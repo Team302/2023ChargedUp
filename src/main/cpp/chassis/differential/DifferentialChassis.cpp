@@ -58,8 +58,9 @@ IChassis::CHASSIS_TYPE DifferentialChassis::GetType() const
 }
 
 //Moves the robot
-void DifferentialChassis::Drive(frc::ChassisSpeeds chassisSpeeds)
+void DifferentialChassis::Drive(ChassisMovement moveInfo)
 {
+    auto chassisSpeeds = moveInfo.chassisSpeeds;
     auto wheels = m_kinematics->ToWheelSpeeds(chassisSpeeds);
     wheels.Desaturate(m_maxSpeed);
     if (m_leftMotor.get() != nullptr)
@@ -71,15 +72,9 @@ void DifferentialChassis::Drive(frc::ChassisSpeeds chassisSpeeds)
         m_rightMotor.get()->Set(wheels.right/m_maxSpeed);
     }
 }
-
-void DifferentialChassis::Drive
-(
-    frc::ChassisSpeeds              chassisSpeeds,
-    IChassis::CHASSIS_DRIVE_MODE    mode,
-    IChassis::HEADING_OPTION        headingOption
-)
+void DifferentialChassis::Drive()
 {
-    Drive(chassisSpeeds);
+    // No-op
 }
 
 void DifferentialChassis::SetTargetHeading(units::angle::degree_t targetYaw) 

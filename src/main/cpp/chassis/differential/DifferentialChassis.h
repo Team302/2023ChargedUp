@@ -22,6 +22,7 @@
 #include <units/angular_velocity.h>
 
 #include <chassis/IChassis.h>
+#include <chassis/ChassisMovement.h>
 #include <hw/interfaces/IDragonMotorController.h>
 #include <frc/kinematics/DifferentialDriveKinematics.h>
 #include <frc/kinematics/DifferentialDriveOdometry.h>
@@ -45,14 +46,9 @@ class DifferentialChassis : public IChassis {
         IChassis::CHASSIS_TYPE GetType() const override;
         void Drive
         (
-            frc::ChassisSpeeds            chassisSpeeds
+            ChassisMovement            chassisSpeeds
         ) override;
-        void Drive
-        (
-            frc::ChassisSpeeds              chassisSpeeds,
-            IChassis::CHASSIS_DRIVE_MODE    mode,
-            IChassis::HEADING_OPTION        headingOption
-        ) override;
+        void Drive() override;
         void SetTargetHeading(units::angle::degree_t targetYaw) override;
 
         inline void Initialize() override {};

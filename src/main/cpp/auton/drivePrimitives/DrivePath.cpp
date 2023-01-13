@@ -27,6 +27,7 @@
 
 // 302 Includes
 #include <auton/drivePrimitives/DrivePath.h>
+#include <chassis/ChassisMovement.h>
 #include <chassis/ChassisFactory.h>
 #include <chassis/IChassis.h>
 #include <utils/Logger.h>
@@ -134,6 +135,11 @@ void DrivePath::Run()
 {
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "Running", "True");
 
+    ChassisMovement moveInfo;
+    moveInfo.driveOption = ChassisOptionEnums::DriveStateType::ROBOT_DRIVE;
+    moveInfo.controllerType = ChassisOptionEnums::AutonControllerType::HOLONOMIC;
+    moveInfo.headingOption = ChassisOptionEnums::HeadingOption::MAINTAIN;
+
     if (!m_trajectoryStates.empty()) //If we have a path parsed / have states to run
     {
         // debugging
@@ -145,14 +151,13 @@ void DrivePath::Run()
         CalcCurrentAndDesiredStates();
 
         // Use the controller to calculate the chassis speeds for getting there
-        ChassisSpeeds refChassisSpeeds;
         if (m_runHoloController)
         {
             Rotation2d rotation = m_desiredState.pose.Rotation();
             switch (m_headingOption)
             {
                 case IChassis::HEADING_OPTION::MAINTAIN:
-                   rotation = m_currentChassisPosition.Rotation();
+//                   rotation = m_currentChassisPosition.Rotation();
                    break;
 
                 case IChassis::HEADING_OPTION::POLAR_HEADING:
@@ -162,10 +167,14 @@ void DrivePath::Run()
                 case IChassis::HEADING_OPTION::TOWARD_GOAL_DRIVE:
                     [[fallthrough]];
                 case IChassis::HEADING_OPTION::TOWARD_GOAL_LAUNCHPAD:
+                    moveInfo.headingOption = ChassisOptionEnums::HeadingOption::TOWARD_GOAL;
+                    //moveInfo.yawAngle = units::angle::degree_t(m_targetFinder.GetTargetAngleD(m_currentChassisPosition));
                     //rotation = Rotation2d(units::angle::degree_t(m_targetFinder.GetTargetAngleD(m_currentChassisPosition)));
                     break;
 
                 case IChassis::HEADING_OPTION::SPECIFIED_ANGLE:
+                    moveInfo.headingOption = ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE;
+                    moveInfo.yawAngle = units::angle::degree_t(m_heading);
                     rotation = Rotation2d(units::angle::degree_t(m_heading));
                     m_chassis.get()->SetTargetHeading(units::angle::degree_t(m_heading));
                     break;
@@ -181,27 +190,24 @@ void DrivePath::Run()
                     rotation = m_desiredState.pose.Rotation();
                     break;
             }
-            refChassisSpeeds = m_holoController.Calculate(m_currentChassisPosition, 
-                                                          m_desiredState, 
-                                                          m_desiredState.pose.Rotation());
-            m_chassis.get()->Drive(refChassisSpeeds, IChassis::CHASSIS_DRIVE_MODE::ROBOT_ORIENTED, m_headingOption);
+            moveInfo.chassisSpeeds = m_holoController.Calculate(m_currentChassisPosition, 
+                                                                m_desiredState, 
+                                                                m_desiredState.pose.Rotation());
         }
         else
         {
-            refChassisSpeeds = m_ramseteController.Calculate(m_currentChassisPosition, 
-                                                             m_desiredState);
-            m_chassis.get()->Drive(refChassisSpeeds);
+            moveInfo.controllerType = ChassisOptionEnums::AutonControllerType::RAMSETE;
+            moveInfo.chassisSpeeds = m_ramseteController.Calculate(m_currentChassisPosition, 
+                                                                   m_desiredState);
         }
     }
     else //If we don't have states to run, don't move the robot
     {
-        ChassisSpeeds speeds;
-        speeds.vx = 0_mps;
-        speeds.vy = 0_mps;
-        speeds.omega = units::angular_velocity::radians_per_second_t(0);
-        m_chassis->Drive(speeds);
+        moveInfo.chassisSpeeds.vx = 0_mps;
+        moveInfo.chassisSpeeds.vy = 0_mps;
+        moveInfo.chassisSpeeds.omega = units::angular_velocity::radians_per_second_t(0);
     }
-
+    m_chassis.get()->Drive(moveInfo);
 }
 
 bool DrivePath::IsDone() //Default primitive function to determine if the primitive is done running

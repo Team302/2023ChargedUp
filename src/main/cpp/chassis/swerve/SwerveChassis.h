@@ -40,6 +40,7 @@
 #include <chassis/IChassis.h>
 #include <chassis/PoseEstimatorEnum.h>
 #include <chassis/swerve/SwerveModule.h>
+#include <chassis/ChassisMovement.h>
 #include <hw/DragonLimelight.h>
 #include <hw/DragonPigeon.h>
 #include <hw/factories/PigeonFactory.h>
@@ -84,39 +85,13 @@ class SwerveChassis : public IChassis
         void ZeroAlignSwerveModules();
 
         /// @brief Drive the chassis
-        /// @param [in] double  drivePercent:   forward/reverse percent output (positive is forward)
-        /// @param [in] double  steerPercent:   left/right percent output (positive is left)
-        /// @param [in] double  rotatePercent:  Rotation percent output around the vertical (Z) axis; (positive is counter clockwise)
-        /// @param [in] bool    fieldRelative:  true: movement is based on the field (e.g., push it goes away from the driver regardless of the robot orientation),
-        ///                                     false: direction is based on robot front/back
-        /// @param [in] bool    useTargetHeading:  true: constrain the heading based on the stored target heading,
-        ///                                     false: don't contrain the heading
         void Drive
         (
-            double drivePercent, 
-            double steerPercent, 
-            double rotatePercent, 
-            CHASSIS_DRIVE_MODE  mode,
-            HEADING_OPTION      headingOption
-        );
-
-        /// @brief Drive the chassis
-        /// @param [in] frc::ChassisSpeeds  speeds:         kinematics for how to move the chassis
-        /// @param [in] bool                fieldRelative:  true: movement is based on the field (e.g., push it goes away from the driver regardless of the robot orientation),
-        ///                                                 false: direction is based on robot front/back
-        /// @param [in] bool                useTargetHeading:  true: constrain the heading based on the stored target heading,
-        ///                                                 false: don't contrain the heading
-        void Drive
-        (
-            frc::ChassisSpeeds speeds, 
-            CHASSIS_DRIVE_MODE  mode,
-            HEADING_OPTION      headingOption
-        ) override;
-        void Drive
-        (
-            frc::ChassisSpeeds            chassisSpeeds
+            ChassisMovement            moveInfo
         ) override;
 
+        void Drive() override;
+        
         /// @brief update the chassis odometry based on current states of the swerve modules and the pigeon
         void UpdateOdometry();
 

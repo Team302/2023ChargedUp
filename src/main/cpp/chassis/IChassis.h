@@ -29,6 +29,7 @@
 // Team 302 includes
 #include <mechanisms/controllers/ControlData.h>
 #include <mechanisms/controllers/ControlModes.h>
+#include <chassis/ChassisMovement.h>
 
 // Third Party Includes
 
@@ -44,6 +45,7 @@ namespace frc
 class IChassis
 {
 	public:
+    /***/
         enum CHASSIS_TYPE
         {
             DIFFERENTIAL, 
@@ -69,7 +71,7 @@ class IChassis
             LEFT_INTAKE_TOWARD_BALL,
             RIGHT_INTAKE_TOWARD_BALL
         };
-
+/***/
         /// @brief      return the chassis type
         /// @returns    CHASSIS_TYPE
         virtual CHASSIS_TYPE GetType() const = 0;
@@ -78,17 +80,9 @@ class IChassis
         /// @returns    void
         virtual void Drive
         (
-            frc::ChassisSpeeds  chassisSpeeds
+            ChassisMovement     moveInfo
         ) = 0;
-
-        /// @brief      Run chassis 
-        /// @returns    void
-        virtual void Drive
-        (
-            frc::ChassisSpeeds  chassisSpeeds,
-            CHASSIS_DRIVE_MODE  mode,
-            HEADING_OPTION      headingOption
-        ) = 0;
+        virtual void Drive() = 0;
         
 
         virtual void SetTargetHeading(units::angle::degree_t targetYaw) = 0;

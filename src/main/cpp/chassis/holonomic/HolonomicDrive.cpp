@@ -24,6 +24,8 @@
 #include <frc/kinematics/ChassisSpeeds.h>
 
 // Team 302 Includes
+#include <chassis/ChassisMovement.h>
+#include <chassis/ChassisOptionEnums.h>
 #include <chassis/holonomic/HolonomicDrive.h>
 #include <chassis/IChassis.h>
 #include <hw/DragonPigeon.h>
@@ -76,18 +78,22 @@ void HolonomicDrive::Init()
 void HolonomicDrive::Run()
 {
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("HolonomicDrive::Run"), string("begin"));
+
+    ChassisMovement moveInfo;
+    moveInfo.driveOption = ChassisOptionEnums::DriveStateType::FIELD_DRIVE;
+    moveInfo.controllerType = ChassisOptionEnums::AutonControllerType::HOLONOMIC;
+
     auto controller = GetController();
     if (controller != nullptr && m_chassis != nullptr)
     {
-        IChassis::CHASSIS_DRIVE_MODE mode = IChassis::CHASSIS_DRIVE_MODE::FIELD_ORIENTED;
-        IChassis::HEADING_OPTION headingOpt = IChassis::HEADING_OPTION::MAINTAIN;
+        moveInfo.headingOption = ChassisOptionEnums::HeadingOption::MAINTAIN;
         if (controller->IsButtonPressed(TeleopControl::FINDTARGET))
         {
-            headingOpt = IChassis::HEADING_OPTION::TOWARD_GOAL;
+            moveInfo.headingOption = ChassisOptionEnums::HeadingOption::TOWARD_GOAL;
         }                                       
         else if (controller->IsButtonPressed(TeleopControl::DRIVE_TO_SHOOTING_SPOT))
         {
-            headingOpt = IChassis::HEADING_OPTION::TOWARD_GOAL_DRIVE;
+            moveInfo.headingOption = ChassisOptionEnums::HeadingOption::TOWARD_GOAL;
         }
         
         if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::REZERO_PIGEON))
@@ -112,9 +118,11 @@ void HolonomicDrive::Run()
         auto rotate = controller->GetAxisValue(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_ROTATE);
 
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("Run"), string("axis read"));
-
-        ChassisSpeeds speeds{forward*maxSpeed, strafe*maxSpeed, rotate*maxAngSpeed};
-        m_chassis->Drive(speeds, mode, headingOpt);
+        
+        moveInfo.chassisSpeeds.vx = forward*maxSpeed;
+        moveInfo.chassisSpeeds.vy = strafe*maxSpeed;
+        moveInfo.chassisSpeeds.omega = rotate*maxAngSpeed;
+        m_chassis->Drive(moveInfo);
     }
     else
     {
