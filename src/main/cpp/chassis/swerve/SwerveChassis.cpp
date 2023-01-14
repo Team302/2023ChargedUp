@@ -159,12 +159,9 @@ void SwerveChassis::Drive
     auto mode = moveInfo.driveOption;
     auto currentPose = GetPose();
     auto goalPose = m_targetFinder.GetPosCenterTarget();
-    //m_hold = false;
     switch (headingOption)
     {
         case ChassisOptionEnums::HeadingOption::MAINTAIN:
-//             [[fallthrough]]; // intentional fallthrough 
-//        case HEADING_OPTION::POLAR_HEADING:
             AdjustRotToMaintainHeading(xSpeed, ySpeed, rot);
             break;
 
@@ -172,25 +169,10 @@ void SwerveChassis::Drive
             AdjustRotToPointTowardGoal(currentPose, rot);
             break;
 
-//        case HEADING_OPTION::TOWARD_GOAL_DRIVE:
-//             [[fallthrough]]; // intentional fallthrough 
-//        case HEADING_OPTION::TOWARD_GOAL_LAUNCHPAD:
-//            DriveToPointTowardGoal(currentPose,goalPose,xSpeed,ySpeed,rot);
-//            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Swerve Chassis"), "Chassis Heading: rot", rot.to<double>() );
-//            break;
-
         case ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE:
             m_targetHeading = moveInfo.yawAngle;
             rot -= CalcHeadingCorrection(m_targetHeading, kPAutonSpecifiedHeading);
             break;
-
-//        case HEADING_OPTION::LEFT_INTAKE_TOWARD_BALL:
-//            // TODO: implement
-//            break;
-
-//        case HEADING_OPTION::RIGHT_INTAKE_TOWARD_BALL:
-//            // TODO: implement
-//            break;
 
         default:
             break;
