@@ -36,7 +36,8 @@
 #include <networktables/NetworkTableInstance.h>
 #include <networktables/NetworkTable.h>
 #include <networktables/NetworkTableEntry.h>
-
+#include <frc/DataLogManager.h>
+#include <wpi/DataLog.h>
 // Team 302 includes
 #include <utils/Logger.h>
 
@@ -89,6 +90,13 @@ void Logger::LogData
         	    table.get()->PutString(identifier, message);
             }
             break;
+            
+            case LOGGER_OPTION::USB:
+            {
+            m_BooleanLog.Append(true);
+            m_DoubleLog.Append(3.5);
+            m_StringLog.Append("wow!");
+            }
 
             default:  // case LOGGER_OPTION::EAT_IT:
                 break;
@@ -127,6 +135,13 @@ void Logger::LogData
             }
             break;
 
+            case LOGGER_OPTION::USB:
+            {
+            m_BooleanLog.Append(true);
+            m_DoubleLog.Append(3.5);
+            m_StringLog.Append("wow!");
+            }
+
             default:  // case LOGGER_OPTION::EAT_IT:
                 break;
 
@@ -164,6 +179,12 @@ void Logger::LogData
 	            table.get()->PutBoolean(identifier, value);
             }
             break;
+            case LOGGER_OPTION::USB:
+            {
+            m_BooleanLog.Append(true);
+            m_DoubleLog.Append(3.5);
+            m_StringLog.Append("wow!");
+            }
 
             default:  // case LOGGER_OPTION::EAT_IT:
                 break;
@@ -201,6 +222,12 @@ void Logger::LogData
 	            table.get()->PutNumber(identifier, value);
             }
             break;
+            case LOGGER_OPTION::USB:
+            {
+            m_BooleanLog.Append(true);
+            m_DoubleLog.Append(3.5);
+            m_StringLog.Append("wow!");
+            }
 
             default:  // case LOGGER_OPTION::EAT_IT:
                 break;
@@ -402,11 +429,19 @@ void Logger::SetLoggingLevel
 }
 
 
-Logger::Logger() : m_option( LOGGER_OPTION::DASHBOARD ), 
+Logger::Logger() : m_option( LOGGER_OPTION::USB ), 
                    m_level( LOGGER_LEVEL::PRINT ),
                    m_alreadyDisplayed(),
                    m_cyclingCounter(0), 
                    m_optionChooser(),
-                   m_levelChooser()
+                   m_levelChooser(),
+                   m_BooleanLog(),
+                   m_DoubleLog(),
+                   m_StringLog()
 {
+    frc::DataLogManager::Start("/home/lvuser/robotdata","notcharlie");
+      wpi::log::DataLog& log = frc::DataLogManager::GetLog();
+m_BooleanLog = wpi::log::BooleanLogEntry(log, "/home/lvuser/robotdata");
+m_DoubleLog = wpi::log::DoubleLogEntry(log, "/home/lvuser/robotdata");
+m_StringLog = wpi::log::StringLogEntry(log, "/home/lvuser/robotdata");
 }

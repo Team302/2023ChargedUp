@@ -21,6 +21,7 @@
 enum LOGGER_OPTION
 {
     CONSOLE,        ///< write to the RoboRio Console
+    USB,            ///< write to usb storage device
     DASHBOARD,      ///< write to the SmartDashboard
     EAT_IT          ///< don't write anything (useful at comps where we want to minimize network traffic)
 };

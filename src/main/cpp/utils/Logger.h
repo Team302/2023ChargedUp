@@ -22,7 +22,7 @@
 
 // FRC includes
 #include <frc/SmartDashboard/SendableChooser.h>
-
+#include <wpi/DataLog.h>
 // Team 302 includes
 #include <utils/LoggerData.h>
 #include <utils/LoggerEnums.h>
@@ -139,7 +139,9 @@ class Logger
         int                                     m_cyclingCounter;       // count 20ms loops
         frc::SendableChooser<LOGGER_OPTION>     m_optionChooser;
         frc::SendableChooser<LOGGER_LEVEL>      m_levelChooser;
-
+        wpi::log::BooleanLogEntry               m_BooleanLog;
+        wpi::log::DoubleLogEntry                m_DoubleLog;
+        wpi::log::StringLogEntry                m_StringLog;
 
         Logger();
         ~Logger() = default;
