@@ -19,16 +19,23 @@
 #include <array>
 
 //Team302 Includes
-#include <chassis/swerve/driveStates/SwerveDriveState.h>
+#include <chassis/swerve/driveStates/ISwerveDriveState.h>
 
-class HoldDrive : public SwerveDriveState
+class HoldDrive : public ISwerveDriveState
 {
     public:
-        using SwerveDriveState::SwerveDriveState;
+        HoldDrive();
+        ~HoldDrive();
 
-        std::array<frc::SwerveModuleState, 4> CalcSwerveModuleStates() override;
+        std::array<frc::SwerveModuleState, 4> CalcSwerveModuleStates
+        (
+            ChassisMovement& chassisMovement
+        ) override;
 
-        void Init() override;
+        void Init
+        (
+            ChassisMovement& chassisMovement
+        ) override;
     private:
         frc::SwerveModuleState* m_flState = new frc::SwerveModuleState();
         frc::SwerveModuleState* m_frState = new frc::SwerveModuleState();

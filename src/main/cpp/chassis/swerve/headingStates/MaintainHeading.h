@@ -18,13 +18,14 @@
 //FRC Includes
 
 //Team302 Includes
-#include <chassis/swerve/ISwerveDriveOrientation.h>
+#include <chassis/swerve/headingStates/ISwerveDriveOrientation.h>
 #include <chassis/ChassisOptionEnums.h>
 
 class MaintainHeading : public ISwerveDriveOrientation
 {
     public:
-        MaintainHeading(ChassisOptionEnums::HeadingOption headingOption);
+        MaintainHeading();
+        ~MaintainHeading() = default;
 
         void UpdateChassisSpeeds(ChassisMovement& chassisMovement) override;
 };

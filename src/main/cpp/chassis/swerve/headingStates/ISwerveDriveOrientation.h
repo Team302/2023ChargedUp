@@ -27,7 +27,7 @@ class ISwerveDriveOrientation
 
         ISwerveDriveOrientation(ChassisOptionEnums::HeadingOption headingOption);
 
-        /// @brief Updated incoming chassis speeds to do heading action, precursor to SwerveDriveState
+        /// @brief Updated incoming chassis speeds to do heading action, precursor to ISwerveDriveState
         /// @param [in] ChassisMovement& chassisMovement - Incomign chassis speeds to edit for heading option
         void virtual UpdateChassisSpeeds(ChassisMovement& chassisMovement) = 0;
 

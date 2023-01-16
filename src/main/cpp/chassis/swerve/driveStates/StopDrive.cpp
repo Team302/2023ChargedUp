@@ -15,13 +15,20 @@
 
 //Team302 Includes
 #include <chassis/swerve/driveStates/StopDrive.h>
+#include <chassis/ChassisMovement.h>
 
-std::array<frc::SwerveModuleState, 4> StopDrive::CalcSwerveModuleStates()
+std::array<frc::SwerveModuleState, 4> StopDrive::CalcSwerveModuleStates
+(
+    ChassisMovement& chassisMovement
+)
 {
     return {*m_flState, *m_frState, *m_blState, *m_brState};
 }
 
-void StopDrive::Init()
+void StopDrive::Init
+(
+    ChassisMovement& chassisMovement
+)
 {
     //Should we do anything here?
 }

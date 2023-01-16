@@ -26,18 +26,25 @@
 class TrajectoryDrive : public RobotDrive
 {
     public:
-        TrajectoryDrive(RobotDrive robotDrive);
+        TrajectoryDrive(RobotDrive* robotDrive);
 
-        std::array<frc::SwerveModuleState, 4> CalcSwerveModuleStates() override;
+        std::array<frc::SwerveModuleState, 4> CalcSwerveModuleStates
+        (
+            ChassisMovement& chassisMovement
+        ) override;
         
-        void Init() override;
+        void Init
+        (
+            ChassisMovement& chassisMovement
+        ) override;
+
     private:
         void CalcCurrentAndDesiredStates();
 
         frc::Trajectory                     m_trajectory;
-        RobotDrive                          m_robotDrive;
+        RobotDrive*                         m_robotDrive;
         frc::HolonomicDriveController       m_holonomicController;
         frc::Trajectory::State              m_desiredState;
         std::vector<frc::Trajectory::State> m_trajectoryStates;
-        std::unique_ptr<frc::Timer>             m_timer;
+        std::unique_ptr<frc::Timer>         m_timer;
 };

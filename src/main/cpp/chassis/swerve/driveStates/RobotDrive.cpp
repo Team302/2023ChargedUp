@@ -21,22 +21,22 @@
 
 #include <chassis/swerve/driveStates/RobotDrive.h>
 #include <chassis/ChassisFactory.h>
+#include <chassis/ChassisMovement.h>
 
-RobotDrive::RobotDrive
-(
-    ChassisMovement chassisMovement, 
-    ISwerveDriveOrientation* swerveOrientation
-) : SwerveDriveState::SwerveDriveState(chassisMovement, swerveOrientation),
-    m_flState(),
-    m_frState(),
-    m_blState(),
-    m_brState(),
-    m_chassis(ChassisFactory::GetChassisFactory()->GetSwerveChassis())
+RobotDrive::RobotDrive() :  ISwerveDriveState::ISwerveDriveState(),
+                            m_flState(),
+                            m_frState(),
+                            m_blState(),
+                            m_brState(),
+                            m_chassis(ChassisFactory::GetChassisFactory()->GetSwerveChassis())
 {
 
 }
 
-std::array<frc::SwerveModuleState, 4> RobotDrive::CalcSwerveModuleStates()
+std::array<frc::SwerveModuleState, 4> RobotDrive::CalcSwerveModuleStates
+(
+    ChassisMovement& chassisMovement
+)
 {
     // These calculations are based on Ether's Chief Delphi derivation
     // The only changes are that that derivation is based on positive angles being clockwise
@@ -61,12 +61,12 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::CalcSwerveModuleStates()
     auto l = m_chassis->GetWheelBase();
     auto w = m_chassis->GetTrack();
 
-    auto vy = 1.0 * m_chassisMovement.chassisSpeeds.vx;
-    auto vx = -1.0 * m_chassisMovement.chassisSpeeds.vy;
-    auto omega = m_chassisMovement.chassisSpeeds.omega;
+    auto vy = 1.0 * chassisMovement.chassisSpeeds.vx;
+    auto vx = -1.0 * chassisMovement.chassisSpeeds.vy;
+    auto omega = chassisMovement.chassisSpeeds.omega;
 
-    units::length::meter_t centerOfRotationW = (w / 2.0) - m_chassisMovement.centerOfRotationOffset.Y;
-    units::length::meter_t centerOfRotationL = (l / 2.0) - m_chassisMovement.centerOfRotationOffset.X;
+    units::length::meter_t centerOfRotationW = (w / 2.0) - chassisMovement.centerOfRotationOffset.Y;
+    units::length::meter_t centerOfRotationL = (l / 2.0) - chassisMovement.centerOfRotationOffset.X;
 
     units::velocity::meters_per_second_t omegaW = omega.to<double>() * centerOfRotationW / 1_s;
     units::velocity::meters_per_second_t omegaL = omega.to<double>() * centerOfRotationL / 1_s;
@@ -119,7 +119,10 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::CalcSwerveModuleStates()
     return {m_flState, m_frState, m_blState, m_brState};
 }
 
-void RobotDrive::Init()
+void RobotDrive::Init
+(
+    ChassisMovement& chassisMovement
+)
 {
 
 }

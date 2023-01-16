@@ -19,15 +19,25 @@
 //Team302 Includes
 #include <chassis/swerve/driveStates/HoldDrive.h>
 
-std::array<frc::SwerveModuleState, 4> HoldDrive::CalcSwerveModuleStates()
-{
-    return {*m_flState, *m_frState, *m_blState, *m_brState};
-}
-
-void HoldDrive::Init()
+HoldDrive::HoldDrive()
 {
     m_flState->angle = {units::angle::degree_t(45)};
     m_frState->angle = {units::angle::degree_t(-45)};
     m_blState->angle = {units::angle::degree_t(135)};
     m_brState->angle = {units::angle::degree_t(-135)};
+}
+std::array<frc::SwerveModuleState, 4> HoldDrive::CalcSwerveModuleStates
+(
+    ChassisMovement& chassisMovement
+)
+{
+    return {*m_flState, *m_frState, *m_blState, *m_brState};
+}
+
+void HoldDrive::Init
+(
+    ChassisMovement& chassisMovement
+)
+{
+
 }

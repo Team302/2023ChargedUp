@@ -17,32 +17,33 @@
 
 //Team302 Includes
 #include <chassis/swerve/driveStates/FieldDrive.h>
-//#include <chassis/swerve/SwerveOdometry.h>
 
 using frc::Rotation2d;
 
-FieldDrive::FieldDrive(RobotDrive robotDrive
-) : RobotDrive(robotDrive.GetChassisMovement(), robotDrive.GetDriveOrientation()),
-    m_robotDrive(robotDrive)
+FieldDrive::FieldDrive(RobotDrive* robotDrive) : RobotDrive(),
+                                                 m_robotDrive(robotDrive)
 {
 }
 
-std::array<frc::SwerveModuleState, 4> FieldDrive::CalcSwerveModuleStates()
+std::array<frc::SwerveModuleState, 4> FieldDrive::CalcSwerveModuleStates
+(
+    ChassisMovement& chassisMovement
+)
 {
-    m_orientation->UpdateChassisSpeeds(m_chassisMovement);
-
-
-    frc::ChassisSpeeds fieldRelativeSpeeds = frc::ChassisSpeeds::FromFieldRelativeSpeeds(m_chassisMovement.chassisSpeeds.vx,
-                                                                                         m_chassisMovement.chassisSpeeds.vy,
-                                                                                         m_chassisMovement.chassisSpeeds.omega,
+    frc::ChassisSpeeds fieldRelativeSpeeds = frc::ChassisSpeeds::FromFieldRelativeSpeeds(chassisMovement.chassisSpeeds.vx,
+                                                                                         chassisMovement.chassisSpeeds.vy,
+                                                                                         chassisMovement.chassisSpeeds.omega,
                                                                                          Rotation2d());
                                                                                          //m_chassis->GetOdometry()->GetPose().Rotation());
 
-    m_chassisMovement.chassisSpeeds = fieldRelativeSpeeds;
-    return m_robotDrive.CalcSwerveModuleStates();
+    chassisMovement.chassisSpeeds = fieldRelativeSpeeds;
+    return m_robotDrive->CalcSwerveModuleStates(chassisMovement);
 }
 
-void FieldDrive::Init()
+void FieldDrive::Init
+(
+    ChassisMovement& chassisMovement
+)
 {
     
 }

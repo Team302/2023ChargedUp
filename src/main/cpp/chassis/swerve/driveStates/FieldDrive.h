@@ -25,12 +25,17 @@
 class FieldDrive : public RobotDrive
 {
     public:
-        FieldDrive(RobotDrive robotDrive);
+        FieldDrive(RobotDrive* robotDrive);
 
-        std::array<frc::SwerveModuleState, 4> CalcSwerveModuleStates() override;
+        std::array<frc::SwerveModuleState, 4> CalcSwerveModuleStates
+        (
+            ChassisMovement& chassisMovement
+        ) override;
 
-        void Init() override;
+        void Init
+        (
+            ChassisMovement& chassisMovement
+        ) override;
     private:
-        frc::ChassisSpeeds      m_chassisSpeeds;
-        RobotDrive              m_robotDrive;
+        RobotDrive*              m_robotDrive;
 };

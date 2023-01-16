@@ -26,7 +26,7 @@
 #include <chassis/ChassisOptionEnums.h>
 
 
-/// @brief This is used to give all neccessary data to SwerveDriveStates
+/// @brief This is used to give all neccessary data to ISwerveDriveStates
 
 struct ChassisMovement
 {

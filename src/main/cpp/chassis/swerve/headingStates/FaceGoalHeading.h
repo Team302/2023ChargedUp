@@ -16,14 +16,15 @@
 #pragma once
 
 //Team302 Includes
-#include <chassis/swerve/ISwerveDriveOrientation.h>
+#include <chassis/swerve/headingStates/ISwerveDriveOrientation.h>
 #include <chassis/DragonTargetFinder.h>
 #include <hw/DragonLimelight.h>
 
 class FaceGoalHeading : public ISwerveDriveOrientation
 {
     public:
-        FaceGoalHeading(ChassisOptionEnums::HeadingOption headingOption);
+        FaceGoalHeading();
+        ~FaceGoalHeading();
 
         void UpdateChassisSpeeds(ChassisMovement& chassisMovement) override;
 

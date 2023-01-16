@@ -19,21 +19,23 @@
 
 //Team302 Includes
 #include <chassis/swerve/SwerveChassis.h>
-#include <chassis/swerve/driveStates/SwerveDriveState.h>
+#include <chassis/swerve/driveStates/ISwerveDriveState.h>
 #include <chassis/ChassisMovement.h>
 
-class RobotDrive : public SwerveDriveState
+class RobotDrive : public ISwerveDriveState
 {
     public:
-        RobotDrive
+        RobotDrive();
+
+        std::array<frc::SwerveModuleState, 4> CalcSwerveModuleStates
         (
-            ChassisMovement chassisMovement, 
-            ISwerveDriveOrientation* swerveOrientation
-        );
+            ChassisMovement& chassisMovement
+        ) override;
 
-        std::array<frc::SwerveModuleState, 4> CalcSwerveModuleStates() override;
-
-        void Init() override;
+        void Init
+        (
+            ChassisMovement& chassisMovement
+        ) override;
     protected:
         frc::SwerveModuleState  m_flState;
         frc::SwerveModuleState  m_frState;

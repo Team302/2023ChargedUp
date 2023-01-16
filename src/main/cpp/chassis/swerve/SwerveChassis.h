@@ -15,6 +15,7 @@
 //====================================================================================================================================================
 
 #pragma once
+#include <map>
 #include <memory>
 #include <string>
 
@@ -35,8 +36,10 @@
 #include <units/length.h>
 #include <units/velocity.h>
 
-
+#include <chassis/ChassisOptionEnums.h>
 #include <chassis/DragonTargetFinder.h>
+#include <chassis/swerve/driveStates/ISwerveDriveState.h>
+#include <chassis/swerve/headingStates/ISwerveDriveOrientation.h>
 #include <chassis/IChassis.h>
 #include <chassis/PoseEstimatorEnum.h>
 #include <chassis/swerve/SwerveModule.h>
@@ -44,6 +47,8 @@
 #include <hw/DragonLimelight.h>
 #include <hw/DragonPigeon.h>
 #include <hw/factories/PigeonFactory.h>
+
+class RobotDrive;
 
 class SwerveChassis : public IChassis
 {
@@ -152,6 +157,15 @@ class SwerveChassis : public IChassis
         void DriveHoldPosition();
 
     private:
+        ISwerveDriveOrientation* GetHeadingState
+        (
+            ChassisMovement         moveInfo
+        );
+        ISwerveDriveState* GetDriveState
+        (
+            ChassisMovement         moveInfo
+        );
+        
         frc::ChassisSpeeds GetFieldRelativeSpeeds
         (
             units::meters_per_second_t xSpeed,
@@ -169,41 +183,15 @@ class SwerveChassis : public IChassis
         (
             frc::ChassisSpeeds 
         );
-
-        void AdjustRotToMaintainHeading
-        (
-            units::meters_per_second_t&  xspeed,
-            units::meters_per_second_t&  yspeed,
-            units::radians_per_second_t& rot 
-        );        
-
-        void AdjustRotToPointTowardGoal
-        (
-            frc::Pose2d                  robotPose,
-            units::radians_per_second_t& rot
-        );
-
-        void DriveToPointTowardGoal
-        (
-            frc::Pose2d              robotPose,
-            frc::Pose2d              goalPose, 
-            units::meters_per_second_t&  xspeed,
-            units::meters_per_second_t&  yspeed,
-            units::radians_per_second_t& rot
-            
-        );
-        units::angle::degree_t UpdateForPolarDrive
-        (
-            frc::Pose2d              robotPose,
-            frc::Pose2d              goalPose,
-            frc::Transform2d       wheelLoc,
-            frc::ChassisSpeeds       speeds
-        );
-
+        
         std::shared_ptr<SwerveModule>                               m_frontLeft;
         std::shared_ptr<SwerveModule>                               m_frontRight;
         std::shared_ptr<SwerveModule>                               m_backLeft;
         std::shared_ptr<SwerveModule>                               m_backRight;
+
+        RobotDrive*                                                         m_robotDrive;
+        std::map<ChassisOptionEnums::DriveStateType, ISwerveDriveState*>     m_driveStateMap;
+        std::map<ChassisOptionEnums::HeadingOption, ISwerveDriveOrientation*> m_headingStateMap;
 
         frc::SwerveModuleState                                      m_flState;
         frc::SwerveModuleState                                      m_frState;
@@ -271,5 +259,5 @@ class SwerveChassis : public IChassis
 
         const units::length::inch_t m_shootingDistance = units::length::inch_t(105.0); // was 105.0
 
-
+    
 };

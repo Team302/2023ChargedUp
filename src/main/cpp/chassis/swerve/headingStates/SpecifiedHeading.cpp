@@ -17,9 +17,8 @@
 #include <chassis/ChassisOptionEnums.h>
 #include <chassis/swerve/headingStates/SpecifiedHeading.h>
 
-SpecifiedHeading::SpecifiedHeading(ChassisOptionEnums::HeadingOption headingOption, units::angle::degree_t targetAngle
-) : ISwerveDriveOrientation(headingOption),
-    m_targetAngle(targetAngle)
+SpecifiedHeading::SpecifiedHeading() : ISwerveDriveOrientation(ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE),
+    m_targetAngle(units::angle::degree_t(0.0))
 {
 
 }

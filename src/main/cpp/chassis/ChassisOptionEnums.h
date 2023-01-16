@@ -48,4 +48,5 @@ class ChassisOptionEnums
         };
 
     ChassisOptionEnums() = delete;   
+    ~ChassisOptionEnums() = delete;
 };

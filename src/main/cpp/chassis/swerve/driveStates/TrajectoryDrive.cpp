@@ -17,12 +17,12 @@
 
 //Team302 Includes
 #include <chassis/swerve/driveStates/TrajectoryDrive.h>
+#include <chassis/ChassisMovement.h>
 
 using frc::Pose2d;
 
-TrajectoryDrive::TrajectoryDrive(RobotDrive robotDrive
-) : RobotDrive(robotDrive.GetChassisMovement(), robotDrive.GetDriveOrientation()),
-    m_trajectory(m_chassisMovement.trajectory),
+TrajectoryDrive::TrajectoryDrive(RobotDrive* robotDrive) : RobotDrive(),
+    m_trajectory(),
     m_robotDrive(robotDrive),
     m_holonomicController(frc2::PIDController{1.5, 0, 0},
                           frc2::PIDController{1.5, 0, 0},
@@ -35,7 +35,10 @@ TrajectoryDrive::TrajectoryDrive(RobotDrive robotDrive
 
 }
 
-void TrajectoryDrive::Init()
+void TrajectoryDrive::Init
+(
+    ChassisMovement& chassisMovement
+)
 {
     //Clear m_trajectoryStates in case it holds onto a previous trajectory
     m_trajectoryStates.clear();
@@ -51,7 +54,10 @@ void TrajectoryDrive::Init()
     }
 }
 
-std::array<frc::SwerveModuleState, 4> TrajectoryDrive::CalcSwerveModuleStates()
+std::array<frc::SwerveModuleState, 4> TrajectoryDrive::CalcSwerveModuleStates
+(
+    ChassisMovement& chassisMovement
+)
 {
     if (!m_trajectoryStates.empty()) //If we have a path parsed / have states to run
     {
@@ -65,8 +71,8 @@ std::array<frc::SwerveModuleState, 4> TrajectoryDrive::CalcSwerveModuleStates()
                                                           m_desiredState, 
                                                           m_desiredState.pose.Rotation());
         //Set chassisMovement speeds that will be used by RobotDrive
-        m_chassisMovement.chassisSpeeds = refChassisSpeeds;
-        return m_robotDrive.CalcSwerveModuleStates();
+        chassisMovement.chassisSpeeds = refChassisSpeeds;
+        return m_robotDrive->CalcSwerveModuleStates(chassisMovement);
 
     }
     else //If we don't have states to run, don't move the robot
@@ -78,8 +84,8 @@ std::array<frc::SwerveModuleState, 4> TrajectoryDrive::CalcSwerveModuleStates()
         speeds.omega = units::angular_velocity::radians_per_second_t(0);
         
         //Set chassisMovement speeds that will be used by RobotDrive
-        m_chassisMovement.chassisSpeeds = speeds;
-        return m_robotDrive.CalcSwerveModuleStates();
+        chassisMovement.chassisSpeeds = speeds;
+        return m_robotDrive->CalcSwerveModuleStates(chassisMovement);
     }
 }
 

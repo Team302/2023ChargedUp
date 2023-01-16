@@ -18,8 +18,7 @@
 #include <chassis/ChassisOptionEnums.h>
 //#include <chassis/swerve/SwerveOdometry.h>
 
-MaintainHeading::MaintainHeading(ChassisOptionEnums::HeadingOption headingOption
-) : ISwerveDriveOrientation(headingOption)
+MaintainHeading::MaintainHeading() : ISwerveDriveOrientation(ChassisOptionEnums::HeadingOption::MAINTAIN)
 {
     
 }
