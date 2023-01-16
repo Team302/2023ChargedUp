@@ -194,7 +194,7 @@ void SwerveChassis::Drive
     auto drive = GetDriveState(moveInfo);
     if (drive != nullptr)
     {
-        auto states = drive->CalcSwerveModuleStates(moveInfo);
+        auto states = drive->UpdateSwerveModuleStates(moveInfo);
 //        auto [fl, fr, bl, br] = states;
         
         m_frontLeft.get()->SetDesiredState(states[0]);
@@ -249,7 +249,7 @@ void SwerveChassis::Drive
             auto states = m_kinematics.ToSwerveModuleStates(chassisSpeeds);
             m_kinematics.DesaturateWheelSpeeds(&states, m_maxSpeed);
 
-            CalcSwerveModuleStates(chassisSpeeds);
+            UpdateSwerveModuleStates(chassisSpeeds);
 
             //Hold position / lock wheels in 'X' configuration
             if(m_hold)
@@ -472,7 +472,7 @@ ChassisSpeeds SwerveChassis::GetFieldRelativeSpeeds
     return output;
 }
 
-void SwerveChassis::CalcSwerveModuleStates
+void SwerveChassis::UpdateSwerveModuleStates
 (
     frc::ChassisSpeeds speeds
 )

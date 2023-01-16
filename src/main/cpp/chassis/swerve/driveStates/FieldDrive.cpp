@@ -25,7 +25,7 @@ FieldDrive::FieldDrive(RobotDrive* robotDrive) : RobotDrive(),
 {
 }
 
-std::array<frc::SwerveModuleState, 4> FieldDrive::CalcSwerveModuleStates
+std::array<frc::SwerveModuleState, 4> FieldDrive::UpdateSwerveModuleStates
 (
     ChassisMovement& chassisMovement
 )
@@ -37,7 +37,7 @@ std::array<frc::SwerveModuleState, 4> FieldDrive::CalcSwerveModuleStates
                                                                                          //m_chassis->GetOdometry()->GetPose().Rotation());
 
     chassisMovement.chassisSpeeds = fieldRelativeSpeeds;
-    return m_robotDrive->CalcSwerveModuleStates(chassisMovement);
+    return m_robotDrive->UpdateSwerveModuleStates(chassisMovement);
 }
 
 void FieldDrive::Init

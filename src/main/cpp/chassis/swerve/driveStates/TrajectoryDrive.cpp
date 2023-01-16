@@ -54,7 +54,7 @@ void TrajectoryDrive::Init
     }
 }
 
-std::array<frc::SwerveModuleState, 4> TrajectoryDrive::CalcSwerveModuleStates
+std::array<frc::SwerveModuleState, 4> TrajectoryDrive::UpdateSwerveModuleStates
 (
     ChassisMovement& chassisMovement
 )
@@ -72,7 +72,7 @@ std::array<frc::SwerveModuleState, 4> TrajectoryDrive::CalcSwerveModuleStates
                                                           m_desiredState.pose.Rotation());
         //Set chassisMovement speeds that will be used by RobotDrive
         chassisMovement.chassisSpeeds = refChassisSpeeds;
-        return m_robotDrive->CalcSwerveModuleStates(chassisMovement);
+        return m_robotDrive->UpdateSwerveModuleStates(chassisMovement);
 
     }
     else //If we don't have states to run, don't move the robot
@@ -85,7 +85,7 @@ std::array<frc::SwerveModuleState, 4> TrajectoryDrive::CalcSwerveModuleStates
         
         //Set chassisMovement speeds that will be used by RobotDrive
         chassisMovement.chassisSpeeds = speeds;
-        return m_robotDrive->CalcSwerveModuleStates(chassisMovement);
+        return m_robotDrive->UpdateSwerveModuleStates(chassisMovement);
     }
 }
 

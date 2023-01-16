@@ -29,7 +29,7 @@ void FaceGoalHeading::UpdateChassisSpeeds(ChassisMovement& chassisMovement)
 {
     units::angular_velocity::radians_per_second_t rot = chassisMovement.chassisSpeeds.omega;
 
-    if(abs(m_limelight->GetTargetHorizontalOffset().to<double>()) < 1.0 && m_limelight->HasTarget())
+    if(m_limelight != nullptr && abs(m_limelight->GetTargetHorizontalOffset().to<double>()) < 1.0 && m_limelight->HasTarget())
     {
         //Hold position
     }

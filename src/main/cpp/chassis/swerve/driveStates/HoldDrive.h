@@ -27,7 +27,7 @@ class HoldDrive : public ISwerveDriveState
         HoldDrive();
         ~HoldDrive();
 
-        std::array<frc::SwerveModuleState, 4> CalcSwerveModuleStates
+        std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates
         (
             ChassisMovement& chassisMovement
         ) override;

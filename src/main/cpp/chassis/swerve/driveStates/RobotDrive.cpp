@@ -28,12 +28,20 @@ RobotDrive::RobotDrive() :  ISwerveDriveState::ISwerveDriveState(),
                             m_frState(),
                             m_blState(),
                             m_brState(),
-                            m_chassis(ChassisFactory::GetChassisFactory()->GetSwerveChassis())
+                            m_wheelbase(units::length::inch_t(20.0)),
+                            m_wheeltrack(units::length::inch_t(20.0)),
+                            m_maxspeed(units::velocity::feet_per_second_t(1.0))
 {
-
+    auto chassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
+    if (chassis != nullptr)
+    {
+        m_wheelbase = chassis->GetWheelBase();
+        m_wheeltrack = chassis->GetTrack();
+        m_maxspeed = chassis->GetMaxSpeed();
+    }
 }
 
-std::array<frc::SwerveModuleState, 4> RobotDrive::CalcSwerveModuleStates
+std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates
 (
     ChassisMovement& chassisMovement
 )
@@ -58,8 +66,8 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::CalcSwerveModuleStates
     // We will use these variable names in the code to help tie back to the document.
     // Variable names, though, will follow C++ standards and start with a lower case letter.
 
-    auto l = m_chassis->GetWheelBase();
-    auto w = m_chassis->GetTrack();
+    auto l = m_wheelbase;
+    auto w = m_wheeltrack;
 
     auto vy = 1.0 * chassisMovement.chassisSpeeds.vx;
     auto vx = -1.0 * chassisMovement.chassisSpeeds.vy;
@@ -107,9 +115,9 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::CalcSwerveModuleStates
     }
 
     // normalize speeds if necessary (maxCalcSpeed > max attainable speed)
-    if ( maxCalcSpeed > m_chassis->GetMaxSpeed().to<double>() )
+    if ( maxCalcSpeed > m_maxspeed.to<double>() )
     {
-        auto ratio = m_chassis->GetMaxSpeed().to<double>() / maxCalcSpeed;
+        auto ratio = m_maxspeed.to<double>() / maxCalcSpeed;
         m_flState.speed *= ratio;
         m_frState.speed *= ratio;
         m_blState.speed *= ratio;

@@ -179,7 +179,7 @@ class SwerveChassis : public IChassis
             double                  kP
         );
 
-        void CalcSwerveModuleStates
+        void UpdateSwerveModuleStates
         (
             frc::ChassisSpeeds 
         );

@@ -17,7 +17,7 @@
 #include <chassis/swerve/driveStates/StopDrive.h>
 #include <chassis/ChassisMovement.h>
 
-std::array<frc::SwerveModuleState, 4> StopDrive::CalcSwerveModuleStates
+std::array<frc::SwerveModuleState, 4> StopDrive::UpdateSwerveModuleStates
 (
     ChassisMovement& chassisMovement
 )

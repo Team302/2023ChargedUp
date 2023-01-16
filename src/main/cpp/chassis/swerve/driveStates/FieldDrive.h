@@ -27,7 +27,7 @@ class FieldDrive : public RobotDrive
     public:
         FieldDrive(RobotDrive* robotDrive);
 
-        std::array<frc::SwerveModuleState, 4> CalcSwerveModuleStates
+        std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates
         (
             ChassisMovement& chassisMovement
         ) override;

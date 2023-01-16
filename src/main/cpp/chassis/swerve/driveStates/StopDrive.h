@@ -29,7 +29,7 @@ class StopDrive : public ISwerveDriveState
     public:
         using ISwerveDriveState::ISwerveDriveState;
 
-        std::array<frc::SwerveModuleState, 4> CalcSwerveModuleStates
+        std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates
         (
             ChassisMovement& chassisMovement
         ) override;

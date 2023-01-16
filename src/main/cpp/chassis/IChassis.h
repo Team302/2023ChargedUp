@@ -45,13 +45,13 @@ namespace frc
 class IChassis
 {
 	public:
-    /***/
         enum CHASSIS_TYPE
         {
             DIFFERENTIAL, 
             MECANUM,
             SWERVE
         };
+    /**
         enum CHASSIS_DRIVE_MODE
         {
             ROBOT_ORIENTED,
@@ -71,7 +71,7 @@ class IChassis
             LEFT_INTAKE_TOWARD_BALL,
             RIGHT_INTAKE_TOWARD_BALL
         };
-/***/
+**/
         /// @brief      return the chassis type
         /// @returns    CHASSIS_TYPE
         virtual CHASSIS_TYPE GetType() const = 0;

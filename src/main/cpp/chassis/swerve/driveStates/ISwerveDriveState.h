@@ -37,7 +37,7 @@ class ISwerveDriveState
         
         /// @brief Calculate the swerve module states based on chassis movement and orientation option
         /// @return std::array<frc::SwerveModuleState*, 4> - 4 calculated swerve module states
-        virtual  std::array<frc::SwerveModuleState, 4> CalcSwerveModuleStates
+        virtual  std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates
         (
             ChassisMovement& chassisMovement
         ) = 0;

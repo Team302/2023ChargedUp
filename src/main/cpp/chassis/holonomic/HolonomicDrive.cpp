@@ -81,6 +81,7 @@ void HolonomicDrive::Run()
 
     ChassisMovement moveInfo;
     moveInfo.driveOption = ChassisOptionEnums::DriveStateType::FIELD_DRIVE;
+   // moveInfo.driveOption = ChassisOptionEnums::DriveStateType::ROBOT_DRIVE;
     moveInfo.controllerType = ChassisOptionEnums::AutonControllerType::HOLONOMIC;
 
     auto controller = GetController();
