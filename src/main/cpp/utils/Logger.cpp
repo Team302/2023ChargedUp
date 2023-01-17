@@ -300,6 +300,7 @@ void Logger::PutLoggingSelectionsOnDashboard()
     m_optionChooser.SetDefaultOption("EAT_IT", LOGGER_OPTION::EAT_IT);
     m_optionChooser.AddOption("DASHBOARD", LOGGER_OPTION::DASHBOARD);
     m_optionChooser.AddOption("CONSOLE", LOGGER_OPTION::CONSOLE);
+    m_optionChooser.AddOption("USB", LOGGER_OPTION::USB);
     frc::SmartDashboard::PutData("Logging Options", &m_optionChooser);
 
     // set up level menu
@@ -353,6 +354,9 @@ void Logger::PeriodicLog()
                     optionAsString.assign("EAT_IT");
                     break;
 
+                case USB:
+                    optionAsString.assign("USB");
+                    break;
                 default:
                     optionAsString.assign("Out of range !");
                     m_option = EAT_IT;
@@ -439,7 +443,7 @@ Logger::Logger() : m_option( LOGGER_OPTION::USB ),
                    m_DoubleLog(),
                    m_StringLog()
 {
-    frc::DataLogManager::Start("/home/lvuser/robotdata","notcharlie");
+    frc::DataLogManager::Start();//("/home/lvuser/robotdata","notcharlie");
       wpi::log::DataLog& log = frc::DataLogManager::GetLog();
 m_BooleanLog = wpi::log::BooleanLogEntry(log, "/home/lvuser/robotdata");
 m_DoubleLog = wpi::log::DoubleLogEntry(log, "/home/lvuser/robotdata");
