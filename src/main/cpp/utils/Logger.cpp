@@ -93,9 +93,9 @@ void Logger::LogData
             
             case LOGGER_OPTION::USB:
             {
-            m_BooleanLog.Append(true);
-            m_DoubleLog.Append(3.5);
-            m_StringLog.Append("wow!");
+            m_booleanLog.Append(true);
+            m_doubleLog.Append(3.5);
+            m_stringLog.Append("wow!");
             }
 
             default:  // case LOGGER_OPTION::EAT_IT:
@@ -137,9 +137,9 @@ void Logger::LogData
 
             case LOGGER_OPTION::USB:
             {
-            m_BooleanLog.Append(true);
-            m_DoubleLog.Append(3.5);
-            m_StringLog.Append("wow!");
+            m_booleanLog.Append(true);
+            m_doubleLog.Append(3.5);
+            m_stringLog.Append("wow!");
             }
 
             default:  // case LOGGER_OPTION::EAT_IT:
@@ -181,9 +181,9 @@ void Logger::LogData
             break;
             case LOGGER_OPTION::USB:
             {
-            m_BooleanLog.Append(true);
-            m_DoubleLog.Append(3.5);
-            m_StringLog.Append("wow!");
+            m_booleanLog.Append(true);
+            m_doubleLog.Append(3.5);
+            m_stringLog.Append("wow!");
             }
 
             default:  // case LOGGER_OPTION::EAT_IT:
@@ -224,9 +224,9 @@ void Logger::LogData
             break;
             case LOGGER_OPTION::USB:
             {
-            m_BooleanLog.Append(true);
-            m_DoubleLog.Append(3.5);
-            m_StringLog.Append("wow!");
+            m_booleanLog.Append(true);
+            m_doubleLog.Append(3.5);
+            m_stringLog.Append("wow!");
             }
 
             default:  // case LOGGER_OPTION::EAT_IT:
@@ -439,13 +439,13 @@ Logger::Logger() : m_option( LOGGER_OPTION::USB ),
                    m_cyclingCounter(0), 
                    m_optionChooser(),
                    m_levelChooser(),
-                   m_BooleanLog(),
-                   m_DoubleLog(),
-                   m_StringLog()
+                   m_booleanLog(),
+                   m_doubleLog(),
+                   m_stringLog()
 {
     frc::DataLogManager::Start();//("/home/lvuser/robotdata","notcharlie");
       wpi::log::DataLog& log = frc::DataLogManager::GetLog();
-m_BooleanLog = wpi::log::BooleanLogEntry(log, "/home/lvuser/robotdata");
-m_DoubleLog = wpi::log::DoubleLogEntry(log, "/home/lvuser/robotdata");
-m_StringLog = wpi::log::StringLogEntry(log, "/home/lvuser/robotdata");
+m_booleanLog = wpi::log::BooleanLogEntry(log, "/home/lvuser/robotdata");
+m_doubleLog = wpi::log::DoubleLogEntry(log, "/home/lvuser/robotdata");
+m_stringLog = wpi::log::StringLogEntry(log, "/home/lvuser/robotdata");
 }
