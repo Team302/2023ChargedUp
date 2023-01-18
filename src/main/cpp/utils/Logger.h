@@ -139,9 +139,10 @@ class Logger
         int                                     m_cyclingCounter;       // count 20ms loops
         frc::SendableChooser<LOGGER_OPTION>     m_optionChooser;
         frc::SendableChooser<LOGGER_LEVEL>      m_levelChooser;
-        wpi::log::BooleanLogEntry               m_booleanLog;
-        wpi::log::DoubleLogEntry                m_doubleLog;
-        wpi::log::StringLogEntry                m_stringLog;
+        //wpi::log::BooleanLogEntry               m_booleanLog;
+        //wpi::log::DoubleLogEntry                m_doubleLog;
+        //wpi::log::StringLogEntry                m_stringLog;
+        //wpi::log::IntegerLogEntry               m_integerLog;
 
         Logger();
         ~Logger() = default;

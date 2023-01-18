@@ -93,7 +93,12 @@ void Logger::LogData
             
             case LOGGER_OPTION::USB:
             {
+            wpi::log::StringLogEntry                m_stringLog;
+            wpi::log::DataLog& log = frc::DataLogManager::GetLog();
+            int index = log.Start("name","interesting name idea");
             m_stringLog.Append(message);
+            m_stringLog = wpi::log::StringLogEntry(log,"/home/lvuser/robotdata");
+            log.Finish(message,0);
             }
 
             default:  // case LOGGER_OPTION::EAT_IT:
@@ -136,6 +141,10 @@ void Logger::LogData
             case LOGGER_OPTION::USB:
             {
             m_doubleLog.Append(value);
+            frc::DataLogManager::Start();
+                wpi::log::DataLog& log = frc::DataLogManager::GetLog();
+                m_doubleLog = wpi::log::DoubleLogEntry(log,"/home/lvuser/robotdata");
+                log.Finish(value,0);
             }
 
             default:  // case LOGGER_OPTION::EAT_IT:
@@ -177,7 +186,12 @@ void Logger::LogData
             break;
             case LOGGER_OPTION::USB:
             {
-            m_booleanLog.Append(value);
+                wpi::log::BooleanLogEntry               m_booleanLog;
+                wpi::log::DataLog& log = frc::DataLogManager::GetLog();
+                int index = log.Start("name","interesting name idea");
+                m_booleanLog.Append(value);
+                m_booleanLog = wpi::log::BooleanLogEntry(log,"/home/lvuser/robotdata");
+                log.Finish(index,0);
             }
 
             default:  // case LOGGER_OPTION::EAT_IT:
@@ -218,7 +232,11 @@ void Logger::LogData
             break;
             case LOGGER_OPTION::USB:
             {
-                m_booleanLog.Append(value);
+                m_integerLog.Append(value);
+                frc::DataLogManager::Start();
+                wpi::log::DataLog& log = frc::DataLogManager::GetLog();
+                m_integerLog = wpi::log::IntegerLogEntry(log,"/home/lvuser/robotdata");
+                log.Finish(value,0);
             }
 
             default:  // case LOGGER_OPTION::EAT_IT:
@@ -435,9 +453,9 @@ Logger::Logger() : m_option( LOGGER_OPTION::USB ),
                    m_doubleLog(),
                    m_stringLog()
 {
-    frc::DataLogManager::Start();//("/home/lvuser/robotdata","notcharlie");
-      wpi::log::DataLog& log = frc::DataLogManager::GetLog();
-m_booleanLog = wpi::log::BooleanLogEntry(log, "/home/lvuser/robotdata");
-m_doubleLog = wpi::log::DoubleLogEntry(log, "/home/lvuser/robotdata");
-m_stringLog = wpi::log::StringLogEntry(log, "/home/lvuser/robotdata");
+    //frc::DataLogManager::Start();("/home/lvuser/robotdata","notcharlie");
+      //wpi::log::DataLog& log = frc::DataLogManager::GetLog();
+//m_booleanLog = wpi::log::BooleanLogEntry(log, "/home/lvuser/robotdata");
+//m_doubleLog = wpi::log::DoubleLogEntry(log, "/home/lvuser/robotdata");
+//m_stringLog = wpi::log::StringLogEntry(log, "/home/lvuser/robotdata");
 }
