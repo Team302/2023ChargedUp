@@ -85,6 +85,7 @@ class SwerveChassis : public IChassis
 
 	    ~SwerveChassis() noexcept override = default;
 
+        void InitStates();
 
         /// @brief Align all of the swerve modules to point forward
         void ZeroAlignSwerveModules();
@@ -179,11 +180,6 @@ class SwerveChassis : public IChassis
             double                  kP
         );
 
-        void UpdateSwerveModuleStates
-        (
-            frc::ChassisSpeeds 
-        );
-        
         std::shared_ptr<SwerveModule>                               m_frontLeft;
         std::shared_ptr<SwerveModule>                               m_frontRight;
         std::shared_ptr<SwerveModule>                               m_backLeft;

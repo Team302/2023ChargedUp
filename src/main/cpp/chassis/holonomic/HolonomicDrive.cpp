@@ -42,7 +42,9 @@ using namespace frc;
 /// @brief initialize the object and validate the necessary items are not nullptrs
 HolonomicDrive::HolonomicDrive() : State(string("HolonomicDrive"), -1),
                                    m_chassis(ChassisFactory::GetChassisFactory()->GetIChassis()),
-                                   m_controller(TeleopControl::GetInstance())
+                                   m_controller(TeleopControl::GetInstance()),
+                                   m_swerve(ChassisFactory::GetChassisFactory()->GetSwerveChassis()),
+                                   m_mecanum(ChassisFactory::GetChassisFactory()->GetMecanumChassis())
 {
     if (m_controller == nullptr)
     {
@@ -102,9 +104,45 @@ void HolonomicDrive::Run()
             auto factory = PigeonFactory::GetFactory();
             auto m_pigeon = factory->GetPigeon(DragonPigeon::PIGEON_USAGE::CENTER_OF_ROBOT);
             m_pigeon->ReZeroPigeon(0.0, 0.0);
-            //m_chassis->ZeroAlignSwerveModules();
-            //m_chassis->ReZero();
+            if (m_swerve != nullptr)
+            {
+                m_swerve->ZeroAlignSwerveModules();
+                m_swerve->ReZero();
+            }
         }
+
+        if (m_swerve != nullptr)
+        {
+            auto wheelbase = m_swerve->GetWheelBase();
+            auto track = m_swerve->GetTrack();
+
+            if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_ROTATE_FRONT))
+            {
+                moveInfo.centerOfRotationOffset.X = wheelbase/2.0;
+                moveInfo.centerOfRotationOffset.Y = units::length::inch_t(0.0);
+            }
+            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_ROTATE_RIGHT))
+            {
+                moveInfo.centerOfRotationOffset.X = units::length::inch_t(0.0);
+                moveInfo.centerOfRotationOffset.Y = track/2.0;
+            }
+            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_ROTATE_LEFT))
+            {
+                moveInfo.centerOfRotationOffset.X = units::length::inch_t(0.0);
+                moveInfo.centerOfRotationOffset.Y = -1.0*track/2.0;
+        }
+            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_ROTATE_BACK))
+            {
+                moveInfo.centerOfRotationOffset.X = -1.0*wheelbase/2.0;
+                moveInfo.centerOfRotationOffset.Y = units::length::inch_t(0.0);
+            }
+            else 
+            {
+                moveInfo.centerOfRotationOffset.X = units::length::inch_t(0.0);
+                moveInfo.centerOfRotationOffset.Y = units::length::inch_t(0.0);
+            }
+        }
+
 
         //if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HOLD_POSITION))
         //{

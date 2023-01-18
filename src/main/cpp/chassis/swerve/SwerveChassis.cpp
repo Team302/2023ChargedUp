@@ -58,6 +58,11 @@
 // Third Party Includes
 #include <ctre/phoenix/sensors/CANCoder.h>
 
+constexpr int LEFT_FRONT = 0;
+constexpr int RIGHT_FRONT = 1;
+constexpr int LEFT_BACK = 2;
+constexpr int RIGHT_BACK = 3;
+
 using std::map;
 using std::shared_ptr;
 using std::string;
@@ -99,6 +104,7 @@ SwerveChassis::SwerveChassis
     m_frontRight(frontRight), 
     m_backLeft(backLeft), 
     m_backRight(backRight), 
+    m_robotDrive(nullptr),
     m_flState(),
     m_frState(),
     m_blState(),
@@ -131,6 +137,15 @@ SwerveChassis::SwerveChassis
     m_networkTableName(networkTableName),
     m_controlFileName(controlFileName)
 {
+    frontLeft.get()->Init( wheelDiameter, maxSpeed, maxAngularSpeed, maxAcceleration, maxAngularAcceleration, m_frontLeftLocation );
+    frontRight.get()->Init( wheelDiameter, maxSpeed, maxAngularSpeed, maxAcceleration, maxAngularAcceleration, m_frontRightLocation );
+    backLeft.get()->Init( wheelDiameter, maxSpeed, maxAngularSpeed, maxAcceleration, maxAngularAcceleration, m_backLeftLocation );
+    backRight.get()->Init( wheelDiameter, maxSpeed, maxAngularSpeed, maxAcceleration, maxAngularAcceleration, m_backRightLocation );
+    ZeroAlignSwerveModules();
+}
+
+void SwerveChassis::InitStates()
+{
     m_robotDrive = new RobotDrive();
 
     m_driveStateMap[ChassisOptionEnums::DriveStateType::FIELD_DRIVE] =  new FieldDrive(m_robotDrive);
@@ -144,12 +159,6 @@ SwerveChassis::SwerveChassis
     m_headingStateMap[ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE] = new SpecifiedHeading();
     m_headingStateMap[ChassisOptionEnums::HeadingOption::TOWARD_GOAL] = new FaceGoalHeading();
 
-    frontLeft.get()->Init( wheelDiameter, maxSpeed, maxAngularSpeed, maxAcceleration, maxAngularAcceleration, m_frontLeftLocation );
-    frontRight.get()->Init( wheelDiameter, maxSpeed, maxAngularSpeed, maxAcceleration, maxAngularAcceleration, m_frontRightLocation );
-    backLeft.get()->Init( wheelDiameter, maxSpeed, maxAngularSpeed, maxAcceleration, maxAngularAcceleration, m_backLeftLocation );
-    backRight.get()->Init( wheelDiameter, maxSpeed, maxAngularSpeed, maxAcceleration, maxAngularAcceleration, m_backRightLocation );
-
-    ZeroAlignSwerveModules();
 }
 /// @brief Align all of the swerve modules to point forward
 void SwerveChassis::ZeroAlignSwerveModules()
@@ -178,13 +187,6 @@ void SwerveChassis::Drive
     ChassisMovement             moveInfo 
 )
 {
-    /**
-    auto speeds = moveInfo.chassisSpeeds;
-    auto xSpeed = (abs(speeds.vx.to<double>()) < m_deadband) ? units::meters_per_second_t(0.0) : speeds.vx; 
-    auto ySpeed = (abs(speeds.vy.to<double>()) < m_deadband) ? units::meters_per_second_t(0.0) : speeds.vy; 
-    auto rot = speeds.omega;
-    **/
-
     auto heading = GetHeadingState(moveInfo);
     if (heading != nullptr)
     {
@@ -194,80 +196,12 @@ void SwerveChassis::Drive
     auto drive = GetDriveState(moveInfo);
     if (drive != nullptr)
     {
-        auto states = drive->UpdateSwerveModuleStates(moveInfo);
-//        auto [fl, fr, bl, br] = states;
-        
-        m_frontLeft.get()->SetDesiredState(states[0]);
-        m_frontRight.get()->SetDesiredState(states[1]);
-        m_backLeft.get()->SetDesiredState(states[2]);
-        m_backRight.get()->SetDesiredState(states[3]); 
+        auto states = drive->UpdateSwerveModuleStates(moveInfo);       
+        m_frontLeft.get()->SetDesiredState(states[LEFT_FRONT]);
+        m_frontRight.get()->SetDesiredState(states[RIGHT_FRONT]);
+        m_backLeft.get()->SetDesiredState(states[LEFT_BACK]);
+        m_backRight.get()->SetDesiredState(states[RIGHT_BACK]); 
     }
-
-    /**
-    if ( (abs(xSpeed.to<double>()) < m_deadband) && 
-         (abs(ySpeed.to<double>()) < m_deadband) && 
-         (abs(rot.to<double>())    < m_angularDeadband.to<double>()))  //our angular deadband, only used once, equates to 10 degrees per second
-    {
-        m_frontLeft.get()->StopMotors();
-        m_frontRight.get()->StopMotors();
-        m_backLeft.get()->StopMotors();
-        m_backRight.get()->StopMotors();
-        m_drive = units::velocity::meters_per_second_t(0.0);
-        m_steer = units::velocity::meters_per_second_t(0.0);
-        m_rotate = units::angular_velocity::radians_per_second_t(0.0);
-    }
-    else
-    {   
-        m_drive = units::velocity::meters_per_second_t(xSpeed);
-        m_steer = units::velocity::meters_per_second_t(ySpeed);
-        m_rotate = units::angular_velocity::radians_per_second_t(rot);
-
-        if ( m_runWPI )
-        {
-            units::degree_t yaw{m_pigeon->GetYaw()};
-            Rotation2d currentOrientation {yaw};
-            ChassisSpeeds chassisSpeeds = moveInfo.driveOption==ChassisOptionEnums::DriveStateType::FIELD_DRIVE ? 
-                                            ChassisSpeeds::FromFieldRelativeSpeeds(xSpeed, ySpeed, rot, currentOrientation) : 
-                                            ChassisSpeeds{xSpeed, ySpeed, rot};
-
-            auto states = m_kinematics.ToSwerveModuleStates(chassisSpeeds);
-
-            m_kinematics.DesaturateWheelSpeeds(&states, m_maxSpeed);
-
-            auto [fl, fr, bl, br] = states;
-       
-            m_frontLeft.get()->SetDesiredState(fl);
-            m_frontRight.get()->SetDesiredState(fr);
-            m_backLeft.get()->SetDesiredState(bl);
-            m_backRight.get()->SetDesiredState(br); 
-        }
-        else
-        {
-            ChassisSpeeds chassisSpeeds = moveInfo.driveOption==ChassisOptionEnums::DriveStateType::FIELD_DRIVE ?
-                                                    GetFieldRelativeSpeeds(xSpeed,ySpeed, rot) : 
-                                                    ChassisSpeeds{xSpeed, ySpeed, rot};
-            auto states = m_kinematics.ToSwerveModuleStates(chassisSpeeds);
-            m_kinematics.DesaturateWheelSpeeds(&states, m_maxSpeed);
-
-            UpdateSwerveModuleStates(chassisSpeeds);
-
-            //Hold position / lock wheels in 'X' configuration
-            if(m_hold)
-            {
-                m_flState.angle = {units::angle::degree_t(45)};
-                m_frState.angle = {units::angle::degree_t(-45)};
-                m_blState.angle = {units::angle::degree_t(135)};
-                m_brState.angle = {units::angle::degree_t(-135)};
-            }
-            //May need to add m_hold = false here if it gets stuck in hold position
-            
-            m_frontLeft.get()->SetDesiredState(m_flState);
-            m_frontRight.get()->SetDesiredState(m_frState);
-            m_backLeft.get()->SetDesiredState(m_blState);
-            m_backRight.get()->SetDesiredState(m_brState);
-        }
-    }    
-    **/
 }
 ISwerveDriveOrientation* SwerveChassis::GetHeadingState
 (
@@ -309,6 +243,7 @@ void SwerveChassis::DriveHoldPosition()
 
 Pose2d SwerveChassis::GetPose() const
 {
+    // TODO odometry
     //if (m_poseOpt==PoseEstimatorEnum::WPI)
     //{
     //    return m_poseEstimator.GetEstimatedPosition();
@@ -325,19 +260,21 @@ units::angle::degree_t SwerveChassis::GetYaw() const
 /// @brief update the chassis odometry based on current states of the swerve modules and the pigeon
 void SwerveChassis::UpdateOdometry() 
 {
+    // TODO odometry
+    /**
     units::degree_t yaw{m_pigeon->GetYaw()};
     Rotation2d rot2d {yaw}; 
 
     if (m_poseOpt == PoseEstimatorEnum::WPI)
     {
-        //auto currentPose = m_poseEstimator.GetEstimatedPosition();
+        auto currentPose = m_poseEstimator.GetEstimatedPosition();
 
-        //m_poseEstimator.Update(rot2d, m_frontLeft.get()->GetState(),
-        //                              m_frontRight.get()->GetState(), 
-        //                              m_backLeft.get()->GetState(),
-        //                              m_backRight.get()->GetState());
+        m_poseEstimator.Update(rot2d, m_frontLeft.get()->GetState(),
+                                      m_frontRight.get()->GetState(), 
+                                      m_backLeft.get()->GetState(),
+                                      m_backRight.get()->GetState());
 
-        //auto updatedPose = m_poseEstimator.GetEstimatedPosition();
+        auto updatedPose = m_poseEstimator.GetEstimatedPosition();
     }
     else if (m_poseOpt==PoseEstimatorEnum::EULER_AT_CHASSIS)
     {
@@ -380,6 +317,7 @@ void SwerveChassis::UpdateOdometry()
         auto trans = currPose - m_pose;
         m_pose = m_pose + trans;
     }
+    **/
 }
 
 /// @brief set all of the encoders to zero
@@ -472,86 +410,6 @@ ChassisSpeeds SwerveChassis::GetFieldRelativeSpeeds
     return output;
 }
 
-void SwerveChassis::UpdateSwerveModuleStates
-(
-    frc::ChassisSpeeds speeds
-)
-{
-    // These calculations are based on Ether's Chief Delphi derivation
-    // The only changes are that that derivation is based on positive angles being clockwise
-    // and our codes/sensors are based on positive angles being counter clockwise.
-
-    // A = Vx - omega * L/2
-    // B = Vx + omega * L/2
-    // C = Vy - omega * W/2
-    // D = Vy + omega * W/2
-    //
-    // Where:
-    // Vx is the sideways (strafe) vector
-    // Vy is the forward vector
-    // omega is the rotation about Z vector
-    // L is the wheelbase (front to back)
-    // W is the wheeltrack (side to side)
-    //
-    // Since our Vx is forward and Vy is strafe we need to rotate the vectors
-    // We will use these variable names in the code to help tie back to the document.
-    // Variable names, though, will follow C++ standards and start with a lower case letter.
-
-    auto l = GetWheelBase();
-    auto w = GetTrack();
-
-    auto vy = 1.0 * speeds.vx;
-    auto vx = -1.0 * speeds.vy;
-    auto omega = speeds.omega;
-
-    units::velocity::meters_per_second_t omegaL = omega.to<double>() * l / 2.0 / 1_s;
-    units::velocity::meters_per_second_t omegaW = omega.to<double>() * w / 2.0 / 1_s;
-    
-    auto a = vx - omegaL;
-    auto b = vx + omegaL;
-    auto c = vy - omegaW;
-    auto d = vy + omegaW;
-
-    // here we'll negate the angle to conform to the positive CCW convention
-    m_flState.angle = units::angle::radian_t(atan2(b.to<double>(), d.to<double>()));
-    m_flState.angle = -1.0 * m_flState.angle.Degrees();
-    m_flState.speed = units::velocity::meters_per_second_t(sqrt( pow(b.to<double>(),2) + pow(d.to<double>(),2) ));
-    auto maxCalcSpeed = abs(m_flState.speed.to<double>());
-
-    m_frState.angle = units::angle::radian_t(atan2(b.to<double>(), c.to<double>()));
-    m_frState.angle = -1.0 * m_frState.angle.Degrees();
-    m_frState.speed = units::velocity::meters_per_second_t(sqrt( pow(b.to<double>(),2) + pow(c.to<double>(),2) ));
-    if (abs(m_frState.speed.to<double>())>maxCalcSpeed)
-    {
-        maxCalcSpeed = abs(m_frState.speed.to<double>());
-    }
-
-    m_blState.angle = units::angle::radian_t(atan2(a.to<double>(), d.to<double>()));
-    m_blState.angle = -1.0 * m_blState.angle.Degrees();
-    m_blState.speed = units::velocity::meters_per_second_t(sqrt( pow(a.to<double>(),2) + pow(d.to<double>(),2) ));
-    if (abs(m_blState.speed.to<double>())>maxCalcSpeed)
-    {
-        maxCalcSpeed = abs(m_blState.speed.to<double>());
-    }
-
-    m_brState.angle = units::angle::radian_t(atan2(a.to<double>(), c.to<double>()));
-    m_brState.angle = -1.0 * m_brState.angle.Degrees();
-    m_brState.speed = units::velocity::meters_per_second_t(sqrt( pow(a.to<double>(),2) + pow(c.to<double>(),2) ));
-    if (abs(m_brState.speed.to<double>())>maxCalcSpeed)
-    {
-        maxCalcSpeed = abs(m_brState.speed.to<double>());
-    }
-
-    // normalize speeds if necessary (maxCalcSpeed > max attainable speed)
-    if ( maxCalcSpeed > m_maxSpeed.to<double>() )
-    {
-        auto ratio = m_maxSpeed.to<double>() / maxCalcSpeed;
-        m_flState.speed *= ratio;
-        m_frState.speed *= ratio;
-        m_blState.speed *= ratio;
-        m_brState.speed *= ratio;
-    }
-}
 
 void SwerveChassis::SetTargetHeading(units::angle::degree_t targetYaw) 
 {

@@ -13,6 +13,8 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
+#include <string>
+
 //FRC Includes
 #include <units/velocity.h>
 #include <units/angle.h>
@@ -22,6 +24,9 @@
 #include <chassis/swerve/driveStates/RobotDrive.h>
 #include <chassis/ChassisFactory.h>
 #include <chassis/ChassisMovement.h>
+#include <utils/Logger.h>
+
+using std::string;
 
 RobotDrive::RobotDrive() :  ISwerveDriveState::ISwerveDriveState(),
                             m_flState(),
@@ -38,6 +43,10 @@ RobotDrive::RobotDrive() :  ISwerveDriveState::ISwerveDriveState(),
         m_wheelbase = chassis->GetWheelBase();
         m_wheeltrack = chassis->GetTrack();
         m_maxspeed = chassis->GetMaxSpeed();
+    }
+    else
+    {
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("RobotDrive"), string("Chassis"), string("nullptr"));
     }
 }
 
