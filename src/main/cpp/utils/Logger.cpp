@@ -93,9 +93,7 @@ void Logger::LogData
             
             case LOGGER_OPTION::USB:
             {
-            m_booleanLog.Append(true);
-            m_doubleLog.Append(3.5);
-            m_stringLog.Append("wow!");
+            m_stringLog.Append(message);
             }
 
             default:  // case LOGGER_OPTION::EAT_IT:
@@ -137,9 +135,7 @@ void Logger::LogData
 
             case LOGGER_OPTION::USB:
             {
-            m_booleanLog.Append(true);
-            m_doubleLog.Append(3.5);
-            m_stringLog.Append("wow!");
+            m_doubleLog.Append(value);
             }
 
             default:  // case LOGGER_OPTION::EAT_IT:
@@ -181,9 +177,7 @@ void Logger::LogData
             break;
             case LOGGER_OPTION::USB:
             {
-            m_booleanLog.Append(true);
-            m_doubleLog.Append(3.5);
-            m_stringLog.Append("wow!");
+            m_booleanLog.Append(value);
             }
 
             default:  // case LOGGER_OPTION::EAT_IT:
@@ -224,9 +218,7 @@ void Logger::LogData
             break;
             case LOGGER_OPTION::USB:
             {
-            m_booleanLog.Append(true);
-            m_doubleLog.Append(3.5);
-            m_stringLog.Append("wow!");
+                m_booleanLog.Append(value);
             }
 
             default:  // case LOGGER_OPTION::EAT_IT:
