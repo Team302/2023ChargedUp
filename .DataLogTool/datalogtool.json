@@ -1,7 +1,6 @@
 {
   "download": {
-    "localDir": "C:\\robotlogs\\.csv",
-    "remoteDir": "/home/lvuser/robotdata",
+    "localDir": "C:\\robotlogs\\raw",
     "serverTeam": "1"
   },
   "output": {

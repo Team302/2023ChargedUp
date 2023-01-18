@@ -93,12 +93,12 @@ void Logger::LogData
             
             case LOGGER_OPTION::USB:
             {
-            wpi::log::StringLogEntry                m_stringLog;
+            wpi::log::StringLogEntry               m_stringLog;
             wpi::log::DataLog& log = frc::DataLogManager::GetLog();
             int index = log.Start("name","interesting name idea");
             m_stringLog.Append(message);
             m_stringLog = wpi::log::StringLogEntry(log,"/home/lvuser/robotdata");
-            log.Finish(message,0);
+            log.Finish(index,0);
             }
 
             default:  // case LOGGER_OPTION::EAT_IT:
@@ -140,11 +140,12 @@ void Logger::LogData
 
             case LOGGER_OPTION::USB:
             {
-            m_doubleLog.Append(value);
-            frc::DataLogManager::Start();
+                wpi::log::DoubleLogEntry               m_doubleLog;
                 wpi::log::DataLog& log = frc::DataLogManager::GetLog();
+                int index = log.Start("name","interesting name idea");
+                m_doubleLog.Append(value);
                 m_doubleLog = wpi::log::DoubleLogEntry(log,"/home/lvuser/robotdata");
-                log.Finish(value,0);
+                log.Finish(index,0);
             }
 
             default:  // case LOGGER_OPTION::EAT_IT:
@@ -232,11 +233,12 @@ void Logger::LogData
             break;
             case LOGGER_OPTION::USB:
             {
-                m_integerLog.Append(value);
-                frc::DataLogManager::Start();
+                wpi::log::IntegerLogEntry               m_integerLog;
                 wpi::log::DataLog& log = frc::DataLogManager::GetLog();
+                int index = log.Start("name","interesting name idea");
+                m_integerLog.Append(value);
                 m_integerLog = wpi::log::IntegerLogEntry(log,"/home/lvuser/robotdata");
-                log.Finish(value,0);
+                log.Finish(index,0);
             }
 
             default:  // case LOGGER_OPTION::EAT_IT:
@@ -448,10 +450,10 @@ Logger::Logger() : m_option( LOGGER_OPTION::USB ),
                    m_alreadyDisplayed(),
                    m_cyclingCounter(0), 
                    m_optionChooser(),
-                   m_levelChooser(),
-                   m_booleanLog(),
-                   m_doubleLog(),
-                   m_stringLog()
+                   m_levelChooser()
+                   //m_booleanLog(),
+                   //m_doubleLog(),
+                   //m_stringLog();
 {
     //frc::DataLogManager::Start();("/home/lvuser/robotdata","notcharlie");
       //wpi::log::DataLog& log = frc::DataLogManager::GetLog();
