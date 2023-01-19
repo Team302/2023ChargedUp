@@ -93,12 +93,12 @@ void Logger::LogData
             
             case LOGGER_OPTION::USB:
             {
-            wpi::log::StringLogEntry               m_stringLog;
-            wpi::log::DataLog& log = frc::DataLogManager::GetLog();
-            int index = log.Start("name","interesting name idea");
-            m_stringLog.Append(message);
-            m_stringLog = wpi::log::StringLogEntry(log,"/home/lvuser/robotdata");
-            log.Finish(index,0);
+                wpi::log::DataLog& log = frc::DataLogManager::GetLog();
+                int index = log.Start("name","interesting name idea");
+                wpi::log::StringLogEntry               m_booleanLog(log,identifier);
+                m_booleanLog.Append(message);
+                m_booleanLog = wpi::log::StringLogEntry(log,"/home/lvuser/robotdata");
+                log.Finish(index,0);
             }
 
             default:  // case LOGGER_OPTION::EAT_IT:
@@ -140,11 +140,11 @@ void Logger::LogData
 
             case LOGGER_OPTION::USB:
             {
-                wpi::log::DoubleLogEntry               m_doubleLog;
                 wpi::log::DataLog& log = frc::DataLogManager::GetLog();
                 int index = log.Start("name","interesting name idea");
-                m_doubleLog.Append(value);
-                m_doubleLog = wpi::log::DoubleLogEntry(log,"/home/lvuser/robotdata");
+                wpi::log::DoubleLogEntry               m_booleanLog(log,identifier);
+                m_booleanLog.Append(value);
+                m_booleanLog = wpi::log::DoubleLogEntry(log,"/home/lvuser/robotdata");
                 log.Finish(index,0);
             }
 
@@ -187,9 +187,9 @@ void Logger::LogData
             break;
             case LOGGER_OPTION::USB:
             {
-                wpi::log::BooleanLogEntry               m_booleanLog;
                 wpi::log::DataLog& log = frc::DataLogManager::GetLog();
                 int index = log.Start("name","interesting name idea");
+                wpi::log::BooleanLogEntry               m_booleanLog(log,identifier);
                 m_booleanLog.Append(value);
                 m_booleanLog = wpi::log::BooleanLogEntry(log,"/home/lvuser/robotdata");
                 log.Finish(index,0);
@@ -233,11 +233,11 @@ void Logger::LogData
             break;
             case LOGGER_OPTION::USB:
             {
-                wpi::log::IntegerLogEntry               m_integerLog;
                 wpi::log::DataLog& log = frc::DataLogManager::GetLog();
                 int index = log.Start("name","interesting name idea");
-                m_integerLog.Append(value);
-                m_integerLog = wpi::log::IntegerLogEntry(log,"/home/lvuser/robotdata");
+                wpi::log::IntegerLogEntry               m_booleanLog(log,identifier);
+                m_booleanLog.Append(value);
+                m_booleanLog = wpi::log::IntegerLogEntry(log,"/home/lvuser/robotdata");
                 log.Finish(index,0);
             }
 
