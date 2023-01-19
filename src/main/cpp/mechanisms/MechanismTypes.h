@@ -16,8 +16,8 @@
 
 #pragma once
 
-#include <map>
 #include <string>
+#include <RobinHood/robin_hood.h>
 
 //========================================================================================================
 ///	 @class			MechanismTypes
@@ -36,7 +36,9 @@ class MechanismTypes
             UNKNOWN_MECHANISM = -1,
             EXAMPLE,
             // @ADDMECH add your mechanism 
-
+            ARM,
+            EXTENDER,
+            GRABBER,
             MAX_MECHANISM_TYPES
         };
 
@@ -53,7 +55,7 @@ class MechanismTypes
         MechanismTypes();
         ~MechanismTypes();
         
-		std::map <std::string, MECHANISM_TYPE> m_typeMap;
+        robin_hood::unordered_map<std::string, MECHANISM_TYPE> m_typeMap;
 
 };
 

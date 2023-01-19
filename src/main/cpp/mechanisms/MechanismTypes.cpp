@@ -15,7 +15,6 @@
 //====================================================================================================================================================
 
 // C++ Includes
-#include <map>
 #include <memory>
 #include <string>
 
@@ -29,6 +28,7 @@
 
 
 // Third Party Includes
+#include <RobinHood/robin_hood.h>
 
 using namespace std;
 
@@ -46,8 +46,10 @@ MechanismTypes::MechanismTypes()
 {
     // @ADDMECH add your mechanism to m_typeMap 
     m_typeMap["EXAMPLE"]    = MECHANISM_TYPE::EXAMPLE;
+    m_typeMap["ARM"] = MECHANISM_TYPE::ARM;
+    m_typeMap["EXTENDER"] = MECHANISM_TYPE::EXTENDER;
+    m_typeMap["GRABBER"] = MECHANISM_TYPE::GRABBER;
 }
-
 MechanismTypes::~MechanismTypes()
 {
     m_typeMap.clear();
