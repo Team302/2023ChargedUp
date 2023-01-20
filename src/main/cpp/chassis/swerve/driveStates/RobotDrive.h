@@ -15,32 +15,36 @@
 
 #pragma once
 
-//C++ Libraries
+#include <frc/kinematics/SwerveModuleState.h>
+#include <units/length.h>
+#include <units/velocity.h>
 
-//Team 302 includes
-#include <TeleopControl.h>
-#include <State.h>
+//Team302 Includes
+#include <chassis/swerve/SwerveChassis.h>
+#include <chassis/swerve/driveStates/ISwerveDriveState.h>
+#include <chassis/ChassisMovement.h>
 
-class IChassis;
-class MecanumChassis;
-class SwerveChassis;
-
-class HolonomicDrive : public State
+class RobotDrive : public ISwerveDriveState
 {
     public:
+        RobotDrive();
 
-        HolonomicDrive();
-        ~HolonomicDrive() = default;
+        std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates
+        (
+            ChassisMovement& chassisMovement
+        ) override;
 
-        void Init() override;
-        void Run() override;
-        void Exit() override;
-        bool AtTarget() const override;
+        void Init
+        (
+            ChassisMovement& chassisMovement
+        ) override;
+    protected:
+        frc::SwerveModuleState  m_flState;
+        frc::SwerveModuleState  m_frState;
+        frc::SwerveModuleState  m_blState;
+        frc::SwerveModuleState  m_brState;
 
-    private:
-        inline TeleopControl* GetController() const { return m_controller; }
-        IChassis*                           m_chassis;
-        TeleopControl*                      m_controller;
-        SwerveChassis*                      m_swerve;
-        MecanumChassis*                     m_mecanum;
+        units::length::inch_t   m_wheelbase;
+        units::length::inch_t   m_wheeltrack;
+        units::velocity::feet_per_second_t  m_maxspeed;
 };

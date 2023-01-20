@@ -13,34 +13,31 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#pragma once
+//FRC Includes
+#include <frc/geometry/Rotation2d.h>
 
-//C++ Libraries
+//Team302 Includes
+#include <chassis/swerve/driveStates/HoldDrive.h>
 
-//Team 302 includes
-#include <TeleopControl.h>
-#include <State.h>
-
-class IChassis;
-class MecanumChassis;
-class SwerveChassis;
-
-class HolonomicDrive : public State
+HoldDrive::HoldDrive()
 {
-    public:
+    m_flState->angle = {units::angle::degree_t(45)};
+    m_frState->angle = {units::angle::degree_t(-45)};
+    m_blState->angle = {units::angle::degree_t(135)};
+    m_brState->angle = {units::angle::degree_t(-135)};
+}
+std::array<frc::SwerveModuleState, 4> HoldDrive::UpdateSwerveModuleStates
+(
+    ChassisMovement& chassisMovement
+)
+{
+    return {*m_flState, *m_frState, *m_blState, *m_brState};
+}
 
-        HolonomicDrive();
-        ~HolonomicDrive() = default;
+void HoldDrive::Init
+(
+    ChassisMovement& chassisMovement
+)
+{
 
-        void Init() override;
-        void Run() override;
-        void Exit() override;
-        bool AtTarget() const override;
-
-    private:
-        inline TeleopControl* GetController() const { return m_controller; }
-        IChassis*                           m_chassis;
-        TeleopControl*                      m_controller;
-        SwerveChassis*                      m_swerve;
-        MecanumChassis*                     m_mecanum;
-};
+}

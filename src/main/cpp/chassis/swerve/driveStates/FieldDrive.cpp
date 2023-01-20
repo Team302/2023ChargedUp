@@ -13,34 +13,38 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#pragma once
+#include <frc/geometry/Rotation2d.h>
 
-//C++ Libraries
+//Team302 Includes
+#include <chassis/swerve/driveStates/FieldDrive.h>
 
-//Team 302 includes
-#include <TeleopControl.h>
-#include <State.h>
+using frc::Rotation2d;
 
-class IChassis;
-class MecanumChassis;
-class SwerveChassis;
-
-class HolonomicDrive : public State
+FieldDrive::FieldDrive(RobotDrive* robotDrive) : RobotDrive(),
+                                                 m_robotDrive(robotDrive)
 {
-    public:
+}
 
-        HolonomicDrive();
-        ~HolonomicDrive() = default;
+std::array<frc::SwerveModuleState, 4> FieldDrive::UpdateSwerveModuleStates
+(
+    ChassisMovement& chassisMovement
+)
+{
+    frc::ChassisSpeeds fieldRelativeSpeeds = frc::ChassisSpeeds::FromFieldRelativeSpeeds(chassisMovement.chassisSpeeds.vx,
+                                                                                         chassisMovement.chassisSpeeds.vy,
+                                                                                         chassisMovement.chassisSpeeds.omega,
+                                                                                         Rotation2d());
+                                                                                         //m_chassis->GetOdometry()->GetPose().Rotation());
 
-        void Init() override;
-        void Run() override;
-        void Exit() override;
-        bool AtTarget() const override;
+    chassisMovement.chassisSpeeds = fieldRelativeSpeeds;
+    return m_robotDrive->UpdateSwerveModuleStates(chassisMovement);
+}
 
-    private:
-        inline TeleopControl* GetController() const { return m_controller; }
-        IChassis*                           m_chassis;
-        TeleopControl*                      m_controller;
-        SwerveChassis*                      m_swerve;
-        MecanumChassis*                     m_mecanum;
-};
+void FieldDrive::Init
+(
+    ChassisMovement& chassisMovement
+)
+{
+    
+}
+

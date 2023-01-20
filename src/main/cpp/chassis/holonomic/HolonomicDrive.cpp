@@ -24,6 +24,8 @@
 #include <frc/kinematics/ChassisSpeeds.h>
 
 // Team 302 Includes
+#include <chassis/ChassisMovement.h>
+#include <chassis/ChassisOptionEnums.h>
 #include <chassis/holonomic/HolonomicDrive.h>
 #include <chassis/IChassis.h>
 #include <hw/DragonPigeon.h>
@@ -40,7 +42,9 @@ using namespace frc;
 /// @brief initialize the object and validate the necessary items are not nullptrs
 HolonomicDrive::HolonomicDrive() : State(string("HolonomicDrive"), -1),
                                    m_chassis(ChassisFactory::GetChassisFactory()->GetIChassis()),
-                                   m_controller(TeleopControl::GetInstance())
+                                   m_controller(TeleopControl::GetInstance()),
+                                   m_swerve(ChassisFactory::GetChassisFactory()->GetSwerveChassis()),
+                                   m_mecanum(ChassisFactory::GetChassisFactory()->GetMecanumChassis())
 {
     if (m_controller == nullptr)
     {
@@ -76,18 +80,23 @@ void HolonomicDrive::Init()
 void HolonomicDrive::Run()
 {
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("HolonomicDrive::Run"), string("begin"));
+
+    ChassisMovement moveInfo;
+    moveInfo.driveOption = ChassisOptionEnums::DriveStateType::FIELD_DRIVE;
+   // moveInfo.driveOption = ChassisOptionEnums::DriveStateType::ROBOT_DRIVE;
+    moveInfo.controllerType = ChassisOptionEnums::AutonControllerType::HOLONOMIC;
+
     auto controller = GetController();
     if (controller != nullptr && m_chassis != nullptr)
     {
-        IChassis::CHASSIS_DRIVE_MODE mode = IChassis::CHASSIS_DRIVE_MODE::FIELD_ORIENTED;
-        IChassis::HEADING_OPTION headingOpt = IChassis::HEADING_OPTION::MAINTAIN;
+        moveInfo.headingOption = ChassisOptionEnums::HeadingOption::MAINTAIN;
         if (controller->IsButtonPressed(TeleopControl::FINDTARGET))
         {
-            headingOpt = IChassis::HEADING_OPTION::TOWARD_GOAL;
+            moveInfo.headingOption = ChassisOptionEnums::HeadingOption::TOWARD_GOAL;
         }                                       
         else if (controller->IsButtonPressed(TeleopControl::DRIVE_TO_SHOOTING_SPOT))
         {
-            headingOpt = IChassis::HEADING_OPTION::TOWARD_GOAL_DRIVE;
+            moveInfo.headingOption = ChassisOptionEnums::HeadingOption::TOWARD_GOAL;
         }
         
         if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::REZERO_PIGEON))
@@ -95,9 +104,45 @@ void HolonomicDrive::Run()
             auto factory = PigeonFactory::GetFactory();
             auto m_pigeon = factory->GetPigeon(DragonPigeon::PIGEON_USAGE::CENTER_OF_ROBOT);
             m_pigeon->ReZeroPigeon(0.0, 0.0);
-            //m_chassis->ZeroAlignSwerveModules();
-            //m_chassis->ReZero();
+            if (m_swerve != nullptr)
+            {
+                m_swerve->ZeroAlignSwerveModules();
+                m_swerve->ReZero();
+            }
         }
+
+        if (m_swerve != nullptr)
+        {
+            auto wheelbase = m_swerve->GetWheelBase();
+            auto track = m_swerve->GetTrack();
+
+            if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_ROTATE_FRONT))
+            {
+                moveInfo.centerOfRotationOffset.X = wheelbase/2.0;
+                moveInfo.centerOfRotationOffset.Y = units::length::inch_t(0.0);
+            }
+            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_ROTATE_RIGHT))
+            {
+                moveInfo.centerOfRotationOffset.X = units::length::inch_t(0.0);
+                moveInfo.centerOfRotationOffset.Y = track/2.0;
+            }
+            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_ROTATE_LEFT))
+            {
+                moveInfo.centerOfRotationOffset.X = units::length::inch_t(0.0);
+                moveInfo.centerOfRotationOffset.Y = -1.0*track/2.0;
+        }
+            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_ROTATE_BACK))
+            {
+                moveInfo.centerOfRotationOffset.X = -1.0*wheelbase/2.0;
+                moveInfo.centerOfRotationOffset.Y = units::length::inch_t(0.0);
+            }
+            else 
+            {
+                moveInfo.centerOfRotationOffset.X = units::length::inch_t(0.0);
+                moveInfo.centerOfRotationOffset.Y = units::length::inch_t(0.0);
+            }
+        }
+
 
         //if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HOLD_POSITION))
         //{
@@ -112,9 +157,11 @@ void HolonomicDrive::Run()
         auto rotate = controller->GetAxisValue(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_ROTATE);
 
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("Run"), string("axis read"));
-
-        ChassisSpeeds speeds{forward*maxSpeed, strafe*maxSpeed, rotate*maxAngSpeed};
-        m_chassis->Drive(speeds, mode, headingOpt);
+        
+        moveInfo.chassisSpeeds.vx = forward*maxSpeed;
+        moveInfo.chassisSpeeds.vy = strafe*maxSpeed;
+        moveInfo.chassisSpeeds.omega = rotate*maxAngSpeed;
+        m_chassis->Drive(moveInfo);
     }
     else
     {

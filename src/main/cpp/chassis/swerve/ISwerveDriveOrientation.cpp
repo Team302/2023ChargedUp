@@ -13,34 +13,28 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#pragma once
+//Team302 Includes
+#include <chassis/swerve/headingStates/ISwerveDriveOrientation.h>
+//#include <chassis/swerve/SwerveOdometry.h>
+#include <utils/AngleUtils.h>
 
-//C++ Libraries
-
-//Team 302 includes
-#include <TeleopControl.h>
-#include <State.h>
-
-class IChassis;
-class MecanumChassis;
-class SwerveChassis;
-
-class HolonomicDrive : public State
+ISwerveDriveOrientation::ISwerveDriveOrientation(ChassisOptionEnums::HeadingOption headingOption
+) : m_headingOption(headingOption)
 {
-    public:
+    
+}
 
-        HolonomicDrive();
-        ~HolonomicDrive() = default;
+units::angular_velocity::degrees_per_second_t ISwerveDriveOrientation::CalcHeadingCorrection(units::angle::degree_t targetAngle, double kP)
+{
+    //auto currentAngle = SwerveOdometry::GetInstance()->GetPose().Rotation().Degrees();
+    //auto errorAngle = AngleUtils::GetEquivAngle(AngleUtils::GetDeltaAngle(currentAngle, targetAngle));
+    auto errorAngle = units::angle::degree_t(0.0);
+    auto correction = units::angular_velocity::degrees_per_second_t(errorAngle.to<double>()*kP);
 
-        void Init() override;
-        void Run() override;
-        void Exit() override;
-        bool AtTarget() const override;
+    return correction;
+}
 
-    private:
-        inline TeleopControl* GetController() const { return m_controller; }
-        IChassis*                           m_chassis;
-        TeleopControl*                      m_controller;
-        SwerveChassis*                      m_swerve;
-        MecanumChassis*                     m_mecanum;
-};
+void ISwerveDriveOrientation::SetStoredHeading(units::angle::degree_t heading)
+{
+    m_storedYaw = heading;
+}

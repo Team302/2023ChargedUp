@@ -15,32 +15,30 @@
 
 #pragma once
 
-//C++ Libraries
+//FRC Includes
+#include <frc/kinematics/SwerveModuleState.h>
 
-//Team 302 includes
-#include <TeleopControl.h>
-#include <State.h>
+//Team302 Includes
+#include <chassis/swerve/headingStates/ISwerveDriveOrientation.h>
+#include <chassis/ChassisMovement.h>
 
-class IChassis;
-class MecanumChassis;
-class SwerveChassis;
 
-class HolonomicDrive : public State
+
+class ISwerveDriveState
 {
     public:
+        ISwerveDriveState() = default;
 
-        HolonomicDrive();
-        ~HolonomicDrive() = default;
-
-        void Init() override;
-        void Run() override;
-        void Exit() override;
-        bool AtTarget() const override;
-
-    private:
-        inline TeleopControl* GetController() const { return m_controller; }
-        IChassis*                           m_chassis;
-        TeleopControl*                      m_controller;
-        SwerveChassis*                      m_swerve;
-        MecanumChassis*                     m_mecanum;
+        /// @brief Initialize the state
+        void virtual Init
+        (
+            ChassisMovement& chassisMovement
+        ) = 0;
+        
+        /// @brief Calculate the swerve module states based on chassis movement and orientation option
+        /// @return std::array<frc::SwerveModuleState*, 4> - 4 calculated swerve module states
+        virtual  std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates
+        (
+            ChassisMovement& chassisMovement
+        ) = 0;
 };

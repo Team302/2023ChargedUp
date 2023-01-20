@@ -15,32 +15,32 @@
 
 #pragma once
 
-//C++ Libraries
+//C++ Includes
+#include <array>
 
-//Team 302 includes
-#include <TeleopControl.h>
-#include <State.h>
+#include <frc/kinematics/SwerveModulestate.h>
 
-class IChassis;
-class MecanumChassis;
-class SwerveChassis;
+//Team302 Includes
+#include <chassis/swerve/driveStates/ISwerveDriveState.h>
+#include <chassis/ChassisMovement.h>
 
-class HolonomicDrive : public State
+class StopDrive : public ISwerveDriveState
 {
     public:
+        using ISwerveDriveState::ISwerveDriveState;
 
-        HolonomicDrive();
-        ~HolonomicDrive() = default;
+        std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates
+        (
+            ChassisMovement& chassisMovement
+        ) override;
 
-        void Init() override;
-        void Run() override;
-        void Exit() override;
-        bool AtTarget() const override;
-
+        void Init
+        (
+            ChassisMovement& chassisMovement
+        ) override;
     private:
-        inline TeleopControl* GetController() const { return m_controller; }
-        IChassis*                           m_chassis;
-        TeleopControl*                      m_controller;
-        SwerveChassis*                      m_swerve;
-        MecanumChassis*                     m_mecanum;
+        frc::SwerveModuleState* m_flState = new frc::SwerveModuleState();
+        frc::SwerveModuleState* m_frState = new frc::SwerveModuleState();
+        frc::SwerveModuleState* m_blState = new frc::SwerveModuleState();
+        frc::SwerveModuleState* m_brState = new frc::SwerveModuleState();
 };

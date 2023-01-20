@@ -15,32 +15,20 @@
 
 #pragma once
 
-//C++ Libraries
+//FRC Includes
+#include <units/length.h>
 
-//Team 302 includes
-#include <TeleopControl.h>
-#include <State.h>
-
-class IChassis;
-class MecanumChassis;
-class SwerveChassis;
-
-class HolonomicDrive : public State
+class Point2d
 {
     public:
+        Point2d();
 
-        HolonomicDrive();
-        ~HolonomicDrive() = default;
+        Point2d(units::meter_t x, units::meter_t y) {X= x; Y= y;};
 
-        void Init() override;
-        void Run() override;
-        void Exit() override;
-        bool AtTarget() const override;
+        Point2d operator+(const Point2d& other);
+        Point2d operator-(const Point2d& other);
+        bool operator==(const Point2d& other);
 
-    private:
-        inline TeleopControl* GetController() const { return m_controller; }
-        IChassis*                           m_chassis;
-        TeleopControl*                      m_controller;
-        SwerveChassis*                      m_swerve;
-        MecanumChassis*                     m_mecanum;
+        units::meter_t X;
+        units::meter_t Y;
 };

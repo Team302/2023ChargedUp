@@ -15,32 +15,21 @@
 
 #pragma once
 
-//C++ Libraries
+//Team302 Includes
+#include <chassis/swerve/headingStates/ISwerveDriveOrientation.h>
+#include <chassis/DragonTargetFinder.h>
+#include <hw/DragonLimelight.h>
 
-//Team 302 includes
-#include <TeleopControl.h>
-#include <State.h>
-
-class IChassis;
-class MecanumChassis;
-class SwerveChassis;
-
-class HolonomicDrive : public State
+class FaceGoalHeading : public ISwerveDriveOrientation
 {
     public:
+        FaceGoalHeading();
+        ~FaceGoalHeading();
 
-        HolonomicDrive();
-        ~HolonomicDrive() = default;
-
-        void Init() override;
-        void Run() override;
-        void Exit() override;
-        bool AtTarget() const override;
+        void UpdateChassisSpeeds(ChassisMovement& chassisMovement) override;
 
     private:
-        inline TeleopControl* GetController() const { return m_controller; }
-        IChassis*                           m_chassis;
-        TeleopControl*                      m_controller;
-        SwerveChassis*                      m_swerve;
-        MecanumChassis*                     m_mecanum;
+        DragonTargetFinder     m_targetFinder;
+
+        DragonLimelight*        m_limelight;
 };

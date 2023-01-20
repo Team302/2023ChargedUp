@@ -15,32 +15,27 @@
 
 #pragma once
 
-//C++ Libraries
+//FRC Includes
+#include <frc/kinematics/ChassisSpeeds.h>
+#include <frc/trajectory/TrajectoryUtil.h>
 
-//Team 302 includes
-#include <TeleopControl.h>
-#include <State.h>
+#include <units/angle.h>
 
-class IChassis;
-class MecanumChassis;
-class SwerveChassis;
+//Team302 Includes
+#include <utils/Point2d.h>
+#include <chassis/ChassisOptionEnums.h>
 
-class HolonomicDrive : public State
+
+/// @brief This is used to give all neccessary data to ISwerveDriveStates
+
+struct ChassisMovement
 {
-    public:
-
-        HolonomicDrive();
-        ~HolonomicDrive() = default;
-
-        void Init() override;
-        void Run() override;
-        void Exit() override;
-        bool AtTarget() const override;
-
-    private:
-        inline TeleopControl* GetController() const { return m_controller; }
-        IChassis*                           m_chassis;
-        TeleopControl*                      m_controller;
-        SwerveChassis*                      m_swerve;
-        MecanumChassis*                     m_mecanum;
+    ChassisOptionEnums::DriveStateType      driveOption = ChassisOptionEnums::DriveStateType::ROBOT_DRIVE;
+    frc::ChassisSpeeds                      chassisSpeeds = frc::ChassisSpeeds();
+    frc::Trajectory                         trajectory = frc::Trajectory();
+    Point2d                                 centerOfRotationOffset = Point2d();
+    ChassisOptionEnums::HeadingOption       headingOption = ChassisOptionEnums::HeadingOption::MAINTAIN;
+    ChassisOptionEnums::NoMovementOption    noMovementOption = ChassisOptionEnums::NoMovementOption::STOP;
+    ChassisOptionEnums::AutonControllerType controllerType = ChassisOptionEnums::AutonControllerType::RAMSETE;
+    units::angle::degree_t                  yawAngle = units::angle::degree_t(0.0);
 };

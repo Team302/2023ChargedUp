@@ -13,34 +13,25 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#pragma once
+#include <utils/Point2d.h>
 
-//C++ Libraries
-
-//Team 302 includes
-#include <TeleopControl.h>
-#include <State.h>
-
-class IChassis;
-class MecanumChassis;
-class SwerveChassis;
-
-class HolonomicDrive : public State
+Point2d::Point2d()
 {
-    public:
+    X = units::meter_t(0.0);
+    Y = units::meter_t(0.0);
+}
 
-        HolonomicDrive();
-        ~HolonomicDrive() = default;
+Point2d Point2d::operator+(const Point2d& other)
+{
+    return Point2d( X + other.X, Y + other.Y);
+}
 
-        void Init() override;
-        void Run() override;
-        void Exit() override;
-        bool AtTarget() const override;
+Point2d Point2d::operator-(const Point2d& other)
+{
+    return Point2d( X - other.X, Y - other.Y);
+}
 
-    private:
-        inline TeleopControl* GetController() const { return m_controller; }
-        IChassis*                           m_chassis;
-        TeleopControl*                      m_controller;
-        SwerveChassis*                      m_swerve;
-        MecanumChassis*                     m_mecanum;
-};
+bool Point2d::operator==(const Point2d& other)
+{
+    return X == other.X && Y == other.Y;
+}
