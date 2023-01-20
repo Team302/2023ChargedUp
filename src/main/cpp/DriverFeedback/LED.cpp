@@ -43,17 +43,11 @@
    int timer = 0;
 
    void LED::ColorTest(){
-        for (int i = 0; i < kLength; i++){
-            auto color = getColorValues(YELLOW);
-            m_ledBuffer[i].SetRGB(color[0],color[1],color[2]);
-            // if (color== getColorValues(BLUE)){
-            //     auto color = getColorValues(RED);
-            // }
-            // else if (color == getColorValues(RED)){
-            //     auto color = getColorValues(BLUE);
-            // }
-        }
-    m_led->SetData(m_ledBuffer);
+            for (int i = 0; i < kLength; i++){
+                auto color = getColorValues(PURPLE);
+                m_ledBuffer[i].SetRGB(color[0],color[1],color[2]);
+        }       
+        m_led->SetData(m_ledBuffer);
     }
     // if(timer<5){
     //     auto color = getColorValues(colorArray[colorLoop]);
