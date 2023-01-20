@@ -18,6 +18,7 @@
 #pragma once
 
 #include <frc/TimedRobot.h>
+#include <DriverFeedback/LED.h>
 
 class ArcadeDrive;
 class CyclePrimitives;
@@ -49,4 +50,5 @@ class Robot : public frc::TimedRobot
         bool                  m_startLogging;
         ArcadeDrive*          m_arcade;
         DragonLimelight*      m_dragonLimeLight;
+        LED*                  m_led;
 };

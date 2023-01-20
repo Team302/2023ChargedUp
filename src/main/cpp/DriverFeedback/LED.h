@@ -24,8 +24,13 @@ class LED
         LED(int PWMport);
 
 
-        enum Colors{RED, GREEN, BLUE, PURPLE, YELLOW, AZUL};
+        enum Colors{RED, GREEN, BLUE, PURPLE, YELLOW, AZUL, MAX_STATE};
         void UpdateLEDS();
+
+        void LedsOff();
+
+        void ColorTest();
+        //void BlinkingPattern();
 
         ~LED();
         LED() = delete;

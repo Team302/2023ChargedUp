@@ -27,10 +27,11 @@ using namespace std;
 
 void Robot::RobotInit() 
 {
+
     m_startLogging = false;
     Logger::GetLogger()->PutLoggingSelectionsOnDashboard();
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("RobotInit"), string("arrived"));   
-    
+    m_led = new LED(9);
     m_controller = TeleopControl::GetInstance();
 
     // Read the XML file to build the robot 
@@ -66,6 +67,7 @@ void Robot::RobotInit()
  */
 void Robot::RobotPeriodic() 
 {
+
     if (m_chassis != nullptr)
     {
         m_chassis->UpdateOdometry();
@@ -82,7 +84,7 @@ void Robot::RobotPeriodic()
         LoggableItemMgr::GetInstance()->LogData();
         Logger::GetLogger()->PeriodicLog();
     }
-}
+ }
 
 /**
  * This autonomous (along with the chooser code above) shows how to select
@@ -137,6 +139,7 @@ void Robot::TeleopInit()
 
 void Robot::TeleopPeriodic() 
 {
+    m_led->UpdateLEDS();
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopPeriodic"), string("arrived"));   
     if (m_chassis != nullptr && m_controller != nullptr)
     {
@@ -157,13 +160,14 @@ void Robot::TeleopPeriodic()
 
 void Robot::DisabledInit() 
 {
+
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("DisabledInit"), string("arrived"));   
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("DisabledInit"), string("end"));   
 }
 
 void Robot::DisabledPeriodic() 
 {
-
+    m_led->LedsOff();
 }
 
 void Robot::TestInit() 
