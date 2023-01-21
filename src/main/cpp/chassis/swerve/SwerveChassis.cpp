@@ -33,6 +33,8 @@
 #include <units/angular_velocity.h>
 #include <units/length.h>
 #include <units/velocity.h>
+#include <frc/kinematics/SwerveModulePosition.h>
+#include <frc/kinematics/SwerveDriveKinematics.h>
 
 // Team 302 includes
 #include <chassis/PoseEstimatorEnum.h>
@@ -130,6 +132,16 @@ SwerveChassis::SwerveChassis
     m_frontRightLocation(wheelBase/2.0, -1.0*track/2.0),
     m_backLeftLocation(-1.0*wheelBase/2.0, track/2.0),
     m_backRightLocation(-1.0*wheelBase/2.0, -1.0*track/2.0),
+    m_kinematics(m_frontLeftLocation, 
+                    m_frontRightLocation, 
+                    m_backLeftLocation, 
+                    m_backRightLocation),
+    m_poseEstimator(m_kinematics,
+                    frc::Rotation2d{},
+                    {m_frontLeft.get()->GetPosition(), m_frontRight.get()->GetPosition(), m_backLeft.get()->GetPosition(), m_backRight.get()->GetPosition()},
+                    frc::Pose2d(),
+                    {0.1, 0.1, 0.1},
+                    {0.1, 0.1, 0.1}),
     m_storedYaw(m_pigeon->GetYaw()),
     m_yawCorrection(units::angular_velocity::degrees_per_second_t(0.0)),
     m_targetHeading(units::angle::degree_t(0)),
@@ -235,20 +247,9 @@ void SwerveChassis::Drive()
     // No-op for now
 }
 
-void SwerveChassis::DriveHoldPosition()
-{
-    m_hold = true;
-}
-
-
 Pose2d SwerveChassis::GetPose() const
 {
-    // TODO odometry
-    //if (m_poseOpt==PoseEstimatorEnum::WPI)
-    //{
-    //    return m_poseEstimator.GetEstimatedPosition();
-    //}
-    return m_pose;
+    return m_poseEstimator.GetEstimatedPosition();
 }
 
 units::angle::degree_t SwerveChassis::GetYaw() const
@@ -260,64 +261,16 @@ units::angle::degree_t SwerveChassis::GetYaw() const
 /// @brief update the chassis odometry based on current states of the swerve modules and the pigeon
 void SwerveChassis::UpdateOdometry() 
 {
-    // TODO odometry
-    /**
     units::degree_t yaw{m_pigeon->GetYaw()};
     Rotation2d rot2d {yaw}; 
 
-    if (m_poseOpt == PoseEstimatorEnum::WPI)
-    {
-        auto currentPose = m_poseEstimator.GetEstimatedPosition();
+    m_poseEstimator.Update(rot2d, wpi::array<frc::SwerveModulePosition, 4>{m_frontLeft.get()->GetPosition(),
+                                  m_frontRight.get()->GetPosition(), 
+                                  m_backLeft.get()->GetPosition(),
+                                  m_backRight.get()->GetPosition()});
 
-        m_poseEstimator.Update(rot2d, m_frontLeft.get()->GetState(),
-                                      m_frontRight.get()->GetState(), 
-                                      m_backLeft.get()->GetState(),
-                                      m_backRight.get()->GetState());
-
-        auto updatedPose = m_poseEstimator.GetEstimatedPosition();
-    }
-    else if (m_poseOpt==PoseEstimatorEnum::EULER_AT_CHASSIS)
-    {
-        // get change in time
-        units::time::second_t deltaT(0.02);
-        //auto deltaT = m_timer.Get();
-        //m_timer.Reset();
-
-        // get the information from the last pose 
-        auto startX = m_pose.X();
-        auto startY = m_pose.Y();
-
-        // xk+1 = xk + vk cos θk T
-        // yk+1 = yk + vk sin θk T
-        // Thetak+1 = Thetagyro,k+1
-        units::angle::radian_t rads = yaw;          // convert angle to radians
-        double cosAng = cos(rads.to<double>());
-        double sinAng = sin(rads.to<double>());
-        auto vx = m_drive * cosAng + m_steer * sinAng;
-        auto vy = m_drive * sinAng + m_steer * cosAng;
-
-        units::length::meter_t currentX = startX + m_odometryComplianceCoefficient*(vx * deltaT);
-        units::length::meter_t currentY = startY + m_odometryComplianceCoefficient*(vy * deltaT);
-
-        Pose2d currPose{currentX, currentY, rot2d};
-        auto trans = currPose - m_pose;
-        m_pose = m_pose + trans;
-    }
-    else if (m_poseOpt==PoseEstimatorEnum::EULER_USING_MODULES ||
-             m_poseOpt==PoseEstimatorEnum::POSE_EST_USING_MODULES)
-    {
-        auto flPose = m_frontLeft.get()->GetCurrentPose(m_poseOpt);
-        auto frPose = m_frontRight.get()->GetCurrentPose(m_poseOpt);
-        auto blPose = m_backLeft.get()->GetCurrentPose(m_poseOpt);
-        auto brPose = m_backRight.get()->GetCurrentPose(m_poseOpt);
-
-        auto chassisX = (flPose.X() + frPose.X() + blPose.X() + brPose.X()) / 4.0;
-        auto chassisY = (flPose.Y() + frPose.Y() + blPose.Y() + brPose.Y()) / 4.0;
-        Pose2d currPose{chassisX, chassisY, rot2d};
-        auto trans = currPose - m_pose;
-        m_pose = m_pose + trans;
-    }
-    **/
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("SwerveOdometry"), std::string("X Position: "), m_poseEstimator.GetEstimatedPosition().X().to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("SwerveOdometry"), std::string("Y Position: "), m_poseEstimator.GetEstimatedPosition().Y().to<double>());
 }
 
 /// @brief set all of the encoders to zero
@@ -354,32 +307,8 @@ void SwerveChassis::ResetPose
 )
 {
     //m_poseEstimator.ResetPosition(pose, angle);
+
     SetEncodersToZero();
-    m_pose = pose;
-
-    auto pigeon = PigeonFactory::GetFactory()->GetPigeon(DragonPigeon::PIGEON_USAGE::CENTER_OF_ROBOT);
-
-    pigeon->ReZeroPigeon(angle.Degrees().to<double>(), 0);
-
-    m_storedYaw = angle.Degrees();
-
-    //m_offsetPoseAngle = units::angle::degree_t(m_pigeon->GetYaw()) - angle.Degrees();
-
-    Transform2d t_fl {m_frontLeftLocation,angle};
-    auto flPose = pose + t_fl;
-    m_frontLeft.get()->UpdateCurrPose(flPose.X(), flPose.Y());
-
-    Transform2d t_fr {m_frontRightLocation,angle};
-    auto frPose = m_pose + t_fr;
-    m_frontRight.get()->UpdateCurrPose(frPose.X(), frPose.Y());
-
-    Transform2d t_bl {m_backLeftLocation,angle};
-    auto blPose = m_pose + t_bl;
-    m_backLeft.get()->UpdateCurrPose(blPose.X(), blPose.Y());
-
-    Transform2d t_br {m_backRightLocation,angle};
-    auto brPose = m_pose + t_br;
-    m_backRight.get()->UpdateCurrPose(brPose.X(), brPose.Y());
 }
 
 

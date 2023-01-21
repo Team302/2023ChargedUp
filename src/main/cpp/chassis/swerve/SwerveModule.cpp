@@ -247,10 +247,12 @@ SwerveModuleState SwerveModule::GetState() const
     return state;
 }
 
-
-frc::SwerveModulePosition SwerveModule::GetPosition() const {
-  return {units::meter_t{0.0},
-          units::radian_t{0.0}};
+/// @brief Get the current position of the swerve module (distance and rotation)
+/// @return frc::SwerveModulePosition - current position
+frc::SwerveModulePosition SwerveModule::GetPosition() const 
+{
+    return {m_driveMotor.get()->GetRotations() * m_wheelDiameter * numbers::pi, //distance travled by drive motor
+            Rotation2d(units::angle::degree_t(m_turnSensor->GetAbsolutePosition()))}; //angle of the swerve module from sensor
 }
 
 
