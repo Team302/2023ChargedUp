@@ -848,7 +848,7 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 		// Team 302 includes
 		#include  &lt;mechanisms/base/Mech1MotorState.h&gt;
 		#include  &lt;mechanisms/controllers/ControlData.h&gt;
-		#include  &lt;mechanisms/$MECHANISM_NAME_LOWERCASE$/$MECHANISM_NAME$.h&gt;
+		#include  &lt;mechanisms/$MECHANISM_NAME_LOWERCASE$/$MECHANISM_NAME$State.h&gt;
 		#include  &lt;mechanisms/MechanismFactory.h&gt;
 
 		// Third Party Includes
@@ -913,7 +913,7 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 
 
 		bool AtTarget() const override;
-		$MECHANISM_NAME$ Get$MECHANISM_NAME$() const {return m_$MECHANISM_NAME_LOWERCASE$;}
+		$MECHANISM_NAME$ * Get$MECHANISM_NAME$() const {return m_$MECHANISM_NAME_LOWERCASE$;}
 
 		private:
 		$MECHANISM_NAME$*        m_$MECHANISM_NAME_LOWERCASE$;
