@@ -13,34 +13,36 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#pragma once
+//Team302 Includes
+#include <chassis/swerve/headingStates/MaintainHeading.h>
+#include <chassis/ChassisOptionEnums.h>
+//#include <chassis/swerve/SwerveOdometry.h>
 
-//C++ Libraries
-
-//Team 302 includes
-#include <TeleopControl.h>
-#include <State.h>
-
-class IChassis;
-class MecanumChassis;
-class SwerveChassis;
-
-class HolonomicDrive : public State
+MaintainHeading::MaintainHeading() : ISwerveDriveOrientation(ChassisOptionEnums::HeadingOption::MAINTAIN)
 {
-    public:
+    
+}
 
-        HolonomicDrive();
-        ~HolonomicDrive() = default;
+void MaintainHeading::UpdateChassisSpeeds(ChassisMovement& chassisMovement)
+{
+    units::angular_velocity::degrees_per_second_t correction = units::angular_velocity::degrees_per_second_t(0.0);
 
-        void Init() override;
-        void Run() override;
-        void Exit() override;
-        bool AtTarget() const override;
+    units::meters_per_second_t xspeed = chassisMovement.chassisSpeeds.vx;
+    units::meters_per_second_t yspeed = chassisMovement.chassisSpeeds.vy;
+    units::radians_per_second_t rot = chassisMovement.chassisSpeeds.omega;
 
-    private:
-        inline TeleopControl* GetController() const { return m_controller; }
-        IChassis*                           m_chassis;
-        TeleopControl*                      m_controller;
-        SwerveChassis*                      m_swerve;
-        MecanumChassis*                     m_mecanum;
-};
+    if(abs(rot.to<double>()) == 0.0)
+    {
+        rot = units::radians_per_second_t(0.0);
+        if (abs(xspeed.to<double>()) > 0.0 || abs(yspeed.to<double>() > 0.0))
+        {
+            correction = CalcHeadingCorrection(m_storedYaw, m_kPMaintainHeadingControl);
+        }
+    }
+    else
+    {
+       // m_storedYaw = SwerveOdometry::GetInstance()->GetPose().Rotation().Degrees();
+    }
+
+    rot -= correction;
+}

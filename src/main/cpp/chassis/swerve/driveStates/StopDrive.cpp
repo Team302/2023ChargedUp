@@ -13,34 +13,22 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#pragma once
+//Team302 Includes
+#include <chassis/swerve/driveStates/StopDrive.h>
+#include <chassis/ChassisMovement.h>
 
-//C++ Libraries
-
-//Team 302 includes
-#include <TeleopControl.h>
-#include <State.h>
-
-class IChassis;
-class MecanumChassis;
-class SwerveChassis;
-
-class HolonomicDrive : public State
+std::array<frc::SwerveModuleState, 4> StopDrive::UpdateSwerveModuleStates
+(
+    ChassisMovement& chassisMovement
+)
 {
-    public:
+    return {*m_flState, *m_frState, *m_blState, *m_brState};
+}
 
-        HolonomicDrive();
-        ~HolonomicDrive() = default;
-
-        void Init() override;
-        void Run() override;
-        void Exit() override;
-        bool AtTarget() const override;
-
-    private:
-        inline TeleopControl* GetController() const { return m_controller; }
-        IChassis*                           m_chassis;
-        TeleopControl*                      m_controller;
-        SwerveChassis*                      m_swerve;
-        MecanumChassis*                     m_mecanum;
-};
+void StopDrive::Init
+(
+    ChassisMovement& chassisMovement
+)
+{
+    //Should we do anything here?
+}

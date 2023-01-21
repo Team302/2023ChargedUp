@@ -13,34 +13,22 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#pragma once
+//Team302 Includes
+#include <chassis/ChassisOptionEnums.h>
+#include <chassis/swerve/headingStates/SpecifiedHeading.h>
 
-//C++ Libraries
-
-//Team 302 includes
-#include <TeleopControl.h>
-#include <State.h>
-
-class IChassis;
-class MecanumChassis;
-class SwerveChassis;
-
-class HolonomicDrive : public State
+SpecifiedHeading::SpecifiedHeading() : ISwerveDriveOrientation(ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE),
+    m_targetAngle(units::angle::degree_t(0.0))
 {
-    public:
 
-        HolonomicDrive();
-        ~HolonomicDrive() = default;
+}
 
-        void Init() override;
-        void Run() override;
-        void Exit() override;
-        bool AtTarget() const override;
+void SpecifiedHeading::SetTargetHeading(units::angle::degree_t targetAngle)
+{
+    m_targetAngle = targetAngle;
+}
 
-    private:
-        inline TeleopControl* GetController() const { return m_controller; }
-        IChassis*                           m_chassis;
-        TeleopControl*                      m_controller;
-        SwerveChassis*                      m_swerve;
-        MecanumChassis*                     m_mecanum;
-};
+void SpecifiedHeading::UpdateChassisSpeeds(ChassisMovement& chassisMovement)
+{
+    chassisMovement.chassisSpeeds.omega -= CalcHeadingCorrection(m_targetAngle, m_kPMaintainHeadingControl);
+}

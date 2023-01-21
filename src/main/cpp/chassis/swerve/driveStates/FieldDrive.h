@@ -15,32 +15,27 @@
 
 #pragma once
 
-//C++ Libraries
+//FRC Includes
+#include <frc/kinematics/SwerveModuleState.h>
+#include <frc/kinematics/ChassisSpeeds.h>
 
-//Team 302 includes
-#include <TeleopControl.h>
-#include <State.h>
+//Team302 Includes
+#include <chassis/swerve/driveStates/RobotDrive.h>
 
-class IChassis;
-class MecanumChassis;
-class SwerveChassis;
-
-class HolonomicDrive : public State
+class FieldDrive : public RobotDrive
 {
     public:
+        FieldDrive(RobotDrive* robotDrive);
 
-        HolonomicDrive();
-        ~HolonomicDrive() = default;
+        std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates
+        (
+            ChassisMovement& chassisMovement
+        ) override;
 
-        void Init() override;
-        void Run() override;
-        void Exit() override;
-        bool AtTarget() const override;
-
+        void Init
+        (
+            ChassisMovement& chassisMovement
+        ) override;
     private:
-        inline TeleopControl* GetController() const { return m_controller; }
-        IChassis*                           m_chassis;
-        TeleopControl*                      m_controller;
-        SwerveChassis*                      m_swerve;
-        MecanumChassis*                     m_mecanum;
+        RobotDrive*              m_robotDrive;
 };

@@ -15,32 +15,36 @@
 
 #pragma once
 
-//C++ Libraries
+//FRC Includes
+#include <frc/trajectory/Trajectory.h>
+#include <frc/controller/HolonomicDriveController.h>
+#include <frc/Timer.h>
 
-//Team 302 includes
-#include <TeleopControl.h>
-#include <State.h>
+//Team302 Includes
+#include <chassis/swerve/driveStates/RobotDrive.h>
 
-class IChassis;
-class MecanumChassis;
-class SwerveChassis;
-
-class HolonomicDrive : public State
+class TrajectoryDrive : public RobotDrive
 {
     public:
+        TrajectoryDrive(RobotDrive* robotDrive);
 
-        HolonomicDrive();
-        ~HolonomicDrive() = default;
-
-        void Init() override;
-        void Run() override;
-        void Exit() override;
-        bool AtTarget() const override;
+        std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates
+        (
+            ChassisMovement& chassisMovement
+        ) override;
+        
+        void Init
+        (
+            ChassisMovement& chassisMovement
+        ) override;
 
     private:
-        inline TeleopControl* GetController() const { return m_controller; }
-        IChassis*                           m_chassis;
-        TeleopControl*                      m_controller;
-        SwerveChassis*                      m_swerve;
-        MecanumChassis*                     m_mecanum;
+        void CalcCurrentAndDesiredStates();
+
+        frc::Trajectory                     m_trajectory;
+        RobotDrive*                         m_robotDrive;
+        frc::HolonomicDriveController       m_holonomicController;
+        frc::Trajectory::State              m_desiredState;
+        std::vector<frc::Trajectory::State> m_trajectoryStates;
+        std::unique_ptr<frc::Timer>         m_timer;
 };

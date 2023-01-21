@@ -15,32 +15,17 @@
 
 #pragma once
 
-//C++ Libraries
+//FRC Includes
 
-//Team 302 includes
-#include <TeleopControl.h>
-#include <State.h>
+//Team302 Includes
+#include <chassis/swerve/headingStates/ISwerveDriveOrientation.h>
+#include <chassis/ChassisOptionEnums.h>
 
-class IChassis;
-class MecanumChassis;
-class SwerveChassis;
-
-class HolonomicDrive : public State
+class MaintainHeading : public ISwerveDriveOrientation
 {
     public:
+        MaintainHeading();
+        ~MaintainHeading() = default;
 
-        HolonomicDrive();
-        ~HolonomicDrive() = default;
-
-        void Init() override;
-        void Run() override;
-        void Exit() override;
-        bool AtTarget() const override;
-
-    private:
-        inline TeleopControl* GetController() const { return m_controller; }
-        IChassis*                           m_chassis;
-        TeleopControl*                      m_controller;
-        SwerveChassis*                      m_swerve;
-        MecanumChassis*                     m_mecanum;
+        void UpdateChassisSpeeds(ChassisMovement& chassisMovement) override;
 };

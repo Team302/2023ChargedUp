@@ -22,6 +22,7 @@
 #include <auton/drivePrimitives/IPrimitive.h>
 #include <chassis/ChassisFactory.h>
 #include <chassis/IChassis.h>
+#include <chassis/ChassisOptionEnums.h>
 
 //FRC,WPI Includes
 #include <frc/controller/HolonomicDriveController.h>
@@ -75,7 +76,7 @@ private:
     double                                  m_deltaY;
     std::vector<frc::Trajectory::State>     m_trajectoryStates;
     frc::Trajectory::State                  m_desiredState;
-    IChassis::HEADING_OPTION                m_headingOption;
+    ChassisOptionEnums::HeadingOption       m_headingOption;
     double                                  m_heading;
     double                                  m_maxTime;
     std::string                             m_ntName;

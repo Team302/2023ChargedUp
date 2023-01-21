@@ -31,10 +31,6 @@
 class TeleopControl
 {
     public:
-// TODO:REMOVE UNUSED IDENTIFIERS ??
-
-
-
         //----------------------------------------------------------------------------------
         // Method:      GetInstance
         // Description: If there isn't an instance of this class, it will create one.  The

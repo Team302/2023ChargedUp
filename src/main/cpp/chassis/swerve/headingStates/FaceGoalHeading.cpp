@@ -13,34 +13,35 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#pragma once
+//Team302 Includes
+#include <chassis/swerve/headingStates/FaceGoalHeading.h>
+#include <hw/factories/LimelightFactory.h>
 
-//C++ Libraries
+//#include <chassis/swerve/SwerveOdometry.h>
 
-//Team 302 includes
-#include <TeleopControl.h>
-#include <State.h>
-
-class IChassis;
-class MecanumChassis;
-class SwerveChassis;
-
-class HolonomicDrive : public State
+FaceGoalHeading::FaceGoalHeading() : ISwerveDriveOrientation(ChassisOptionEnums::HeadingOption::TOWARD_GOAL),
+    m_limelight(LimelightFactory::GetLimelightFactory()->GetLimelight())
 {
-    public:
 
-        HolonomicDrive();
-        ~HolonomicDrive() = default;
+}
 
-        void Init() override;
-        void Run() override;
-        void Exit() override;
-        bool AtTarget() const override;
+void FaceGoalHeading::UpdateChassisSpeeds(ChassisMovement& chassisMovement)
+{
+    units::angular_velocity::radians_per_second_t rot = chassisMovement.chassisSpeeds.omega;
 
-    private:
-        inline TeleopControl* GetController() const { return m_controller; }
-        IChassis*                           m_chassis;
-        TeleopControl*                      m_controller;
-        SwerveChassis*                      m_swerve;
-        MecanumChassis*                     m_mecanum;
-};
+    if(m_limelight != nullptr && abs(m_limelight->GetTargetHorizontalOffset().to<double>()) < 1.0 && m_limelight->HasTarget())
+    {
+        //Hold position
+    }
+    else if (m_limelight != nullptr && m_limelight->HasTarget())
+    { 
+        double rotCorrection = abs(m_limelight->GetTargetHorizontalOffset().to<double>()) > 10.0 ? m_kPGoalHeadingControl : m_kPGoalHeadingControl*2.0;
+        rot += (m_limelight->GetTargetHorizontalOffset())/1_s*rotCorrection; 
+    }
+    else
+    {
+//        auto targetAngle = units::angle::degree_t(m_targetFinder.GetTargetAngleD(SwerveOdometry::GetInstance()->GetPose()));
+        auto targetAngle = units::angle::degree_t(0.0);
+        rot -= CalcHeadingCorrection(targetAngle,m_kPGoalHeadingControl);
+    }
+}

@@ -135,6 +135,7 @@ IChassis* ChassisFactory::CreateChassis
                                           controlFileName
                                           );
             m_chassis = m_swerve;
+            m_swerve->InitStates();
         }
         break;
 

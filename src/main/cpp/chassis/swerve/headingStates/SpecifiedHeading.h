@@ -15,32 +15,20 @@
 
 #pragma once
 
-//C++ Libraries
+#include <units/angle.h>
 
-//Team 302 includes
-#include <TeleopControl.h>
-#include <State.h>
+//Team302 Includes
+#include <chassis/swerve/headingStates/ISwerveDriveOrientation.h>
+#include <chassis/ChassisOptionEnums.h>
 
-class IChassis;
-class MecanumChassis;
-class SwerveChassis;
-
-class HolonomicDrive : public State
+class SpecifiedHeading : public ISwerveDriveOrientation
 {
     public:
-
-        HolonomicDrive();
-        ~HolonomicDrive() = default;
-
-        void Init() override;
-        void Run() override;
-        void Exit() override;
-        bool AtTarget() const override;
+        SpecifiedHeading();
+        ~SpecifiedHeading();
+        void UpdateChassisSpeeds(ChassisMovement& chassisMovement) override;
+        void SetTargetHeading(units::angle::degree_t targetAngle);
 
     private:
-        inline TeleopControl* GetController() const { return m_controller; }
-        IChassis*                           m_chassis;
-        TeleopControl*                      m_controller;
-        SwerveChassis*                      m_swerve;
-        MecanumChassis*                     m_mecanum;
+        units::angle::degree_t      m_targetAngle;
 };

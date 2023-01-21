@@ -23,6 +23,7 @@
 
 // Team 302 Includes
 #include <chassis/differential/ArcadeDrive.h>
+#include <chassis/ChassisMovement.h>
 #include <hw/DragonPigeon.h>
 #include <gamepad/IDragonGamePad.h>
 #include <TeleopControl.h>
@@ -74,11 +75,12 @@ void ArcadeDrive::Run()
         auto throttle = m_controller->GetAxisValue(TeleopControlFunctions::FUNCTION::ARCADE_THROTTLE);
         auto steer = m_controller->GetAxisValue(TeleopControlFunctions::FUNCTION::ARCADE_STEER);
 
-        frc::ChassisSpeeds speeds;
-        speeds.vx = throttle * m_chassis->GetMaxSpeed();
-        speeds.vy = 0_mps; //units::velocity::meters_per_second_t(0)
-        speeds.omega = steer * m_chassis->GetMaxAngularSpeed();
-        m_chassis->Drive(speeds);
+        ChassisMovement moveInfo;
+         
+        moveInfo.chassisSpeeds.vx = throttle * m_chassis->GetMaxSpeed();
+        moveInfo.chassisSpeeds.vy = 0_mps; //units::velocity::meters_per_second_t(0)
+        moveInfo.chassisSpeeds.omega = steer * m_chassis->GetMaxAngularSpeed();
+        m_chassis->Drive(moveInfo);
     }
 }
 

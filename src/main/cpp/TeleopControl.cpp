@@ -122,6 +122,14 @@ void TeleopControl::Initialize() const
 
 		m_controllerIndex[TeleopControlFunctions::FUNCTION::FINDTARGET] 					= ctrlNo;  
 		m_buttonIDs[TeleopControlFunctions::FUNCTION::FINDTARGET]	 						= IDragonGamePad::LEFT_BUMPER;	
+		m_controllerIndex[ TeleopControlFunctions::FUNCTION::HOLONOMIC_ROTATE_FRONT ]		= ctrlNo;
+		m_buttonIDs[ TeleopControlFunctions::FUNCTION::HOLONOMIC_ROTATE_FRONT ]			= IDragonGamePad::POV_0;
+		m_controllerIndex[ TeleopControlFunctions::FUNCTION::HOLONOMIC_ROTATE_BACK ]		= ctrlNo;
+		m_buttonIDs[ TeleopControlFunctions::FUNCTION::HOLONOMIC_ROTATE_BACK ]			= IDragonGamePad::POV_180;
+		m_controllerIndex[ TeleopControlFunctions::FUNCTION::HOLONOMIC_ROTATE_LEFT ]		= ctrlNo;
+		m_buttonIDs[ TeleopControlFunctions::FUNCTION::HOLONOMIC_ROTATE_LEFT ]			= IDragonGamePad::POV_270;
+		m_controllerIndex[ TeleopControlFunctions::FUNCTION::HOLONOMIC_ROTATE_RIGHT ]		= ctrlNo;
+		m_buttonIDs[ TeleopControlFunctions::FUNCTION::HOLONOMIC_ROTATE_RIGHT ]			= IDragonGamePad::POV_90;
 
 		m_controllerIndex[ TeleopControlFunctions::FUNCTION::DRIVE_TO_SHOOTING_SPOT ]		= ctrlNo;
 		m_buttonIDs[ TeleopControlFunctions::FUNCTION::DRIVE_TO_SHOOTING_SPOT ]			= IDragonGamePad::A_BUTTON;

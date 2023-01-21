@@ -23,6 +23,7 @@
 #include <frc/controller/ProfiledPIDController.h>
 
 #include <chassis/ChassisFactory.h>
+#include <chassis/ChassisMovement.h>
 #include <chassis/swerve/SwerveChassis.h>
 #include <chassis/TurnToAngle.h>
 #include <State.h>
@@ -95,24 +96,25 @@ void TurnToAngle::Run()
     {
         auto currentAngle = m_chassis->GetYaw();
         auto delta = AngleUtils::GetDeltaAngle(currentAngle, m_targetAngle);
+        ChassisMovement moveInfo;
+        moveInfo.chassisSpeeds.vx = 0_mps;
+        moveInfo.chassisSpeeds.vy = 0_mps;
+        moveInfo.driveOption = ChassisOptionEnums::DriveStateType::ROBOT_DRIVE;
+        moveInfo.headingOption = ChassisOptionEnums::HeadingOption::TOWARD_GOAL;
+        
         if (std::abs(delta.to<double>()) > m_angleTolerance.to<double>())
         {
             m_pid.SetSetpoint(m_targetAngle.to<double>());
             auto rotatePercent = m_pid.Calculate(currentAngle.to<double>());
             rotatePercent = clamp(rotatePercent, -1.0, 1.0);
-            m_chassis->Drive(0.0, 0.0, rotatePercent,
-                             IChassis::CHASSIS_DRIVE_MODE::ROBOT_ORIENTED,
-						     IChassis::HEADING_OPTION::TOWARD_GOAL);
-
+            moveInfo.chassisSpeeds.omega = rotatePercent * m_chassis->GetMaxAngularSpeed();
         }
         else
         {
+            moveInfo.chassisSpeeds.omega = units::angular_velocity::degrees_per_second_t(0.0);
             m_atTarget = true;
-            m_chassis->Drive(0.0, 0.0, 0.0,
-                             IChassis::CHASSIS_DRIVE_MODE::ROBOT_ORIENTED,
-						     IChassis::HEADING_OPTION::TOWARD_GOAL);
-
         }
+        m_chassis->Drive(moveInfo);
     }
 }
 
