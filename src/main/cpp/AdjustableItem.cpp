@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-/// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+/// Copyright 2023 Lake Orion Robotics FIRST Team 302 
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 /// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -13,37 +13,17 @@
 /// OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
+//Team 302 Includes
+#include <AdjustableItem.h>
+#include <AdjustableItemMgr.h>
 
-// C++ Includes
-#include <string>
-
-// FRC includes
-
-// Team 302 includes
-#include <mechanisms/base/Mech1MotorState.h>
-#include <mechanisms/controllers/ControlData.h>
-#include <mechanisms/example/ExampleState.h>
-#include <mechanisms/MechanismFactory.h>
-
-// Third Party Includes
-
-using namespace std;
-
-ExampleState::ExampleState
-(
-    string                          stateName,
-    int                             stateId,
-    ControlData*                    control, 
-    double                          target
-) : Mech1MotorState( MechanismFactory::GetMechanismFactory()->GetExample(), stateName, stateId, control, target),
-    m_example(MechanismFactory::GetMechanismFactory()->GetExample()),
-    m_parsedTarget(target),
-    m_target(target)
+/// @brief when constructed, add to array of other adjustable items
+AdjustableItem::AdjustableItem()
 {
-    
+    AdjustableItemMgr::GetInstance()->RegisterAdjustableItem(this);
 }
 
-bool ExampleState::AtTarget() const
+std::shared_ptr<nt::NetworkTable> AdjustableItem::GetShuffleboardTable()
 {
-    return true;
+    return nt::NetworkTableInstance::GetDefault().GetTable("Shuffleboard");
 }
