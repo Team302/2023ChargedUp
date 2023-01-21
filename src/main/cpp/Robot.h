@@ -18,7 +18,7 @@
 #pragma once
 
 #include <frc/TimedRobot.h>
-
+#include <DragonVision/DragonVision.h>
 class ArcadeDrive;
 class CyclePrimitives;
 class DragonLimelight;

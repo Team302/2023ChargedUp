@@ -29,7 +29,7 @@ class State : public LoggableItem
             std::string     stateName,
             int             stateId
         );
-        State() = delete;
+        State() = default;
         ~State() = default;
 
         virtual void Init() = 0;

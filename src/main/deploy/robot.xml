@@ -7,7 +7,22 @@
                usage="CENTER_OF_ROTATION"  
                type="pigeon2"  
                rotation="0.0"/>  
-  
+       <limelight tablename="limelight"
+              mountingheight="10.0"
+              horizontaloffset="0.0"
+              mountingangle="357.0"
+              rotation="0.0"
+              targetheight="15.0"
+              targetheight2="0.0"
+              defaultledmode="currentpipeline"
+              defaultcammode="vision"
+              streammode="sidebyside"
+              snapshots="off"
+              crosshairx="0.5"
+              crosshairy="0.5"
+              secondcrosshairx="0.25"
+              secondcrosshairy="0.25" />
+
  <!-- ====================================================  
      Chassis  
      ====================================================  -->  

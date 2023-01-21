@@ -70,10 +70,13 @@ void Robot::RobotPeriodic()
     {
         m_chassis->UpdateOdometry();
     }
-    if (m_dragonLimeLight != nullptr)
+
+auto vision = DragonVision::GetDragonVision();
+
+    if (vision != nullptr)
     {
-        LoggerDoubleValue horAngle = {string("Horizontal Angle"), m_dragonLimeLight->GetTargetHorizontalOffset().to<double>()};
-        LoggerDoubleValue distance = { string("distance "), m_dragonLimeLight->EstimateTargetDistance().to<double>()};
+        LoggerDoubleValue horAngle = {string("Angle"), vision->AngleFromConeNode().to<double>()};
+        LoggerDoubleValue distance = { string("distance "), vision->DistanceFromConeNode().to<double>()};
         LoggerData  data = {LOGGER_LEVEL::PRINT, string("DragonLimelight"), {}, {}, {horAngle, distance}, {}};
         Logger::GetLogger()->LogData(data);
     }

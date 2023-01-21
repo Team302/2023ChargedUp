@@ -40,16 +40,18 @@ class DragonVision : public State
     bool AlignedWithCubeGamePiece() const;
     bool AlignedWithConeGamePiece() const;
 
-    int DistanceFromCubeNode() const;
-    int DistanceFromConeNode() const;
-    int DistanceFromSubstation() const;
-    int AngleFromCubeNode() const;
-    int AngleFromConeNode() const;
-    int AngleFromSubstation() const;
-    int DistanceFromCubeGamePiece() const;
-    int DistanceFromConeGamePiece() const;
-    int AngleFromCubeGamePiece() const;
-    int AngleFromConeGamePiece() const;
+    units::length::inch_t DistanceFromCubeNode() const;
+    units::length::inch_t DistanceFromConeNode() const;
+    units::length::inch_t DistanceFromSubstation() const;
+    units::length::inch_t DistanceFromCubeGamePiece() const;
+    units::length::inch_t DistanceFromConeGamePiece() const;
+
+    units::angle::degree_t AngleFromCubeNode() const;
+    units::angle::degree_t AngleFromConeNode() const;
+    units::angle::degree_t AngleFromSubstation() const;
+    units::angle::degree_t AngleFromCubeGamePiece() const;
+    units::angle::degree_t AngleFromConeGamePiece() const;
+
     int GetRobotPosition() const;
    
 private:
@@ -57,9 +59,8 @@ private:
     DragonVision();
     ~DragonVision() = default;
 
-    static DragonVision*	m_dragonvision;
-    DragonVision*    m_frontdragonlimelight;
- 
+    static DragonVision*	m_dragonVision;
+    DragonLimelight*           m_frontDragonLimelight;
     
 };
 
