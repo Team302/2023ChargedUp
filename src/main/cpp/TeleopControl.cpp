@@ -31,6 +31,7 @@
 #include <gamepad/DragonXBox.h>
 #include <gamepad/DragonGamePad.h>
 #include <TeleopControl.h>
+#include <TeleopControlFunctions.h>
 #include <frc/DriverStation.h>
 #include <utils/Logger.h>
 
@@ -96,10 +97,10 @@ void TeleopControl::Initialize() const
 
 
     // Initialize the items to not defined
-	m_axisIDs.resize(FUNCTION_IDENTIFIER::MAX_FUNCTIONS);
-	m_buttonIDs.resize(FUNCTION_IDENTIFIER::MAX_FUNCTIONS);
-	m_controllerIndex.resize(FUNCTION_IDENTIFIER::MAX_FUNCTIONS);
-    for ( int inx=0; inx<FUNCTION_IDENTIFIER::MAX_FUNCTIONS; ++inx )
+	m_axisIDs.resize(TeleopControlFunctions::FUNCTION::MAX_FUNCTIONS);
+	m_buttonIDs.resize(TeleopControlFunctions::FUNCTION::MAX_FUNCTIONS);
+	m_controllerIndex.resize(TeleopControlFunctions::FUNCTION::MAX_FUNCTIONS);
+    for ( int inx=0; inx<TeleopControlFunctions::FUNCTION::MAX_FUNCTIONS; ++inx )
     {
         m_axisIDs[inx]    		= IDragonGamePad::UNDEFINED_AXIS;
         m_buttonIDs[inx]  		= IDragonGamePad::UNDEFINED_BUTTON;
@@ -112,22 +113,22 @@ void TeleopControl::Initialize() const
     if ( m_controller[ctrlNo] != nullptr && DriverStation::GetJoystickIsXbox(ctrlNo) )
     {
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("TeleopControl"), string("Controller 0"), string("XBOX plugged in"));
-		m_controllerIndex[ HOLONOMIC_DRIVE_FORWARD]			= ctrlNo;
-		m_axisIDs[HOLONOMIC_DRIVE_FORWARD]					= IDragonGamePad::LEFT_JOYSTICK_Y;
-		m_controllerIndex[ HOLONOMIC_DRIVE_STRAFE]			= ctrlNo;
-		m_axisIDs[HOLONOMIC_DRIVE_STRAFE]					= IDragonGamePad::LEFT_JOYSTICK_X;
-		m_controllerIndex[ HOLONOMIC_DRIVE_ROTATE]			= ctrlNo;
-		m_axisIDs[HOLONOMIC_DRIVE_ROTATE]					= IDragonGamePad::RIGHT_JOYSTICK_X;
+		m_controllerIndex[ TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_FORWARD]			= ctrlNo;
+		m_axisIDs[TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_FORWARD]					= IDragonGamePad::LEFT_JOYSTICK_Y;
+		m_controllerIndex[ TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_STRAFE]			= ctrlNo;
+		m_axisIDs[TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_STRAFE]					= IDragonGamePad::LEFT_JOYSTICK_X;
+		m_controllerIndex[ TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_ROTATE]			= ctrlNo;
+		m_axisIDs[TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_ROTATE]					= IDragonGamePad::RIGHT_JOYSTICK_X;
 
-		m_controllerIndex[FINDTARGET] 					= ctrlNo;  
-		m_buttonIDs[FINDTARGET]	 						= IDragonGamePad::LEFT_BUMPER;	
+		m_controllerIndex[TeleopControlFunctions::FUNCTION::FINDTARGET] 					= ctrlNo;  
+		m_buttonIDs[TeleopControlFunctions::FUNCTION::FINDTARGET]	 						= IDragonGamePad::LEFT_BUMPER;	
 
-		m_controllerIndex[ DRIVE_TO_SHOOTING_SPOT ]		= ctrlNo;
-		m_buttonIDs[ DRIVE_TO_SHOOTING_SPOT ]			= IDragonGamePad::A_BUTTON;
-		m_controllerIndex[ REZERO_PIGEON ]				= ctrlNo;
-		m_buttonIDs[ REZERO_PIGEON ]					= IDragonGamePad::B_BUTTON;
-		m_controllerIndex[HOLD_POSITION]				= ctrlNo;
-		m_buttonIDs[HOLD_POSITION]						= IDragonGamePad::X_BUTTON;
+		m_controllerIndex[ TeleopControlFunctions::FUNCTION::DRIVE_TO_SHOOTING_SPOT ]		= ctrlNo;
+		m_buttonIDs[ TeleopControlFunctions::FUNCTION::DRIVE_TO_SHOOTING_SPOT ]			= IDragonGamePad::A_BUTTON;
+		m_controllerIndex[ TeleopControlFunctions::FUNCTION::REZERO_PIGEON ]				= ctrlNo;
+		m_buttonIDs[ TeleopControlFunctions::FUNCTION::REZERO_PIGEON ]					= IDragonGamePad::B_BUTTON;
+		m_controllerIndex[TeleopControlFunctions::FUNCTION::HOLD_POSITION]				= ctrlNo;
+		m_buttonIDs[TeleopControlFunctions::FUNCTION::HOLD_POSITION]						= IDragonGamePad::X_BUTTON;
 	
     }
     else
@@ -139,10 +140,10 @@ void TeleopControl::Initialize() const
     if ( m_controller[ctrlNo] != nullptr && DriverStation::GetJoystickIsXbox(ctrlNo) )
     {
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("TeleopControl"), string("Controller 1"), string("XBOIX controller plugged in"));
-		m_controllerIndex[ EXAMPLE_FORWARD ]	= ctrlNo;
-		m_buttonIDs[ EXAMPLE_FORWARD ]			= IDragonGamePad::A_BUTTON;
-		m_controllerIndex[ EXAMPLE_REVERSE ]	= ctrlNo;
-		m_buttonIDs[ EXAMPLE_REVERSE ]			= IDragonGamePad::B_BUTTON;
+		m_controllerIndex[ TeleopControlFunctions::FUNCTION::EXAMPLE_FORWARD ]	= ctrlNo;
+		m_buttonIDs[ TeleopControlFunctions::FUNCTION::EXAMPLE_FORWARD ]			= IDragonGamePad::A_BUTTON;
+		m_controllerIndex[ TeleopControlFunctions::FUNCTION::EXAMPLE_REVERSE ]	= ctrlNo;
+		m_buttonIDs[ TeleopControlFunctions::FUNCTION::EXAMPLE_REVERSE ]			= IDragonGamePad::B_BUTTON;
 	}
     else if ( m_controller[ctrlNo] != nullptr )
     {
@@ -215,7 +216,7 @@ void TeleopControl::Initialize() const
 
 pair<IDragonGamePad*, IDragonGamePad::AXIS_IDENTIFIER> TeleopControl::GetAxisInfo
 (
-	TeleopControl::FUNCTION_IDENTIFIER  function          // <I> - controller with this function
+	TeleopControlFunctions::FUNCTION  function          // <I> - controller with this function
 ) const
 {
 	IDragonGamePad* controller = nullptr;
@@ -240,7 +241,7 @@ pair<IDragonGamePad*, IDragonGamePad::AXIS_IDENTIFIER> TeleopControl::GetAxisInf
 
 pair<IDragonGamePad*, IDragonGamePad::BUTTON_IDENTIFIER> TeleopControl::GetButtonInfo
 (
-	TeleopControl::FUNCTION_IDENTIFIER  function          // <I> - controller with this function
+	TeleopControlFunctions::FUNCTION  function          // <I> - controller with this function
 ) const
 {
 	IDragonGamePad* controller = nullptr;
@@ -275,7 +276,7 @@ pair<IDragonGamePad*, IDragonGamePad::BUTTON_IDENTIFIER> TeleopControl::GetButto
 //------------------------------------------------------------------
 void TeleopControl::SetAxisScaleFactor
 (
-    TeleopControl::FUNCTION_IDENTIFIER  	function,      // <I> - function that will update an axis
+    TeleopControlFunctions::FUNCTION  	function,      // <I> - function that will update an axis
     double                                  scaleFactor    // <I> - scale factor used to limit the range
 )
 {
@@ -288,7 +289,7 @@ void TeleopControl::SetAxisScaleFactor
 
 void TeleopControl::SetDeadBand
 (
-	TeleopControl::FUNCTION_IDENTIFIER		function,
+	TeleopControlFunctions::FUNCTION		function,
 	IDragonGamePad::AXIS_DEADBAND			deadband    
 )
 {
@@ -307,7 +308,7 @@ void TeleopControl::SetDeadBand
 //------------------------------------------------------------------
 void TeleopControl::SetAxisProfile
 (
-    TeleopControl::FUNCTION_IDENTIFIER  function,       // <I> - function that will update an axis
+    TeleopControlFunctions::FUNCTION  function,       // <I> - function that will update an axis
     IDragonGamePad::AXIS_PROFILE        profile         // <I> - profile to use
 )
 {
@@ -326,7 +327,7 @@ void TeleopControl::SetAxisProfile
 //------------------------------------------------------------------
 double TeleopControl::GetAxisValue
 (
-    TeleopControl::FUNCTION_IDENTIFIER  function    // <I> - function that whose axis will be read
+    TeleopControlFunctions::FUNCTION  function    // <I> - function that whose axis will be read
 ) const
 {
     double value = 0.0;
@@ -346,7 +347,7 @@ double TeleopControl::GetAxisValue
 //------------------------------------------------------------------
 bool TeleopControl::IsButtonPressed
 (
-    TeleopControl::FUNCTION_IDENTIFIER  function    // <I> - function that whose button will be read
+    TeleopControlFunctions::FUNCTION  function    // <I> - function that whose button will be read
 ) const
 {
     bool isSelected = false;
@@ -362,7 +363,7 @@ bool TeleopControl::IsButtonPressed
 
 void TeleopControl::SetRumble
 (
-	TeleopControl::FUNCTION_IDENTIFIER  function,       // <I> - controller with this function
+	TeleopControlFunctions::FUNCTION  function,       // <I> - controller with this function
 	bool                                leftRumble,     // <I> - rumble left
 	bool                                rightRumble     // <I> - rumble right
 ) const

@@ -26,29 +26,13 @@
 
 // Team 302 includes
 #include <gamepad/IDragonGamepad.h>
+#include <TeleopControlFunctions.h>
 
 class TeleopControl
 {
     public:
 // TODO:REMOVE UNUSED IDENTIFIERS ??
-        enum FUNCTION_IDENTIFIER
-        {
-            UNKNOWN_FUNCTION,
-            ROBOT_ORIENTED_DRIVE,
-            HOLONOMIC_DRIVE_FORWARD,
-            HOLONOMIC_DRIVE_ROTATE,
-            HOLONOMIC_DRIVE_STRAFE,
-            REZERO_PIGEON,
-            HOLD_POSITION,
-            FINDTARGET,        
-            DRIVE_TO_SHOOTING_SPOT,
-            ARCADE_THROTTLE,
-            ARCADE_STEER,            
-		    // @ADDMECH add functions here for robot
-            EXAMPLE_FORWARD,
-            EXAMPLE_REVERSE,
-            MAX_FUNCTIONS
-        };
+
 
 
         //----------------------------------------------------------------------------------
@@ -72,13 +56,13 @@ class TeleopControl
         //------------------------------------------------------------------
         void SetAxisScaleFactor
         (
-            TeleopControl::FUNCTION_IDENTIFIER  axis,          // <I> - axis number to update
+            TeleopControlFunctions::FUNCTION  axis,          // <I> - axis number to update
             double                              scaleFactor    // <I> - scale factor used to limit the range
         );
 
         void SetDeadBand
         (
-            TeleopControl::FUNCTION_IDENTIFIER  axis,
+            TeleopControlFunctions::FUNCTION  axis,
             IDragonGamePad::AXIS_DEADBAND       deadband
         );
 
@@ -89,7 +73,7 @@ class TeleopControl
         //------------------------------------------------------------------
         void SetAxisProfile
         (
-            TeleopControl::FUNCTION_IDENTIFIER      axis,       // <I> - axis number to update
+            TeleopControlFunctions::FUNCTION      axis,       // <I> - axis number to update
 			IDragonGamePad::AXIS_PROFILE			profile     // <I> - profile to use
         );
 
@@ -101,7 +85,7 @@ class TeleopControl
         //------------------------------------------------------------------
         double GetAxisValue
         (
-            TeleopControl::FUNCTION_IDENTIFIER     axis // <I> - axis number to update
+            TeleopControlFunctions::FUNCTION     axis // <I> - axis number to update
         ) const;
 
         //------------------------------------------------------------------
@@ -112,12 +96,12 @@ class TeleopControl
         //------------------------------------------------------------------
         bool IsButtonPressed
         (
-            TeleopControl::FUNCTION_IDENTIFIER button   // <I> - button number to query
+            TeleopControlFunctions::FUNCTION button   // <I> - button number to query
         ) const;
 
         void SetRumble
         (
-            TeleopControl::FUNCTION_IDENTIFIER  button,         // <I> - controller with this function
+            TeleopControlFunctions::FUNCTION  button,         // <I> - controller with this function
             bool                                leftRumble,     // <I> - rumble left
             bool                                rightRumble     // <I> - rumble right
         ) const;
@@ -147,12 +131,12 @@ class TeleopControl
 
         std::pair<IDragonGamePad*, IDragonGamePad::AXIS_IDENTIFIER> GetAxisInfo
         (
-            TeleopControl::FUNCTION_IDENTIFIER  function          // <I> - controller with this function
+            TeleopControlFunctions::FUNCTION  function          // <I> - controller with this function
         ) const;
 
         std::pair<IDragonGamePad*, IDragonGamePad::BUTTON_IDENTIFIER> GetButtonInfo
         (
-            TeleopControl::FUNCTION_IDENTIFIER  function          // <I> - controller with this function
+            TeleopControlFunctions::FUNCTION  function          // <I> - controller with this function
         ) const;
 
         //----------------------------------------------------------------------------------

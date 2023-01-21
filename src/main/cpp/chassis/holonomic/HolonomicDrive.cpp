@@ -29,6 +29,7 @@
 #include <hw/DragonPigeon.h>
 #include <gamepad/IDragonGamePad.h>
 #include <TeleopControl.h>
+#include <TeleopControlFunctions.h>
 #include <State.h>
 #include <chassis/ChassisFactory.h>
 #include <hw/factories/PigeonFactory.h>
@@ -56,17 +57,17 @@ void HolonomicDrive::Init()
     auto controller = GetController();
     if (controller != nullptr)
     {
-        controller->SetAxisProfile(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_FORWARD, IDragonGamePad::AXIS_PROFILE::CUBED);
-        controller->SetDeadBand(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_FORWARD, IDragonGamePad::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND);
-        controller->SetAxisScaleFactor(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_FORWARD, -0.6);
+        controller->SetAxisProfile(TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_FORWARD, IDragonGamePad::AXIS_PROFILE::CUBED);
+        controller->SetDeadBand(TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_FORWARD, IDragonGamePad::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND);
+        controller->SetAxisScaleFactor(TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_FORWARD, -0.6);
 
-        controller->SetAxisProfile(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_STRAFE, IDragonGamePad::AXIS_PROFILE::CUBED);
-        controller->SetDeadBand(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_STRAFE, IDragonGamePad::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND);
-        controller->SetAxisScaleFactor(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_STRAFE, -0.6);
+        controller->SetAxisProfile(TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_STRAFE, IDragonGamePad::AXIS_PROFILE::CUBED);
+        controller->SetDeadBand(TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_STRAFE, IDragonGamePad::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND);
+        controller->SetAxisScaleFactor(TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_STRAFE, -0.6);
 
-        controller->SetAxisProfile(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_ROTATE, IDragonGamePad::AXIS_PROFILE::CUBED);
-        controller->SetDeadBand(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_ROTATE, IDragonGamePad::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND);
-        controller->SetAxisScaleFactor(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_ROTATE, 0.5);
+        controller->SetAxisProfile(TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_ROTATE, IDragonGamePad::AXIS_PROFILE::CUBED);
+        controller->SetDeadBand(TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_ROTATE, IDragonGamePad::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND);
+        controller->SetAxisScaleFactor(TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_ROTATE, 0.5);
     }
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("HolonomicDrive::Init"), string("end"));   
 }
@@ -81,16 +82,16 @@ void HolonomicDrive::Run()
     {
         IChassis::CHASSIS_DRIVE_MODE mode = IChassis::CHASSIS_DRIVE_MODE::FIELD_ORIENTED;
         IChassis::HEADING_OPTION headingOpt = IChassis::HEADING_OPTION::MAINTAIN;
-        if (controller->IsButtonPressed(TeleopControl::FINDTARGET))
+        if (controller->IsButtonPressed(TeleopControlFunctions::FUNCTION::FINDTARGET))
         {
             headingOpt = IChassis::HEADING_OPTION::TOWARD_GOAL;
         }                                       
-        else if (controller->IsButtonPressed(TeleopControl::DRIVE_TO_SHOOTING_SPOT))
+        else if (controller->IsButtonPressed(TeleopControlFunctions::FUNCTION::DRIVE_TO_SHOOTING_SPOT))
         {
             headingOpt = IChassis::HEADING_OPTION::TOWARD_GOAL_DRIVE;
         }
         
-        if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::REZERO_PIGEON))
+        if (controller->IsButtonPressed(TeleopControlFunctions::FUNCTION::REZERO_PIGEON))
         {
             auto factory = PigeonFactory::GetFactory();
             auto m_pigeon = factory->GetPigeon(DragonPigeon::PIGEON_USAGE::CENTER_OF_ROBOT);
@@ -99,7 +100,7 @@ void HolonomicDrive::Run()
             //m_chassis->ReZero();
         }
 
-        //if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HOLD_POSITION))
+        //if (controller->IsButtonPressed(TeleopControl::TeleopControlFunctions::FUNCTION::HOLD_POSITION))
         //{
             //m_chassis.get()->DriveHoldPosition();
         //}
@@ -107,9 +108,9 @@ void HolonomicDrive::Run()
         auto maxSpeed = m_chassis->GetMaxSpeed();
         auto maxAngSpeed = m_chassis->GetMaxAngularSpeed();
 
-        auto forward = controller->GetAxisValue(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_FORWARD);
-        auto strafe = controller->GetAxisValue(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_STRAFE);
-        auto rotate = controller->GetAxisValue(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_ROTATE);
+        auto forward = controller->GetAxisValue(TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_FORWARD);
+        auto strafe = controller->GetAxisValue(TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_STRAFE);
+        auto rotate = controller->GetAxisValue(TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_ROTATE);
 
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("Run"), string("axis read"));
 

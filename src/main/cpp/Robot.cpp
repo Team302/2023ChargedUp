@@ -22,6 +22,7 @@
 #include <utils/LoggerData.h>
 #include <utils/LoggerEnums.h>
 #include <LoggableItemMgr.h>
+#include <hw/factories/LimelightFactory.h>
 
 using namespace std;
 
@@ -53,7 +54,9 @@ void Robot::RobotInit()
     m_cyclePrims = new CyclePrimitives();
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("RobotInit"), string("end"));
 
+    m_dragonLimeLight = LimelightFactory::GetLimelightFactory()->GetLimelight();
     m_startLogging = true;
+
 }
 
 /**

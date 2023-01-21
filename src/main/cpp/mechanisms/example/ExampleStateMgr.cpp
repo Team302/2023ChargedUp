@@ -73,8 +73,8 @@ void ExampleStateMgr::CheckForStateTransition()
         auto targetState = currentState;
 
         auto controller = TeleopControl::GetInstance();
-        auto isForwardSelected   = controller != nullptr ? controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::EXAMPLE_FORWARD) : false;
-        auto isReverseSelected   = controller != nullptr ? controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::EXAMPLE_REVERSE) : false;
+        auto isForwardSelected   = controller != nullptr ? controller->IsButtonPressed(TeleopControlFunctions::FUNCTION::EXAMPLE_FORWARD) : false;
+        auto isReverseSelected   = controller != nullptr ? controller->IsButtonPressed(TeleopControlFunctions::FUNCTION::EXAMPLE_REVERSE) : false;
 
         if (isForwardSelected)
         {

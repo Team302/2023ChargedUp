@@ -26,6 +26,7 @@
 #include <hw/DragonPigeon.h>
 #include <gamepad/IDragonGamePad.h>
 #include <TeleopControl.h>
+#include <TeleopControlFunctions.h>
 #include <State.h>
 #include <chassis/ChassisFactory.h>
 #include <hw/factories/PigeonFactory.h>
@@ -57,10 +58,10 @@ void ArcadeDrive::Init()
     auto controller = GetController();
     if (controller != nullptr)
     {
-        controller->SetAxisProfile(TeleopControl::FUNCTION_IDENTIFIER::ARCADE_STEER, IDragonGamePad::AXIS_PROFILE::CUBED);
-        controller->SetDeadBand(TeleopControl::FUNCTION_IDENTIFIER::ARCADE_STEER, IDragonGamePad::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND);
-        controller->SetAxisProfile(TeleopControl::FUNCTION_IDENTIFIER::ARCADE_THROTTLE, IDragonGamePad::AXIS_PROFILE::CUBED);
-        controller->SetDeadBand(TeleopControl::FUNCTION_IDENTIFIER::ARCADE_THROTTLE, IDragonGamePad::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND);
+        controller->SetAxisProfile(TeleopControlFunctions::FUNCTION::ARCADE_STEER, IDragonGamePad::AXIS_PROFILE::CUBED);
+        controller->SetDeadBand(TeleopControlFunctions::FUNCTION::ARCADE_STEER, IDragonGamePad::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND);
+        controller->SetAxisProfile(TeleopControlFunctions::FUNCTION::ARCADE_THROTTLE, IDragonGamePad::AXIS_PROFILE::CUBED);
+        controller->SetDeadBand(TeleopControlFunctions::FUNCTION::ARCADE_THROTTLE, IDragonGamePad::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND);
     }
 }
 
@@ -70,8 +71,8 @@ void ArcadeDrive::Run()
 {
     if (m_chassis != nullptr && m_controller != nullptr)
     {
-        auto throttle = m_controller->GetAxisValue(TeleopControl::FUNCTION_IDENTIFIER::ARCADE_THROTTLE);
-        auto steer = m_controller->GetAxisValue(TeleopControl::FUNCTION_IDENTIFIER::ARCADE_STEER);
+        auto throttle = m_controller->GetAxisValue(TeleopControlFunctions::FUNCTION::ARCADE_THROTTLE);
+        auto steer = m_controller->GetAxisValue(TeleopControlFunctions::FUNCTION::ARCADE_STEER);
 
         frc::ChassisSpeeds speeds;
         speeds.vx = throttle * m_chassis->GetMaxSpeed();
