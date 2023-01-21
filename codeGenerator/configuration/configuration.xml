@@ -4,6 +4,141 @@
 <rootOutputFolder>..\..\src\main\cpp</rootOutputFolder>
 <robotConfiguration>..\..\src\main\deploy\robot.xml</robotConfiguration>
 
+<MechanismTypes_h>
+
+//====================================================================================================================================================
+// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+// OR OTHER DEALINGS IN THE SOFTWARE.
+//====================================================================================================================================================
+
+#pragma once
+
+#include &lt;map&gt;
+#include &lt;string&gt;
+
+//========================================================================================================
+///	 @class			MechanismTypes
+///  @brief      	This contains the enum for the mechanism types
+//========================================================================================================
+class MechanismTypes
+{
+	public:
+
+        //==================================================================================
+        /// enum:           MECHANISM_TYPE
+        /// description:    Indicates the type of mechanism
+        //==================================================================================
+        enum MECHANISM_TYPE
+        {
+            UNKNOWN_MECHANISM = -1,
+            $COMMA_SEPARATED_MECHANISM_NAMES$
+        
+
+            MAX_MECHANISM_TYPES
+        };
+
+        static MechanismTypes* GetInstance();
+
+        MECHANISM_TYPE GetType
+        ( 
+            std::string         typeString
+        );
+
+
+    private:
+        static MechanismTypes*    m_instance;
+        MechanismTypes();
+        ~MechanismTypes();
+        
+		std::map &lt;std::string, MECHANISM_TYPE&gt; m_typeMap;
+
+};
+
+
+</MechanismTypes_h>
+
+<MechanismTypes_cpp>
+
+//====================================================================================================================================================
+// Copyright 2022 Lake Orion Robotics FIRST Team 302
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+// OR OTHER DEALINGS IN THE SOFTWARE.
+//====================================================================================================================================================
+
+// C++ Includes
+#include &lt;map&gt;
+#include &lt;memory&gt;
+#include &lt;string&gt;
+
+// FRC includes
+
+// Team 302 includes
+#include &lt;mechanisms/MechanismTypes.h&gt;
+#include &lt;utils/Logger.h&gt;
+
+// @ADDMECH add your mechanism include 
+
+
+// Third Party Includes
+
+using namespace std;
+
+MechanismTypes* MechanismTypes::m_instance = nullptr;
+MechanismTypes* MechanismTypes::GetInstance()
+{
+    if ( m_instance == nullptr )
+    {
+        m_instance = new MechanismTypes();
+    }
+    return m_instance;
+}
+
+MechanismTypes::MechanismTypes()
+{
+    $MECHANISM_NAMES_MAPPED_TO_ENUMS$ 
+    //m_typeMap["EXAMPLE"]    = MECHANISM_TYPE::EXAMPLE;
+}
+
+MechanismTypes::~MechanismTypes()
+{
+    m_typeMap.clear();
+}
+
+MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
+(
+    string              typeString
+)
+{
+    auto it = m_typeMap.find(typeString);
+    if (it != m_typeMap.end())
+    {
+        return it->second;
+    }
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("MechanismTypes"), string("GetType - unknown mechanism type"), typeString);
+    return MechanismTypes::MECHANISM_TYPE::UNKNOWN_MECHANISM;
+}
+
+</MechanismTypes_cpp>
+
 	<ServoUsage_h>
 
 		//====================================================================================================================================================
@@ -633,7 +768,7 @@
 		/// @param [in] std::string the name of the file that will set control parameters for this mechanism
 		/// @param [in] std::string the name of the network table for logging information
 		/// @param [in] std::shared_ptr&lt;IDragonMotorController&gt;
-		motor controller used by this mechanism
+		
 		$MECHANISM_NAME$
 		(
 		std::string                                 controlFileName,
@@ -676,7 +811,7 @@
 		/// @param [in] std::string the name of the file that will set control parameters for this mechanism
 		/// @param [in] std::string the name of the network table for logging information
 		/// @param [in] std::shared_ptr&lt;IDragonMotorController&gt;
-		motor controller used by this mechanism
+		
 		$MECHANISM_NAME$::$MECHANISM_NAME$
 		(
 		std::string                                 controlFileName,
