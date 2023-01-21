@@ -62,7 +62,7 @@ void HolonomicDrive::Init()
     {
         controller->SetAxisProfile(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_FORWARD, IDragonGamePad::AXIS_PROFILE::CUBED);
         controller->SetDeadBand(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_FORWARD, IDragonGamePad::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND);
-        controller->SetAxisScaleFactor(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_FORWARD, -0.6);
+        controller->SetAxisScaleFactor(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_FORWARD, 0.6);
 
         controller->SetAxisProfile(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_STRAFE, IDragonGamePad::AXIS_PROFILE::CUBED);
         controller->SetDeadBand(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_STRAFE, IDragonGamePad::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND);
@@ -161,6 +161,10 @@ void HolonomicDrive::Run()
         moveInfo.chassisSpeeds.vx = forward*maxSpeed;
         moveInfo.chassisSpeeds.vy = strafe*maxSpeed;
         moveInfo.chassisSpeeds.omega = rotate*maxAngSpeed;
+
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("Vx"), moveInfo.chassisSpeeds.vx.to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("Vy"), moveInfo.chassisSpeeds.vy.to<double>());
+
         m_chassis->Drive(moveInfo);
     }
     else
