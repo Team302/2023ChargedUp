@@ -43,8 +43,12 @@ class Mech1MotorState : public State
 
         void LogInformation() const override;
 
-        double GetTarget() const {return m_target;}
+        double GetCurrentTarget() const {return m_target;}
+        double GetOriginalTarget() const {return m_originalTarget;}
         double GetRPS() const {return m_mechanism->GetSpeed();}
+
+        ///May move to protected later
+        void SetTarget(double newTarget) {m_target = newTarget;}
 
     protected:
         ControlData*    GetControlData() const {return m_control;}
@@ -54,6 +58,7 @@ class Mech1MotorState : public State
         Mech1IndMotor*                  m_mechanism;
         ControlData*                    m_control;
         double                          m_target;
+        const double                    m_originalTarget;
         bool                            m_positionBased;
         bool                            m_speedBased;
 };
