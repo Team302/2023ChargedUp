@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>  
 <!DOCTYPE robot SYSTEM "robot.dtd">  
-<robot>  
+<robot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">  
        <pdp canId="1"  
             type="REV"/>  
        <pigeon canId="0"  

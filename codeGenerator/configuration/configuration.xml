@@ -1,0 +1,977 @@
+<?xml version="1.0"?>
+<toolConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+<rootOutputFolder>..\..\src\main\cpp\output</rootOutputFolder>
+<robotConfiguration>..\..\src\main\deploy\robot.xml</robotConfiguration>
+
+	<ServoUsage.h>
+
+		//====================================================================================================================================================
+		// Copyright 2022 Lake Orion Robotics FIRST Team 302
+		//
+		// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+		// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+		// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+		//
+		// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+		//
+		// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+		// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+		// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+		// OR OTHER DEALINGS IN THE SOFTWARE.
+		//====================================================================================================================================================
+
+		#pragma once
+
+		// C++ Includes
+		#include &lt;map&gt;
+			#include &lt;memory&gt;
+				#include &lt;string&gt;
+
+					// FRC includes
+
+					// Team 302 includes
+
+
+					// Third Party Includes
+
+
+
+					class ServoUsage
+					{
+
+					public:
+
+					/// @enum SERVO_USAGE
+					/// @brief Defines Servo usages.  This should be modified for each robot.
+					enum SERVO_USAGE
+					{
+					UNKNOWN_SERVO_USAGE = -1,
+					RELEASE_SERVO,
+					RELEASE_SERVO2,
+					FLAG_SERVO,
+					MAX_SERVO_USAGES
+					};
+
+
+					static ServoUsage* GetInstance();
+
+					SERVO_USAGE GetUsage
+					(
+					const std::string         usageString
+					);
+
+					private:
+					static ServoUsage*    m_instance;
+					ServoUsage();
+					~ServoUsage();
+
+					std::map &lt;std::string, SERVO_USAGE=""&gt; m_usageMap;
+
+};
+
+
+
+
+	</ServoUsage.h>
+	
+	<ServoUsage.cpp>
+
+		//====================================================================================================================================================
+		// Copyright 2022 Lake Orion Robotics FIRST Team 302
+		//
+		// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+		// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+		// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+		//
+		// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+		//
+		// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+		// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+		// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+		// OR OTHER DEALINGS IN THE SOFTWARE.
+		//====================================================================================================================================================
+
+		// C++ Includes
+		#include &lt;mapy&gt;
+			#include &lt;memory&gt;
+				#include &lt;stringy&gt;
+
+					// FRC includes
+
+					// Team 302 includes
+					#include &lt;hw/usages/ServoUsage.hy&gt;
+					#include &lt;utils/Logger.hy&gt;
+
+					// Third Party Includes
+
+					using namespace std;
+
+					ServoUsage* ServoUsage::m_instance = nullptr;
+					ServoUsage* ServoUsage::GetInstance()
+					{
+					if ( m_instance == nullptr )
+					{
+					m_instance = new ServoUsage();
+					}
+					return m_instance;
+					}
+
+					ServoUsage::ServoUsage()
+					{
+					m_usageMap["RELEASE_SERVO"]  = SERVO_USAGE::RELEASE_SERVO;
+					m_usageMap["RELEASE_SERVO2"]  = SERVO_USAGE::RELEASE_SERVO2;
+					m_usageMap["FLAG_SERVO"]  = SERVO_USAGE::FLAG_SERVO;
+					}
+
+					ServoUsage::~ServoUsage()
+					{
+					m_usageMap.clear();
+					}
+
+					ServoUsage::SERVO_USAGE ServoUsage::GetUsage
+					(
+					const string              usageString
+					)
+					{
+					auto it = m_usageMap.find(usageString);
+					if (it != m_usageMap.end())
+					{
+					return it->second;
+					}
+					Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("ServoUsage::GetUsage"), string("unknown usage"), usageString);
+					return ServoUsage::SERVO_USAGE::UNKNOWN_SERVO_USAGE;
+					}
+
+
+				</ServoUsage.cpp>
+
+	<DigitalInputUsage.h>
+
+		//====================================================================================================================================================
+		// Copyright 2022 Lake Orion Robotics FIRST Team 302
+		//
+		// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+		// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+		// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+		//
+		// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+		//
+		// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+		// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+		// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+		// OR OTHER DEALINGS IN THE SOFTWARE.
+		//====================================================================================================================================================
+
+		#pragma once
+
+		// C++ Includes
+		#include &lt;map&gt;
+			#include &lt;memory&gt;
+				#include &lt;string&gt;
+
+					// FRC includes
+
+					// Team 302 includes
+
+
+					// Third Party Includes
+
+					class DigitalInputUsage
+					{
+
+					public:
+
+					/// @enum DIGITAL_SENSOR_USAGE
+					/// @brief Defines digital input sensor usages.  This should be modified for each robot.
+					enum DIGITAL_SENSOR_USAGE
+					{
+					UNKNOWN_DIGITAL_TYPE = -1,
+					INTAKE_OUT,
+					INTAKE_IN,
+					BALL_PRESENT,
+					BALL_TRANSFER_FORWARD,
+					BALL_TRANSFER_BACK,
+					SHOOTER_HOOD_MIN,
+					SHOOTER_HOOD_MAX,
+					CLIMBER_BACK,
+					CLIMBER_FORWARD,
+					MAX_DIGITAL_TYPES
+					};
+
+					static DigitalInputUsage* GetInstance();
+
+					DIGITAL_SENSOR_USAGE GetUsage
+					(
+					std::string         usageString
+					);
+
+					private:
+					static DigitalInputUsage*    m_instance;
+					DigitalInputUsage();
+					~DigitalInputUsage();
+
+					std::map &lt;std::string, DIGITAL_SENSOR_USAGE=""&gt; m_usageMap;
+
+};
+
+	</DigitalInputUsage.h>
+
+	<DigitalInputUsage.cpp>
+
+		//====================================================================================================================================================
+		// Copyright 2022 Lake Orion Robotics FIRST Team 302
+		//
+		// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+		// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+		// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+		//
+		// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+		//
+		// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+		// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+		// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+		// OR OTHER DEALINGS IN THE SOFTWARE.
+		//====================================================================================================================================================
+
+		// C++ Includes
+		#include &lt;map&gt;
+			#include &lt;memory&gt;
+				#include &lt;string&gt;
+
+					// FRC includes
+
+					// Team 302 includes
+					#include &lt;hw/usages/DigitalInputUsage.h&gt;
+					#include &lt;utils/logger.h&gt;
+
+					// Third Party Includes
+
+					using namespace std;
+
+					DigitalInputUsage* DigitalInputUsage::m_instance = nullptr;
+					DigitalInputUsage* DigitalInputUsage::GetInstance()
+					{
+					if ( m_instance == nullptr )
+					{
+					m_instance = new DigitalInputUsage();
+					}
+					return m_instance;
+					}
+
+					DigitalInputUsage::DigitalInputUsage()
+					{
+					m_usageMap["INTAKE_OUT"] = DigitalInputUsage::DIGITAL_SENSOR_USAGE::INTAKE_OUT;
+					m_usageMap["INTAKE_IN"] = DigitalInputUsage::DIGITAL_SENSOR_USAGE::INTAKE_IN;
+					m_usageMap["BALL_PRESENT"] = DigitalInputUsage::DIGITAL_SENSOR_USAGE::BALL_PRESENT;
+					m_usageMap["BALL_TRANSFER_FORWARD"] = DigitalInputUsage::DIGITAL_SENSOR_USAGE::BALL_TRANSFER_FORWARD;
+					m_usageMap["BALL_TRANSFER_BACK"] = DigitalInputUsage::DIGITAL_SENSOR_USAGE::BALL_TRANSFER_BACK;
+					m_usageMap["SHOOTER_HOOD_MIN"] = DigitalInputUsage::DIGITAL_SENSOR_USAGE::SHOOTER_HOOD_MIN;
+					m_usageMap["SHOOTER_HOOD_MAX"] = DigitalInputUsage::DIGITAL_SENSOR_USAGE::SHOOTER_HOOD_MAX;
+					m_usageMap["CLIMBER_BACK"] = DigitalInputUsage::DIGITAL_SENSOR_USAGE::CLIMBER_BACK;
+					m_usageMap["CLIMBER_FORWARD"] = DigitalInputUsage::DIGITAL_SENSOR_USAGE::CLIMBER_FORWARD;
+					;
+					}
+
+					DigitalInputUsage::~DigitalInputUsage()
+					{
+					m_usageMap.clear();
+					}
+
+					DigitalInputUsage::DIGITAL_SENSOR_USAGE DigitalInputUsage::GetUsage
+					(
+					string              usageString
+					)
+					{
+					auto it = m_usageMap.find(usageString);
+					if (it != m_usageMap.end())
+					{
+					return it->second;
+					}
+					Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("DigitalInputUsage::GetUsage"), string("unknown usage"), usageString);
+					return DigitalInputUsage::DIGITAL_SENSOR_USAGE::UNKNOWN_DIGITAL_TYPE;
+					}
+
+
+				</DigitalInputUsage.cpp>
+
+	<MotorControllerUsage_h>
+
+		//====================================================================================================================================================
+		// Copyright 2022 Lake Orion Robotics FIRST Team 302
+		//
+		// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+		// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+		// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+		//
+		// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+		//
+		// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+		// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+		// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+		// OR OTHER DEALINGS IN THE SOFTWARE.
+		//====================================================================================================================================================
+
+		#pragma once
+
+		// C++ Includes
+		#include &lt;map&gt;
+			#include &lt;memory&gt;
+				#include &lt;string&gt;
+
+					// FRC includes
+
+					// Team 302 includes
+
+					// Third Party Includes
+
+
+
+					class MotorControllerUsage
+					{
+
+					public:
+
+					/// @enum MOTOR_CONTROLLER_USAGE
+					/// @brief Defines motor usages.  This should be modified for each robot.
+					enum MOTOR_CONTROLLER_USAGE
+					{
+					UNKNOWN_MOTOR_CONTROLLER_USAGE = -1,
+					SWERVE_DRIVE,
+					SWERVE_TURN,
+					DIFFERENTIAL_LEFT_MAIN,
+					DIFFERENTIAL_LEFT_FOLLOWER,
+					DIFFERENTIAL_RIGHT_MAIN,
+					DIFFERENTIAL_RIGHT_FOLLOWER,
+					MECANUM_LEFT_FRONT,
+					MECANUM_LEFT_BACK,
+					MECANUM_RIGHT_FRONT,
+					MECANUM_RIGHT_BACK,
+					EXAMPLE,
+					// @ADDMECH add mechanisms here
+					MAX_MOTOR_CONTROLLER_USAGES
+					};
+
+					static MotorControllerUsage* GetInstance();
+
+					MOTOR_CONTROLLER_USAGE GetUsage
+					(
+					std::string         usageString
+					);
+
+
+					private:
+					static MotorControllerUsage*    m_instance;
+					MotorControllerUsage();
+					~MotorControllerUsage();
+
+					std::map &lt;std::string, MOTOR_CONTROLLER_USAGE=""&gt; m_usageMap;
+
+};
+
+
+
+
+	</MotorControllerUsage_h>
+
+	<MotorControllerUsage_cpp>
+
+		//====================================================================================================================================================
+		// Copyright 2022 Lake Orion Robotics FIRST Team 302
+		//
+		// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+		// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+		// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+		//
+		// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+		//
+		// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+		// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+		// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+		// OR OTHER DEALINGS IN THE SOFTWARE.
+		//====================================================================================================================================================
+
+		// C++ Includes
+		#include &lt;map&gt;
+			#include &lt;memory&gt;
+				#include &lt;string&gt;
+
+					// FRC includes
+
+					// Team 302 includes
+					#include &lt;hw/usages/MotorControllerUsage.h&gt;
+					#include &lt;utils/Logger.h&gt;
+
+					// Third Party Includes
+
+					using namespace std;
+
+					MotorControllerUsage* MotorControllerUsage::m_instance = nullptr;
+					MotorControllerUsage* MotorControllerUsage::GetInstance()
+					{
+					if ( m_instance == nullptr )
+					{
+					m_instance = new MotorControllerUsage();
+					}
+					return m_instance;
+					}
+
+					MotorControllerUsage::MotorControllerUsage()
+					{
+					m_usageMap["SWERVE_DRIVE"]  = MOTOR_CONTROLLER_USAGE::SWERVE_DRIVE;
+					m_usageMap["SWERVE_TURN"]   = MOTOR_CONTROLLER_USAGE::SWERVE_TURN;
+
+					m_usageMap["DIFFERENTIAL_LEFT_MAIN"]  = MOTOR_CONTROLLER_USAGE::DIFFERENTIAL_LEFT_MAIN;
+					m_usageMap["DIFFERENTIAL_LEFT_FOLLOWER"]   = MOTOR_CONTROLLER_USAGE::DIFFERENTIAL_LEFT_FOLLOWER;
+					m_usageMap["DIFFERENTIAL_RIGHT_MAIN"]  = MOTOR_CONTROLLER_USAGE::DIFFERENTIAL_RIGHT_MAIN;
+					m_usageMap["DIFFERENTIAL_RIGHT_FOLLOWER"]   = MOTOR_CONTROLLER_USAGE::DIFFERENTIAL_RIGHT_FOLLOWER;
+					m_usageMap["MECANUM_LEFT_FRONT"] = MOTOR_CONTROLLER_USAGE::MECANUM_LEFT_FRONT;
+					m_usageMap["MECANUM_LEFT_BACK"] = MOTOR_CONTROLLER_USAGE::MECANUM_LEFT_BACK;
+					m_usageMap["MECANUM_RIGHT_FRONT"] = MOTOR_CONTROLLER_USAGE::MECANUM_RIGHT_FRONT;
+					m_usageMap["MECANUM_RIGHT_BACK"] = MOTOR_CONTROLLER_USAGE::MECANUM_RIGHT_BACK;
+
+					m_usageMap["EXAMPLE"]   = MOTOR_CONTROLLER_USAGE::EXAMPLE;
+					// @ADDMECH add motors usages here
+					}
+
+					MotorControllerUsage::~MotorControllerUsage()
+					{
+					m_usageMap.clear();
+					}
+
+					MotorControllerUsage::MOTOR_CONTROLLER_USAGE MotorControllerUsage::GetUsage
+					(
+					string              usageString
+					)
+					{
+					auto it = m_usageMap.find(usageString);
+					if (it != m_usageMap.end())
+					{
+					return it->second;
+					}
+					Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("MotorControllerUsage::GetUsage"), string("unknown usage"), usageString);
+					return MotorControllerUsage::MOTOR_CONTROLLER_USAGE::UNKNOWN_MOTOR_CONTROLLER_USAGE;
+					}
+
+				</MotorControllerUsage_cpp>
+
+	<SolenoidUsage_h>
+
+		//====================================================================================================================================================
+		// Copyright 2022 Lake Orion Robotics FIRST Team 302
+		//
+		// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+		// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+		// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+		//
+		// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+		//
+		// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+		// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+		// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+		// OR OTHER DEALINGS IN THE SOFTWARE.
+		//====================================================================================================================================================
+
+		#pragma once
+
+		// C++ Includes
+		#include &lt;map&gt;
+			#include &lt;memory&gt;
+				#include &lt;string&gt;
+
+					// FRC includes
+
+					// Team 302 includes
+
+
+					// Third Party Includes
+
+
+
+					class SolenoidUsage
+					{
+
+					public:
+
+					/// @enum SOLENOID_USAGE
+					/// @brief Defines solenoid usages.  This should be modified for each robot.
+					enum SOLENOID_USAGE
+					{
+					UNKNOWN_SOLENOID_USAGE = -1,
+					INTAKE,
+					INTAKE2,
+					BALL_TRANSFER,
+					SHOOTER_HOOD,
+					CLIMBER,
+					MAX_SOLENOID_USAGES
+					};
+
+
+					static SolenoidUsage* GetInstance();
+
+					SOLENOID_USAGE GetUsage
+					(
+					const std::string         usageString
+					);
+
+					private:
+					static SolenoidUsage*    m_instance;
+					SolenoidUsage();
+					~SolenoidUsage();
+
+					std::map &lt;std::string, SOLENOID_USAGE=""&gt; m_usageMap;
+
+};
+
+
+
+
+	</SolenoidUsage_h>
+
+	<SolenoidUsage_cpp>
+
+		//====================================================================================================================================================
+		// Copyright 2022 Lake Orion Robotics FIRST Team 302
+		//
+		// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+		// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+		// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+		//
+		// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+		//
+		// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+		// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+		// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+		// OR OTHER DEALINGS IN THE SOFTWARE.
+		//====================================================================================================================================================
+
+		// C++ Includes
+		#include &lt;map>
+			#include &lt;memory&gt;
+				#include &lt;string&gt;
+
+					// FRC includes
+
+					// Team 302 includes
+					#include &lt;hw/usages/SolenoidUsage.h&gt;
+					#include &lt;utils/Logger.h&gt;
+
+					// Third Party Includes
+
+					using namespace std;
+
+					SolenoidUsage* SolenoidUsage::m_instance = nullptr;
+					SolenoidUsage* SolenoidUsage::GetInstance()
+					{
+					if ( m_instance == nullptr )
+					{
+					m_instance = new SolenoidUsage();
+					}
+					return m_instance;
+					}
+
+					SolenoidUsage::SolenoidUsage()
+					{
+					m_usageMap["INTAKE"] = SOLENOID_USAGE::INTAKE;
+					m_usageMap["INTAKE2"] = SOLENOID_USAGE::INTAKE2;
+					m_usageMap["BALL_TRANSFER"] = SOLENOID_USAGE::BALL_TRANSFER;
+					m_usageMap["SHOOTER_HOOD"] = SOLENOID_USAGE::SHOOTER_HOOD;
+					m_usageMap["CLIMBER"] = SOLENOID_USAGE::CLIMBER;
+					}
+
+					SolenoidUsage::~SolenoidUsage()
+					{
+					m_usageMap.clear();
+					}
+
+					SolenoidUsage::SOLENOID_USAGE SolenoidUsage::GetUsage
+					(
+					const string              usageString
+					)
+					{
+					auto it = m_usageMap.find(usageString);
+					if (it != m_usageMap.end())
+					{
+					return it->second;
+					}
+					Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("Solenoid::GetUsage"), string("unknown usage"), usageString);
+					return SolenoidUsage::SOLENOID_USAGE::UNKNOWN_SOLENOID_USAGE;
+					}
+
+
+				</SolenoidUsage_cpp>
+	
+	<main_h>
+		//====================================================================================================================================================
+		// Copyright 2022 Lake Orion Robotics FIRST Team 302
+		//
+		// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+		// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+		// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+		//
+		// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+		//
+		// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+		// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+		// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+		// OR OTHER DEALINGS IN THE SOFTWARE.
+		//====================================================================================================================================================
+
+		#pragma once
+
+		// C++ Includes
+		#include &lt;memory&gt;
+			#include &lt;string&gt;
+
+				// Team 302 includes
+				#include &lt;mechanisms/base/Mech1IndMotor.h&gt;
+
+		class $MECHANISM_NAME$ : public Mech1IndMotor
+		{
+		public:
+		/// @brief Create an $MECHANISM_NAME$ mechanism wiht 1 independent motor
+		/// @param [in] std::string the name of the file that will set control parameters for this mechanism
+		/// @param [in] std::string the name of the network table for logging information
+		/// @param [in] std::shared_ptr&lt;IDragonMotorController&gt;
+		motor controller used by this mechanism
+		$MECHANISM_NAME$
+		(
+		std::string                                 controlFileName,
+		std::string                                 networkTableName,
+		std::shared_ptr&lt;IDragonMotorController&gt;     motorController
+		);
+		$MECHANISM_NAME$() = delete;
+		~$MECHANISM_NAME$() override = default;
+		};
+	</main_h>
+
+	<main_cpp>
+		//====================================================================================================================================================
+		// Copyright 2022 Lake Orion Robotics FIRST Team 302
+		//
+		// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+		// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+		// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+		//
+		// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+		//
+		// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+		// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+		// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+		// OR OTHER DEALINGS IN THE SOFTWARE.
+		//====================================================================================================================================================
+
+		// C++ Includes
+		#include &lt;memory&gt;
+			#include &lt;string&gt;
+
+				//team 302 includes
+				#include &lt;hw/interfaces/IDragonMotorController.h&gt;
+				#include &lt;mechanisms/base/Mech1IndMotor.h&gt;
+				#include &lt;mechanisms/$MECHANISM_NAME_LOWERCASE$/$MECHANISM_NAME$.h&gt;
+
+		using namespace std;
+
+		/// @brief Create an $MECHANISM_NAME$ mechanism wiht 1 independent motor
+		/// @param [in] std::string the name of the file that will set control parameters for this mechanism
+		/// @param [in] std::string the name of the network table for logging information
+		/// @param [in] std::shared_ptr&lt;IDragonMotorController&gt;
+		motor controller used by this mechanism
+		$MECHANISM_NAME$::$MECHANISM_NAME$
+		(
+		std::string                                 controlFileName,
+		std::string                                 networkTableName,
+		std::shared_ptr&lt;IDragonMotorController&gt;     motorController
+		):Mech1IndMotor(MechanismTypes::MECHANISM_TYPE::$MECHANISM_NAME_UPPERCASE$,controlFileName,networkTableName,motorController)
+		{
+		}
+	</main_cpp>
+	
+	<state_cpp>
+		//====================================================================================================================================================
+		/// Copyright 2022 Lake Orion Robotics FIRST Team 302
+		///
+		/// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+		/// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+		/// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+		///
+		/// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+		///
+		/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+		/// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+		/// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+		/// OR OTHER DEALINGS IN THE SOFTWARE.
+		//====================================================================================================================================================
+
+
+
+		// C++ Includes
+		#include  &lt;string&gt;
+
+		// FRC includes
+
+		// Team 302 includes
+		#include  &lt;mechanisms/base/Mech1MotorState.h&gt;
+		#include  &lt;mechanisms/controllers/ControlData.h&gt;
+		#include  &lt;mechanisms/$MECHANISM_NAME_LOWERCASE$/$MECHANISM_NAME$.h&gt;
+		#include  &lt;mechanisms/MechanismFactory.h&gt;
+
+		// Third Party Includes
+
+		using namespace std;
+
+		$MECHANISM_NAME$State::$MECHANISM_NAME$State
+		(
+		string                          stateName,
+		int                             stateId,
+		ControlData*                    control,
+		double                          target
+		) : Mech1MotorState( MechanismFactory::GetMechanismFactory()->Get$MECHANISM_NAME$(), stateName, stateId, control, target),
+		m_$MECHANISM_NAME$(MechanismFactory::GetMechanismFactory()->Get$MECHANISM_NAME$())
+		{
+
+		}
+
+		bool $MECHANISM_NAME$State::AtTarget() const
+		{
+		return true;
+		}
+
+
+	</state_cpp>
+	<state_h>
+		//====================================================================================================================================================
+		/// Copyright 2022 Lake Orion Robotics FIRST Team 302
+		///
+		/// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+		/// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+		/// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+		///
+		/// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+		///
+		/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+		/// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+		/// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+		/// OR OTHER DEALINGS IN THE SOFTWARE.
+		//====================================================================================================================================================
+		#pragma once
+		#include &lt;string&gt;
+
+			#include &lt;mechanisms/base/Mech1MotorState.h&gt;
+
+		class ControlData;
+		class $MECHANISM_NAME$;
+
+		class $MECHANISM_NAME$State : public Mech1MotorState
+		{
+		public:
+
+		$MECHANISM_NAME$State() = delete;
+		$MECHANISM_NAME$State
+		(
+		std::string                     stateName,
+		int                             stateId,
+		ControlData*                    control,
+		double                          target
+		);
+		~$MECHANISM_NAME$State() = default;
+
+
+		bool AtTarget() const override;
+		$MECHANISM_NAME$ Get$MECHANISM_NAME$() const {return m_$MECHANISM_NAME_LOWERCASE$;}
+
+		private:
+		$MECHANISM_NAME$*        m_$MECHANISM_NAME_LOWERCASE$;
+		};
+	</state_h>
+  <stateManager_h>//====================================================================================================================================================
+/// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+///
+/// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+/// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+/// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+///
+/// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+///
+/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+/// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+/// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+/// OR OTHER DEALINGS IN THE SOFTWARE.
+//====================================================================================================================================================
+
+#pragma once
+
+// C++ Includes
+#include &lt;string&gt;
+
+// FRC includes
+
+// Team 302 includes
+#include &lt;mechanisms/base/StateMgr.h&gt;
+#include &lt;mechanisms/$MECHANISM_NAME$/$MECHANISM_NAME$.h&gt;
+#include &lt;mechanisms/StateStruc.h&gt;
+
+// Third Party Includes
+
+class $MECHANISM_NAME$StateMgr : public StateMgr
+{
+    public:
+	    /// @enum the various states of the Intake
+        enum $MECHANISM_NAME_UPPERCASE$_STATE
+        {
+            $COMMA_SEPARATED_MECHANISM_STATES$
+        };
+		
+        const std::map&lt;const std::string, $MECHANISM_NAME_UPPERCASE$_STATE&gt; m_$MECHANISM_NAME_LOWERCASE$XmlStringToStateEnumMap
+        {   
+			$XML_STRING_TO_STATE_ENUM_MAP$
+        };
+        
+		/// @brief  Find or create the state manmanager
+		static $MECHANISM_NAME$StateMgr* GetInstance();
+
+        /// @brief  Get the current Parameter parm value for the state of this mechanism
+        /// @param PrimitiveParams* currentParams current set of primitive parameters
+        /// @returns int state id - -1 indicates that there is not a state to set
+        int GetCurrentStateParam
+        (
+            PrimitiveParams*    currentParams
+        ) override;
+
+        void CheckForStateTransition() override;
+		
+    private:
+	
+        $MECHANISM_NAME$StateMgr();
+        ~$MECHANISM_NAME$StateMgr() = default;
+        
+        $MECHANISM_NAME$*                                m_$MECHANISM_NAME_LOWERCASE$;
+
+		static $MECHANISM_NAME$StateMgr*	m_instance;
+
+		$STATE_STRUCT$
+};
+</stateManager_h>
+
+<stateManager_cpp>
+//====================================================================================================================================================
+/// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+///
+/// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+/// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+/// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+///
+/// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+///
+/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+/// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+/// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+/// OR OTHER DEALINGS IN THE SOFTWARE.
+//====================================================================================================================================================
+#include &lt;map&gt;
+
+// FRC includes
+
+// Team 302 includes
+#include &lt;TeleopControl.h&gt;
+#include &lt;auton/PrimitiveParams.h&gt;
+#include &lt;mechanisms/MechanismFactory.h&gt;
+#include &lt;mechanisms/base/StateMgr.h&gt;
+#include &lt;mechanisms/StateStruc.h&gt;
+#include &lt;mechanisms/$MECHANISM_NAME_LOWERCASE$/$MECHANISM_NAME$.h&gt;
+#include &lt;mechanisms/$MECHANISM_NAME_LOWERCASE$/$MECHANISM_NAME$State.h&gt;
+#include &lt;mechanisms/$MECHANISM_NAME_LOWERCASE$/$MECHANISM_NAME$StateMgr.h&gt;
+
+// Third Party Includes
+
+using namespace std;
+
+
+$MECHANISM_NAME$StateMgr* $MECHANISM_NAME$StateMgr::m_instance = nullptr;
+$MECHANISM_NAME$StateMgr* $MECHANISM_NAME$StateMgr::GetInstance()
+{
+	if ( $MECHANISM_NAME$StateMgr::m_instance == nullptr )
+	{
+        auto $MECHANISM_NAME_LOWERCASE$Ptr = MechanismFactory::GetMechanismFactory()->Get$MECHANISM_NAME$();
+        if ($MECHANISM_NAME_LOWERCASE$Ptr != nullptr)
+        {
+            $MECHANISM_NAME$StateMgr::m_instance = new $MECHANISM_NAME$StateMgr();
+        }
+	}
+	return $MECHANISM_NAME$StateMgr::m_instance;
+    
+}
+
+
+/// @brief    initialize the state manager, parse the configuration file and create the states.
+$MECHANISM_NAME$StateMgr::$MECHANISM_NAME$StateMgr() : StateMgr(),
+                                     m_$MECHANISM_NAME_LOWERCASE$(MechanismFactory::GetMechanismFactory()-&gt;Get$MECHANISM_NAME$())
+{
+    map&lt;string, StateStruc&gt; stateMap;
+	$STATE_MAP_INITIALIZATION$
+
+    Init(m_$MECHANISM_NAME_LOWERCASE$, stateMap);
+    if (m_$MECHANISM_NAME_LOWERCASE$ != nullptr)
+    {
+        m_$MECHANISM_NAME_LOWERCASE$->AddStateMgr(this);
+    }
+}   
+
+/// @brief  Get the current Parameter parm value for the state of this mechanism
+/// @param PrimitiveParams* currentParams current set of primitive parameters
+/// @returns int state id - -1 indicates that there is not a state to set
+int $MECHANISM_NAME$StateMgr::GetCurrentStateParam
+(
+    PrimitiveParams*    currentParams
+) 
+{
+    // normally get the state from primitive params
+    return StateMgr::GetCurrentStateParam(currentParams);
+}
+
+/// @brief Check if driver inputs or sensors trigger a state transition
+void $MECHANISM_NAME$StateMgr::CheckForStateTransition()
+{
+
+    if ( m_$MECHANISM_NAME_LOWERCASE$ != nullptr )
+    {    
+        auto currentState = static_cast&lt;$MECHANISM_NAME_UPPERCASE$_STATE&gt;(GetCurrentState());
+        auto targetState = currentState;
+
+        //========= Do not erase this line and the one below it. They are used by the code generator ========		
+		//========= Hand modified code start section 0 ========
+	
+     	// Write logic here. See example below
+		/*
+        auto controller = TeleopControl::GetInstance();
+        auto isForwardSelected   = controller != nullptr ? controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::EXAMPLE_FORWARD) : false;
+        auto isReverseSelected   = controller != nullptr ? controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::EXAMPLE_REVERSE) : false;
+
+        if (isForwardSelected)
+        {
+            targetState = EXAMPLE_STATE::FORWARD;
+        }
+        else if (isReverseSelected)
+        {
+            targetState = EXAMPLE_STATE::REVERSE;
+        }
+        else
+        {
+            targetState = EXAMPLE_STATE::OFF;
+        }
+
+        if (targetState != currentState)
+        {
+            SetCurrentState(targetState, true);
+        }
+        */
+
+		//========= Hand modified code end section 0 ========
+        //========= Do not erase this line and the one above it. They are used by the code generator =======
+    }
+}
+
+</stateManager_cpp>
+
+
+</toolConfiguration>
