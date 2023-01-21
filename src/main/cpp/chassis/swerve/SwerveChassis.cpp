@@ -269,15 +269,6 @@ void SwerveChassis::UpdateOdometry()
                                   m_backLeft.get()->GetPosition(),
                                   m_backRight.get()->GetPosition()});
 
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("SwerveOdometry"), std::string("FL Dist Traveled: "), m_frontLeft.get()->GetPosition().distance.to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("SwerveOdometry"), std::string("FL Angle: "), m_frontLeft.get()->GetPosition().angle.Degrees().to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("SwerveOdometry"), std::string("FR Dist Traveled: "), m_frontRight.get()->GetPosition().distance.to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("SwerveOdometry"), std::string("FR Angle: "), m_frontRight.get()->GetPosition().angle.Degrees().to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("SwerveOdometry"), std::string("BL Dist Traveled: "), m_backLeft.get()->GetPosition().distance.to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("SwerveOdometry"), std::string("BL Angle: "), m_backLeft.get()->GetPosition().angle.Degrees().to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("SwerveOdometry"), std::string("BR Dist Traveled: "), m_backRight.get()->GetPosition().distance.to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("SwerveOdometry"), std::string("BR Angle: "), m_backRight.get()->GetPosition().angle.Degrees().to<double>());
-
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("SwerveOdometry"), std::string("X Position: "), m_poseEstimator.GetEstimatedPosition().X().to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("SwerveOdometry"), std::string("Y Position: "), m_poseEstimator.GetEstimatedPosition().Y().to<double>());
 }
