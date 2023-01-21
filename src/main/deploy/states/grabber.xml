@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<statedata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <mechanismTarget
+    stateIdentifier="OPEN"
+    controlDataIdentifier=""
+    controlDataIdentifier2=""
+    value=""
+    secondValue=""
+    solenoid="NONE" />
+  <mechanismTarget
+    stateIdentifier="GRABBING_CONE"
+    controlDataIdentifier=""
+    controlDataIdentifier2=""
+    value=""
+    secondValue=""
+    solenoid="NONE" />
+  <mechanismTarget
+    stateIdentifier="GRABBING_CUBE"
+    controlDataIdentifier=""
+    controlDataIdentifier2=""
+    value=""
+    secondValue=""
+    solenoid="NONE" />
+  <mechanismTarget
+    stateIdentifier="HOLDING_CONE"
+    controlDataIdentifier=""
+    controlDataIdentifier2=""
+    value=""
+    secondValue=""
+    solenoid="NONE" />
+  <mechanismTarget
+    stateIdentifier="HOLDING_CUBE"
+    controlDataIdentifier=""
+    controlDataIdentifier2=""
+    value=""
+    secondValue=""
+    solenoid="NONE" />
+  <mechanismTarget
+    stateIdentifier="RELEASE"
+    controlDataIdentifier=""
+    controlDataIdentifier2=""
+    value=""
+    secondValue=""
+    solenoid="NONE" />
+</statedata>
