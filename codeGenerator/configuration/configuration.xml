@@ -4,7 +4,7 @@
 <rootOutputFolder>..\..\src\main\cpp</rootOutputFolder>
 <robotConfiguration>..\..\src\main\deploy\robot.xml</robotConfiguration>
 
-	<ServoUsage.h>
+	<ServoUsage_h>
 
 		//====================================================================================================================================================
 		// Copyright 2022 Lake Orion Robotics FIRST Team 302
@@ -66,16 +66,16 @@
 					ServoUsage();
 					~ServoUsage();
 
-					std::map &lt;std::string, SERVO_USAGE=""&gt; m_usageMap;
+					std::map &lt;std::string, SERVO_USAGE&gt; m_usageMap;
 
 };
 
 
 
 
-	</ServoUsage.h>
+	</ServoUsage_h>
 	
-	<ServoUsage.cpp>
+	<ServoUsage_cpp>
 
 		//====================================================================================================================================================
 		// Copyright 2022 Lake Orion Robotics FIRST Team 302
@@ -93,15 +93,15 @@
 		//====================================================================================================================================================
 
 		// C++ Includes
-		#include &lt;mapy&gt;
+		#include &lt;map&gt;
 			#include &lt;memory&gt;
-				#include &lt;stringy&gt;
+				#include &lt;string&gt;
 
 					// FRC includes
 
 					// Team 302 includes
-					#include &lt;hw/usages/ServoUsage.hy&gt;
-					#include &lt;utils/Logger.hy&gt;
+					#include &lt;hw/usages/ServoUsage.h&gt;
+					#include &lt;utils/Logger.h&gt;
 
 					// Third Party Includes
 
@@ -144,9 +144,9 @@
 					}
 
 
-				</ServoUsage.cpp>
+				</ServoUsage_cpp>
 
-	<DigitalInputUsage.h>
+	<DigitalInputUsage_h>
 
 		//====================================================================================================================================================
 		// Copyright 2022 Lake Orion Robotics FIRST Team 302
@@ -211,13 +211,13 @@
 					DigitalInputUsage();
 					~DigitalInputUsage();
 
-					std::map &lt;std::string, DIGITAL_SENSOR_USAGE=""&gt; m_usageMap;
+					std::map &lt;std::string, DIGITAL_SENSOR_USAGE&gt; m_usageMap;
 
 };
 
-	</DigitalInputUsage.h>
+	</DigitalInputUsage_h>
 
-	<DigitalInputUsage.cpp>
+	<DigitalInputUsage_cpp>
 
 		//====================================================================================================================================================
 		// Copyright 2022 Lake Orion Robotics FIRST Team 302
@@ -293,7 +293,7 @@
 					}
 
 
-				</DigitalInputUsage.cpp>
+				</DigitalInputUsage_cpp>
 
 	<MotorControllerUsage_h>
 
@@ -365,7 +365,7 @@
 					MotorControllerUsage();
 					~MotorControllerUsage();
 
-					std::map &lt;std::string, MOTOR_CONTROLLER_USAGE=""&gt; m_usageMap;
+					std::map &lt;std::string, MOTOR_CONTROLLER_USAGE&gt; m_usageMap;
 
 };
 
@@ -519,7 +519,7 @@
 					SolenoidUsage();
 					~SolenoidUsage();
 
-					std::map &lt;std::string, SOLENOID_USAGE=""&gt; m_usageMap;
+					std::map &lt;std::string, SOLENOID_USAGE&gt; m_usageMap;
 
 };
 
