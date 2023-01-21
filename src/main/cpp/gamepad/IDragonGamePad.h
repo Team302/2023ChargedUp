@@ -20,6 +20,25 @@
 class IDragonGamePad
 {
     public:
+        enum CONTROLLER
+        {
+            UNKNOWN_CONTROLLER = -1,
+            DRIVER,
+            CO_PILOT,
+            EXTRA1,
+            EXTRA2,
+            EXTRA3,
+            EXTRA4,
+            MAX_CONTROLLERS
+        };
+
+        enum CONTROL_MODE
+        {
+            ALL,
+            CUBE,
+            CONE
+        };
+        
         enum BUTTON_IDENTIFIER
         {
             UNDEFINED_BUTTON = -1,
@@ -116,6 +135,12 @@ class IDragonGamePad
             CUBED,
             PIECEWISE_LINEAR,
             MAX_PROFILES
+        };
+
+        enum AXIS_DIRECTION
+        {
+            SYNCED,
+            REVERSED
         };
 
         IDragonGamePad() = default;

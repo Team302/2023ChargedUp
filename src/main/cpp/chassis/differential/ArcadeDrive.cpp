@@ -56,14 +56,6 @@ ArcadeDrive::ArcadeDrive() : State(string("ArcadeDrive"), -1),
 /// @return void
 void ArcadeDrive::Init()
 {
-    auto controller = GetController();
-    if (controller != nullptr)
-    {
-        controller->SetAxisProfile(TeleopControlFunctions::FUNCTION::ARCADE_STEER, IDragonGamePad::AXIS_PROFILE::CUBED);
-        controller->SetDeadBand(TeleopControlFunctions::FUNCTION::ARCADE_STEER, IDragonGamePad::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND);
-        controller->SetAxisProfile(TeleopControlFunctions::FUNCTION::ARCADE_THROTTLE, IDragonGamePad::AXIS_PROFILE::CUBED);
-        controller->SetDeadBand(TeleopControlFunctions::FUNCTION::ARCADE_THROTTLE, IDragonGamePad::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND);
-    }
 }
 
 /// @brief calculate the output for the wheels on the chassis from the throttle and steer components

@@ -39,40 +39,6 @@ class TeleopControl
         //----------------------------------------------------------------------------------
         static TeleopControl* GetInstance();
 
-
-        //------------------------------------------------------------------
-        // Method:      SetScaleFactor
-        // Description: Allow the range of values to be set smaller than
-        //              -1.0 to 1.0.  By providing a scale factor between 0.0
-        //              and 1.0, the range can be made smaller.  If a value
-        //              outside the range is provided, then the value will
-        //              be set to the closest bounding value (e.g. 1.5 will
-        //              become 1.0)
-        // Returns:     void
-        //------------------------------------------------------------------
-        void SetAxisScaleFactor
-        (
-            TeleopControlFunctions::FUNCTION  axis,          // <I> - axis number to update
-            double                              scaleFactor    // <I> - scale factor used to limit the range
-        );
-
-        void SetDeadBand
-        (
-            TeleopControlFunctions::FUNCTION  axis,
-            IDragonGamePad::AXIS_DEADBAND       deadband
-        );
-
-        //------------------------------------------------------------------
-        // Method:      SetAxisProfile
-        // Description: Sets the axis profile for the specifed axis
-        // Returns:     void
-        //------------------------------------------------------------------
-        void SetAxisProfile
-        (
-            TeleopControlFunctions::FUNCTION      axis,       // <I> - axis number to update
-			IDragonGamePad::AXIS_PROFILE			profile     // <I> - profile to use
-        );
-
         //------------------------------------------------------------------
         // Method:      GetAxisValue
         // Description: Reads the joystick axis, removes any deadband (small
@@ -124,6 +90,41 @@ class TeleopControl
 
         void Initialize() const;
         bool IsInitialized() const;
+
+
+        //------------------------------------------------------------------
+        // Method:      SetScaleFactor
+        // Description: Allow the range of values to be set smaller than
+        //              -1.0 to 1.0.  By providing a scale factor between 0.0
+        //              and 1.0, the range can be made smaller.  If a value
+        //              outside the range is provided, then the value will
+        //              be set to the closest bounding value (e.g. 1.5 will
+        //              become 1.0)
+        // Returns:     void
+        //------------------------------------------------------------------
+        void SetAxisScaleFactor
+        (
+            TeleopControlFunctions::FUNCTION  axis,          // <I> - axis number to update
+            double                              scaleFactor    // <I> - scale factor used to limit the range
+        );
+
+        void SetDeadBand
+        (
+            TeleopControlFunctions::FUNCTION  axis,
+            IDragonGamePad::AXIS_DEADBAND       deadband
+        );
+
+        //------------------------------------------------------------------
+        // Method:      SetAxisProfile
+        // Description: Sets the axis profile for the specifed axis
+        // Returns:     void
+        //------------------------------------------------------------------
+        void SetAxisProfile
+        (
+            TeleopControlFunctions::FUNCTION      axis,       // <I> - axis number to update
+			IDragonGamePad::AXIS_PROFILE			profile     // <I> - profile to use
+        );
+
 
         std::pair<IDragonGamePad*, IDragonGamePad::AXIS_IDENTIFIER> GetAxisInfo
         (

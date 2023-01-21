@@ -21,10 +21,13 @@
 // FRC includes
 
 // Team 302 includes
-
-#include <RobinHood/robin_hood.h>
+#include <gamepad/IDragonGamePad.h>
 
 struct TeleopControlButton
 {
+    IDragonGamePad::CONTROLLER          controllerNumber=IDragonGamePad::CONTROLLER::UNKNOWN_CONTROLLER;
+    IDragonGamePad::CONTROL_MODE        mode=IDragonGamePad::CONTROL_MODE::ALL;
+    IDragonGamePad::BUTTON_IDENTIFIER   buttonId=IDragonGamePad::BUTTON_IDENTIFIER::UNDEFINED_BUTTON;
+    IDragonGamePad::BUTTON_MODE         mode=IDragonGamePad::BUTTON_MODE::STANDARD;
 };
 

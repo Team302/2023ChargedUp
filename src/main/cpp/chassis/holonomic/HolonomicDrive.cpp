@@ -57,34 +57,14 @@ HolonomicDrive::HolonomicDrive() : State(string("HolonomicDrive"), -1),
 /// @return void
 void HolonomicDrive::Init()
 {
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("HolonomicDrive::Init"), string("arrived"));   
-    auto controller = GetController();
-    if (controller != nullptr)
-    {
-        controller->SetAxisProfile(TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_FORWARD, IDragonGamePad::AXIS_PROFILE::CUBED);
-        controller->SetDeadBand(TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_FORWARD, IDragonGamePad::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND);
-        controller->SetAxisScaleFactor(TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_FORWARD, -0.6);
-
-        controller->SetAxisProfile(TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_STRAFE, IDragonGamePad::AXIS_PROFILE::CUBED);
-        controller->SetDeadBand(TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_STRAFE, IDragonGamePad::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND);
-        controller->SetAxisScaleFactor(TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_STRAFE, -0.6);
-
-        controller->SetAxisProfile(TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_ROTATE, IDragonGamePad::AXIS_PROFILE::CUBED);
-        controller->SetDeadBand(TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_ROTATE, IDragonGamePad::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND);
-        controller->SetAxisScaleFactor(TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_ROTATE, 0.5);
-    }
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("HolonomicDrive::Init"), string("end"));   
 }
 
 /// @brief calculate the output for the wheels on the chassis from the throttle and steer components
 /// @return void
 void HolonomicDrive::Run()
 {
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("HolonomicDrive::Run"), string("begin"));
-
     ChassisMovement moveInfo;
     moveInfo.driveOption = ChassisOptionEnums::DriveStateType::FIELD_DRIVE;
-   // moveInfo.driveOption = ChassisOptionEnums::DriveStateType::ROBOT_DRIVE;
     moveInfo.controllerType = ChassisOptionEnums::AutonControllerType::HOLONOMIC;
 
     auto controller = GetController();
@@ -117,22 +97,22 @@ void HolonomicDrive::Run()
             auto wheelbase = m_swerve->GetWheelBase();
             auto track = m_swerve->GetTrack();
 
-            if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_ROTATE_FRONT))
+            if (controller->IsButtonPressed(TeleopControlFunctions::FUNCTION::HOLONOMIC_ROTATE_FRONT))
             {
                 moveInfo.centerOfRotationOffset.X = wheelbase/2.0;
                 moveInfo.centerOfRotationOffset.Y = units::length::inch_t(0.0);
             }
-            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_ROTATE_RIGHT))
+            else if (controller->IsButtonPressed(TeleopControlFunctions::FUNCTION::HOLONOMIC_ROTATE_RIGHT))
             {
                 moveInfo.centerOfRotationOffset.X = units::length::inch_t(0.0);
                 moveInfo.centerOfRotationOffset.Y = track/2.0;
             }
-            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_ROTATE_LEFT))
+            else if (controller->IsButtonPressed(TeleopControlFunctions::FUNCTION::HOLONOMIC_ROTATE_LEFT))
             {
                 moveInfo.centerOfRotationOffset.X = units::length::inch_t(0.0);
                 moveInfo.centerOfRotationOffset.Y = -1.0*track/2.0;
         }
-            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_ROTATE_BACK))
+            else if (controller->IsButtonPressed(TeleopControlFunctions::FUNCTION::HOLONOMIC_ROTATE_BACK))
             {
                 moveInfo.centerOfRotationOffset.X = -1.0*wheelbase/2.0;
                 moveInfo.centerOfRotationOffset.Y = units::length::inch_t(0.0);
@@ -168,7 +148,6 @@ void HolonomicDrive::Run()
     {
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("Run"), string("nullptr"));
     }
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("HolonomicDrive::Run"), string("end"));   
 }
 
 void HolonomicDrive::Exit()

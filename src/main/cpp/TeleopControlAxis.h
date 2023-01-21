@@ -22,9 +22,18 @@
 
 // Team 302 includes
 
-#include <RobinHood/robin_hood.h>
+#include <gamepad/IDragonGamePad.h>
 
 struct TeleopControlAxis
 {
+    IDragonGamePad::CONTROLLER          controllerNumber=IDragonGamePad::CONTROLLER::UNKNOWN_CONTROLLER;
+    IDragonGamePad::CONTROL_MODE        mode=IDragonGamePad::CONTROL_MODE::ALL;
+    IDragonGamePad::AXIS_IDENTIFIER     axisId=IDragonGamePad::AXIS_IDENTIFIER::UNDEFINED_AXIS;
+    IDragonGamePad::AXIS_DEADBAND       deadbandType=IDragonGamePad::AXIS_DEADBAND::NONE;
+    IDragonGamePad::AXIS_PROFILE        profile=IDragonGamePad::AXIS_PROFILE::CUBED;
+    IDragonGamePad::AXIS_DIRECTION      direction=IDragonGamePad::AXIS_DIRECTION::SYNCED;
+    double                              deadband=0.1;
+    double                              scaleFactor=1.0;
 };
+
 
