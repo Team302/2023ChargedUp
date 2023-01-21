@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -15,39 +15,30 @@
 
 #pragma once
 
-//FRC Includes
+//C++ Includes
 #include <frc/trajectory/Trajectory.h>
-#include <frc/controller/HolonomicDriveController.h>
-#include <frc/Timer.h>
+#include <frc/trajectory/TrajectoryGenerator.h>
 
-//Team302 Includes
-#include <chassis/swerve/driveStates/RobotDrive.h>
-#include <chassis/swerve/SwerveChassis.h>
+//FRC Includes
+#include <frc/geometry/Pose2d.h>
+#include <units/velocity.h>
+#include <units/acceleration.h>
 
-class TrajectoryDrive : public RobotDrive
+//Team 302 Includes
+
+class TrajectoryGenerator
 {
     public:
-        TrajectoryDrive(RobotDrive* robotDrive);
+        TrajectoryGenerator(units::meters_per_second_t maxVelocity,
+                            units::meters_per_second_squared_t maxAcceleration);
+        ~TrajectoryGenerator() = default;
 
-        std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates
-        (
-            ChassisMovement& chassisMovement
-        ) override;
-        
-        void Init
-        (
-            ChassisMovement& chassisMovement
-        ) override;
+        /// @brief Generate a trajectory to be fed into TrajectoryDrive
+        /// @param startPoint starting point, most likely current robot position
+        /// @param endPoint ending/goal point
+        /// @return frc::Trajectory - the calculated trajectory based on given points
+        frc::Trajectory GenerateTrajectory(frc::Pose2d startPoint, frc::Pose2d endPoint);
 
     private:
-        void CalcCurrentAndDesiredStates();
-
-        frc::Trajectory                     m_trajectory;
-        RobotDrive*                         m_robotDrive;
-        frc::HolonomicDriveController       m_holonomicController;
-        frc::Trajectory::State              m_desiredState;
-        std::vector<frc::Trajectory::State> m_trajectoryStates;
-        std::unique_ptr<frc::Timer>         m_timer;
-
-        SwerveChassis*                      m_chassis;
+        frc::TrajectoryConfig m_config;
 };

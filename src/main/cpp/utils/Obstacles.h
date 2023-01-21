@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -15,39 +15,21 @@
 
 #pragma once
 
+//C++ Includes
+#include <vector>
+
 //FRC Includes
-#include <frc/trajectory/Trajectory.h>
-#include <frc/controller/HolonomicDriveController.h>
-#include <frc/Timer.h>
+#include <frc/geometry/Translation2d.h>
 
-//Team302 Includes
-#include <chassis/swerve/driveStates/RobotDrive.h>
-#include <chassis/swerve/SwerveChassis.h>
-
-class TrajectoryDrive : public RobotDrive
+class Obstacles
 {
     public:
-        TrajectoryDrive(RobotDrive* robotDrive);
+        Obstacles() = default;
+        ~Obstacles() = default;
 
-        std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates
-        (
-            ChassisMovement& chassisMovement
-        ) override;
-        
-        void Init
-        (
-            ChassisMovement& chassisMovement
-        ) override;
+        void ParseObstacles();
 
+        std::vector<frc::Translation2d> GetObstacles() const {return m_obstacles;};
     private:
-        void CalcCurrentAndDesiredStates();
-
-        frc::Trajectory                     m_trajectory;
-        RobotDrive*                         m_robotDrive;
-        frc::HolonomicDriveController       m_holonomicController;
-        frc::Trajectory::State              m_desiredState;
-        std::vector<frc::Trajectory::State> m_trajectoryStates;
-        std::unique_ptr<frc::Timer>         m_timer;
-
-        SwerveChassis*                      m_chassis;
+        std::vector<frc::Translation2d> m_obstacles;
 };

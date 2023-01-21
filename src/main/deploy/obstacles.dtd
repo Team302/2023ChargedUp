@@ -1,0 +1,11 @@
+<!ELEMENT obstacles(obstacle*)>
+
+<!ELEMENT obstacle EMPTY>
+<!ATTLIST obstacle
+            waypoint (CHARGING_PAD_LEFT_TOP_BLUE |
+                      CHARGING_PAD_RIGHT_TOP_BLUE |
+                      CHARGING_PAD_LEFT_BOTTOM_BLUE |
+                      CHARGING_PAD_RIGHT_BOTTOM_BLUE | ) "CHARGING_PAD_LEFT_TOP_BLUE"
+            xCoordinate CDATA "0.0"
+            yCoordinate CDATA "0.0"
+>
