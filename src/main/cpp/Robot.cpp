@@ -21,6 +21,7 @@
 #include <utils/LoggerData.h>
 #include <utils/LoggerEnums.h>
 #include <LoggableItemMgr.h>
+#include <utils/ObstacleXmlParser.h>
 
 using namespace std;
 
@@ -35,6 +36,9 @@ void Robot::RobotInit()
     // Read the XML file to build the robot 
     auto XmlParser = new RobotXmlParser();
     XmlParser->ParseXML();
+
+    auto obstacleParser = ObstacleXmlParser::GetInstance();
+    obstacleParser->ParseObstacles();
 
     auto factory = ChassisFactory::GetChassisFactory();
     m_chassis = factory->GetIChassis();
