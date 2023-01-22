@@ -27,6 +27,7 @@
 // Team 302 includes
 #include <gamepad/IDragonGamepad.h>
 #include <TeleopControlFunctions.h>
+#include <TeleopControlMappingEnums.h>
 
 class TeleopControl
 {
@@ -111,7 +112,7 @@ class TeleopControl
         void SetDeadBand
         (
             TeleopControlFunctions::FUNCTION  axis,
-            IDragonGamePad::AXIS_DEADBAND       deadband
+            TeleopControlMappingEnums::AXIS_DEADBAND       deadband
         );
 
         //------------------------------------------------------------------
@@ -122,16 +123,16 @@ class TeleopControl
         void SetAxisProfile
         (
             TeleopControlFunctions::FUNCTION      axis,       // <I> - axis number to update
-			IDragonGamePad::AXIS_PROFILE			profile     // <I> - profile to use
+			TeleopControlMappingEnums::AXIS_PROFILE			profile     // <I> - profile to use
         );
 
 
-        std::pair<IDragonGamePad*, IDragonGamePad::AXIS_IDENTIFIER> GetAxisInfo
+        std::pair<IDragonGamePad*, TeleopControlMappingEnums::AXIS_IDENTIFIER> GetAxisInfo
         (
             TeleopControlFunctions::FUNCTION  function          // <I> - controller with this function
         ) const;
 
-        std::pair<IDragonGamePad*, IDragonGamePad::BUTTON_IDENTIFIER> GetButtonInfo
+        std::pair<IDragonGamePad*, TeleopControlMappingEnums::BUTTON_IDENTIFIER> GetButtonInfo
         (
             TeleopControlFunctions::FUNCTION  function          // <I> - controller with this function
         ) const;
@@ -141,8 +142,9 @@ class TeleopControl
         //----------------------------------------------------------------------------------
         static TeleopControl*               m_instance;  // Singleton instance of this class
 
-        mutable std::vector<IDragonGamePad::AXIS_IDENTIFIER>    m_axisIDs;
-        mutable std::vector<IDragonGamePad::BUTTON_IDENTIFIER>  m_buttonIDs;
+        int                                                     m_nmodes;
+        mutable std::vector<TeleopControlMappingEnums::AXIS_IDENTIFIER>    m_axisIDs;
+        mutable std::vector<TeleopControlMappingEnums::BUTTON_IDENTIFIER>  m_buttonIDs;
         mutable std::vector<int>							    m_controllerIndex;
 
         mutable int                                             m_numControllers;

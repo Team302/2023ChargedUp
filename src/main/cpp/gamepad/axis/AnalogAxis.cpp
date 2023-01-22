@@ -103,25 +103,25 @@ double AnalogAxis::GetAxisValue()
 
 //================================================================================================
 /// @brief  Set the deadband type
-/// @param  IDragonGamePad::AXIS_DEADBAND type - deadband option
+/// @param  TeleopControlMappingEnums::AXIS_DEADBAND type - deadband option
 /// @return void
 //================================================================================================
 void AnalogAxis::SetDeadBand
 (
-    IDragonGamePad::AXIS_DEADBAND   type            /// <I> - deadband option
+    TeleopControlMappingEnums::AXIS_DEADBAND   type            /// <I> - deadband option
 )
 {
     switch (type)
     {
-        case IDragonGamePad::AXIS_DEADBAND::NONE:
+        case TeleopControlMappingEnums::AXIS_DEADBAND::NONE:
             m_deadband = NoDeadbandValue::GetInstance();
             break;
 
-        case IDragonGamePad::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND:
+        case TeleopControlMappingEnums::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND:
             m_deadband = DeadbandValue::GetInstance();
             break;
 
-        case IDragonGamePad::AXIS_DEADBAND::APPLY_SCALED_DEADBAND:
+        case TeleopControlMappingEnums::AXIS_DEADBAND::APPLY_SCALED_DEADBAND:
             m_deadband = ScaledDeadbandValue::GetInstance();
             break;
 
@@ -135,25 +135,25 @@ void AnalogAxis::SetDeadBand
 
 //================================================================================================
 /// @brief  Set the axis profile (cubed, linear, etc.)
-/// @param  IDragonGamePad::AXIS_PROFILE profile - profile option
+/// @param  TeleopControlMappingEnums::AXIS_PROFILE profile - profile option
 /// @return void
 //================================================================================================
 void AnalogAxis::SetAxisProfile
 (
-     IDragonGamePad::AXIS_PROFILE    profile         /// <I> - axis profile
+     TeleopControlMappingEnums::AXIS_PROFILE    profile         /// <I> - axis profile
 )
 {
     switch (profile)
     {
-        case IDragonGamePad::AXIS_PROFILE::CUBED:
+        case TeleopControlMappingEnums::AXIS_PROFILE::CUBED:
             m_profile = CubedProfile::GetInstance();
             break;
 
-        case IDragonGamePad::AXIS_PROFILE::SQUARED:
+        case TeleopControlMappingEnums::AXIS_PROFILE::SQUARED:
             m_profile = SquaredProfile::GetInstance();
             break;
 
-        case IDragonGamePad::AXIS_PROFILE::LINEAR:
+        case TeleopControlMappingEnums::AXIS_PROFILE::LINEAR:
             m_profile = LinearProfile::GetInstance();
             break;
 

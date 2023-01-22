@@ -25,9 +25,9 @@
 
 struct TeleopControlButton
 {
-    IDragonGamePad::CONTROLLER          controllerNumber=IDragonGamePad::CONTROLLER::UNKNOWN_CONTROLLER;
-    IDragonGamePad::CONTROL_MODE        mode=IDragonGamePad::CONTROL_MODE::ALL;
-    IDragonGamePad::BUTTON_IDENTIFIER   buttonId=IDragonGamePad::BUTTON_IDENTIFIER::UNDEFINED_BUTTON;
-    IDragonGamePad::BUTTON_MODE         mode=IDragonGamePad::BUTTON_MODE::STANDARD;
+    TeleopControlMappingEnums::CONTROLLER          controllerNumber=TeleopControlMappingEnums::CONTROLLER::UNKNOWN_CONTROLLER;
+    TeleopControlMappingEnums::CONTROL_MODE        mode=TeleopControlMappingEnums::CONTROL_MODE::ALL;
+    TeleopControlMappingEnums::BUTTON_IDENTIFIER   buttonId=TeleopControlMappingEnums::BUTTON_IDENTIFIER::UNDEFINED_BUTTON;
+    TeleopControlMappingEnums::BUTTON_MODE         mode=TeleopControlMappingEnums::BUTTON_MODE::STANDARD;
 };
 

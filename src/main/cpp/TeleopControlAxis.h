@@ -26,12 +26,12 @@
 
 struct TeleopControlAxis
 {
-    IDragonGamePad::CONTROLLER          controllerNumber=IDragonGamePad::CONTROLLER::UNKNOWN_CONTROLLER;
-    IDragonGamePad::CONTROL_MODE        mode=IDragonGamePad::CONTROL_MODE::ALL;
-    IDragonGamePad::AXIS_IDENTIFIER     axisId=IDragonGamePad::AXIS_IDENTIFIER::UNDEFINED_AXIS;
-    IDragonGamePad::AXIS_DEADBAND       deadbandType=IDragonGamePad::AXIS_DEADBAND::NONE;
-    IDragonGamePad::AXIS_PROFILE        profile=IDragonGamePad::AXIS_PROFILE::CUBED;
-    IDragonGamePad::AXIS_DIRECTION      direction=IDragonGamePad::AXIS_DIRECTION::SYNCED;
+    TeleopControlMappingEnums::CONTROLLER          controllerNumber=TeleopControlMappingEnums::CONTROLLER::UNKNOWN_CONTROLLER;
+    TeleopControlMappingEnums::CONTROL_MODE        mode=TeleopControlMappingEnums::CONTROL_MODE::ALL;
+    TeleopControlMappingEnums::AXIS_IDENTIFIER     axisId=TeleopControlMappingEnums::AXIS_IDENTIFIER::UNDEFINED_AXIS;
+    TeleopControlMappingEnums::AXIS_DEADBAND       deadbandType=TeleopControlMappingEnums::AXIS_DEADBAND::NONE;
+    TeleopControlMappingEnums::AXIS_PROFILE        profile=TeleopControlMappingEnums::AXIS_PROFILE::CUBED;
+    TeleopControlMappingEnums::AXIS_DIRECTION      direction=TeleopControlMappingEnums::AXIS_DIRECTION::SYNCED;
     double                              deadband=0.1;
     double                              scaleFactor=1.0;
 };

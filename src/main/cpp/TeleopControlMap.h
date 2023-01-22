@@ -33,16 +33,16 @@ class TeleopControlMap
 {
     public:
 
-        const TeleopControlButton findTarget = {IDragonGamePad::CONTROLLER::DRIVER, IDragonGamePad::CONTROL_MODE::ALL, IDragonGamePad::BUTTON_IDENTIFIER::LEFT_BUMPER, IDragonGamePad::BUTTON_MODE::STANDARD};
-        const TeleopControlButton rotateFront = {IDragonGamePad::CONTROLLER::DRIVER, IDragonGamePad::CONTROL_MODE::ALL, IDragonGamePad::BUTTON_IDENTIFIER::POV_0, IDragonGamePad::BUTTON_MODE::STANDARD};
-        const TeleopControlButton rotateBack {IDragonGamePad::CONTROLLER::DRIVER, IDragonGamePad::CONTROL_MODE::ALL, IDragonGamePad::BUTTON_IDENTIFIER::POV_180, IDragonGamePad::BUTTON_MODE::STANDARD};
-        const TeleopControlButton rotateLeft = {IDragonGamePad::CONTROLLER::DRIVER, IDragonGamePad::CONTROL_MODE::ALL, IDragonGamePad::BUTTON_IDENTIFIER::POV_270, IDragonGamePad::BUTTON_MODE::STANDARD};
-        const TeleopControlButton rotateRight = {IDragonGamePad::CONTROLLER::DRIVER, IDragonGamePad::CONTROL_MODE::ALL, IDragonGamePad::BUTTON_IDENTIFIER::POV_90, IDragonGamePad::BUTTON_MODE::STANDARD};
-        const TeleopControlButton driveToShootingSpot = {IDragonGamePad::CONTROLLER::DRIVER, IDragonGamePad::CONTROL_MODE::ALL, IDragonGamePad::BUTTON_IDENTIFIER::A_BUTTON, IDragonGamePad::BUTTON_MODE::STANDARD};
-        const TeleopControlButton rezeroPigeon = {IDragonGamePad::CONTROLLER::DRIVER, IDragonGamePad::CONTROL_MODE::ALL, IDragonGamePad::BUTTON_IDENTIFIER::B_BUTTON, IDragonGamePad::BUTTON_MODE::STANDARD};
-        const TeleopControlButton holdPosition = {IDragonGamePad::CONTROLLER::DRIVER, IDragonGamePad::CONTROL_MODE::ALL, IDragonGamePad::BUTTON_IDENTIFIER::X_BUTTON, IDragonGamePad::BUTTON_MODE::STANDARD};
-        const TeleopControlButton exampleForward = {IDragonGamePad::CONTROLLER::EXTRA1, IDragonGamePad::CONTROL_MODE::ALL, IDragonGamePad::BUTTON_IDENTIFIER::A_BUTTON, IDragonGamePad::BUTTON_MODE::STANDARD};
-        const TeleopControlButton exampleReverse = {IDragonGamePad::CONTROLLER::EXTRA1, IDragonGamePad::CONTROL_MODE::ALL, IDragonGamePad::BUTTON_IDENTIFIER::B_BUTTON, IDragonGamePad::BUTTON_MODE::STANDARD};
+        const TeleopControlButton findTarget = {TeleopControlMappingEnums::CONTROLLER::DRIVER, TeleopControlMappingEnums::CONTROL_MODE::ALL, TeleopControlMappingEnums::BUTTON_IDENTIFIER::LEFT_BUMPER, TeleopControlMappingEnums::BUTTON_MODE::STANDARD};
+        const TeleopControlButton rotateFront = {TeleopControlMappingEnums::CONTROLLER::DRIVER, TeleopControlMappingEnums::CONTROL_MODE::ALL, TeleopControlMappingEnums::BUTTON_IDENTIFIER::POV_0, TeleopControlMappingEnums::BUTTON_MODE::STANDARD};
+        const TeleopControlButton rotateBack {TeleopControlMappingEnums::CONTROLLER::DRIVER, TeleopControlMappingEnums::CONTROL_MODE::ALL, TeleopControlMappingEnums::BUTTON_IDENTIFIER::POV_180, TeleopControlMappingEnums::BUTTON_MODE::STANDARD};
+        const TeleopControlButton rotateLeft = {TeleopControlMappingEnums::CONTROLLER::DRIVER, TeleopControlMappingEnums::CONTROL_MODE::ALL, TeleopControlMappingEnums::BUTTON_IDENTIFIER::POV_270, TeleopControlMappingEnums::BUTTON_MODE::STANDARD};
+        const TeleopControlButton rotateRight = {TeleopControlMappingEnums::CONTROLLER::DRIVER, TeleopControlMappingEnums::CONTROL_MODE::ALL, TeleopControlMappingEnums::BUTTON_IDENTIFIER::POV_90, TeleopControlMappingEnums::BUTTON_MODE::STANDARD};
+        const TeleopControlButton driveToShootingSpot = {TeleopControlMappingEnums::CONTROLLER::DRIVER, TeleopControlMappingEnums::CONTROL_MODE::ALL, TeleopControlMappingEnums::BUTTON_IDENTIFIER::A_BUTTON, TeleopControlMappingEnums::BUTTON_MODE::STANDARD};
+        const TeleopControlButton rezeroPigeon = {TeleopControlMappingEnums::CONTROLLER::DRIVER, TeleopControlMappingEnums::CONTROL_MODE::ALL, TeleopControlMappingEnums::BUTTON_IDENTIFIER::B_BUTTON, TeleopControlMappingEnums::BUTTON_MODE::STANDARD};
+        const TeleopControlButton holdPosition = {TeleopControlMappingEnums::CONTROLLER::DRIVER, TeleopControlMappingEnums::CONTROL_MODE::ALL, TeleopControlMappingEnums::BUTTON_IDENTIFIER::X_BUTTON, TeleopControlMappingEnums::BUTTON_MODE::STANDARD};
+        const TeleopControlButton exampleForward = {TeleopControlMappingEnums::CONTROLLER::EXTRA1, TeleopControlMappingEnums::CONTROL_MODE::ALL, TeleopControlMappingEnums::BUTTON_IDENTIFIER::A_BUTTON, TeleopControlMappingEnums::BUTTON_MODE::STANDARD};
+        const TeleopControlButton exampleReverse = {TeleopControlMappingEnums::CONTROLLER::EXTRA1, TeleopControlMappingEnums::CONTROL_MODE::ALL, TeleopControlMappingEnums::BUTTON_IDENTIFIER::B_BUTTON, TeleopControlMappingEnums::BUTTON_MODE::STANDARD};
 
         robin_hood::unordered_map<TeleopControlFunctions::FUNCTION, const TeleopControlButton> buttonMap
         {
@@ -58,11 +58,11 @@ class TeleopControlMap
             {TeleopControlFunctions::FUNCTION::EXAMPLE_REVERSE, exampleReverse}
         };
 
-        const TeleopControlAxis arcadeDrive = {IDragonGamePad::CONTROLLER::DRIVER, IDragonGamePad::CONTROL_MODE::ALL, IDragonGamePad::AXIS_IDENTIFIER::LEFT_JOYSTICK_Y, IDragonGamePad::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND, IDragonGamePad::AXIS_PROFILE::CUBED, IDragonGamePad::AXIS_DIRECTION::REVERSED, 0.1, 1.0};
-        const TeleopControlAxis arcadeSteer = {IDragonGamePad::CONTROLLER::DRIVER, IDragonGamePad::CONTROL_MODE::ALL, IDragonGamePad::AXIS_IDENTIFIER::RIGHT_JOYSTICK_X, IDragonGamePad::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND, IDragonGamePad::AXIS_PROFILE::CUBED, IDragonGamePad::AXIS_DIRECTION::REVERSED, 0.1, 1.0};
-        const TeleopControlAxis holonomicForward = {IDragonGamePad::CONTROLLER::DRIVER, IDragonGamePad::CONTROL_MODE::ALL, IDragonGamePad::AXIS_IDENTIFIER::LEFT_JOYSTICK_Y, IDragonGamePad::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND, IDragonGamePad::AXIS_PROFILE::CUBED, IDragonGamePad::AXIS_DIRECTION::REVERSED, 0.1, 0.6};
-        const TeleopControlAxis holonomicStrafe  = {IDragonGamePad::CONTROLLER::DRIVER, IDragonGamePad::CONTROL_MODE::ALL, IDragonGamePad::AXIS_IDENTIFIER::LEFT_JOYSTICK_X, IDragonGamePad::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND, IDragonGamePad::AXIS_PROFILE::CUBED, IDragonGamePad::AXIS_DIRECTION::REVERSED, 0.1, 0.6};
-        const TeleopControlAxis holonomicRotate  = {IDragonGamePad::CONTROLLER::DRIVER, IDragonGamePad::CONTROL_MODE::ALL, IDragonGamePad::AXIS_IDENTIFIER::RIGHT_JOYSTICK_X, IDragonGamePad::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND, IDragonGamePad::AXIS_PROFILE::CUBED, IDragonGamePad::AXIS_DIRECTION::SYNCED, 0.1, 0.5};
+        const TeleopControlAxis arcadeDrive = {TeleopControlMappingEnums::CONTROLLER::DRIVER, TeleopControlMappingEnums::CONTROL_MODE::ALL, TeleopControlMappingEnums::AXIS_IDENTIFIER::LEFT_JOYSTICK_Y, TeleopControlMappingEnums::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::AXIS_PROFILE::CUBED, TeleopControlMappingEnums::AXIS_DIRECTION::REVERSED, 0.1, 1.0};
+        const TeleopControlAxis arcadeSteer = {TeleopControlMappingEnums::CONTROLLER::DRIVER, TeleopControlMappingEnums::CONTROL_MODE::ALL, TeleopControlMappingEnums::AXIS_IDENTIFIER::RIGHT_JOYSTICK_X, TeleopControlMappingEnums::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::AXIS_PROFILE::CUBED, TeleopControlMappingEnums::AXIS_DIRECTION::REVERSED, 0.1, 1.0};
+        const TeleopControlAxis holonomicForward = {TeleopControlMappingEnums::CONTROLLER::DRIVER, TeleopControlMappingEnums::CONTROL_MODE::ALL, TeleopControlMappingEnums::AXIS_IDENTIFIER::LEFT_JOYSTICK_Y, TeleopControlMappingEnums::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::AXIS_PROFILE::CUBED, TeleopControlMappingEnums::AXIS_DIRECTION::REVERSED, 0.1, 0.6};
+        const TeleopControlAxis holonomicStrafe  = {TeleopControlMappingEnums::CONTROLLER::DRIVER, TeleopControlMappingEnums::CONTROL_MODE::ALL, TeleopControlMappingEnums::AXIS_IDENTIFIER::LEFT_JOYSTICK_X, TeleopControlMappingEnums::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::AXIS_PROFILE::CUBED, TeleopControlMappingEnums::AXIS_DIRECTION::REVERSED, 0.1, 0.6};
+        const TeleopControlAxis holonomicRotate  = {TeleopControlMappingEnums::CONTROLLER::DRIVER, TeleopControlMappingEnums::CONTROL_MODE::ALL, TeleopControlMappingEnums::AXIS_IDENTIFIER::RIGHT_JOYSTICK_X, TeleopControlMappingEnums::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::AXIS_PROFILE::CUBED, TeleopControlMappingEnums::AXIS_DIRECTION::SYNCED, 0.1, 0.5};
         robin_hood::unordered_map<TeleopControlFunctions::FUNCTION, const TeleopControlAxis> axisMap
         {
             {TeleopControlFunctions::FUNCTION::ARCADE_THROTTLE, arcadeDrive},
