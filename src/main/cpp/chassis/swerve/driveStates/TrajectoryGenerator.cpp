@@ -20,11 +20,12 @@
 //Team 302 Includes
 #include <chassis/swerve/driveStates/TrajectoryGenerator.h>
 #include <chassis/ChassisFactory.h>
-#include <utils/Obstacles.h>
+#include <utils/ObstacleXmlParser.h>
 
 TrajectoryGenerator::TrajectoryGenerator(units::meters_per_second_t maxVelocity,
                                         units::meters_per_second_squared_t maxAcceleration) : 
-                                        m_config(maxVelocity, maxAcceleration)
+                                        m_config(maxVelocity, maxAcceleration),
+                                        m_obstacles(ObstacleXmlParser::GetInstance()->GetObstacles())
 {
 
 }                                        
@@ -68,12 +69,12 @@ frc::Trajectory TrajectoryGenerator::GenerateTrajectory(frc::Pose2d startPoint, 
     std::vector<frc::Translation2d> avoidancePoints = AvoidObstacles(lowerBounds, upperBounds);
 }
 
-std::vector<frc::Translation2d> AvoidObstacles(frc::Translation2d lower, frc::Translation2d upper)
+std::vector<frc::Translation2d> TrajectoryGenerator::AvoidObstacles(frc::Translation2d lower, frc::Translation2d upper)
 {
     auto robotWidth = ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetWheelBase();
     auto robotLength = ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetTrack();
-    auto obstacle = Chassisfactory::GetChassisFactory()->GetSwerveChassis()->GetBackRight();
-    //for(frc::Translation2d obstacle : Obstacle::GetObstacles) //Obstacle::GetObstacles will get points on field that is parsed from xml
+    
+    for(frc::Translation2d obstacle : m_obstacles)
     {
         if(obstacle.X() > lower.X() && obstacle.X() < upper.X())
         {

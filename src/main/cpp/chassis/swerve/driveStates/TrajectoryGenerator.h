@@ -39,6 +39,14 @@ class TrajectoryGenerator
         /// @return frc::Trajectory - the calculated trajectory based on given points
         frc::Trajectory GenerateTrajectory(frc::Pose2d startPoint, frc::Pose2d endPoint);
 
+        /// @brief Get the waypoints to avoid obstacles if path intersects them
+        /// @param lower lower bounds of path boundary
+        /// @param upper upper bounds of path boundary
+        /// @return std::vector<frc::Translation2d> - waypoints to include in path to avoid obstacles
+        std::vector<frc::Translation2d> AvoidObstacles(frc::Translation2d lower, frc::Translation2d upper);
+
     private:
         frc::TrajectoryConfig m_config;
+
+        std::vector<frc::Translation2d> m_obstacles;
 };
