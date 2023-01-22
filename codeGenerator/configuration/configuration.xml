@@ -182,9 +182,9 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 					enum SERVO_USAGE
 					{
 					UNKNOWN_SERVO_USAGE = -1,
-					RELEASE_SERVO,
-					RELEASE_SERVO2,
-					FLAG_SERVO,
+
+					$USAGE_ENUM_COMMA_SEPARATED$
+
 					MAX_SERVO_USAGES
 					};
 
@@ -254,9 +254,8 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 
 					ServoUsage::ServoUsage()
 					{
-					m_usageMap["RELEASE_SERVO"]  = SERVO_USAGE::RELEASE_SERVO;
-					m_usageMap["RELEASE_SERVO2"]  = SERVO_USAGE::RELEASE_SERVO2;
-					m_usageMap["FLAG_SERVO"]  = SERVO_USAGE::FLAG_SERVO;
+						$USAGE_TEXT_TO_ENUM_MAP$
+
 					}
 
 					ServoUsage::~ServoUsage()
@@ -322,15 +321,9 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 					enum DIGITAL_SENSOR_USAGE
 					{
 					UNKNOWN_DIGITAL_TYPE = -1,
-					INTAKE_OUT,
-					INTAKE_IN,
-					BALL_PRESENT,
-					BALL_TRANSFER_FORWARD,
-					BALL_TRANSFER_BACK,
-					SHOOTER_HOOD_MIN,
-					SHOOTER_HOOD_MAX,
-					CLIMBER_BACK,
-					CLIMBER_FORWARD,
+
+					$USAGE_ENUM_COMMA_SEPARATED$
+					
 					MAX_DIGITAL_TYPES
 					};
 
@@ -396,16 +389,8 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 
 					DigitalInputUsage::DigitalInputUsage()
 					{
-					m_usageMap["INTAKE_OUT"] = DigitalInputUsage::DIGITAL_SENSOR_USAGE::INTAKE_OUT;
-					m_usageMap["INTAKE_IN"] = DigitalInputUsage::DIGITAL_SENSOR_USAGE::INTAKE_IN;
-					m_usageMap["BALL_PRESENT"] = DigitalInputUsage::DIGITAL_SENSOR_USAGE::BALL_PRESENT;
-					m_usageMap["BALL_TRANSFER_FORWARD"] = DigitalInputUsage::DIGITAL_SENSOR_USAGE::BALL_TRANSFER_FORWARD;
-					m_usageMap["BALL_TRANSFER_BACK"] = DigitalInputUsage::DIGITAL_SENSOR_USAGE::BALL_TRANSFER_BACK;
-					m_usageMap["SHOOTER_HOOD_MIN"] = DigitalInputUsage::DIGITAL_SENSOR_USAGE::SHOOTER_HOOD_MIN;
-					m_usageMap["SHOOTER_HOOD_MAX"] = DigitalInputUsage::DIGITAL_SENSOR_USAGE::SHOOTER_HOOD_MAX;
-					m_usageMap["CLIMBER_BACK"] = DigitalInputUsage::DIGITAL_SENSOR_USAGE::CLIMBER_BACK;
-					m_usageMap["CLIMBER_FORWARD"] = DigitalInputUsage::DIGITAL_SENSOR_USAGE::CLIMBER_FORWARD;
-					;
+						$USAGE_TEXT_TO_ENUM_MAP$
+
 					}
 
 					DigitalInputUsage::~DigitalInputUsage()
@@ -472,18 +457,9 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 					enum MOTOR_CONTROLLER_USAGE
 					{
 					UNKNOWN_MOTOR_CONTROLLER_USAGE = -1,
-					SWERVE_DRIVE,
-					SWERVE_TURN,
-					DIFFERENTIAL_LEFT_MAIN,
-					DIFFERENTIAL_LEFT_FOLLOWER,
-					DIFFERENTIAL_RIGHT_MAIN,
-					DIFFERENTIAL_RIGHT_FOLLOWER,
-					MECANUM_LEFT_FRONT,
-					MECANUM_LEFT_BACK,
-					MECANUM_RIGHT_FRONT,
-					MECANUM_RIGHT_BACK,
-					EXAMPLE,
-					// @ADDMECH add mechanisms here
+					
+					$USAGE_ENUM_COMMA_SEPARATED$
+
 					MAX_MOTOR_CONTROLLER_USAGES
 					};
 
@@ -553,20 +529,9 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 
 					MotorControllerUsage::MotorControllerUsage()
 					{
-					m_usageMap["SWERVE_DRIVE"]  = MOTOR_CONTROLLER_USAGE::SWERVE_DRIVE;
-					m_usageMap["SWERVE_TURN"]   = MOTOR_CONTROLLER_USAGE::SWERVE_TURN;
 
-					m_usageMap["DIFFERENTIAL_LEFT_MAIN"]  = MOTOR_CONTROLLER_USAGE::DIFFERENTIAL_LEFT_MAIN;
-					m_usageMap["DIFFERENTIAL_LEFT_FOLLOWER"]   = MOTOR_CONTROLLER_USAGE::DIFFERENTIAL_LEFT_FOLLOWER;
-					m_usageMap["DIFFERENTIAL_RIGHT_MAIN"]  = MOTOR_CONTROLLER_USAGE::DIFFERENTIAL_RIGHT_MAIN;
-					m_usageMap["DIFFERENTIAL_RIGHT_FOLLOWER"]   = MOTOR_CONTROLLER_USAGE::DIFFERENTIAL_RIGHT_FOLLOWER;
-					m_usageMap["MECANUM_LEFT_FRONT"] = MOTOR_CONTROLLER_USAGE::MECANUM_LEFT_FRONT;
-					m_usageMap["MECANUM_LEFT_BACK"] = MOTOR_CONTROLLER_USAGE::MECANUM_LEFT_BACK;
-					m_usageMap["MECANUM_RIGHT_FRONT"] = MOTOR_CONTROLLER_USAGE::MECANUM_RIGHT_FRONT;
-					m_usageMap["MECANUM_RIGHT_BACK"] = MOTOR_CONTROLLER_USAGE::MECANUM_RIGHT_BACK;
+					$USAGE_TEXT_TO_ENUM_MAP$
 
-					m_usageMap["EXAMPLE"]   = MOTOR_CONTROLLER_USAGE::EXAMPLE;
-					// @ADDMECH add motors usages here
 					}
 
 					MotorControllerUsage::~MotorControllerUsage()
@@ -633,11 +598,9 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 					enum SOLENOID_USAGE
 					{
 					UNKNOWN_SOLENOID_USAGE = -1,
-					INTAKE,
-					INTAKE2,
-					BALL_TRANSFER,
-					SHOOTER_HOOD,
-					CLIMBER,
+
+					$USAGE_ENUM_COMMA_SEPARATED$
+
 					MAX_SOLENOID_USAGES
 					};
 
@@ -707,11 +670,9 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 
 					SolenoidUsage::SolenoidUsage()
 					{
-					m_usageMap["INTAKE"] = SOLENOID_USAGE::INTAKE;
-					m_usageMap["INTAKE2"] = SOLENOID_USAGE::INTAKE2;
-					m_usageMap["BALL_TRANSFER"] = SOLENOID_USAGE::BALL_TRANSFER;
-					m_usageMap["SHOOTER_HOOD"] = SOLENOID_USAGE::SHOOTER_HOOD;
-					m_usageMap["CLIMBER"] = SOLENOID_USAGE::CLIMBER;
+
+					$USAGE_TEXT_TO_ENUM_MAP$
+
 					}
 
 					SolenoidUsage::~SolenoidUsage()
@@ -759,9 +720,9 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 			#include &lt;string&gt;
 
 				// Team 302 includes
-				#include &lt;mechanisms/base/Mech1IndMotor.h&gt;
+				#include &lt;mechanisms/base/$MECH_BASE_CLASS$.h&gt;
 
-		class $MECHANISM_NAME$ : public Mech1IndMotor
+		class $MECHANISM_NAME$ : public $MECH_BASE_CLASS$
 		{
 		public:
 		/// @brief Create an $MECHANISM_NAME$ mechanism wiht 1 independent motor
@@ -802,7 +763,7 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 
 				//team 302 includes
 				#include &lt;hw/interfaces/IDragonMotorController.h&gt;
-				#include &lt;mechanisms/base/Mech1IndMotor.h&gt;
+				#include &lt;mechanisms/base/$MECH_BASE_CLASS$.h&gt;
 				#include &lt;mechanisms/$MECHANISM_NAME_LOWERCASE$/$MECHANISM_NAME$.h&gt;
 
 		using namespace std;
@@ -817,7 +778,7 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 		std::string                                 controlFileName,
 		std::string                                 networkTableName,
 		std::shared_ptr&lt;IDragonMotorController&gt;     motorController
-		):Mech1IndMotor(MechanismTypes::MECHANISM_TYPE::$MECHANISM_NAME_UPPERCASE$,controlFileName,networkTableName,motorController)
+		):$MECH_BASE_CLASS$(MechanismTypes::MECHANISM_TYPE::$MECHANISM_NAME_UPPERCASE$,controlFileName,networkTableName,motorController)
 		{
 		}
 	</main_cpp>
@@ -846,7 +807,7 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 		// FRC includes
 
 		// Team 302 includes
-		#include  &lt;mechanisms/base/Mech1MotorState.h&gt;
+		#include  &lt;mechanisms/base/$MECH_BASE_CLASS$.h&gt;
 		#include  &lt;mechanisms/controllers/ControlData.h&gt;
 		#include  &lt;mechanisms/$MECHANISM_NAME_LOWERCASE$/$MECHANISM_NAME$State.h&gt;
 		#include  &lt;mechanisms/MechanismFactory.h&gt;
@@ -861,7 +822,7 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 		int                             stateId,
 		ControlData*                    control,
 		double                          target
-		) : Mech1MotorState( MechanismFactory::GetMechanismFactory()->Get$MECHANISM_NAME$(), stateName, stateId, control, target),
+		) : $MECH_BASE_CLASS$( MechanismFactory::GetMechanismFactory()->Get$MECHANISM_NAME$(), stateName, stateId, control, target),
 		m_$MECHANISM_NAME$(MechanismFactory::GetMechanismFactory()->Get$MECHANISM_NAME$())
 		{
 
@@ -892,12 +853,12 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 		#pragma once
 		#include &lt;string&gt;
 
-			#include &lt;mechanisms/base/Mech1MotorState.h&gt;
+			#include &lt;mechanisms/base/$MECH_BASE_CLASS$.h&gt;
 
 		class ControlData;
 		class $MECHANISM_NAME$;
 
-		class $MECHANISM_NAME$State : public Mech1MotorState
+		class $MECHANISM_NAME$State : public $MECH_BASE_CLASS$
 		{
 		public:
 
