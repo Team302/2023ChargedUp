@@ -1,5 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <statedata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <controlData
+    identifier="rotateToAngle"
+    mode="POSITION_DEGREES"
+    constrolServer="MOTORCONTROLLER"
+    proportional="0.1"
+    integral="0.0"
+    derivative="0.0"
+    feedforward="0.0"
+    izone="0.0"
+    maxacceleration="0.0"
+    cruisevelocity="0.0" />
   <mechanismTarget
     stateIdentifier="HOLD_POSITION_ROTATE"
     controlDataIdentifier=""
