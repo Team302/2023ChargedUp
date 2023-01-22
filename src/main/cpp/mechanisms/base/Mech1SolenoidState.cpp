@@ -22,7 +22,7 @@
 
 // Team 302 includes
 #include <State.h>
-#include <mechanisms/base/MechSolenoidState.h>
+#include <mechanisms/base/Mech1SolenoidState.h>
 #include <mechanisms/base/Mech1Solenoid.h>
 #include <utils/Logger.h>
 
@@ -32,9 +32,9 @@
 
 using namespace std;
 
-/// @class MechSolenoidState
+/// @class Mech1SolenoidState
 /// @brief information about the control (open loop, closed loop position, closed loop velocity, etc.) for a mechanism state
-MechSolenoidState::MechSolenoidState
+Mech1SolenoidState::Mech1SolenoidState
 (
     Mech1Solenoid*                  mechanism,
     string                          stateName,
@@ -46,16 +46,16 @@ MechSolenoidState::MechSolenoidState
 {
     if ( mechanism == nullptr )
     {
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("MechSolenoidState"), string("MechSolenoidState"), string("no mechanism"));
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("Mech1SolenoidState"), string("Mech1SolenoidState"), string("no mechanism"));
     }    
 }
 
-void MechSolenoidState::Init()
+void Mech1SolenoidState::Init()
 {
 }
 
 
-void MechSolenoidState::Run()           
+void Mech1SolenoidState::Run()           
 {
     if ( m_mechanism != nullptr )
     {
@@ -75,15 +75,15 @@ void MechSolenoidState::Run()
     }
 }
 
-void MechSolenoidState::Exit() 
+void Mech1SolenoidState::Exit() 
 {
 }
 
-bool MechSolenoidState::AtTarget() const
+bool Mech1SolenoidState::AtTarget() const
 {
     return true;
 }
-void MechSolenoidState::LogInformation() const
+void Mech1SolenoidState::LogInformation() const
 {
     if (m_mechanism != nullptr)
     {

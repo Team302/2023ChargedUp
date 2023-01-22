@@ -21,28 +21,28 @@
 
 #include <State.h>
 #include <mechanisms/controllers/MechanismTargetData.h>
-#include <mechanisms/base/Mech1MotorState.h>
-#include <mechanisms/base/MechSolenoidState.h>
+#include <mechanisms/base/Mech1IndMotorState.h>
+#include <mechanisms/base/Mech1SolenoidState.h>
 
 // forward declares
 class ControlData;
-class Mech1IndMotorSolenoid;
+class Mech1IndMotor1Solenoid;
 
-class Mech1IndMotorSolenoidState : public State
+class Mech1IndMotor1SolenoidState : public State
 {
     public:
 
-        Mech1IndMotorSolenoidState
+        Mech1IndMotor1SolenoidState
         (
-            Mech1IndMotorSolenoid*          mechanism,
+            Mech1IndMotor1Solenoid*          mechanism,
             std::string                     identifer,
             int                             stateId,
             ControlData*                    control,
             double                          target,
             MechanismTargetData::SOLENOID   solState
         );
-        Mech1IndMotorSolenoidState() = delete;
-        ~Mech1IndMotorSolenoidState() = default;
+        Mech1IndMotor1SolenoidState() = delete;
+        ~Mech1IndMotor1SolenoidState() = default;
 
         void Init() override;
         void Run() override;
@@ -55,7 +55,7 @@ class Mech1IndMotorSolenoidState : public State
         void LogInformation() const override;
 
     private:
-        Mech1IndMotorSolenoid*                  m_mechanism;
-        std::shared_ptr<Mech1MotorState>        m_motorState;
-        std::shared_ptr<MechSolenoidState>      m_solenoidState;
+        Mech1IndMotor1Solenoid*                  m_mechanism;
+        std::shared_ptr<Mech1IndMotorState>        m_motorState;
+        std::shared_ptr<Mech1SolenoidState>      m_solenoidState;
 };
