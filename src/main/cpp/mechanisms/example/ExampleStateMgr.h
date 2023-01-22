@@ -48,7 +48,7 @@ class ExampleStateMgr : public StateMgr
         };
 
         
-		/// @brief  Find or create the state manmanager
+		/// @brief  Find or create the state manager
 		static ExampleStateMgr* GetInstance();
 
         /// @brief  Get the current Parameter parm value for the state of this mechanism
