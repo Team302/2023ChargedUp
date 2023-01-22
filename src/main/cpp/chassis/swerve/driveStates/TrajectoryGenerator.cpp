@@ -73,7 +73,7 @@ std::vector<frc::Translation2d> TrajectoryGenerator::AvoidObstacles(frc::Transla
 {
     auto robotWidth = ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetWheelBase();
     auto robotLength = ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetTrack();
-    
+    /*
     for(frc::Translation2d obstacle : m_obstacles)
     {
         if(obstacle.X() > lower.X() && obstacle.X() < upper.X())
@@ -81,5 +81,11 @@ std::vector<frc::Translation2d> TrajectoryGenerator::AvoidObstacles(frc::Transla
             if(obstacle.X() + robotWidth < lower.X() && obstacle.X() < upper.X())
             {}
         }
-    }
+    }*/
+
+    // NOTES
+    // Create 3 pre-determined waypoints by charge pad, 1 for boundary wall between community and loading zone
+    // This will be the end point for all the "on-the-fly" path generation
+    // From these points, we can use pre-generated/pathweaver created trajectories for going to HP substation
+    // or one of the three grids
 }
