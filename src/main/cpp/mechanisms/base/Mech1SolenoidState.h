@@ -23,19 +23,19 @@
 // forward declares
 class Mech1Solenoid;
 
-class MechSolenoidState : public State
+class Mech1SolenoidState : public State
 {
     public:
 
-        MechSolenoidState
+        Mech1SolenoidState
         (
             Mech1Solenoid*                  mechanism,
             std::string                     stateName,
             int                             stateId,
             MechanismTargetData::SOLENOID   solState
         );
-        MechSolenoidState() = delete;
-        ~MechSolenoidState() = default;
+        Mech1SolenoidState() = delete;
+        ~Mech1SolenoidState() = default;
 
         void Init() override;
         void Run() override;
