@@ -39,7 +39,7 @@ WaypointXmlParser* WaypointXmlParser::GetInstance()
 	return WaypointXmlParser::m_instance;
 }
 
-std::vector<Waypoint2d> WaypointXmlParser::ParseWaypoints()
+void WaypointXmlParser::ParseWaypoints()
 {
     // set the file to parse
 	auto deployDir = frc::filesystem::GetDeployDirectory();
@@ -134,6 +134,6 @@ std::vector<Waypoint2d> WaypointXmlParser::ParseWaypoints()
 
     if(!hasError)
     {
-        return waypoints;
+        m_waypoints = waypoints;
     }
 }

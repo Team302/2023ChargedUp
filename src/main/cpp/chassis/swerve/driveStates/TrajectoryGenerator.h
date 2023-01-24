@@ -26,18 +26,33 @@
 #include <frc/trajectory/TrajectoryGenerator.h>
 
 //Team 302 Includes
+#include <utils/Waypoint2d.h>
 
 class TrajectoryGenerator
 {
     public:
         enum WAYPOINTS
         {
-            GRID_ONE,
-            GRID_TWO,
-            GRID_THREE,
+            GRID_ONE_COL_ONE,
+            GRID_ONE_COL_TWO,
+            GRID_ONE_COL_THREE,
+            GRID_TWO_COL_ONE,
+            GRID_TWO_COL_TWO,
+            GRID_TWO_COL_THREE,
+            GRID_THREE_COL_ONE,
+            GRID_THREE_COL_TWO,
+            GRID_THREE_COL_THREE,
             GRID_ONE_INTERMEDIATE,
             GRID_TWO_INTERMEDIATE,
             GRID_THREE_INTERMEDIATE
+        };
+
+        enum TARGET_POSITION
+        {
+            COLUMN_ONE,
+            COLUMN_TWO,
+            COLUMN_THREE,
+            HUMAN_PLAYER_SUBSTATION
         };
 
         TrajectoryGenerator(units::meters_per_second_t maxVelocity,
@@ -48,10 +63,10 @@ class TrajectoryGenerator
         /// @param currentPose current robot position
         /// @param endPoint ending/goal point
         /// @return frc::Trajectory - the calculated trajectory based on given points
-        frc::Trajectory GenerateTrajectory(frc::Pose2d currentPose, WAYPOINTS endPoint);
+        frc::Trajectory GenerateTrajectory(frc::Pose2d currentPose, TARGET_POSITION endPoint);
 
     private:
         frc::TrajectoryConfig m_config;
 
-        std::map<WAYPOINTS, frc::Translation2d> m_waypoints;
+        std::unordered_map<WAYPOINTS, frc::Translation2d>   m_waypoints;
 };

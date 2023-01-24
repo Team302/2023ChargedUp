@@ -5,9 +5,15 @@
             identifier (GRID_ONE_INTERMEDIATE |
                       GRID_TWO_INTERMEDIATE |
                       GRID_THREE_INTERMEDIATE |
-                      GRID_ONE |
-                      GRID_TWO |
-                      GRID_THREE) "GRID_ONE_INTERMEDIATE"
+                      GRID_ONE_COL_ONE |
+                      GRID_ONE_COL_TWO |
+                      GRID_ONE_COL_THREE |
+                      GRID_TWO_COL_ONE |
+                      GRID_TWO_COL_TWO |
+                      GRID_TWO_COL_THREE |
+                      GRID_THREE_COL_ONE |
+                      GRID_THREE_COL_TWO |
+                      GRID_THREE_COL_THREE) "GRID_ONE_INTERMEDIATE"
             xCoordinate CDATA "0.0"
             yCoordinate CDATA "0.0"
 >

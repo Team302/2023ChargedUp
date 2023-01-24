@@ -34,11 +34,11 @@ class WaypointXmlParser
         /// @brief  Find or create the Waypoint parser
 		static WaypointXmlParser* GetInstance();
 
-        std::vector<Waypoint2d> ParseWaypoints();
+        void ParseWaypoints();
 
-        std::unordered_map<TrajectoryGenerator::WAYPOINTS, frc::Translation2d> GetWaypoints() const {return m_waypoints;};
+        std::vector<Waypoint2d> GetWaypoints() const {return m_waypoints;};
     private:
         static WaypointXmlParser*	m_instance;
 
-        std::unordered_map<TrajectoryGenerator::WAYPOINTS, frc::Translation2d> m_waypoints;
+        std::vector<Waypoint2d> m_waypoints;
 };
