@@ -20,7 +20,7 @@
 #include <frc/Filesystem.h>
 
 //Team 302 Includes
-#include <utils/ObstacleXmlParser.h>
+#include <utils/WaypointXmlParser.h>
 #include <utils/Logger.h>
 
 //Third party includes
@@ -29,27 +29,33 @@
 using namespace pugi;
 using namespace std;
 
-ObstacleXmlParser* ObstacleXmlParser::m_instance = nullptr;
-ObstacleXmlParser* ObstacleXmlParser::GetInstance()
+WaypointXmlParser* WaypointXmlParser::m_instance = nullptr;
+WaypointXmlParser* WaypointXmlParser::GetInstance()
 {
-	if ( ObstacleXmlParser::m_instance == nullptr )
+	if ( WaypointXmlParser::m_instance == nullptr )
 	{
-        ObstacleXmlParser::m_instance = new ObstacleXmlParser();
+        WaypointXmlParser::m_instance = new WaypointXmlParser();
 	}
-	return ObstacleXmlParser::m_instance;
+	return WaypointXmlParser::m_instance;
 }
 
-void ObstacleXmlParser::ParseObstacles()
+std::vector<Waypoint2d> WaypointXmlParser::ParseWaypoints()
 {
     // set the file to parse
 	auto deployDir = frc::filesystem::GetDeployDirectory();
-    std::string filename = deployDir + std::string("/obstacles.xml");
+    std::string filename = deployDir + std::string("/waypoints.xml");
 
-    string waypoint = "";
-    double xCoordinate = 0.0;
-    double yCoordinate = 0.0;
+    map<string, TrajectoryGenerator::WAYPOINTS> waypointMap;
+    waypointMap[string("GRID_ONE_INTERMEDIATE")] = TrajectoryGenerator::WAYPOINTS::GRID_ONE_INTERMEDIATE;
+    waypointMap[string("GRID_TWO_INTERMEDIATE")] = TrajectoryGenerator::WAYPOINTS::GRID_TWO_INTERMEDIATE;
+    waypointMap[string("GRID_THREE_INTERMEDIATE")] = TrajectoryGenerator::WAYPOINTS::GRID_THREE_INTERMEDIATE;
+    waypointMap[string("GRID_ONE")] = TrajectoryGenerator::WAYPOINTS::GRID_ONE;
+    waypointMap[string("GRID_TWO")] = TrajectoryGenerator::WAYPOINTS::GRID_TWO;
+    waypointMap[string("GRID_THREE")] = TrajectoryGenerator::WAYPOINTS::GRID_THREE;
 
     bool hasError = false;
+
+    std::vector<Waypoint2d> waypoints;
 
     try
     {
@@ -60,6 +66,10 @@ void ObstacleXmlParser::ParseObstacles()
         // if it is good
         if (result)
         {
+            Waypoint2d currentWaypoint;
+            double xCoordinate = 0.0;
+            double yCoordinate = 0.0;
+
             // get the root node <robot>
             xml_node parent = doc.root();
             for (xml_node node = parent.first_child(); node; node = node.next_sibling())
@@ -69,9 +79,9 @@ void ObstacleXmlParser::ParseObstacles()
                 {
                     for(xml_attribute attr = child.first_attribute(); attr && !hasError; attr = attr.next_attribute())
                     {
-                        if(strcmp(attr.name(), "waypoint") == 0)
+                        if(strcmp(attr.name(), "identifier") == 0)
                         {
-                            waypoint = attr.as_string();
+                            currentWaypoint.waypointIdentifier = waypointMap[attr.as_string()];
                         }
                         else if (strcmp(attr.name(), "xCoordinate") == 0)
                         {
@@ -85,11 +95,15 @@ void ObstacleXmlParser::ParseObstacles()
                         {
                             string msg = "unknown attribute ";
                             msg += attr.name();
-                            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("MotorXmlParser"), string("ParseXML"), msg );
+                            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("WaypointXmlParser"), string("ParseXML"), msg );
                             hasError = true;
                         }
                     }
                 }
+
+                currentWaypoint.coordinates = {units::length::meter_t(xCoordinate), units::length::meter_t(yCoordinate)};
+
+                waypoints.emplace_back(currentWaypoint);
             }
         }
         else
@@ -99,27 +113,27 @@ void ObstacleXmlParser::ParseObstacles()
             msg += "] parsed with errors, attr value: [";
             msg += doc.child( "prototype" ).attribute( "attr" ).value();
             msg += "]";
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("ObstacleXmlParser"), string("ParseXML (1) "), msg );
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("WaypointXmlParser"), string("ParseXML (1) "), msg );
 
             msg = "Error description: ";
             msg += result.description();
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("ObstacleXmlParser"), string("ParseXML (2) "), msg );
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("WaypointXmlParser"), string("ParseXML (2) "), msg );
 
             msg = "Error offset: ";
             msg += result.offset;
             msg += " error at ...";
             msg += filename;
             msg += result.offset;
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("ObstacleXmlParser"), string("ParseXML (3) "), msg );
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("WaypointXmlParser"), string("ParseXML (3) "), msg );
         }
     }
     catch(const std::exception& e)
     {
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("ObstacleXmlParser"), string("ParseXML"), string("Error thrown while parsing obstacles.xml") );
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("WaypointXmlParser"), string("ParseXML"), string("Error thrown while parsing Waypoints.xml") );
     }
 
     if(!hasError)
     {
-
+        return waypoints;
     }
 }

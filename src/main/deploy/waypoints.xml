@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE robot SYSTEM "waypoints.dtd">
+<waypoints>
+    <waypoint identifier="GRID_ONE_INTERMEDIATE"
+              xCoordinate="0.0"
+              yCoordinate="0.0"/>
+</waypoints>

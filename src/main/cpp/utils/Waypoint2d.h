@@ -13,28 +13,14 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#pragma once
-
-//C++ Includes
-#include <vector>
-
 //FRC Includes
 #include <frc/geometry/Translation2d.h>
 
-class ObstacleXmlParser
+//Team 302 Includes
+#include <chassis/swerve/driveStates/TrajectoryGenerator.h>
+
+struct Waypoint2d
 {
-    public:
-        ObstacleXmlParser() = default;
-        ~ObstacleXmlParser() = default;
-
-        /// @brief  Find or create the obstacle parser
-		static ObstacleXmlParser* GetInstance();
-
-        void ParseObstacles();
-
-        std::vector<frc::Translation2d> GetObstacles() const {return m_obstacles;};
-    private:
-        static ObstacleXmlParser*	m_instance;
-
-        std::vector<frc::Translation2d> m_obstacles;
+    TrajectoryGenerator::WAYPOINTS  waypointIdentifier;
+    frc::Translation2d              coordinates;
 };

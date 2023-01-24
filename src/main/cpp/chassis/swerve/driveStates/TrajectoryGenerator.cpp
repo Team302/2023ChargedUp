@@ -24,68 +24,24 @@
 
 TrajectoryGenerator::TrajectoryGenerator(units::meters_per_second_t maxVelocity,
                                         units::meters_per_second_squared_t maxAcceleration) : 
-                                        m_config(maxVelocity, maxAcceleration),
-                                        m_obstacles(ObstacleXmlParser::GetInstance()->GetObstacles())
+                                        m_config(maxVelocity, maxAcceleration)
 {
+    //create map with enum and points parsed from xml
+    ObstacleXmlParser::GetInstance()->ParseObstacles();
+    m_waypoints = ObstacleXmlParser::GetInstance()->GetWaypoints();
 
+    //for(frc::Translation2d waypoint )
 }                                        
 
-frc::Trajectory TrajectoryGenerator::GenerateTrajectory(frc::Pose2d startPoint, frc::Pose2d endPoint)
+frc::Trajectory TrajectoryGenerator::GenerateTrajectory(frc::Pose2d currentPose, WAYPOINTS endPoint)
 {
-    //do math to determine if field obstacles are in between start point and end point
-    //"bounding box" would be area of retangle created by start and end point with half or all of the robot width added
-    
-    //get area of startPoint and endPoint
-    units::length::meter_t lowerX, lowerY, upperX, upperY;
+    // check to see if robot is in front of or behind charging pad
+    // if so, add intermediate points
 
-    auto robotWidth = ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetWheelBase();
-    auto robotLength = ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetTrack();
 
-    if(startPoint.X() < endPoint.X())
-    {
-        lowerX = startPoint.X() - robotWidth;
-        upperX = endPoint.X() + robotWidth;
-    }
-    else
-    {
-        lowerX = endPoint.X() - robotWidth;
-        upperX = startPoint.X() + robotWidth;
-    }
+    if(currentPose.X() > )
 
-    if(startPoint.Y() < endPoint.Y())
-    {
-        lowerY = startPoint.Y() - robotLength;
-        upperY = endPoint.Y() + robotLength;
-    }
-    else
-    {
-        lowerY = endPoint.Y() - robotLength;
-        upperY = startPoint.Y() + robotLength;
-    }
+    // get waypoint based on endPoint enum, then get waypoint x and y values from xml
 
-    frc::Translation2d lowerBounds = {lowerX, lowerY};
-    frc::Translation2d upperBounds = {upperX, upperY};
 
-    std::vector<frc::Translation2d> avoidancePoints = AvoidObstacles(lowerBounds, upperBounds);
-}
-
-std::vector<frc::Translation2d> TrajectoryGenerator::AvoidObstacles(frc::Translation2d lower, frc::Translation2d upper)
-{
-    auto robotWidth = ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetWheelBase();
-    auto robotLength = ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetTrack();
-    /*
-    for(frc::Translation2d obstacle : m_obstacles)
-    {
-        if(obstacle.X() > lower.X() && obstacle.X() < upper.X())
-        {
-            if(obstacle.X() + robotWidth < lower.X() && obstacle.X() < upper.X())
-            {}
-        }
-    }*/
-
-    // NOTES
-    // Create 3 pre-determined waypoints by charge pad, 1 for boundary wall between community and loading zone
-    // This will be the end point for all the "on-the-fly" path generation
-    // From these points, we can use pre-generated/pathweaver created trajectories for going to HP substation
-    // or one of the three grids
 }

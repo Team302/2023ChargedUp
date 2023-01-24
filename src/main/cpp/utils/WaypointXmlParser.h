@@ -16,42 +16,29 @@
 #pragma once
 
 //C++ Includes
-#include <map>
+#include <vector>
 
 //FRC Includes
-#include <frc/geometry/Pose2d.h>
-#include <units/velocity.h>
-#include <units/acceleration.h>
-#include <frc/trajectory/Trajectory.h>
-#include <frc/trajectory/TrajectoryGenerator.h>
+#include <frc/geometry/Translation2d.h>
 
 //Team 302 Includes
+#include <chassis/swerve/driveStates/TrajectoryGenerator.h>
+#include <utils/Waypoint2d.h>
 
-class TrajectoryGenerator
+class WaypointXmlParser
 {
     public:
-        enum WAYPOINTS
-        {
-            GRID_ONE,
-            GRID_TWO,
-            GRID_THREE,
-            GRID_ONE_INTERMEDIATE,
-            GRID_TWO_INTERMEDIATE,
-            GRID_THREE_INTERMEDIATE
-        };
+        WaypointXmlParser() = default;
+        ~WaypointXmlParser() = default;
 
-        TrajectoryGenerator(units::meters_per_second_t maxVelocity,
-                            units::meters_per_second_squared_t maxAcceleration);
-        ~TrajectoryGenerator() = default;
+        /// @brief  Find or create the Waypoint parser
+		static WaypointXmlParser* GetInstance();
 
-        /// @brief Generate a trajectory to be fed into TrajectoryDrive
-        /// @param currentPose current robot position
-        /// @param endPoint ending/goal point
-        /// @return frc::Trajectory - the calculated trajectory based on given points
-        frc::Trajectory GenerateTrajectory(frc::Pose2d currentPose, WAYPOINTS endPoint);
+        std::vector<Waypoint2d> ParseWaypoints();
 
+        std::unordered_map<TrajectoryGenerator::WAYPOINTS, frc::Translation2d> GetWaypoints() const {return m_waypoints;};
     private:
-        frc::TrajectoryConfig m_config;
+        static WaypointXmlParser*	m_instance;
 
-        std::map<WAYPOINTS, frc::Translation2d> m_waypoints;
+        std::unordered_map<TrajectoryGenerator::WAYPOINTS, frc::Translation2d> m_waypoints;
 };
