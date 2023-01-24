@@ -50,5 +50,5 @@ class Robot : public frc::TimedRobot
         bool                  m_startLogging;
         ArcadeDrive*          m_arcade;
         DragonLimelight*      m_dragonLimeLight;
-        LED*                  m_led;
+        LED*                  m_led = new LED(0);
 };

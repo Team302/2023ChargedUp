@@ -31,7 +31,6 @@ void Robot::RobotInit()
     m_startLogging = false;
     Logger::GetLogger()->PutLoggingSelectionsOnDashboard();
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("RobotInit"), string("arrived"));   
-    m_led = new LED(9);
     m_controller = TeleopControl::GetInstance();
 
     // Read the XML file to build the robot 
@@ -140,6 +139,7 @@ void Robot::TeleopInit()
 void Robot::TeleopPeriodic() 
 {
     m_led->UpdateLEDS();
+
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopPeriodic"), string("arrived"));   
     if (m_chassis != nullptr && m_controller != nullptr)
     {

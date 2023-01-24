@@ -21,13 +21,13 @@
             return {0,0,255};
 
         case YELLOW:
-            return {255,255,0};   
+            return {204,204,0};   
 
         case PURPLE:
             return {255,0,255};
 
         case AZUL:
-            return {29,93,236};   
+            return {0,255,255};   
         }
     }
 
@@ -38,28 +38,44 @@
         m_led->SetData(m_ledBuffer);
 
    }
-   int colorLoop = 0;
-   std::array<LED::Colors,(int)LED::MAX_STATE> colorArray;
+   int loop = -1;
+   bool done = false;
    int timer = 0;
+   void LED::ChangingChaserPattern(){
+    if(timer>10){
+        auto color = getColorValues(PURPLE);
+        
+        if(loop<kLength){
+            loop++;
+        }else{
+            done = true;
+            loop = 0;
+        }
+        if(!done){
+            m_ledBuffer[loop].SetRGB(color[0],color[1],color[2]);
+        }else{
+            LedsOff();
+            done = false;
+        }
+        timer =0;
+    }
+    timer++;
+   }
 
-   void LED::ColorTest(){
-            for (int i = 0; i < kLength; i++){
-                auto color = getColorValues(PURPLE);
+   void LED::HalfAndHalfPattern(){
+            auto color = getColorValues(PURPLE);
+            for (int i = 0; i < kLength/2; i++){
                 m_ledBuffer[i].SetRGB(color[0],color[1],color[2]);
-        }       
+        }
+         color = getColorValues(YELLOW);
+            for (int i = kLength-1; i > kLength/2; i--){
+                m_ledBuffer[i].SetRGB(color[0],color[1],color[2]);
+            }
         m_led->SetData(m_ledBuffer);
     }
-    // if(timer<5){
-    //     auto color = getColorValues(colorArray[colorLoop]);
-    //     for (int i = 0; i < kLength; i++){
-    //         m_ledBuffer[i].SetRGB(color[0],color[1],color[2]);
-    //     }
-    //     colorLoop+=colorLoop<LED::MAX_STATE ? 1 : -colorLoop;
-    
-    //     m_led->SetData(m_ledBuffer);
-    // }
 
-    //timer++;
+
    void LED::UpdateLEDS(){
-        ColorTest();
+        ChangingChaserPattern();
+        m_led->SetData(m_ledBuffer);
     }

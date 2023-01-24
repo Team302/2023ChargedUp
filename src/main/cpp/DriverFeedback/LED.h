@@ -29,12 +29,9 @@ class LED
 
         void LedsOff();
 
-        void ColorTest();
+        void HalfAndHalfPattern();
 
-        void WantCube();
-        //might return something im just too tired to think too much rn
-        void WantCone();
-        //same here
+        void ChangingChaserPattern();
 
         //void BlinkingPattern();
 
