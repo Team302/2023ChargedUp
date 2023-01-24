@@ -24,10 +24,6 @@ class DragonVision : public State
 {
     public:
         static DragonVision* GetDragonVision();
-        
-    
-    
-    
 
     void Init() override;
     void Run() override;
@@ -56,7 +52,8 @@ class DragonVision : public State
    
 private:
     
-    DragonVision();
+    DragonVision(std::string     stateName,
+                int              stateId);
     ~DragonVision() = default;
 
     static DragonVision*	m_dragonVision;

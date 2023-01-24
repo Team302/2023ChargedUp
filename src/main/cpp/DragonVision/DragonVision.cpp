@@ -31,11 +31,14 @@
 using namespace std;
 
 DragonVision* DragonVision::m_dragonVision = nullptr;
-DragonVision* DragonVision::GetDragonVision()
+DragonVision* DragonVision::GetDragonVision
+(
+	
+)
 {
 	if ( DragonVision::m_dragonVision == nullptr )
 	{
-		DragonVision::m_dragonVision = new DragonVision();
+		DragonVision::m_dragonVision = new DragonVision(std::string("DragonVision"), int(-1));
 	}
 	return DragonVision::m_dragonVision;
 }
@@ -43,7 +46,8 @@ DragonVision* DragonVision::GetDragonVision()
 //state functions
 
 
-DragonVision::DragonVision(): m_frontDragonLimelight(LimelightFactory::GetLimelightFactory()->GetLimelight())
+DragonVision::DragonVision(std::string stateName, int stateId): State(stateName, stateId),
+							  m_frontDragonLimelight(LimelightFactory::GetLimelightFactory()->GetLimelight())				
 {
 	
 }

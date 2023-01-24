@@ -87,9 +87,8 @@ class DragonLimelight //: public IDragonSensor, public IDragonDistanceSensor
         /// Description:    Delete the object
         ///-----------------------------------------------------------------------------------
         ~DragonLimelight() = default;
-
-
-        // Getters
+        
+        // Retroreflective tape Getters
         bool HasTarget() const;
         units::angle::degree_t GetTargetHorizontalOffset() const;
         units::angle::degree_t GetTargetVerticalOffset() const;
@@ -98,6 +97,17 @@ class DragonLimelight //: public IDragonSensor, public IDragonDistanceSensor
         units::time::microsecond_t GetPipelineLatency() const;
         units::length::inch_t EstimateTargetDistance() const;
         std::vector<double> Get3DSolve() const;
+
+        // Aprl Tage Getters
+        bool HasAprilTag() const;
+        units::angle::degree_t GetTargetHorizontalOffsetAprilTag() const;
+        units::angle::degree_t GetTargetVerticalOffsetAprilTag() const;
+        double GetTargetAreaAprilTag() const;
+        units::angle::degree_t GetTargetSkewAprilTag() const;
+        units::time::microsecond_t GetPipelineLatencyAprilTag() const;
+        units::length::inch_t EstimateTargetDistanceAprilTag() const;
+        std::vector<double> Get3DSolveAprilTag() const;
+
 
         // Setters
         void SetTargetHeight
