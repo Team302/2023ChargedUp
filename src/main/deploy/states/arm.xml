@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <statedata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <controlData
-    identifier="rotateToAngle"
+    identifier="RotateToAngle"
     mode="POSITION_DEGREES"
     constrolServer="MOTORCONTROLLER"
     proportional="0.1"
@@ -11,67 +11,89 @@
     izone="0.0"
     maxacceleration="0.0"
     cruisevelocity="0.0" />
+  <controlData
+    identifier="HoldAngle"
+    mode="POSITION_DEGREES"
+    constrolServer="MOTORCONTROLLER"
+    proportional="0.3"
+    integral="0.0"
+    derivative="0.0"
+    feedforward="0.0"
+    izone="0.0"
+    maxacceleration="0.0"
+    cruisevelocity="0.0" />
+  <controlData
+    identifier="PercentOutput"
+    mode="PERCENT_OUTPUT"
+    constrolServer="MOTORCONTROLLER"
+    proportional="0.0"
+    integral="0.0"
+    derivative="0.0"
+    feedforward="0.0"
+    izone="0.0"
+    maxacceleration="0.0"
+    cruisevelocity="0.0" />
   <mechanismTarget
     stateIdentifier="HOLD_POSITION_ROTATE"
-    controlDataIdentifier=""
+    controlDataIdentifier="HoldAngle"
     controlDataIdentifier2=""
-    value=""
+    value="45"
     secondValue=""
     solenoid="NONE" />
   <mechanismTarget
     stateIdentifier="MANUAL_ROTATE"
-    controlDataIdentifier=""
+    controlDataIdentifier="PercentOutput"
     controlDataIdentifier2=""
-    value=""
+    value="1"
     secondValue=""
     solenoid="NONE" />
   <mechanismTarget
     stateIdentifier="CUBE_BACKROW_ROTATE"
-    controlDataIdentifier=""
+    controlDataIdentifier="RotateToAngle"
     controlDataIdentifier2=""
-    value=""
+    value="45"
     secondValue=""
     solenoid="NONE" />
   <mechanismTarget
     stateIdentifier="CONE_BACKROW_ROTATE"
-    controlDataIdentifier=""
+    controlDataIdentifier="RotateToAngle"
     controlDataIdentifier2=""
-    value=""
+    value="45"
     secondValue=""
     solenoid="NONE" />
   <mechanismTarget
     stateIdentifier="CUBE_MIDROW_ROTATE"
-    controlDataIdentifier=""
+    controlDataIdentifier="RotateToAngle"
     controlDataIdentifier2=""
-    value=""
+    value="45"
     secondValue=""
     solenoid="NONE" />
   <mechanismTarget
     stateIdentifier="CONE_MIDROW_ROTATE"
-    controlDataIdentifier=""
+    controlDataIdentifier="RotateToAngle"
     controlDataIdentifier2=""
-    value=""
+    value="45"
     secondValue=""
     solenoid="NONE" />
   <mechanismTarget
     stateIdentifier="HUMAN_PLAYER_STATION_ROTATE"
-    controlDataIdentifier=""
+    controlDataIdentifier="RotateToAngle"
     controlDataIdentifier2=""
-    value=""
+    value="45"
     secondValue=""
     solenoid="NONE" />
   <mechanismTarget
     stateIdentifier="STARTING_POSITION_ROTATE"
-    controlDataIdentifier=""
+    controlDataIdentifier="RotateToAngle"
     controlDataIdentifier2=""
-    value=""
+    value="45"
     secondValue=""
     solenoid="NONE" />
   <mechanismTarget
     stateIdentifier="FLOOR_POSITION_ROTATE"
-    controlDataIdentifier=""
+    controlDataIdentifier="RotateToAngle"
     controlDataIdentifier2=""
-    value=""
+    value="45"
     secondValue=""
     solenoid="NONE" />
 </statedata>
