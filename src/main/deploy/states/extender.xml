@@ -2,9 +2,9 @@
 <statedata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <controlData
     identifier="HoldPosition"
-    mode="PERCENT_OUTPUT"
+    mode="POSITION_INCH"
     constrolServer="MOTORCONTROLLER"
-    proportional="0.0"
+    proportional="0.3"
     integral="0.0"
     derivative="0.0"
     feedforward="0.0"
@@ -12,7 +12,18 @@
     maxacceleration="0.0"
     cruisevelocity="0.0" />
   <controlData
-    identifier=""
+    identifier="ExtendPosition"
+    mode="PERCENT_OUTPUT"
+    constrolServer="MOTORCONTROLLER"
+    proportional="0.1"
+    integral="0.0"
+    derivative="0.0"
+    feedforward="0.0"
+    izone="0.0"
+    maxacceleration="0.0"
+    cruisevelocity="0.0" />
+  <controlData
+    identifier="PercentOutput"
     mode="PERCENT_OUTPUT"
     constrolServer="MOTORCONTROLLER"
     proportional="0.0"
@@ -24,65 +35,65 @@
     cruisevelocity="0.0" />
   <mechanismTarget
     stateIdentifier="HOLD_POSITION_EXTEND"
-    controlDataIdentifier=""
+    controlDataIdentifier="ExtendPosition"
     controlDataIdentifier2=""
-    value=""
+    value="10"
     secondValue=""
     solenoid="NONE" />
   <mechanismTarget
     stateIdentifier="MANUAL_EXTEND_RETRACT"
-    controlDataIdentifier=""
+    controlDataIdentifier="PercentOutput"
     controlDataIdentifier2=""
-    value=""
+    value="1"
     secondValue=""
     solenoid="NONE" />
   <mechanismTarget
     stateIdentifier="CUBE_BACKROW_EXTEND"
-    controlDataIdentifier=""
+    controlDataIdentifier="ExtendPosition"
     controlDataIdentifier2=""
-    value=""
+    value="10"
     secondValue=""
     solenoid="NONE" />
   <mechanismTarget
     stateIdentifier="CONE_BACKROW_EXTEND"
-    controlDataIdentifier=""
+    controlDataIdentifier="ExtendPosition"
     controlDataIdentifier2=""
-    value=""
+    value="10"
     secondValue=""
     solenoid="NONE" />
   <mechanismTarget
     stateIdentifier="CUBE_MIDROW_EXTEND"
-    controlDataIdentifier=""
+    controlDataIdentifier="ExtendPosition"
     controlDataIdentifier2=""
-    value=""
+    value="10"
     secondValue=""
     solenoid="NONE" />
   <mechanismTarget
     stateIdentifier="CONE_MIDROW_EXTEND"
-    controlDataIdentifier=""
+    controlDataIdentifier="ExtendPosition"
     controlDataIdentifier2=""
-    value=""
+    value="10"
     secondValue=""
     solenoid="NONE" />
   <mechanismTarget
     stateIdentifier="HUMAN_PLAYER_STATION_EXTEND"
-    controlDataIdentifier=""
+    controlDataIdentifier="ExtendPosition"
     controlDataIdentifier2=""
-    value=""
+    value="10"
     secondValue=""
     solenoid="NONE" />
   <mechanismTarget
     stateIdentifier="STARTING_POSITION_EXTEND"
-    controlDataIdentifier=""
+    controlDataIdentifier="ExtendPosition"
     controlDataIdentifier2=""
-    value=""
+    value="10"
     secondValue=""
     solenoid="NONE" />
   <mechanismTarget
     stateIdentifier="FLOOR_EXTEND"
-    controlDataIdentifier=""
+    controlDataIdentifier="ExtendPosition"
     controlDataIdentifier2=""
-    value=""
+    value="10"
     secondValue=""
     solenoid="NONE" />
 </statedata>
