@@ -32,7 +32,7 @@ class IDragonMotorController;
 class Mech1IndMotor;
 class Mech1Solenoid;
 
-class Mech1IndMotorSolenoid : public Mech
+class Mech1IndMotor1Solenoid : public Mech
 {
 	public:
         /// @brief Create a generic mechanism wiht 1 independent motor 
@@ -40,7 +40,7 @@ class Mech1IndMotorSolenoid : public Mech
         /// @param [in] std::string the name of the file that will set control parameters for this mechanism
         /// @param [in] std::string the name of the network table for logging information
         /// @param [in] std::shared_ptr<IDragonMotorController> motor controller used by this mechanism
-        Mech1IndMotorSolenoid
+        Mech1IndMotor1Solenoid
         (
             MechanismTypes::MECHANISM_TYPE              type,
             std::string                                 controlFileName,
@@ -49,8 +49,8 @@ class Mech1IndMotorSolenoid : public Mech
             std::shared_ptr<DragonSolenoid>             solenoid
 
         );
-	    Mech1IndMotorSolenoid() = delete;
-	    ~Mech1IndMotorSolenoid();
+	    Mech1IndMotor1Solenoid() = delete;
+	    ~Mech1IndMotor1Solenoid();
 
         /// @brief log data to the network table if it is activated and time period has past
         void LogInformation() const override;

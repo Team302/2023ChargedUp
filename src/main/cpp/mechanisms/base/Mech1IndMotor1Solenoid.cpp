@@ -19,7 +19,7 @@
 
 // Team 302 includes
 #include <mechanisms/base/Mech1IndMotor.h>
-#include <mechanisms/base/Mech1IndMotorSolenoid.h>
+#include <mechanisms/base/Mech1IndMotor1Solenoid.h>
 #include <mechanisms/base/Mech1Solenoid.h>
 #include <hw/DragonSolenoid.h>
 #include <hw/interfaces/IDragonMotorController.h>
@@ -33,7 +33,7 @@ using namespace std;
 /// @param [in] std::string the name of the file that will set control parameters for this mechanism
 /// @param [in] std::string the name of the network table for logging information
 /// @param [in] std::shared_ptr<IDragonMotorController> motor controller used by this mechanism
-Mech1IndMotorSolenoid::Mech1IndMotorSolenoid
+Mech1IndMotor1Solenoid::Mech1IndMotor1Solenoid
 
 (
     MechanismTypes::MECHANISM_TYPE              type,
@@ -49,7 +49,7 @@ Mech1IndMotorSolenoid::Mech1IndMotorSolenoid
 
 
 /// @brief log data to the network table if it is activated and time period has past
-void Mech1IndMotorSolenoid::LogInformation() const
+void Mech1IndMotor1Solenoid::LogInformation() const
 {
     if (m_motorMech != nullptr)
     {
@@ -61,7 +61,7 @@ void Mech1IndMotorSolenoid::LogInformation() const
     }
 }
 
-void Mech1IndMotorSolenoid::Update()
+void Mech1IndMotor1Solenoid::Update()
 {
     if (m_motorMech != nullptr)
     {
@@ -69,7 +69,7 @@ void Mech1IndMotorSolenoid::Update()
     }
 }
 
-void Mech1IndMotorSolenoid::UpdateTarget
+void Mech1IndMotor1Solenoid::UpdateTarget
 (
     double  target
 )
@@ -81,7 +81,7 @@ void Mech1IndMotorSolenoid::UpdateTarget
 }
 
 
-double Mech1IndMotorSolenoid::GetPosition() const
+double Mech1IndMotor1Solenoid::GetPosition() const
 
 {
     if (m_motorMech != nullptr)
@@ -93,7 +93,7 @@ double Mech1IndMotorSolenoid::GetPosition() const
 
 
 
-double Mech1IndMotorSolenoid::GetSpeed() const
+double Mech1IndMotor1Solenoid::GetSpeed() const
 
 {
     if (m_motorMech != nullptr)
@@ -107,7 +107,7 @@ double Mech1IndMotorSolenoid::GetSpeed() const
 /// @brief  Set the control constants (e.g. PIDF values).
 /// @param [in] ControlData* pid:  the control constants
 /// @return void
-void Mech1IndMotorSolenoid::SetControlConstants
+void Mech1IndMotor1Solenoid::SetControlConstants
 (
     int                                         slot,
     ControlData*                                pid                 
@@ -123,7 +123,7 @@ void Mech1IndMotorSolenoid::SetControlConstants
 /// @brief      Activate/deactivate pneumatic solenoid
 /// @param [in] bool - true == extend, false == retract
 /// @return     void 
-void Mech1IndMotorSolenoid::ActivateSolenoid
+void Mech1IndMotor1Solenoid::ActivateSolenoid
 (
     bool activate
 )
@@ -137,7 +137,7 @@ void Mech1IndMotorSolenoid::ActivateSolenoid
 
 /// @brief      Check if the pneumatic solenoid is activated
 /// @return     bool - true == extended, false == retracted
-bool Mech1IndMotorSolenoid::IsSolenoidActivated() const
+bool Mech1IndMotor1Solenoid::IsSolenoidActivated() const
 {
     if (m_solenoidMech != nullptr)
     {
@@ -146,16 +146,16 @@ bool Mech1IndMotorSolenoid::IsSolenoidActivated() const
     return false;
 }
 
-Mech1IndMotor* Mech1IndMotorSolenoid::Get1IndMotorMech() const
+Mech1IndMotor* Mech1IndMotor1Solenoid::Get1IndMotorMech() const
 {
     return m_motorMech;
 }
-Mech1Solenoid* Mech1IndMotorSolenoid::GetSolenoidMech() const
+Mech1Solenoid* Mech1IndMotor1Solenoid::GetSolenoidMech() const
 {
     return m_solenoidMech;
 }
 
-Mech1IndMotorSolenoid::~Mech1IndMotorSolenoid()
+Mech1IndMotor1Solenoid::~Mech1IndMotor1Solenoid()
 {
     delete m_motorMech;
     delete m_solenoidMech;

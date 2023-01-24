@@ -21,11 +21,11 @@
 #include <State.h>
 #include <mechanisms/controllers/ControlData.h>
 
-class Mech1MotorState : public State
+class Mech1IndMotorState : public State
 {
     public:
 
-        Mech1MotorState
+        Mech1IndMotorState
         (
             Mech1IndMotor*                  mechanism,
             std::string                     stateName,
@@ -33,8 +33,8 @@ class Mech1MotorState : public State
             ControlData*                    control,
             double                          target
         );
-        Mech1MotorState() = delete;
-        ~Mech1MotorState() = default;
+        Mech1IndMotorState() = delete;
+        ~Mech1IndMotorState() = default;
 
         void Init() override;
         void Run() override;

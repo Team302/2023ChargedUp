@@ -176,7 +176,7 @@ void ExampleStateMgr::PopulateNetworkTable()
     
     for(int i = 0; i < states.size(); i++)
     {
-        Mech1MotorState* state = (Mech1MotorState*) states[i];
+        Mech1IndMotorState* state = (Mech1IndMotorState*) states[i];
         m_tuningTable->PutNumber(states[i]->GetStateName()+"-Target", state->GetOriginalTarget());
     }
 }
