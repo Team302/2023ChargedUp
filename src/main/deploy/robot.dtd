@@ -94,7 +94,7 @@
 		  rotation          ( 0.0 | 90.0 | 180.0 | 270.0 ) "0.0"
 		  targetheight      CDATA #REQUIRED
 		  targetheight2     CDATA #REQUIRED
-		  defaultledmode	( currentpipeline | off | blink | on ) " currentpipeline" 
+		  defaultledmode	( currentpipeline | off | blink | on ) "currentpipeline" 
 		  defaultcammode    ( vision | drivercamera ) "vision"
 		  streammode        ( sidebyside | pipmain | pipsecondary ) "sidebyside"
 		  snapshots         ( off | twopersec ) "off"
