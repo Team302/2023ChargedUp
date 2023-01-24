@@ -2,7 +2,7 @@
 <!DOCTYPE auton SYSTEM "auton.dtd">
 <auton>
     <primitive id="RESET_POSITION"
-			   pathname="RedWall3A.wpilib.json"/>
+			   pathname="square.wpilib.json"/>
     <primitive id="DRIVE_PATH"
-               pathname="RedWall3A.wpilib.json"/>
+               pathname="square.wpilib.json"/>
 </auton>
