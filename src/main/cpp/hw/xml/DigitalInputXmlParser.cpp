@@ -52,7 +52,7 @@ shared_ptr<DragonDigitalInput> DigitalInputXmlParser::ParseXML
     shared_ptr<DragonDigitalInput> input;
 
     // initialize the attributes to default values
-    auto usage = DigitalInputUsage::DIGITAL_SENSOR_USAGE::UNKNOWN_DIGITAL_TYPE;
+    auto usage = DigitalInputUsage::DIGITAL_INPUT_USAGE::UNKNOWN_DIGITAL_INPUT_USAGE;
     int  digitalID = 0;
     bool reversed = false;
     units::time::second_t debounceTime = 0_s;

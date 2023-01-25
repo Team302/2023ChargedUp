@@ -35,9 +35,9 @@ class DigitalInputUsage
 
         /// @enum DIGITAL_SENSOR_USAGE
         /// @brief Defines digital input sensor usages.  This should be modified for each robot.
-        enum DIGITAL_SENSOR_USAGE
+        enum DIGITAL_INPUT_USAGE
         {
-            UNKNOWN_DIGITAL_TYPE = -1,
+            UNKNOWN_DIGITAL_INPUT_USAGE = -1,
             INTAKE_OUT,
             INTAKE_IN,
             BALL_PRESENT,
@@ -47,12 +47,12 @@ class DigitalInputUsage
             SHOOTER_HOOD_MAX,
             CLIMBER_BACK,
             CLIMBER_FORWARD,
-            MAX_DIGITAL_TYPES
+            MAX_DIGITAL_INPUT_USAGES
         };
 
         static DigitalInputUsage* GetInstance();
 
-        DIGITAL_SENSOR_USAGE GetUsage
+        DIGITAL_INPUT_USAGE GetUsage
         ( 
             std::string         usageString
         );
@@ -62,6 +62,6 @@ class DigitalInputUsage
         DigitalInputUsage();
         ~DigitalInputUsage();
         
-		std::map <std::string, DIGITAL_SENSOR_USAGE> m_usageMap;
+		std::map <std::string, DIGITAL_INPUT_USAGE> m_usageMap;
 
 };

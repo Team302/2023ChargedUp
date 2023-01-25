@@ -49,7 +49,7 @@ DigitalInputFactory* DigitalInputFactory::GetFactory()
 DragonDigitalInput* DigitalInputFactory::CreateInput
 (
     string										    networkTableName,
-    DigitalInputUsage::DIGITAL_SENSOR_USAGE			type,
+    DigitalInputUsage::DIGITAL_INPUT_USAGE			type,
     int 						                    digitalID,
     bool						                    reversed,
     units::time::second_t                           debounceTime
@@ -69,7 +69,7 @@ DragonDigitalInput* DigitalInputFactory::CreateInput
 /// @returns DragonDigitalInput*     pointer to the digital input or nullptr if it doesn't exist
 DragonDigitalInput* DigitalInputFactory::GetInput
 (
-    DigitalInputUsage::DIGITAL_SENSOR_USAGE			type
+    DigitalInputUsage::DIGITAL_INPUT_USAGE			type
 )
 {
     DragonDigitalInput* sensor = nullptr;
