@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE auton SYSTEM "auton.dtd">
+<auton>
+    <primitive id="RESET_POSITION" 
+			   pathname="BlueHP1.wpilib.jason"/> 
+    <primitive id="DRIVE_PATH" 
+               pathname="BlueHP1.wpilib.jason" 
+               time="5"/> <!--driving to gamepiece-->
+    <primitive id="DO_NOTHING"
+               time="2.0"/> <!--pick up gamepiece-->
+    <!--determine grabbed gamepiece-->
+    <primitive id="DRIVE_PATH" 
+               pathname="BlueHP2.wpilib.jason" 
+               time="5"/> <!--driving to gamepiece specific scoring station-->
+    <primitive id="DO_NOTHING"
+                time="2.0"/> <!--score gamepiece-->
+    <!--determine if going to charging station or gamepieces-->
+    <primitive id="DRIVE_PATH" 
+               pathname="BlueHP3A.wpilib.jason" 
+               time="5"/> <!--driving to gamepiece-->
+    <primitive id="DO_NOTHING"
+               time="2.0"/> <!--pick up gamepiece-->
+       <!--determine grabbed gamepiece-->
+
+</auton>
