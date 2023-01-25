@@ -733,8 +733,8 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 		$MECHANISM_NAME$
 		(
 		std::string                                 controlFileName,
-		std::string                                 networkTableName,
-		std::shared_ptr&lt;IDragonMotorController&gt;     motorController
+		std::string                                 networkTableName
+		$MECHANISM_CONSTRUCTOR_ARGUMENT_LIST$
 		);
 		$MECHANISM_NAME$() = delete;
 		~$MECHANISM_NAME$() override = default;
@@ -776,9 +776,9 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 		$MECHANISM_NAME$::$MECHANISM_NAME$
 		(
 		std::string                                 controlFileName,
-		std::string                                 networkTableName,
-		std::shared_ptr&lt;IDragonMotorController&gt;     motorController
-		):$MECH_BASE_CLASS$(MechanismTypes::MECHANISM_TYPE::$MECHANISM_NAME_UPPERCASE$,controlFileName,networkTableName,motorController)
+		std::string                                 networkTableName
+		$MECHANISM_CONSTRUCTOR_ARGUMENT_LIST$
+		):$MECH_BASE_CLASS$(MechanismTypes::MECHANISM_TYPE::$MECHANISM_NAME_UPPERCASE$,controlFileName,networkTableName $MECHANISM_CONSTRUCTOR_PARAMETER_LIST$)
 		{
 		}
 	</main_cpp>
@@ -1069,5 +1069,41 @@ void $MECHANISM_NAME$StateMgr::CheckForStateTransition()
 
 </stateManager_cpp>
 
+<StateStruc_h>
+
+//====================================================================================================================================================
+// Copyright 2022 Lake Orion Robotics FIRST Team 302
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+// OR OTHER DEALINGS IN THE SOFTWARE.
+//====================================================================================================================================================
+
+#pragma once
+#include &lt;string&gt;
+       
+enum StateType
+{
+    $STATE_STRUCT$
+    MAX_STATE_TYPES
+};
+
+
+struct StateStruc
+{
+    int         id;
+    std::string xmlIdentifier;
+    StateType   type;
+    bool        isDefault;
+};
+
+</StateStruc_h>
 
 </toolConfiguration>
