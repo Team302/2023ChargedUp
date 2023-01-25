@@ -112,7 +112,7 @@ frc::Trajectory TrajectoryGenerator::GenerateTrajectory(frc::Pose2d currentPose,
                     endWaypoint = WAYPOINTS::GRID_THREE_COL_THREE;
                     break;
                 default:
-                    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("TrajectoryGenerator"), std::string("Grid Two"), std::string("Could not find target position"));
+                    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("TrajectoryGenerator"), std::string("Grid Three"), std::string("Could not find target position"));
                     break;
             }
 
@@ -128,5 +128,6 @@ frc::Trajectory TrajectoryGenerator::GenerateTrajectory(frc::Pose2d currentPose,
 
     }
 
+    /// @TODO: Need to grab rotation 2d from somewhere to have correct end heading
     frc::TrajectoryGenerator::GenerateTrajectory(currentPose, intermediatePoints, frc::Pose2d{m_waypoints[endWaypoint], frc::Rotation2d(0, 0)}, m_config);
 }
