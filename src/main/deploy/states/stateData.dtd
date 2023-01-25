@@ -23,5 +23,6 @@
           value                         CDATA #REQUIRED
           secondValue                   CDATA #IMPLIED
           solenoid                      ( NONE | ON | REVERSE ) "NONE"
+          solenoid2                     ( NONE | ON | REVERSE ) "NONE"
 >
 
