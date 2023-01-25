@@ -40,8 +40,6 @@ using namespace frc;
 using namespace wpi::math;
 
 DrivePath::DrivePath() : m_chassis(ChassisFactory::GetChassisFactory()->GetIChassis()),
-                         m_timer(make_unique<Timer>()),
-                         m_currentChassisPosition(m_chassis.get()->GetPose()),
                          m_trajectory(),
                          m_runHoloController(true),
                          m_ramseteController(),
@@ -50,21 +48,12 @@ DrivePath::DrivePath() : m_chassis(ChassisFactory::GetChassisFactory()->GetIChas
                                           frc::ProfiledPIDController<units::radian>{0.1, 0, 0,
                                                                                     frc::TrapezoidProfile<units::radian>::Constraints{0_rad_per_s, 0_rad_per_s / 1_s}}),
                          //max velocity of 1 rotation per second and a max acceleration of 180 degrees per second squared.
-                         m_PrevPos(m_chassis.get()->GetPose()),
-                         m_PosChgTimer(make_unique<Timer>()),
-                         m_timesRun(0),
-                         m_targetPose(),
-                         m_deltaX(0.0),
-                         m_deltaY(0.0),
-                         m_trajectoryStates(),
-                         m_desiredState(),
                          m_headingOption(ChassisOptionEnums::HeadingOption::MAINTAIN),
                          m_heading(0.0),
-                         m_maxTime(-1.0),
+                         m_maxTime(-1.0), 
                          m_ntName("DrivePath")
 
 {
-    m_trajectoryStates.clear();
 }
 void DrivePath::Init(PrimitiveParams *params)
 {
@@ -74,126 +63,42 @@ void DrivePath::Init(PrimitiveParams *params)
     m_heading = params->GetHeading();
     m_maxTime = params->GetTime();
 
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, std::string("DrivePathInit"), std::string(m_pathname));
-
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, string("DrivePathInit"), string(m_pathname));
-
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "Initialized", "False");
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "Running", "False");
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "Done", "False");
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "WhyDone", "Not done");
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "Times Ran", 0);
-
-    m_trajectoryStates.clear(); //Clears the primitive of previous path/trajectory
-
-    m_wasMoving = false;
-
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "Initialized", "True"); //Signals that drive path is initialized in the console
 
     GetTrajectory(params->GetPathName());  //Parses path from json file based on path name given in xml
-    
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "Trajectory Time", m_trajectory.TotalTime().to<double>());// Debugging
-
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, std::string("DrivePathInit"), std::to_string(m_trajectoryStates.size()));
-    
-    if (!m_trajectoryStates.empty()) // only go if path name found
-    {
-        m_desiredState = m_trajectoryStates.front(); //m_desiredState is the first state, or starting position
-
-        m_timer.get()->Reset(); //Restarts and starts timer
-        m_timer.get()->Start();
-
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "DrivePathValues: CurrentPosX", m_currentChassisPosition.X().to<double>());
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "DrivePathValues: CurrentPosY", m_currentChassisPosition.Y().to<double>());
-
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "DrivePathValues: iDeltaX", "0");
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "DrivePathValues: iDeltaX", "0");
-
-        //A timer used for position change detection
-        m_PosChgTimer.get()->Reset(); 
-        m_PosChgTimer.get()->Start(); // start scan timer to detect motion
-
-        //Is used to determine what controller/ "drive mode" pathweaver will run in
-        //Holo / Holonomic = Swerve X, y, z movement   Ramsete = Differential / Tank x, y movement
-        m_holoController.SetEnabled(m_runHoloController);
-        m_ramseteController.SetEnabled(!m_runHoloController);
-
-        //Sampling means to grab a state based on the time, if we want to know what state we should be running at 5 seconds,
-        //we will sample the 5 second state.
-        auto targetState = m_trajectory.Sample(m_trajectory.TotalTime());  //"Samples" or grabs the position we should be at based on time
-
-        m_targetPose = targetState.pose;  //Target pose represents the pose that we want to be at, based on the target state from above
-
-        auto currPose = m_chassis.get()->GetPose(); //Grabs the current pose of the robot to compare to the target pose
-        auto trans = m_targetPose - currPose; //Translation / Delta of the target pose and current pose
-
-        m_deltaX = trans.X().to<double>();  //Separates the delta "trans" from above into two variables for x and y
-        m_deltaY = trans.Y().to<double>();
-    }
-    m_timesRun = 0;
 }
 void DrivePath::Run()
 {
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "Running", "True");
-
     ChassisMovement moveInfo;
-    moveInfo.driveOption = ChassisOptionEnums::DriveStateType::ROBOT_DRIVE;
+    moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
     moveInfo.controllerType = ChassisOptionEnums::AutonControllerType::HOLONOMIC;
     moveInfo.headingOption = ChassisOptionEnums::HeadingOption::MAINTAIN;
 
-    if (!m_trajectoryStates.empty()) //If we have a path parsed / have states to run
+    // Use the controller to calculate the chassis speeds for getting there
+    if (m_runHoloController)
     {
-        // debugging
-        m_timesRun++;
-        
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "Times Ran", m_timesRun);
-
-        // calculate where we are and where we want to be
-        CalcCurrentAndDesiredStates();
-
-        // Use the controller to calculate the chassis speeds for getting there
-        if (m_runHoloController)
+        switch (m_headingOption)
         {
-            Rotation2d rotation = m_desiredState.pose.Rotation();
-            switch (m_headingOption)
-            {
-                case ChassisOptionEnums::HeadingOption::MAINTAIN:
-//                   rotation = m_currentChassisPosition.Rotation();
-                   break;
+            case ChassisOptionEnums::HeadingOption::MAINTAIN:
+               break;
 
-                case ChassisOptionEnums::HeadingOption::TOWARD_GOAL:
-                    moveInfo.headingOption = ChassisOptionEnums::HeadingOption::TOWARD_GOAL;
-                    //moveInfo.yawAngle = units::angle::degree_t(m_targetFinder.GetTargetAngleD(m_currentChassisPosition));
-                    //rotation = Rotation2d(units::angle::degree_t(m_targetFinder.GetTargetAngleD(m_currentChassisPosition)));
-                    break;
+            case ChassisOptionEnums::HeadingOption::TOWARD_GOAL:
+                moveInfo.headingOption = ChassisOptionEnums::HeadingOption::TOWARD_GOAL;
+                break;
 
-                case ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE:
-                    moveInfo.headingOption = ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE;
-                    moveInfo.yawAngle = units::angle::degree_t(m_heading);
-                    rotation = Rotation2d(units::angle::degree_t(m_heading));
-                    m_chassis.get()->SetTargetHeading(units::angle::degree_t(m_heading));
-                    break;
-                
-                default:
-                    rotation = m_desiredState.pose.Rotation();
-                    break;
-            }
-            moveInfo.chassisSpeeds = m_holoController.Calculate(m_currentChassisPosition, 
-                                                                m_desiredState, 
-                                                                m_desiredState.pose.Rotation());
-        }
-        else
-        {
-            moveInfo.controllerType = ChassisOptionEnums::AutonControllerType::RAMSETE;
-            moveInfo.chassisSpeeds = m_ramseteController.Calculate(m_currentChassisPosition, 
-                                                                   m_desiredState);
+            case ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE:
+                moveInfo.headingOption = ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE;
+                moveInfo.yawAngle = units::angle::degree_t(m_heading);
+                m_chassis.get()->SetTargetHeading(units::angle::degree_t(m_heading));
+                break;
+            
+            default:
+                break;
         }
     }
-    else //If we don't have states to run, don't move the robot
+    else
     {
-        moveInfo.chassisSpeeds.vx = 0_mps;
-        moveInfo.chassisSpeeds.vy = 0_mps;
-        moveInfo.chassisSpeeds.omega = units::angular_velocity::radians_per_second_t(0);
+        moveInfo.controllerType = ChassisOptionEnums::AutonControllerType::RAMSETE;
     }
     m_chassis.get()->Drive(moveInfo);
 }
@@ -202,7 +107,7 @@ bool DrivePath::IsDone() //Default primitive function to determine if the primit
 {
 
     bool isDone = false;
-    string whyDone = ""; //debugging variable that we used to determine why the path was stopping
+    string whyDone = ""; //debugging variable that we use to determine why the path was stopping
     
     if (!m_trajectoryStates.empty()) //If we have states... 
     {
@@ -220,8 +125,6 @@ bool DrivePath::IsDone() //Default primitive function to determine if the primit
                 whyDone = "Current Pose = Trajectory final pose";
             }
         }
-        
-
         
         if ( !isDone )
         {
@@ -306,45 +209,14 @@ void DrivePath::GetTrajectory //Parses pathweaver json to create a series of poi
 {
     if (!path.empty()) // only go if path name found
     {
-        // Read path into trajectory for deploy directory.  JSON File ex. Bounce1.wpilid.json
-        //wpi::SmallString<64> deployDir;  //creates a string variable
-        //frc::filesystem::GetDeployDirectory(deployDir);  //grabs the deploy directory: "/lvuser/deploy" on roborio
-        //wpi::sys::path::append(deployDir, "paths");  //goes into "/lvuser/deploy/paths" on roborio
-        //wpi::sys::path::append(deployDir, path); // load path from deploy directory
+        // Read path into trajectory for deploy directory.  JSON File ex. Bounce1.wpilib.json
     	auto deployDir = frc::filesystem::GetDeployDirectory();
         deployDir += "/paths/" + path;
-
-        m_trajectory = frc::TrajectoryUtil::FromPathweaverJson(deployDir);
-
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, string("Deploy path is "), deployDir.c_str()); //Debugging
         
-        //This doesn't work, gives parsing error
         m_trajectory = frc::TrajectoryUtil::FromPathweaverJson(deployDir);  //Creates a trajectory or path that can be used in the code, parsed from pathweaver json
-        //m_trajectory = frc::TrajectoryUtil::FromPathweaverJson("/home/lvuser/deploy/paths/5Ball1.wpilib.json"); //This is a temporary fix
-        m_trajectoryStates = m_trajectory.States();  //Creates a vector of all the states or "waypoints" the robot needs to get to
         
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, string("DrivePath - Loaded = "), path);
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "DrivePathValues: TrajectoryTotalTime", m_trajectory.TotalTime().to<double>());
     }
 
-}
-
-void DrivePath::CalcCurrentAndDesiredStates()
-{
-    m_currentChassisPosition = m_chassis.get()->GetPose(); //Grabs current pose / position
-    auto sampleTime = units::time::second_t(m_timer.get()->Get()); //+ 0.02  //Grabs the time that we should sample a state from
-
-    m_desiredState = m_trajectory.Sample(sampleTime); //Gets the target state based on the current time
-
-    // May need to do our own sampling based on position and time     
-
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "DrivePathValues: DesiredPoseX", m_desiredState.pose.X().to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "DrivePathValues: DesiredPoseY", m_desiredState.pose.Y().to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "DrivePathValues: DesiredPoseOmega", m_desiredState.pose.Rotation().Degrees().to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "DrivePathValues: CurrentPosX", m_currentChassisPosition.X().to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "DrivePathValues: CurrentPosY", m_currentChassisPosition.Y().to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "DrivePathValues: CurrentPosOmega", m_currentChassisPosition.Rotation().Degrees().to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "DrivePathValues: DeltaX", m_desiredState.pose.X().to<double>() - m_currentChassisPosition.X().to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "DrivePathValues: DeltaY", m_desiredState.pose.Y().to<double>() - m_currentChassisPosition.Y().to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "DrivePathValues: CurrentTime", m_timer.get()->Get().to<double>());
 }

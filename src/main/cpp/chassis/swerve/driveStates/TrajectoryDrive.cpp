@@ -43,7 +43,6 @@ void TrajectoryDrive::Init
     //Clear m_trajectoryStates in case it holds onto a previous trajectory
     m_trajectoryStates.clear();
 
-
     if (!m_trajectoryStates.empty()) // only go if path name found
     {
         //Desired state is first state in trajectory
