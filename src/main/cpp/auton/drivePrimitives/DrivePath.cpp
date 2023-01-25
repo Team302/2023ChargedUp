@@ -40,6 +40,7 @@ using namespace frc;
 using namespace wpi::math;
 
 DrivePath::DrivePath() : m_chassis(ChassisFactory::GetChassisFactory()->GetIChassis()),
+                         m_timer(make_unique<Timer>()),
                          m_trajectory(),
                          m_runHoloController(true),
                          m_ramseteController(),
@@ -62,6 +63,10 @@ void DrivePath::Init(PrimitiveParams *params)
     m_headingOption = params->GetHeadingOption();
     m_heading = params->GetHeading();
     m_maxTime = params->GetTime();
+
+    //Start timeout timer for path
+    m_timer.get()->Reset();
+    m_timer.get()->Start();
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "WhyDone", "Not done");
 
@@ -103,103 +108,31 @@ void DrivePath::Run()
     m_chassis.get()->Drive(moveInfo);
 }
 
-bool DrivePath::IsDone() //Default primitive function to determine if the primitive is done running
+bool DrivePath::IsDone()
 {
-
-    bool isDone = false;
-    string whyDone = ""; //debugging variable that we use to determine why the path was stopping
     
-    if (!m_trajectoryStates.empty()) //If we have states... 
+    if(m_timer.get()->Get() > m_trajectory.TotalTime())
     {
-        auto curPos = m_chassis.get()->GetPose();
-        // allow a time out to be put into the xml
-        auto currentTime = m_timer.get()->Get().to<double>();
-        isDone = currentTime > m_maxTime && m_maxTime > 0.0;
-        if (!isDone)
-        {
-            // Check if the current pose and the trajectory's final pose are the same
-            //isDone = IsSamePose(curPos, m_targetPose, 100.0);
-            if (IsSamePose(curPos, m_targetPose, 100.0))
-            {
-                isDone = true;
-                whyDone = "Current Pose = Trajectory final pose";
-            }
-        }
-        
-        if ( !isDone )
-        {
-            // Now check if the current pose is getting closer or farther from the target pose 
-            auto trans = m_targetPose - curPos;
-            auto thisDeltaX = trans.X().to<double>();
-            auto thisDeltaY = trans.Y().to<double>();
-            if (abs(thisDeltaX) < m_deltaX && abs(thisDeltaY) < m_deltaY)
-            {   // Getting closer so just update the deltas
-                m_deltaX = thisDeltaX;
-                m_deltaY = thisDeltaY;
-            }
-            else
-            {   // Getting farther away:  determine if it is because of the path curvature (not straight line between start and the end)
-                // or because we went past the target (in this case, we are done)
-                // Assume that once we get within a third of a meter (just under 12 inches), if we get
-                // farther away we are passing the target, so we should stop.  Otherwise, keep trying.
-                isDone = ((abs(m_deltaX) < 0.3&& abs(m_deltaY) < 0.3));  //These values were updated to .3 from .1
-                if ((abs(m_deltaX) < 0.3 && abs(m_deltaY) < 0.3))
-                {
-                    whyDone = "Within 12 inches of target or getting farther away from target";
-                }
-            }
-        }       
- 
-        if (m_PosChgTimer.get()->Get() > 1_s)//This if statement makes sure that we aren't checking for position change right at the start
-        {                                    //caused problems that would signal we are done when the path hasn't started
-            auto moving = !IsSamePose(curPos, m_PrevPos, 7.5);
-            if (!moving && m_wasMoving)  //If we aren't moving and last state we were moving, then...
-            {
-                    isDone = true;
-                    whyDone = "Stopped moving";                    
-            }
-            m_PrevPos = curPos;
-            m_wasMoving = moving;
-        }
-
-        // finally, do it based on time (we have no more states);  if we want to keep 
-        // going, we need to understand where in the trajectory we are, so we can generate
-        // a new state.
-        if (!isDone)
-        {
-            //return (units::second_t(m_timer.get()->Get()) >= m_trajectory.TotalTime()); 
-        }
+        return true;
     }
     else
     {
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "Done", "True");
-        return true;
+        /// @TODO: Add accessor for current drive state to return why/isDone from TrajectoryDrive
+        /*if(TrajectoryDrive->IsDone()) //TrajectoryDrive is done -> log the reason why and end drive path primitive
+        {
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "WhyDone", TrajectoryDrive->WhyDone());
+            return true;
+        }
+        else //TrajectoryDrive isn't done
+        {
+            return false;
+        }
+        */
+
+
+       /// PLACEHOLDER UNTIL ACCESSOR CREATED
+       return false;
     }
-    if (isDone)
-    {   //debugging
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "Done", "True");
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "WhyDone", whyDone);
-    }
-    return isDone;
-    
-}
-
-bool DrivePath::IsSamePose(frc::Pose2d lCurPos, frc::Pose2d lPrevPos, double tolerance) //position checking functions
-{
-    // Detect if the two poses are the same within a tolerance
-    double dCurPosX = lCurPos.X().to<double>() * 1000; //cm
-    double dCurPosY = lCurPos.Y().to<double>() * 1000;
-    double dPrevPosX = lPrevPos.X().to<double>() * 1000;
-    double dPrevPosY = lPrevPos.Y().to<double>() * 1000;
-
-    double dDeltaX = abs(dPrevPosX - dCurPosX);
-    double dDeltaY = abs(dPrevPosY - dCurPosY);
-
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "DrivePathValues: iDeltaX", to_string(dDeltaX));
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "DrivePathValues: iDeltaY", to_string(dDeltaY));
-
-    //  If Position of X or Y has moved since last scan..  Using Delta X/Y
-    return (dDeltaX <= tolerance && dDeltaY <= tolerance);
 }
 
 void DrivePath::GetTrajectory //Parses pathweaver json to create a series of points that we can drive the robot to
@@ -214,9 +147,6 @@ void DrivePath::GetTrajectory //Parses pathweaver json to create a series of poi
         deployDir += "/paths/" + path;
         
         m_trajectory = frc::TrajectoryUtil::FromPathweaverJson(deployDir);  //Creates a trajectory or path that can be used in the code, parsed from pathweaver json
-        
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, string("DrivePath - Loaded = "), path);
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "DrivePathValues: TrajectoryTotalTime", m_trajectory.TotalTime().to<double>());
     }
 
 }

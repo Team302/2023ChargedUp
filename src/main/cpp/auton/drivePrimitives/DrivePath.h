@@ -52,20 +52,18 @@ public:
     bool IsDone() override;
 
 private:
-    bool IsSamePose(frc::Pose2d, frc::Pose2d, double tolerance); // routine to check for motion
     void GetTrajectory(std::string  path);
     void CalcCurrentAndDesiredStates();
 
 
 
     std::shared_ptr<IChassis>               m_chassis;
-
+    std::unique_ptr<frc::Timer>             m_timer;
     frc::Trajectory                         m_trajectory;
     bool                                    m_runHoloController;
     
     frc::RamseteController                  m_ramseteController;
     frc::HolonomicDriveController           m_holoController;
-
     
     std::string                             m_pathname;
 
@@ -73,6 +71,4 @@ private:
     double                                  m_heading;
     double                                  m_maxTime;
     std::string                             m_ntName;
-
- 
 };
