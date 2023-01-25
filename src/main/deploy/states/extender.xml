@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<statedata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <mechanismTarget
+    stateIdentifier="HOLD_POSITION_EXTEND"
+    controlDataIdentifier=""
+    controlDataIdentifier2=""
+    value=""
+    secondValue=""
+    solenoid="NONE" />
+  <mechanismTarget
+    stateIdentifier="MANUAL_EXTEND_RETRACT"
+    controlDataIdentifier=""
+    controlDataIdentifier2=""
+    value=""
+    secondValue=""
+    solenoid="NONE" />
+  <mechanismTarget
+    stateIdentifier="CUBE_BACKROW_EXTEND"
+    controlDataIdentifier=""
+    controlDataIdentifier2=""
+    value=""
+    secondValue=""
+    solenoid="NONE" />
+  <mechanismTarget
+    stateIdentifier="CONE_BACKROW_EXTEND"
+    controlDataIdentifier=""
+    controlDataIdentifier2=""
+    value=""
+    secondValue=""
+    solenoid="NONE" />
+  <mechanismTarget
+    stateIdentifier="CUBE_MIDROW_EXTEND"
+    controlDataIdentifier=""
+    controlDataIdentifier2=""
+    value=""
+    secondValue=""
+    solenoid="NONE" />
+  <mechanismTarget
+    stateIdentifier="CONE_MIDROW_EXTEND"
+    controlDataIdentifier=""
+    controlDataIdentifier2=""
+    value=""
+    secondValue=""
+    solenoid="NONE" />
+  <mechanismTarget
+    stateIdentifier="HUMAN_PLAYER_STATION_EXTEND"
+    controlDataIdentifier=""
+    controlDataIdentifier2=""
+    value=""
+    secondValue=""
+    solenoid="NONE" />
+  <mechanismTarget
+    stateIdentifier="STARTING_POSITION_EXTEND"
+    controlDataIdentifier=""
+    controlDataIdentifier2=""
+    value=""
+    secondValue=""
+    solenoid="NONE" />
+  <mechanismTarget
+    stateIdentifier="FLOOR_EXTEND"
+    controlDataIdentifier=""
+    controlDataIdentifier2=""
+    value=""
+    secondValue=""
+    solenoid="NONE" />
+</statedata>

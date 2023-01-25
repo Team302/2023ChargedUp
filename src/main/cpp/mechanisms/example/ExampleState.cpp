@@ -20,7 +20,7 @@
 // FRC includes
 
 // Team 302 includes
-#include <mechanisms/base/Mech1MotorState.h>
+#include <mechanisms/base/Mech1IndMotorState.h>
 #include <mechanisms/controllers/ControlData.h>
 #include <mechanisms/example/ExampleState.h>
 #include <mechanisms/MechanismFactory.h>
@@ -35,8 +35,10 @@ ExampleState::ExampleState
     int                             stateId,
     ControlData*                    control, 
     double                          target
-) : Mech1MotorState( MechanismFactory::GetMechanismFactory()->GetExample(), stateName, stateId, control, target),
-    m_example(MechanismFactory::GetMechanismFactory()->GetExample())
+) : Mech1IndMotorState( MechanismFactory::GetMechanismFactory()->GetExample(), stateName, stateId, control, target),
+    m_example(MechanismFactory::GetMechanismFactory()->GetExample()),
+    m_parsedTarget(target),
+    m_target(target)
 {
     
 }

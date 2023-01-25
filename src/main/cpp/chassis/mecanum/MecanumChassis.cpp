@@ -28,12 +28,14 @@
 #include <units/angle.h>
 
 #include <chassis/holonomic/FieldDriveUtils.h>
+#include <chassis/ChassisMovement.h>
 #include <hw/factories/PigeonFactory.h>
 #include <hw/DragonPigeon.h>
 #include <utils/ConversionUtils.h>
 #include <utils/Logger.h>
 
 #include <chassis/mecanum/MecanumChassis.h>
+#include <chassis/ChassisOptionEnums.h>
 
 #include <ctre/phoenix/motorcontrol/can/WPI_TalonSRX.h>
 
@@ -75,17 +77,17 @@ IChassis::CHASSIS_TYPE MecanumChassis::GetType() const
 
 void MecanumChassis::Drive
 (
-    frc::ChassisSpeeds                     chassisSpeeds,
-    IChassis::CHASSIS_DRIVE_MODE  mode,
-    IChassis::HEADING_OPTION      headingOption
+    ChassisMovement moveInfo
 ) 
 {
 
+    auto chassisSpeeds = moveInfo.chassisSpeeds;
+    auto mode = moveInfo.driveOption;
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("MecanumChassis"), string("Run Vx"), chassisSpeeds.vx.value());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("MecanumChassis"), string("Run Vy"), chassisSpeeds.vy.value());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("MecanumChassis"), string("Run Omega"), chassisSpeeds.omega.value());
 
-    auto speeds = mode == IChassis::CHASSIS_DRIVE_MODE::FIELD_ORIENTED ? FieldDriveUtils::ConvertFieldOrientedToRobot(chassisSpeeds, m_pigeon) : chassisSpeeds;
+    auto speeds = mode == ChassisOptionEnums::DriveStateType::FIELD_DRIVE ? FieldDriveUtils::ConvertFieldOrientedToRobot(chassisSpeeds, m_pigeon) : chassisSpeeds;
     auto forward = speeds.vx / m_maxSpeed;
     auto strafe  = speeds.vy / m_maxSpeed;
     auto rot     = speeds.omega / m_maxAngSpeed;
@@ -103,12 +105,10 @@ void MecanumChassis::Drive
     m_rightBackMotor.get()->Set(backRightPower);
 }
 
-//Moves the robot
-void MecanumChassis::Drive(frc::ChassisSpeeds chassisSpeeds)
+void MecanumChassis::Drive()
 {
-    Drive(chassisSpeeds, IChassis::CHASSIS_DRIVE_MODE::ROBOT_ORIENTED, IChassis::HEADING_OPTION::MAINTAIN);
+    // No-op
 }
-
 frc::Pose2d MecanumChassis::GetPose() const
 {
     return Pose2d();

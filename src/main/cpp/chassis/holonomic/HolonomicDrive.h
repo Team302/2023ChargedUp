@@ -22,6 +22,8 @@
 #include <State.h>
 
 class IChassis;
+class MecanumChassis;
+class SwerveChassis;
 
 class HolonomicDrive : public State
 {
@@ -39,4 +41,6 @@ class HolonomicDrive : public State
         inline TeleopControl* GetController() const { return m_controller; }
         IChassis*                           m_chassis;
         TeleopControl*                      m_controller;
+        SwerveChassis*                      m_swerve;
+        MecanumChassis*                     m_mecanum;
 };

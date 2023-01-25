@@ -26,6 +26,7 @@
 #include <auton/drivePrimitives/DriveStop.h>
 #include <auton/PrimitiveParams.h>
 #include <auton/drivePrimitives/IPrimitive.h>
+#include <chassis/ChassisMovement.h>
 #include <chassis/ChassisFactory.h>
 #include <mechanisms/controllers/ControlModes.h>
 #include <utils/Logger.h>
@@ -67,11 +68,11 @@ void DriveStop::Run()
 {
 	if (m_chassis.get() != nullptr)
 	{
-		ChassisSpeeds speeds;
-		speeds.vx = 0_mps;
-		speeds.vy = 0_mps;
-		speeds.omega = units::degrees_per_second_t(0.0);
-		m_chassis.get()->Drive(speeds);
+		ChassisMovement moveInfo;
+		moveInfo.chassisSpeeds.vx = 0_mps;
+		moveInfo.chassisSpeeds.vy = 0_mps;
+		moveInfo.chassisSpeeds.omega = units::degrees_per_second_t(0.0);
+		m_chassis.get()->Drive(moveInfo);
 	}
 	else
 	{

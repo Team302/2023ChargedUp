@@ -10,7 +10,6 @@
 #include <cameraserver/CameraServer.h>
 
 #include <auton/CyclePrimitives.h>
-#include <chassis/differential/ArcadeDrive.h>
 #include <chassis/ChassisFactory.h>
 #include <chassis/IChassis.h>
 #include <chassis/holonomic/HolonomicDrive.h>
@@ -22,6 +21,7 @@
 #include <utils/LoggerData.h>
 #include <utils/LoggerEnums.h>
 #include <LoggableItemMgr.h>
+#include <AdjustableItemMgr.h>
 
 using namespace std;
 
@@ -37,15 +37,15 @@ void Robot::RobotInit()
     auto XmlParser = new RobotXmlParser();
     XmlParser->ParseXML();
 
+    //Get AdjustableItemMgr instance
+    m_tuner = AdjustableItemMgr::GetInstance();
+
     auto factory = ChassisFactory::GetChassisFactory();
     m_chassis = factory->GetIChassis();
     m_holonomic = nullptr;
-    m_arcade = nullptr;
     if (m_chassis != nullptr)
     {
-        auto type = m_chassis->GetType();
-         m_holonomic = type == IChassis::CHASSIS_TYPE::SWERVE || type == IChassis::CHASSIS_TYPE::MECANUM ? new HolonomicDrive() : nullptr;
-         m_arcade = m_chassis->GetType() == IChassis::CHASSIS_TYPE::DIFFERENTIAL ? new ArcadeDrive() : nullptr;
+        m_holonomic = new HolonomicDrive();
     }        
     
     StateMgrHelper::InitStateMgrs();
@@ -85,6 +85,8 @@ auto vision = DragonVision::GetDragonVision();
         LoggableItemMgr::GetInstance()->LogData();
         Logger::GetLogger()->PeriodicLog();
     }
+
+    m_tuner->ListenForUpdates();
 }
 
 /**
@@ -127,10 +129,6 @@ void Robot::TeleopInit()
         {
             m_holonomic->Init();
         }
-        else if (m_arcade != nullptr)
-        {
-            m_arcade->Init();
-        }
     }
     StateMgrHelper::RunCurrentMechanismStates();
 
@@ -146,10 +144,6 @@ void Robot::TeleopPeriodic()
         if (m_holonomic != nullptr)
         {
             m_holonomic->Run();
-        }
-        else if (m_arcade != nullptr)
-        {
-            m_arcade->Run();
         }
     }
     StateMgrHelper::RunCurrentMechanismStates();

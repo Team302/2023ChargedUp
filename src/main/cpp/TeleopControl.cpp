@@ -119,6 +119,15 @@ void TeleopControl::Initialize() const
 		m_controllerIndex[ HOLONOMIC_DRIVE_ROTATE]			= ctrlNo;
 		m_axisIDs[HOLONOMIC_DRIVE_ROTATE]					= IDragonGamePad::RIGHT_JOYSTICK_X;
 
+		m_controllerIndex[ HOLONOMIC_ROTATE_FRONT ]		= ctrlNo;
+		m_buttonIDs[ HOLONOMIC_ROTATE_FRONT ]			= IDragonGamePad::POV_0;
+		m_controllerIndex[ HOLONOMIC_ROTATE_BACK ]		= ctrlNo;
+		m_buttonIDs[ HOLONOMIC_ROTATE_BACK ]			= IDragonGamePad::POV_180;
+		m_controllerIndex[ HOLONOMIC_ROTATE_LEFT ]		= ctrlNo;
+		m_buttonIDs[ HOLONOMIC_ROTATE_LEFT ]			= IDragonGamePad::POV_270;
+		m_controllerIndex[ HOLONOMIC_ROTATE_RIGHT ]		= ctrlNo;
+		m_buttonIDs[ HOLONOMIC_ROTATE_RIGHT ]			= IDragonGamePad::POV_90;
+
 		m_controllerIndex[FINDTARGET] 					= ctrlNo;  
 		m_buttonIDs[FINDTARGET]	 						= IDragonGamePad::LEFT_BUMPER;	
 

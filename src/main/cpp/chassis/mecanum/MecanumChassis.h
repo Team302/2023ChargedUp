@@ -22,6 +22,7 @@
 #include <units/angular_velocity.h>
 
 #include <chassis/IChassis.h>
+#include <chassis/ChassisMovement.h>
 #include <hw/interfaces/IDragonMotorController.h>
 
 namespace frc
@@ -52,13 +53,8 @@ class MecanumChassis : public IChassis
                             std::string                                     networktablename);
 
         IChassis::CHASSIS_TYPE GetType() const override;
-        void Drive(frc::ChassisSpeeds chassisSpeeds) override;
-        void Drive
-        (
-            frc::ChassisSpeeds                      chassisSpeeds,
-            IChassis::CHASSIS_DRIVE_MODE   mode,
-            IChassis::HEADING_OPTION       headingOption
-        ) override;
+        void Drive(ChassisMovement chassisSpeeds) override;
+        void Drive() override;
         
         inline void Initialize() override {};
         frc::Pose2d GetPose() const override;
