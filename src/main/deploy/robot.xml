@@ -9,6 +9,40 @@
     type="pigeon2"
     rotation="0.0"
     usage="CENTER_OF_ROTATION" />
+  <limelight
+    usage="MAINLIMELIGHT"
+    tablename="limelight"
+    mountingheight="35"
+    horizontaloffset="0.0"
+    mountingangle="0"
+    rotation="0.0"
+    targetheight=""
+    targetheight2=""
+    defaultledmode="currentpipeline"
+    defaultcammode="vision"
+    streammode="sidebyside"
+    snapshots="off"
+    crosshairx=""
+    crosshairy=""
+    secondcrosshairx=""
+    secondcrosshairy="" />
+  <limelight
+    usage="SECONDARYLIMELIGHT"
+    tablename="limelight2"
+    mountingheight=""
+    horizontaloffset="0.0"
+    mountingangle=""
+    rotation="0.0"
+    targetheight=""
+    targetheight2=""
+    defaultledmode="currentpipeline"
+    defaultcammode="vision"
+    streammode="sidebyside"
+    snapshots="off"
+    crosshairx=""
+    crosshairy=""
+    secondcrosshairx=""
+    secondcrosshairy="" />
   <chassis
     type="SWERVE"
     wheelDiameter="4.0"
@@ -314,11 +348,11 @@
       reverse="false" />
   </mechanism>
   <mechanism
-    type="INTAKE"
+    type="Extender"
     networkTable="extenderNT"
     controlFile="extender.xml">
     <motor
-      usage="INTAKE_TRANSFER"
+      usage="Extender"
       canId="10"
       canBusName="rio"
       pdpID="10"
@@ -343,16 +377,16 @@
       countsPerInch="countsPerDegree&#x9;&#x9;    CDATA&#xD;&#xA;&gt;" />
   </mechanism>
   <mechanism
-    type="INTAKE"
+    type="Grabber"
     networkTable=""
     controlFile="grabber.xml">
     <solenoid
-      usage="INTAKE"
+      usage="GrabberSolenoid1"
       canId="1"
       channel="0"
       reversed="false" />
     <solenoid
-      usage="INTAKE2"
+      usage="GrabberSolenoid2"
       canId="1"
       channel="1"
       reversed="false" />
