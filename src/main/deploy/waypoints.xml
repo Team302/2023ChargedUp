@@ -1,9 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>  
 <!DOCTYPE robot SYSTEM "waypoints.dtd">
 <waypoints>
-    <waypoint identifier="GRID_ONE_INTERMEDIATE"
-              blueXCoordinate="0.0"
-              blueYCoordinate="0.0"
-              redXCoordinate="0.0"
-              redYCoordinate="0.0"/>
+<!--Coordinates have an origin at the bottom left corner of the field (red loading zone)-->
+<!--Column one is closest to the spectator wall, column three is closest to loading zone-->
+<!--Coordinates are in meters-->  
+<!-- @TODO: Determine if we need a separate red/blue y coordinate, right now they are the same for each-->  
+    <waypoint identifier="GRID_WALL_INTERMEDIATE"
+              blueXCoordinate="4.3"
+              blueYCoordinate="0.75"
+              redXCoordinate="12.35"
+              redYCoordinate="0.75"/>
+    <waypoint identifier="GRID_COOP_INTERMEDIATE"
+              blueXCoordinate="5.3"
+              blueYCoordinate="2.75"
+              redXCoordinate="9.5"
+              redYCoordinate="2.75"/>
+    <waypoint identifier="GRID_HP_INTERMEDIATE"
+              blueXCoordinate="4.3"
+              blueYCoordinate="4.45"
+              redXCoordinate="12.35"
+              redYCoordinate="4.45"/>
+    <waypoint identifier="GRID_WALL_COL_ONE"
+              blueXCoordinate="1.85"
+              blueYCoordinate="0.5"
+              redXCoordinate="14.8"
+              redYCoordinate="0.5"/>
+    <waypoint identifier="GRID_WALL_COL_TWO"
+              blueXCoordinate="1.85"
+              blueYCoordinate="1.1"
+              redXCoordinate="14.8"
+              redYCoordinate="1.1"/>
+    <waypoint identifier="GRID_WALL_COL_THREE"
+              blueXCoordinate="1.85"
+              blueYCoordinate="1.6"
+              redXCoordinate="14.8"
+              redYCoordinate="1.6"/>
+    <waypoint identifier="GRID_COOP_COL_ONE"
+              blueXCoordinate="1.85"
+              blueYCoordinate="2.2"
+              redXCoordinate="14.8"
+              redYCoordinate="2.2"/>
+    <waypoint identifier="GRID_COOP_COL_TWO"
+              blueXCoordinate="1.85"
+              blueYCoordinate="2.75"
+              redXCoordinate="14.8"
+              redYCoordinate="2.75"/>
+    <waypoint identifier="GRID_COOP_COL_THREE"
+              blueXCoordinate="1.85"
+              blueYCoordinate="3.3"
+              redXCoordinate="14.8"
+              redYCoordinate="3.3"/>
+    <waypoint identifier="GRID_HP_COL_ONE"
+              blueXCoordinate="1.85"
+              blueYCoordinate="3.85"
+              redXCoordinate="14.8"
+              redYCoordinate="3.85"/>
+    <waypoint identifier="GRID_HP_COL_TWO"
+              blueXCoordinate="1.85"
+              blueYCoordinate="4.4"
+              redXCoordinate="14.8"
+              redYCoordinate="4.4"/>
+    <waypoint identifier="GRID_HP_COL_THREE"
+              blueXCoordinate="1.85"
+              blueYCoordinate="5.0"
+              redXCoordinate="14.8"
+              redYCoordinate="5.0"/>
 </waypoints>
