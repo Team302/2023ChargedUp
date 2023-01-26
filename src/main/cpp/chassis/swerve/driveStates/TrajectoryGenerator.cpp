@@ -148,5 +148,5 @@ frc::Trajectory Dragons::TrajectoryGenerator::GenerateTrajectory(frc::Pose2d cur
         set correct heading for red side
     }
     */
-    frc::TrajectoryGenerator::GenerateTrajectory(currentPose, intermediatePoints, frc::Pose2d{m_blueWaypoints[endWaypoint], frc::Rotation2d(0, 0)}, m_config);
+    return frc::TrajectoryGenerator::GenerateTrajectory(currentPose, intermediatePoints, frc::Pose2d{m_blueWaypoints[endWaypoint], frc::Rotation2d(0, 0)}, m_config);
 }
