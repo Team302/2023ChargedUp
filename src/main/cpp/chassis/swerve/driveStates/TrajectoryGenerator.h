@@ -24,6 +24,7 @@
 #include <units/acceleration.h>
 #include <frc/trajectory/Trajectory.h>
 #include <frc/trajectory/TrajectoryGenerator.h>
+#include <frc/trajectory/TrajectoryConfig.h>
 
 //Team 302 Includes
 #include <utils/Waypoint2d.h>
@@ -33,18 +34,18 @@ class TrajectoryGenerator
     public:
         enum WAYPOINTS
         {
-            GRID_ONE_COL_ONE,
-            GRID_ONE_COL_TWO,
-            GRID_ONE_COL_THREE,
-            GRID_TWO_COL_ONE,
-            GRID_TWO_COL_TWO,
-            GRID_TWO_COL_THREE,
-            GRID_THREE_COL_ONE,
-            GRID_THREE_COL_TWO,
-            GRID_THREE_COL_THREE,
-            GRID_ONE_INTERMEDIATE,
-            GRID_TWO_INTERMEDIATE,
-            GRID_THREE_INTERMEDIATE
+            GRID_WALL_COL_ONE,
+            GRID_WALL_COL_TWO,
+            GRID_WALL_COL_THREE,
+            GRID_COOP_COL_ONE,
+            GRID_COOP_COL_TWO,
+            GRID_COOP_COL_THREE,
+            GRID_HP_COL_ONE,
+            GRID_HP_COL_TWO,
+            GRID_HP_COL_THREE,
+            GRID_WALL_INTERMEDIATE,
+            GRID_COOP_INTERMEDIATE,
+            GRID_HP_INTERMEDIATE
         };
 
         enum TARGET_POSITION

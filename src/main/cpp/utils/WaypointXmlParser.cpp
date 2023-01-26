@@ -46,12 +46,18 @@ void WaypointXmlParser::ParseWaypoints()
     std::string filename = deployDir + std::string("/waypoints.xml");
 
     map<string, TrajectoryGenerator::WAYPOINTS> waypointMap;
-    waypointMap[string("GRID_ONE_INTERMEDIATE")] = TrajectoryGenerator::WAYPOINTS::GRID_ONE_INTERMEDIATE;
-    waypointMap[string("GRID_TWO_INTERMEDIATE")] = TrajectoryGenerator::WAYPOINTS::GRID_TWO_INTERMEDIATE;
-    waypointMap[string("GRID_THREE_INTERMEDIATE")] = TrajectoryGenerator::WAYPOINTS::GRID_THREE_INTERMEDIATE;
-    waypointMap[string("GRID_ONE")] = TrajectoryGenerator::WAYPOINTS::GRID_ONE;
-    waypointMap[string("GRID_TWO")] = TrajectoryGenerator::WAYPOINTS::GRID_TWO;
-    waypointMap[string("GRID_THREE")] = TrajectoryGenerator::WAYPOINTS::GRID_THREE;
+    waypointMap[string("GRID_WALL_INTERMEDIATE")] = TrajectoryGenerator::WAYPOINTS::GRID_WALL_INTERMEDIATE;
+    waypointMap[string("GRID_COOP_INTERMEDIATE")] = TrajectoryGenerator::WAYPOINTS::GRID_COOP_INTERMEDIATE;
+    waypointMap[string("GRID_HP_INTERMEDIATE")] = TrajectoryGenerator::WAYPOINTS::GRID_HP_INTERMEDIATE;
+    waypointMap[string("GRID_WALL_COL_ONE")] = TrajectoryGenerator::WAYPOINTS::GRID_WALL_COL_ONE;
+    waypointMap[string("GRID_WALL_COL_TWO")] = TrajectoryGenerator::WAYPOINTS::GRID_WALL_COL_TWO;
+    waypointMap[string("GRID_WALL_COL_THREE")] = TrajectoryGenerator::WAYPOINTS::GRID_WALL_COL_THREE;
+    waypointMap[string("GRID_COOP_COL_ONE")] = TrajectoryGenerator::WAYPOINTS::GRID_COOP_COL_ONE;
+    waypointMap[string("GRID_COOP_COL_TWO")] = TrajectoryGenerator::WAYPOINTS::GRID_COOP_COL_TWO;
+    waypointMap[string("GRID_COOP_COL_THREE")] = TrajectoryGenerator::WAYPOINTS::GRID_COOP_COL_THREE;
+    waypointMap[string("GRID_HP_COL_ONE")] = TrajectoryGenerator::WAYPOINTS::GRID_HP_COL_ONE;
+    waypointMap[string("GRID_HP_COL_TWO")] = TrajectoryGenerator::WAYPOINTS::GRID_HP_COL_TWO;
+    waypointMap[string("GRID_HP_COL_THREE")] = TrajectoryGenerator::WAYPOINTS::GRID_HP_COL_THREE;
 
     bool hasError = false;
 
@@ -67,8 +73,10 @@ void WaypointXmlParser::ParseWaypoints()
         if (result)
         {
             Waypoint2d currentWaypoint;
-            double xCoordinate = 0.0;
-            double yCoordinate = 0.0;
+            double blueXCoordinate = 0.0;
+            double blueYCoordinate = 0.0;
+            double redXCoordinate = 0.0;
+            double redYCoordinate = 0.0;
 
             // get the root node <robot>
             xml_node parent = doc.root();
@@ -83,13 +91,21 @@ void WaypointXmlParser::ParseWaypoints()
                         {
                             currentWaypoint.waypointIdentifier = waypointMap[attr.as_string()];
                         }
-                        else if (strcmp(attr.name(), "xCoordinate") == 0)
+                        else if (strcmp(attr.name(), "blueXCoordinate") == 0)
                         {
-                            xCoordinate = attr.as_double();
+                            blueXCoordinate = attr.as_double();
                         }
-                        else if (strcmp(attr.name(), "yCoordinate") == 0)
+                        else if (strcmp(attr.name(), "blueYCoordinate") == 0)
                         {
-                            yCoordinate = attr.as_double();
+                            blueYCoordinate = attr.as_double();
+                        }
+                        else if (strcmp(attr.name(), "redXCoordinate") == 0)
+                        {
+                            redXCoordinate = attr.as_double();
+                        }
+                        else if (strcmp(attr.name(), "redYCoordinate") == 0)
+                        {
+                            redYCoordinate = attr.as_double();
                         }
                         else
                         {
@@ -101,7 +117,8 @@ void WaypointXmlParser::ParseWaypoints()
                     }
                 }
 
-                currentWaypoint.coordinates = {units::length::meter_t(xCoordinate), units::length::meter_t(yCoordinate)};
+                currentWaypoint.blueCoordinates = {units::length::meter_t(blueXCoordinate), units::length::meter_t(blueYCoordinate)};
+                currentWaypoint.redCoordinates = {units::length::meter_t(redXCoordinate), units::length::meter_t(redYCoordinate)};
 
                 waypoints.emplace_back(currentWaypoint);
             }

@@ -22,5 +22,6 @@
 struct Waypoint2d
 {
     TrajectoryGenerator::WAYPOINTS  waypointIdentifier;
-    frc::Translation2d              coordinates;
+    frc::Translation2d              blueCoordinates;
+    frc::Translation2d              redCoordinates;
 };

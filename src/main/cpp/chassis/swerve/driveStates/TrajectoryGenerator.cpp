@@ -39,9 +39,6 @@ TrajectoryGenerator::TrajectoryGenerator(units::meters_per_second_t maxVelocity,
 
 frc::Trajectory TrajectoryGenerator::GenerateTrajectory(frc::Pose2d currentPose, TARGET_POSITION endPoint)
 {
-    // check to see if robot is in front of or behind charging pad
-    // if so, add intermediate points
-
     std::vector<frc::Translation2d> intermediatePoints;
 
     WAYPOINTS endWaypoint;
@@ -49,77 +46,77 @@ frc::Trajectory TrajectoryGenerator::GenerateTrajectory(frc::Pose2d currentPose,
     //check if we are going to grids
     if(endPoint != TARGET_POSITION::HUMAN_PLAYER_SUBSTATION)
     {
-        if(currentPose.Y() > m_waypoints[WAYPOINTS::GRID_ONE_COL_THREE].Y())
+        if(currentPose.Y() > m_waypoints[WAYPOINTS::GRID_WALL_COL_THREE].Y()) //Are we below or in line with the wall grid?
         {
             switch (endPoint)
             {
                 case TARGET_POSITION::COLUMN_ONE:
-                    endWaypoint = WAYPOINTS::GRID_ONE_COL_ONE;
+                    endWaypoint = WAYPOINTS::GRID_WALL_COL_ONE;
                     break;
                 case TARGET_POSITION::COLUMN_TWO:
-                    endWaypoint = WAYPOINTS::GRID_ONE_COL_TWO;
+                    endWaypoint = WAYPOINTS::GRID_WALL_COL_TWO;
                     break;
                 case TARGET_POSITION::COLUMN_THREE:
-                    endWaypoint = WAYPOINTS::GRID_ONE_COL_THREE;
+                    endWaypoint = WAYPOINTS::GRID_WALL_COL_THREE;
                     break;
                 default:
-                    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("TrajectoryGenerator"), std::string("Grid One"), std::string("Could not find target position"));
+                    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("TrajectoryGenerator"), std::string("Grid Wall"), std::string("Could not find target position"));
                     break;
             }
 
             //check if we are behind charging pad, if so, add intermediate point
-            if(currentPose.X() > m_waypoints[WAYPOINTS::GRID_ONE_INTERMEDIATE].X())
+            if(currentPose.X() > m_waypoints[WAYPOINTS::GRID_WALL_INTERMEDIATE].X())
             {
-                intermediatePoints.emplace_back(m_waypoints[WAYPOINTS::GRID_ONE_INTERMEDIATE]);
+                intermediatePoints.emplace_back(m_waypoints[WAYPOINTS::GRID_WALL_INTERMEDIATE]);
             }
         }
-        else if(currentPose.Y() > m_waypoints[WAYPOINTS::GRID_TWO_COL_THREE].Y() && 
-                currentPose.Y() < m_waypoints[WAYPOINTS::GRID_ONE_COL_THREE].Y())
+        else if(currentPose.Y() > m_waypoints[WAYPOINTS::GRID_COOP_COL_THREE].Y() && 
+                currentPose.Y() < m_waypoints[WAYPOINTS::GRID_WALL_COL_THREE].Y()) //are we in between the HP grid and the wall grid?
         {
             switch (endPoint)
             {
                 case TARGET_POSITION::COLUMN_ONE:
-                    endWaypoint = WAYPOINTS::GRID_TWO_COL_ONE;
+                    endWaypoint = WAYPOINTS::GRID_COOP_COL_ONE;
                     break;
                 case TARGET_POSITION::COLUMN_TWO:
-                    endWaypoint = WAYPOINTS::GRID_TWO_COL_TWO;
+                    endWaypoint = WAYPOINTS::GRID_COOP_COL_TWO;
                     break;
                 case TARGET_POSITION::COLUMN_THREE:
-                    endWaypoint = WAYPOINTS::GRID_TWO_COL_THREE;
+                    endWaypoint = WAYPOINTS::GRID_COOP_COL_THREE;
                     break;
                 default:
-                    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("TrajectoryGenerator"), std::string("Grid Two"), std::string("Could not find target position"));
+                    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("TrajectoryGenerator"), std::string("Grid Coop"), std::string("Could not find target position"));
                     break;
             }
 
             //check if we are behind charging pad, if so, add intermediate point
-            if(currentPose.X() > m_waypoints[WAYPOINTS::GRID_TWO_INTERMEDIATE].X())
+            if(currentPose.X() > m_waypoints[WAYPOINTS::GRID_COOP_INTERMEDIATE].X())
             {
-                intermediatePoints.emplace_back(m_waypoints[WAYPOINTS::GRID_TWO_INTERMEDIATE]);
+                intermediatePoints.emplace_back(m_waypoints[WAYPOINTS::GRID_COOP_INTERMEDIATE]);
             }
         }
-        else
+        else //the only place we can be is the HP grid or above
         {
             switch (endPoint)
             {
                 case TARGET_POSITION::COLUMN_ONE:
-                    endWaypoint = WAYPOINTS::GRID_THREE_COL_ONE;
+                    endWaypoint = WAYPOINTS::GRID_HP_COL_ONE;
                     break;
                 case TARGET_POSITION::COLUMN_TWO:
-                    endWaypoint = WAYPOINTS::GRID_THREE_COL_TWO;
+                    endWaypoint = WAYPOINTS::GRID_HP_COL_TWO;
                     break;
                 case TARGET_POSITION::COLUMN_THREE:
-                    endWaypoint = WAYPOINTS::GRID_THREE_COL_THREE;
+                    endWaypoint = WAYPOINTS::GRID_HP_COL_THREE;
                     break;
                 default:
-                    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("TrajectoryGenerator"), std::string("Grid Three"), std::string("Could not find target position"));
+                    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("TrajectoryGenerator"), std::string("Grid HP"), std::string("Could not find target position"));
                     break;
             }
 
             //check if we are behind charging pad, if so, add intermediate point
-            if(currentPose.X() > m_waypoints[WAYPOINTS::GRID_THREE_INTERMEDIATE].X())
+            if(currentPose.X() > m_waypoints[WAYPOINTS::GRID_HP_INTERMEDIATE].X())
             {
-                intermediatePoints.emplace_back(m_waypoints[WAYPOINTS::GRID_THREE_INTERMEDIATE]);
+                intermediatePoints.emplace_back(m_waypoints[WAYPOINTS::GRID_HP_INTERMEDIATE]);
             }
         }
     }
@@ -128,6 +125,17 @@ frc::Trajectory TrajectoryGenerator::GenerateTrajectory(frc::Pose2d currentPose,
 
     }
 
-    /// @TODO: Need to grab rotation 2d from somewhere to have correct end heading
+    /// @TODO: Differentiate between red and blue alliance
+    /*if(allianceColor == blue)
+    {
+        transform waypoint for blue side
+        set correct heading for blue side
+    }
+    else if(allianceColor == red)
+    {
+        transform waypoint for red side
+        set correct heading for red side
+    }
+    */
     frc::TrajectoryGenerator::GenerateTrajectory(currentPose, intermediatePoints, frc::Pose2d{m_waypoints[endWaypoint], frc::Rotation2d(0, 0)}, m_config);
 }

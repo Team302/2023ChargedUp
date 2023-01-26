@@ -14,6 +14,8 @@
                       GRID_THREE_COL_ONE |
                       GRID_THREE_COL_TWO |
                       GRID_THREE_COL_THREE) "GRID_ONE_INTERMEDIATE"
-            xCoordinate CDATA "0.0"
-            yCoordinate CDATA "0.0"
+            blueXCoordinate CDATA "0.0"
+            blueYCoordinate CDATA "0.0"
+            redXCoordinate CDATA "0.0"
+            redYCoordinate CDATA "0.0"
 >

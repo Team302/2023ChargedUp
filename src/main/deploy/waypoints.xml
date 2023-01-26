@@ -2,6 +2,8 @@
 <!DOCTYPE robot SYSTEM "waypoints.dtd">
 <waypoints>
     <waypoint identifier="GRID_ONE_INTERMEDIATE"
-              xCoordinate="0.0"
-              yCoordinate="0.0"/>
+              blueXCoordinate="0.0"
+              blueYCoordinate="0.0"
+              redXCoordinate="0.0"
+              redYCoordinate="0.0"/>
 </waypoints>
