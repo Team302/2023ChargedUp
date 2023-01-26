@@ -21,7 +21,7 @@
 #include <utils/LoggerData.h>
 #include <utils/LoggerEnums.h>
 #include <LoggableItemMgr.h>
-#include <utils/ObstacleXmlParser.h>
+#include <utils/WaypointXmlParser.h>
 
 using namespace std;
 
@@ -37,8 +37,8 @@ void Robot::RobotInit()
     auto XmlParser = new RobotXmlParser();
     XmlParser->ParseXML();
 
-    auto obstacleParser = ObstacleXmlParser::GetInstance();
-    obstacleParser->ParseObstacles();
+    auto waypointParser = WaypointXmlParser::GetInstance();
+    waypointParser->ParseWaypoints();
 
     auto factory = ChassisFactory::GetChassisFactory();
     m_chassis = factory->GetIChassis();

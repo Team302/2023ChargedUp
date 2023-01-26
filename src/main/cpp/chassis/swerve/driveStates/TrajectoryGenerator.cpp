@@ -16,14 +16,18 @@
 //C++ Includes
 
 //FRC Includes
+#include <frc/trajectory/TrajectoryGenerator.h>
 
 //Team 302 Includes
 #include <chassis/swerve/driveStates/TrajectoryGenerator.h>
 #include <chassis/ChassisFactory.h>
 #include <utils/WaypointXmlParser.h>
 #include <utils/Logger.h>
+#include <utils/Waypoint2d.h>
 
-TrajectoryGenerator::TrajectoryGenerator(units::meters_per_second_t maxVelocity,
+using namespace Dragons;
+
+Dragons::TrajectoryGenerator::TrajectoryGenerator(units::meters_per_second_t maxVelocity,
                                         units::meters_per_second_squared_t maxAcceleration) : 
                                         m_config(maxVelocity, maxAcceleration)
 {
@@ -33,11 +37,12 @@ TrajectoryGenerator::TrajectoryGenerator(units::meters_per_second_t maxVelocity,
     
     for(Waypoint2d waypoint: parsedWaypoints)
     {
-        m_waypoints.emplace(waypoint.waypointIdentifier, waypoint.coordinates);
+        m_blueWaypoints.emplace(waypoint.waypointIdentifier, waypoint.blueCoordinates);
+        m_redWaypoints.emplace(waypoint.waypointIdentifier, waypoint.redCoordinates);
     }
 }                                        
 
-frc::Trajectory TrajectoryGenerator::GenerateTrajectory(frc::Pose2d currentPose, TARGET_POSITION endPoint)
+frc::Trajectory Dragons::TrajectoryGenerator::GenerateTrajectory(frc::Pose2d currentPose, TARGET_POSITION endPoint)
 {
     std::vector<frc::Translation2d> intermediatePoints;
 
@@ -46,7 +51,7 @@ frc::Trajectory TrajectoryGenerator::GenerateTrajectory(frc::Pose2d currentPose,
     //check if we are going to grids
     if(endPoint != TARGET_POSITION::HUMAN_PLAYER_SUBSTATION)
     {
-        if(currentPose.Y() > m_waypoints[WAYPOINTS::GRID_WALL_COL_THREE].Y()) //Are we below or in line with the wall grid?
+        if(currentPose.Y() > m_blueWaypoints[WAYPOINTS::GRID_WALL_COL_THREE].Y()) //Are we below or in line with the wall grid?  the waypoint color doesnt matter since they are same y value
         {
             switch (endPoint)
             {
@@ -65,13 +70,15 @@ frc::Trajectory TrajectoryGenerator::GenerateTrajectory(frc::Pose2d currentPose,
             }
 
             //check if we are behind charging pad, if so, add intermediate point
-            if(currentPose.X() > m_waypoints[WAYPOINTS::GRID_WALL_INTERMEDIATE].X())
+
+            //FIRST DIFFERENTIATE BETWEEN RED AND BLUE ALLIANCE
+            if(currentPose.X() > m_blueWaypoints[WAYPOINTS::GRID_WALL_INTERMEDIATE].X())
             {
-                intermediatePoints.emplace_back(m_waypoints[WAYPOINTS::GRID_WALL_INTERMEDIATE]);
+                intermediatePoints.emplace_back(m_blueWaypoints[WAYPOINTS::GRID_WALL_INTERMEDIATE]);
             }
         }
-        else if(currentPose.Y() > m_waypoints[WAYPOINTS::GRID_COOP_COL_THREE].Y() && 
-                currentPose.Y() < m_waypoints[WAYPOINTS::GRID_WALL_COL_THREE].Y()) //are we in between the HP grid and the wall grid?
+        else if(currentPose.Y() > m_blueWaypoints[WAYPOINTS::GRID_COOP_COL_THREE].Y() && 
+                currentPose.Y() < m_blueWaypoints[WAYPOINTS::GRID_WALL_COL_THREE].Y()) //are we in between the HP grid and the wall grid? the waypoint color doesnt matter since they are same y value
         {
             switch (endPoint)
             {
@@ -90,9 +97,11 @@ frc::Trajectory TrajectoryGenerator::GenerateTrajectory(frc::Pose2d currentPose,
             }
 
             //check if we are behind charging pad, if so, add intermediate point
-            if(currentPose.X() > m_waypoints[WAYPOINTS::GRID_COOP_INTERMEDIATE].X())
+
+            //FIRST DIFFERENTIATE BETWEEN RED AND BLUE ALLIANCE
+            if(currentPose.X() > m_blueWaypoints[WAYPOINTS::GRID_COOP_INTERMEDIATE].X())
             {
-                intermediatePoints.emplace_back(m_waypoints[WAYPOINTS::GRID_COOP_INTERMEDIATE]);
+                intermediatePoints.emplace_back(m_blueWaypoints[WAYPOINTS::GRID_COOP_INTERMEDIATE]);
             }
         }
         else //the only place we can be is the HP grid or above
@@ -114,9 +123,11 @@ frc::Trajectory TrajectoryGenerator::GenerateTrajectory(frc::Pose2d currentPose,
             }
 
             //check if we are behind charging pad, if so, add intermediate point
-            if(currentPose.X() > m_waypoints[WAYPOINTS::GRID_HP_INTERMEDIATE].X())
+
+            //FIRST DIFFERENTIATE BETWEEN RED AND BLUE ALLIANCE
+            if(currentPose.X() > m_blueWaypoints[WAYPOINTS::GRID_HP_INTERMEDIATE].X())
             {
-                intermediatePoints.emplace_back(m_waypoints[WAYPOINTS::GRID_HP_INTERMEDIATE]);
+                intermediatePoints.emplace_back(m_blueWaypoints[WAYPOINTS::GRID_HP_INTERMEDIATE]);
             }
         }
     }
@@ -128,14 +139,14 @@ frc::Trajectory TrajectoryGenerator::GenerateTrajectory(frc::Pose2d currentPose,
     /// @TODO: Differentiate between red and blue alliance
     /*if(allianceColor == blue)
     {
-        transform waypoint for blue side
+        frc::TrajectoryGenerator::GenerateTrajectory(currentPose, intermediatePoints, frc::Pose2d{m_blueWaypoints[endWaypoint], frc::Rotation2d(0, 0)}, m_config);
         set correct heading for blue side
     }
     else if(allianceColor == red)
     {
-        transform waypoint for red side
+        frc::TrajectoryGenerator::GenerateTrajectory(currentPose, intermediatePoints, frc::Pose2d{m_redWaypoints[endWaypoint], frc::Rotation2d(0, 0)}, m_config);
         set correct heading for red side
     }
     */
-    frc::TrajectoryGenerator::GenerateTrajectory(currentPose, intermediatePoints, frc::Pose2d{m_waypoints[endWaypoint], frc::Rotation2d(0, 0)}, m_config);
+    frc::TrajectoryGenerator::GenerateTrajectory(currentPose, intermediatePoints, frc::Pose2d{m_blueWaypoints[endWaypoint], frc::Rotation2d(0, 0)}, m_config);
 }

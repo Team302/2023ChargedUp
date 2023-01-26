@@ -22,7 +22,6 @@
 #include <frc/geometry/Translation2d.h>
 
 //Team 302 Includes
-#include <chassis/swerve/driveStates/TrajectoryGenerator.h>
 #include <utils/Waypoint2d.h>
 
 class WaypointXmlParser

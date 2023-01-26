@@ -44,5 +44,5 @@ class HolonomicDrive : public State
         TeleopControl*                      m_controller;
         SwerveChassis*                      m_swerve;
         MecanumChassis*                     m_mecanum;
-        TrajectoryGenerator*                m_trajectoryGenerator;
+        Dragons::TrajectoryGenerator*                m_trajectoryGenerator;
 };

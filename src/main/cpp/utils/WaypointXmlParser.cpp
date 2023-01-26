@@ -22,12 +22,14 @@
 //Team 302 Includes
 #include <utils/WaypointXmlParser.h>
 #include <utils/Logger.h>
-
+#include <utils/Waypoint2d.h>
+#include <chassis/swerve/driveStates/TrajectoryGenerator.h>
 //Third party includes
 #include <pugixml/pugixml.hpp>
 
 using namespace pugi;
 using namespace std;
+using namespace Dragons;
 
 WaypointXmlParser* WaypointXmlParser::m_instance = nullptr;
 WaypointXmlParser* WaypointXmlParser::GetInstance()
@@ -45,19 +47,19 @@ void WaypointXmlParser::ParseWaypoints()
 	auto deployDir = frc::filesystem::GetDeployDirectory();
     std::string filename = deployDir + std::string("/waypoints.xml");
 
-    map<string, TrajectoryGenerator::WAYPOINTS> waypointMap;
-    waypointMap[string("GRID_WALL_INTERMEDIATE")] = TrajectoryGenerator::WAYPOINTS::GRID_WALL_INTERMEDIATE;
-    waypointMap[string("GRID_COOP_INTERMEDIATE")] = TrajectoryGenerator::WAYPOINTS::GRID_COOP_INTERMEDIATE;
-    waypointMap[string("GRID_HP_INTERMEDIATE")] = TrajectoryGenerator::WAYPOINTS::GRID_HP_INTERMEDIATE;
-    waypointMap[string("GRID_WALL_COL_ONE")] = TrajectoryGenerator::WAYPOINTS::GRID_WALL_COL_ONE;
-    waypointMap[string("GRID_WALL_COL_TWO")] = TrajectoryGenerator::WAYPOINTS::GRID_WALL_COL_TWO;
-    waypointMap[string("GRID_WALL_COL_THREE")] = TrajectoryGenerator::WAYPOINTS::GRID_WALL_COL_THREE;
-    waypointMap[string("GRID_COOP_COL_ONE")] = TrajectoryGenerator::WAYPOINTS::GRID_COOP_COL_ONE;
-    waypointMap[string("GRID_COOP_COL_TWO")] = TrajectoryGenerator::WAYPOINTS::GRID_COOP_COL_TWO;
-    waypointMap[string("GRID_COOP_COL_THREE")] = TrajectoryGenerator::WAYPOINTS::GRID_COOP_COL_THREE;
-    waypointMap[string("GRID_HP_COL_ONE")] = TrajectoryGenerator::WAYPOINTS::GRID_HP_COL_ONE;
-    waypointMap[string("GRID_HP_COL_TWO")] = TrajectoryGenerator::WAYPOINTS::GRID_HP_COL_TWO;
-    waypointMap[string("GRID_HP_COL_THREE")] = TrajectoryGenerator::WAYPOINTS::GRID_HP_COL_THREE;
+    map<string, Dragons::TrajectoryGenerator::WAYPOINTS> waypointMap;
+    waypointMap[string("GRID_WALL_INTERMEDIATE")] = Dragons::TrajectoryGenerator::WAYPOINTS::GRID_WALL_INTERMEDIATE;
+    waypointMap[string("GRID_COOP_INTERMEDIATE")] = Dragons::TrajectoryGenerator::WAYPOINTS::GRID_COOP_INTERMEDIATE;
+    waypointMap[string("GRID_HP_INTERMEDIATE")] = Dragons::TrajectoryGenerator::WAYPOINTS::GRID_HP_INTERMEDIATE;
+    waypointMap[string("GRID_WALL_COL_ONE")] = Dragons::TrajectoryGenerator::WAYPOINTS::GRID_WALL_COL_ONE;
+    waypointMap[string("GRID_WALL_COL_TWO")] = Dragons::TrajectoryGenerator::WAYPOINTS::GRID_WALL_COL_TWO;
+    waypointMap[string("GRID_WALL_COL_THREE")] = Dragons::TrajectoryGenerator::WAYPOINTS::GRID_WALL_COL_THREE;
+    waypointMap[string("GRID_COOP_COL_ONE")] = Dragons::TrajectoryGenerator::WAYPOINTS::GRID_COOP_COL_ONE;
+    waypointMap[string("GRID_COOP_COL_TWO")] = Dragons::TrajectoryGenerator::WAYPOINTS::GRID_COOP_COL_TWO;
+    waypointMap[string("GRID_COOP_COL_THREE")] = Dragons::TrajectoryGenerator::WAYPOINTS::GRID_COOP_COL_THREE;
+    waypointMap[string("GRID_HP_COL_ONE")] = Dragons::TrajectoryGenerator::WAYPOINTS::GRID_HP_COL_ONE;
+    waypointMap[string("GRID_HP_COL_TWO")] = Dragons::TrajectoryGenerator::WAYPOINTS::GRID_HP_COL_TWO;
+    waypointMap[string("GRID_HP_COL_THREE")] = Dragons::TrajectoryGenerator::WAYPOINTS::GRID_HP_COL_THREE;
 
     bool hasError = false;
 
