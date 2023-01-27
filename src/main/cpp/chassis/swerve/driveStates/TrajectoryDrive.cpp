@@ -19,6 +19,7 @@
 #include <chassis/swerve/driveStates/TrajectoryDrive.h>
 #include <chassis/ChassisMovement.h>
 #include <chassis/ChassisFactory.h>
+#include <utils/Logger.h>
 
 using frc::Pose2d;
 
@@ -45,11 +46,16 @@ void TrajectoryDrive::Init
     //Clear m_trajectoryStates in case it holds onto a previous trajectory
     m_trajectoryStates.clear();
 
+    /// DEBUGGING
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Trajectory Drive", "Init", "Initialized");
 
     if (!m_trajectoryStates.empty()) // only go if path name found
     {
         //Desired state is first state in trajectory
         m_desiredState = m_trajectoryStates.front(); //m_desiredState is the first state, or starting position
+
+        /// DEBUGGING
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Trajectory Drive", "Init", "Not empty");
 
         m_timer.get()->Reset(); //Restarts and starts timer
         m_timer.get()->Start();
@@ -73,6 +79,11 @@ std::array<frc::SwerveModuleState, 4> TrajectoryDrive::UpdateSwerveModuleStates
                                                           m_desiredState.pose.Rotation());
         //Set chassisMovement speeds that will be used by RobotDrive
         chassisMovement.chassisSpeeds = refChassisSpeeds;
+
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Trajectory Drive", "ChassisMovement VX", chassisMovement.chassisSpeeds.vx.to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Trajectory Drive", "ChassisMovement VY", chassisMovement.chassisSpeeds.vy.to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Trajectory Drive", "ChassisMovement Omega", chassisMovement.chassisSpeeds.omega.to<double>());
+
         return m_robotDrive->UpdateSwerveModuleStates(chassisMovement);
 
     }

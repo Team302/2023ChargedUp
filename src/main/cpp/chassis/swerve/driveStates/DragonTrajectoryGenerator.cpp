@@ -19,15 +19,13 @@
 #include <frc/trajectory/TrajectoryGenerator.h>
 
 //Team 302 Includes
-#include <chassis/swerve/driveStates/TrajectoryGenerator.h>
+#include <chassis/swerve/driveStates/DragonTrajectoryGenerator.h>
 #include <chassis/ChassisFactory.h>
 #include <utils/WaypointXmlParser.h>
 #include <utils/Logger.h>
 #include <utils/Waypoint2d.h>
 
-using namespace Dragons;
-
-Dragons::TrajectoryGenerator::TrajectoryGenerator(units::meters_per_second_t maxVelocity,
+DragonTrajectoryGenerator::DragonTrajectoryGenerator(units::meters_per_second_t maxVelocity,
                                         units::meters_per_second_squared_t maxAcceleration) : 
                                         m_config(maxVelocity, maxAcceleration)
 {
@@ -37,12 +35,18 @@ Dragons::TrajectoryGenerator::TrajectoryGenerator(units::meters_per_second_t max
     
     for(Waypoint2d waypoint: parsedWaypoints)
     {
-        m_blueWaypoints.emplace(waypoint.waypointIdentifier, waypoint.blueCoordinates);
-        m_redWaypoints.emplace(waypoint.waypointIdentifier, waypoint.redCoordinates);
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("TrajectoryGenerator"), std::string("Waypoint Identifier"), waypoint.waypointIdentifier);
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("TrajectoryGenerator"), std::string("Waypoint Blue X"), waypoint.bluePose.X().to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("TrajectoryGenerator"), std::string("Waypoint Blue Y"), waypoint.bluePose.Y().to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("TrajectoryGenerator"), std::string("Waypoint Red X"), waypoint.redPose.X().to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("TrajectoryGenerator"), std::string("Waypoint Red Y"), waypoint.redPose.Y().to<double>());
+
+        m_blueWaypoints.emplace(waypoint.waypointIdentifier, waypoint.bluePose);
+        m_redWaypoints.emplace(waypoint.waypointIdentifier, waypoint.redPose);
     }
 }                                        
 
-frc::Trajectory Dragons::TrajectoryGenerator::GenerateTrajectory(frc::Pose2d currentPose, TARGET_POSITION endPoint)
+frc::Trajectory DragonTrajectoryGenerator::GenerateTrajectory(frc::Pose2d currentPose, TARGET_POSITION endPoint)
 {
     std::vector<frc::Translation2d> intermediatePoints;
 
@@ -74,7 +78,8 @@ frc::Trajectory Dragons::TrajectoryGenerator::GenerateTrajectory(frc::Pose2d cur
             //FIRST DIFFERENTIATE BETWEEN RED AND BLUE ALLIANCE
             if(currentPose.X() > m_blueWaypoints[WAYPOINTS::GRID_WALL_INTERMEDIATE].X())
             {
-                intermediatePoints.emplace_back(m_blueWaypoints[WAYPOINTS::GRID_WALL_INTERMEDIATE]);
+                intermediatePoints.emplace_back(frc::Translation2d{m_blueWaypoints[WAYPOINTS::GRID_WALL_INTERMEDIATE].X(), 
+                                                m_blueWaypoints[WAYPOINTS::GRID_WALL_INTERMEDIATE].Y()});
             }
         }
         else if(currentPose.Y() > m_blueWaypoints[WAYPOINTS::GRID_COOP_COL_THREE].Y() && 
@@ -101,7 +106,8 @@ frc::Trajectory Dragons::TrajectoryGenerator::GenerateTrajectory(frc::Pose2d cur
             //FIRST DIFFERENTIATE BETWEEN RED AND BLUE ALLIANCE
             if(currentPose.X() > m_blueWaypoints[WAYPOINTS::GRID_COOP_INTERMEDIATE].X())
             {
-                intermediatePoints.emplace_back(m_blueWaypoints[WAYPOINTS::GRID_COOP_INTERMEDIATE]);
+                intermediatePoints.emplace_back(frc::Translation2d{m_blueWaypoints[WAYPOINTS::GRID_COOP_INTERMEDIATE].X(),
+                                                                    m_blueWaypoints[WAYPOINTS::GRID_COOP_INTERMEDIATE].Y()});
             }
         }
         else //the only place we can be is the HP grid or above
@@ -127,7 +133,8 @@ frc::Trajectory Dragons::TrajectoryGenerator::GenerateTrajectory(frc::Pose2d cur
             //FIRST DIFFERENTIATE BETWEEN RED AND BLUE ALLIANCE
             if(currentPose.X() > m_blueWaypoints[WAYPOINTS::GRID_HP_INTERMEDIATE].X())
             {
-                intermediatePoints.emplace_back(m_blueWaypoints[WAYPOINTS::GRID_HP_INTERMEDIATE]);
+                intermediatePoints.emplace_back(frc::Translation2d{m_blueWaypoints[WAYPOINTS::GRID_HP_INTERMEDIATE].X(), 
+                                                                    m_blueWaypoints[WAYPOINTS::GRID_HP_INTERMEDIATE].Y()});
             }
         }
     }
@@ -148,5 +155,9 @@ frc::Trajectory Dragons::TrajectoryGenerator::GenerateTrajectory(frc::Pose2d cur
         set correct heading for red side
     }
     */
-    return frc::TrajectoryGenerator::GenerateTrajectory(currentPose, intermediatePoints, frc::Pose2d{m_blueWaypoints[endWaypoint], frc::Rotation2d(0, 0)}, m_config);
+   Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("TrajectoryGenerator"), std::string("End Waypoint Identifier"), std::to_string(endWaypoint));
+   Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("TrajectoryGenerator"), std::string("End Waypoint X"), m_blueWaypoints[endWaypoint].X().to<double>());
+   Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("TrajectoryGenerator"), std::string("End Waypoint Y"), m_blueWaypoints[endWaypoint].Y().to<double>());
+   
+    return frc::TrajectoryGenerator::GenerateTrajectory(currentPose, intermediatePoints, m_blueWaypoints[endWaypoint], m_config);
 }

@@ -15,14 +15,14 @@
 #pragma once
 
 //FRC Includes
-#include <frc/geometry/Translation2d.h>
+#include <frc/geometry/Pose2d.h>
 
 //Team 302 Includes
-#include <chassis/swerve/driveStates/TrajectoryGenerator.h>
+#include <chassis/swerve/driveStates/DragonTrajectoryGenerator.h>
 
 struct Waypoint2d
 {
-    Dragons::TrajectoryGenerator::WAYPOINTS  waypointIdentifier;
-    frc::Translation2d              blueCoordinates;
-    frc::Translation2d              redCoordinates;
+    DragonTrajectoryGenerator::WAYPOINTS    waypointIdentifier;
+    frc::Pose2d                              bluePose;
+    frc::Pose2d                              redPose;
 };

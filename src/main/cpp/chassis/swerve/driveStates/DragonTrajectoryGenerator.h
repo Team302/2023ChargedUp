@@ -26,48 +26,46 @@
 #include <frc/trajectory/TrajectoryConfig.h>
 
 //Team 302 Includes
-namespace Dragons{
-    class TrajectoryGenerator
-    {
-        public:
-            enum WAYPOINTS
-            {
-                GRID_WALL_COL_ONE,
-                GRID_WALL_COL_TWO,
-                GRID_WALL_COL_THREE,
-                GRID_COOP_COL_ONE,
-                GRID_COOP_COL_TWO,
-                GRID_COOP_COL_THREE,
-                GRID_HP_COL_ONE,
-                GRID_HP_COL_TWO,
-                GRID_HP_COL_THREE,
-                GRID_WALL_INTERMEDIATE,
-                GRID_COOP_INTERMEDIATE,
-                GRID_HP_INTERMEDIATE
-            };
+class DragonTrajectoryGenerator
+{
+    public:
+        enum WAYPOINTS
+        {
+            GRID_WALL_COL_ONE,
+            GRID_WALL_COL_TWO,
+            GRID_WALL_COL_THREE,
+            GRID_COOP_COL_ONE,
+            GRID_COOP_COL_TWO,
+            GRID_COOP_COL_THREE,
+            GRID_HP_COL_ONE,
+            GRID_HP_COL_TWO,
+            GRID_HP_COL_THREE,
+            GRID_WALL_INTERMEDIATE,
+            GRID_COOP_INTERMEDIATE,
+            GRID_HP_INTERMEDIATE
+        };
 
-            enum TARGET_POSITION
-            {
-                COLUMN_ONE,
-                COLUMN_TWO,
-                COLUMN_THREE,
-                HUMAN_PLAYER_SUBSTATION
-            };
+        enum TARGET_POSITION
+        {
+            COLUMN_ONE,
+            COLUMN_TWO,
+            COLUMN_THREE,
+            HUMAN_PLAYER_SUBSTATION
+        };
 
-            TrajectoryGenerator(units::meters_per_second_t maxVelocity,
-                                units::meters_per_second_squared_t maxAcceleration);
-            ~TrajectoryGenerator() = default;
+        DragonTrajectoryGenerator(units::meters_per_second_t maxVelocity,
+                            units::meters_per_second_squared_t maxAcceleration);
+        ~DragonTrajectoryGenerator() = default;
 
-            /// @brief Generate a trajectory to be fed into TrajectoryDrive
-            /// @param currentPose current robot position
-            /// @param endPoint ending/goal point
-            /// @return frc::Trajectory - the calculated trajectory based on given points
-            frc::Trajectory GenerateTrajectory(frc::Pose2d currentPose, TARGET_POSITION endPoint);
+        /// @brief Generate a trajectory to be fed into TrajectoryDrive
+        /// @param currentPose current robot position
+        /// @param endPoint ending/goal point
+        /// @return frc::Trajectory - the calculated trajectory based on given points
+        frc::Trajectory GenerateTrajectory(frc::Pose2d currentPose, TARGET_POSITION endPoint);
 
-        private:
-            frc::TrajectoryConfig m_config;
+    private:
+        frc::TrajectoryConfig m_config;
 
-            std::unordered_map<WAYPOINTS, frc::Translation2d>   m_redWaypoints;
-            std::unordered_map<WAYPOINTS, frc::Translation2d>   m_blueWaypoints;
-    };
-}
+        std::unordered_map<WAYPOINTS, frc::Pose2d>   m_redWaypoints;
+        std::unordered_map<WAYPOINTS, frc::Pose2d>   m_blueWaypoints;
+};

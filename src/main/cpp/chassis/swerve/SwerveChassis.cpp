@@ -208,6 +208,8 @@ void SwerveChassis::Drive
     auto drive = GetDriveState(moveInfo);
     if (drive != nullptr)
     {
+        drive->Init(moveInfo);
+
         auto states = drive->UpdateSwerveModuleStates(moveInfo);       
         m_frontLeft.get()->SetDesiredState(states[LEFT_FRONT]);
         m_frontRight.get()->SetDesiredState(states[RIGHT_FRONT]);

@@ -20,7 +20,7 @@
 //Team 302 includes
 #include <TeleopControl.h>
 #include <State.h>
-#include <chassis/swerve/driveStates/TrajectoryGenerator.h>
+#include <chassis/swerve/driveStates/DragonTrajectoryGenerator.h>
 
 class IChassis;
 class MecanumChassis;
@@ -44,5 +44,5 @@ class HolonomicDrive : public State
         TeleopControl*                      m_controller;
         SwerveChassis*                      m_swerve;
         MecanumChassis*                     m_mecanum;
-        Dragons::TrajectoryGenerator*                m_trajectoryGenerator;
+        DragonTrajectoryGenerator*                m_trajectoryGenerator;
 };
