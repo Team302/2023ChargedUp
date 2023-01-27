@@ -199,16 +199,16 @@ void SwerveChassis::Drive
     ChassisMovement             moveInfo 
 )
 {
-    auto heading = GetHeadingState(moveInfo);
-    if (heading != nullptr)
+    m_currentOrientationState = GetHeadingState(moveInfo);
+    if (m_currentOrientationState != nullptr)
     {
-        heading->UpdateChassisSpeeds(moveInfo);
+        m_currentOrientationState->UpdateChassisSpeeds(moveInfo);
     }
 
-    auto drive = GetDriveState(moveInfo);
-    if (drive != nullptr)
+    m_currentDriveState = GetDriveState(moveInfo);
+    if (m_currentDriveState != nullptr)
     {
-        auto states = drive->UpdateSwerveModuleStates(moveInfo);       
+        auto states = m_currentDriveState->UpdateSwerveModuleStates(moveInfo);       
         m_frontLeft.get()->SetDesiredState(states[LEFT_FRONT]);
         m_frontRight.get()->SetDesiredState(states[RIGHT_FRONT]);
         m_backLeft.get()->SetDesiredState(states[LEFT_BACK]);
@@ -238,7 +238,23 @@ ISwerveDriveState* SwerveChassis::GetDriveState
         return m_robotDrive;
     }
     auto state = itr->second;
-    state->Init(moveInfo);
+
+    if(m_currentDriveState == nullptr)
+    {
+        m_currentDriveState = m_robotDrive;
+    }
+
+    if(state != m_currentDriveState)
+    {
+        m_initialized = false;
+    }
+
+    if(!m_initialized)
+    {
+        state->Init(moveInfo);
+        m_initialized = true;
+    }
+
     return state;
 }
 
