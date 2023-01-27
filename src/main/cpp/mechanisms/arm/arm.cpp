@@ -1,5 +1,4 @@
 
-
 		//====================================================================================================================================================
 		// Copyright 2022 Lake Orion Robotics FIRST Team 302
 		//
@@ -16,54 +15,28 @@
 		//====================================================================================================================================================
 
 		// C++ Includes
-		#include <map>
-			#include <memory>
-				#include <string>
+		#include <memory>
+			#include <string>
 
-					// FRC includes
+				//team 302 includes
+				#include <hw/interfaces/IDragonMotorController.h>
+				#include <mechanisms/base/Mech1IndMotor.h>
+				#include <mechanisms/arm/arm.h>
 
-					// Team 302 includes
-					#include <hw/usages/DigitalInputUsage.h>
-					#include <utils/logger.h>
+		using namespace std;
 
-					// Third Party Includes
-
-					using namespace std;
-
-					DigitalInputUsage* DigitalInputUsage::m_instance = nullptr;
-					DigitalInputUsage* DigitalInputUsage::GetInstance()
-					{
-					if ( m_instance == nullptr )
-					{
-					m_instance = new DigitalInputUsage();
-					}
-					return m_instance;
-					}
-
-					DigitalInputUsage::DigitalInputUsage()
-					{
-						
-
-					}
-
-					DigitalInputUsage::~DigitalInputUsage()
-					{
-					m_usageMap.clear();
-					}
-
-					DigitalInputUsage::DIGITAL_SENSOR_USAGE DigitalInputUsage::GetUsage
-					(
-					string              usageString
-					)
-					{
-					auto it = m_usageMap.find(usageString);
-					if (it != m_usageMap.end())
-					{
-					return it->second;
-					}
-					Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("DigitalInputUsage::GetUsage"), string("unknown usage"), usageString);
-					return DigitalInputUsage::DIGITAL_SENSOR_USAGE::UNKNOWN_DIGITAL_TYPE;
-					}
-
-
-				
+		/// @brief Create an arm mechanism wiht 1 independent motor
+		/// @param [in] std::string the name of the file that will set control parameters for this mechanism
+		/// @param [in] std::string the name of the network table for logging information
+		/// @param [in] std::shared_ptr<IDragonMotorController>
+		
+		arm::arm
+		(
+		std::string                                 controlFileName,
+		std::string                                 networkTableName
+		,
+std::shared_ptr<IDragonMotorController>     motorController0
+		):Mech1IndMotor(MechanismTypes::MECHANISM_TYPE::ARM,controlFileName,networkTableName , motorController0)
+		{
+		}
+	

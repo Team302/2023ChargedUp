@@ -21,7 +21,7 @@
 
 // Team 302 includes
 #include <mechanisms/base/Mech.h>
-#include <mechanisms/base/Mech2Solenoids.h>
+#include <mechanisms/base/Mech2Solenoid.h>
 #include <hw/DragonSolenoid.h>
 #include <utils/Logger.h>
 #include <mechanisms/base/StateMgr.h>
@@ -35,7 +35,7 @@ using namespace std;
 /// @param [in] std::string the name of the file that will set control parameters for this mechanism
 /// @param [in] std::string the name of the network table for logging information
 /// @param [in] std::shared_ptr<DragonSolenoid> solenoid used by this mechanism
-Mech2Solenoids::Mech2Solenoids
+Mech2Solenoid::Mech2Solenoid
 (
     MechanismTypes::MECHANISM_TYPE          type,
     string                                  controlFileName,
@@ -47,7 +47,7 @@ Mech2Solenoids::Mech2Solenoids
 {
     if (m_solenoid2.get() == nullptr )
     {
-        Logger::GetLogger()->LogData( LOGGER_LEVEL::ERROR_ONCE, string( "Mech2Solenoids" ),  string( "constructor" ), string( "solenoid2 is nullptr" ) );
+        Logger::GetLogger()->LogData( LOGGER_LEVEL::ERROR_ONCE, string( "Mech2Solenoid" ),  string( "constructor" ), string( "solenoid2 is nullptr" ) );
     }
 
 }
@@ -56,7 +56,7 @@ Mech2Solenoids::Mech2Solenoids
 /// @brief      Activate/deactivate pneumatic solenoid
 /// @param [in] bool - true == extend, false == retract
 /// @return     void 
-void Mech2Solenoids::ActivateSolenoid2
+void Mech2Solenoid::ActivateSolenoid2
 (
     bool activate
 )
@@ -70,7 +70,7 @@ void Mech2Solenoids::ActivateSolenoid2
 
 /// @brief      Check if the pneumatic solenoid is activated
 /// @return     bool - true == extended, false == retracted
-bool Mech2Solenoids::IsSolenoid2Activated() const
+bool Mech2Solenoid::IsSolenoid2Activated() const
 {
     return  ( m_solenoid2.get() != nullptr ) ? m_solenoid2.get()->Get() : false;
 }
@@ -78,7 +78,7 @@ bool Mech2Solenoids::IsSolenoid2Activated() const
 
 
 /// @brief log data to the network table if it is activated and time period has past
-void Mech2Solenoids::LogInformation() const
+void Mech2Solenoid::LogInformation() const
 {
     Mech1Solenoid::LogInformation();
     auto ntName = GetNetworkTableName();

@@ -13,26 +13,50 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
+#pragma once 
+
 // C++ Includes
 #include <memory>
 #include <string>
 
-//team 302 includes
-#include <hw/interfaces/IDragonMotorController.h>
-#include <mechanisms/base/Mech1IndMotor.h>
-#include <mechanisms/example/Example.h>
+// Team 302 includes
+#include <mechanisms/base/Mech1Solenoid.h>
+#include <mechanisms/MechanismTypes.h>
+#include <hw/DragonSolenoid.h>
 
-using namespace std;
-
-/// @brief Create an Example mechanism wiht 1 independent motor 
-/// @param [in] std::string the name of the file that will set control parameters for this mechanism
-/// @param [in] std::string the name of the network table for logging information
-/// @param [in] std::shared_ptr<IDragonMotorController> motor controller used by this mechanism
-Example::Example
-(
-    std::string                                 controlFileName,
-    std::string                                 networkTableName,  
-    std::shared_ptr<IDragonMotorController>     motorController
-):Mech1IndMotor(MechanismTypes::MECHANISM_TYPE::EXAMPLE,controlFileName,networkTableName,motorController)
+class Mech2Solenoid : public Mech1Solenoid
 {
-}
+    public:
+        /// @brief Create a generic mechanism wiht 1 solenoid 
+        /// @param [in] std::shared_ptr<DragonSolenoid> solenoid used by this mechanism
+         Mech2Solenoid
+        (
+            MechanismTypes::MECHANISM_TYPE              type,
+            std::string                                 controlFileName,
+            std::string                                 networkTableName,
+            std::shared_ptr<DragonSolenoid>             solenoid,
+            std::shared_ptr<DragonSolenoid>             solenoid2
+        );
+
+        Mech2Solenoid() = delete;
+        virtual ~Mech2Solenoid() = default;
+
+        /// @brief      Activate/deactivate pneumatic solenoid
+        /// @param [in] bool - true == extend, false == retract
+        /// @return     void 
+        void ActivateSolenoid2
+        (
+            bool     activate
+        );
+
+        /// @brief      Check if the pneumatic solenoid is activated
+        /// @return     bool - true == extended, false == retracted
+        bool IsSolenoid2Activated() const;
+
+        /// @brief log data to the network table if it is activated and time period has past
+        void LogInformation() const override;
+
+    private:
+        std::shared_ptr<DragonSolenoid>             m_solenoid2;
+
+};

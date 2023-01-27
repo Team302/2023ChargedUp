@@ -1,4 +1,5 @@
 
+
 //====================================================================================================================================================
 // Copyright 2022 Lake Orion Robotics FIRST Team 302
 //
@@ -19,8 +20,10 @@
        
 enum StateType
 {
-    // @ADDMECH Add your states
-    EXAMPLE_STATE,
+    ARM_STATE,
+EXTENDER_STATE,
+GRABBER_STATE,
+
     MAX_STATE_TYPES
 };
 
@@ -32,3 +35,5 @@ struct StateStruc
     StateType   type;
     bool        isDefault;
 };
+
+

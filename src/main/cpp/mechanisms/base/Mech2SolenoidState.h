@@ -1,3 +1,4 @@
+
 //====================================================================================================================================================
 /// Copyright 2022 Lake Orion Robotics FIRST Team 302 
 ///
@@ -13,37 +14,36 @@
 /// OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-
-// C++ Includes
+#pragma once
 #include <string>
 
-// FRC includes
+#include <State.h>
+#include <mechanisms/base/Mech1SolenoidState.h>
+#include <mechanisms/controllers/MechanismTargetData.h>
 
-// Team 302 includes
-#include <mechanisms/base/Mech1IndMotorState.h>
-#include <mechanisms/controllers/ControlData.h>
-#include <mechanisms/example/ExampleState.h>
-#include <mechanisms/MechanismFactory.h>
+// forward declares
+class Mech2Solenoid;
 
-// Third Party Includes
-
-using namespace std;
-
-ExampleState::ExampleState
-(
-    string                          stateName,
-    int                             stateId,
-    ControlData*                    control, 
-    double                          target
-) : Mech1IndMotorState( MechanismFactory::GetMechanismFactory()->GetExample(), stateName, stateId, control, target),
-    m_example(MechanismFactory::GetMechanismFactory()->GetExample()),
-    m_parsedTarget(target),
-    m_target(target)
+class Mech2SolenoidState : public Mech1SolenoidState
 {
-    
-}
+    public:
 
-bool ExampleState::AtTarget() const
-{
-    return true;
-}
+        Mech2SolenoidState
+        (
+            Mech2Solenoid*                 mechanism,
+            std::string                     stateName,
+            int                             stateId,
+            MechanismTargetData::SOLENOID   solState,
+            MechanismTargetData::SOLENOID   solState2
+        );
+        Mech2SolenoidState() = delete;
+        ~Mech2SolenoidState() = default;
+
+        void Run() override;
+        void LogInformation() const override;
+
+    private:
+
+        Mech2Solenoid*                 m_mechanism;
+        MechanismTargetData::SOLENOID   m_solenoidState2;
+};

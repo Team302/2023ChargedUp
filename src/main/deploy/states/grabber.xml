@@ -17,40 +17,46 @@
     controlDataIdentifier2=""
     value=""
     secondValue=""
-    solenoid="REVERSE" />
+    solenoid="REVERSE"
+    solenoid2="NONE" />
   <mechanismTarget
     stateIdentifier="GRABBING_CONE"
     controlDataIdentifier="Solenoid"
     controlDataIdentifier2=""
     value=""
     secondValue=""
-    solenoid="ON" />
+    solenoid="ON"
+    solenoid2="NONE" />
   <mechanismTarget
     stateIdentifier="GRABBING_CUBE"
     controlDataIdentifier="Solenoid"
     controlDataIdentifier2=""
     value=""
     secondValue=""
-    solenoid="ON" />
+    solenoid="ON"
+    solenoid2="NONE" />
   <mechanismTarget
     stateIdentifier="HOLDING_CONE"
     controlDataIdentifier="Solenoid"
     controlDataIdentifier2=""
     value=""
     secondValue=""
-    solenoid="ON" />
+    solenoid="ON"
+    solenoid2="NONE" />
   <mechanismTarget
     stateIdentifier="HOLDING_CUBE"
     controlDataIdentifier="Solenoid"
     controlDataIdentifier2=""
     value=""
     secondValue=""
-    solenoid="ON" />
+    solenoid="ON"
+    solenoid2="NONE" />
   <mechanismTarget
     stateIdentifier="RELEASE"
     controlDataIdentifier="Solenoid"
     controlDataIdentifier2=""
     value=""
     secondValue=""
-    solenoid="REVERSE" />
+    solenoid="REVERSE"
+    solenoid2="NONE" />
 </statedata>

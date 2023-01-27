@@ -1,4 +1,5 @@
 
+
 //====================================================================================================================================================
 // Copyright 2022 Lake Orion Robotics FIRST Team 302 
 //
@@ -34,8 +35,11 @@ class MechanismTypes
         enum MECHANISM_TYPE
         {
             UNKNOWN_MECHANISM = -1,
-            EXAMPLE,
-            // @ADDMECH add your mechanism 
+            ARM,
+EXTENDER,
+GRABBER,
+
+        
 
             MAX_MECHANISM_TYPES
         };
@@ -56,4 +60,6 @@ class MechanismTypes
 		std::map <std::string, MECHANISM_TYPE> m_typeMap;
 
 };
+
+
 

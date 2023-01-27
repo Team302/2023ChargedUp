@@ -92,6 +92,7 @@ IChassis* ChassisFactory::CreateChassis
     double                                                      odometryComplianceCoefficient
 )
 {
+    /**
     switch ( type )
     {
         case ChassisFactory::CHASSIS_TYPE::TANK_CHASSIS:
@@ -118,6 +119,7 @@ IChassis* ChassisFactory::CreateChassis
 
         case ChassisFactory::CHASSIS_TYPE::SWERVE_CHASSIS:
         {
+            **/
             m_swerve = new SwerveChassis( frontLeft, 
                                           frontRight, 
                                           backLeft, 
@@ -136,6 +138,7 @@ IChassis* ChassisFactory::CreateChassis
                                           );
             m_chassis = m_swerve;
             m_swerve->InitStates();
+            /**
         }
         break;
 
@@ -143,6 +146,7 @@ IChassis* ChassisFactory::CreateChassis
         break;
 
     }
+    **/
 
     return m_chassis;
 }

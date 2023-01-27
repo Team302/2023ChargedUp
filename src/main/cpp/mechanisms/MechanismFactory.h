@@ -40,7 +40,9 @@
 #include <hw/usages/ServoMap.h>
 #include <mechanisms/MechanismTypes.h>
 #include <mechanisms/base/Mech.h>
-#include <mechanisms/example/Example.h>
+#include <mechanisms/arm/arm.h>
+#include <mechanisms/extender/extender.h>
+#include <mechanisms/grabber/grabber.h>
 
 // @ADDMECH include for your mechanism 
 
@@ -77,9 +79,11 @@ class MechanismFactory
 			DragonCanCoder* 										canCoder
 		);
 		
-		inline Example* GetExample() const {return m_example;}
 		
 		// @ADDMECH  Add inline Get method for your mechanism
+		inline arm* Getarm() const {return m_arm;}
+		inline extender* Getextender() const {return m_extender;}
+		inline grabber* Getgrabber() const {return m_grabber;}
 
 		Mech* GetMechanism
 		(
@@ -119,10 +123,11 @@ class MechanismFactory
 		virtual ~MechanismFactory() = default;
 
 		static MechanismFactory*	m_mechanismFactory;
-
-		Example*                        m_example;
 		
-		// @ADDMECH  Add your mechanism here		
+		// @ADDMECH  Add your mechanism here	
+		arm*							m_arm;
+		extender*						m_extender;
+		grabber*						m_grabber;	
          
 
 		

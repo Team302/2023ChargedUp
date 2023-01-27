@@ -340,7 +340,7 @@
       reverselimitswitchopen="false"
       voltageCompensationSaturation="10"
       voltageCompensationEnable="true"
-      countsPerInch="countsPerDegree&#x9;&#x9;    CDATA&#xD;&#xA;&gt;" />
+      countsPerInch="3725.135" />
     <cancoder
       canId="9"
       canBusName="rio"
@@ -348,7 +348,7 @@
       reverse="false" />
   </mechanism>
   <mechanism
-    type="Extender"
+    type="EXTENDER"
     networkTable="extenderNT"
     controlFile="extender.xml">
     <motor
@@ -374,10 +374,10 @@
       reverselimitswitchopen="false"
       voltageCompensationSaturation="10"
       voltageCompensationEnable="false"
-      countsPerInch="countsPerDegree&#x9;&#x9;    CDATA&#xD;&#xA;&gt;" />
+      countsPerInch="countsPerDegree&#x9;&#x9;    " />
   </mechanism>
   <mechanism
-    type="Grabber"
+    type="GRABBER"
     networkTable=""
     controlFile="grabber.xml">
     <solenoid

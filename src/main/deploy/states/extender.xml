@@ -39,61 +39,70 @@
     controlDataIdentifier2=""
     value="10"
     secondValue=""
-    solenoid="NONE" />
+    solenoid="NONE"
+    solenoid2="NONE" />
   <mechanismTarget
     stateIdentifier="MANUAL_EXTEND_RETRACT"
     controlDataIdentifier="PercentOutput"
     controlDataIdentifier2=""
     value="1"
     secondValue=""
-    solenoid="NONE" />
+    solenoid="NONE"
+    solenoid2="NONE" />
   <mechanismTarget
     stateIdentifier="CUBE_BACKROW_EXTEND"
     controlDataIdentifier="ExtendPosition"
     controlDataIdentifier2=""
     value="10"
     secondValue=""
-    solenoid="NONE" />
+    solenoid="NONE"
+    solenoid2="NONE" />
   <mechanismTarget
     stateIdentifier="CONE_BACKROW_EXTEND"
     controlDataIdentifier="ExtendPosition"
     controlDataIdentifier2=""
     value="10"
     secondValue=""
-    solenoid="NONE" />
+    solenoid="NONE"
+    solenoid2="NONE" />
   <mechanismTarget
     stateIdentifier="CUBE_MIDROW_EXTEND"
     controlDataIdentifier="ExtendPosition"
     controlDataIdentifier2=""
     value="10"
     secondValue=""
-    solenoid="NONE" />
+    solenoid="NONE"
+    solenoid2="NONE" />
   <mechanismTarget
     stateIdentifier="CONE_MIDROW_EXTEND"
     controlDataIdentifier="ExtendPosition"
     controlDataIdentifier2=""
     value="10"
     secondValue=""
-    solenoid="NONE" />
+    solenoid="NONE"
+    solenoid2="NONE" />
   <mechanismTarget
     stateIdentifier="HUMAN_PLAYER_STATION_EXTEND"
     controlDataIdentifier="ExtendPosition"
     controlDataIdentifier2=""
     value="10"
     secondValue=""
-    solenoid="NONE" />
+    solenoid="NONE"
+    solenoid2="NONE" />
   <mechanismTarget
     stateIdentifier="STARTING_POSITION_EXTEND"
     controlDataIdentifier="ExtendPosition"
     controlDataIdentifier2=""
     value="10"
     secondValue=""
-    solenoid="NONE" />
+    solenoid="NONE"
+    solenoid2="NONE" />
   <mechanismTarget
     stateIdentifier="FLOOR_EXTEND"
     controlDataIdentifier="ExtendPosition"
     controlDataIdentifier2=""
     value="10"
     secondValue=""
-    solenoid="NONE" />
+    solenoid="NONE"
+    solenoid2="NONE" />
 </statedata>
