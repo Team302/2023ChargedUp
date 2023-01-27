@@ -41,15 +41,15 @@ DigitalInputUsage* DigitalInputUsage::GetInstance()
 
 DigitalInputUsage::DigitalInputUsage()
 {
-    m_usageMap["INTAKE_OUT"] = DigitalInputUsage::DIGITAL_SENSOR_USAGE::INTAKE_OUT;
-    m_usageMap["INTAKE_IN"] = DigitalInputUsage::DIGITAL_SENSOR_USAGE::INTAKE_IN;
-    m_usageMap["BALL_PRESENT"] = DigitalInputUsage::DIGITAL_SENSOR_USAGE::BALL_PRESENT;
-    m_usageMap["BALL_TRANSFER_FORWARD"] = DigitalInputUsage::DIGITAL_SENSOR_USAGE::BALL_TRANSFER_FORWARD;
-    m_usageMap["BALL_TRANSFER_BACK"] = DigitalInputUsage::DIGITAL_SENSOR_USAGE::BALL_TRANSFER_BACK;
-    m_usageMap["SHOOTER_HOOD_MIN"] = DigitalInputUsage::DIGITAL_SENSOR_USAGE::SHOOTER_HOOD_MIN;
-    m_usageMap["SHOOTER_HOOD_MAX"] = DigitalInputUsage::DIGITAL_SENSOR_USAGE::SHOOTER_HOOD_MAX;
-    m_usageMap["CLIMBER_BACK"] = DigitalInputUsage::DIGITAL_SENSOR_USAGE::CLIMBER_BACK;
-    m_usageMap["CLIMBER_FORWARD"] = DigitalInputUsage::DIGITAL_SENSOR_USAGE::CLIMBER_FORWARD;
+    m_usageMap["INTAKE_OUT"] = DigitalInputUsage::DIGITAL_INPUT_USAGE::INTAKE_OUT;
+    m_usageMap["INTAKE_IN"] = DigitalInputUsage::DIGITAL_INPUT_USAGE::INTAKE_IN;
+    m_usageMap["BALL_PRESENT"] = DigitalInputUsage::DIGITAL_INPUT_USAGE::BALL_PRESENT;
+    m_usageMap["BALL_TRANSFER_FORWARD"] = DigitalInputUsage::DIGITAL_INPUT_USAGE::BALL_TRANSFER_FORWARD;
+    m_usageMap["BALL_TRANSFER_BACK"] = DigitalInputUsage::DIGITAL_INPUT_USAGE::BALL_TRANSFER_BACK;
+    m_usageMap["SHOOTER_HOOD_MIN"] = DigitalInputUsage::DIGITAL_INPUT_USAGE::SHOOTER_HOOD_MIN;
+    m_usageMap["SHOOTER_HOOD_MAX"] = DigitalInputUsage::DIGITAL_INPUT_USAGE::SHOOTER_HOOD_MAX;
+    m_usageMap["CLIMBER_BACK"] = DigitalInputUsage::DIGITAL_INPUT_USAGE::CLIMBER_BACK;
+    m_usageMap["CLIMBER_FORWARD"] = DigitalInputUsage::DIGITAL_INPUT_USAGE::CLIMBER_FORWARD;
 ;
 }
 
@@ -58,7 +58,7 @@ DigitalInputUsage::~DigitalInputUsage()
     m_usageMap.clear();
 }
 
-DigitalInputUsage::DIGITAL_SENSOR_USAGE DigitalInputUsage::GetUsage
+DigitalInputUsage::DIGITAL_INPUT_USAGE DigitalInputUsage::GetUsage
 (
     string              usageString
 )
@@ -69,6 +69,6 @@ DigitalInputUsage::DIGITAL_SENSOR_USAGE DigitalInputUsage::GetUsage
         return it->second;
     }
     Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("DigitalInputUsage::GetUsage"), string("unknown usage"), usageString);
-    return DigitalInputUsage::DIGITAL_SENSOR_USAGE::UNKNOWN_DIGITAL_TYPE;
+    return DigitalInputUsage::DIGITAL_INPUT_USAGE::UNKNOWN_DIGITAL_INPUT_USAGE;
 }
 
