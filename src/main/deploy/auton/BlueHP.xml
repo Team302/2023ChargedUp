@@ -5,21 +5,35 @@
 			   pathname="BlueHP1.wpilib.jason"/> 
     <primitive id="DRIVE_PATH" 
                pathname="BlueHP1.wpilib.jason" 
-               time="5"/> <!--driving to gamepiece-->
+               time="3"/> <!--driving to gamepiece-->
+    <primitive id="DO_NOTHING"
+               time="2.0"/> <!--pick up gamepiece-->
+    <primitive id="DRIVE_PATH"
+               pathname="BlueHP2.wpilib.jason"
+               time="3"/> <!--driving to GRID_HP_COL_TWO-->
+    <!--determine grabbed gamepiece (need primitive)-->
+    <!--drive to gamepiece specific scoring station (need primitive)-->
+    <primitive id="DO_NOTHING"
+                time="2.0"/> <!--score gamepiece-->
+
+<!--need to create conditions to determine next action-->
+    <!--picking up another gamepiece-->
+    <primitive id="DRIVE_PATH"
+               pathname="BlueHP3A.wpilib.jason" 
+               time="3"/> <!--driving to gamepiece-->
     <primitive id="DO_NOTHING"
                time="2.0"/> <!--pick up gamepiece-->
     <!--determine grabbed gamepiece-->
-    <primitive id="DRIVE_PATH" 
-               pathname="BlueHP2.wpilib.jason" 
-               time="5"/> <!--driving to gamepiece specific scoring station-->
-    <primitive id="DO_NOTHING"
-                time="2.0"/> <!--score gamepiece-->
-    <!--determine if going to charging station or gamepieces-->
-    <primitive id="DRIVE_PATH" 
-               pathname="BlueHP3A.wpilib.jason" 
-               time="5"/> <!--driving to gamepiece-->
-    <primitive id="DO_NOTHING"
-               time="2.0"/> <!--pick up gamepiece-->
-       <!--determine grabbed gamepiece-->
-
+    <!--drive to gamepiece specific scoring station (need primitive)-->
+                                                        <!--going to charging station-->
+                                                        <primitive id="DRIVE_PATH"
+                                                                   pathname="BlueHP3B"
+                                                                   time="2"/> <!--drive to charging station-->
+                                                        <primitive id="DO_NOTHING"
+                                                                   time="15"/>
+                                                                                                                <!--doing nothing-->
+                                                                                                                <primitive id="DO_NOTHING"
+                                                                                                                           time="15"/>
+<!--need to create condition to determine next action-->
+    
 </auton>
