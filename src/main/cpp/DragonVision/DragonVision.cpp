@@ -69,7 +69,7 @@ void DragonVision::Run()
 }
 
 
-//ALligned-with functions
+//Aligned-with functions
 
 bool DragonVision::AlignedWithCubeNode() const
 {
