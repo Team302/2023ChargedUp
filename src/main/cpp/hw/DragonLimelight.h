@@ -106,7 +106,7 @@ class DragonLimelight //: public IDragonSensor, public IDragonDistanceSensor
         units::angle::degree_t GetTargetSkewAprilTag() const;
         units::time::microsecond_t GetPipelineLatencyAprilTag() const;
         units::length::inch_t EstimateTargetDistanceAprilTag() const;
-        std::vector<double> Get3DSolveAprilTag() const;
+        std::vector<double> Get3DSolveAprilTag() const; 
 
 
         // Setters

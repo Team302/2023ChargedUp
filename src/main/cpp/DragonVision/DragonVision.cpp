@@ -69,7 +69,7 @@ void DragonVision::Run()
 }
 
 
-//Alligned-with functions
+//Aligned-with functions
 
 bool DragonVision::AlignedWithCubeNode() const
 {
@@ -116,8 +116,6 @@ units::length::inch_t DragonVision::DistanceFromConeGamePiece() const
 }
 
 //Angel Functions
-
-// Ah yes, the spelling skills of Ben.
 
 
 units::angle::degree_t DragonVision::AngleFromCubeNode() const
