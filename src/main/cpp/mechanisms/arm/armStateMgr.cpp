@@ -83,46 +83,31 @@ int ArmStateMgr::GetCurrentStateParam
     return StateMgr::GetCurrentStateParam(currentParams);
 }
 
-/// @brief Check if driver inputs or sensors trigger a state transition
-void ArmStateMgr::CheckForStateTransition()
+void ArmStateMgr::CheckForSensorTransitions()
 {
-
-    if ( m_arm != nullptr )
-    {    
-        auto currentState = static_cast<ARM_STATE>(GetCurrentState());
-        auto targetState = currentState;
-
-        //========= Do not erase this line and the one below it. They are used by the code generator ========		
-		//========= Hand modified code start section 0 ========
+	//========= Do not erase this line and the one below it. They are used by the code generator ========		
+	//========= Hand modified code start section 0 ========
 	
-     	// Write logic here. See example below
-		/*
-        auto controller = TeleopControl::GetInstance();
-        auto isForwardSelected   = controller != nullptr ? controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::EXAMPLE_FORWARD) : false;
-        auto isReverseSelected   = controller != nullptr ? controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::EXAMPLE_REVERSE) : false;
+     	/// override this method if sensors could change states 
 
-        if (isForwardSelected)
-        {
-            targetState = EXAMPLE_STATE::FORWARD;
-        }
-        else if (isReverseSelected)
-        {
-            targetState = EXAMPLE_STATE::REVERSE;
-        }
-        else
-        {
-            targetState = EXAMPLE_STATE::OFF;
-        }
-
-        if (targetState != currentState)
-        {
-            SetCurrentState(targetState, true);
-        }
-        */
-
-		//========= Hand modified code end section 0 ========
-        //========= Do not erase this line and the one above it. They are used by the code generator =======
-    }
+    //========= Hand modified code end section 0 ========
+	//========= Do not erase this line and the one above it. They are used by the code generator =======
 }
 
+void ArmStateMgr::CheckForGamepadTransitions()
+{
+	//========= Do not erase this line and the one below it. They are used by the code generator ========		
+	//========= Hand modified code start section 1 ========
+
+    // override this method if joystick inputs could change states;  Format 
+    // would look something like:
+    //    auto controller = TeleopControl::GetInstance();
+    //    if ( controller != nullptr )
+    //    {
+    //          code here that checks the inputs
+    //    }
+
+	//========= Hand modified code end section 1 ========
+	//========= Do not erase this line and the one above it. They are used by the code generator =======
+}
 

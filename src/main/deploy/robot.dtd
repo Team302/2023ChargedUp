@@ -161,7 +161,7 @@
           turn_nominal_val                                  CDATA "0.0"
           turn_peak_val                                     CDATA "1.0"
           turn_max_acc                                      CDATA "0.0"
-          turn_cruise_vel                                   CDATA "0.0",
+          turn_cruise_vel                                   CDATA "0.0"
           countsOnTurnEncoderPerDegreesOnAngleSensor        CDATA "1.0"
 >
 
@@ -247,8 +247,8 @@
           reverselimitswitchopen    ( true | false ) "true"        
           voltageCompensationSaturation CDATA "12.0"
           voltageCompensationEnable (true | false)  "false"  
-		  countsPerInch             CDATA  
-          countsPerDegree		    CDATA
+		  countsPerInch             CDATA "0"  
+          countsPerDegree		    CDATA "0"
 >
 
 

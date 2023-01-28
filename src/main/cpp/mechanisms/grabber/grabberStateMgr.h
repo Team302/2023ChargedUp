@@ -63,8 +63,9 @@ RELEASE
             PrimitiveParams*    currentParams
         ) override;
 
-        void CheckForStateTransition() override;
-		
+		void CheckForSensorTransitions() override;
+		void CheckForGamepadTransitions() override;
+
     private:
 	
         GrabberStateMgr();
