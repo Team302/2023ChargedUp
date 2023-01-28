@@ -151,7 +151,7 @@ void DrivePath::GetTrajectory //Parses pathweaver json to create a series of poi
         deployDir += "/paths/output/" + path;     
         
         m_trajectory = frc::TrajectoryUtil::FromPathweaverJson(deployDir);  //Creates a trajectory or path that can be used in the code, parsed from pathweaver json
-        m_timer->Reset();
+        m_timer.get()->Reset();
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "current path", (path));
     }
     else
