@@ -20,6 +20,18 @@
 //Team 302 Includes
 #include <utils/FMSData.h>
 
+FMSData* FMSData::m_instance = nullptr;
+
+FMSData* FMSData::GetInstance()
+{
+	if ( FMSData::m_instance == nullptr )
+	{
+            FMSData::m_instance = new FMSData();
+	}
+	return FMSData::m_instance;
+    
+}
+
 FMSData::FMSData() : m_allianceColorChooser(),
                     m_hasFMS(false),
                     m_color(frc::DriverStation::Alliance::kInvalid),

@@ -31,11 +31,19 @@ class FMSData
         FMSData();
         ~FMSData() = default;
 
+        /// @brief Get the alliance color from dashboard or FMS when available
+        /// @return the current alliance
         frc::DriverStation::Alliance GetAllianceColor();
 
+        /// @brief Check if we are connected to FMS
         void CheckForFMS();
 
+        /// @brief get the singeleton of FMSData
+        static FMSData* GetInstance();
+
     private:
+        static FMSData*	m_instance;
+
         frc::SendableChooser<std::string>                                   m_allianceColorChooser;
         std::unordered_map<frc::DriverStation::Alliance, ALLIANCE_COLOR>    m_colorMap;
         bool                                                                m_hasFMS;

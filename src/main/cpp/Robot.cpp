@@ -60,7 +60,7 @@ void Robot::RobotInit()
 
     m_startLogging = true;
 
-    m_fmsData = new FMSData();
+    m_fmsData = FMSData::GetInstance();
 }
 
 /**
@@ -127,8 +127,6 @@ void Robot::AutonomousPeriodic()
 void Robot::TeleopInit() 
 {
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopInit"), string("arrived")); 
-
-    m_fmsData = new FMSData();
 
     StateMgrHelper::SetCheckGamepadInputsForStateTransitions(true);
     if (m_chassis != nullptr && m_controller != nullptr)

@@ -54,7 +54,6 @@ class TeleopControl
 		    // @ADDMECH add functions here for robot
             // EXAMPLE_FORWARD,
             // EXAMPLE_REVERSE,
-            MAX_FUNCTIONS,
              //Arm states
             HOLD_POSITION_ROTATE,
             MANUAL_ROTATE,
@@ -82,6 +81,7 @@ class TeleopControl
             HOLDING_CONE,
             HOLDING_CUBE,
             RELEASE
+            MAX_FUNCTIONS
         };
 
 

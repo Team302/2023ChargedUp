@@ -38,7 +38,9 @@
 #include <mechanisms/MechanismTypes.h>
 #include <utils/Logger.h>
 // @ADDMECH include for your mechanism 
-#include <mechanisms/example/Example.h>
+#include <mechanisms/arm/Arm.h>
+#include <mechanisms/extender/Extender.h>
+#include <mechanisms/grabber/Grabber.h>
 
 // Third Party Includes
 #include <ctre/phoenix/sensors/CANCoder.h>
@@ -92,14 +94,40 @@ void MechanismFactory::CreateMechanism
 	// Create the mechanism
 	switch ( type )
 	{
-		case MechanismTypes::MECHANISM_TYPE::EXAMPLE:
-		{
-			auto motor = GetMotorController(motorControllers, MotorControllerUsage::EXAMPLE);
-			m_example = new Example(controlFileName, networkTableName, motor);
-		}
-		break;
+
 		// @ADDMECH  Add case for Mechanism
 
+		case MechanismTypes::ARM:
+		{
+			auto motor = GetMotorController(motorControllers, MotorControllerUsage::ARM);
+			if (motor.get() != nullptr)
+			{
+				m_arm = new Arm(controlFileName, networkTableName, motor);
+			}
+		}
+		break;
+
+		case MechanismTypes::EXTENDER:
+		{
+			auto motor = GetMotorController(motorControllers, MotorControllerUsage::Extender);
+			if (motor.get() != nullptr)
+			{
+				m_extender = new Extender(controlFileName, networkTableName, motor);
+			}
+		}
+		break;
+
+		case MechanismTypes::GRABBER:
+		{
+			auto solenoid1 = GetSolenoid(solenoids, SolenoidUsage::GrabberSolenoid1);
+			auto solenoid2 = GetSolenoid(solenoids, SolenoidUsage::GrabberSolenoid2);
+			if (solenoid1.get() != nullptr && solenoid2.get())
+			{
+				m_grabber = new Grabber(controlFileName, networkTableName, solenoid1, solenoid2);
+			}
+
+		}
+		break;
 
 		default:
 		{
@@ -119,11 +147,22 @@ Mech* MechanismFactory::GetMechanism
 {
 	switch (type)
 	{
-		case MechanismTypes::MECHANISM_TYPE::EXAMPLE:
-			return m_example;
-			break;
 
 		// @ADDMECH  Add case for Mechanism
+
+		case MechanismTypes::ARM:
+			return m_arm;
+			break;
+
+		case MechanismTypes::EXTENDER:
+			return m_extender;
+			break;
+
+		case MechanismTypes::GRABBER:
+			return m_grabber;
+			break;
+
+		
 
 		default:
 			return nullptr;

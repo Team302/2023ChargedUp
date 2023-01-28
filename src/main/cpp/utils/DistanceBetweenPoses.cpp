@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -13,28 +13,15 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#pragma once
+//Team 302 Includes
+#include <utils/DistanceBetweenPoses.h>
 
-// C++ Includes
-#include <memory>
-#include <string>
+/// @brief Find the distance between two poses by using the Pythagorean Formula
+/// @param poseOne first pose to compare
+/// @param poseTwo second pose to compare
+/// @return frc::Translation2d - the difference in X value and the distance in Y value
 
-// Team 302 includes
-#include <mechanisms/base/Mech1IndMotor.h>
-
-class Example : public Mech1IndMotor
-{
-	public:
-        /// @brief Create an Example mechanism wiht 1 independent motor 
-        /// @param [in] std::string the name of the file that will set control parameters for this mechanism
-        /// @param [in] std::string the name of the network table for logging information
-        /// @param [in] std::shared_ptr<IDragonMotorController> motor controller used by this mechanism
-        Example
-        (
-            std::string                                 controlFileName,
-            std::string                                 networkTableName,
-            std::shared_ptr<IDragonMotorController>     motorController
-        );
-	    Example() = delete;
-	    ~Example() override = default;
-};
+double DistanceBetweenPoses::GetDeltaBetweenPoses(frc::Pose2d poseOne, frc::Pose2d poseTwo)
+{    
+    return sqrt(pow((poseTwo.X() - poseOne.X()).to<double>(),2) + pow((poseTwo.Y() - poseOne.Y()).to<double>(),2));
+}

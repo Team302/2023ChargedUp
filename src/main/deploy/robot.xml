@@ -249,16 +249,4 @@
                             offset="-106.347"/> 
         </swervemodule> 
       </chassis>    
-  <mechanism
-    type="INTAKE"
-    networkTable=""
-    controlFile="arm.xml" />
-  <mechanism
-    type="INTAKE"
-    networkTable=""
-    controlFile="extender.xml" />
-  <mechanism
-    type="INTAKE"
-    networkTable=""
-    controlFile="grabber.xml" />
 </robot>
