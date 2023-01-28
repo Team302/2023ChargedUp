@@ -26,9 +26,6 @@
 
 #include <AdjustableItemMgr.h>
 
-/// DEBUGGING
-#include <iostream>
-
 using namespace std;
 
 void Robot::RobotInit() 
@@ -94,9 +91,6 @@ void Robot::RobotPeriodic()
     }
 
     m_tuner->ListenForUpdates();
-
-    /// DEBUGGING
-    std::cout << to_string(m_fmsData->GetAllianceColor()) << std::endl;
 }
 
 /**
