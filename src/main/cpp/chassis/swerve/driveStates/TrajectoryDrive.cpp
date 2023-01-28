@@ -37,7 +37,7 @@ TrajectoryDrive::TrajectoryDrive(RobotDrive* robotDrive) : RobotDrive(),
     m_prevPose(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose()),
     m_wasMoving(false),
     m_timer(std::make_unique<frc::Timer>()),
-    m_chassis(ChassisFactory::GetChassisFactory()->GetSwerveChassis())
+    m_chassis(ChassisFactory::GetChassisFactory()->GetSwerveChassis()),
     m_whyDone("Trajectory isn't finished/Error")
 
 {
