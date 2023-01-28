@@ -63,7 +63,6 @@ private:
     bool                                    m_runHoloController;
     
     frc::RamseteController                  m_ramseteController;
-    frc::HolonomicDriveController           m_holoController;
     
     std::string                             m_pathname;
 

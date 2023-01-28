@@ -5,18 +5,22 @@
 			   pathname="square1.wpilib.json"/>
     <primitive id="DRIVE_PATH"
                pathname="square1.wpilib.json"
+               time="5.0"
                headingOption="SPECIFIED_ANGLE"
                heading="0"/>
     <primitive id="DRIVE_PATH"
                pathname="square2.wpilib.json"
+               time="5.0"
                headingOption="SPECIFIED_ANGLE"
                heading="0"/>
     <primitive id="DRIVE_PATH"
                pathname="square3.wpilib.json"
+               time="5.0"
                headingOption="SPECIFIED_ANGLE"
                heading="0"/>
     <primitive id="DRIVE_PATH"
                pathname="square4.wpilib.json"
+               time="5.0"
                headingOption="SPECIFIED_ANGLE"
                heading="0"/>
 </auton>
