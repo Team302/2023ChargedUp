@@ -38,13 +38,23 @@ class TrajectoryDrive : public RobotDrive
             ChassisMovement& chassisMovement
         ) override;
 
+        std::string WhyDone() const {return m_whyDone;};
+
     private:
         void CalcCurrentAndDesiredStates();
+
+        bool IsDone();
+        bool IsSamePose(frc::Pose2d currentPose, frc::Pose2d previousPose, double tolerance);
 
         frc::Trajectory                     m_trajectory;
         RobotDrive*                         m_robotDrive;
         frc::HolonomicDriveController       m_holonomicController;
         frc::Trajectory::State              m_desiredState;
         std::vector<frc::Trajectory::State> m_trajectoryStates;
+        frc::Trajectory::State              m_finalState;
+        frc::Pose2d                         m_prevPose;
+        bool                                m_wasMoving;
+        frc::Transform2d                    m_delta;
         std::unique_ptr<frc::Timer>         m_timer;
+        std::string                         m_whyDone;
 };
