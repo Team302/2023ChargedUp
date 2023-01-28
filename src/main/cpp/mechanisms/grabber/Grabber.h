@@ -21,59 +21,33 @@
 //	//========= Hand modified code end section x ========
 //==============================================================
 
-
+		
 		#pragma once
 
 		// C++ Includes
-		#include <map>
-			#include <memory>
-				#include <string>
+		#include <memory>
+			#include <string>
 
-					// FRC includes
+				// Team 302 includes
+				#include <mechanisms/base/Mech2Solenoids.h>
 
-					// Team 302 includes
-
-
-					// Third Party Includes
-
-
-
-					class SolenoidUsage
-					{
-
-					public:
-
-					/// @enum SOLENOID_USAGE
-					/// @brief Defines solenoid usages.  This should be modified for each robot.
-					enum SOLENOID_USAGE
-					{
-					UNKNOWN_SOLENOID_USAGE = -1,
-
-					GrabberSolenoid1,
-GrabberSolenoid2,
-
-
-					MAX_SOLENOID_USAGES
-					};
-
-
-					static SolenoidUsage* GetInstance();
-
-					SOLENOID_USAGE GetUsage
-					(
-					const std::string         usageString
-					);
-
-					private:
-					static SolenoidUsage*    m_instance;
-					SolenoidUsage();
-					~SolenoidUsage();
-
-					std::map <std::string, SOLENOID_USAGE> m_usageMap;
-
-};
-
-
-
-
+		class Grabber : public Mech2Solenoids
+		{
+		public:
+		/// @brief Create an Grabber mechanism wiht 1 independent motor
+		/// @param [in] std::string the name of the file that will set control parameters for this mechanism
+		/// @param [in] std::string the name of the network table for logging information
+		/// @param [in] std::shared_ptr<IDragonMotorController>
+		
+		Grabber
+		(
+		std::string                                 controlFileName,
+		std::string                                 networkTableName
+		,
+std::shared_ptr<DragonSolenoid>     solenoid0,
+std::shared_ptr<DragonSolenoid>     solenoid1
+		);
+		Grabber() = delete;
+		~Grabber() override = default;
+		};
 	

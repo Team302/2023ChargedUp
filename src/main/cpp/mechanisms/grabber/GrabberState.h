@@ -21,59 +21,35 @@
 //	//========= Hand modified code end section x ========
 //==============================================================
 
-
+		
 		#pragma once
+		#include <string>
 
-		// C++ Includes
-		#include <map>
-			#include <memory>
-				#include <string>
+			#include <mechanisms/base/Mech2SolenoidsState.h>
 
-					// FRC includes
+		class ControlData;
+		class Grabber;
 
-					// Team 302 includes
+		class GrabberState : public Mech2SolenoidsState
+		{
+		public:
 
-
-					// Third Party Includes
-
-
-
-					class SolenoidUsage
-					{
-
-					public:
-
-					/// @enum SOLENOID_USAGE
-					/// @brief Defines solenoid usages.  This should be modified for each robot.
-					enum SOLENOID_USAGE
-					{
-					UNKNOWN_SOLENOID_USAGE = -1,
-
-					GrabberSolenoid1,
-GrabberSolenoid2,
+		GrabberState() = delete;
+		GrabberState
+		(
+		std::string                     stateName,
+		int                             stateId
+		,
+MechanismTargetData::SOLENOID solState0,
+MechanismTargetData::SOLENOID solState1
+		);
+		~GrabberState() = default;
 
 
-					MAX_SOLENOID_USAGES
-					};
+		bool AtTarget() const override;
+		Grabber * GetGrabber() const {return m_grabber;}
 
-
-					static SolenoidUsage* GetInstance();
-
-					SOLENOID_USAGE GetUsage
-					(
-					const std::string         usageString
-					);
-
-					private:
-					static SolenoidUsage*    m_instance;
-					SolenoidUsage();
-					~SolenoidUsage();
-
-					std::map <std::string, SOLENOID_USAGE> m_usageMap;
-
-};
-
-
-
-
+		private:
+		Grabber*        m_grabber;
+		};
 	

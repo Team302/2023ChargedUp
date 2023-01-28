@@ -22,58 +22,38 @@
 //==============================================================
 
 
-		#pragma once
-
 		// C++ Includes
-		#include <map>
-			#include <memory>
-				#include <string>
+		#include  <string>
 
-					// FRC includes
+		// FRC includes
 
-					// Team 302 includes
+		// Team 302 includes
+		#include  <mechanisms/base/Mech2SolenoidsState.h>
+		#include  <mechanisms/controllers/ControlData.h>
+		#include  <mechanisms/grabber/GrabberState.h>
+		#include  <mechanisms/MechanismFactory.h>
 
+		// Third Party Includes
 
-					// Third Party Includes
+		using namespace std;
 
+		GrabberState::GrabberState
+		(
+		string                          stateName,
+		int                             stateId
+		,
+MechanismTargetData::SOLENOID solState0,
+MechanismTargetData::SOLENOID solState1
+		) : Mech2SolenoidsState( MechanismFactory::GetMechanismFactory()->Getgrabber(), stateName, stateId , solState0, solState1),
+		m_grabber(MechanismFactory::GetMechanismFactory()->Getgrabber())
+		{
 
+		}
 
-					class SolenoidUsage
-					{
-
-					public:
-
-					/// @enum SOLENOID_USAGE
-					/// @brief Defines solenoid usages.  This should be modified for each robot.
-					enum SOLENOID_USAGE
-					{
-					UNKNOWN_SOLENOID_USAGE = -1,
-
-					GrabberSolenoid1,
-GrabberSolenoid2,
-
-
-					MAX_SOLENOID_USAGES
-					};
-
-
-					static SolenoidUsage* GetInstance();
-
-					SOLENOID_USAGE GetUsage
-					(
-					const std::string         usageString
-					);
-
-					private:
-					static SolenoidUsage*    m_instance;
-					SolenoidUsage();
-					~SolenoidUsage();
-
-					std::map <std::string, SOLENOID_USAGE> m_usageMap;
-
-};
-
-
+		bool GrabberState::AtTarget() const
+		{
+		return true;
+		}
 
 
 	
