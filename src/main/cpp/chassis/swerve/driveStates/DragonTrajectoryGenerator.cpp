@@ -55,7 +55,8 @@ frc::Trajectory DragonTrajectoryGenerator::GenerateTrajectory(frc::Pose2d curren
     //check if we are going to grids
     if(endPoint != TARGET_POSITION::HUMAN_PLAYER_SUBSTATION)
     {
-        if(currentPose.Y() > m_blueWaypoints[WAYPOINTS::GRID_WALL_COL_THREE].Y()) //Are we below or in line with the wall grid?  the waypoint color doesnt matter since they are same y value
+
+        if(currentPose.Y() < m_blueWaypoints[WAYPOINTS::GRID_WALL_COL_THREE].Y()) //Are we below or in line with the wall grid?  the waypoint color doesnt matter since they are same y value
         {
             switch (endPoint)
             {
@@ -75,15 +76,15 @@ frc::Trajectory DragonTrajectoryGenerator::GenerateTrajectory(frc::Pose2d curren
 
             //check if we are behind charging pad, if so, add intermediate point
 
-            //FIRST DIFFERENTIATE BETWEEN RED AND BLUE ALLIANCE
+         /*   //FIRST DIFFERENTIATE BETWEEN RED AND BLUE ALLIANCE
             if(currentPose.X() > m_blueWaypoints[WAYPOINTS::GRID_WALL_INTERMEDIATE].X())
             {
                 intermediatePoints.emplace_back(frc::Translation2d{m_blueWaypoints[WAYPOINTS::GRID_WALL_INTERMEDIATE].X(), 
                                                 m_blueWaypoints[WAYPOINTS::GRID_WALL_INTERMEDIATE].Y()});
-            }
+            }*/
         }
-        else if(currentPose.Y() > m_blueWaypoints[WAYPOINTS::GRID_COOP_COL_THREE].Y() && 
-                currentPose.Y() < m_blueWaypoints[WAYPOINTS::GRID_WALL_COL_THREE].Y()) //are we in between the HP grid and the wall grid? the waypoint color doesnt matter since they are same y value
+        else if(currentPose.Y() < m_blueWaypoints[WAYPOINTS::GRID_COOP_COL_THREE].Y() && 
+                currentPose.Y() > m_blueWaypoints[WAYPOINTS::GRID_WALL_COL_THREE].Y()) //are we in between the HP grid and the wall grid? the waypoint color doesnt matter since they are same y value
         {
             switch (endPoint)
             {
@@ -103,12 +104,12 @@ frc::Trajectory DragonTrajectoryGenerator::GenerateTrajectory(frc::Pose2d curren
 
             //check if we are behind charging pad, if so, add intermediate point
 
-            //FIRST DIFFERENTIATE BETWEEN RED AND BLUE ALLIANCE
+          /*  //FIRST DIFFERENTIATE BETWEEN RED AND BLUE ALLIANCE
             if(currentPose.X() > m_blueWaypoints[WAYPOINTS::GRID_COOP_INTERMEDIATE].X())
             {
                 intermediatePoints.emplace_back(frc::Translation2d{m_blueWaypoints[WAYPOINTS::GRID_COOP_INTERMEDIATE].X(),
                                                                     m_blueWaypoints[WAYPOINTS::GRID_COOP_INTERMEDIATE].Y()});
-            }
+            }*/
         }
         else //the only place we can be is the HP grid or above
         {
@@ -158,6 +159,20 @@ frc::Trajectory DragonTrajectoryGenerator::GenerateTrajectory(frc::Pose2d curren
    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("TrajectoryGenerator"), std::string("End Waypoint Identifier"), std::to_string(endWaypoint));
    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("TrajectoryGenerator"), std::string("End Waypoint X"), m_blueWaypoints[endWaypoint].X().to<double>());
    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("TrajectoryGenerator"), std::string("End Waypoint Y"), m_blueWaypoints[endWaypoint].Y().to<double>());
-   
-    return frc::TrajectoryGenerator::GenerateTrajectory(currentPose, intermediatePoints, m_blueWaypoints[endWaypoint], m_config);
+
+    double dist = 0;
+
+    //finding distance between the two points
+    dist = sqrt(pow((m_blueWaypoints[endWaypoint].X().to<double>()-currentPose.X().to<double>()),2)+pow(m_blueWaypoints[endWaypoint].Y().to<double>()-currentPose.Y().to<double>(),2));
+
+    //if distance of the points is less that .1m away then return an empty trajectory
+    if( dist > 0.1)
+    {
+        return frc::TrajectoryGenerator::GenerateTrajectory(currentPose, intermediatePoints, m_blueWaypoints[endWaypoint], m_config);
+    }
+    else
+    {
+        return frc::Trajectory();
+    }
+
 }

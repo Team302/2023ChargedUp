@@ -149,8 +149,10 @@ void HolonomicDrive::Run()
         if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::DRIVE_TO_COL_ONE))
         {
             moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
+            
             moveInfo.trajectory = m_trajectoryGenerator->GenerateTrajectory(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose(), DragonTrajectoryGenerator::TARGET_POSITION::COLUMN_ONE);
         }
+
         else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::DRIVE_TO_COL_TWO))
         {
             moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
