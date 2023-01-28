@@ -29,7 +29,6 @@
 // Third Party Includes
 
 using namespace std;
-
 DragonVision* DragonVision::m_dragonVision = nullptr;
 DragonVision* DragonVision::GetDragonVision
 (
@@ -47,7 +46,7 @@ DragonVision* DragonVision::GetDragonVision
 
 
 DragonVision::DragonVision(std::string stateName, int stateId): State(stateName, stateId)
-						  // m_frontDragonLimelight(LimelightFactory::GetLimelightFactory()->GetLimelight())				
+				//		   m_frontDragonLimelight(LimelightFactory::GetLimelightFactory()->GetLimelight())				
 {
 	
 }
@@ -70,49 +69,50 @@ void DragonVision::Run()
 
 
 //Aligned-with functions
-
+/**
 bool DragonVision::AlignedWithCubeNode() const
 {
-//return m_frontDragonLimelight->HasTarget();
+return m_frontDragonLimelight->HasTarget();
 }
 bool DragonVision::AlignedWithConeNode() const
 {
-//	return m_frontDragonLimelight->HasTarget();
+return m_frontDragonLimelight->HasTarget();
 }
+
 bool DragonVision::AlignedWithSubstation() const
 {
-//	return m_frontDragonLimelight->HasTarget();
+return m_frontDragonLimelight->HasTarget();
 }
 bool DragonVision::AlignedWithCubeGamePiece() const
 {
-//	return m_frontDragonLimelight->HasTarget();
+return m_frontDragonLimelight->HasTarget();
 }   
 bool DragonVision::AlignedWithConeGamePiece() const
 {
-//	return m_frontDragonLimelight->HasTarget();
+return m_frontDragonLimelight->HasTarget();
 }
 
 // Distance methods
 
 units::length::inch_t DragonVision::DistanceFromCubeNode() const
 {
-//	return m_frontDragonLimelight->EstimateTargetDistance();
+return m_frontDragonLimelight->EstimateTargetDistance();
 }
 units::length::inch_t DragonVision::DistanceFromConeNode() const
 {
-//	return m_frontDragonLimelight->EstimateTargetDistance();
+return m_frontDragonLimelight->EstimateTargetDistance();
 }
 units::length::inch_t DragonVision::DistanceFromSubstation() const
 {
-//	return m_frontDragonLimelight->EstimateTargetDistance();
+return m_frontDragonLimelight->EstimateTargetDistance();
 }
 units::length::inch_t DragonVision::DistanceFromCubeGamePiece() const
 {
-//	return m_frontDragonLimelight->EstimateTargetDistance();
+return m_frontDragonLimelight->EstimateTargetDistance();
 }
 units::length::inch_t DragonVision::DistanceFromConeGamePiece() const
 {
-//	return m_frontDragonLimelight->EstimateTargetDistance();
+return m_frontDragonLimelight->EstimateTargetDistance();
 }
 
 //Angel Functions
@@ -120,23 +120,23 @@ units::length::inch_t DragonVision::DistanceFromConeGamePiece() const
 
 units::angle::degree_t DragonVision::AngleFromCubeNode() const
 {
-//	return m_frontDragonLimelight->GetTargetSkew();
+return m_frontDragonLimelight->GetTargetSkew();
 }
 units::angle::degree_t DragonVision::AngleFromConeNode() const
 {
-//	return m_frontDragonLimelight->GetTargetSkew();
+return m_frontDragonLimelight->GetTargetSkew();
 }
 units::angle::degree_t DragonVision::AngleFromCubeGamePiece() const
 {
-//	return m_frontDragonLimelight->GetTargetSkew();
+return m_frontDragonLimelight->GetTargetSkew();
 } 
 units::angle::degree_t DragonVision::AngleFromConeGamePiece() const
 {
-//	return m_frontDragonLimelight->GetTargetSkew();
+return m_frontDragonLimelight->GetTargetSkew();
 }
 units::angle::degree_t DragonVision::AngleFromSubstation() const
 {
-//	return m_frontDragonLimelight->GetTargetSkew();
+return m_frontDragonLimelight->GetTargetSkew();
 }
 
 // position function
@@ -146,3 +146,4 @@ int DragonVision::GetRobotPosition()  const
 	return 0;
 }
 
+*/

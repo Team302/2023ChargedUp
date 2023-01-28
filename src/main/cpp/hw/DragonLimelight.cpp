@@ -61,13 +61,13 @@ DragonLimelight::DragonLimelight
 {
     //SetLEDMode( DragonLimelight::LED_MODE::LED_OFF);
 }
-
+/**
 std::vector<double> DragonLimelight::Get3DSolve() const
 {
     std::vector<double> output;
     return output;
 }
-
+*/
 bool DragonLimelight::HasTarget() const
 {
     auto nt = m_networktable.get();
@@ -119,7 +119,7 @@ units::angle::degree_t DragonLimelight::GetTargetHorizontalOffset() const
     Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("DragonLimelight"), string("GetTargetVerticalOffset"), string("Invalid limelight rotation"));
     return GetTx();
 }
-
+/**
 units::angle::degree_t DragonLimelight::GetTargetVerticalOffset() const
 {
     if ( abs(m_rotation.to<double>()) < 1.0 )
@@ -171,7 +171,7 @@ units::time::microsecond_t DragonLimelight::GetPipelineLatency() const
     }
     return units::time::second_t(0.0);
 }
-
+*/
 
 void DragonLimelight::SetTargetHeight
 (
@@ -246,7 +246,7 @@ void DragonLimelight::ToggleSnapshot(DragonLimelight::SNAPSHOT_MODE toggle)
         nt->PutNumber("snapshot", toggle);
     }
 }
-
+/**
 void DragonLimelight::PrintValues()
 {
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("PrintValues HasTarget"), to_string( HasTarget() ) );    
@@ -274,7 +274,7 @@ units::length::inch_t DragonLimelight::EstimateTargetDistance() const
 
     return (GetTargetHeight()-GetMountingHeight()) / tanAngle;
 }
-
+*/
 
 
 
