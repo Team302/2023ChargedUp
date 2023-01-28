@@ -23,7 +23,7 @@
 
 // Team 302 includes
 #include <mechanisms/base/StateMgr.h>
-#include <mechanisms/Grabber/grabber.h>
+#include <mechanisms/Grabber/Grabber.h>
 #include <mechanisms/StateStruc.h>
 
 // Third Party Includes

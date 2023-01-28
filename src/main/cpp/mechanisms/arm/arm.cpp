@@ -21,7 +21,7 @@
 				//team 302 includes
 				#include <hw/interfaces/IDragonMotorController.h>
 				#include <mechanisms/base/Mech1IndMotor.h>
-				#include <mechanisms/arm/arm.h>
+				#include <mechanisms/arm/Arm.h>
 
 		using namespace std;
 

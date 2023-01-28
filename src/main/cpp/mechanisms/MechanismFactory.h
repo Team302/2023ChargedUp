@@ -40,9 +40,9 @@
 #include <hw/usages/ServoMap.h>
 #include <mechanisms/MechanismTypes.h>
 #include <mechanisms/base/Mech.h>
-#include <mechanisms/arm/arm.h>
-#include <mechanisms/extender/extender.h>
-#include <mechanisms/grabber/grabber.h>
+#include <mechanisms/arm/Arm.h>
+#include <mechanisms/extender/Extender.h>
+#include <mechanisms/grabber/Grabber.h>
 
 // @ADDMECH include for your mechanism 
 

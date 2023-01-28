@@ -21,7 +21,7 @@
 				//team 302 includes
 				#include <hw/interfaces/IDragonMotorController.h>
 				#include <mechanisms/base/Mech1IndMotor.h>
-				#include <mechanisms/extender/extender.h>
+				#include <mechanisms/extender/Extender.h>
 
 		using namespace std;
 

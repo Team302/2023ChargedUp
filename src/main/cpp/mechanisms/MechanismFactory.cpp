@@ -38,9 +38,9 @@
 #include <mechanisms/MechanismTypes.h>
 #include <utils/Logger.h>
 // @ADDMECH include for your mechanism 
-#include <mechanisms/arm/arm.h>
-#include <mechanisms/extender/extender.h>
-#include <mechanisms/grabber/grabber.h>
+#include <mechanisms/arm/Arm.h>
+#include <mechanisms/extender/Extender.h>
+#include <mechanisms/grabber/Grabber.h>
 
 // Third Party Includes
 #include <ctre/phoenix/sensors/CANCoder.h>

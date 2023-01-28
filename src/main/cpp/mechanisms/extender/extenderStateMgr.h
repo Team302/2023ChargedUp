@@ -23,7 +23,7 @@
 
 // Team 302 includes
 #include <mechanisms/base/StateMgr.h>
-#include <mechanisms/Extender/extender.h>
+#include <mechanisms/Extender/Extender.h>
 #include <mechanisms/StateStruc.h>
 
 // Third Party Includes

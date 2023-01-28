@@ -23,7 +23,7 @@
 
 // Team 302 includes
 #include <mechanisms/base/StateMgr.h>
-#include <mechanisms/Arm/arm.h>
+#include <mechanisms/Arm/Arm.h>
 #include <mechanisms/StateStruc.h>
 
 // Third Party Includes

@@ -21,7 +21,7 @@
 				//team 302 includes
 				#include <hw/interfaces/IDragonMotorController.h>
 				#include <mechanisms/base/Mech2Solenoids.h>
-				#include <mechanisms/grabber/grabber.h>
+				#include <mechanisms/grabber/Grabber.h>
 
 		using namespace std;
 

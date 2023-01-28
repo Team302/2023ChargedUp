@@ -23,9 +23,9 @@
 #include <mechanisms/MechanismFactory.h>
 #include <mechanisms/base/StateMgr.h>
 #include <mechanisms/StateStruc.h>
-#include <mechanisms/grabber/grabber.h>
-#include <mechanisms/grabber/grabberState.h>
-#include <mechanisms/grabber/grabberStateMgr.h>
+#include <mechanisms/grabber/Grabber.h>
+#include <mechanisms/grabber/GrabberState.h>
+#include <mechanisms/grabber/GrabberStatemgr.h>
 
 // Third Party Includes
 
