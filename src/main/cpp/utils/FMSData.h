@@ -1,4 +1,3 @@
-
 //====================================================================================================================================================
 // Copyright 2022 Lake Orion Robotics FIRST Team 302
 //
@@ -13,44 +12,33 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
-
-
 #pragma once
 
-#include <frc/TimedRobot.h>
+//FRC Includes
+#include <frc/SmartDashboard/SendableChooser.h>
+#include <frc/DriverStation.h>
 
-class ArcadeDrive;
-class CyclePrimitives;
-class DragonLimelight;
-class HolonomicDrive;
-class IChassis;
-class TeleopControl;
-class AdjustableItemMgr;
-class FMSData;
-
-
-class Robot : public frc::TimedRobot 
+class FMSData
 {
     public:
-        void RobotInit() override;
-        void RobotPeriodic() override;
-        void AutonomousInit() override;
-        void AutonomousPeriodic() override;
-        void TeleopInit() override;
-        void TeleopPeriodic() override;
-        void DisabledInit() override;
-        void DisabledPeriodic() override;
-        void TestInit() override;
-        void TestPeriodic() override;
+        enum ALLIANCE_COLOR
+        {
+            BLUE,
+            RED,
+            INVALID
+        };
+
+        FMSData();
+        ~FMSData() = default;
+
+        frc::DriverStation::Alliance GetAllianceColor();
+
+        void CheckForFMS();
 
     private:
-        TeleopControl*        m_controller;
-        IChassis*             m_chassis;
-        CyclePrimitives*      m_cyclePrims;
-        HolonomicDrive*       m_holonomic;
-        bool                  m_startLogging;
-        ArcadeDrive*          m_arcade;
-        DragonLimelight*      m_dragonLimeLight;
-        AdjustableItemMgr*    m_tuner;
-        FMSData*              m_fmsData;
+        frc::SendableChooser<std::string>                                   m_allianceColorChooser;
+        std::unordered_map<frc::DriverStation::Alliance, ALLIANCE_COLOR>    m_colorMap;
+        bool                                                                m_hasFMS;
+        frc::DriverStation::Alliance                                        m_color;
+        bool                                                                m_polledFMS;
 };

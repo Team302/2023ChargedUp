@@ -1,4 +1,3 @@
-
 //====================================================================================================================================================
 // Copyright 2022 Lake Orion Robotics FIRST Team 302
 //
@@ -14,43 +13,56 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
+//FRC Includes
+#include <frc/SmartDashboard/SmartDashboard.h>
+#include <frc/DriverStation.h>
 
-#pragma once
+//Team 302 Includes
+#include <utils/FMSData.h>
 
-#include <frc/TimedRobot.h>
-
-class ArcadeDrive;
-class CyclePrimitives;
-class DragonLimelight;
-class HolonomicDrive;
-class IChassis;
-class TeleopControl;
-class AdjustableItemMgr;
-class FMSData;
-
-
-class Robot : public frc::TimedRobot 
+FMSData::FMSData() : m_allianceColorChooser(),
+                    m_hasFMS(false),
+                    m_color(frc::DriverStation::Alliance::kInvalid),
+                    m_polledFMS(false)
 {
-    public:
-        void RobotInit() override;
-        void RobotPeriodic() override;
-        void AutonomousInit() override;
-        void AutonomousPeriodic() override;
-        void TeleopInit() override;
-        void TeleopPeriodic() override;
-        void DisabledInit() override;
-        void DisabledPeriodic() override;
-        void TestInit() override;
-        void TestPeriodic() override;
+    m_allianceColorChooser.SetDefaultOption("UNKNOWN Alliance", "Invalid");
+    m_allianceColorChooser.AddOption("Red Alliance", "Red");
+    m_allianceColorChooser.AddOption("Blue Alliance", "Blue");
 
-    private:
-        TeleopControl*        m_controller;
-        IChassis*             m_chassis;
-        CyclePrimitives*      m_cyclePrims;
-        HolonomicDrive*       m_holonomic;
-        bool                  m_startLogging;
-        ArcadeDrive*          m_arcade;
-        DragonLimelight*      m_dragonLimeLight;
-        AdjustableItemMgr*    m_tuner;
-        FMSData*              m_fmsData;
-};
+    frc::SmartDashboard::PutData("Alliance If NO FMS", &m_allianceColorChooser);
+}
+
+frc::DriverStation::Alliance FMSData::GetAllianceColor()
+{
+    if(!m_polledFMS)
+    {
+        CheckForFMS();
+        
+        if(m_hasFMS)
+        {
+            m_color = frc::DriverStation::GetAlliance();
+            m_polledFMS = true;
+        }
+        else
+        {
+            if(m_allianceColorChooser.GetSelected() == "Red")
+            {
+                m_color = frc::DriverStation::Alliance::kRed;
+            }
+            else if(m_allianceColorChooser.GetSelected() == "Blue")
+            {
+                m_color = frc::DriverStation::Alliance::kBlue;
+            }
+        }
+    }
+
+    return m_color;
+}
+
+void FMSData::CheckForFMS()
+{
+    if(frc::DriverStation::IsFMSAttached() && !m_hasFMS)
+    {
+        m_hasFMS = true;
+    }
+}
