@@ -15,49 +15,26 @@
 //====================================================================================================================================================
 
 #pragma once
-#include <string>
-#include <State.h>
-// #include <hw/DragonLimelight.h>
-// class DragonLimelight;
-class DragonVision : public State
+
+#include <hw/DragonLimelight.h>
+#include <utils/Logger.h>
+class DragonVIsion;
+class Cube : public DragonLimelight
 {
     public:
-        static DragonVision* GetDragonVision();
+        
+    Cube() = default;
+    ~Cube() = default;
 
-    void Init() override;
-    void Run() override;
-    void Exit() override;
-    bool AtTarget() const override;
+    // Retroreflective tape Getters
+    bool HasTarget() const override;
+    units::angle::degree_t GetTargetHorizontalOffset() const override;
+    units::angle::degree_t GetTargetVerticalOffset() const override;
+    double GetTargetArea() const override;
+    units::angle::degree_t GetTargetSkew() const override;
+    units::time::microsecond_t GetPipelineLatency() const override;
+    units::length::inch_t EstimateTargetDistance() const override;
+    std::vector<double> Get3DSolve() const override;
 
-    bool AlignedWithCubeNode() const;
-    bool AlignedWithConeNode() const;
-    bool AlignedWithSubstation() const;
-    bool AlignedWithCubeGamePiece() const;
-    bool AlignedWithConeGamePiece() const;
-
-    units::length::inch_t DistanceFromCubeNode() const;
-    units::length::inch_t DistanceFromConeNode() const;
-    units::length::inch_t DistanceFromSubstation() const;
-    units::length::inch_t DistanceFromCubeGamePiece() const;
-    units::length::inch_t DistanceFromConeGamePiece() const;
-
-    units::angle::degree_t AngleFromCubeNode() const;
-    units::angle::degree_t AngleFromConeNode() const;
-    units::angle::degree_t AngleFromSubstation() const;
-    units::angle::degree_t AngleFromCubeGamePiece() const;
-    units::angle::degree_t AngleFromConeGamePiece() const;
-
-    int GetRobotPosition() const;
-   
-private:
-    
-    DragonVision(std::string     stateName,
-                int              stateId);
-    ~DragonVision() = default;
-
-    static DragonVision*	m_dragonVision;
-    // DragonLimelight*           m_frontDragonLimelight;
-    
+    //
 };
-
-

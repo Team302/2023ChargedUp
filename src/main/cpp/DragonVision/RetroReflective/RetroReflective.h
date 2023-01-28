@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+// Copyright 2022 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -14,8 +14,27 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-
-
 #pragma once
 
- class AprilTag
+#include <hw/DragonLimelight.h>
+#include <utils/Logger.h>
+class DragonVIsion;
+class RetroReflective : public DragonLimelight
+{
+    public:
+        
+    RetroReflective() = default;
+    ~RetroReflective() = default;
+
+    // Retroreflective tape Getters
+    bool HasTarget() const override;
+    units::angle::degree_t GetTargetHorizontalOffset() const override;
+    units::angle::degree_t GetTargetVerticalOffset() const override;
+    double GetTargetArea() const override;
+    units::angle::degree_t GetTargetSkew() const override;
+    units::time::microsecond_t GetPipelineLatency() const override;
+    units::length::inch_t EstimateTargetDistance() const override;
+    std::vector<double> Get3DSolve() const override;
+
+    //
+};

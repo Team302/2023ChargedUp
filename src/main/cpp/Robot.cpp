@@ -70,7 +70,7 @@ void Robot::RobotPeriodic()
     {
         m_chassis->UpdateOdometry();
     }
-
+/**
 auto vision = DragonVision::GetDragonVision();
 
     if (vision != nullptr)
@@ -87,7 +87,9 @@ auto vision = DragonVision::GetDragonVision();
     }
 
     m_tuner->ListenForUpdates();
+ */   
 }
+
 
 /**
  * This autonomous (along with the chooser code above) shows how to select

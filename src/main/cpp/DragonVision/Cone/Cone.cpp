@@ -16,11 +16,11 @@
 
 #pragma once
 
-#include <hw/RetroReflective/RetroReflective.h>
+#include <DragonVision/Cone/Cone.h>
 
 using namespace std;
 
-bool DragonLimelight::HasTarget() const
+bool Cone::HasTarget() const
 {
    auto nt = m_networktable.get();
     if (nt != nullptr)
@@ -30,7 +30,7 @@ bool DragonLimelight::HasTarget() const
     return false;
 }
 
-units::angle::degree_t DragonLimelight::GetTargetHorizontalOffset() const
+units::angle::degree_t Cone::GetTargetHorizontalOffset() const
 {
     if ( abs(m_rotation.to<double>()) < 1.0 )
     {
@@ -52,7 +52,7 @@ units::angle::degree_t DragonLimelight::GetTargetHorizontalOffset() const
     return GetTx();
 }
 
-units::angle::degree_t DragonLimelight::GetTargetVerticalOffset() const
+units::angle::degree_t Cone::GetTargetVerticalOffset() const
 {
     if ( abs(m_rotation.to<double>()) < 1.0 )
     {
@@ -74,7 +74,7 @@ units::angle::degree_t DragonLimelight::GetTargetVerticalOffset() const
     return GetTy();   
 }
 
-double DragonLimelight::GetTargetArea() const
+double Cone::GetTargetArea() const
 {
     auto nt = m_networktable.get();
     if (nt != nullptr)
@@ -84,7 +84,7 @@ double DragonLimelight::GetTargetArea() const
     return 0.0;
 }
 
-units::angle::degree_t DragonLimelight::GetTargetSkew() const
+units::angle::degree_t Cone::GetTargetSkew() const
 {
  //   auto nt = m_networktable.get();
     if (m_networktable != nullptr)
@@ -94,7 +94,7 @@ units::angle::degree_t DragonLimelight::GetTargetSkew() const
     return units::angle::degree_t(0.0);
 }
 
-units::time::microsecond_t DragonLimelight::GetPipelineLatency() const
+units::time::microsecond_t Cone::GetPipelineLatency() const
 {
     auto nt = m_networktable.get();
     if (nt != nullptr)
@@ -104,13 +104,13 @@ units::time::microsecond_t DragonLimelight::GetPipelineLatency() const
     return units::time::second_t(0.0);
 }
 
-std::vector<double> RetroReflective::Get3DSolve() const
+std::vector<double> Cone::Get3DSolve() const
 {
     std::vector<double> output;
     return output;
 }
 
-units::length::inch_t DragonLimelight::EstimateTargetDistance() const
+units::length::inch_t Cone::EstimateTargetDistance() const
 {
     units::angle::degree_t angleFromHorizon = (GetMountingAngle() + GetTargetVerticalOffset());
     units::angle::radian_t angleRad = angleFromHorizon;

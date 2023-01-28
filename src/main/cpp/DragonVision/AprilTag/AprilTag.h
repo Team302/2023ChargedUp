@@ -19,19 +19,22 @@
 #include <hw/DragonLimelight.h>
 #include <utils/Logger.h>
 class DragonVIsion;
-class RetroReflective : public DragonLimelight
+class AprilTag : public DragonLimelight
 {
     public:
         
+    AprilTag() = default;
+    ~AprilTag() = default;
 
+    // Retroreflective tape Getters
+    bool HasTarget() const override;
+    units::angle::degree_t GetTargetHorizontalOffset() const override;
+    units::angle::degree_t GetTargetVerticalOffset() const override;
+    double GetTargetArea() const override;
+    units::angle::degree_t GetTargetSkew() const override;
+    units::time::microsecond_t GetPipelineLatency() const override;
+    units::length::inch_t EstimateTargetDistance() const override;
+    std::vector<double> Get3DSolve() const override;
 
-         // Retroreflective tape Getters
-        bool HasTarget() const override;
-        units::angle::degree_t GetTargetHorizontalOffset() const override;
-        units::angle::degree_t GetTargetVerticalOffset() const override;
-        double GetTargetArea() const override;
-        units::angle::degree_t GetTargetSkew() const override;
-        units::time::microsecond_t GetPipelineLatency() const override;
-        units::length::inch_t EstimateTargetDistance() const override;
-        std::vector<double> Get3DSolve() const override;
+    //
 };
