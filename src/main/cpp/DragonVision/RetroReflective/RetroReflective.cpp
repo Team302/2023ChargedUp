@@ -19,7 +19,16 @@
 #include <DragonVision/RetroReflective/RetroReflective.h>
 
 using namespace std;
+RetroReflective::RetroReflective() : DragonLimelight(std::string                 tableName,                  /// <I> - network table name
+                                                     units::length::inch_t       mountingHeight,             /// <I> - mounting height of the limelight
+                                                     units::length::inch_t       mountingHorizontalOffset,   /// <I> - mounting horizontal offset from the middle of the robot
+                                                     units::angle::degree_t      rotation,                   /// <I> - clockwise rotation of limelight
+                                                     units::angle::degree_t      mountingAngle,              /// <I> - mounting angle of the camera
+                                                     units::length::inch_t       targetHeight,               /// <I> - height the target
+                                                     units::length::inch_t       targetHeight2)              /// <I> - height of second target)
+{
 
+}
 bool RetroReflective::HasTarget() const
 {
    auto nt = m_networktable.get();
@@ -127,4 +136,3 @@ units::length::inch_t RetroReflective::EstimateTargetDistance() const
 
     return (GetTargetHeight()-GetMountingHeight()) / tanAngle;
 }
-

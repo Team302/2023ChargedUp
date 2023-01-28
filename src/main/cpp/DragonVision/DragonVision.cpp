@@ -21,7 +21,6 @@
 
 // Team 302 includes
 
-
 #include <DragonVision/DragonVision.h>
 #include <hw\factories\LimelightFactory.h>
 
@@ -46,9 +45,13 @@ DragonVision* DragonVision::GetDragonVision
 
 
 DragonVision::DragonVision(std::string stateName, int stateId): State(stateName, stateId),
-						   m_frontDragonLimelight(LimelightFactory::GetLimelightFactory()->GetLimelight())				
+						   m_frontDragonLimelight(LimelightFactory::GetLimelightFactory()->GetLimelight())			
 {
-	
+	map<LIMELIGHT_STATES, DragonVision> limelightstates;
+	limelightstates[RETROREFLECTIVE] = new RetroReflective();
+	limelightstates[APRILTAG] = new AprilTag();
+	limelightstates[CUBE] = new Cube();
+	limelightstates[CONE] = new Cone();
 }
 void DragonVision::Init() 
 {
@@ -65,6 +68,11 @@ bool DragonVision::AtTarget() const
 void DragonVision::Run() 
 {
 
+}
+
+void DragonVision::SetLimelightStates(DragonVision::LIMELIGHT_STATES limelightstate)
+{
+    
 }
 
 

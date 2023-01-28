@@ -23,7 +23,7 @@ class RetroReflective : public DragonLimelight
 {
     public:
         
-    RetroReflective() = default;
+    RetroReflective();
     ~RetroReflective() = default;
 
     // Retroreflective tape Getters

@@ -66,6 +66,8 @@ class DragonLimelight //: public IDragonSensor, public IDragonDistanceSensor
             SNAP_ON
         };
 
+        
+
         ///-----------------------------------------------------------------------------------
         /// Method:         DragonLimelight (constructor)
         /// Description:    Create the object

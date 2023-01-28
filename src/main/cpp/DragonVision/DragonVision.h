@@ -16,6 +16,7 @@
 
 #pragma once
 #include <string>
+#include <map>
 #include <State.h>
 #include <hw/DragonLimelight.h>
 class DragonLimelight;
@@ -23,6 +24,20 @@ class DragonVision : public State
 {
     public:
         static DragonVision* GetDragonVision();
+
+    enum LIMELIGHT_STATES
+        {
+            RETROREFLECTIVE,
+            APRILTAG,
+            CUBE,
+            CONE
+        };
+    const std::string m_retroReflective = "STATE_RETROREFLECTIVE";
+    const std::string m_aprilTag = "STATE_APRILTAG";
+    const std::string m_cube = "STATE_CUBE";
+    const std::string m_cone = "STATE_CONE";
+
+    std::map<LIMELIGHT_STATES, DragonVision> limelightstates;
 
     void Init() override;
     void Run() override;
@@ -48,12 +63,26 @@ class DragonVision : public State
     units::angle::degree_t AngleFromCubeGamePiece() const;
     units::angle::degree_t AngleFromConeGamePiece() const;
 
+
+
+
+    void SetLimelightStates
+        (
+            DragonVision::LIMELIGHT_STATES limelightstate
+        );
     int GetRobotPosition() const;
    
 private:
     
     DragonVision(std::string     stateName,
-                int              stateId);
+                int              stateId
+                /**d::unordered_map<LIMELIGHT_STATES, DragonVision> limelightstate)
+                {
+                    auto Retro = new (m_retroReflective);
+                    limelightstate[m_retroReflective] = Retro;
+                }
+                */
+                );
     ~DragonVision() = default;
 
     static DragonVision*	m_dragonVision;
