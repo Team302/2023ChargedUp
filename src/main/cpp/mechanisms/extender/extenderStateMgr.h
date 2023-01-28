@@ -69,8 +69,9 @@ FLOOR_EXTEND
             PrimitiveParams*    currentParams
         ) override;
 
-        void CheckForStateTransition() override;
-		
+		void CheckForSensorTransitions() override;
+		void CheckForGamepadTransitions() override;
+
     private:
 	
         ExtenderStateMgr();
