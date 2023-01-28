@@ -26,12 +26,22 @@
 #include <mechanisms/StateStruc.h>
 #include <utils/Logger.h>
 
+//@ADDMech Add includes for mech states and mech state mgr
+#include <mechanisms/arm/ArmState.h>
+#include <mechanisms/arm/ArmStateMgr.h>
+#include <mechanisms/extender/ExtenderState.h>
+#include <mechanisms/extender/ExtenderStateMgr.h>
+#include <mechanisms/grabber/GrabberState.h>
+#include <mechanisms/grabber/GrabberStateMgr.h>
+
 using namespace std;
 
 void StateMgrHelper::InitStateMgrs()
 {
-    //ExampleStateMgr::GetInstance();
-    //@ADDMech Add mechanisms here
+    //@ADDMech Add MechanismStateMgr::GetInstanceI() here
+    ArmStateMgr::GetInstance();
+    ExtenderStateMgr::GetInstance();
+    GrabberStateMgr::GetInstance();
 }
 
 void StateMgrHelper::RunCurrentMechanismStates() 
@@ -110,17 +120,23 @@ State* StateMgrHelper::CreateState
     State* thisState = nullptr;
     switch (type)
     {
-        // @ADDMECH Add case(s) tto create your state(s) 
-
-
         // @ADDMECH Add case(s) to create your state(s) 
-        //case StateType::SHOOTER:
-        //    thisState = new ShooterState(controlData, 
-        //                                    controlData2, 
-        //                                    target, 
-        //                                    secondaryTarget);
-        //    break;
+        // case StateType::GRABBER_STATE:
+        //      thisState = new GrabberState(xmlString, id, solenoidState, solenoid2State);
+        //     break;
 
+       case StateType::ARM_STATE:
+            thisState = new ArmState(xmlString, id, controlData, target);
+            break;
+
+        case StateType::EXTENDER_STATE:
+            thisState = new ExtenderState(xmlString, id, controlData, target);
+            break;
+
+        case StateType::GRABBER_STATE:
+            thisState = new GrabberState(xmlString, id, solenoidState, solenoid2State);
+            break;
+        
         default:
             Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, mech->GetNetworkTableName(), string("StateMgr::StateMgr"), string("unknown state"));
             break;

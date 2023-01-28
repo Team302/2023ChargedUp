@@ -23,9 +23,9 @@
 #include <mechanisms/MechanismFactory.h>
 #include <mechanisms/base/StateMgr.h>
 #include <mechanisms/StateStruc.h>
-#include <mechanisms/extender/extender.h>
-#include <mechanisms/extender/extenderState.h>
-#include <mechanisms/extender/extenderStateMgr.h>
+#include <mechanisms/extender/Extender.h>
+#include <mechanisms/extender/ExtenderState.h>
+#include <mechanisms/extender/ExtenderStateMgr.h>
 
 // Third Party Includes
 
