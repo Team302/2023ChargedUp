@@ -1,5 +1,4 @@
 
-
 		//====================================================================================================================================================
 		// Copyright 2022 Lake Orion Robotics FIRST Team 302
 		//
@@ -18,47 +17,28 @@
 		#pragma once
 
 		// C++ Includes
-		#include <map>
-			#include <memory>
-				#include <string>
+		#include <memory>
+			#include <string>
 
-					// FRC includes
+				// Team 302 includes
+				#include <mechanisms/base/Mech1IndMotor.h>
 
-					// Team 302 includes
-
-
-					// Third Party Includes
-
-					class DigitalInputUsage
-					{
-
-					public:
-
-					/// @enum DIGITAL_INPUT_USAGE
-					/// @brief Defines digital input sensor usages.  This should be modified for each robot.
-					enum DIGITAL_INPUT_USAGE
-					{
-					UNKNOWN_DIGITAL_INPUT_USAGE = -1,
-
-					
-					
-					MAX_DIGITAL_INPUT_USAGE
-					};
-
-					static DigitalInputUsage* GetInstance();
-
-					DIGITAL_INPUT_USAGE GetUsage
-					(
-					std::string         usageString
-					);
-
-					private:
-					static DigitalInputUsage*    m_instance;
-					DigitalInputUsage();
-					~DigitalInputUsage();
-
-					std::map <std::string, DIGITAL_INPUT_USAGE> m_usageMap;
-
-};
-
+		class Arm : public Mech1IndMotor
+		{
+		public:
+		/// @brief Create an Arm mechanism wiht 1 independent motor
+		/// @param [in] std::string the name of the file that will set control parameters for this mechanism
+		/// @param [in] std::string the name of the network table for logging information
+		/// @param [in] std::shared_ptr<IDragonMotorController>
+		
+		Arm
+		(
+		std::string                                 controlFileName,
+		std::string                                 networkTableName
+		,
+std::shared_ptr<IDragonMotorController>     motorController0
+		);
+		Arm() = delete;
+		~Arm() override = default;
+		};
 	

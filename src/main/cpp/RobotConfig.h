@@ -1,5 +1,7 @@
+
+
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+// Copyright 2022 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -13,26 +15,10 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-// C++ Includes
-#include <memory>
-#include <string>
 
-//team 302 includes
-#include <hw/interfaces/IDragonMotorController.h>
-#include <mechanisms/base/Mech1IndMotor.h>
-#include <mechanisms/example/Example.h>
+#pragma once
 
-using namespace std;
+#define  CHASSIS_TYPE_SWERVE_CHASSIS
 
-/// @brief Create an Example mechanism wiht 1 independent motor 
-/// @param [in] std::string the name of the file that will set control parameters for this mechanism
-/// @param [in] std::string the name of the network table for logging information
-/// @param [in] std::shared_ptr<IDragonMotorController> motor controller used by this mechanism
-Example::Example
-(
-    std::string                                 controlFileName,
-    std::string                                 networkTableName,  
-    std::shared_ptr<IDragonMotorController>     motorController
-):Mech1IndMotor(MechanismTypes::MECHANISM_TYPE::EXAMPLE,controlFileName,networkTableName,motorController)
-{
-}
+
+

@@ -52,8 +52,8 @@ class TeleopControl
             DRIVE_TO_COL_TWO,
             DRIVE_TO_COL_THREE,            
 		    // @ADDMECH add functions here for robot
-            EXAMPLE_FORWARD,
-            EXAMPLE_REVERSE,
+            // EXAMPLE_FORWARD,
+            // EXAMPLE_REVERSE,
             MAX_FUNCTIONS
         };
 

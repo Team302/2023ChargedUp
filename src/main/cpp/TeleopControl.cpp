@@ -148,10 +148,10 @@ void TeleopControl::Initialize() const
     if ( m_controller[ctrlNo] != nullptr && DriverStation::GetJoystickIsXbox(ctrlNo) )
     {
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("TeleopControl"), string("Controller 1"), string("XBOIX controller plugged in"));
-		m_controllerIndex[ EXAMPLE_FORWARD ]	= ctrlNo;
-		m_buttonIDs[ EXAMPLE_FORWARD ]			= IDragonGamePad::A_BUTTON;
-		m_controllerIndex[ EXAMPLE_REVERSE ]	= ctrlNo;
-		m_buttonIDs[ EXAMPLE_REVERSE ]			= IDragonGamePad::B_BUTTON;
+		// m_controllerIndex[ EXAMPLE_FORWARD ]	= ctrlNo;
+		// m_buttonIDs[ EXAMPLE_FORWARD ]			= IDragonGamePad::A_BUTTON;
+		// m_controllerIndex[ EXAMPLE_REVERSE ]	= ctrlNo;
+		// m_buttonIDs[ EXAMPLE_REVERSE ]			= IDragonGamePad::B_BUTTON;
 	}
     else if ( m_controller[ctrlNo] != nullptr )
     {

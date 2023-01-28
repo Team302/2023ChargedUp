@@ -13,28 +13,50 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#pragma once
+#pragma once 
 
 // C++ Includes
 #include <memory>
 #include <string>
 
 // Team 302 includes
-#include <mechanisms/base/Mech1IndMotor.h>
+#include <mechanisms/base/Mech1Solenoid.h>
+#include <mechanisms/MechanismTypes.h>
+#include <hw/DragonSolenoid.h>
 
-class Example : public Mech1IndMotor
+class Mech2Solenoids : public Mech1Solenoid
 {
-	public:
-        /// @brief Create an Example mechanism wiht 1 independent motor 
-        /// @param [in] std::string the name of the file that will set control parameters for this mechanism
-        /// @param [in] std::string the name of the network table for logging information
-        /// @param [in] std::shared_ptr<IDragonMotorController> motor controller used by this mechanism
-        Example
+    public:
+        /// @brief Create a generic mechanism wiht 1 solenoid 
+        /// @param [in] std::shared_ptr<DragonSolenoid> solenoid used by this mechanism
+         Mech2Solenoids
         (
+            MechanismTypes::MECHANISM_TYPE              type,
             std::string                                 controlFileName,
             std::string                                 networkTableName,
-            std::shared_ptr<IDragonMotorController>     motorController
+            std::shared_ptr<DragonSolenoid>             solenoid,
+            std::shared_ptr<DragonSolenoid>             solenoid2
         );
-	    Example() = delete;
-	    ~Example() override = default;
+
+        Mech2Solenoids() = delete;
+        virtual ~Mech2Solenoids() = default;
+
+        /// @brief      Activate/deactivate pneumatic solenoid
+        /// @param [in] bool - true == extend, false == retract
+        /// @return     void 
+        void ActivateSolenoid2
+        (
+            bool     activate
+        );
+
+        /// @brief      Check if the pneumatic solenoid is activated
+        /// @return     bool - true == extended, false == retracted
+        bool IsSolenoid2Activated() const;
+
+        /// @brief log data to the network table if it is activated and time period has past
+        void LogInformation() const override;
+
+    private:
+        std::shared_ptr<DragonSolenoid>             m_solenoid2;
+
 };

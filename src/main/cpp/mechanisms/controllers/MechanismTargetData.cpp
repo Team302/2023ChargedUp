@@ -37,6 +37,7 @@ MechanismTargetData::MechanismTargetData
     double                                      greaterThanTransitiionTarget,
     std::string                                 greaterThanTransitionState,
     SOLENOID                                    solenoid,
+    SOLENOID                                    solenoid2,
     array<double,3>                             function1Coeff,
     array<double,3>                             function2Coeff
 ) : m_state( state ),
@@ -47,6 +48,7 @@ MechanismTargetData::MechanismTargetData
     m_controlData(nullptr),
     m_controlData2(nullptr),
     m_solenoid( solenoid ),
+    m_solenoid2( solenoid2 ),
     m_robotPitch(robotPitch),
     m_lessThanTransitiionTarget(lessThanTransitiionTarget),
     m_lessThanTransitionState(lessThanTransitionState),

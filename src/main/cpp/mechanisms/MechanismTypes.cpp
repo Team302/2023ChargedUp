@@ -1,4 +1,5 @@
 
+
 //====================================================================================================================================================
 // Copyright 2022 Lake Orion Robotics FIRST Team 302
 //
@@ -44,8 +45,11 @@ MechanismTypes* MechanismTypes::GetInstance()
 
 MechanismTypes::MechanismTypes()
 {
-    // @ADDMECH add your mechanism to m_typeMap 
-    m_typeMap["EXAMPLE"]    = MECHANISM_TYPE::EXAMPLE;
+    m_typeMap["ARM"] = MECHANISM_TYPE::ARM;
+m_typeMap["EXTENDER"] = MECHANISM_TYPE::EXTENDER;
+m_typeMap["GRABBER"] = MECHANISM_TYPE::GRABBER;
+ 
+    //m_typeMap["EXAMPLE"]    = MECHANISM_TYPE::EXAMPLE;
 }
 
 MechanismTypes::~MechanismTypes()
@@ -66,3 +70,5 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
     Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("MechanismTypes"), string("GetType - unknown mechanism type"), typeString);
     return MechanismTypes::MECHANISM_TYPE::UNKNOWN_MECHANISM;
 }
+
+

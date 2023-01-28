@@ -1,3 +1,4 @@
+
 //====================================================================================================================================================
 /// Copyright 2022 Lake Orion Robotics FIRST Team 302 
 ///
@@ -22,35 +23,37 @@
 
 // Team 302 includes
 #include <mechanisms/base/StateMgr.h>
-#include <mechanisms/example/Example.h>
+#include <mechanisms/Grabber/Grabber.h>
 #include <mechanisms/StateStruc.h>
-#include <AdjustableItem.h>
 
 // Third Party Includes
 
-class ExampleStateMgr : public StateMgr, public AdjustableItem
+class GrabberStateMgr : public StateMgr
 {
     public:
-        /// @enum the various states of the Intake
-        enum EXAMPLE_STATE
+	    /// @enum the various states of the Intake
+        enum GRABBER_STATE
         {
-            OFF,
-            FORWARD,
-            REVERSE
+            OPEN,
+GRABBING_CONE,
+GRABBING_CUBE,
+HOLDING_CONE,
+HOLDING_CUBE,
+RELEASE
         };
-        const std::string m_exampleOffXmlString = "EXAMPLE_OFF";
-        const std::string m_exampleForwardXmlString = "EXAMPLE_FORWARD";
-        const std::string m_exampleReverseXmlString = "EXAMPLE_REVERSE";
-        
-        const std::map<const std::string, EXAMPLE_STATE> m_exampleXmlStringToStateEnumMap
-        {   {m_exampleOffXmlString, EXAMPLE_STATE::OFF},
-            {m_exampleForwardXmlString, EXAMPLE_STATE::FORWARD},
-            {m_exampleReverseXmlString, EXAMPLE_STATE::REVERSE}
+		
+        const std::map<const std::string, GRABBER_STATE> m_grabberXmlStringToStateEnumMap
+        {   
+			{"OPEN", GRABBER_STATE::OPEN},
+{"GRABBING_CONE", GRABBER_STATE::GRABBING_CONE},
+{"GRABBING_CUBE", GRABBER_STATE::GRABBING_CUBE},
+{"HOLDING_CONE", GRABBER_STATE::HOLDING_CONE},
+{"HOLDING_CUBE", GRABBER_STATE::HOLDING_CUBE},
+{"RELEASE", GRABBER_STATE::RELEASE}
         };
-
         
-		/// @brief  Find or create the state manager
-		static ExampleStateMgr* GetInstance();
+		/// @brief  Find or create the state manmanager
+		static GrabberStateMgr* GetInstance();
 
         /// @brief  Get the current Parameter parm value for the state of this mechanism
         /// @param PrimitiveParams* currentParams current set of primitive parameters
@@ -60,30 +63,24 @@ class ExampleStateMgr : public StateMgr, public AdjustableItem
             PrimitiveParams*    currentParams
         ) override;
 
-        void CheckForStateTransition() override;
-
-        //Adjustable Item Overrides
-        void SetValues() override;
-
-        void ResetValues() override;
-
-        bool HasDifferences() override;
-
-        void ShowDifferences() override;
-        
-        void PopulateNetworkTable() override;
+		void CheckForSensorTransitions() override;
+		void CheckForGamepadTransitions() override;
 
     private:
-
-        ExampleStateMgr();
-        ~ExampleStateMgr() = default;
+	
+        GrabberStateMgr();
+        ~GrabberStateMgr() = default;
         
-        Example*                                m_example;
+        Grabber*                                m_grabber;
 
-		static ExampleStateMgr*	m_instance;
-        const StateStruc m_offState = {EXAMPLE_STATE::OFF, m_exampleOffXmlString, StateType::EXAMPLE_STATE, true};
-        const StateStruc m_forwardState = {EXAMPLE_STATE::FORWARD, m_exampleForwardXmlString, StateType::EXAMPLE_STATE, false};
-        const StateStruc m_reverseState = {EXAMPLE_STATE::REVERSE, m_exampleReverseXmlString, StateType::EXAMPLE_STATE, false};
+		static GrabberStateMgr*	m_instance;
 
-        std::shared_ptr<nt::NetworkTable> m_tuningTable = nullptr;
+		const StateStruc m_openState = { GRABBER_STATE::OPEN, "OPEN", StateType::GRABBER_STATE, true };
+const StateStruc m_grabbing_coneState = { GRABBER_STATE::GRABBING_CONE, "GRABBING_CONE", StateType::GRABBER_STATE, true };
+const StateStruc m_grabbing_cubeState = { GRABBER_STATE::GRABBING_CUBE, "GRABBING_CUBE", StateType::GRABBER_STATE, true };
+const StateStruc m_holding_coneState = { GRABBER_STATE::HOLDING_CONE, "HOLDING_CONE", StateType::GRABBER_STATE, true };
+const StateStruc m_holding_cubeState = { GRABBER_STATE::HOLDING_CUBE, "HOLDING_CUBE", StateType::GRABBER_STATE, true };
+const StateStruc m_releaseState = { GRABBER_STATE::RELEASE, "RELEASE", StateType::GRABBER_STATE, true };
+
 };
+
