@@ -15,43 +15,44 @@
 //====================================================================================================================================================
 
 #include <DriverFeedback/DriverFeedback.h>
+#include <DriverFeedback/DriverFeedbackStruct.h>
 
  void DriverFeedback::UpdateFeedback(){
-    // if(DriverFeedbackStruct::DriveteamFeedbackOptions.AlignedWithConeNode){
+    if(DriveteamFeedbackOptions.AlignedWithConeNode){
         
-    //     if(currentState!=DriverFeedbackStates::ALIGNED_WITH_CONE_NODE){
-    //         m_LEDStates->ResetVariables();
-    //     }
-    //     m_LEDStates->AlternatingBlinkingPattern(LED::YELLOW);
-    //     currentState = DriverFeedbackStates::ALIGNED_WITH_CONE_NODE;
+        if(currentState!=DriverFeedbackStates::ALIGNED_WITH_CONE_NODE){
+            m_LEDStates->ResetVariables();
+        }
+        m_LEDStates->AlternatingBlinkingPattern(LED::YELLOW);
+        currentState = DriverFeedbackStates::ALIGNED_WITH_CONE_NODE;
 
-    // }else if(DriverFeedbackStruct::DriveteamFeedbackOptions.AlignedWithCubeNode){
+    }else if(DriveteamFeedbackOptions.AlignedWithCubeNode){
         
-    //     if(currentState!=DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE){
-    //         m_LEDStates->ResetVariables();
-    //     }
-    //     m_LEDStates->AlternatingBlinkingPattern(LED::PURPLE);
-    //     currentState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
+        if(currentState!=DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE){
+            m_LEDStates->ResetVariables();
+        }
+        m_LEDStates->AlternatingBlinkingPattern(LED::PURPLE);
+        currentState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
 
-    // }else if(DriverFeedbackStruct::DriveteamFeedbackOptions.GamePieceInGrabber){
+    }else if(DriveteamFeedbackOptions.GamePieceInGrabber){
          
-    //     if(currentState!=DriverFeedbackStates::GAME_PIECE_IN_GRABBER){
-    //         m_LEDStates->ResetVariables();
-    //     }
-    //     m_LEDStates->AlternatingBlinkingPattern(LED::YELLOW, LED::PURPLE);
-    //     currentState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
+        if(currentState!=DriverFeedbackStates::GAME_PIECE_IN_GRABBER){
+            m_LEDStates->ResetVariables();
+        }
+        m_LEDStates->AlternatingBlinkingPattern(LED::YELLOW, LED::PURPLE);
+        currentState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
 
-    // }else if(DriverFeedbackStruct::DriveteamFeedbackOptions.WantCube){
-    //     currentState = DriverFeedbackStates::WANT_CUBE;
+    }else if(DriveteamFeedbackOptions.WantCube){
+        currentState = DriverFeedbackStates::WANT_CUBE;
 
-    // }else if(DriverFeedbackStruct::DriveteamFeedbackOptions.WantCone){
-    //     currentState = DriverFeedbackStates::WANT_CONE;
+    }else if(DriveteamFeedbackOptions.WantCone){
+        currentState = DriverFeedbackStates::WANT_CONE;
 
-    // }else if(DriverFeedbackStruct::DriveteamFeedbackOptions.GamePieceReadyToPickUp){
-    //     currentState = DriverFeedbackStates::GAME_PIECE_READY_TO_PICK_UP;
+    }else if(DriveteamFeedbackOptions.GamePieceReadyToPickUp){
+        currentState = DriverFeedbackStates::GAME_PIECE_READY_TO_PICK_UP;
     
-    // }else{
-    //     currentState = DriverFeedbackStates::NONE;
+    }else{
+        currentState = DriverFeedbackStates::NONE;
     
-    // }
+    }
 }

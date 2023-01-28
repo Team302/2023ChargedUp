@@ -16,8 +16,6 @@
 
 #pragma once
 
-class DriverFeedbackStruct
-{
     static struct {
     bool WantCube=false;
     bool WantCone=false;
@@ -26,7 +24,6 @@ class DriverFeedbackStruct
     bool AlignedWithConeNode=false;
     bool AlignedWithCubeNode=false;
     } DriveteamFeedbackOptions;
-};
 
 
 
