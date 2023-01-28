@@ -32,24 +32,24 @@
 using namespace std;
 
 
-extenderStateMgr* extenderStateMgr::m_instance = nullptr;
-extenderStateMgr* extenderStateMgr::GetInstance()
+ExtenderStateMgr* ExtenderStateMgr::m_instance = nullptr;
+ExtenderStateMgr* ExtenderStateMgr::GetInstance()
 {
-	if ( extenderStateMgr::m_instance == nullptr )
+	if ( ExtenderStateMgr::m_instance == nullptr )
 	{
         auto extenderPtr = MechanismFactory::GetMechanismFactory()->Getextender();
         if (extenderPtr != nullptr)
         {
-            extenderStateMgr::m_instance = new extenderStateMgr();
+            ExtenderStateMgr::m_instance = new ExtenderStateMgr();
         }
 	}
-	return extenderStateMgr::m_instance;
+	return ExtenderStateMgr::m_instance;
     
 }
 
 
 /// @brief    initialize the state manager, parse the configuration file and create the states.
-extenderStateMgr::extenderStateMgr() : StateMgr(),
+ExtenderStateMgr::ExtenderStateMgr() : StateMgr(),
                                      m_extender(MechanismFactory::GetMechanismFactory()->Getextender())
 {
     map<string, StateStruc> stateMap;
@@ -74,7 +74,7 @@ stateMap["FLOOR_EXTEND"] = m_floor_extendState;
 /// @brief  Get the current Parameter parm value for the state of this mechanism
 /// @param PrimitiveParams* currentParams current set of primitive parameters
 /// @returns int state id - -1 indicates that there is not a state to set
-int extenderStateMgr::GetCurrentStateParam
+int ExtenderStateMgr::GetCurrentStateParam
 (
     PrimitiveParams*    currentParams
 ) 
@@ -84,7 +84,7 @@ int extenderStateMgr::GetCurrentStateParam
 }
 
 /// @brief Check if driver inputs or sensors trigger a state transition
-void extenderStateMgr::CheckForStateTransition()
+void ExtenderStateMgr::CheckForStateTransition()
 {
 
     if ( m_extender != nullptr )

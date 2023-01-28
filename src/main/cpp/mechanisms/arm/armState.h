@@ -19,27 +19,28 @@
 			#include <mechanisms/base/Mech1IndMotorState.h>
 
 		class ControlData;
-		class arm;
+		class Arm;
 
-		class armState : public Mech1IndMotorState
+		class ArmState : public Mech1IndMotorState
 		{
 		public:
 
-		armState() = delete;
-		armState
+		ArmState() = delete;
+		ArmState
 		(
 		std::string                     stateName,
-		int                             stateId,
-		ControlData*                    control,
-		double                          target
+		int                             stateId
+		,
+ControlData* control0,
+double target0
 		);
-		~armState() = default;
+		~ArmState() = default;
 
 
 		bool AtTarget() const override;
-		arm * Getarm() const {return m_arm;}
+		Arm * GetArm() const {return m_arm;}
 
 		private:
-		arm*        m_arm;
+		Arm*        m_arm;
 		};
 	

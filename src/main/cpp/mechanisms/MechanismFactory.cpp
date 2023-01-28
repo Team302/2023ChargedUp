@@ -102,7 +102,7 @@ void MechanismFactory::CreateMechanism
 			auto motor = GetMotorController(motorControllers, MotorControllerUsage::ARM);
 			if (motor.get() != nullptr)
 			{
-				m_arm = new arm(controlFileName, networkTableName, motor);
+				m_arm = new Arm(controlFileName, networkTableName, motor);
 			}
 		}
 		break;
@@ -112,7 +112,7 @@ void MechanismFactory::CreateMechanism
 			auto motor = GetMotorController(motorControllers, MotorControllerUsage::Extender);
 			if (motor.get() != nullptr)
 			{
-				m_extender = new extender(controlFileName, networkTableName, motor);
+				m_extender = new Extender(controlFileName, networkTableName, motor);
 			}
 		}
 		break;
@@ -123,7 +123,7 @@ void MechanismFactory::CreateMechanism
 			auto solenoid2 = GetSolenoid(solenoids, SolenoidUsage::GrabberSolenoid2);
 			if (solenoid1.get() != nullptr && solenoid2.get())
 			{
-				m_grabber = new grabber(controlFileName, networkTableName, solenoid1, solenoid2);
+				m_grabber = new Grabber(controlFileName, networkTableName, solenoid1, solenoid2);
 			}
 
 		}

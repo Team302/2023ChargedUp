@@ -16,30 +16,31 @@
 		#pragma once
 		#include <string>
 
-			#include <mechanisms/base/Mech2SolenoidState.h>
-			#include <mechanisms/controllers/MechanismTargetData.h>
+			#include <mechanisms/base/Mech2SolenoidsState.h>
 
-		class grabber;
+		class ControlData;
+		class Grabber;
 
-		class grabberState : public Mech2SolenoidState
+		class GrabberState : public Mech2SolenoidsState
 		{
 		public:
 
-		grabberState() = delete;
-		grabberState
+		GrabberState() = delete;
+		GrabberState
 		(
 		std::string                     stateName,
-		int                             stateId,
-		MechanismTargetData::SOLENOID   solState,
-		MechanismTargetData::SOLENOID   solState2
+		int                             stateId
+		,
+MechanismTargetData::SOLENOID solState0,
+MechanismTargetData::SOLENOID solState1
 		);
-		~grabberState() = default;
+		~GrabberState() = default;
 
 
 		bool AtTarget() const override;
-		grabber * Getgrabber() const {return m_grabber;}
+		Grabber * GetGrabber() const {return m_grabber;}
 
 		private:
-		grabber*        m_grabber;
+		Grabber*        m_grabber;
 		};
 	

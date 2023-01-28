@@ -1,3 +1,4 @@
+
 //====================================================================================================================================================
 /// Copyright 2022 Lake Orion Robotics FIRST Team 302 
 ///
@@ -22,12 +23,12 @@
 
 // Team 302 includes
 #include <mechanisms/base/StateMgr.h>
-#include <mechanisms/arm/arm.h>
+#include <mechanisms/Arm/arm.h>
 #include <mechanisms/StateStruc.h>
 
 // Third Party Includes
 
-class armStateMgr : public StateMgr
+class ArmStateMgr : public StateMgr
 {
     public:
 	    /// @enum the various states of the Intake
@@ -58,7 +59,7 @@ FLOOR_POSITION_ROTATE
         };
         
 		/// @brief  Find or create the state manmanager
-		static armStateMgr* GetInstance();
+		static ArmStateMgr* GetInstance();
 
         /// @brief  Get the current Parameter parm value for the state of this mechanism
         /// @param PrimitiveParams* currentParams current set of primitive parameters
@@ -72,12 +73,12 @@ FLOOR_POSITION_ROTATE
 		
     private:
 	
-        armStateMgr();
-        ~armStateMgr() = default;
+        ArmStateMgr();
+        ~ArmStateMgr() = default;
         
-        arm*                                m_arm;
+        Arm*                                m_arm;
 
-		static armStateMgr*	m_instance;
+		static ArmStateMgr*	m_instance;
 
 		const StateStruc m_hold_position_rotateState = { ARM_STATE::HOLD_POSITION_ROTATE, "HOLD_POSITION_ROTATE", StateType::ARM_STATE, true };
 const StateStruc m_manual_rotateState = { ARM_STATE::MANUAL_ROTATE, "MANUAL_ROTATE", StateType::ARM_STATE, true };

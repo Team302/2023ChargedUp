@@ -24,26 +24,27 @@
 		// Team 302 includes
 		#include  <mechanisms/base/Mech1IndMotorState.h>
 		#include  <mechanisms/controllers/ControlData.h>
-		#include  <mechanisms/extender/extenderState.h>
+		#include  <mechanisms/extender/ExtenderState.h>
 		#include  <mechanisms/MechanismFactory.h>
 
 		// Third Party Includes
 
 		using namespace std;
 
-		extenderState::extenderState
+		ExtenderState::ExtenderState
 		(
 		string                          stateName,
-		int                             stateId,
-		ControlData*                    control,
-		double                          target
-		) : Mech1IndMotorState( MechanismFactory::GetMechanismFactory()->Getextender(), stateName, stateId, control, target),
+		int                             stateId
+		,
+ControlData* control0,
+double target0
+		) : Mech1IndMotorState( MechanismFactory::GetMechanismFactory()->Getextender(), stateName, stateId , control0, target0),
 		m_extender(MechanismFactory::GetMechanismFactory()->Getextender())
 		{
 
 		}
 
-		bool extenderState::AtTarget() const
+		bool ExtenderState::AtTarget() const
 		{
 		return true;
 		}

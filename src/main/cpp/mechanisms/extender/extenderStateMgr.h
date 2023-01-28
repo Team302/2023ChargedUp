@@ -1,3 +1,4 @@
+
 //====================================================================================================================================================
 /// Copyright 2022 Lake Orion Robotics FIRST Team 302 
 ///
@@ -22,12 +23,12 @@
 
 // Team 302 includes
 #include <mechanisms/base/StateMgr.h>
-#include <mechanisms/extender/extender.h>
+#include <mechanisms/Extender/extender.h>
 #include <mechanisms/StateStruc.h>
 
 // Third Party Includes
 
-class extenderStateMgr : public StateMgr
+class ExtenderStateMgr : public StateMgr
 {
     public:
 	    /// @enum the various states of the Intake
@@ -58,7 +59,7 @@ FLOOR_EXTEND
         };
         
 		/// @brief  Find or create the state manmanager
-		static extenderStateMgr* GetInstance();
+		static ExtenderStateMgr* GetInstance();
 
         /// @brief  Get the current Parameter parm value for the state of this mechanism
         /// @param PrimitiveParams* currentParams current set of primitive parameters
@@ -72,12 +73,12 @@ FLOOR_EXTEND
 		
     private:
 	
-        extenderStateMgr();
-        ~extenderStateMgr() = default;
+        ExtenderStateMgr();
+        ~ExtenderStateMgr() = default;
         
-        extender*                                m_extender;
+        Extender*                                m_extender;
 
-		static extenderStateMgr*	m_instance;
+		static ExtenderStateMgr*	m_instance;
 
 		const StateStruc m_hold_position_extendState = { EXTENDER_STATE::HOLD_POSITION_EXTEND, "HOLD_POSITION_EXTEND", StateType::EXTENDER_STATE, true };
 const StateStruc m_manual_extend_retractState = { EXTENDER_STATE::MANUAL_EXTEND_RETRACT, "MANUAL_EXTEND_RETRACT", StateType::EXTENDER_STATE, true };

@@ -32,24 +32,24 @@
 using namespace std;
 
 
-grabberStateMgr* grabberStateMgr::m_instance = nullptr;
-grabberStateMgr* grabberStateMgr::GetInstance()
+GrabberStateMgr* GrabberStateMgr::m_instance = nullptr;
+GrabberStateMgr* GrabberStateMgr::GetInstance()
 {
-	if ( grabberStateMgr::m_instance == nullptr )
+	if ( GrabberStateMgr::m_instance == nullptr )
 	{
         auto grabberPtr = MechanismFactory::GetMechanismFactory()->Getgrabber();
         if (grabberPtr != nullptr)
         {
-            grabberStateMgr::m_instance = new grabberStateMgr();
+            GrabberStateMgr::m_instance = new GrabberStateMgr();
         }
 	}
-	return grabberStateMgr::m_instance;
+	return GrabberStateMgr::m_instance;
     
 }
 
 
 /// @brief    initialize the state manager, parse the configuration file and create the states.
-grabberStateMgr::grabberStateMgr() : StateMgr(),
+GrabberStateMgr::GrabberStateMgr() : StateMgr(),
                                      m_grabber(MechanismFactory::GetMechanismFactory()->Getgrabber())
 {
     map<string, StateStruc> stateMap;
@@ -71,7 +71,7 @@ stateMap["RELEASE"] = m_releaseState;
 /// @brief  Get the current Parameter parm value for the state of this mechanism
 /// @param PrimitiveParams* currentParams current set of primitive parameters
 /// @returns int state id - -1 indicates that there is not a state to set
-int grabberStateMgr::GetCurrentStateParam
+int GrabberStateMgr::GetCurrentStateParam
 (
     PrimitiveParams*    currentParams
 ) 
@@ -81,7 +81,7 @@ int grabberStateMgr::GetCurrentStateParam
 }
 
 /// @brief Check if driver inputs or sensors trigger a state transition
-void grabberStateMgr::CheckForStateTransition()
+void GrabberStateMgr::CheckForStateTransition()
 {
 
     if ( m_grabber != nullptr )

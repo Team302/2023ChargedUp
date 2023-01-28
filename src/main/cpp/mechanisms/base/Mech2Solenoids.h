@@ -24,12 +24,12 @@
 #include <mechanisms/MechanismTypes.h>
 #include <hw/DragonSolenoid.h>
 
-class Mech2Solenoid : public Mech1Solenoid
+class Mech2Solenoids : public Mech1Solenoid
 {
     public:
         /// @brief Create a generic mechanism wiht 1 solenoid 
         /// @param [in] std::shared_ptr<DragonSolenoid> solenoid used by this mechanism
-         Mech2Solenoid
+         Mech2Solenoids
         (
             MechanismTypes::MECHANISM_TYPE              type,
             std::string                                 controlFileName,
@@ -38,8 +38,8 @@ class Mech2Solenoid : public Mech1Solenoid
             std::shared_ptr<DragonSolenoid>             solenoid2
         );
 
-        Mech2Solenoid() = delete;
-        virtual ~Mech2Solenoid() = default;
+        Mech2Solenoids() = delete;
+        virtual ~Mech2Solenoids() = default;
 
         /// @brief      Activate/deactivate pneumatic solenoid
         /// @param [in] bool - true == extend, false == retract

@@ -20,24 +20,24 @@
 
 				//team 302 includes
 				#include <hw/interfaces/IDragonMotorController.h>
-				#include <mechanisms/base/Mech2Solenoid.h>
+				#include <mechanisms/base/Mech2Solenoids.h>
 				#include <mechanisms/grabber/grabber.h>
 
 		using namespace std;
 
-		/// @brief Create an grabber mechanism wiht 1 independent motor
+		/// @brief Create an Grabber mechanism wiht 1 independent motor
 		/// @param [in] std::string the name of the file that will set control parameters for this mechanism
 		/// @param [in] std::string the name of the network table for logging information
 		/// @param [in] std::shared_ptr<IDragonMotorController>
 		
-		grabber::grabber
+		Grabber::Grabber
 		(
 		std::string                                 controlFileName,
 		std::string                                 networkTableName
 		,
 std::shared_ptr<DragonSolenoid>     solenoid0,
 std::shared_ptr<DragonSolenoid>     solenoid1
-		):Mech2Solenoid(MechanismTypes::MECHANISM_TYPE::GRABBER,controlFileName,networkTableName , solenoid0, solenoid1)
+		):Mech2Solenoids(MechanismTypes::MECHANISM_TYPE::GRABBER,controlFileName,networkTableName , solenoid0, solenoid1)
 		{
 		}
 	

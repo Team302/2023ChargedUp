@@ -24,26 +24,27 @@
 		// Team 302 includes
 		#include  <mechanisms/base/Mech1IndMotorState.h>
 		#include  <mechanisms/controllers/ControlData.h>
-		#include  <mechanisms/arm/armState.h>
+		#include  <mechanisms/arm/ArmState.h>
 		#include  <mechanisms/MechanismFactory.h>
 
 		// Third Party Includes
 
 		using namespace std;
 
-		armState::armState
+		ArmState::ArmState
 		(
 		string                          stateName,
-		int                             stateId,
-		ControlData*                    control,
-		double                          target
-		) : Mech1IndMotorState( MechanismFactory::GetMechanismFactory()->Getarm(), stateName, stateId, control, target),
+		int                             stateId
+		,
+ControlData* control0,
+double target0
+		) : Mech1IndMotorState( MechanismFactory::GetMechanismFactory()->Getarm(), stateName, stateId , control0, target0),
 		m_arm(MechanismFactory::GetMechanismFactory()->Getarm())
 		{
 
 		}
 
-		bool armState::AtTarget() const
+		bool ArmState::AtTarget() const
 		{
 		return true;
 		}

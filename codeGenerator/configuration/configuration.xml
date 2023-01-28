@@ -4,6 +4,75 @@
 <rootOutputFolder>..\..\src\main\cpp</rootOutputFolder>
 <robotConfiguration>..\..\src\main\deploy\robot.xml</robotConfiguration>
 
+<AllMechanisms_h>
+
+//====================================================================================================================================================
+// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+// OR OTHER DEALINGS IN THE SOFTWARE.
+//====================================================================================================================================================
+
+#pragma once
+
+$INCLUDES_FOR_ALL_MECHANISMS$
+
+</AllMechanisms_h>
+
+<AllMechanismsState_h>
+
+//====================================================================================================================================================
+// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+// OR OTHER DEALINGS IN THE SOFTWARE.
+//====================================================================================================================================================
+
+#pragma once
+
+$INCLUDES_FOR_ALL_MECHANISMS$
+
+</AllMechanismsState_h>
+
+<AllMechanismsStateMgr_h>
+
+//====================================================================================================================================================
+// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+// OR OTHER DEALINGS IN THE SOFTWARE.
+//====================================================================================================================================================
+
+#pragma once
+
+$INCLUDES_FOR_ALL_MECHANISMS$
+
+</AllMechanismsStateMgr_h>
+
 <MechanismTypes_h>
 
 //====================================================================================================================================================
@@ -449,20 +518,20 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 
 					public:
 
-					/// @enum DIGITAL_SENSOR_USAGE
+					/// @enum DIGITAL_INPUT_USAGE
 					/// @brief Defines digital input sensor usages.  This should be modified for each robot.
-					enum DIGITAL_SENSOR_USAGE
+					enum DIGITAL_INPUT_USAGE
 					{
-					UNKNOWN_DIGITAL_TYPE = -1,
+					UNKNOWN_DIGITAL_INPUT_USAGE = -1,
 
 					$USAGE_ENUM_COMMA_SEPARATED$
 					
-					MAX_DIGITAL_TYPES
+					MAX_DIGITAL_INPUT_USAGE
 					};
 
 					static DigitalInputUsage* GetInstance();
 
-					DIGITAL_SENSOR_USAGE GetUsage
+					DIGITAL_INPUT_USAGE GetUsage
 					(
 					std::string         usageString
 					);
@@ -472,7 +541,7 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 					DigitalInputUsage();
 					~DigitalInputUsage();
 
-					std::map &lt;std::string, DIGITAL_SENSOR_USAGE&gt; m_usageMap;
+					std::map &lt;std::string, DIGITAL_INPUT_USAGE&gt; m_usageMap;
 
 };
 
@@ -531,7 +600,7 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 					m_usageMap.clear();
 					}
 
-					DigitalInputUsage::DIGITAL_SENSOR_USAGE DigitalInputUsage::GetUsage
+					DigitalInputUsage::DIGITAL_INPUT_USAGE DigitalInputUsage::GetUsage
 					(
 					string              usageString
 					)
@@ -542,7 +611,7 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 					return it->second;
 					}
 					Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("DigitalInputUsage::GetUsage"), string("unknown usage"), usageString);
-					return DigitalInputUsage::DIGITAL_SENSOR_USAGE::UNKNOWN_DIGITAL_TYPE;
+					return DigitalInputUsage::DIGITAL_INPUT_USAGE::UNKNOWN_DIGITAL_INPUT_USAGE;
 					}
 
 
@@ -866,7 +935,7 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 		(
 		std::string                                 controlFileName,
 		std::string                                 networkTableName
-		$MECHANISM_CONSTRUCTOR_ARGUMENT_LIST$
+		$MECHANISM_CONSTRUCTOR_PARAMETER_LIST$
 		);
 		$MECHANISM_NAME$() = delete;
 		~$MECHANISM_NAME$() override = default;
@@ -896,7 +965,7 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 				//team 302 includes
 				#include &lt;hw/interfaces/IDragonMotorController.h&gt;
 				#include &lt;mechanisms/base/$MECH_BASE_CLASS$.h&gt;
-				#include &lt;mechanisms/$MECHANISM_NAME_LOWERCASE$/$MECHANISM_NAME$.h&gt;
+				#include &lt;mechanisms/$MECHANISM_NAME_LOWERCASE$/$MECHANISM_NAME_LOWERCASE$.h&gt;
 
 		using namespace std;
 
@@ -909,8 +978,8 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 		(
 		std::string                                 controlFileName,
 		std::string                                 networkTableName
-		$MECHANISM_CONSTRUCTOR_ARGUMENT_LIST$
-		):$MECH_BASE_CLASS$(MechanismTypes::MECHANISM_TYPE::$MECHANISM_NAME_UPPERCASE$,controlFileName,networkTableName $MECHANISM_CONSTRUCTOR_PARAMETER_LIST$)
+		$MECHANISM_CONSTRUCTOR_PARAMETER_LIST$
+		):$MECH_BASE_CLASS$(MechanismTypes::MECHANISM_TYPE::$MECHANISM_NAME_UPPERCASE$,controlFileName,networkTableName $MECHANISM_CONSTRUCTOR_ARGUMENT_LIST$)
 		{
 		}
 	</main_cpp>
@@ -939,7 +1008,7 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 		// FRC includes
 
 		// Team 302 includes
-		#include  &lt;mechanisms/base/$MECH_BASE_CLASS$.h&gt;
+		#include  &lt;mechanisms/base/$MECH_BASE_CLASS$State.h&gt;
 		#include  &lt;mechanisms/controllers/ControlData.h&gt;
 		#include  &lt;mechanisms/$MECHANISM_NAME_LOWERCASE$/$MECHANISM_NAME$State.h&gt;
 		#include  &lt;mechanisms/MechanismFactory.h&gt;
@@ -951,11 +1020,10 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 		$MECHANISM_NAME$State::$MECHANISM_NAME$State
 		(
 		string                          stateName,
-		int                             stateId,
-		ControlData*                    control,
-		double                          target
-		) : $MECH_BASE_CLASS$( MechanismFactory::GetMechanismFactory()->Get$MECHANISM_NAME$(), stateName, stateId, control, target),
-		m_$MECHANISM_NAME$(MechanismFactory::GetMechanismFactory()->Get$MECHANISM_NAME$())
+		int                             stateId
+		$MECHANISM_CONSTRUCTOR_PARAMETER_LIST$
+		) : $MECH_BASE_CLASS$State( MechanismFactory::GetMechanismFactory()->Get$MECHANISM_NAME_LOWERCASE$(), stateName, stateId $MECHANISM_CONSTRUCTOR_ARGUMENT_LIST$),
+		m_$MECHANISM_NAME_LOWERCASE$(MechanismFactory::GetMechanismFactory()->Get$MECHANISM_NAME_LOWERCASE$())
 		{
 
 		}
@@ -985,12 +1053,12 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 		#pragma once
 		#include &lt;string&gt;
 
-			#include &lt;mechanisms/base/$MECH_BASE_CLASS$.h&gt;
+			#include &lt;mechanisms/base/$MECH_BASE_CLASS$State.h&gt;
 
 		class ControlData;
 		class $MECHANISM_NAME$;
 
-		class $MECHANISM_NAME$State : public $MECH_BASE_CLASS$
+		class $MECHANISM_NAME$State : public $MECH_BASE_CLASS$State
 		{
 		public:
 
@@ -998,9 +1066,8 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 		$MECHANISM_NAME$State
 		(
 		std::string                     stateName,
-		int                             stateId,
-		ControlData*                    control,
-		double                          target
+		int                             stateId
+		$MECHANISM_CONSTRUCTOR_PARAMETER_LIST$
 		);
 		~$MECHANISM_NAME$State() = default;
 
@@ -1012,7 +1079,8 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 		$MECHANISM_NAME$*        m_$MECHANISM_NAME_LOWERCASE$;
 		};
 	</state_h>
-  <stateManager_h>//====================================================================================================================================================
+  <stateManager_h>
+//====================================================================================================================================================
 /// Copyright 2022 Lake Orion Robotics FIRST Team 302 
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
@@ -1036,7 +1104,7 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 
 // Team 302 includes
 #include &lt;mechanisms/base/StateMgr.h&gt;
-#include &lt;mechanisms/$MECHANISM_NAME$/$MECHANISM_NAME$.h&gt;
+#include &lt;mechanisms/$MECHANISM_NAME$/$MECHANISM_NAME_LOWERCASE$.h&gt;
 #include &lt;mechanisms/StateStruc.h&gt;
 
 // Third Party Includes
@@ -1106,9 +1174,9 @@ class $MECHANISM_NAME$StateMgr : public StateMgr
 #include &lt;mechanisms/MechanismFactory.h&gt;
 #include &lt;mechanisms/base/StateMgr.h&gt;
 #include &lt;mechanisms/StateStruc.h&gt;
-#include &lt;mechanisms/$MECHANISM_NAME_LOWERCASE$/$MECHANISM_NAME$.h&gt;
-#include &lt;mechanisms/$MECHANISM_NAME_LOWERCASE$/$MECHANISM_NAME$State.h&gt;
-#include &lt;mechanisms/$MECHANISM_NAME_LOWERCASE$/$MECHANISM_NAME$StateMgr.h&gt;
+#include &lt;mechanisms/$MECHANISM_NAME_LOWERCASE$/$MECHANISM_NAME_LOWERCASE$.h&gt;
+#include &lt;mechanisms/$MECHANISM_NAME_LOWERCASE$/$MECHANISM_NAME_LOWERCASE$State.h&gt;
+#include &lt;mechanisms/$MECHANISM_NAME_LOWERCASE$/$MECHANISM_NAME_LOWERCASE$StateMgr.h&gt;
 
 // Third Party Includes
 
@@ -1120,7 +1188,7 @@ $MECHANISM_NAME$StateMgr* $MECHANISM_NAME$StateMgr::GetInstance()
 {
 	if ( $MECHANISM_NAME$StateMgr::m_instance == nullptr )
 	{
-        auto $MECHANISM_NAME_LOWERCASE$Ptr = MechanismFactory::GetMechanismFactory()->Get$MECHANISM_NAME$();
+        auto $MECHANISM_NAME_LOWERCASE$Ptr = MechanismFactory::GetMechanismFactory()->Get$MECHANISM_NAME_LOWERCASE$();
         if ($MECHANISM_NAME_LOWERCASE$Ptr != nullptr)
         {
             $MECHANISM_NAME$StateMgr::m_instance = new $MECHANISM_NAME$StateMgr();
@@ -1133,7 +1201,7 @@ $MECHANISM_NAME$StateMgr* $MECHANISM_NAME$StateMgr::GetInstance()
 
 /// @brief    initialize the state manager, parse the configuration file and create the states.
 $MECHANISM_NAME$StateMgr::$MECHANISM_NAME$StateMgr() : StateMgr(),
-                                     m_$MECHANISM_NAME_LOWERCASE$(MechanismFactory::GetMechanismFactory()-&gt;Get$MECHANISM_NAME$())
+                                     m_$MECHANISM_NAME_LOWERCASE$(MechanismFactory::GetMechanismFactory()-&gt;Get$MECHANISM_NAME_LOWERCASE$())
 {
     map&lt;string, StateStruc&gt; stateMap;
 	$STATE_MAP_INITIALIZATION$

@@ -23,22 +23,22 @@
 				// Team 302 includes
 				#include <mechanisms/base/Mech1IndMotor.h>
 
-		class extender : public Mech1IndMotor
+		class Extender : public Mech1IndMotor
 		{
 		public:
-		/// @brief Create an extender mechanism wiht 1 independent motor
+		/// @brief Create an Extender mechanism wiht 1 independent motor
 		/// @param [in] std::string the name of the file that will set control parameters for this mechanism
 		/// @param [in] std::string the name of the network table for logging information
 		/// @param [in] std::shared_ptr<IDragonMotorController>
 		
-		extender
+		Extender
 		(
 		std::string                                 controlFileName,
 		std::string                                 networkTableName
 		,
 std::shared_ptr<IDragonMotorController>     motorController0
 		);
-		extender() = delete;
-		~extender() override = default;
+		Extender() = delete;
+		~Extender() override = default;
 		};
 	

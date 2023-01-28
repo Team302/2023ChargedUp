@@ -1,3 +1,4 @@
+
 //====================================================================================================================================================
 /// Copyright 2022 Lake Orion Robotics FIRST Team 302 
 ///
@@ -22,12 +23,12 @@
 
 // Team 302 includes
 #include <mechanisms/base/StateMgr.h>
-#include <mechanisms/grabber/grabber.h>
+#include <mechanisms/Grabber/grabber.h>
 #include <mechanisms/StateStruc.h>
 
 // Third Party Includes
 
-class grabberStateMgr : public StateMgr
+class GrabberStateMgr : public StateMgr
 {
     public:
 	    /// @enum the various states of the Intake
@@ -52,7 +53,7 @@ RELEASE
         };
         
 		/// @brief  Find or create the state manmanager
-		static grabberStateMgr* GetInstance();
+		static GrabberStateMgr* GetInstance();
 
         /// @brief  Get the current Parameter parm value for the state of this mechanism
         /// @param PrimitiveParams* currentParams current set of primitive parameters
@@ -66,12 +67,12 @@ RELEASE
 		
     private:
 	
-        grabberStateMgr();
-        ~grabberStateMgr() = default;
+        GrabberStateMgr();
+        ~GrabberStateMgr() = default;
         
-        grabber*                                m_grabber;
+        Grabber*                                m_grabber;
 
-		static grabberStateMgr*	m_instance;
+		static GrabberStateMgr*	m_instance;
 
 		const StateStruc m_openState = { GRABBER_STATE::OPEN, "OPEN", StateType::GRABBER_STATE, true };
 const StateStruc m_grabbing_coneState = { GRABBER_STATE::GRABBING_CONE, "GRABBING_CONE", StateType::GRABBER_STATE, true };

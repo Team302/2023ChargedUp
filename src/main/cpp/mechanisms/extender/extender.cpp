@@ -25,12 +25,12 @@
 
 		using namespace std;
 
-		/// @brief Create an extender mechanism wiht 1 independent motor
+		/// @brief Create an Extender mechanism wiht 1 independent motor
 		/// @param [in] std::string the name of the file that will set control parameters for this mechanism
 		/// @param [in] std::string the name of the network table for logging information
 		/// @param [in] std::shared_ptr<IDragonMotorController>
 		
-		extender::extender
+		Extender::Extender
 		(
 		std::string                                 controlFileName,
 		std::string                                 networkTableName

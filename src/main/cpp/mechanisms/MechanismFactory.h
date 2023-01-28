@@ -81,9 +81,9 @@ class MechanismFactory
 		
 		
 		// @ADDMECH  Add inline Get method for your mechanism
-		inline arm* Getarm() const {return m_arm;}
-		inline extender* Getextender() const {return m_extender;}
-		inline grabber* Getgrabber() const {return m_grabber;}
+		inline Arm* Getarm() const {return m_arm;}
+		inline Extender* Getextender() const {return m_extender;}
+		inline Grabber* Getgrabber() const {return m_grabber;}
 
 		Mech* GetMechanism
 		(
@@ -125,9 +125,9 @@ class MechanismFactory
 		static MechanismFactory*	m_mechanismFactory;
 		
 		// @ADDMECH  Add your mechanism here	
-		arm*							m_arm;
-		extender*						m_extender;
-		grabber*						m_grabber;	
+		Arm*							m_arm;
+		Extender*						m_extender;
+		Grabber*						m_grabber;	
          
 
 		

@@ -22,8 +22,8 @@
 
 // Team 302 includes
 #include <State.h>
-#include <mechanisms/base/Mech2SolenoidState.h>
-#include <mechanisms/base/Mech2Solenoid.h>
+#include <mechanisms/base/Mech2SolenoidsState.h>
+#include <mechanisms/base/Mech2Solenoids.h>
 #include <utils/Logger.h>
 
 #include <TeleopControl.h>
@@ -32,11 +32,11 @@
 
 using namespace std;
 
-/// @class Mech2SolenoidState
+/// @class Mech2SolenoidsState
 /// @brief information about the control (open loop, closed loop position, closed loop velocity, etc.) for a mechanism state
-Mech2SolenoidState::Mech2SolenoidState
+Mech2SolenoidsState::Mech2SolenoidsState
 (
-    Mech2Solenoid*                 mechanism,
+    Mech2Solenoids*                 mechanism,
     string                          stateName,
     int                             stateId,
     MechanismTargetData::SOLENOID   solState,
@@ -47,7 +47,7 @@ Mech2SolenoidState::Mech2SolenoidState
 }
 
 
-void Mech2SolenoidState::Run()           
+void Mech2SolenoidsState::Run()           
 {
     if ( m_mechanism != nullptr )
     {
@@ -67,7 +67,7 @@ void Mech2SolenoidState::Run()
     }
 }
 
-void Mech2SolenoidState::LogInformation() const
+void Mech2SolenoidsState::LogInformation() const
 {
     Mech1SolenoidState::LogInformation();
 

@@ -22,27 +22,29 @@
 		// FRC includes
 
 		// Team 302 includes
-		#include  <mechanisms/base/Mech2SolenoidState.h>
-		#include  <mechanisms/grabber/grabberState.h>
+		#include  <mechanisms/base/Mech2SolenoidsState.h>
+		#include  <mechanisms/controllers/ControlData.h>
+		#include  <mechanisms/grabber/GrabberState.h>
 		#include  <mechanisms/MechanismFactory.h>
 
 		// Third Party Includes
 
 		using namespace std;
 
-		grabberState::grabberState
+		GrabberState::GrabberState
 		(
 		string                          stateName,
-		int                             stateId,
-    	MechanismTargetData::SOLENOID   solState,
-    	MechanismTargetData::SOLENOID   solState2
-		) : Mech2SolenoidState( MechanismFactory::GetMechanismFactory()->Getgrabber(), stateName, stateId, solState, solState2),
+		int                             stateId
+		,
+MechanismTargetData::SOLENOID solState0,
+MechanismTargetData::SOLENOID solState1
+		) : Mech2SolenoidsState( MechanismFactory::GetMechanismFactory()->Getgrabber(), stateName, stateId , solState0, solState1),
 		m_grabber(MechanismFactory::GetMechanismFactory()->Getgrabber())
 		{
 
 		}
 
-		bool grabberState::AtTarget() const
+		bool GrabberState::AtTarget() const
 		{
 		return true;
 		}

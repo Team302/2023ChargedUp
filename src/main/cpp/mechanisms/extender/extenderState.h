@@ -19,27 +19,28 @@
 			#include <mechanisms/base/Mech1IndMotorState.h>
 
 		class ControlData;
-		class extender;
+		class Extender;
 
-		class extenderState : public Mech1IndMotorState
+		class ExtenderState : public Mech1IndMotorState
 		{
 		public:
 
-		extenderState() = delete;
-		extenderState
+		ExtenderState() = delete;
+		ExtenderState
 		(
 		std::string                     stateName,
-		int                             stateId,
-		ControlData*                    control,
-		double                          target
+		int                             stateId
+		,
+ControlData* control0,
+double target0
 		);
-		~extenderState() = default;
+		~ExtenderState() = default;
 
 
 		bool AtTarget() const override;
-		extender * Getextender() const {return m_extender;}
+		Extender * GetExtender() const {return m_extender;}
 
 		private:
-		extender*        m_extender;
+		Extender*        m_extender;
 		};
 	

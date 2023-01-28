@@ -22,28 +22,28 @@
 #include <mechanisms/controllers/MechanismTargetData.h>
 
 // forward declares
-class Mech2Solenoid;
+class Mech2Solenoids;
 
-class Mech2SolenoidState : public Mech1SolenoidState
+class Mech2SolenoidsState : public Mech1SolenoidState
 {
     public:
 
-        Mech2SolenoidState
+        Mech2SolenoidsState
         (
-            Mech2Solenoid*                 mechanism,
+            Mech2Solenoids*                 mechanism,
             std::string                     stateName,
             int                             stateId,
             MechanismTargetData::SOLENOID   solState,
             MechanismTargetData::SOLENOID   solState2
         );
-        Mech2SolenoidState() = delete;
-        ~Mech2SolenoidState() = default;
+        Mech2SolenoidsState() = delete;
+        ~Mech2SolenoidsState() = default;
 
         void Run() override;
         void LogInformation() const override;
 
     private:
 
-        Mech2Solenoid*                 m_mechanism;
+        Mech2Solenoids*                 m_mechanism;
         MechanismTargetData::SOLENOID   m_solenoidState2;
 };

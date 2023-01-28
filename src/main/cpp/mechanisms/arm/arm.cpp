@@ -25,12 +25,12 @@
 
 		using namespace std;
 
-		/// @brief Create an arm mechanism wiht 1 independent motor
+		/// @brief Create an Arm mechanism wiht 1 independent motor
 		/// @param [in] std::string the name of the file that will set control parameters for this mechanism
 		/// @param [in] std::string the name of the network table for logging information
 		/// @param [in] std::shared_ptr<IDragonMotorController>
 		
-		arm::arm
+		Arm::Arm
 		(
 		std::string                                 controlFileName,
 		std::string                                 networkTableName

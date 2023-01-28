@@ -32,24 +32,24 @@
 using namespace std;
 
 
-armStateMgr* armStateMgr::m_instance = nullptr;
-armStateMgr* armStateMgr::GetInstance()
+ArmStateMgr* ArmStateMgr::m_instance = nullptr;
+ArmStateMgr* ArmStateMgr::GetInstance()
 {
-	if ( armStateMgr::m_instance == nullptr )
+	if ( ArmStateMgr::m_instance == nullptr )
 	{
         auto armPtr = MechanismFactory::GetMechanismFactory()->Getarm();
         if (armPtr != nullptr)
         {
-            armStateMgr::m_instance = new armStateMgr();
+            ArmStateMgr::m_instance = new ArmStateMgr();
         }
 	}
-	return armStateMgr::m_instance;
+	return ArmStateMgr::m_instance;
     
 }
 
 
 /// @brief    initialize the state manager, parse the configuration file and create the states.
-armStateMgr::armStateMgr() : StateMgr(),
+ArmStateMgr::ArmStateMgr() : StateMgr(),
                                      m_arm(MechanismFactory::GetMechanismFactory()->Getarm())
 {
     map<string, StateStruc> stateMap;
@@ -74,7 +74,7 @@ stateMap["FLOOR_POSITION_ROTATE"] = m_floor_position_rotateState;
 /// @brief  Get the current Parameter parm value for the state of this mechanism
 /// @param PrimitiveParams* currentParams current set of primitive parameters
 /// @returns int state id - -1 indicates that there is not a state to set
-int armStateMgr::GetCurrentStateParam
+int ArmStateMgr::GetCurrentStateParam
 (
     PrimitiveParams*    currentParams
 ) 
@@ -84,7 +84,7 @@ int armStateMgr::GetCurrentStateParam
 }
 
 /// @brief Check if driver inputs or sensors trigger a state transition
-void armStateMgr::CheckForStateTransition()
+void ArmStateMgr::CheckForStateTransition()
 {
 
     if ( m_arm != nullptr )
