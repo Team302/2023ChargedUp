@@ -23,6 +23,8 @@
 #include <LoggableItemMgr.h>
 #include <utils/WaypointXmlParser.h>
 
+#include <AdjustableItemMgr.h>
+
 using namespace std;
 
 void Robot::RobotInit() 
@@ -39,6 +41,8 @@ void Robot::RobotInit()
 
     auto waypointParser = WaypointXmlParser::GetInstance();
     waypointParser->ParseWaypoints();
+    //Get AdjustableItemMgr instance
+    m_tuner = AdjustableItemMgr::GetInstance();
 
     auto factory = ChassisFactory::GetChassisFactory();
     m_chassis = factory->GetIChassis();
@@ -82,6 +86,8 @@ void Robot::RobotPeriodic()
         LoggableItemMgr::GetInstance()->LogData();
         Logger::GetLogger()->PeriodicLog();
     }
+
+    m_tuner->ListenForUpdates();
 }
 
 /**

@@ -25,6 +25,7 @@
 #include <mechanisms/example/Example.h>
 #include <mechanisms/example/ExampleState.h>
 #include <mechanisms/example/ExampleStateMgr.h>
+#include <utils/Logger.h>
 
 // Third Party Includes
 
@@ -49,6 +50,7 @@ ExampleStateMgr* ExampleStateMgr::GetInstance()
 
 /// @brief    initialize the state manager, parse the configuration file and create the states.
 ExampleStateMgr::ExampleStateMgr() : StateMgr(),
+                                     AdjustableItem(),
                                      m_example(MechanismFactory::GetMechanismFactory()->GetExample())
 {
     map<string, StateStruc> stateMap;
@@ -61,6 +63,8 @@ ExampleStateMgr::ExampleStateMgr() : StateMgr(),
     {
         m_example->AddStateMgr(this);
     }
+
+    m_tuningTable = GetShuffleboardTable()->GetSubTable(m_example->GetNetworkTableName()+"-Tuning");
 }   
 
 /// @brief Check if driver inputs or sensors trigger a state transition
@@ -107,4 +111,72 @@ int ExampleStateMgr::GetCurrentStateParam
 {
     // normally get the state from primitive params
     return StateMgr::GetCurrentStateParam(currentParams);
+}
+
+void ExampleStateMgr::SetValues()
+{
+    std::vector<State*> states = GetStateVector();
+
+    for(auto state : states)
+    {
+        ExampleState* convertedState = (ExampleState*) state;
+        double ntTargetValue = m_tuningTable->GetNumber(state->GetStateName()+"-Target", convertedState->GetOriginalTarget());
+
+        if(ntTargetValue != convertedState->GetOriginalTarget())
+        {
+            convertedState->SetTarget(ntTargetValue);
+        }
+    }
+}
+
+
+void ExampleStateMgr::ResetValues()
+{
+    std::vector<State*> states = GetStateVector();
+    for(auto state : states)
+    {
+        ExampleState* convertedState = static_cast<ExampleState*>(state);
+        convertedState->SetTarget(convertedState->GetOriginalTarget());
+        m_tuningTable->PutNumber(state->GetStateName()+"-Target", convertedState->GetOriginalTarget());
+    }
+}
+
+bool ExampleStateMgr::HasDifferences()
+{
+    std::vector<State*> states = GetStateVector();
+    for(auto state : states)
+    {
+        ExampleState* convertedState = (ExampleState*) state;
+        double ntTargetValue = m_tuningTable->GetNumber(state->GetStateName()+"-Target", convertedState->GetOriginalTarget());
+        if(ntTargetValue != convertedState->GetOriginalTarget())
+        {
+            return true;
+        }
+    }
+}
+
+void ExampleStateMgr::ShowDifferences()
+{
+    std::vector<State*> states = GetStateVector();
+    for(auto state : states)
+    {
+        ExampleState* convertedState = (ExampleState*) state;
+        double ntTargetValue = m_tuningTable->GetNumber(state->GetStateName()+"-Target", convertedState->GetOriginalTarget());
+        if(ntTargetValue != convertedState->GetOriginalTarget())
+        {
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, convertedState->GetExample()->GetNetworkTableName(), state->GetStateName(),
+            "New Target: " + std::to_string(convertedState->GetCurrentTarget()));
+        }
+    }
+}
+
+void ExampleStateMgr::PopulateNetworkTable()
+{
+    std::vector<State*> states = GetStateVector();
+    
+    for(int i = 0; i < states.size(); i++)
+    {
+        Mech1IndMotorState* state = (Mech1IndMotorState*) states[i];
+        m_tuningTable->PutNumber(states[i]->GetStateName()+"-Target", state->GetOriginalTarget());
+    }
 }

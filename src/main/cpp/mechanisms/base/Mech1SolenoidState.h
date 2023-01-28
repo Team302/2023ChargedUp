@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-/// Copyright 2022 Lake Orion Robotics FIRST Team 302
+/// Copyright 2022 Lake Orion Robotics FIRST Team 302 
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 /// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -15,47 +15,36 @@
 //====================================================================================================================================================
 
 #pragma once
-
-// C++ Includes
 #include <string>
 
-// Team 302 includes
-#include <hw/usages/DigitalInputUsage.h>
+#include <State.h>
+#include <mechanisms/controllers/MechanismTargetData.h>
 
-#include <units/time.h>
+// forward declares
+class Mech1Solenoid;
 
-// Forward declares
-class DragonDigitalInput;
-
-class DigitalInputFactory
+class Mech1SolenoidState : public State
 {
-	public:
+    public:
 
-		static DigitalInputFactory* GetFactory();
-
-
-		/// @brief      Create the requested Digital input
-		/// @returns 	DigitalInput* 
-        DragonDigitalInput* CreateInput
+        Mech1SolenoidState
         (
-			std::string										networkTableName,
-    		DigitalInputUsage::DIGITAL_INPUT_USAGE			type,
-            int 						                    digitalID,
-            bool						                    reversed,
-			units::time::second_t							debounceTime
+            Mech1Solenoid*                  mechanism,
+            std::string                     stateName,
+            int                             stateId,
+            MechanismTargetData::SOLENOID   solState
         );
+        Mech1SolenoidState() = delete;
+        ~Mech1SolenoidState() = default;
 
-		/// @brief    Get the requested Digital input
-        DragonDigitalInput* GetInput
-        (
-    		DigitalInputUsage::DIGITAL_INPUT_USAGE			type
-        );
+        void Init() override;
+        void Run() override;
+        void Exit() override;
+        bool AtTarget() const override;
+        void LogInformation() const override;
 
+    private:
 
-	private:
-		DigitalInputFactory();
-		~DigitalInputFactory();
-
-		static DigitalInputFactory*	m_factory;
-			
+        Mech1Solenoid*                  m_mechanism;
+        MechanismTargetData::SOLENOID   m_solenoidState;
 };

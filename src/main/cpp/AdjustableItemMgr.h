@@ -1,6 +1,5 @@
-
 //====================================================================================================================================================
-/// Copyright 2022 Lake Orion Robotics FIRST Team 302
+/// Copyright 2023 Lake Orion Robotics FIRST Team 302 
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 /// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -16,46 +15,49 @@
 
 #pragma once
 
-// C++ Includes
-#include <string>
+//C++ Includes
+#include <vector>
 
-// Team 302 includes
-#include <hw/usages/DigitalInputUsage.h>
+//FRC Includes
+#include <networktables/GenericEntry.h>
 
-#include <units/time.h>
+#include <AdjustableItem.h>
 
-// Forward declares
-class DragonDigitalInput;
-
-class DigitalInputFactory
+class AdjustableItemMgr
 {
-	public:
+    public:
+        static AdjustableItemMgr* GetInstance();
 
-		static DigitalInputFactory* GetFactory();
-
-
-		/// @brief      Create the requested Digital input
-		/// @returns 	DigitalInput* 
-        DragonDigitalInput* CreateInput
+        /// @brief  add item to vector in state mgr
+        /// @param item - each constructed AdjustableItem
+        void RegisterAdjustableItem
         (
-			std::string										networkTableName,
-    		DigitalInputUsage::DIGITAL_INPUT_USAGE			type,
-            int 						                    digitalID,
-            bool						                    reversed,
-			units::time::second_t							debounceTime
+            AdjustableItem*     item
         );
 
-		/// @brief    Get the requested Digital input
-        DragonDigitalInput* GetInput
-        (
-    		DigitalInputUsage::DIGITAL_INPUT_USAGE			type
-        );
+        /// @brief Listens for button presses on network table
+        void ListenForUpdates();
 
+        /// @brief Check for differences in all adjustable items from parsed value and network table value
+        /// @return all adjustable items with changes
+        std::vector<AdjustableItem*> CheckForDifferences();
 
-	private:
-		DigitalInputFactory();
-		~DigitalInputFactory();
+    private:
+        AdjustableItemMgr();
+        ~AdjustableItemMgr() = default;
 
-		static DigitalInputFactory*	m_factory;
-			
+        /// @brief Will populate the network tables with keys for every adjustable value in an item
+        void PopulateNetworkTables();
+
+        std::vector<AdjustableItem*>    m_adjustableItems;
+
+        static AdjustableItemMgr*   m_instance;
+
+        bool                        m_enabled = false;
+
+        nt::GenericEntry*            m_enableButton;
+        nt::GenericEntry*            m_submitButton;
+        nt::GenericEntry*            m_resetButton;
+        nt::GenericEntry*            m_getDiffsButton;
+        
 };

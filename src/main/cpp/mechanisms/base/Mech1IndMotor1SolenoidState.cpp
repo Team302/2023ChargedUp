@@ -22,10 +22,10 @@
 
 // Team 302 includes
 #include <State.h>
-#include <mechanisms/base/Mech1IndMotorSolenoidState.h>
+#include <mechanisms/base/Mech1IndMotor1SolenoidState.h>
 #include <mechanisms/controllers/ControlData.h>
 #include <mechanisms/controllers/MechanismTargetData.h>
-#include <mechanisms/base/Mech1IndMotorSolenoid.h>
+#include <mechanisms/base/Mech1IndMotor1Solenoid.h>
 #include <utils/Logger.h>
 
 #include <TeleopControl.h>
@@ -34,11 +34,11 @@
 
 using namespace std;
 
-/// @class Mech1IndMotorSolenoidState
+/// @class Mech1IndMotor1SolenoidState
 /// @brief information about the control (open loop, closed loop position, closed loop velocity, etc.) for a mechanism state
-Mech1IndMotorSolenoidState::Mech1IndMotorSolenoidState
+Mech1IndMotor1SolenoidState::Mech1IndMotor1SolenoidState
 (
-    Mech1IndMotorSolenoid*          mechanism,
+    Mech1IndMotor1Solenoid*          mechanism,
     string                          stateName,
     int                             stateId,
     ControlData*                    control,
@@ -47,54 +47,54 @@ Mech1IndMotorSolenoidState::Mech1IndMotorSolenoidState
 
 ) : State(stateName, stateId),
     m_mechanism( mechanism ),
-    m_motorState(make_shared<Mech1MotorState>(mechanism->Get1IndMotorMech(), stateName, stateId, control, target)),
-    m_solenoidState(make_shared<MechSolenoidState>(mechanism->GetSolenoidMech(), stateName, stateId, solState))
+    m_motorState(make_shared<Mech1IndMotorState>(mechanism->Get1IndMotorMech(), stateName, stateId, control, target)),
+    m_solenoidState(make_shared<Mech1SolenoidState>(mechanism->GetSolenoidMech(), stateName, stateId, solState))
 {
     if ( control == nullptr )
     {
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, mechanism->GetNetworkTableName(), ("Mech1IndMotorSolenoidState::Mech1IndMotorSolenoidState"), string("no control data"));
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, mechanism->GetNetworkTableName(), ("Mech1IndMotor1SolenoidState::Mech1IndMotor1SolenoidState"), string("no control data"));
     }
 
     if ( mechanism == nullptr )
     {
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("Bad Pointer"), string("Mech1IndMotorSolenoidState::Mech1IndMotorSolenoidState"), string("no mechanism"));
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("Bad Pointer"), string("Mech1IndMotor1SolenoidState::Mech1IndMotor1SolenoidState"), string("no mechanism"));
     }    
 }
 
-void Mech1IndMotorSolenoidState::Init()
+void Mech1IndMotor1SolenoidState::Init()
 {
     m_motorState.get()->Init();
     m_solenoidState.get()->Init();
 }
 
 
-void Mech1IndMotorSolenoidState::Run()           
+void Mech1IndMotor1SolenoidState::Run()           
 {
     m_motorState.get()->Run();
     m_solenoidState.get()->Run();
 
 }
 
-void Mech1IndMotorSolenoidState::Exit() 
+void Mech1IndMotor1SolenoidState::Exit() 
 {
 }
 
-bool Mech1IndMotorSolenoidState::AtTarget() const
+bool Mech1IndMotor1SolenoidState::AtTarget() const
 {
     return m_motorState.get()->AtTarget();
 }
 
-double Mech1IndMotorSolenoidState::GetTarget() const
+double Mech1IndMotor1SolenoidState::GetTarget() const
 {
-    return m_motorState.get()->GetTarget();
+    return m_motorState.get()->GetCurrentTarget();
 }
 
-double Mech1IndMotorSolenoidState::GetRPS() const
+double Mech1IndMotor1SolenoidState::GetRPS() const
 {
     return m_motorState.get()->GetRPS();
 }
 
-void Mech1IndMotorSolenoidState::LogInformation() const
+void Mech1IndMotor1SolenoidState::LogInformation() const
 {
     m_motorState.get()->LogInformation();
     m_solenoidState.get()->LogInformation();

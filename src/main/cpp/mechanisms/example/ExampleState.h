@@ -15,12 +15,12 @@
 #pragma once
 #include <string>
 
-#include <mechanisms/base/Mech1MotorState.h>
+#include <mechanisms/base/Mech1IndMotorState.h>
 
 class ControlData;
 class Example;
 
-class ExampleState : public Mech1MotorState
+class ExampleState : public Mech1IndMotorState
 {
     public:
 
@@ -39,4 +39,6 @@ class ExampleState : public Mech1MotorState
 
     private:
         Example*        m_example;
+        const double    m_parsedTarget;
+        double          m_target;
 };

@@ -1,3 +1,4 @@
+
 //====================================================================================================================================================
 /// Copyright 2022 Lake Orion Robotics FIRST Team 302 
 ///
@@ -13,37 +14,51 @@
 /// OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-
-// C++ Includes
+#pragma once
 #include <string>
 
-// FRC includes
-
-// Team 302 includes
-#include <mechanisms/base/Mech1IndMotorState.h>
+#include <mechanisms/base/Mech1IndMotor.h>
+#include <State.h>
 #include <mechanisms/controllers/ControlData.h>
-#include <mechanisms/example/ExampleState.h>
-#include <mechanisms/MechanismFactory.h>
 
-// Third Party Includes
-
-using namespace std;
-
-ExampleState::ExampleState
-(
-    string                          stateName,
-    int                             stateId,
-    ControlData*                    control, 
-    double                          target
-) : Mech1IndMotorState( MechanismFactory::GetMechanismFactory()->GetExample(), stateName, stateId, control, target),
-    m_example(MechanismFactory::GetMechanismFactory()->GetExample()),
-    m_parsedTarget(target),
-    m_target(target)
+class Mech1IndMotorState : public State
 {
-    
-}
+    public:
 
-bool ExampleState::AtTarget() const
-{
-    return true;
-}
+        Mech1IndMotorState
+        (
+            Mech1IndMotor*                  mechanism,
+            std::string                     stateName,
+            int                             stateId,
+            ControlData*                    control,
+            double                          target
+        );
+        Mech1IndMotorState() = delete;
+        ~Mech1IndMotorState() = default;
+
+        void Init() override;
+        void Run() override;
+        void Exit() override;
+        bool AtTarget() const override;
+
+        void LogInformation() const override;
+
+        double GetCurrentTarget() const {return m_target;}
+        double GetOriginalTarget() const {return m_originalTarget;}
+        double GetRPS() const {return m_mechanism->GetSpeed();}
+
+        ///May move to protected later
+        void SetTarget(double newTarget) {m_target = newTarget;}
+
+    protected:
+        ControlData*    GetControlData() const {return m_control;}
+
+    private:
+
+        Mech1IndMotor*                  m_mechanism;
+        ControlData*                    m_control;
+        double                          m_target;
+        const double                    m_originalTarget;
+        bool                            m_positionBased;
+        bool                            m_speedBased;
+};

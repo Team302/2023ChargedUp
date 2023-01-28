@@ -21,4 +21,4 @@
 #include <hw/DragonDigitalInput.h>
 #include <hw/usages/DigitalInputUsage.h>
 
-typedef std::map <DigitalInputUsage::DIGITAL_SENSOR_USAGE, std::shared_ptr<DragonDigitalInput>> DigitalInputMap;
+typedef std::map <DigitalInputUsage::DIGITAL_INPUT_USAGE, std::shared_ptr<DragonDigitalInput>> DigitalInputMap;

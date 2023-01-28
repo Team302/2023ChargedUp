@@ -1,6 +1,5 @@
-
 //====================================================================================================================================================
-/// Copyright 2022 Lake Orion Robotics FIRST Team 302
+/// Copyright 2023 Lake Orion Robotics FIRST Team 302 
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 /// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -14,48 +13,17 @@
 /// OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#pragma once
+//Team 302 Includes
+#include <AdjustableItem.h>
+#include <AdjustableItemMgr.h>
 
-// C++ Includes
-#include <string>
-
-// Team 302 includes
-#include <hw/usages/DigitalInputUsage.h>
-
-#include <units/time.h>
-
-// Forward declares
-class DragonDigitalInput;
-
-class DigitalInputFactory
+/// @brief when constructed, add to array of other adjustable items
+AdjustableItem::AdjustableItem()
 {
-	public:
+    AdjustableItemMgr::GetInstance()->RegisterAdjustableItem(this);
+}
 
-		static DigitalInputFactory* GetFactory();
-
-
-		/// @brief      Create the requested Digital input
-		/// @returns 	DigitalInput* 
-        DragonDigitalInput* CreateInput
-        (
-			std::string										networkTableName,
-    		DigitalInputUsage::DIGITAL_INPUT_USAGE			type,
-            int 						                    digitalID,
-            bool						                    reversed,
-			units::time::second_t							debounceTime
-        );
-
-		/// @brief    Get the requested Digital input
-        DragonDigitalInput* GetInput
-        (
-    		DigitalInputUsage::DIGITAL_INPUT_USAGE			type
-        );
-
-
-	private:
-		DigitalInputFactory();
-		~DigitalInputFactory();
-
-		static DigitalInputFactory*	m_factory;
-			
-};
+std::shared_ptr<nt::NetworkTable> AdjustableItem::GetShuffleboardTable()
+{
+    return nt::NetworkTableInstance::GetDefault().GetTable("Shuffleboard");
+}

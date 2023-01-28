@@ -1,6 +1,5 @@
-
 //====================================================================================================================================================
-/// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+/// Copyright 2023 Lake Orion Robotics FIRST Team 302 
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 /// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -15,45 +14,33 @@
 //====================================================================================================================================================
 
 #pragma once
-#include <string>
 
-#include <mechanisms/base/Mech1IndMotor.h>
-#include <State.h>
-#include <mechanisms/controllers/ControlData.h>
+//FRC Includes
+#include <frc/shuffleboard/Shuffleboard.h>
+#include <networktables/NetworkTableInstance.h>
 
-class Mech1MotorState : public State
+/// @brief Interface for adjustable/tunable items for testing purposes
+class AdjustableItem
 {
     public:
+        AdjustableItem();
+        virtual ~AdjustableItem() = default;
 
-        Mech1MotorState
-        (
-            Mech1IndMotor*                  mechanism,
-            std::string                     stateName,
-            int                             stateId,
-            ControlData*                    control,
-            double                          target
-        );
-        Mech1MotorState() = delete;
-        ~Mech1MotorState() = default;
+        /// @brief Set values based on network table values
+        virtual void SetValues() = 0;
 
-        void Init() override;
-        void Run() override;
-        void Exit() override;
-        bool AtTarget() const override;
+        /// @brief Reset network tables and target values to their defaults (parsed from xml)
+        virtual void ResetValues() = 0;
 
-        void LogInformation() const override;
+        /// @brief Return if there are differences between xml/default values and network table values
+        /// @return bool - item has differences
+        virtual bool HasDifferences() = 0;
 
-        double GetTarget() const {return m_target;}
-        double GetRPS() const {return m_mechanism->GetSpeed();}
+        /// @brief Will log the values that are different from xml
+        virtual void ShowDifferences() = 0;
 
+        /// @brief Add adjustable values onto networktable (under the name from xml plus "-Tuner")
+        virtual void PopulateNetworkTable() = 0;
     protected:
-        ControlData*    GetControlData() const {return m_control;}
-
-    private:
-
-        Mech1IndMotor*                  m_mechanism;
-        ControlData*                    m_control;
-        double                          m_target;
-        bool                            m_positionBased;
-        bool                            m_speedBased;
+        std::shared_ptr<nt::NetworkTable> GetShuffleboardTable();
 };

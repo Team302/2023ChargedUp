@@ -24,10 +24,11 @@
 #include <mechanisms/base/StateMgr.h>
 #include <mechanisms/example/Example.h>
 #include <mechanisms/StateStruc.h>
+#include <AdjustableItem.h>
 
 // Third Party Includes
 
-class ExampleStateMgr : public StateMgr
+class ExampleStateMgr : public StateMgr, public AdjustableItem
 {
     public:
         /// @enum the various states of the Intake
@@ -60,6 +61,18 @@ class ExampleStateMgr : public StateMgr
         ) override;
 
         void CheckForStateTransition() override;
+
+        //Adjustable Item Overrides
+        void SetValues() override;
+
+        void ResetValues() override;
+
+        bool HasDifferences() override;
+
+        void ShowDifferences() override;
+        
+        void PopulateNetworkTable() override;
+
     private:
 
         ExampleStateMgr();
@@ -71,4 +84,6 @@ class ExampleStateMgr : public StateMgr
         const StateStruc m_offState = {EXAMPLE_STATE::OFF, m_exampleOffXmlString, StateType::EXAMPLE_STATE, true};
         const StateStruc m_forwardState = {EXAMPLE_STATE::FORWARD, m_exampleForwardXmlString, StateType::EXAMPLE_STATE, false};
         const StateStruc m_reverseState = {EXAMPLE_STATE::REVERSE, m_exampleReverseXmlString, StateType::EXAMPLE_STATE, false};
+
+        std::shared_ptr<nt::NetworkTable> m_tuningTable = nullptr;
 };

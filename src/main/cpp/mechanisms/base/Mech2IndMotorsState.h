@@ -15,47 +15,52 @@
 //====================================================================================================================================================
 
 #pragma once
-
-#include <memory>
 #include <string>
 
 #include <State.h>
-#include <mechanisms/controllers/MechanismTargetData.h>
-#include <mechanisms/base/Mech1MotorState.h>
-#include <mechanisms/base/MechSolenoidState.h>
 
-// forward declares
+// forward declare
 class ControlData;
-class Mech1IndMotorSolenoid;
+class Mech2IndMotors;
 
-class Mech1IndMotorSolenoidState : public State
+class Mech2IndMotorsState : public State
 {
     public:
 
-        Mech1IndMotorSolenoidState
+        Mech2IndMotorsState
         (
-            Mech1IndMotorSolenoid*          mechanism,
-            std::string                     identifer,
+            Mech2IndMotors*                 mechanism,
+            std::string                     stateName,
             int                             stateId,
             ControlData*                    control,
-            double                          target,
-            MechanismTargetData::SOLENOID   solState
+            ControlData*                    control2,
+            double                          primaryTarget,
+            double                          secondaryTarget
         );
-        Mech1IndMotorSolenoidState() = delete;
-        ~Mech1IndMotorSolenoidState() = default;
+        Mech2IndMotorsState() = delete;
+        ~Mech2IndMotorsState() = default;
 
         void Init() override;
         void Run() override;
         void Exit() override;
         bool AtTarget() const override;
 
-        double GetTarget() const;
-        double GetRPS() const;
-
         void LogInformation() const override;
 
+        double GetPrimaryTarget() const {return m_primaryTarget;}
+        double GetSecondaryTarget() const {return m_secondaryTarget;}
+        double GetPrimaryRPS() const;
+        double GetSecondaryRPS() const;
+        ControlData* GetPrimaryControlData() const {return m_control;}
+        ControlData* GetSecondaryControlData() const {return m_control2;}
+
     private:
-        Mech1IndMotorSolenoid*                  m_mechanism;
-        std::shared_ptr<Mech1MotorState>        m_motorState;
-        std::shared_ptr<MechSolenoidState>      m_solenoidState;
+
+        Mech2IndMotors*                 m_mechanism;
+        ControlData*                    m_control;
+        ControlData*                    m_control2;
+        double                          m_primaryTarget;
+        double                          m_secondaryTarget;
+        bool                            m_positionBased;
+        bool                            m_speedBased;
 };
