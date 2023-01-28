@@ -110,7 +110,7 @@ class MechanismFactory
 		std::shared_ptr<DragonDigitalInput> GetDigitalInput
 		(
 			const DigitalInputMap&							digitaInputs,
-			DigitalInputUsage::DIGITAL_SENSOR_USAGE			usage
+			DigitalInputUsage::DIGITAL_INPUT_USAGE			usage
 		);
 
 		DragonAnalogInput* GetAnalogInput

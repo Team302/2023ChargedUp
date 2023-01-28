@@ -260,7 +260,7 @@ DragonServo* MechanismFactory::GetServo
 shared_ptr<DragonDigitalInput> MechanismFactory::GetDigitalInput
 (
 	const DigitalInputMap&							digitaInputs,
-	DigitalInputUsage::DIGITAL_SENSOR_USAGE			usage
+	DigitalInputUsage::DIGITAL_INPUT_USAGE			usage
 )
 {
 	shared_ptr<DragonDigitalInput> dio;
