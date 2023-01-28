@@ -22,8 +22,12 @@
 #include <utils/LoggerEnums.h>
 #include <LoggableItemMgr.h>
 #include <utils/WaypointXmlParser.h>
+#include <utils/FMSData.h>
 
 #include <AdjustableItemMgr.h>
+
+/// DEBUGGING
+#include <iostream>
 
 using namespace std;
 
@@ -58,6 +62,8 @@ void Robot::RobotInit()
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("RobotInit"), string("end"));
 
     m_startLogging = true;
+
+    m_fmsData = new FMSData();
 }
 
 /**
@@ -88,6 +94,9 @@ void Robot::RobotPeriodic()
     }
 
     m_tuner->ListenForUpdates();
+
+    /// DEBUGGING
+    std::cout << to_string(m_fmsData->GetAllianceColor()) << std::endl;
 }
 
 /**
@@ -103,7 +112,8 @@ void Robot::RobotPeriodic()
  */
 void Robot::AutonomousInit() 
 {
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("AutonomousInit"), string("arrived"));   
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("AutonomousInit"), string("arrived"));
+
     StateMgrHelper::SetCheckGamepadInputsForStateTransitions(false);
     if (m_cyclePrims != nullptr)
     {
@@ -122,7 +132,10 @@ void Robot::AutonomousPeriodic()
 
 void Robot::TeleopInit() 
 {
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopInit"), string("arrived"));   
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopInit"), string("arrived")); 
+
+    m_fmsData = new FMSData();
+
     StateMgrHelper::SetCheckGamepadInputsForStateTransitions(true);
     if (m_chassis != nullptr && m_controller != nullptr)
     {

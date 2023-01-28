@@ -26,6 +26,7 @@ class HolonomicDrive;
 class IChassis;
 class TeleopControl;
 class AdjustableItemMgr;
+class FMSData;
 
 
 class Robot : public frc::TimedRobot 
@@ -51,4 +52,5 @@ class Robot : public frc::TimedRobot
         ArcadeDrive*          m_arcade;
         DragonLimelight*      m_dragonLimeLight;
         AdjustableItemMgr*    m_tuner;
+        FMSData*              m_fmsData;
 };
