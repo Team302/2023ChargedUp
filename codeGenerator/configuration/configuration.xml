@@ -1303,6 +1303,13 @@ void $MECHANISM_NAME$StateMgr::CheckForGamepadTransitions()
 enum StateType
 {
     $STATE_STRUCT$
+
+	//========= Do not erase this line and the one below it. They are used by the code generator ========		
+	//========= Hand modified code start section 0 ========
+	
+    //========= Hand modified code end section 0 ========
+	//========= Do not erase this line and the one above it. They are used by the code generator =======
+
     MAX_STATE_TYPES
 };
 
