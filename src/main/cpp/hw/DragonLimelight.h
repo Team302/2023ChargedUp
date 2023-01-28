@@ -34,7 +34,7 @@
 
 // Third Party Includes
 
-using namespace units;
+
 class DragonLimelight //: public IDragonSensor, public IDragonDistanceSensor
 {
     public:
@@ -89,16 +89,15 @@ class DragonLimelight //: public IDragonSensor, public IDragonDistanceSensor
         ~DragonLimelight() = default;
         
         // Retroreflective tape Getters
-        bool HasTarget() const;
-        units::angle::degree_t GetTargetHorizontalOffset() const;
-        /**
-        units::angle::degree_t GetTargetVerticalOffset() const;
-        double GetTargetArea() const;
-        units::angle::degree_t GetTargetSkew() const;
-        units::time::microsecond_t GetPipelineLatency() const;
-        units::length::inch_t EstimateTargetDistance() const;
-        std::vector<double> Get3DSolve() const;
-        */
+        virtual bool HasTarget() const;
+        virtual units::angle::degree_t GetTargetHorizontalOffset() const;
+        virtual units::angle::degree_t GetTargetVerticalOffset() const;
+        virtual double GetTargetArea() const;
+        virtual units::angle::degree_t GetTargetSkew() const;
+        virtual units::time::microsecond_t GetPipelineLatency() const;
+        virtual units::length::inch_t EstimateTargetDistance() const;
+        virtual std::vector<double> Get3DSolve() const;
+        
 
 
         // Setters

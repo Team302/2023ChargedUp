@@ -18,7 +18,7 @@
 #include <string>
 #include <State.h>
 #include <hw/DragonLimelight.h>
-//class DragonLimelight;
+class DragonLimelight;
 class DragonVision : public State
 {
     public:
@@ -29,9 +29,9 @@ class DragonVision : public State
     void Exit() override;
     bool AtTarget() const override;
 
-//    bool AlignedWithCubeNode() const;
-//    bool AlignedWithConeNode() const;
-/**
+    bool AlignedWithCubeNode() const;
+    bool AlignedWithConeNode() const;
+
     bool AlignedWithSubstation() const;
     bool AlignedWithCubeGamePiece() const;
     bool AlignedWithConeGamePiece() const;
@@ -49,7 +49,7 @@ class DragonVision : public State
     units::angle::degree_t AngleFromConeGamePiece() const;
 
     int GetRobotPosition() const;
-   */
+   
 private:
     
     DragonVision(std::string     stateName,
@@ -57,7 +57,7 @@ private:
     ~DragonVision() = default;
 
     static DragonVision*	m_dragonVision;
-   // DragonLimelight*           m_frontDragonLimelight;
+    DragonLimelight*           m_frontDragonLimelight;
     
 };
 

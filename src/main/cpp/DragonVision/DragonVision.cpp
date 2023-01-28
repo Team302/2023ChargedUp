@@ -45,8 +45,8 @@ DragonVision* DragonVision::GetDragonVision
 //state functions
 
 
-DragonVision::DragonVision(std::string stateName, int stateId): State(stateName, stateId)
-				//		   m_frontDragonLimelight(LimelightFactory::GetLimelightFactory()->GetLimelight())				
+DragonVision::DragonVision(std::string stateName, int stateId): State(stateName, stateId),
+						   m_frontDragonLimelight(LimelightFactory::GetLimelightFactory()->GetLimelight())				
 {
 	
 }
@@ -69,7 +69,7 @@ void DragonVision::Run()
 
 
 //Aligned-with functions
-/**
+
 bool DragonVision::AlignedWithCubeNode() const
 {
 return m_frontDragonLimelight->HasTarget();
@@ -146,4 +146,3 @@ int DragonVision::GetRobotPosition()  const
 	return 0;
 }
 
-*/

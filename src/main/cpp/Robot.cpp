@@ -70,7 +70,7 @@ void Robot::RobotPeriodic()
     {
         m_chassis->UpdateOdometry();
     }
-/**
+
 auto vision = DragonVision::GetDragonVision();
 
     if (vision != nullptr)
@@ -87,7 +87,7 @@ auto vision = DragonVision::GetDragonVision();
     }
 
     m_tuner->ListenForUpdates();
- */   
+  
 }
 
 
