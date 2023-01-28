@@ -12,37 +12,33 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
-
 #pragma once
 
-//C++ Libraries
+//FRC Includes
+#include <frc/SmartDashboard/SendableChooser.h>
+#include <frc/DriverStation.h>
 
-//Team 302 includes
-#include <TeleopControl.h>
-#include <State.h>
-#include <chassis/swerve/driveStates/DragonTrajectoryGenerator.h>
-
-class IChassis;
-class MecanumChassis;
-class SwerveChassis;
-
-class HolonomicDrive : public State
+class FMSData
 {
     public:
+        enum ALLIANCE_COLOR
+        {
+            BLUE,
+            RED,
+            INVALID
+        };
 
-        HolonomicDrive();
-        ~HolonomicDrive() = default;
+        FMSData();
+        ~FMSData() = default;
 
-        void Init() override;
-        void Run() override;
-        void Exit() override;
-        bool AtTarget() const override;
+        frc::DriverStation::Alliance GetAllianceColor();
+
+        void CheckForFMS();
 
     private:
-        inline TeleopControl* GetController() const { return m_controller; }
-        IChassis*                           m_chassis;
-        TeleopControl*                      m_controller;
-        SwerveChassis*                      m_swerve;
-        MecanumChassis*                     m_mecanum;
-        DragonTrajectoryGenerator*                m_trajectoryGenerator;
+        frc::SendableChooser<std::string>                                   m_allianceColorChooser;
+        std::unordered_map<frc::DriverStation::Alliance, ALLIANCE_COLOR>    m_colorMap;
+        bool                                                                m_hasFMS;
+        frc::DriverStation::Alliance                                        m_color;
+        bool                                                                m_polledFMS;
 };

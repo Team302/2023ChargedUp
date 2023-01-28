@@ -52,7 +52,6 @@ public:
     bool IsDone() override;
 
 private:
-    bool IsSamePose(frc::Pose2d, frc::Pose2d, double tolerance); // routine to check for motion
     void GetTrajectory(std::string  path);
     void CalcCurrentAndDesiredStates();
 
@@ -60,26 +59,16 @@ private:
 
     std::shared_ptr<IChassis>               m_chassis;
     std::unique_ptr<frc::Timer>             m_timer;
-
-    frc::Pose2d                             m_currentChassisPosition;
     frc::Trajectory                         m_trajectory;
     bool                                    m_runHoloController;
-    bool                                    m_wasMoving;
+    
     frc::RamseteController                  m_ramseteController;
     frc::HolonomicDriveController           m_holoController;
-    frc::Pose2d                             m_PrevPos;          // previous position of robot for compare to current position.
-    std::unique_ptr<frc::Timer>             m_PosChgTimer;      // scan time for position change
-    int                                     m_timesRun;
-    frc::Pose2d                             m_targetPose;
+    
     std::string                             m_pathname;
-    double                                  m_deltaX;
-    double                                  m_deltaY;
-    std::vector<frc::Trajectory::State>     m_trajectoryStates;
-    frc::Trajectory::State                  m_desiredState;
+
     ChassisOptionEnums::HeadingOption       m_headingOption;
     double                                  m_heading;
     double                                  m_maxTime;
     std::string                             m_ntName;
-
- 
 };

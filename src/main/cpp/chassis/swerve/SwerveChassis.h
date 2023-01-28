@@ -243,5 +243,8 @@ class SwerveChassis : public IChassis
 
         const units::length::inch_t m_shootingDistance = units::length::inch_t(105.0); // was 105.0
 
-    
+        ISwerveDriveState*              m_currentDriveState;
+        ISwerveDriveOrientation*        m_currentOrientationState;
+
+        bool                            m_initialized = false;
 };

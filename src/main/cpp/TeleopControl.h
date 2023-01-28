@@ -47,7 +47,10 @@ class TeleopControl
             FINDTARGET,        
             DRIVE_TO_SHOOTING_SPOT,
             ARCADE_THROTTLE,
-            ARCADE_STEER,            
+            ARCADE_STEER,
+            DRIVE_TO_COL_ONE,
+            DRIVE_TO_COL_TWO,
+            DRIVE_TO_COL_THREE,            
 		    // @ADDMECH add functions here for robot
             // EXAMPLE_FORWARD,
             // EXAMPLE_REVERSE,

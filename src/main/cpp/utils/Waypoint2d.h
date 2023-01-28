@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -12,37 +12,17 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
-
 #pragma once
 
-//C++ Libraries
+//FRC Includes
+#include <frc/geometry/Pose2d.h>
 
-//Team 302 includes
-#include <TeleopControl.h>
-#include <State.h>
+//Team 302 Includes
 #include <chassis/swerve/driveStates/DragonTrajectoryGenerator.h>
 
-class IChassis;
-class MecanumChassis;
-class SwerveChassis;
-
-class HolonomicDrive : public State
+struct Waypoint2d
 {
-    public:
-
-        HolonomicDrive();
-        ~HolonomicDrive() = default;
-
-        void Init() override;
-        void Run() override;
-        void Exit() override;
-        bool AtTarget() const override;
-
-    private:
-        inline TeleopControl* GetController() const { return m_controller; }
-        IChassis*                           m_chassis;
-        TeleopControl*                      m_controller;
-        SwerveChassis*                      m_swerve;
-        MecanumChassis*                     m_mecanum;
-        DragonTrajectoryGenerator*                m_trajectoryGenerator;
+    DragonTrajectoryGenerator::WAYPOINTS    waypointIdentifier;
+    frc::Pose2d                              bluePose;
+    frc::Pose2d                              redPose;
 };

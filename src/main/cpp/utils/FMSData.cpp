@@ -13,36 +13,56 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#pragma once
+//FRC Includes
+#include <frc/SmartDashboard/SmartDashboard.h>
+#include <frc/DriverStation.h>
 
-//C++ Libraries
+//Team 302 Includes
+#include <utils/FMSData.h>
 
-//Team 302 includes
-#include <TeleopControl.h>
-#include <State.h>
-#include <chassis/swerve/driveStates/DragonTrajectoryGenerator.h>
-
-class IChassis;
-class MecanumChassis;
-class SwerveChassis;
-
-class HolonomicDrive : public State
+FMSData::FMSData() : m_allianceColorChooser(),
+                    m_hasFMS(false),
+                    m_color(frc::DriverStation::Alliance::kInvalid),
+                    m_polledFMS(false)
 {
-    public:
+    m_allianceColorChooser.SetDefaultOption("UNKNOWN Alliance", "Invalid");
+    m_allianceColorChooser.AddOption("Red Alliance", "Red");
+    m_allianceColorChooser.AddOption("Blue Alliance", "Blue");
 
-        HolonomicDrive();
-        ~HolonomicDrive() = default;
+    frc::SmartDashboard::PutData("Alliance If NO FMS", &m_allianceColorChooser);
+}
 
-        void Init() override;
-        void Run() override;
-        void Exit() override;
-        bool AtTarget() const override;
+frc::DriverStation::Alliance FMSData::GetAllianceColor()
+{
+    if(!m_polledFMS)
+    {
+        CheckForFMS();
+        
+        if(m_hasFMS)
+        {
+            m_color = frc::DriverStation::GetAlliance();
+            m_polledFMS = true;
+        }
+        else
+        {
+            if(m_allianceColorChooser.GetSelected() == "Red")
+            {
+                m_color = frc::DriverStation::Alliance::kRed;
+            }
+            else if(m_allianceColorChooser.GetSelected() == "Blue")
+            {
+                m_color = frc::DriverStation::Alliance::kBlue;
+            }
+        }
+    }
 
-    private:
-        inline TeleopControl* GetController() const { return m_controller; }
-        IChassis*                           m_chassis;
-        TeleopControl*                      m_controller;
-        SwerveChassis*                      m_swerve;
-        MecanumChassis*                     m_mecanum;
-        DragonTrajectoryGenerator*                m_trajectoryGenerator;
-};
+    return m_color;
+}
+
+void FMSData::CheckForFMS()
+{
+    if(frc::DriverStation::IsFMSAttached() && !m_hasFMS)
+    {
+        m_hasFMS = true;
+    }
+}
