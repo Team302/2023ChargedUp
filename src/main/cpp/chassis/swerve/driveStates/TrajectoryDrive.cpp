@@ -49,17 +49,10 @@ void TrajectoryDrive::Init
     m_trajectory = chassisMovement.trajectory;
     m_trajectoryStates = m_trajectory.States();
 
-    /// DEBUGGING
-    m_initTimesRan++;
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Trajectory Drive", "Init", m_initTimesRan);
-
     if (!m_trajectoryStates.empty()) // only go if path name found
     {
         //Desired state is first state in trajectory
         m_desiredState = m_trajectoryStates.front(); //m_desiredState is the first state, or starting position
-
-        /// DEBUGGING
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Trajectory Drive", "Init", "Not empty");
 
         m_timer.get()->Reset(); //Restarts and starts timer
         m_timer.get()->Start();

@@ -50,7 +50,4 @@ class TrajectoryDrive : public RobotDrive
         std::unique_ptr<frc::Timer>         m_timer;
 
         SwerveChassis*                      m_chassis;
-
-        /// DEBUGGING
-        int     m_initTimesRan = 0;
 };
