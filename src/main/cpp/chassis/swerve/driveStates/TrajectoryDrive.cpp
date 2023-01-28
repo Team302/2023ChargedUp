@@ -26,8 +26,8 @@ using frc::Pose2d;
 TrajectoryDrive::TrajectoryDrive(RobotDrive* robotDrive) : RobotDrive(),
     m_trajectory(),
     m_robotDrive(robotDrive),
-    m_holonomicController(frc2::PIDController{1.5, 0, 0},
-                          frc2::PIDController{1.5, 0, 0},
+    m_holonomicController(frc2::PIDController{1.0, 0, 0},
+                          frc2::PIDController{1.0, 0, 0},
                           frc::ProfiledPIDController<units::radian>{0.1, 0, 0,
                           frc::TrapezoidProfile<units::radian>::Constraints{0_rad_per_s, 0_rad_per_s / 1_s}}),
     m_desiredState(),
@@ -76,14 +76,6 @@ std::array<frc::SwerveModuleState, 4> TrajectoryDrive::UpdateSwerveModuleStates
                                                           m_desiredState.pose.Rotation());
         //Set chassisMovement speeds that will be used by RobotDrive
         chassisMovement.chassisSpeeds = refChassisSpeeds;
-
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Trajectory Drive", "Desired X", m_desiredState.pose.X().to<double>());
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Trajectory Drive", "Desired Y", m_desiredState.pose.Y().to<double>());
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Trajectory Drive", "Current Time", m_timer.get()->Get().to<double>());
-
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Trajectory Drive", "ChassisMovement VX", chassisMovement.chassisSpeeds.vx.to<double>());
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Trajectory Drive", "ChassisMovement VY", chassisMovement.chassisSpeeds.vy.to<double>());
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Trajectory Drive", "ChassisMovement Omega", chassisMovement.chassisSpeeds.omega.to<double>());
 
         return m_robotDrive->UpdateSwerveModuleStates(chassisMovement);
 
