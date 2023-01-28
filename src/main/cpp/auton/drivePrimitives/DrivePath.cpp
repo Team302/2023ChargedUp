@@ -144,7 +144,7 @@ void DrivePath::GetTrajectory //Parses pathweaver json to create a series of poi
     {
         // Read path into trajectory for deploy directory.  JSON File ex. Bounce1.wpilib.json
     	auto deployDir = frc::filesystem::GetDeployDirectory();
-        deployDir += "/paths/" + path;
+        deployDir += "/paths/output/" + path;
 
         m_trajectory = frc::TrajectoryUtil::FromPathweaverJson(deployDir);
 
