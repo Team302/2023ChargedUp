@@ -22,58 +22,38 @@
 //==============================================================
 
 
-		#pragma once
-
 		// C++ Includes
-		#include <map>
-			#include <memory>
-				#include <string>
+		#include  <string>
 
-					// FRC includes
+		// FRC includes
 
-					// Team 302 includes
+		// Team 302 includes
+		#include  <mechanisms/base/Mech1IndMotorState.h>
+		#include  <mechanisms/controllers/ControlData.h>
+		#include  <mechanisms/extender/ExtenderState.h>
+		#include  <mechanisms/MechanismFactory.h>
 
+		// Third Party Includes
 
-					// Third Party Includes
+		using namespace std;
 
+		ExtenderState::ExtenderState
+		(
+		string                          stateName,
+		int                             stateId
+		,
+ControlData* control0,
+double target0
+		) : Mech1IndMotorState( MechanismFactory::GetMechanismFactory()->Getextender(), stateName, stateId , control0, target0),
+		m_extender(MechanismFactory::GetMechanismFactory()->Getextender())
+		{
 
+		}
 
-					class SolenoidUsage
-					{
-
-					public:
-
-					/// @enum SOLENOID_USAGE
-					/// @brief Defines solenoid usages.  This should be modified for each robot.
-					enum SOLENOID_USAGE
-					{
-					UNKNOWN_SOLENOID_USAGE = -1,
-
-					GrabberSolenoid1,
-GrabberSolenoid2,
-
-
-					MAX_SOLENOID_USAGES
-					};
-
-
-					static SolenoidUsage* GetInstance();
-
-					SOLENOID_USAGE GetUsage
-					(
-					const std::string         usageString
-					);
-
-					private:
-					static SolenoidUsage*    m_instance;
-					SolenoidUsage();
-					~SolenoidUsage();
-
-					std::map <std::string, SOLENOID_USAGE> m_usageMap;
-
-};
-
-
+		bool ExtenderState::AtTarget() const
+		{
+		return true;
+		}
 
 
 	
