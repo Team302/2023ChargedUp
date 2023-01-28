@@ -24,8 +24,6 @@
 #include <mechanisms/MechanismTypes.h>
 #include <mechanisms/StateMgrHelper.h>
 #include <mechanisms/StateStruc.h>
-#include <mechanisms/example/ExampleState.h>
-#include <mechanisms/example/ExampleStateMgr.h>
 #include <utils/Logger.h>
 
 using namespace std;
@@ -38,7 +36,7 @@ void StateMgrHelper::InitStateMgrs()
 
 void StateMgrHelper::RunCurrentMechanismStates() 
 {
-    for (auto i=MechanismTypes::MECHANISM_TYPE::EXAMPLE+1; i<MechanismTypes::MECHANISM_TYPE::MAX_MECHANISM_TYPES; ++i)
+    for (auto i=MechanismTypes::MECHANISM_TYPE::UNKNOWN_MECHANISM+1; i<MechanismTypes::MECHANISM_TYPE::MAX_MECHANISM_TYPES; ++i)
     {
         auto mech = MechanismFactory::GetMechanismFactory()->GetMechanism(static_cast<MechanismTypes::MECHANISM_TYPE>(i));
         auto stateMgr = mech != nullptr ? mech->GetStateMgr() : nullptr;
@@ -57,7 +55,7 @@ void StateMgrHelper::SetMechanismStateFromParam
 
     if (params != nullptr)
     {
-        for (auto i=MechanismTypes::MECHANISM_TYPE::EXAMPLE+1; i<MechanismTypes::MECHANISM_TYPE::MAX_MECHANISM_TYPES; ++i)
+        for (auto i=MechanismTypes::MECHANISM_TYPE::UNKNOWN_MECHANISM+1; i<MechanismTypes::MECHANISM_TYPE::MAX_MECHANISM_TYPES; ++i)
         {
             auto mech = MechanismFactory::GetMechanismFactory()->GetMechanism(static_cast<MechanismTypes::MECHANISM_TYPE>(i));
             auto stateMgr = mech != nullptr ? mech->GetStateMgr() : nullptr;
@@ -78,7 +76,7 @@ void StateMgrHelper::SetCheckGamepadInputsForStateTransitions
     bool  check
 )
 {
-    for (auto i=MechanismTypes::MECHANISM_TYPE::EXAMPLE+1; i<MechanismTypes::MECHANISM_TYPE::MAX_MECHANISM_TYPES; ++i)
+    for (auto i=MechanismTypes::MECHANISM_TYPE::UNKNOWN_MECHANISM+1; i<MechanismTypes::MECHANISM_TYPE::MAX_MECHANISM_TYPES; ++i)
     {
         auto mech = MechanismFactory::GetMechanismFactory()->GetMechanism(static_cast<MechanismTypes::MECHANISM_TYPE>(i));
         auto stateMgr = mech != nullptr ? mech->GetStateMgr() : nullptr;
@@ -100,6 +98,8 @@ State* StateMgrHelper::CreateState
     auto controlData2 = targetData->GetController2();
     auto target = targetData->GetTarget();
     auto secondaryTarget = targetData->GetSecondTarget();
+    auto solenoidState = targetData->GetSolenoidState();
+    auto solenoid2State = targetData->GetSolenoidState();
     auto robotPitch = targetData->GetRobotPitch();
     auto function1Coeff = targetData->GetFunction1Coeff();
     auto function2Coeff = targetData->GetFunction2Coeff();
@@ -111,9 +111,6 @@ State* StateMgrHelper::CreateState
     switch (type)
     {
         // @ADDMECH Add case(s) tto create your state(s) 
-        case StateType::EXAMPLE_STATE:
-            thisState = new ExampleState(xmlString, id, controlData, target);
-            break;
 
 
         // @ADDMECH Add case(s) to create your state(s) 

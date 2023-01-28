@@ -49,8 +49,8 @@ class TeleopControl
             ARCADE_THROTTLE,
             ARCADE_STEER,            
 		    // @ADDMECH add functions here for robot
-            EXAMPLE_FORWARD,
-            EXAMPLE_REVERSE,
+            // EXAMPLE_FORWARD,
+            // EXAMPLE_REVERSE,
             MAX_FUNCTIONS
         };
 

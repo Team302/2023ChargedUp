@@ -123,7 +123,7 @@ void MechanismFactory::CreateMechanism
 			auto solenoid2 = GetSolenoid(solenoids, SolenoidUsage::GrabberSolenoid2);
 			if (solenoid1.get() != nullptr && solenoid2.get())
 			{
-				m_extender = new grabber(controlFileName, networkTableName, solenoid1, solenoid2);
+				m_grabber = new grabber(controlFileName, networkTableName, solenoid1, solenoid2);
 			}
 
 		}
