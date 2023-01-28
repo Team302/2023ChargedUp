@@ -90,11 +90,11 @@ frc::Trajectory DragonTrajectoryGenerator::GenerateTrajectory(frc::Pose2d curren
                     break;
             }
 
-            /*if(behindChargingPad)
+            if(behindChargingPad)
             {
                 intermediatePoints.emplace_back(frc::Translation2d{m_blueWaypoints[WAYPOINTS::GRID_WALL_INTERMEDIATE].X(), 
                                                 m_blueWaypoints[WAYPOINTS::GRID_WALL_INTERMEDIATE].Y()});
-            }*/
+            }
         }
         else if(distToCoopGrid < distToWallGrid && distToCoopGrid < distToHPGrid)
         {
@@ -114,11 +114,11 @@ frc::Trajectory DragonTrajectoryGenerator::GenerateTrajectory(frc::Pose2d curren
                     break;
             }
 
-            /*if(behindChargingPad)
+            if(behindChargingPad)
             {
                 intermediatePoints.emplace_back(frc::Translation2d{m_blueWaypoints[WAYPOINTS::GRID_COOP_INTERMEDIATE].X(), 
                                                 m_blueWaypoints[WAYPOINTS::GRID_COOP_INTERMEDIATE].Y()});
-            }*/
+            }
         }
         else
         {
@@ -138,11 +138,11 @@ frc::Trajectory DragonTrajectoryGenerator::GenerateTrajectory(frc::Pose2d curren
                     break;
             }
 
-            /*if(behindChargingPad)
+            if(behindChargingPad)
             {
                 intermediatePoints.emplace_back(frc::Translation2d{m_blueWaypoints[WAYPOINTS::GRID_HP_INTERMEDIATE].X(), 
                                                 m_blueWaypoints[WAYPOINTS::GRID_HP_INTERMEDIATE].Y()});
-            }*/
+            }
         }
     }
     else //we are going to human player substation
@@ -166,7 +166,9 @@ frc::Trajectory DragonTrajectoryGenerator::GenerateTrajectory(frc::Pose2d curren
         distanceToFinalPoint = DistanceBetweenPoses::GetDeltaBetweenPoses(currentPose, m_redWaypoints[endWaypoint]);
     }
 
-    if(distanceToFinalPoint > 0.1)
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("TrajectoryGenerator"), std::string("DistToFinalPoint"), std::to_string(distanceToFinalPoint));
+
+    if(distanceToFinalPoint > 0.2)
     {
         return resultingTrajectory;
     }
