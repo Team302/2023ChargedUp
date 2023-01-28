@@ -21,6 +21,8 @@
 #include <utils/LoggerData.h>
 #include <utils/LoggerEnums.h>
 #include <LoggableItemMgr.h>
+#include <utils/WaypointXmlParser.h>
+
 #include <AdjustableItemMgr.h>
 
 using namespace std;
@@ -37,6 +39,8 @@ void Robot::RobotInit()
     auto XmlParser = new RobotXmlParser();
     XmlParser->ParseXML();
 
+    auto waypointParser = WaypointXmlParser::GetInstance();
+    waypointParser->ParseWaypoints();
     //Get AdjustableItemMgr instance
     m_tuner = AdjustableItemMgr::GetInstance();
 

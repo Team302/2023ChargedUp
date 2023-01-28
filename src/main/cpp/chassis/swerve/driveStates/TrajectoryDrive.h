@@ -22,6 +22,7 @@
 
 //Team302 Includes
 #include <chassis/swerve/driveStates/RobotDrive.h>
+#include <chassis/swerve/SwerveChassis.h>
 
 class TrajectoryDrive : public RobotDrive
 {
@@ -56,5 +57,8 @@ class TrajectoryDrive : public RobotDrive
         bool                                m_wasMoving;
         frc::Transform2d                    m_delta;
         std::unique_ptr<frc::Timer>         m_timer;
+
+        SwerveChassis*                      m_chassis;
         std::string                         m_whyDone;
+
 };

@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -15,34 +15,29 @@
 
 #pragma once
 
-//C++ Libraries
+//C++ Includes
+#include <vector>
 
-//Team 302 includes
-#include <TeleopControl.h>
-#include <State.h>
-#include <chassis/swerve/driveStates/DragonTrajectoryGenerator.h>
+//FRC Includes
+#include <frc/geometry/Translation2d.h>
 
-class IChassis;
-class MecanumChassis;
-class SwerveChassis;
+//Team 302 Includes
+#include <utils/Waypoint2d.h>
 
-class HolonomicDrive : public State
+class WaypointXmlParser
 {
     public:
+        WaypointXmlParser() = default;
+        ~WaypointXmlParser() = default;
 
-        HolonomicDrive();
-        ~HolonomicDrive() = default;
+        /// @brief  Find or create the Waypoint parser
+		static WaypointXmlParser* GetInstance();
 
-        void Init() override;
-        void Run() override;
-        void Exit() override;
-        bool AtTarget() const override;
+        void ParseWaypoints();
 
+        std::vector<Waypoint2d> GetWaypoints() const {return m_waypoints;};
     private:
-        inline TeleopControl* GetController() const { return m_controller; }
-        IChassis*                           m_chassis;
-        TeleopControl*                      m_controller;
-        SwerveChassis*                      m_swerve;
-        MecanumChassis*                     m_mecanum;
-        DragonTrajectoryGenerator*                m_trajectoryGenerator;
+        static WaypointXmlParser*	m_instance;
+
+        std::vector<Waypoint2d> m_waypoints;
 };

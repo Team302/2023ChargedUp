@@ -18,24 +18,28 @@
 //Team302 Includes
 #include <chassis/swerve/driveStates/TrajectoryDrive.h>
 #include <chassis/ChassisMovement.h>
-#include <utils/Logger.h>
 #include <chassis/ChassisFactory.h>
+#include <utils/Logger.h>
+
 
 using frc::Pose2d;
 
 TrajectoryDrive::TrajectoryDrive(RobotDrive* robotDrive) : RobotDrive(),
     m_trajectory(),
     m_robotDrive(robotDrive),
-    m_holonomicController(frc2::PIDController{1.5, 0, 0},
-                          frc2::PIDController{1.5, 0, 0},
+    m_holonomicController(frc2::PIDController{1.0, 0, 0},
+                          frc2::PIDController{1.0, 0, 0},
                           frc::ProfiledPIDController<units::radian>{0.1, 0, 0,
                           frc::TrapezoidProfile<units::radian>::Constraints{0_rad_per_s, 0_rad_per_s / 1_s}}),
     m_desiredState(),
-    m_trajectoryStates(m_trajectory.States()),
+
+    m_trajectoryStates(),
     m_prevPose(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose()),
     m_wasMoving(false),
     m_timer(std::make_unique<frc::Timer>()),
+    m_chassis(ChassisFactory::GetChassisFactory()->GetSwerveChassis())
     m_whyDone("Trajectory isn't finished/Error")
+
 {
 
 }
@@ -47,6 +51,10 @@ void TrajectoryDrive::Init
 {
     //Clear m_trajectoryStates in case it holds onto a previous trajectory
     m_trajectoryStates.clear();
+
+    m_trajectory = chassisMovement.trajectory;
+    m_trajectoryStates = m_trajectory.States();
+
 
     if (!m_trajectoryStates.empty()) // only go if path name found
     {
@@ -74,12 +82,12 @@ std::array<frc::SwerveModuleState, 4> TrajectoryDrive::UpdateSwerveModuleStates
 
         // Use the controller to calculate the chassis speeds for getting there
         frc::ChassisSpeeds refChassisSpeeds;
-        refChassisSpeeds = m_holonomicController.Calculate(//m_chassis->GetOdometry()->GetPose(),
-                                                          Pose2d(), 
+        refChassisSpeeds = m_holonomicController.Calculate( m_chassis->GetPose(),
                                                           m_desiredState, 
                                                           m_desiredState.pose.Rotation());
         //Set chassisMovement speeds that will be used by RobotDrive
         chassisMovement.chassisSpeeds = refChassisSpeeds;
+
         return m_robotDrive->UpdateSwerveModuleStates(chassisMovement);
 
     }

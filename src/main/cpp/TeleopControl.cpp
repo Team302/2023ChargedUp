@@ -131,12 +131,12 @@ void TeleopControl::Initialize() const
 		m_controllerIndex[FINDTARGET] 					= ctrlNo;  
 		m_buttonIDs[FINDTARGET]	 						= IDragonGamePad::LEFT_BUMPER;	
 
-		m_controllerIndex[ DRIVE_TO_SHOOTING_SPOT ]		= ctrlNo;
-		m_buttonIDs[ DRIVE_TO_SHOOTING_SPOT ]			= IDragonGamePad::A_BUTTON;
-		m_controllerIndex[ REZERO_PIGEON ]				= ctrlNo;
-		m_buttonIDs[ REZERO_PIGEON ]					= IDragonGamePad::B_BUTTON;
-		m_controllerIndex[HOLD_POSITION]				= ctrlNo;
-		m_buttonIDs[HOLD_POSITION]						= IDragonGamePad::X_BUTTON;
+		m_controllerIndex[ DRIVE_TO_COL_ONE ]			= ctrlNo;
+		m_buttonIDs[ DRIVE_TO_COL_ONE ]					= IDragonGamePad::X_BUTTON;
+		m_controllerIndex[ DRIVE_TO_COL_TWO ]			= ctrlNo;
+		m_buttonIDs[ DRIVE_TO_COL_TWO ]					= IDragonGamePad::Y_BUTTON;
+		m_controllerIndex[ DRIVE_TO_COL_THREE ]			= ctrlNo;
+		m_buttonIDs[ DRIVE_TO_COL_THREE ]				= IDragonGamePad::B_BUTTON;
 	
     }
     else
