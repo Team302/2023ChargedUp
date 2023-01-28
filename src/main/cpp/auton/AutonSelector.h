@@ -14,6 +14,8 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
+// co-Author: notcharlie, creator of dumb code / copy paster of better code
+
 #pragma once
 
 #include <string>
@@ -22,7 +24,30 @@
 
 class AutonSelector
 {
+	bool Benisgoodatspelling = false;
 	public:
+
+		enum Alliancecolor
+		{
+			Red,
+			Blue,
+		};
+		enum AutonPosition
+		{
+			Gridcoop, 
+			Gridwall,
+			Gridhp,
+		};
+
+		enum NumOfPieces
+		{
+			One,
+			Two,
+			Three,
+			Four,
+			Five,
+
+		};
 		//---------------------------------------------------------------------
 		// Method: 		<<constructor>>
 		// Description: This creates this object and reads the auto script (CSV)
@@ -65,6 +90,13 @@ class AutonSelector
 
 		// Attributues
 		std::vector<std::string> m_xmlFiles;
-		frc::SendableChooser<std::string> m_chooser;
+		frc::SendableChooser<std::string> m_chrgstatchooser;
+		frc::SendableChooser<std::string> m_alliancecolorchooser;
+		frc::SendableChooser<std::string> m_startposchooser;
+		frc::SendableChooser<std::string> m_numofgamepiecechooser;
+		std::string m_parkonchrgstat;
+		std::string m_alliancecolor;
+		std::string m_statrpos;
+		std::string m_numofgamepiece;
 };
 

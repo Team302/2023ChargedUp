@@ -14,6 +14,8 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
+// co-Author: notcharlie, creator of dumb code / copy paster of better code
+
 //Includes
 #include <string>
 #include <vector>
@@ -22,7 +24,6 @@
 #include <dirent.h>
 #endif
 
-#include <frc/SmartDashboard/SendableChooser.h>
 #include <frc/SmartDashboard/SmartDashboard.h>
 #include <frc/Filesystem.h>
 
@@ -37,8 +38,10 @@ using namespace std;
 // Description: This creates this object and reads the auto script (CSV)
 //  			files and displays a list on the dashboard.
 //---------------------------------------------------------------------
+bool HasError = false;
 AutonSelector::AutonSelector() : m_xmlFiles(),
-								 m_chooser()
+								 m_chrgstatchooser()
+
 {
 	FindXMLFileNames();
 	PutChoicesOnDashboard();
@@ -53,7 +56,7 @@ AutonSelector::AutonSelector() : m_xmlFiles(),
 //---------------------------------------------------------------------
 std::string AutonSelector::GetSelectedAutoFile()
 {
-	return m_chooser.GetSelected();
+	return m_chrgstatchooser.GetSelected();
 }
 
 //---------------------------------------------------------------------
@@ -107,22 +110,25 @@ void AutonSelector::FindXMLFileNames()
 //---------------------------------------------------------------------
 void AutonSelector::PutChoicesOnDashboard()
 {
-	auto gotDefault = false;
-	for (unsigned int inx = 0; inx < m_xmlFiles.size(); ++inx)
-	{
-		if(m_xmlFiles[inx] != "." && m_xmlFiles[inx] != "..")
-		{
-			if ( !gotDefault )
-			{
-				m_chooser.SetDefaultOption(  m_xmlFiles[inx], m_xmlFiles[inx] );
-				gotDefault = true;
-			}
-			else
-			{
-				m_chooser.AddOption( m_xmlFiles[inx], m_xmlFiles[inx]);	
-			}
-		}
-	}
-	frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
-}
+	//choose to park on charging station or not
+	m_chrgstatchooser.SetDefaultOption("yes", m_parkonchrgstat);
+	m_chrgstatchooser.AddOption("no", m_parkonchrgstat);
+	frc::SmartDashboard::PutData("prkonchrgstat", &m_chrgstatchooser);
+	
+	//alliance color
+	m_alliancecolorchooser.AddOption("Red", m_alliancecolor);
+	m_alliancecolorchooser.AddOption("Blue", m_alliancecolor);
+	frc::SmartDashboard::PutData("Alliance color", &m_alliancecolorchooser);
 
+	//# of game pieces
+	m_startposchooser.AddOption("Gridcoop",m_statrpos);
+	m_startposchooser.AddOption("Gridwall",m_statrpos);
+	m_startposchooser.AddOption("Gridhp",m_statrpos);
+	frc::SmartDashboard::PutData("StartPos",&m_startposchooser);
+
+	//what you want to do in auton
+	m_numofgamepiecechooser.AddOption("1 gamepiece",m_numofgamepiece);
+	m_numofgamepiecechooser.AddOption("2 gamepieces",m_numofgamepiece);
+	m_numofgamepiecechooser.AddOption("3 gamepieces",m_numofgamepiece);
+	frc::SmartDashboard::PutData("NumOfpcs",&m_numofgamepiecechooser);
+}
