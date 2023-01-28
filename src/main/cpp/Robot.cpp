@@ -138,7 +138,7 @@ void Robot::TeleopInit()
 
 void Robot::TeleopPeriodic() 
 {
-    m_ledStates->AlternatingBlinkingPattern(LED::YELLOW,LED::PURPLE);
+    m_ledStates->ClosingInChaserPattern(LED::GREEN);
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopPeriodic"), string("arrived"));   
     if (m_chassis != nullptr && m_controller != nullptr)

@@ -29,6 +29,7 @@ class LEDStates
     void SolidColorPattern(LED::Colors c);
     void AlternatingBlinkingPattern(LED::Colors c);
     void AlternatingBlinkingPattern(LED::Colors c1, LED::Colors c2);
+    void ClosingInChaserPattern(LED::Colors c);
     LED* m_LED = LED::GetInstance();
     static LEDStates* GetInstance();
 

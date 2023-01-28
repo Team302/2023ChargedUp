@@ -39,24 +39,20 @@
         {
         case RED:
             return {255,0,0};
-        
         case GREEN:
             return {0,255,0};
-
         case BLUE:
             return {0,0,255};
-
         case YELLOW:
             return {204,204,0};   
-
         case PURPLE:
             return {75,0,130};
-
         case AZUL:
             return {0,255,255};  
-
+        case WHITE:
+            return{255,255,180};
         case BLACK:
-            return {0,0,0}; 
+            return {0,0,0};
         }
     }
 

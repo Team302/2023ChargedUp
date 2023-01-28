@@ -85,6 +85,20 @@ void LEDStates::AlternatingBlinkingPattern(LED::Colors c1, LED::Colors c2){
     }
     timer++;
 }
+void LEDStates::ClosingInChaserPattern(LED::Colors c){
+    if (timer == 7){
+        int halfLength = (m_LED->kLength-1)/2;
+        loopThroughIndividualLEDs += loopThroughIndividualLEDs < halfLength ? 1 : -loopThroughIndividualLEDs;
+        int loopout = (m_LED->kLength-1)-loopThroughIndividualLEDs;
+        auto color = colorLoop>=0 ? m_LED->getColorValues(c) : m_LED->getColorValues(m_LED->BLACK);
+        colorLoop += colorLoop < halfLength ? 1 : -((colorLoop*2)+1);
+        m_LED->m_ledBuffer[loopThroughIndividualLEDs].SetRGB(color[0],color[1],color[2]);
+        m_LED->m_ledBuffer[loopout].SetRGB(color[0],color[1],color[2]);
+        m_LED->m_led->SetData(m_LED->m_ledBuffer);
+        timer = 0;
+    }
+    timer++;
+}
 void LEDStates::ResetVariables(){
  loopThroughIndividualLEDs = -1;
  colorLoop = 0;
