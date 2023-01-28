@@ -26,6 +26,8 @@
 #include <frc/trajectory/TrajectoryConfig.h>
 
 //Team 302 Includes
+#include <utils/FMSData.h>
+
 class DragonTrajectoryGenerator
 {
     public:
@@ -68,4 +70,5 @@ class DragonTrajectoryGenerator
 
         std::unordered_map<WAYPOINTS, frc::Pose2d>   m_redWaypoints;
         std::unordered_map<WAYPOINTS, frc::Pose2d>   m_blueWaypoints;
+        FMSData*                                     m_fmsData;
 };
