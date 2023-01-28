@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -12,41 +12,16 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
-#pragma once
 
-//FRC Includes
-#include <frc/SmartDashboard/SendableChooser.h>
-#include <frc/DriverStation.h>
+//Team 302 Includes
+#include <utils/DistanceBetweenPoses.h>
 
-class FMSData
-{
-    public:
-        enum ALLIANCE_COLOR
-        {
-            BLUE,
-            RED,
-            INVALID
-        };
+/// @brief Find the distance between two poses by using the Pythagorean Formula
+/// @param poseOne first pose to compare
+/// @param poseTwo second pose to compare
+/// @return frc::Translation2d - the difference in X value and the distance in Y value
 
-        FMSData();
-        ~FMSData() = default;
-
-        /// @brief Get the alliance color from dashboard or FMS when available
-        /// @return the current alliance
-        frc::DriverStation::Alliance GetAllianceColor();
-
-        /// @brief Check if we are connected to FMS
-        void CheckForFMS();
-
-        /// @brief get the singeleton of FMSData
-        static FMSData* GetInstance();
-
-    private:
-        static FMSData*	m_instance;
-
-        frc::SendableChooser<std::string>                                   m_allianceColorChooser;
-        std::unordered_map<frc::DriverStation::Alliance, ALLIANCE_COLOR>    m_colorMap;
-        bool                                                                m_hasFMS;
-        frc::DriverStation::Alliance                                        m_color;
-        bool                                                                m_polledFMS;
-};
+double DistanceBetweenPoses::GetDeltaBetweenPoses(frc::Pose2d poseOne, frc::Pose2d poseTwo)
+{    
+    return sqrt(pow((poseTwo.X() - poseOne.X()).to<double>(),2) + pow((poseTwo.Y() - poseOne.Y()).to<double>(),2));
+}
