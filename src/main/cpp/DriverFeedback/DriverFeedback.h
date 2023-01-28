@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302 
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -14,41 +14,33 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-
 #pragma once
-
-#include <frc/TimedRobot.h>
 #include <DriverFeedback/LEDStates.h>
+#include <DriverFeedback/DriverFeedbackStruct.h>
 
-class ArcadeDrive;
-class CyclePrimitives;
-class DragonLimelight;
-class HolonomicDrive;
-class IChassis;
-class TeleopControl;
-
-
-class Robot : public frc::TimedRobot 
+class DriverFeedback
 {
-    public:
-        void RobotInit() override;
-        void RobotPeriodic() override;
-        void AutonomousInit() override;
-        void AutonomousPeriodic() override;
-        void TeleopInit() override;
-        void TeleopPeriodic() override;
-        void DisabledInit() override;
-        void DisabledPeriodic() override;
-        void TestInit() override;
-        void TestPeriodic() override;
-
+	public:
+    LEDStates* m_LEDStates = LEDStates::GetInstance();
+    void UpdateFeedback();
+   
     private:
-        TeleopControl*        m_controller;
-        IChassis*             m_chassis;
-        CyclePrimitives*      m_cyclePrims;
-        HolonomicDrive*       m_holonomic;
-        bool                  m_startLogging;
-        ArcadeDrive*          m_arcade;
-        DragonLimelight*      m_dragonLimeLight;
-        LEDStates* m_ledStates = new LEDStates();
+    enum DriverFeedbackStates
+    {
+     ALIGNED_WITH_CONE_NODE,
+     ALIGNED_WITH_CUBE_NODE,
+     GAME_PIECE_IN_GRABBER,
+     WANT_CUBE,
+     WANT_CONE,
+     GAME_PIECE_READY_TO_PICK_UP,
+     NONE
+     
+    };
+
+    DriverFeedbackStates currentState = DriverFeedbackStates::NONE;
+
+
 };
+
+
+

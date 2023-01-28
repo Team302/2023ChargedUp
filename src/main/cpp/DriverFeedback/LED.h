@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+// Copyright 2023 Lake Orion Robotics FIRST Team 302 
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -24,26 +24,25 @@ class LED
         LED(int PWMport);
 
 
-        enum Colors{RED, GREEN, BLUE, PURPLE, YELLOW, AZUL, MAX_STATE};
-        void UpdateLEDS();
+        enum Colors{RED, GREEN, BLUE, PURPLE, YELLOW, AZUL, BLACK, MAX_STATE};
 
-        void LedsOff();
-
-        void HalfAndHalfPattern();
-
-        void ChangingChaserPattern();
-
-        //void BlinkingPattern();
-
-        ~LED();
-        LED() = delete;
-    private:
-        std::array<int,3> getColorValues(Colors c);
-        
         static constexpr int kLength = 15;
-        
+
         frc::AddressableLED* m_led;
         std::array<frc::AddressableLED::LEDData, kLength> m_ledBuffer;
+      
+        std::array<int,3> getColorValues(Colors c);
+        ~LED();
+        LED() = delete;
+
+        static LED* GetInstance();
+
+        private:
+        static LED* m_instance;
+   
+        
+        
+        
 
 
 

@@ -1,4 +1,19 @@
 
+//====================================================================================================================================================
+// Copyright 2023 Lake Orion Robotics FIRST Team 302 
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+// OR OTHER DEALINGS IN THE SOFTWARE.
+//====================================================================================================================================================
+
 #include <DriverFeedback/LED.h>
 
     LED::LED(int PWMport){
@@ -7,6 +22,17 @@
         m_led->SetData(m_ledBuffer);
         m_led->Start();
     }
+    LED* LED::m_instance = nullptr;
+
+    LED* LED::GetInstance()
+{
+	if ( LED::m_instance == nullptr )
+	{
+		LED::m_instance = new LED(0);
+	}
+	return LED::m_instance;
+}
+
 
     std::array<int, 3> LED::getColorValues(Colors c){
         switch (c)
@@ -24,58 +50,13 @@
             return {204,204,0};   
 
         case PURPLE:
-            return {255,0,255};
+            return {75,0,130};
 
         case AZUL:
-            return {0,255,255};   
+            return {0,255,255};  
+
+        case BLACK:
+            return {0,0,0}; 
         }
     }
 
-   void LED::LedsOff(){
-        for (int i = 0; i < kLength; i++){
-            m_ledBuffer[i].SetRGB(0,0,0);
-        }
-        m_led->SetData(m_ledBuffer);
-
-   }
-   int loop = -1;
-   bool done = false;
-   int timer = 0;
-   void LED::ChangingChaserPattern(){
-    if(timer>10){
-        auto color = getColorValues(PURPLE);
-        
-        if(loop<kLength){
-            loop++;
-        }else{
-            done = true;
-            loop = 0;
-        }
-        if(!done){
-            m_ledBuffer[loop].SetRGB(color[0],color[1],color[2]);
-        }else{
-            LedsOff();
-            done = false;
-        }
-        timer =0;
-    }
-    timer++;
-   }
-
-   void LED::HalfAndHalfPattern(){
-            auto color = getColorValues(PURPLE);
-            for (int i = 0; i < kLength/2; i++){
-                m_ledBuffer[i].SetRGB(color[0],color[1],color[2]);
-        }
-         color = getColorValues(YELLOW);
-            for (int i = kLength-1; i > kLength/2; i--){
-                m_ledBuffer[i].SetRGB(color[0],color[1],color[2]);
-            }
-        m_led->SetData(m_ledBuffer);
-    }
-
-
-   void LED::UpdateLEDS(){
-        ChangingChaserPattern();
-        m_led->SetData(m_ledBuffer);
-    }
