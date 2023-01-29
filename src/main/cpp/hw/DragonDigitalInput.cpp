@@ -31,7 +31,7 @@ using namespace std;
 DragonDigitalInput::DragonDigitalInput
 (
 	string										networkTableName,
-	DigitalInputUsage::DIGITAL_SENSOR_USAGE		usage,	    	// <I> - Usage of the digital input
+	DigitalInputUsage::DIGITAL_INPUT_USAGE		usage,	    	// <I> - Usage of the digital input
 	int 										deviceID,		// <I> - digial io ID
 	bool										reversed,		// <I>
 	units::time::second_t						debounceTime
@@ -48,7 +48,7 @@ DragonDigitalInput::~DragonDigitalInput()
 	delete m_digital;
 }
 
-DigitalInputUsage::DIGITAL_SENSOR_USAGE DragonDigitalInput::GetType() const
+DigitalInputUsage::DIGITAL_INPUT_USAGE DragonDigitalInput::GetType() const
 {
     return m_type;
 }

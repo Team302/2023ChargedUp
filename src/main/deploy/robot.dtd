@@ -1,4 +1,4 @@
-<!ELEMENT robot (pdp?, pcm?, pigeon*, limelight?, chassis?, mechanism*, camera*, roborio* )>
+<!ELEMENT robot (pdp?, pcm*, pigeon*, limelight*, chassis, mechanism*, camera*, roborio* )>
 
 <!ELEMENT roborio EMPTY>
 <!ATTLIST roborio
@@ -62,7 +62,7 @@
           canBusName CDATA "rio"
           type      (pigeon1 | pigeon2) "pigeon1"
           rotation CDATA "0.0"
-          usage     (CENTER_OF_ROTATION | SHOOTER_CENTER)  "CENTER_OF_ROTATION"
+          usage     (CENTER_OF_ROTATION)  "CENTER_OF_ROTATION"
 >
 
 <!ELEMENT pwmultrasonic EMPTY>
@@ -94,7 +94,7 @@
 		  rotation          ( 0.0 | 90.0 | 180.0 | 270.0 ) "0.0"
 		  targetheight      CDATA #REQUIRED
 		  targetheight2     CDATA #REQUIRED
-		  defaultledmode	( currentpipeline | off | blink | on ) " currentpipeline" 
+		  defaultledmode	( currentpipeline | off | blink | on ) "currentpipeline" 
 		  defaultcammode    ( vision | drivercamera ) "vision"
 		  streammode        ( sidebyside | pipmain | pipsecondary ) "sidebyside"
 		  snapshots         ( off | twopersec ) "off"
@@ -161,7 +161,7 @@
           turn_nominal_val                                  CDATA "0.0"
           turn_peak_val                                     CDATA "1.0"
           turn_max_acc                                      CDATA "0.0"
-          turn_cruise_vel                                   CDATA "0.0",
+          turn_cruise_vel                                   CDATA "0.0"
           countsOnTurnEncoderPerDegreesOnAngleSensor        CDATA "1.0"
 >
 
@@ -246,7 +246,9 @@
           reverselimitswitch        ( true | false ) "false" 
           reverselimitswitchopen    ( true | false ) "true"        
           voltageCompensationSaturation CDATA "12.0"
-          voltageCompensationEnable (true | false)  "false"    
+          voltageCompensationEnable (true | false)  "false"  
+		  countsPerInch             CDATA "0"  
+          countsPerDegree		    CDATA "0"
 >
 
 

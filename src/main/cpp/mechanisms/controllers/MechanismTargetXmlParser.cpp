@@ -59,6 +59,7 @@ MechanismTargetData*  MechanismTargetXmlParser::ParseXML
     double  greaterThanTransitiionTarget = 0.0;
     std::string greaterThanTransitionState("N/A");
     MechanismTargetData::SOLENOID solenoid = MechanismTargetData::SOLENOID::NONE; 
+    MechanismTargetData::SOLENOID solenoid2 = MechanismTargetData::SOLENOID::NONE; 
     array<double,3> function1Coeff = {0.0, 0.0, 0.0};
     array<double,3> function2Coeff = {0.0, 0.0, 0.0};
 
@@ -134,6 +135,26 @@ MechanismTargetData*  MechanismTargetXmlParser::ParseXML
                 Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("MechanismTargetXmlParser"), string("ParseXML"), string("solenoid enum"));
             }
         }
+        else if( strcmp( attr.name(), "solenoid2" ) == 0 )
+        {
+            auto val = attr.value();
+            if(strcmp(val, "ON") == 0)
+            {
+                solenoid2 = MechanismTargetData::SOLENOID::ON;
+            }
+            else if ( strcmp(val, "REVERSE") == 0)
+            {
+                solenoid2 = MechanismTargetData::SOLENOID::REVERSE;
+            }
+            else if( strcmp(val, "NONE") == 0)
+            {
+                solenoid2 = MechanismTargetData::SOLENOID::NONE;
+            }
+            else
+            {
+                Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("MechanismTargetXmlParser"), string("ParseXML"), string("solenoid2 enum"));
+            }
+        }
         else
         {
             string msg = "unknown attribute ";
@@ -158,6 +179,7 @@ MechanismTargetData*  MechanismTargetXmlParser::ParseXML
                                             greaterThanTransitiionTarget,
                                             greaterThanTransitionState,
                                             solenoid,
+                                            solenoid2,
                                             function1Coeff,
                                             function2Coeff );
     }
