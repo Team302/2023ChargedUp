@@ -19,6 +19,17 @@
 //Team 302 Includes
 #include <utils/DragonField.h>
 
+DragonField* DragonField::m_instance = nullptr;
+
+DragonField* DragonField::GetInstance()
+{
+	if ( DragonField::m_instance == nullptr )
+	{
+            DragonField::m_instance = new DragonField();
+	}
+	return DragonField::m_instance;
+}
+
 DragonField::DragonField()
 {
     frc::SmartDashboard::PutData(&m_field);
@@ -34,7 +45,7 @@ void DragonField::AddPose(std::string name, frc::Pose2d pose)
     m_field.GetObject(name)->SetPose(pose);
 }
 
-void DragonField::AddTrajectroy(std::string name, frc::Trajectory trajectory)
+void DragonField::AddTrajectory(std::string name, frc::Trajectory trajectory)
 {
     m_field.GetObject(name)->SetTrajectory(trajectory);
 }

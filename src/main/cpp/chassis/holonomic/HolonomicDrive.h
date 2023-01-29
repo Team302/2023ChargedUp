@@ -47,4 +47,5 @@ class HolonomicDrive : public State
         DragonTrajectoryGenerator*                m_trajectoryGenerator;
         ChassisOptionEnums::DriveStateType  m_previousDriveState;
         frc::Trajectory                     m_generatedTrajectory;
+        DragonField*                        m_field;
 };

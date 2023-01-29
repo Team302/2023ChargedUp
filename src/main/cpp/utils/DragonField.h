@@ -28,8 +28,12 @@ class DragonField
         void UpdateRobotPosition(frc::Pose2d robotPose);
 
         void AddPose(std::string name, frc::Pose2d pose);
-        void AddTrajectroy(std::string name, frc::Trajectory trajectory);
+        void AddTrajectory(std::string name, frc::Trajectory trajectory);
+
+        /// @brief get the singeleton of FMSData
+        static DragonField* GetInstance();
 
     private:
-        frc::Field2d    m_field;
+        static DragonField*	    m_instance;
+        frc::Field2d            m_field;
 };

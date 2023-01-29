@@ -60,7 +60,7 @@ void Robot::RobotInit()
 
 
     m_fmsData = FMSData::GetInstance();
-    m_field = new DragonField();
+    m_field = DragonField::GetInstance();
 }
 
 /**
