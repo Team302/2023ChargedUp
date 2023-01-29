@@ -47,7 +47,9 @@ HolonomicDrive::HolonomicDrive() : State(string("HolonomicDrive"), -1),
                                    m_swerve(ChassisFactory::GetChassisFactory()->GetSwerveChassis()),
                                    m_mecanum(ChassisFactory::GetChassisFactory()->GetMecanumChassis()),
                                    m_trajectoryGenerator(new DragonTrajectoryGenerator(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetMaxSpeed(),
-                                                                                ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetMaxAcceleration()))
+                                                                                ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetMaxAcceleration())),
+                                   m_previousDriveState(ChassisOptionEnums::DriveStateType::FIELD_DRIVE),
+                                   m_generatedTrajectory(frc::Trajectory())
 {
     if (m_controller == nullptr)
     {
@@ -146,28 +148,38 @@ void HolonomicDrive::Run()
         }
 
         //Automated driving
-        if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::DRIVE_TO_COL_ONE))
+        if(m_previousDriveState != ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE)
         {
-            moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
-            
-            moveInfo.trajectory = m_trajectoryGenerator->GenerateTrajectory(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose(), DragonTrajectoryGenerator::TARGET_POSITION::COLUMN_ONE);
-        }
+            if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::DRIVE_TO_COL_ONE))
+            {
+                moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
+                m_previousDriveState = moveInfo.driveOption;
+                moveInfo.trajectory = m_trajectoryGenerator->GenerateTrajectory(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose(), DragonTrajectoryGenerator::TARGET_POSITION::COLUMN_ONE);
+                m_generatedTrajectory = moveInfo.trajectory;
+            }
 
-        else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::DRIVE_TO_COL_TWO))
-        {
-            moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
-            moveInfo.trajectory = m_trajectoryGenerator->GenerateTrajectory(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose(), DragonTrajectoryGenerator::TARGET_POSITION::COLUMN_TWO);
+            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::DRIVE_TO_COL_TWO))
+            {
+                moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
+                m_previousDriveState = moveInfo.driveOption;
+                moveInfo.trajectory = m_trajectoryGenerator->GenerateTrajectory(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose(), DragonTrajectoryGenerator::TARGET_POSITION::COLUMN_TWO);
+                m_generatedTrajectory = moveInfo.trajectory;
+            }
+            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::DRIVE_TO_COL_THREE))
+            {
+                moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
+                m_previousDriveState = moveInfo.driveOption;
+                moveInfo.trajectory = m_trajectoryGenerator->GenerateTrajectory(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose(), DragonTrajectoryGenerator::TARGET_POSITION::COLUMN_THREE);
+                m_generatedTrajectory = moveInfo.trajectory;
+            }
         }
-        else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::DRIVE_TO_COL_THREE))
+        else
         {
-            moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
-            moveInfo.trajectory = m_trajectoryGenerator->GenerateTrajectory(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose(), DragonTrajectoryGenerator::TARGET_POSITION::COLUMN_THREE);
+            moveInfo.driveOption = m_previousDriveState;
+            moveInfo.trajectory = m_generatedTrajectory;
         }
+        
         //add button to drive to loading zone
-        else //if we aren't trying to automatically drive anywhere, take us out of trajectorydrive
-        {
-            moveInfo.driveOption = ChassisOptionEnums::DriveStateType::FIELD_DRIVE;
-        }
 
         //if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HOLD_POSITION))
         //{
@@ -180,6 +192,12 @@ void HolonomicDrive::Run()
         auto forward = controller->GetAxisValue(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_FORWARD);
         auto strafe = controller->GetAxisValue(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_STRAFE);
         auto rotate = controller->GetAxisValue(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_ROTATE);
+
+        if(abs(forward) > 0.05 || abs(strafe) > 0.05 || abs(rotate) > 0.05)
+        {
+            moveInfo.driveOption = ChassisOptionEnums::DriveStateType::FIELD_DRIVE;
+            m_previousDriveState = moveInfo.driveOption;
+        }
 
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("Run"), string("axis read"));
         
