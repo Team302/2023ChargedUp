@@ -104,30 +104,60 @@ void ExtenderStateMgr::CheckForStateTransition()
         //========= Do not erase this line and the one below it. They are used by the code generator ========		
 		//========= Hand modified code start section 0 ========
 	
-     	// Write logic here. See example below
-		/*
         auto controller = TeleopControl::GetInstance();
-        auto isForwardSelected   = controller != nullptr ? controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::EXAMPLE_FORWARD) : false;
-        auto isReverseSelected   = controller != nullptr ? controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::EXAMPLE_REVERSE) : false;
+        
+        if(controller != nullptr)
+        {
+            double extendRetractValue = controller->GetAxisValue(TeleopControl::FUNCTION_IDENTIFIER::MANUAL_EXTEND_RETRACT);
 
-        if (isForwardSelected)
-        {
-            targetState = EXAMPLE_STATE::FORWARD;
-        }
-        else if (isReverseSelected)
-        {
-            targetState = EXAMPLE_STATE::REVERSE;
-        }
-        else
-        {
-            targetState = EXAMPLE_STATE::OFF;
+            if(abs(extendRetractValue) > 0.05)
+            {
+                targetState = EXTENDER_STATE::MANUAL_EXTEND_RETRACT;
+                m_extender->UpdateTarget(extendRetractValue);
+            }
+
+            if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::CUBE_BACKROW_EXTEND))
+            {
+                targetState = EXTENDER_STATE::CUBE_BACKROW_EXTEND;
+            }
+            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HOLD_POSITION_EXTEND))
+            {
+                targetState = EXTENDER_STATE::HOLD_POSITION_EXTEND;
+            }
+            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::CONE_BACKROW_EXTEND))
+            {
+                targetState = EXTENDER_STATE::CONE_BACKROW_EXTEND;
+            }
+            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::CUBE_MIDROW_EXTEND))
+            {
+                targetState = EXTENDER_STATE::CUBE_MIDROW_EXTEND;
+            }
+            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::CONE_MIDROW_EXTEND))
+            {
+                targetState = EXTENDER_STATE::CONE_MIDROW_EXTEND;
+            }
+            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HUMAN_PLAYER_STATION_EXTEND))
+            {
+                targetState = EXTENDER_STATE::HUMAN_PLAYER_STATION_EXTEND;
+            }
+            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::STARTING_POSITION_EXTEND))
+            {
+                targetState = EXTENDER_STATE::STARTING_POSITION_EXTEND;
+            }
+            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::FLOOR_EXTEND))
+            {
+                targetState = EXTENDER_STATE::FLOOR_EXTEND;
+            }
+            else
+            {
+                targetState = EXTENDER_STATE::STARTING_POSITION_EXTEND;
+            }
         }
 
         if (targetState != currentState)
         {
             SetCurrentState(targetState, true);
         }
-        */
 
 		//========= Hand modified code end section 0 ========
         //========= Do not erase this line and the one above it. They are used by the code generator =======
