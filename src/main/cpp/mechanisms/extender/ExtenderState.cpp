@@ -44,8 +44,8 @@
 		,
 ControlData* control0,
 double target0
-		) : Mech1IndMotorState( MechanismFactory::GetMechanismFactory()->Getextender(), stateName, stateId , control0, target0),
-		m_extender(MechanismFactory::GetMechanismFactory()->Getextender())
+		) : Mech1IndMotorState( MechanismFactory::GetMechanismFactory()->GetExtender(), stateName, stateId , control0, target0),
+		m_extender(MechanismFactory::GetMechanismFactory()->GetExtender())
 		{
 
 		}

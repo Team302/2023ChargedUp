@@ -44,8 +44,8 @@
 		,
 ControlData* control0,
 double target0
-		) : Mech1IndMotorState( MechanismFactory::GetMechanismFactory()->Getarm(), stateName, stateId , control0, target0),
-		m_arm(MechanismFactory::GetMechanismFactory()->Getarm())
+		) : Mech1IndMotorState( MechanismFactory::GetMechanismFactory()->GetArm(), stateName, stateId , control0, target0),
+		m_arm(MechanismFactory::GetMechanismFactory()->GetArm())
 		{
 
 		}
