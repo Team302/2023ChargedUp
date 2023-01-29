@@ -40,11 +40,11 @@
 #include <hw/usages/ServoMap.h>
 #include <mechanisms/MechanismTypes.h>
 #include <mechanisms/base/Mech.h>
+
+// @ADDMECH include for your mechanism 
 #include <mechanisms/arm/Arm.h>
 #include <mechanisms/extender/Extender.h>
 #include <mechanisms/grabber/Grabber.h>
-
-// @ADDMECH include for your mechanism 
 
 // Third Party Includes
 
@@ -81,9 +81,9 @@ class MechanismFactory
 		
 		
 		// @ADDMECH  Add inline Get method for your mechanism
-		inline Arm* Getarm() const {return m_arm;}
-		inline Extender* Getextender() const {return m_extender;}
-		inline Grabber* Getgrabber() const {return m_grabber;}
+		inline Arm* GetArm() const {return m_arm;}
+		inline Extender* GetExtender() const {return m_extender;}
+		inline Grabber* GetEGrabber() const {return m_grabber;}
 
 		Mech* GetMechanism
 		(

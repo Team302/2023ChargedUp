@@ -46,7 +46,7 @@ ExtenderStateMgr* ExtenderStateMgr::GetInstance()
 {
 	if ( ExtenderStateMgr::m_instance == nullptr )
 	{
-        auto extenderPtr = MechanismFactory::GetMechanismFactory()->Getextender();
+        auto extenderPtr = MechanismFactory::GetMechanismFactory()->GetExtender();
         if (extenderPtr != nullptr)
         {
             ExtenderStateMgr::m_instance = new ExtenderStateMgr();
@@ -59,7 +59,7 @@ ExtenderStateMgr* ExtenderStateMgr::GetInstance()
 
 /// @brief    initialize the state manager, parse the configuration file and create the states.
 ExtenderStateMgr::ExtenderStateMgr() : StateMgr(),
-                                     m_extender(MechanismFactory::GetMechanismFactory()->Getextender())
+                                     m_extender(MechanismFactory::GetMechanismFactory()->GetExtender())
 {
     map<string, StateStruc> stateMap;
 	stateMap["HOLD_POSITION_EXTEND"] = m_hold_position_extendState;

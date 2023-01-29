@@ -44,8 +44,8 @@
 		,
 MechanismTargetData::SOLENOID solState0,
 MechanismTargetData::SOLENOID solState1
-		) : Mech2SolenoidsState( MechanismFactory::GetMechanismFactory()->Getgrabber(), stateName, stateId , solState0, solState1),
-		m_grabber(MechanismFactory::GetMechanismFactory()->Getgrabber())
+		) : Mech2SolenoidsState( MechanismFactory::GetMechanismFactory()->GetEGrabber(), stateName, stateId , solState0, solState1),
+		m_grabber(MechanismFactory::GetMechanismFactory()->GetEGrabber())
 		{
 
 		}

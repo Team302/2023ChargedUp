@@ -46,7 +46,7 @@ ArmStateMgr* ArmStateMgr::GetInstance()
 {
 	if ( ArmStateMgr::m_instance == nullptr )
 	{
-        auto armPtr = MechanismFactory::GetMechanismFactory()->Getarm();
+        auto armPtr = MechanismFactory::GetMechanismFactory()->GetArm();
         if (armPtr != nullptr)
         {
             ArmStateMgr::m_instance = new ArmStateMgr();
@@ -59,7 +59,7 @@ ArmStateMgr* ArmStateMgr::GetInstance()
 
 /// @brief    initialize the state manager, parse the configuration file and create the states.
 ArmStateMgr::ArmStateMgr() : StateMgr(),
-                                     m_arm(MechanismFactory::GetMechanismFactory()->Getarm())
+                                     m_arm(MechanismFactory::GetMechanismFactory()->GetArm())
 {
     map<string, StateStruc> stateMap;
 	stateMap["HOLD_POSITION_ROTATE"] = m_hold_position_rotateState;

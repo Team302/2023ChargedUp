@@ -47,7 +47,7 @@ MechanismTargetData::SOLENOID solState1
 
 
 		bool AtTarget() const override;
-		Grabber * GetGrabber() const {return m_grabber;}
+		Grabber * GetEGrabber() const {return m_grabber;}
 
 		private:
 		Grabber*        m_grabber;
