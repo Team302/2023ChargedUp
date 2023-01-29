@@ -40,11 +40,11 @@ class TrajectoryDrive : public RobotDrive
         ) override;
 
         std::string WhyDone() const {return m_whyDone;};
+        bool IsDone();
 
     private:
         void CalcCurrentAndDesiredStates();
 
-        bool IsDone();
         bool IsSamePose(frc::Pose2d currentPose, frc::Pose2d previousPose, double tolerance);
 
         frc::Trajectory                     m_trajectory;

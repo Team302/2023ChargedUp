@@ -100,31 +100,44 @@ void GrabberStateMgr::CheckForStateTransition()
 
         //========= Do not erase this line and the one below it. They are used by the code generator ========		
 		//========= Hand modified code start section 0 ========
-	
-     	// Write logic here. See example below
-		/*
+		
         auto controller = TeleopControl::GetInstance();
-        auto isForwardSelected   = controller != nullptr ? controller->IsButtonPressed(TeleopControlFunctions::::EXAMPLE_FORWARD) : false;
-        auto isReverseSelected   = controller != nullptr ? controller->IsButtonPressed(TeleopControlFunctions::::EXAMPLE_REVERSE) : false;
-
-        if (isForwardSelected)
+        if(controller != nullptr)
         {
-            targetState = EXAMPLE_STATE::FORWARD;
-        }
-        else if (isReverseSelected)
-        {
-            targetState = EXAMPLE_STATE::REVERSE;
-        }
-        else
-        {
-            targetState = EXAMPLE_STATE::OFF;
+            if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::OPEN))
+            {
+                targetState = GRABBER_STATE::OPEN;
+            }
+            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::GRABBING_CONE))
+            {
+                targetState = GRABBER_STATE::GRABBING_CONE;
+            }
+            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::GRABBING_CUBE))
+            {
+                targetState = GRABBER_STATE::GRABBING_CUBE;
+            }
+            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HOLDING_CONE))
+            {
+                targetState = GRABBER_STATE::HOLDING_CONE;
+            }
+            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HOLDING_CUBE))
+            {
+                targetState = GRABBER_STATE::HOLDING_CUBE;
+            }
+            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::RELEASE))
+            {
+                targetState = GRABBER_STATE::RELEASE;
+            }
+            else
+            {
+                targetState = GRABBER_STATE::OPEN;
+            }
         }
 
         if (targetState != currentState)
         {
             SetCurrentState(targetState, true);
         }
-        */
 
 		//========= Hand modified code end section 0 ========
         //========= Do not erase this line and the one above it. They are used by the code generator =======
