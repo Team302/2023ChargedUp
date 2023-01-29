@@ -117,20 +117,22 @@ bool DrivePath::IsDone()
     }
     else
     {
+        SwerveChassis* swerveChassis = dynamic_cast<SwerveChassis*>(m_chassis.get());
+        ISwerveDriveState* trajectoryDrive = swerveChassis->GetSpecifiedDriveState(ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE);
+
         /// @TODO: Add accessor for current drive state to return why/isDone from TrajectoryDrive
-        /*if(TrajectoryDrive->IsDone()) //TrajectoryDrive is done -> log the reason why and end drive path primitive
+        /*if(trajectoryDrive->IsDone()) //TrajectoryDrive is done -> log the reason why and end drive path primitive
         {
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "WhyDone", TrajectoryDrive->WhyDone());
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "WhyDone", trajectoryDrive->WhyDone());
             return true;
         }
         else //TrajectoryDrive isn't done
         {
             return false;
-        }
-        */
+        }*/
 
+       
 
-       /// PLACEHOLDER UNTIL ACCESSOR CREATED
        return false;
     }
 }
