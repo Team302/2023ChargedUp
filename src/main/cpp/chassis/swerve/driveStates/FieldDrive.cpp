@@ -17,6 +17,7 @@
 
 //Team302 Includes
 #include <chassis/swerve/driveStates/FieldDrive.h>
+#include <chassis/ChassisFactory.h>
 
 using frc::Rotation2d;
 
@@ -33,8 +34,7 @@ std::array<frc::SwerveModuleState, 4> FieldDrive::UpdateSwerveModuleStates
     frc::ChassisSpeeds fieldRelativeSpeeds = frc::ChassisSpeeds::FromFieldRelativeSpeeds(chassisMovement.chassisSpeeds.vx,
                                                                                          chassisMovement.chassisSpeeds.vy,
                                                                                          chassisMovement.chassisSpeeds.omega,
-                                                                                         Rotation2d());
-                                                                                         //m_chassis->GetOdometry()->GetPose().Rotation());
+                                                                                         ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose().Rotation());
 
     chassisMovement.chassisSpeeds = fieldRelativeSpeeds;
     return m_robotDrive->UpdateSwerveModuleStates(chassisMovement);
