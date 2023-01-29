@@ -104,30 +104,60 @@ void ArmStateMgr::CheckForStateTransition()
         //========= Do not erase this line and the one below it. They are used by the code generator ========		
 		//========= Hand modified code start section 0 ========
 	
-     	// Write logic here. See example below
-		/*
-        auto controller = TeleopControl::GetInstance();
-        auto isForwardSelected   = controller != nullptr ? controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::EXAMPLE_FORWARD) : false;
-        auto isReverseSelected   = controller != nullptr ? controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::EXAMPLE_REVERSE) : false;
+     	auto controller = TeleopControl::GetInstance();
+        
+        if(controller != nullptr)
+        {
+            double armRotateValue = controller->GetAxisValue(TeleopControl::FUNCTION_IDENTIFIER::MANUAL_ROTATE);
 
-        if (isForwardSelected)
-        {
-            targetState = EXAMPLE_STATE::FORWARD;
-        }
-        else if (isReverseSelected)
-        {
-            targetState = EXAMPLE_STATE::REVERSE;
-        }
-        else
-        {
-            targetState = EXAMPLE_STATE::OFF;
+            if(abs(armRotateValue) > 0.05)
+            {
+                targetState = ARM_STATE::MANUAL_ROTATE;
+                m_arm->UpdateTarget(armRotateValue);
+            }
+
+            if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HOLD_POSITION_ROTATE))
+            {
+                targetState = ARM_STATE::HOLD_POSITION_ROTATE;
+            }
+            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::CONE_BACKROW_ROTATE))
+            {
+                targetState = ARM_STATE::CONE_BACKROW_ROTATE;
+            }
+            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::CONE_BACKROW_ROTATE))
+            {
+                targetState = ARM_STATE::CONE_BACKROW_ROTATE;
+            }
+            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::CUBE_MIDROW_ROTATE))
+            {
+                targetState = ARM_STATE::CUBE_MIDROW_ROTATE;
+            }
+            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::CONE_MIDROW_ROTATE))
+            {
+                targetState = ARM_STATE::CONE_MIDROW_ROTATE;
+            }
+            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HUMAN_PLAYER_STATION_ROTATE))
+            {
+                targetState = ARM_STATE::HUMAN_PLAYER_STATION_ROTATE;
+            }
+            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::STARTING_POSITION_ROTATE))
+            {
+                targetState = ARM_STATE::STARTING_POSITION_ROTATE;
+            }
+            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::FLOOR_POSITION_ROTATE))
+            {
+                targetState = ARM_STATE::FLOOR_POSITION_ROTATE;
+            }
+            else
+            {
+                targetState = ARM_STATE::STARTING_POSITION_ROTATE;
+            }
         }
 
         if (targetState != currentState)
         {
             SetCurrentState(targetState, true);
         }
-        */
 
 		//========= Hand modified code end section 0 ========
         //========= Do not erase this line and the one above it. They are used by the code generator =======
