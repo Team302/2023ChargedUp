@@ -53,7 +53,7 @@ void Robot::RobotInit()
         m_holonomic = new HolonomicDrive();
     }        
     
-    //StateMgrHelper::InitStateMgrs();
+    StateMgrHelper::InitStateMgrs();
 
     m_cyclePrims = new CyclePrimitives();
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("RobotInit"), string("end"));
@@ -108,7 +108,7 @@ void Robot::AutonomousInit()
 {
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("AutonomousInit"), string("arrived"));
 
-    //StateMgrHelper::SetCheckGamepadInputsForStateTransitions(false);
+    StateMgrHelper::SetCheckGamepadInputsForStateTransitions(false);
     if (m_cyclePrims != nullptr)
     {
         m_cyclePrims->Init();
@@ -128,7 +128,7 @@ void Robot::TeleopInit()
 {
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopInit"), string("arrived")); 
 
-    //StateMgrHelper::SetCheckGamepadInputsForStateTransitions(true);
+    StateMgrHelper::SetCheckGamepadInputsForStateTransitions(true);
     if (m_chassis != nullptr && m_controller != nullptr)
     {
         if (m_holonomic != nullptr)
@@ -136,7 +136,7 @@ void Robot::TeleopInit()
             m_holonomic->Init();
         }
     }
-    //StateMgrHelper::RunCurrentMechanismStates();
+    StateMgrHelper::RunCurrentMechanismStates();
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopInit"), string("end"));
 }
@@ -152,7 +152,7 @@ void Robot::TeleopPeriodic()
             m_holonomic->Run();
         }
     }
-    //StateMgrHelper::RunCurrentMechanismStates();
+    StateMgrHelper::RunCurrentMechanismStates();
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopPeriodic"), string("end"));
 
