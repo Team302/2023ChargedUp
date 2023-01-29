@@ -27,9 +27,9 @@ using frc::Pose2d;
 TrajectoryDrive::TrajectoryDrive(RobotDrive* robotDrive) : RobotDrive(),
     m_trajectory(),
     m_robotDrive(robotDrive),
-    m_holonomicController(frc2::PIDController{0.25, 0, 0},
-                          frc2::PIDController{0.25, 0, 0},
-                          frc::ProfiledPIDController<units::radian>{0.1, 0, 0,
+    m_holonomicController(frc2::PIDController{0.5, 0, 0},
+                          frc2::PIDController{0.5, 0, 0},
+                          frc::ProfiledPIDController<units::radian>{0.0, 0, 0,
                           frc::TrapezoidProfile<units::radian>::Constraints{0_rad_per_s, 0_rad_per_s / 1_s}}),
     m_desiredState(),
     m_trajectoryStates(),
@@ -126,7 +126,7 @@ bool TrajectoryDrive::IsDone()
         auto curPos = ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose();
         
         // Check if the current pose and the trajectory's final pose are the same
-        if (IsSamePose(curPos, m_desiredState.pose, 100.0))
+        if (IsSamePose(curPos, m_finalState.pose, 100.0))
         {
             isDone = true;
             m_whyDone = "Current Pose = Trajectory final pose";
@@ -148,14 +148,14 @@ bool TrajectoryDrive::IsDone()
                 // or because we went past the target (in this case, we are done)
                 // Assume that once we get within a third of a meter (just under 12 inches), if we get
                 // farther away we are passing the target, so we should stop.  Otherwise, keep trying.
-                if ((abs(m_delta.X().to<double>()) < 0.3 && abs(m_delta.Y().to<double>()) < 0.3))
+                if ((abs(m_delta.X().to<double>()) < 0.05 && abs(m_delta.Y().to<double>()) < 0.05))
                 {
                     isDone = true;
                     m_whyDone = "Within 12 inches of target or getting farther away from target";
                 }
             }
         }       
- 
+        /**
         if (m_timer.get()->Get() > 1_s)//This if statement makes sure that we aren't checking for position change right at the start
         {
             auto moving = !IsSamePose(curPos, m_prevPose, 7.5);
@@ -166,13 +166,15 @@ bool TrajectoryDrive::IsDone()
             }
             m_prevPose = curPos;
             m_wasMoving = moving;
-        }
+        }*/
     }
     else
     {
         m_whyDone = "No states in trajectory";
         isDone = true;
     }
+
+
     return isDone;
 }
 
