@@ -32,6 +32,7 @@
 #include <chassis/ChassisFactory.h>
 #include <chassis/IChassis.h>
 #include <utils/Logger.h>
+#include <chassis/swerve/driveStates/TrajectoryDrive.h>
 
 
 using namespace std;
@@ -115,10 +116,9 @@ bool DrivePath::IsDone()
     else
     {
         SwerveChassis* swerveChassis = dynamic_cast<SwerveChassis*>(m_chassis.get());
-        ISwerveDriveState* trajectoryDrive = swerveChassis->GetSpecifiedDriveState(ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE);
+        TrajectoryDrive* trajectoryDrive = dynamic_cast<TrajectoryDrive*>(swerveChassis->GetSpecifiedDriveState(ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE));
 
-        /// @TODO: Add accessor for current drive state to return why/isDone from TrajectoryDrive
-        /*if(trajectoryDrive->IsDone()) //TrajectoryDrive is done -> log the reason why and end drive path primitive
+        if(trajectoryDrive->IsDone()) //TrajectoryDrive is done -> log the reason why and end drive path primitive
         {
             Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "WhyDone", trajectoryDrive->WhyDone());
             return true;
@@ -126,9 +126,7 @@ bool DrivePath::IsDone()
         else //TrajectoryDrive isn't done
         {
             return false;
-        }*/
-
-       
+        }
 
        return false;
     }
