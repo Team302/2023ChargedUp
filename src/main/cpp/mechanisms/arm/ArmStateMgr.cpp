@@ -107,8 +107,8 @@ void ArmStateMgr::CheckForStateTransition()
      	// Write logic here. See example below
 		/*
         auto controller = TeleopControl::GetInstance();
-        auto isForwardSelected   = controller != nullptr ? controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::EXAMPLE_FORWARD) : false;
-        auto isReverseSelected   = controller != nullptr ? controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::EXAMPLE_REVERSE) : false;
+        auto isForwardSelected   = controller != nullptr ? controller->IsButtonPressed(TeleopControlFunctions::::EXAMPLE_FORWARD) : false;
+        auto isReverseSelected   = controller != nullptr ? controller->IsButtonPressed(TeleopControlFunctions::::EXAMPLE_REVERSE) : false;
 
         if (isForwardSelected)
         {

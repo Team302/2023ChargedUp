@@ -98,10 +98,10 @@ void TeleopControl::Initialize() const
 
 
     // Initialize the items to not defined
-	m_axisIDs.resize(TeleopControlFunctions::FUNCTION::MAX_FUNCTIONS);
-	m_buttonIDs.resize(TeleopControlFunctions::FUNCTION::MAX_FUNCTIONS);
-	m_controllerIndex.resize(TeleopControlFunctions::FUNCTION::MAX_FUNCTIONS);
-    for ( int inx=0; inx<TeleopControlFunctions::FUNCTION::MAX_FUNCTIONS; ++inx )
+	m_axisIDs.resize(TeleopControlFunctions::MAX_FUNCTIONS);
+	m_buttonIDs.resize(TeleopControlFunctions::MAX_FUNCTIONS);
+	m_controllerIndex.resize(TeleopControlFunctions::MAX_FUNCTIONS);
+    for ( int inx=0; inx<TeleopControlFunctions::MAX_FUNCTIONS; ++inx )
     {
         m_axisIDs[inx]    		= TeleopControlMappingEnums::UNDEFINED_AXIS;
         m_buttonIDs[inx]  		= TeleopControlMappingEnums::UNDEFINED_BUTTON;
@@ -113,34 +113,34 @@ void TeleopControl::Initialize() const
     auto ctrlNo = 0;
     if ( m_controller[ctrlNo] != nullptr && DriverStation::GetJoystickIsXbox(ctrlNo) )
     {
-		m_controllerIndex[ TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_FORWARD]			= ctrlNo;
-		m_axisIDs[TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_FORWARD]					= TeleopControlMappingEnums::LEFT_JOYSTICK_Y;
-		m_controllerIndex[ TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_STRAFE]			= ctrlNo;
-		m_axisIDs[TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_STRAFE]					= TeleopControlMappingEnums::LEFT_JOYSTICK_X;
-		m_controllerIndex[ TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_ROTATE]			= ctrlNo;
-		m_axisIDs[TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_ROTATE]					= TeleopControlMappingEnums::RIGHT_JOYSTICK_X;
+		m_controllerIndex[ TeleopControlFunctions::HOLONOMIC_DRIVE_FORWARD]			= ctrlNo;
+		m_axisIDs[TeleopControlFunctions::HOLONOMIC_DRIVE_FORWARD]					= TeleopControlMappingEnums::LEFT_JOYSTICK_Y;
+		m_controllerIndex[ TeleopControlFunctions::HOLONOMIC_DRIVE_STRAFE]			= ctrlNo;
+		m_axisIDs[TeleopControlFunctions::HOLONOMIC_DRIVE_STRAFE]					= TeleopControlMappingEnums::LEFT_JOYSTICK_X;
+		m_controllerIndex[ TeleopControlFunctions::HOLONOMIC_DRIVE_ROTATE]			= ctrlNo;
+		m_axisIDs[TeleopControlFunctions::HOLONOMIC_DRIVE_ROTATE]					= TeleopControlMappingEnums::RIGHT_JOYSTICK_X;
 
-		m_controllerIndex[TeleopControlFunctions::FUNCTION::FINDTARGET] 					= ctrlNo;  
-		m_buttonIDs[TeleopControlFunctions::FUNCTION::FINDTARGET]	 						= TeleopControlMappingEnums::LEFT_BUMPER;	
-		m_controllerIndex[ TeleopControlFunctions::FUNCTION::HOLONOMIC_ROTATE_FRONT ]		= ctrlNo;
-		m_buttonIDs[ TeleopControlFunctions::FUNCTION::HOLONOMIC_ROTATE_FRONT ]			= TeleopControlMappingEnums::POV_0;
-		m_controllerIndex[ TeleopControlFunctions::FUNCTION::HOLONOMIC_ROTATE_BACK ]		= ctrlNo;
-		m_buttonIDs[ TeleopControlFunctions::FUNCTION::HOLONOMIC_ROTATE_BACK ]			= TeleopControlMappingEnums::POV_180;
-		m_controllerIndex[ TeleopControlFunctions::FUNCTION::HOLONOMIC_ROTATE_LEFT ]		= ctrlNo;
-		m_buttonIDs[ TeleopControlFunctions::FUNCTION::HOLONOMIC_ROTATE_LEFT ]			= TeleopControlMappingEnums::POV_270;
-		m_controllerIndex[ TeleopControlFunctions::FUNCTION::HOLONOMIC_ROTATE_RIGHT ]		= ctrlNo;
-		m_buttonIDs[ TeleopControlFunctions::FUNCTION::HOLONOMIC_ROTATE_RIGHT ]			= TeleopControlMappingEnums::POV_90;
+		m_controllerIndex[TeleopControlFunctions::FINDTARGET] 					= ctrlNo;  
+		m_buttonIDs[TeleopControlFunctions::FINDTARGET]	 						= TeleopControlMappingEnums::LEFT_BUMPER;	
+		m_controllerIndex[ TeleopControlFunctions::HOLONOMIC_ROTATE_FRONT ]		= ctrlNo;
+		m_buttonIDs[ TeleopControlFunctions::HOLONOMIC_ROTATE_FRONT ]			= TeleopControlMappingEnums::POV_0;
+		m_controllerIndex[ TeleopControlFunctions::HOLONOMIC_ROTATE_BACK ]		= ctrlNo;
+		m_buttonIDs[ TeleopControlFunctions::HOLONOMIC_ROTATE_BACK ]			= TeleopControlMappingEnums::POV_180;
+		m_controllerIndex[ TeleopControlFunctions::HOLONOMIC_ROTATE_LEFT ]		= ctrlNo;
+		m_buttonIDs[ TeleopControlFunctions::HOLONOMIC_ROTATE_LEFT ]			= TeleopControlMappingEnums::POV_270;
+		m_controllerIndex[ TeleopControlFunctions::HOLONOMIC_ROTATE_RIGHT ]		= ctrlNo;
+		m_buttonIDs[ TeleopControlFunctions::HOLONOMIC_ROTATE_RIGHT ]			= TeleopControlMappingEnums::POV_90;
 
 
-		m_controllerIndex[FINDTARGET] 					= ctrlNo;  
-		m_buttonIDs[FINDTARGET]	 						= IDragonGamePad::LEFT_BUMPER;	
+		m_controllerIndex[TeleopControlFunctions::FINDTARGET] 					= ctrlNo;  
+		m_buttonIDs[TeleopControlFunctions::FINDTARGET]	 						= TeleopControlMappingEnums::LEFT_BUMPER;	
 
-		m_controllerIndex[ DRIVE_TO_COL_ONE ]			= ctrlNo;
-		m_buttonIDs[ DRIVE_TO_COL_ONE ]					= IDragonGamePad::X_BUTTON;
-		m_controllerIndex[ DRIVE_TO_COL_TWO ]			= ctrlNo;
-		m_buttonIDs[ DRIVE_TO_COL_TWO ]					= IDragonGamePad::Y_BUTTON;
-		m_controllerIndex[ DRIVE_TO_COL_THREE ]			= ctrlNo;
-		m_buttonIDs[ DRIVE_TO_COL_THREE ]				= IDragonGamePad::B_BUTTON;
+		m_controllerIndex[ TeleopControlFunctions::DRIVE_TO_COL_ONE ]			= ctrlNo;
+		m_buttonIDs[ TeleopControlFunctions::DRIVE_TO_COL_ONE ]					= TeleopControlMappingEnums::X_BUTTON;
+		m_controllerIndex[ TeleopControlFunctions::DRIVE_TO_COL_TWO ]			= ctrlNo;
+		m_buttonIDs[ TeleopControlFunctions::DRIVE_TO_COL_TWO ]					= TeleopControlMappingEnums::Y_BUTTON;
+		m_controllerIndex[ TeleopControlFunctions::DRIVE_TO_COL_THREE ]			= ctrlNo;
+		m_buttonIDs[ TeleopControlFunctions::DRIVE_TO_COL_THREE ]				= TeleopControlMappingEnums::B_BUTTON;
 	
     }
     else
@@ -249,7 +249,7 @@ pair<IDragonGamePad*, TeleopControlMappingEnums::BUTTON_IDENTIFIER> TeleopContro
 ) const
 {
 	IDragonGamePad* controller = nullptr;
-	TeleopControlMappingEnums::BUTTON_IDENTIFIER btn = TeleopControlMappingEnums::BUTTON_IDENTIFIER::UNDEFINED_BUTTON;
+	TeleopControlMappingEnums::BUTTON_IDENTIFIER btn = TeleopControlMappingEnums::UNDEFINED_BUTTON;
 
 	if (!IsInitialized())
 	{
@@ -260,7 +260,7 @@ pair<IDragonGamePad*, TeleopControlMappingEnums::BUTTON_IDENTIFIER> TeleopContro
 	if (ctlIndex > -1)
 	{
 		btn = m_buttonIDs[function];
-		if (btn != TeleopControlMappingEnums::BUTTON_IDENTIFIER::UNDEFINED_BUTTON)
+		if (btn != TeleopControlMappingEnums::UNDEFINED_BUTTON)
 		{
 			controller = m_controller[ctlIndex];
 		}
@@ -356,7 +356,7 @@ bool TeleopControl::IsButtonPressed
 {
     bool isSelected = false;
 	auto info = GetButtonInfo(function);
-	if (info.first != nullptr && info.second != TeleopControlMappingEnums::BUTTON_IDENTIFIER::UNDEFINED_BUTTON)
+	if (info.first != nullptr && info.second != TeleopControlMappingEnums::UNDEFINED_BUTTON)
     {
    		isSelected = info.first->IsButtonPressed(info.second);
     }

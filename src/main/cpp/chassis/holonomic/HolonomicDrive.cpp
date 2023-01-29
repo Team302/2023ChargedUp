@@ -63,17 +63,17 @@ void HolonomicDrive::Init()
     auto controller = GetController();
     if (controller != nullptr)
     {
-        controller->SetAxisProfile(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_FORWARD, IDragonGamePad::AXIS_PROFILE::CUBED);
-        controller->SetDeadBand(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_FORWARD, IDragonGamePad::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND);
-        controller->SetAxisScaleFactor(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_FORWARD, 0.6);
+        controller->SetAxisProfile(TeleopControlFunctions::HOLONOMIC_DRIVE_FORWARD, TeleopControlMappingEnums::AXIS_PROFILE::CUBED);
+        controller->SetDeadBand(TeleopControlFunctions::HOLONOMIC_DRIVE_FORWARD, TeleopControlMappingEnums::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND);
+        controller->SetAxisScaleFactor(TeleopControlFunctions::HOLONOMIC_DRIVE_FORWARD, 0.6);
 
-        controller->SetAxisProfile(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_STRAFE, IDragonGamePad::AXIS_PROFILE::CUBED);
-        controller->SetDeadBand(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_STRAFE, IDragonGamePad::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND);
-        controller->SetAxisScaleFactor(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_STRAFE, -0.6);
+        controller->SetAxisProfile(TeleopControlFunctions::HOLONOMIC_DRIVE_STRAFE, TeleopControlMappingEnums::AXIS_PROFILE::CUBED);
+        controller->SetDeadBand(TeleopControlFunctions::HOLONOMIC_DRIVE_STRAFE, TeleopControlMappingEnums::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND);
+        controller->SetAxisScaleFactor(TeleopControlFunctions::HOLONOMIC_DRIVE_STRAFE, -0.6);
 
-        controller->SetAxisProfile(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_ROTATE, IDragonGamePad::AXIS_PROFILE::CUBED);
-        controller->SetDeadBand(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_ROTATE, IDragonGamePad::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND);
-        controller->SetAxisScaleFactor(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_ROTATE, 0.5);
+        controller->SetAxisProfile(TeleopControlFunctions::HOLONOMIC_DRIVE_ROTATE, TeleopControlMappingEnums::AXIS_PROFILE::CUBED);
+        controller->SetDeadBand(TeleopControlFunctions::HOLONOMIC_DRIVE_ROTATE, TeleopControlMappingEnums::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND);
+        controller->SetAxisScaleFactor(TeleopControlFunctions::HOLONOMIC_DRIVE_ROTATE, 0.5);
     }
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("HolonomicDrive::Init"), string("end"));   
 }
@@ -144,19 +144,19 @@ void HolonomicDrive::Run()
         }
 
         //Automated driving
-        if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::DRIVE_TO_COL_ONE))
+        if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_COL_ONE))
         {
             moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
             
             moveInfo.trajectory = m_trajectoryGenerator->GenerateTrajectory(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose(), DragonTrajectoryGenerator::TARGET_POSITION::COLUMN_ONE);
         }
 
-        else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::DRIVE_TO_COL_TWO))
+        else if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_COL_TWO))
         {
             moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
             moveInfo.trajectory = m_trajectoryGenerator->GenerateTrajectory(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose(), DragonTrajectoryGenerator::TARGET_POSITION::COLUMN_TWO);
         }
-        else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::DRIVE_TO_COL_THREE))
+        else if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_COL_THREE))
         {
             moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
             moveInfo.trajectory = m_trajectoryGenerator->GenerateTrajectory(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose(), DragonTrajectoryGenerator::TARGET_POSITION::COLUMN_THREE);
@@ -167,7 +167,7 @@ void HolonomicDrive::Run()
             moveInfo.driveOption = ChassisOptionEnums::DriveStateType::FIELD_DRIVE;
         }
 
-        //if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HOLD_POSITION))
+        //if (controller->IsButtonPressed(TeleopControlFunctions::::HOLD_POSITION))
         //{
             //m_chassis.get()->DriveHoldPosition();
         //}
