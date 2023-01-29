@@ -1,4 +1,3 @@
-
 //====================================================================================================================================================
 // Copyright 2022 Lake Orion Robotics FIRST Team 302
 //
@@ -14,43 +13,28 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
+//FRC Includes
+#include <frc/smartdashboard/SmartDashboard.h>
 
-#pragma once
+//Team 302 Includes
+#include <utils/DragonField.h>
 
-#include <frc/TimedRobot.h>
-
-class ArcadeDrive;
-class CyclePrimitives;
-class DragonLimelight;
-class HolonomicDrive;
-class IChassis;
-class TeleopControl;
-class AdjustableItemMgr;
-class FMSData;
-class DragonField;
-
-class Robot : public frc::TimedRobot 
+DragonField::DragonField()
 {
-    public:
-        void RobotInit() override;
-        void RobotPeriodic() override;
-        void AutonomousInit() override;
-        void AutonomousPeriodic() override;
-        void TeleopInit() override;
-        void TeleopPeriodic() override;
-        void DisabledInit() override;
-        void DisabledPeriodic() override;
-        void TestInit() override;
-        void TestPeriodic() override;
+    frc::SmartDashboard::PutData(&m_field);
+}
 
-    private:
-        TeleopControl*        m_controller;
-        IChassis*             m_chassis;
-        CyclePrimitives*      m_cyclePrims;
-        HolonomicDrive*       m_holonomic;
-        ArcadeDrive*          m_arcade;
-        DragonLimelight*      m_dragonLimeLight;
-        AdjustableItemMgr*    m_tuner;
-        FMSData*              m_fmsData;
-        DragonField*          m_field;
-};
+void DragonField::UpdateRobotPosition(frc::Pose2d robotPose)
+{
+    m_field.SetRobotPose(robotPose);
+}
+
+void DragonField::AddPose(std::string name, frc::Pose2d pose)
+{
+    m_field.GetObject(name)->SetPose(pose);
+}
+
+void DragonField::AddTrajectroy(std::string name, frc::Trajectory trajectory)
+{
+    m_field.GetObject(name)->SetTrajectory(trajectory);
+}

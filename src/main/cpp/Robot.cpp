@@ -23,6 +23,7 @@
 #include <LoggableItemMgr.h>
 #include <utils/WaypointXmlParser.h>
 #include <utils/FMSData.h>
+#include <utils/DragonField.h>
 
 #include <AdjustableItemMgr.h>
 
@@ -59,6 +60,7 @@ void Robot::RobotInit()
 
 
     m_fmsData = FMSData::GetInstance();
+    m_field = new DragonField();
 }
 
 /**
@@ -74,6 +76,7 @@ void Robot::RobotPeriodic()
     if (m_chassis != nullptr)
     {
         m_chassis->UpdateOdometry();
+        m_field->UpdateRobotPosition(m_chassis->GetPose());
     }
     if (m_dragonLimeLight != nullptr)
     {

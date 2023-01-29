@@ -1,4 +1,3 @@
-
 //====================================================================================================================================================
 // Copyright 2022 Lake Orion Robotics FIRST Team 302
 //
@@ -13,44 +12,24 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
-
-
 #pragma once
 
-#include <frc/TimedRobot.h>
+//FRC Include
+#include <frc/smartdashboard/Field2d.h>
+#include <frc/geometry/Pose2d.h>
+#include <frc/trajectory/Trajectory.h>
 
-class ArcadeDrive;
-class CyclePrimitives;
-class DragonLimelight;
-class HolonomicDrive;
-class IChassis;
-class TeleopControl;
-class AdjustableItemMgr;
-class FMSData;
-class DragonField;
-
-class Robot : public frc::TimedRobot 
+class DragonField
 {
     public:
-        void RobotInit() override;
-        void RobotPeriodic() override;
-        void AutonomousInit() override;
-        void AutonomousPeriodic() override;
-        void TeleopInit() override;
-        void TeleopPeriodic() override;
-        void DisabledInit() override;
-        void DisabledPeriodic() override;
-        void TestInit() override;
-        void TestPeriodic() override;
+        DragonField();
+        ~DragonField() = default;
+
+        void UpdateRobotPosition(frc::Pose2d robotPose);
+
+        void AddPose(std::string name, frc::Pose2d pose);
+        void AddTrajectroy(std::string name, frc::Trajectory trajectory);
 
     private:
-        TeleopControl*        m_controller;
-        IChassis*             m_chassis;
-        CyclePrimitives*      m_cyclePrims;
-        HolonomicDrive*       m_holonomic;
-        ArcadeDrive*          m_arcade;
-        DragonLimelight*      m_dragonLimeLight;
-        AdjustableItemMgr*    m_tuner;
-        FMSData*              m_fmsData;
-        DragonField*          m_field;
+        frc::Field2d    m_field;
 };
