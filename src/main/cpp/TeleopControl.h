@@ -80,7 +80,7 @@ class TeleopControl
             GRABBING_CUBE,
             HOLDING_CONE,
             HOLDING_CUBE,
-            RELEASE
+            RELEASE,
             MAX_FUNCTIONS
         };
 

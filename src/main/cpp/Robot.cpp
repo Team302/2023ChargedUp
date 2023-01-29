@@ -30,7 +30,6 @@ using namespace std;
 
 void Robot::RobotInit() 
 {
-    m_startLogging = false;
     Logger::GetLogger()->PutLoggingSelectionsOnDashboard();
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("RobotInit"), string("arrived"));   
     
@@ -58,7 +57,6 @@ void Robot::RobotInit()
     m_cyclePrims = new CyclePrimitives();
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("RobotInit"), string("end"));
 
-    m_startLogging = true;
 
     m_fmsData = FMSData::GetInstance();
 }
@@ -84,11 +82,8 @@ void Robot::RobotPeriodic()
         LoggerData  data = {LOGGER_LEVEL::PRINT, string("DragonLimelight"), {}, {}, {horAngle, distance}, {}};
         Logger::GetLogger()->LogData(data);
     }
-    if (m_startLogging)
-    {
-        LoggableItemMgr::GetInstance()->LogData();
-        Logger::GetLogger()->PeriodicLog();
-    }
+    LoggableItemMgr::GetInstance()->LogData();
+    Logger::GetLogger()->PeriodicLog();
 
     m_tuner->ListenForUpdates();
 }
