@@ -64,14 +64,10 @@ void DrivePath::Init(PrimitiveParams *params)
     m_timer.get()->Reset();
     m_timer.get()->Start();
 
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "WhyDone", "Not done");
-
     GetTrajectory(params->GetPathName());  //Parses path from json file based on path name given in xml
 }
 void DrivePath::Run()
 {
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "timer", m_timer.get()->Get().to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "maxTime", m_maxTime);
     
     ChassisMovement moveInfo;
     moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
@@ -148,11 +144,6 @@ void DrivePath::GetTrajectory //Parses pathweaver json to create a series of poi
         deployDir += "/paths/output/" + path;     
         
         m_trajectory = frc::TrajectoryUtil::FromPathweaverJson(deployDir);  //Creates a trajectory or path that can be used in the code, parsed from pathweaver json
-        m_timer.get()->Reset();
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "current path", (path));
-    }
-    else
-    {
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "current path", "Empty Path");
+        m_timer.get()->Reset();  
     }
 }
