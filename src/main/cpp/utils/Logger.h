@@ -51,6 +51,14 @@ class Logger
 
         void LogData
         (
+            LOGGER_LEVEL            level,
+            const std::string&      group,
+            const std::string&      identifier,     
+            const char*             message                 
+        );
+
+        void LogData
+        (
             LoggerData&             info
         );
 
