@@ -1,6 +1,5 @@
-
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -13,59 +12,31 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
-
 #pragma once
 
-// C++ Includes
-#include <memory>
-#include <vector>
+//C++ Includes
+#include <string>
 
-// FRC includes
-#include <frc/Timer.h>
+//FRC Includes
+#include <frc/trajectory/Trajectory.h>
 
-// Team 302 includes
-#include <State.h>
+//Team 302 Includes
+#include <utils/DragonField.h>
+#include <auton/CyclePrimitives.h>
 
-// Third Party Includes
-
-class AutonSelector;
-class IPrimitive;
-class PrimitiveFactory;
-class PrimitiveParams;
-
-class LeftIntakeStateMgr;
-class RightIntakeStateMgr;
-class ShooterStateMgr;
-class LeftIndexerStateMgr;
-class RightIndexerStateMgr;
-class LiftStateMgr;
-
-class CyclePrimitives : public State
+class AutonPreviewer
 {
-	public:
-		CyclePrimitives();
-		virtual ~CyclePrimitives() = default;
+    public:
+        AutonPreviewer(CyclePrimitives* cyclePrims);
+        ~AutonPreviewer() = default;
 
-		void Init() override;
-		void Run() override;
-		void Exit() override;
-	 	bool AtTarget() const override;
+        void CheckCurrentAuton();
 
-		AutonSelector* GetAutonSelector() const {return m_autonSelector;};
+        void PopulateField();
 
-	protected:
-		void GetNextPrim();
-		void RunDriveStop();
-
-	private:
-		std::vector<PrimitiveParams*> 	m_primParams;
-		int 							m_currentPrimSlot;
-		IPrimitive*						m_currentPrim;
-		PrimitiveFactory* 				m_primFactory;
-		IPrimitive* 					m_DriveStop;
-		AutonSelector* 					m_autonSelector;
-		std::unique_ptr<frc::Timer>     m_timer;
-		double                          m_maxTime;
-		bool							m_isDone;
+        std::vector<frc::Trajectory> GetTrajectories();
+    private:
+        AutonSelector*  m_selector;
+        std::string     m_prevChoice;
+        DragonField*    m_field;
 };
-

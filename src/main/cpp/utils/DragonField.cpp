@@ -49,3 +49,8 @@ void DragonField::AddTrajectory(std::string name, frc::Trajectory trajectory)
 {
     m_field.GetObject(name)->SetTrajectory(trajectory);
 }
+
+void DragonField::ResetField()
+{
+    m_field = frc::Field2d();
+}

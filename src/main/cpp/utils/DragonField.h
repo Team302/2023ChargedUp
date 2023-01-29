@@ -33,6 +33,8 @@ class DragonField
         /// @brief get the singeleton of FMSData
         static DragonField* GetInstance();
 
+        void ResetField();
+
     private:
         static DragonField*	    m_instance;
         frc::Field2d            m_field;

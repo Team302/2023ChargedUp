@@ -24,6 +24,7 @@
 #include <utils/WaypointXmlParser.h>
 #include <utils/FMSData.h>
 #include <utils/DragonField.h>
+#include <auton/AutonPreviewer.h>
 
 #include <AdjustableItemMgr.h>
 
@@ -35,6 +36,8 @@ void Robot::RobotInit()
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("RobotInit"), string("arrived"));   
     
     m_controller = TeleopControl::GetInstance();
+    m_fmsData = FMSData::GetInstance();
+    m_field = DragonField::GetInstance();
 
     // Read the XML file to build the robot 
     auto XmlParser = new RobotXmlParser();
@@ -56,11 +59,8 @@ void Robot::RobotInit()
     StateMgrHelper::InitStateMgrs();
 
     m_cyclePrims = new CyclePrimitives();
+    m_previewer = new AutonPreviewer(m_cyclePrims);
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("RobotInit"), string("end"));
-
-
-    m_fmsData = FMSData::GetInstance();
-    m_field = DragonField::GetInstance();
 }
 
 /**
@@ -89,6 +89,7 @@ void Robot::RobotPeriodic()
     Logger::GetLogger()->PeriodicLog();
 
     m_tuner->ListenForUpdates();
+    m_previewer->CheckCurrentAuton();
 }
 
 /**
