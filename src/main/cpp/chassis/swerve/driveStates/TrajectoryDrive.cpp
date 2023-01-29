@@ -155,18 +155,6 @@ bool TrajectoryDrive::IsDone()
                 }
             }
         }       
-        /**
-        if (m_timer.get()->Get() > 1_s)//This if statement makes sure that we aren't checking for position change right at the start
-        {
-            auto moving = !IsSamePose(curPos, m_prevPose, 7.5);
-            if (!moving && m_wasMoving)  //If we aren't moving and last state we were moving, then...
-            {
-                    isDone = true;
-                    m_whyDone = "Stopped moving";                    
-            }
-            m_prevPose = curPos;
-            m_wasMoving = moving;
-        }*/
     }
     else
     {
