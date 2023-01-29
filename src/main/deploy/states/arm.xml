@@ -53,7 +53,7 @@
     stateIdentifier="CUBE_BACKROW_ROTATE"
     controlDataIdentifier="RotateToAngle"
     controlDataIdentifier2=""
-    value="45"
+    value="58"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
@@ -61,7 +61,7 @@
     stateIdentifier="CONE_BACKROW_ROTATE"
     controlDataIdentifier="RotateToAngle"
     controlDataIdentifier2=""
-    value="45"
+    value="70"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
@@ -69,7 +69,7 @@
     stateIdentifier="CUBE_MIDROW_ROTATE"
     controlDataIdentifier="RotateToAngle"
     controlDataIdentifier2=""
-    value="45"
+    value="42"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
@@ -77,7 +77,7 @@
     stateIdentifier="CONE_MIDROW_ROTATE"
     controlDataIdentifier="RotateToAngle"
     controlDataIdentifier2=""
-    value="45"
+    value="58"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
@@ -85,7 +85,7 @@
     stateIdentifier="HUMAN_PLAYER_STATION_ROTATE"
     controlDataIdentifier="RotateToAngle"
     controlDataIdentifier2=""
-    value="45"
+    value="62"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
@@ -93,7 +93,7 @@
     stateIdentifier="STARTING_POSITION_ROTATE"
     controlDataIdentifier="RotateToAngle"
     controlDataIdentifier2=""
-    value="45"
+    value="0"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
@@ -101,7 +101,7 @@
     stateIdentifier="FLOOR_POSITION_ROTATE"
     controlDataIdentifier="RotateToAngle"
     controlDataIdentifier2=""
-    value="45"
+    value="12"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
