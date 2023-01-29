@@ -83,7 +83,7 @@ class MechanismFactory
 		// @ADDMECH  Add inline Get method for your mechanism
 		inline Arm* GetArm() const {return m_arm;}
 		inline Extender* GetExtender() const {return m_extender;}
-		inline Grabber* GetEGrabber() const {return m_grabber;}
+		inline Grabber* GetGrabber() const {return m_grabber;}
 
 		Mech* GetMechanism
 		(

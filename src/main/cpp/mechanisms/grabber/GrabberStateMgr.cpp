@@ -46,7 +46,7 @@ GrabberStateMgr* GrabberStateMgr::GetInstance()
 {
 	if ( GrabberStateMgr::m_instance == nullptr )
 	{
-        auto grabberPtr = MechanismFactory::GetMechanismFactory()->GetEGrabber();
+        auto grabberPtr = MechanismFactory::GetMechanismFactory()->GetGrabber();
         if (grabberPtr != nullptr)
         {
             GrabberStateMgr::m_instance = new GrabberStateMgr();
@@ -59,7 +59,7 @@ GrabberStateMgr* GrabberStateMgr::GetInstance()
 
 /// @brief    initialize the state manager, parse the configuration file and create the states.
 GrabberStateMgr::GrabberStateMgr() : StateMgr(),
-                                     m_grabber(MechanismFactory::GetMechanismFactory()->GetEGrabber())
+                                     m_grabber(MechanismFactory::GetMechanismFactory()->GetGrabber())
 {
     map<string, StateStruc> stateMap;
 	stateMap["OPEN"] = m_openState;
