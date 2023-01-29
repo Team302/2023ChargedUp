@@ -44,10 +44,6 @@ DrivePath::DrivePath() : m_chassis(ChassisFactory::GetChassisFactory()->GetIChas
                          m_trajectory(),
                          m_runHoloController(true),
                          m_ramseteController(),
-                         m_holoController(frc2::PIDController{0.1, 0, 0},
-                                          frc2::PIDController{0.1, 0, 0},
-                                          frc::ProfiledPIDController<units::radian>{0.1, 0, 0,
-                                                                                    frc::TrapezoidProfile<units::radian>::Constraints{0_rad_per_s, 0_rad_per_s / 1_s}}),
                          //max velocity of 1 rotation per second and a max acceleration of 180 degrees per second squared.
                          m_headingOption(ChassisOptionEnums::HeadingOption::MAINTAIN),
                          m_heading(0.0),
@@ -68,17 +64,16 @@ void DrivePath::Init(PrimitiveParams *params)
     m_timer.get()->Reset();
     m_timer.get()->Start();
 
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "WhyDone", "Not done");
-
     GetTrajectory(params->GetPathName());  //Parses path from json file based on path name given in xml
 }
 void DrivePath::Run()
 {
+    
     ChassisMovement moveInfo;
     moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
     moveInfo.controllerType = ChassisOptionEnums::AutonControllerType::HOLONOMIC;
     moveInfo.headingOption = ChassisOptionEnums::HeadingOption::MAINTAIN;
-
+    
     // Use the controller to calculate the chassis speeds for getting there
     if (m_runHoloController)
     {
@@ -105,13 +100,15 @@ void DrivePath::Run()
     {
         moveInfo.controllerType = ChassisOptionEnums::AutonControllerType::RAMSETE;
     }
+
+    moveInfo.trajectory = m_trajectory;
     m_chassis.get()->Drive(moveInfo);
 }
 
 bool DrivePath::IsDone()
 {
     
-    if(m_timer.get()->Get() > m_trajectory.TotalTime())
+    if(m_timer.get()->Get().to<double>() > m_maxTime && m_timer.get()->Get().to<double>() > 0)
     {
         return true;
     }
@@ -144,9 +141,9 @@ void DrivePath::GetTrajectory //Parses pathweaver json to create a series of poi
     {
         // Read path into trajectory for deploy directory.  JSON File ex. Bounce1.wpilib.json
     	auto deployDir = frc::filesystem::GetDeployDirectory();
-        deployDir += "/paths/" + path;
+        deployDir += "/paths/output/" + path;     
         
         m_trajectory = frc::TrajectoryUtil::FromPathweaverJson(deployDir);  //Creates a trajectory or path that can be used in the code, parsed from pathweaver json
+        m_timer.get()->Reset();  
     }
-
 }

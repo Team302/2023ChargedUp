@@ -32,7 +32,6 @@ TrajectoryDrive::TrajectoryDrive(RobotDrive* robotDrive) : RobotDrive(),
                           frc::ProfiledPIDController<units::radian>{0.1, 0, 0,
                           frc::TrapezoidProfile<units::radian>::Constraints{0_rad_per_s, 0_rad_per_s / 1_s}}),
     m_desiredState(),
-
     m_trajectoryStates(),
     m_prevPose(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose()),
     m_wasMoving(false),
@@ -77,6 +76,11 @@ std::array<frc::SwerveModuleState, 4> TrajectoryDrive::UpdateSwerveModuleStates
 {
     if (!m_trajectoryStates.empty()) //If we have a path parsed / have states to run
     {
+        if(m_trajectory.InitialPose() != chassisMovement.trajectory.InitialPose())  
+        {
+            Init(chassisMovement);
+        }
+
         // calculate where we are and where we want to be
         CalcCurrentAndDesiredStates();
 
@@ -87,7 +91,6 @@ std::array<frc::SwerveModuleState, 4> TrajectoryDrive::UpdateSwerveModuleStates
                                                           m_desiredState.pose.Rotation());
         //Set chassisMovement speeds that will be used by RobotDrive
         chassisMovement.chassisSpeeds = refChassisSpeeds;
-
         return m_robotDrive->UpdateSwerveModuleStates(chassisMovement);
 
     }
@@ -98,7 +101,7 @@ std::array<frc::SwerveModuleState, 4> TrajectoryDrive::UpdateSwerveModuleStates
         speeds.vx = 0_mps;
         speeds.vy = 0_mps;
         speeds.omega = units::angular_velocity::radians_per_second_t(0);
-        
+
         //Set chassisMovement speeds that will be used by RobotDrive
         chassisMovement.chassisSpeeds = speeds;
         return m_robotDrive->UpdateSwerveModuleStates(chassisMovement);
