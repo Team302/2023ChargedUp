@@ -48,7 +48,8 @@ HolonomicDrive::HolonomicDrive() : State(string("HolonomicDrive"), -1),
                                    m_mecanum(ChassisFactory::GetChassisFactory()->GetMecanumChassis()),
                                    m_trajectoryGenerator(new DragonTrajectoryGenerator(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetMaxSpeed(),
                                                                                 ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetMaxAcceleration())),
-                                   m_previousDriveState(ChassisOptionEnums::DriveStateType::FIELD_DRIVE)
+                                   m_previousDriveState(ChassisOptionEnums::DriveStateType::FIELD_DRIVE),
+                                   m_generatedTrajectory(frc::Trajectory())
 {
     if (m_controller == nullptr)
     {
@@ -154,6 +155,7 @@ void HolonomicDrive::Run()
                 moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
                 m_previousDriveState = moveInfo.driveOption;
                 moveInfo.trajectory = m_trajectoryGenerator->GenerateTrajectory(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose(), DragonTrajectoryGenerator::TARGET_POSITION::COLUMN_ONE);
+                m_generatedTrajectory = moveInfo.trajectory;
             }
 
             else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::DRIVE_TO_COL_TWO))
@@ -161,13 +163,20 @@ void HolonomicDrive::Run()
                 moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
                 m_previousDriveState = moveInfo.driveOption;
                 moveInfo.trajectory = m_trajectoryGenerator->GenerateTrajectory(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose(), DragonTrajectoryGenerator::TARGET_POSITION::COLUMN_TWO);
+                m_generatedTrajectory = moveInfo.trajectory;
             }
             else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::DRIVE_TO_COL_THREE))
             {
                 moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
                 m_previousDriveState = moveInfo.driveOption;
                 moveInfo.trajectory = m_trajectoryGenerator->GenerateTrajectory(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose(), DragonTrajectoryGenerator::TARGET_POSITION::COLUMN_THREE);
+                m_generatedTrajectory = moveInfo.trajectory;
             }
+        }
+        else
+        {
+            moveInfo.driveOption = m_previousDriveState;
+            moveInfo.trajectory = m_generatedTrajectory;
         }
         
         //add button to drive to loading zone
