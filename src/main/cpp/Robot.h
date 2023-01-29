@@ -48,7 +48,6 @@ class Robot : public frc::TimedRobot
         IChassis*             m_chassis;
         CyclePrimitives*      m_cyclePrims;
         HolonomicDrive*       m_holonomic;
-        bool                  m_startLogging;
         ArcadeDrive*          m_arcade;
         DragonLimelight*      m_dragonLimeLight;
         AdjustableItemMgr*    m_tuner;
