@@ -155,7 +155,16 @@ class SwerveChassis : public IChassis
 
         void ReZero();
 
-    private:
+        ISwerveDriveOrientation* GetSpecifiedHeadingState
+        (
+            ChassisOptionEnums::HeadingOption headingOption
+        );
+        ISwerveDriveState* GetSpecifiedDriveState
+        (
+            ChassisOptionEnums::DriveStateType driveOption
+        ); 
+
+    private:    
         ISwerveDriveOrientation* GetHeadingState
         (
             ChassisMovement         moveInfo
@@ -163,8 +172,8 @@ class SwerveChassis : public IChassis
         ISwerveDriveState* GetDriveState
         (
             ChassisMovement         moveInfo
-        );
-        
+        );    
+
         frc::ChassisSpeeds GetFieldRelativeSpeeds
         (
             units::meters_per_second_t xSpeed,

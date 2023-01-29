@@ -215,6 +215,32 @@ void SwerveChassis::Drive
         m_backRight.get()->SetDesiredState(states[RIGHT_BACK]); 
     }
 }
+
+ISwerveDriveOrientation* SwerveChassis::GetSpecifiedHeadingState
+(
+    ChassisOptionEnums::HeadingOption headingOption
+)
+{
+    auto itr = m_headingStateMap.find(headingOption);
+    if (itr == m_headingStateMap.end())
+    {
+        itr = m_headingStateMap.find(ChassisOptionEnums::HeadingOption::MAINTAIN);
+    }
+    return itr->second;
+}
+ISwerveDriveState* SwerveChassis::GetSpecifiedDriveState
+(
+    ChassisOptionEnums::DriveStateType driveOption
+)
+{
+    auto itr = m_driveStateMap.find(driveOption);
+    if (itr == m_driveStateMap.end())
+    {
+        return m_robotDrive;
+    }
+    return itr->second;
+} 
+
 ISwerveDriveOrientation* SwerveChassis::GetHeadingState
 (
     ChassisMovement         moveInfo
