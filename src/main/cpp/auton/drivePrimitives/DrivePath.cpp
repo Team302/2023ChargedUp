@@ -72,6 +72,7 @@ void DrivePath::Run()
 {
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "timer", m_timer.get()->Get().to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "maxTime", m_maxTime);
+    
     ChassisMovement moveInfo;
     moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
     moveInfo.controllerType = ChassisOptionEnums::AutonControllerType::HOLONOMIC;
@@ -105,8 +106,8 @@ void DrivePath::Run()
     }
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "Trajectory Initial Pos X",  (m_trajectory.InitialPose().X()).to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "Trajectory Initial Pos Y",  (m_trajectory.InitialPose().Y()).to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "Trajectory Initial Pos X",  (m_trajectory.Sample(m_trajectory.TotalTime()).pose.X()).to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "Trajectory Initial Pos Y",  (m_trajectory.Sample(m_trajectory.TotalTime()).pose.Y()).to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "Trajectory Final Pos X",  (m_trajectory.Sample(m_trajectory.TotalTime()).pose.X()).to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "Trajectory Final Pos Y",  (m_trajectory.Sample(m_trajectory.TotalTime()).pose.Y()).to<double>());
 
     moveInfo.trajectory = m_trajectory;
     m_chassis.get()->Drive(moveInfo);

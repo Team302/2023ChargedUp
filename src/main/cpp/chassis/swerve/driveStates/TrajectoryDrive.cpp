@@ -32,7 +32,6 @@ TrajectoryDrive::TrajectoryDrive(RobotDrive* robotDrive) : RobotDrive(),
                           frc::ProfiledPIDController<units::radian>{0.1, 0, 0,
                           frc::TrapezoidProfile<units::radian>::Constraints{0_rad_per_s, 0_rad_per_s / 1_s}}),
     m_desiredState(),
-
     m_trajectoryStates(),
     m_prevPose(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose()),
     m_wasMoving(false),
