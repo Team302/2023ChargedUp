@@ -104,10 +104,6 @@ void DrivePath::Run()
     {
         moveInfo.controllerType = ChassisOptionEnums::AutonControllerType::RAMSETE;
     }
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "Trajectory Initial Pos X",  (m_trajectory.InitialPose().X()).to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "Trajectory Initial Pos Y",  (m_trajectory.InitialPose().Y()).to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "Trajectory Final Pos X",  (m_trajectory.Sample(m_trajectory.TotalTime()).pose.X()).to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "Trajectory Final Pos Y",  (m_trajectory.Sample(m_trajectory.TotalTime()).pose.Y()).to<double>());
 
     moveInfo.trajectory = m_trajectory;
     m_chassis.get()->Drive(moveInfo);
