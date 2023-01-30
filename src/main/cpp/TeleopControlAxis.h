@@ -27,7 +27,6 @@
 struct TeleopControlAxis
 {
     TeleopControlMappingEnums::CONTROLLER          controllerNumber=TeleopControlMappingEnums::CONTROLLER::UNKNOWN_CONTROLLER;
-    TeleopControlMappingEnums::CONTROL_MODE        mode=TeleopControlMappingEnums::CONTROL_MODE::ALL;
     TeleopControlMappingEnums::AXIS_IDENTIFIER     axisId=TeleopControlMappingEnums::AXIS_IDENTIFIER::UNDEFINED_AXIS;
     TeleopControlMappingEnums::AXIS_DEADBAND       deadbandType=TeleopControlMappingEnums::AXIS_DEADBAND::NONE;
     TeleopControlMappingEnums::AXIS_PROFILE        profile=TeleopControlMappingEnums::AXIS_PROFILE::CUBED;

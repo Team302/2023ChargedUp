@@ -170,25 +170,25 @@ void TeleopControl::Initialize() const
     if ( m_controller[ctrlNo] != nullptr && DriverStation::GetJoystickIsXbox(ctrlNo) )
     {
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("TeleopControl"), string("Controller 2"), string("XBOIX controller plugged in"));
-		m_controllerIndex[ HOLD_POSITION_ROTATE ]	= ctrlNo;
-		m_buttonIDs[ HOLD_POSITION_ROTATE ]			= IDragonGamePad::A_BUTTON;
-		m_controllerIndex[ MANUAL_ROTATE ]			= ctrlNo;
-		m_axisIDs[ MANUAL_ROTATE ]					= IDragonGamePad::LEFT_JOYSTICK_Y;
-		m_controllerIndex[ CUBE_BACKROW_ROTATE ]	= ctrlNo;
-		m_buttonIDs[ CUBE_BACKROW_ROTATE ]			= IDragonGamePad::X_BUTTON;
-		m_controllerIndex[ CONE_BACKROW_ROTATE ]	= ctrlNo;
-		m_buttonIDs[ CONE_BACKROW_ROTATE ]			= IDragonGamePad::Y_BUTTON;
-		m_controllerIndex[ CUBE_MIDROW_ROTATE ]		= ctrlNo;
-		m_buttonIDs[ CUBE_MIDROW_ROTATE ]			= IDragonGamePad::B_BUTTON;
-		m_controllerIndex[ CONE_MIDROW_ROTATE ]		= ctrlNo;
-		m_buttonIDs[ CONE_MIDROW_ROTATE ]			= IDragonGamePad::POV_0;
+		m_controllerIndex[ TeleopControlFunctions::HOLD_POSITION_ROTATE ]	= ctrlNo;
+		m_buttonIDs[ TeleopControlFunctions::HOLD_POSITION_ROTATE ]			= TeleopControlMappingEnums::A_BUTTON;
+		m_controllerIndex[ TeleopControlFunctions::MANUAL_ROTATE ]			= ctrlNo;
+		m_axisIDs[ TeleopControlFunctions::MANUAL_ROTATE ]					= TeleopControlMappingEnums::LEFT_JOYSTICK_Y;
+		m_controllerIndex[ TeleopControlFunctions::CUBE_BACKROW_ROTATE ]	= ctrlNo;
+		m_buttonIDs[ TeleopControlFunctions::CUBE_BACKROW_ROTATE ]			= TeleopControlMappingEnums::X_BUTTON;
+		m_controllerIndex[ TeleopControlFunctions::CONE_BACKROW_ROTATE ]	= ctrlNo;
+		m_buttonIDs[ TeleopControlFunctions::CONE_BACKROW_ROTATE ]			= TeleopControlMappingEnums::Y_BUTTON;
+		m_controllerIndex[ TeleopControlFunctions::CUBE_MIDROW_ROTATE ]		= ctrlNo;
+		m_buttonIDs[ TeleopControlFunctions::CUBE_MIDROW_ROTATE ]			= TeleopControlMappingEnums::B_BUTTON;
+		m_controllerIndex[ TeleopControlFunctions::CONE_MIDROW_ROTATE ]		= ctrlNo;
+		m_buttonIDs[ TeleopControlFunctions::CONE_MIDROW_ROTATE ]			= TeleopControlMappingEnums::POV_0;
 
-		m_controllerIndex[ HUMAN_PLAYER_STATION_ROTATE ]	= ctrlNo;
-		m_buttonIDs[ HUMAN_PLAYER_STATION_ROTATE ]			= IDragonGamePad::POV_90;
-		m_controllerIndex[ STARTING_POSITION_ROTATE ]	= ctrlNo;
-		m_buttonIDs[ STARTING_POSITION_ROTATE ]			= IDragonGamePad::POV_180;
-		m_controllerIndex[ FLOOR_POSITION_ROTATE ]	= ctrlNo;
-		m_buttonIDs[ FLOOR_POSITION_ROTATE ]			= IDragonGamePad::POV_270;
+		m_controllerIndex[ TeleopControlFunctions::HUMAN_PLAYER_STATION_ROTATE ]	= ctrlNo;
+		m_buttonIDs[ TeleopControlFunctions::HUMAN_PLAYER_STATION_ROTATE ]			= TeleopControlMappingEnums::POV_90;
+		m_controllerIndex[ TeleopControlFunctions::STARTING_POSITION_ROTATE ]	= ctrlNo;
+		m_buttonIDs[ TeleopControlFunctions::STARTING_POSITION_ROTATE ]			= TeleopControlMappingEnums::POV_180;
+		m_controllerIndex[ TeleopControlFunctions::FLOOR_POSITION_ROTATE ]	= ctrlNo;
+		m_buttonIDs[ TeleopControlFunctions::FLOOR_POSITION_ROTATE ]			= TeleopControlMappingEnums::POV_270;
 	}
     else if ( m_controller[ctrlNo] != nullptr )
     {
@@ -202,24 +202,24 @@ void TeleopControl::Initialize() const
     if ( m_controller[ctrlNo] != nullptr && DriverStation::GetJoystickIsXbox(ctrlNo) )
     {
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("TeleopControl"), string("Controller 3"), string("XBOIX controller plugged in"));
-		m_controllerIndex[ HOLD_POSITION_EXTEND ]	= ctrlNo;
-		m_buttonIDs[ HOLD_POSITION_EXTEND ]			= IDragonGamePad::A_BUTTON;
-		m_controllerIndex[ MANUAL_EXTEND_RETRACT ]			= ctrlNo;
-		m_axisIDs[ MANUAL_EXTEND_RETRACT ]					= IDragonGamePad::LEFT_JOYSTICK_Y;
-		m_controllerIndex[ CUBE_BACKROW_EXTEND ]	= ctrlNo;
-		m_buttonIDs[ CUBE_BACKROW_EXTEND ]			= IDragonGamePad::X_BUTTON;
-		m_controllerIndex[ CONE_BACKROW_EXTEND ]	= ctrlNo;
-		m_buttonIDs[ CONE_BACKROW_EXTEND ]			= IDragonGamePad::Y_BUTTON;
-		m_controllerIndex[ CUBE_MIDROW_EXTEND ]		= ctrlNo;
-		m_buttonIDs[ CUBE_MIDROW_EXTEND ]			= IDragonGamePad::B_BUTTON;
-		m_controllerIndex[ CONE_MIDROW_EXTEND ]		= ctrlNo;
-		m_buttonIDs[ CONE_MIDROW_EXTEND ]			= IDragonGamePad::POV_0;
-		m_controllerIndex[ HUMAN_PLAYER_STATION_EXTEND ]	= ctrlNo;
-		m_buttonIDs[ HUMAN_PLAYER_STATION_EXTEND ]			= IDragonGamePad::POV_90;
-		m_controllerIndex[ STARTING_POSITION_EXTEND ]	= ctrlNo;
-		m_buttonIDs[ STARTING_POSITION_EXTEND ]			= IDragonGamePad::POV_180;
-		m_controllerIndex[ FLOOR_EXTEND ]	= ctrlNo;
-		m_buttonIDs[ FLOOR_EXTEND ]			= IDragonGamePad::POV_270;
+		m_controllerIndex[ TeleopControlFunctions::HOLD_POSITION_EXTEND ]	= ctrlNo;
+		m_buttonIDs[ TeleopControlFunctions::HOLD_POSITION_EXTEND ]			= TeleopControlMappingEnums::A_BUTTON;
+		m_controllerIndex[ TeleopControlFunctions::MANUAL_EXTEND_RETRACT ]			= ctrlNo;
+		m_axisIDs[ TeleopControlFunctions::MANUAL_EXTEND_RETRACT ]					= TeleopControlMappingEnums::LEFT_JOYSTICK_Y;
+		m_controllerIndex[ TeleopControlFunctions::CUBE_BACKROW_EXTEND ]	= ctrlNo;
+		m_buttonIDs[ TeleopControlFunctions::CUBE_BACKROW_EXTEND ]			= TeleopControlMappingEnums::X_BUTTON;
+		m_controllerIndex[ TeleopControlFunctions::CONE_BACKROW_EXTEND ]	= ctrlNo;
+		m_buttonIDs[ TeleopControlFunctions::CONE_BACKROW_EXTEND ]			= TeleopControlMappingEnums::Y_BUTTON;
+		m_controllerIndex[ TeleopControlFunctions::CUBE_MIDROW_EXTEND ]		= ctrlNo;
+		m_buttonIDs[ TeleopControlFunctions::CUBE_MIDROW_EXTEND ]			= TeleopControlMappingEnums::B_BUTTON;
+		m_controllerIndex[ TeleopControlFunctions::CONE_MIDROW_EXTEND ]		= ctrlNo;
+		m_buttonIDs[ TeleopControlFunctions::CONE_MIDROW_EXTEND ]			= TeleopControlMappingEnums::POV_0;
+		m_controllerIndex[ TeleopControlFunctions::HUMAN_PLAYER_STATION_EXTEND ]	= ctrlNo;
+		m_buttonIDs[ TeleopControlFunctions::HUMAN_PLAYER_STATION_EXTEND ]			= TeleopControlMappingEnums::POV_90;
+		m_controllerIndex[ TeleopControlFunctions::STARTING_POSITION_EXTEND ]	= ctrlNo;
+		m_buttonIDs[ TeleopControlFunctions::STARTING_POSITION_EXTEND ]			= TeleopControlMappingEnums::POV_180;
+		m_controllerIndex[ TeleopControlFunctions::FLOOR_EXTEND ]	= ctrlNo;
+		m_buttonIDs[ TeleopControlFunctions::FLOOR_EXTEND ]			= TeleopControlMappingEnums::POV_270;
 	}
     else if ( m_controller[ctrlNo] != nullptr )
     {
@@ -235,18 +235,18 @@ void TeleopControl::Initialize() const
     {
 
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("TeleopControl"), string("Controller 4"), string("XBOIX controller plugged in"));
-		m_controllerIndex[ OPEN ]	= ctrlNo;
-		m_buttonIDs[ OPEN ]			= IDragonGamePad::Y_BUTTON;
-		m_controllerIndex[ GRABBING_CONE ]		= ctrlNo;
-		m_buttonIDs[ GRABBING_CONE ]			= IDragonGamePad::B_BUTTON;
-		m_controllerIndex[ GRABBING_CUBE ]		= ctrlNo;
-		m_buttonIDs[ GRABBING_CUBE ]			= IDragonGamePad::POV_0;
-		m_controllerIndex[ HOLDING_CONE ]	= ctrlNo;
-		m_buttonIDs[ HOLDING_CONE ]			= IDragonGamePad::POV_90;
-		m_controllerIndex[ HOLDING_CUBE ]	= ctrlNo;
-		m_buttonIDs[ HOLDING_CUBE ]			= IDragonGamePad::POV_180;
-		m_controllerIndex[ RELEASE ]	= ctrlNo;
-		m_buttonIDs[ RELEASE ]			= IDragonGamePad::POV_270;
+		m_controllerIndex[ TeleopControlFunctions::OPEN ]	= ctrlNo;
+		m_buttonIDs[ TeleopControlFunctions::OPEN ]			= TeleopControlMappingEnums::Y_BUTTON;
+		m_controllerIndex[ TeleopControlFunctions::GRABBING_CONE ]		= ctrlNo;
+		m_buttonIDs[ TeleopControlFunctions::GRABBING_CONE ]			= TeleopControlMappingEnums::B_BUTTON;
+		m_controllerIndex[ TeleopControlFunctions::GRABBING_CUBE ]		= ctrlNo;
+		m_buttonIDs[TeleopControlFunctions::GRABBING_CUBE ]			= TeleopControlMappingEnums::POV_0;
+		m_controllerIndex[ TeleopControlFunctions::HOLDING_CONE ]	= ctrlNo;
+		m_buttonIDs[ TeleopControlFunctions::HOLDING_CONE ]			= TeleopControlMappingEnums::POV_90;
+		m_controllerIndex[ TeleopControlFunctions::HOLDING_CUBE ]	= ctrlNo;
+		m_buttonIDs[ TeleopControlFunctions::HOLDING_CUBE ]			= TeleopControlMappingEnums::POV_180;
+		m_controllerIndex[ TeleopControlFunctions::RELEASE ]	= ctrlNo;
+		m_buttonIDs[ TeleopControlFunctions::RELEASE ]			= TeleopControlMappingEnums::POV_270;
 	}
     else if ( m_controller[ctrlNo] != nullptr )
     {

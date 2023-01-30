@@ -107,7 +107,7 @@ void ArmStateMgr::CheckForStateTransition()
      	auto controller = TeleopControl::GetInstance();
         if(controller != nullptr)
         {
-            double armRotateValue = controller->GetAxisValue(TeleopControl::FUNCTION_IDENTIFIER::MANUAL_ROTATE);
+            double armRotateValue = controller->GetAxisValue(TeleopControlFunctions::MANUAL_ROTATE);
 
             if(abs(armRotateValue) > 0.05)
             {
@@ -115,35 +115,35 @@ void ArmStateMgr::CheckForStateTransition()
                 m_arm->UpdateTarget(armRotateValue);
             }
 
-            if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HOLD_POSITION_ROTATE))
+            if (controller->IsButtonPressed(TeleopControlFunctions::HOLD_POSITION_ROTATE))
             {
                 targetState = ARM_STATE::HOLD_POSITION_ROTATE;
             }
-            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::CONE_BACKROW_ROTATE))
+            else if (controller->IsButtonPressed(TeleopControlFunctions::CONE_BACKROW_ROTATE))
             {
                 targetState = ARM_STATE::CONE_BACKROW_ROTATE;
             }
-            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::CONE_BACKROW_ROTATE))
+            else if (controller->IsButtonPressed(TeleopControlFunctions::CONE_BACKROW_ROTATE))
             {
                 targetState = ARM_STATE::CONE_BACKROW_ROTATE;
             }
-            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::CUBE_MIDROW_ROTATE))
+            else if (controller->IsButtonPressed(TeleopControlFunctions::CUBE_MIDROW_ROTATE))
             {
                 targetState = ARM_STATE::CUBE_MIDROW_ROTATE;
             }
-            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::CONE_MIDROW_ROTATE))
+            else if (controller->IsButtonPressed(TeleopControlFunctions::CONE_MIDROW_ROTATE))
             {
                 targetState = ARM_STATE::CONE_MIDROW_ROTATE;
             }
-            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HUMAN_PLAYER_STATION_ROTATE))
+            else if (controller->IsButtonPressed(TeleopControlFunctions::HUMAN_PLAYER_STATION_ROTATE))
             {
                 targetState = ARM_STATE::HUMAN_PLAYER_STATION_ROTATE;
             }
-            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::STARTING_POSITION_ROTATE))
+            else if (controller->IsButtonPressed(TeleopControlFunctions::STARTING_POSITION_ROTATE))
             {
                 targetState = ARM_STATE::STARTING_POSITION_ROTATE;
             }
-            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::FLOOR_POSITION_ROTATE))
+            else if (controller->IsButtonPressed(TeleopControlFunctions::FLOOR_POSITION_ROTATE))
             {
                 targetState = ARM_STATE::FLOOR_POSITION_ROTATE;
             }

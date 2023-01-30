@@ -59,7 +59,6 @@ void Robot::RobotInit()
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("RobotInit"), string("end"));
 
     m_dragonLimeLight = LimelightFactory::GetLimelightFactory()->GetLimelight();
-    m_startLogging = true;
 
     m_fmsData = FMSData::GetInstance();
 }
