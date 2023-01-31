@@ -48,18 +48,6 @@ AutonSelector::AutonSelector() : m_xmlFiles(),
 }
 
 //---------------------------------------------------------------------
-// Method: 		GetSelectedAutoFile
-// Description: This returns the selected auton file to run.  If it
-//  			returns "Do Nothing", it is indicating no auton should
-//				be run.
-// Returns:		std::string			auton file to run
-//---------------------------------------------------------------------
-std::string AutonSelector::GetSelectedAutoFile()
-{
-	return m_chrgstatchooser.GetSelected();
-}
-
-//---------------------------------------------------------------------
 // Method: 		FindXMLFileNames
 // Description: This builds up a list of CSV files in the directory and
 //				stores them in the m_csvFiles attribute.
@@ -67,40 +55,20 @@ std::string AutonSelector::GetSelectedAutoFile()
 //---------------------------------------------------------------------
 void AutonSelector::FindXMLFileNames()
 {
-#ifdef __linux__
-	//struct dirent* files;
 
-	auto deployDir = frc::filesystem::GetDeployDirectory();
-	auto autonDir = deployDir + "/auton/";
-	DIR* directory = opendir(autonDir.c_str());
-
-	if (directory != nullptr)
-	{
-		while (true)
-		{
-			auto files = readdir(directory);
-			if (files == nullptr)
-			{
-				break;
-			}
-			else 
-			{
-				auto filename = string( files->d_name);
-				if ( filename != "." && filename != ".." && filename != "auton.dtd" )
-				{
-					m_xmlFiles.emplace_back(string(files->d_name));
-				}
-
-			} 
-		}
-	}
-	else
-	{
-		// error condition need to handle
-	}
-#endif
-// TODO handle windows so the simulator works
 }
+
+string AutonSelector::GetSelectedAutoFile()
+{
+if (m_parkonchrgstat.compare("yes")==0)
+{
+	auto Autonpath = frc::filesystem::GetDeployDirectory();
+	Autonpath += "paths/output/" + autonfile;
+	
+}
+
+}
+
 
 //---------------------------------------------------------------------
 // Method: 		PutChoicesOnDashboard
@@ -131,4 +99,5 @@ void AutonSelector::PutChoicesOnDashboard()
 	m_numofgamepiecechooser.AddOption("2 gamepieces",m_numofgamepiece);
 	m_numofgamepiecechooser.AddOption("3 gamepieces",m_numofgamepiece);
 	frc::SmartDashboard::PutData("NumOfpcs",&m_numofgamepiecechooser);
+
 }
