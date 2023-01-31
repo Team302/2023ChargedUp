@@ -23,7 +23,10 @@
 
 #include <DragonVision/DragonVision.h>
 #include <hw\factories\LimelightFactory.h>
-
+#include <DragonVision\RetroReflective\RetroReflective.h>
+#include <DragonVision\Cube\Cube.h>
+#include <DragonVision\Cone\Cone.h>
+#include <DragonVision\AprilTag\AprilTag.h>
 #include <string>
 // Third Party Includes
 
@@ -43,7 +46,7 @@ DragonVision* DragonVision::GetDragonVision
 
 //state functions
 
-
+/**
 DragonVision::DragonVision(std::string stateName, int stateId): State(stateName, stateId),
 						   m_frontDragonLimelight(LimelightFactory::GetLimelightFactory()->GetLimelight())			
 {
@@ -53,6 +56,7 @@ DragonVision::DragonVision(std::string stateName, int stateId): State(stateName,
 	limelightstates[CUBE] = new Cube();
 	limelightstates[CONE] = new Cone();
 }
+*/
 void DragonVision::Init() 
 {
 

@@ -71,7 +71,8 @@ class DragonVision : public State
             DragonVision::LIMELIGHT_STATES limelightstate
         );
     int GetRobotPosition() const;
-   
+
+~DragonVision() = default;
 private:
     
     DragonVision(std::string     stateName,
@@ -83,7 +84,7 @@ private:
                 }
                 */
                 );
-    ~DragonVision() = default;
+    
 
     static DragonVision*	m_dragonVision;
     DragonLimelight*           m_frontDragonLimelight;

@@ -19,13 +19,7 @@
 #include <DragonVision/RetroReflective/RetroReflective.h>
 
 using namespace std;
-RetroReflective::RetroReflective() : DragonLimelight(std::string                 tableName,                  /// <I> - network table name
-                                                     units::length::inch_t       mountingHeight,             /// <I> - mounting height of the limelight
-                                                     units::length::inch_t       mountingHorizontalOffset,   /// <I> - mounting horizontal offset from the middle of the robot
-                                                     units::angle::degree_t      rotation,                   /// <I> - clockwise rotation of limelight
-                                                     units::angle::degree_t      mountingAngle,              /// <I> - mounting angle of the camera
-                                                     units::length::inch_t       targetHeight,               /// <I> - height the target
-                                                     units::length::inch_t       targetHeight2)              /// <I> - height of second target)
+RetroReflective::RetroReflective(DragonLimelight*    dragonlimelight) : LimelightState(dragonlimelight)              /// <I> - height of second target)
 {
 
 }
@@ -39,21 +33,25 @@ bool RetroReflective::HasTarget() const
     return false;
 }
 
+
+
+
 units::angle::degree_t RetroReflective::GetTargetHorizontalOffset() const
 {
-    if ( abs(m_rotation.to<double>()) < 1.0 )
+    
+    if ( abs(m_limelight->GetRotation().to<double>()) < 1.0 )
     {
         return GetTx();
     }
-    else if ( abs(m_rotation.to<double>()-90.0) < 1.0 )
+    else if ( abs(m_limelight->GetRotation().to<double>()-90.0) < 1.0 )
     {
         return -1.0 * GetTy();
     }
-    else if ( abs(m_rotation.to<double>()-180.0) < 1.0 )
+    else if ( abs(m_limelight->GetRotation().to<double>()-180.0) < 1.0 )
     {
         return -1.0 * GetTx();
     }
-    else if ( abs(m_rotation.to<double>()-270.0) < 1.0 )
+    else if ( abs(m_limelight->GetRotation().to<double>()-270.0) < 1.0 )
     {
         return GetTy();
     }
@@ -63,19 +61,19 @@ units::angle::degree_t RetroReflective::GetTargetHorizontalOffset() const
 
 units::angle::degree_t RetroReflective::GetTargetVerticalOffset() const
 {
-    if ( abs(m_rotation.to<double>()) < 1.0 )
+    if ( abs(m_limelight->GetRotation().to<double>()) < 1.0 )
     {
         return GetTy();
     }
-    else if ( abs(m_rotation.to<double>()-90.0) < 1.0 )
+    else if ( abs(m_limelight->GetRotation().to<double>()-90.0) < 1.0 )
     {
         return GetTx();
     }
-    else if ( abs(m_rotation.to<double>()-180.0) < 1.0 )
+    else if ( abs(m_limelight->GetRotation().to<double>()-180.0) < 1.0 )
     {
         return -1.0 * GetTy();
     }
-    else if ( abs(m_rotation.to<double>()-270.0) < 1.0 )
+    else if ( abs(m_limelight->GetRotation().to<double>()-270.0) < 1.0 )
     {
         return -1.0 * GetTx();
     }
@@ -121,18 +119,18 @@ std::vector<double> RetroReflective::Get3DSolve() const
 
 units::length::inch_t RetroReflective::EstimateTargetDistance() const
 {
-    units::angle::degree_t angleFromHorizon = (GetMountingAngle() + GetTargetVerticalOffset());
+    units::angle::degree_t angleFromHorizon = (m_limelight->GetMountingAngle() + GetTargetVerticalOffset());
     units::angle::radian_t angleRad = angleFromHorizon;
     double tanAngle = tan(angleRad.to<double>());
 
-    auto deltaHgt = GetTargetHeight()-GetMountingHeight();
+    auto deltaHgt = m_limelight->GetTargetHeight()-m_limelight->GetMountingHeight();
 
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("mounting angle "), GetMountingAngle().to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("mounting angle "), m_limelight->GetMountingAngle().to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("target vertical angle "), GetTargetVerticalOffset().to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("angle radians "), angleRad.to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("deltaH "), deltaHgt.to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("tan angle "), tanAngle);
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("distance "), ((GetTargetHeight()-GetMountingHeight()) / tanAngle).to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("distance "), ((m_limelight->GetTargetHeight()-m_limelight->GetMountingHeight()) / tanAngle).to<double>());
 
-    return (GetTargetHeight()-GetMountingHeight()) / tanAngle;
+    return (m_limelight->GetTargetHeight()-m_limelight->GetMountingHeight()) / tanAngle;
 }

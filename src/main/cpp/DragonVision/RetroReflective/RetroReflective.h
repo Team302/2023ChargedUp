@@ -16,14 +16,14 @@
 
 #pragma once
 
-#include <hw/DragonLimelight.h>
+#include <DragonVision/LimelightState.h>
 #include <utils/Logger.h>
 class DragonVIsion;
-class RetroReflective : public DragonLimelight
+class RetroReflective : public LimelightState
 {
     public:
         
-    RetroReflective();
+    RetroReflective(DragonLimelight*    dragonlimelight);
     ~RetroReflective() = default;
 
     // Retroreflective tape Getters
@@ -35,6 +35,7 @@ class RetroReflective : public DragonLimelight
     units::time::microsecond_t GetPipelineLatency() const override;
     units::length::inch_t EstimateTargetDistance() const override;
     std::vector<double> Get3DSolve() const override;
+
 
     
 };
