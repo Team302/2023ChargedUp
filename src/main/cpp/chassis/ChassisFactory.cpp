@@ -48,6 +48,7 @@
 #include <hw/interfaces/IDragonMotorController.h>
 #include <hw/usages/IDragonMotorControllerMap.h>
 #include <utils/Logger.h>
+#include <robotConfig.h>
 
 using namespace std;
 
@@ -92,10 +93,11 @@ IChassis* ChassisFactory::CreateChassis
     double                                                      odometryComplianceCoefficient
 )
 {
-    switch ( type )
-    {
-        case ChassisFactory::CHASSIS_TYPE::TANK_CHASSIS:
-        {
+
+    #ifdef CHASSIS_TYPE_TANK_CHASSIS
+    
+    
+      
             auto leftMotor = GetMotorController(motors, MotorControllerUsage::MOTOR_CONTROLLER_USAGE::DIFFERENTIAL_LEFT_MAIN);
             auto rightMotor = GetMotorController(motors, MotorControllerUsage::MOTOR_CONTROLLER_USAGE::DIFFERENTIAL_RIGHT_MAIN);
             m_differential = new DifferentialChassis(leftMotor,
@@ -107,17 +109,15 @@ IChassis* ChassisFactory::CreateChassis
                                                      networkTableName,
                                                      controlFileName);
             m_chassis = m_differential;
-        }
-        break;
-
-        case ChassisFactory::CHASSIS_TYPE::MECANUM_CHASSIS:
+    
+    #elif defined CHASSIS_TYPE_MECANUM_CHASSIS
         {
             // todo plug in mecanum drive
         }
-        break;
 
-        case ChassisFactory::CHASSIS_TYPE::SWERVE_CHASSIS:
-        {
+    #elif defined CHASSIS_TYPE_SWERVE_CHASSIS
+
+            
             m_swerve = new SwerveChassis( frontLeft, 
                                           frontRight, 
                                           backLeft, 
@@ -135,15 +135,12 @@ IChassis* ChassisFactory::CreateChassis
                                           controlFileName
                                           );
             m_chassis = m_swerve;
-        }
-        break;
-
-        default:
-        break;
-
-    }
+            m_swerve->InitStates();
+            
+    #endif
 
     return m_chassis;
+
 }
 shared_ptr<IDragonMotorController> ChassisFactory::GetMotorController
 (
@@ -197,6 +194,8 @@ std::shared_ptr<SwerveModule> ChassisFactory::CreateSwerveModule
 )
 {
     std::shared_ptr<SwerveModule> swerve = nullptr;
+
+    #ifdef CHASSIS_TYPE_SWERVE_CHASSIS
 	auto driveMotor = GetMotorController(motorControllers, MotorControllerUsage::MOTOR_CONTROLLER_USAGE::SWERVE_DRIVE);
 	auto turnMotor  = GetMotorController(motorControllers, MotorControllerUsage::MOTOR_CONTROLLER_USAGE::SWERVE_TURN);
 
@@ -286,7 +285,8 @@ std::shared_ptr<SwerveModule> ChassisFactory::CreateSwerveModule
         default:
             break;
     }
-
+    #endif
+    
     return swerve;
 }
 

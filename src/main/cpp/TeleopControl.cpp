@@ -119,15 +119,24 @@ void TeleopControl::Initialize() const
 		m_controllerIndex[ HOLONOMIC_DRIVE_ROTATE]			= ctrlNo;
 		m_axisIDs[HOLONOMIC_DRIVE_ROTATE]					= IDragonGamePad::RIGHT_JOYSTICK_X;
 
+		m_controllerIndex[ HOLONOMIC_ROTATE_FRONT ]		= ctrlNo;
+		m_buttonIDs[ HOLONOMIC_ROTATE_FRONT ]			= IDragonGamePad::POV_0;
+		m_controllerIndex[ HOLONOMIC_ROTATE_BACK ]		= ctrlNo;
+		m_buttonIDs[ HOLONOMIC_ROTATE_BACK ]			= IDragonGamePad::POV_180;
+		m_controllerIndex[ HOLONOMIC_ROTATE_LEFT ]		= ctrlNo;
+		m_buttonIDs[ HOLONOMIC_ROTATE_LEFT ]			= IDragonGamePad::POV_270;
+		m_controllerIndex[ HOLONOMIC_ROTATE_RIGHT ]		= ctrlNo;
+		m_buttonIDs[ HOLONOMIC_ROTATE_RIGHT ]			= IDragonGamePad::POV_90;
+
 		m_controllerIndex[FINDTARGET] 					= ctrlNo;  
 		m_buttonIDs[FINDTARGET]	 						= IDragonGamePad::LEFT_BUMPER;	
 
-		m_controllerIndex[ DRIVE_TO_SHOOTING_SPOT ]		= ctrlNo;
-		m_buttonIDs[ DRIVE_TO_SHOOTING_SPOT ]			= IDragonGamePad::A_BUTTON;
-		m_controllerIndex[ REZERO_PIGEON ]				= ctrlNo;
-		m_buttonIDs[ REZERO_PIGEON ]					= IDragonGamePad::B_BUTTON;
-		m_controllerIndex[HOLD_POSITION]				= ctrlNo;
-		m_buttonIDs[HOLD_POSITION]						= IDragonGamePad::X_BUTTON;
+		m_controllerIndex[ DRIVE_TO_COL_ONE ]			= ctrlNo;
+		m_buttonIDs[ DRIVE_TO_COL_ONE ]					= IDragonGamePad::X_BUTTON;
+		m_controllerIndex[ DRIVE_TO_COL_TWO ]			= ctrlNo;
+		m_buttonIDs[ DRIVE_TO_COL_TWO ]					= IDragonGamePad::Y_BUTTON;
+		m_controllerIndex[ DRIVE_TO_COL_THREE ]			= ctrlNo;
+		m_buttonIDs[ DRIVE_TO_COL_THREE ]				= IDragonGamePad::B_BUTTON;
 	
     }
     else
@@ -139,10 +148,10 @@ void TeleopControl::Initialize() const
     if ( m_controller[ctrlNo] != nullptr && DriverStation::GetJoystickIsXbox(ctrlNo) )
     {
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("TeleopControl"), string("Controller 1"), string("XBOIX controller plugged in"));
-		m_controllerIndex[ EXAMPLE_FORWARD ]	= ctrlNo;
-		m_buttonIDs[ EXAMPLE_FORWARD ]			= IDragonGamePad::A_BUTTON;
-		m_controllerIndex[ EXAMPLE_REVERSE ]	= ctrlNo;
-		m_buttonIDs[ EXAMPLE_REVERSE ]			= IDragonGamePad::B_BUTTON;
+		// m_controllerIndex[ EXAMPLE_FORWARD ]	= ctrlNo;
+		// m_buttonIDs[ EXAMPLE_FORWARD ]			= IDragonGamePad::A_BUTTON;
+		// m_controllerIndex[ EXAMPLE_REVERSE ]	= ctrlNo;
+		// m_buttonIDs[ EXAMPLE_REVERSE ]			= IDragonGamePad::B_BUTTON;
 	}
     else if ( m_controller[ctrlNo] != nullptr )
     {
@@ -157,6 +166,25 @@ void TeleopControl::Initialize() const
     if ( m_controller[ctrlNo] != nullptr && DriverStation::GetJoystickIsXbox(ctrlNo) )
     {
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("TeleopControl"), string("Controller 2"), string("XBOIX controller plugged in"));
+		m_controllerIndex[ HOLD_POSITION_ROTATE ]	= ctrlNo;
+		m_buttonIDs[ HOLD_POSITION_ROTATE ]			= IDragonGamePad::A_BUTTON;
+		m_controllerIndex[ MANUAL_ROTATE ]			= ctrlNo;
+		m_axisIDs[ MANUAL_ROTATE ]					= IDragonGamePad::LEFT_JOYSTICK_Y;
+		m_controllerIndex[ CUBE_BACKROW_ROTATE ]	= ctrlNo;
+		m_buttonIDs[ CUBE_BACKROW_ROTATE ]			= IDragonGamePad::X_BUTTON;
+		m_controllerIndex[ CONE_BACKROW_ROTATE ]	= ctrlNo;
+		m_buttonIDs[ CONE_BACKROW_ROTATE ]			= IDragonGamePad::Y_BUTTON;
+		m_controllerIndex[ CUBE_MIDROW_ROTATE ]		= ctrlNo;
+		m_buttonIDs[ CUBE_MIDROW_ROTATE ]			= IDragonGamePad::B_BUTTON;
+		m_controllerIndex[ CONE_MIDROW_ROTATE ]		= ctrlNo;
+		m_buttonIDs[ CONE_MIDROW_ROTATE ]			= IDragonGamePad::POV_0;
+
+		m_controllerIndex[ HUMAN_PLAYER_STATION_ROTATE ]	= ctrlNo;
+		m_buttonIDs[ HUMAN_PLAYER_STATION_ROTATE ]			= IDragonGamePad::POV_90;
+		m_controllerIndex[ STARTING_POSITION_ROTATE ]	= ctrlNo;
+		m_buttonIDs[ STARTING_POSITION_ROTATE ]			= IDragonGamePad::POV_180;
+		m_controllerIndex[ FLOOR_POSITION_ROTATE ]	= ctrlNo;
+		m_buttonIDs[ FLOOR_POSITION_ROTATE ]			= IDragonGamePad::POV_270;
 	}
     else if ( m_controller[ctrlNo] != nullptr )
     {
@@ -171,6 +199,24 @@ void TeleopControl::Initialize() const
     if ( m_controller[ctrlNo] != nullptr && DriverStation::GetJoystickIsXbox(ctrlNo) )
     {
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("TeleopControl"), string("Controller 3"), string("XBOIX controller plugged in"));
+		m_controllerIndex[ HOLD_POSITION_EXTEND ]	= ctrlNo;
+		m_buttonIDs[ HOLD_POSITION_EXTEND ]			= IDragonGamePad::A_BUTTON;
+		m_controllerIndex[ MANUAL_EXTEND_RETRACT ]			= ctrlNo;
+		m_axisIDs[ MANUAL_EXTEND_RETRACT ]					= IDragonGamePad::LEFT_JOYSTICK_Y;
+		m_controllerIndex[ CUBE_BACKROW_EXTEND ]	= ctrlNo;
+		m_buttonIDs[ CUBE_BACKROW_EXTEND ]			= IDragonGamePad::X_BUTTON;
+		m_controllerIndex[ CONE_BACKROW_EXTEND ]	= ctrlNo;
+		m_buttonIDs[ CONE_BACKROW_EXTEND ]			= IDragonGamePad::Y_BUTTON;
+		m_controllerIndex[ CUBE_MIDROW_EXTEND ]		= ctrlNo;
+		m_buttonIDs[ CUBE_MIDROW_EXTEND ]			= IDragonGamePad::B_BUTTON;
+		m_controllerIndex[ CONE_MIDROW_EXTEND ]		= ctrlNo;
+		m_buttonIDs[ CONE_MIDROW_EXTEND ]			= IDragonGamePad::POV_0;
+		m_controllerIndex[ HUMAN_PLAYER_STATION_EXTEND ]	= ctrlNo;
+		m_buttonIDs[ HUMAN_PLAYER_STATION_EXTEND ]			= IDragonGamePad::POV_90;
+		m_controllerIndex[ STARTING_POSITION_EXTEND ]	= ctrlNo;
+		m_buttonIDs[ STARTING_POSITION_EXTEND ]			= IDragonGamePad::POV_180;
+		m_controllerIndex[ FLOOR_EXTEND ]	= ctrlNo;
+		m_buttonIDs[ FLOOR_EXTEND ]			= IDragonGamePad::POV_270;
 	}
     else if ( m_controller[ctrlNo] != nullptr )
     {
@@ -186,6 +232,18 @@ void TeleopControl::Initialize() const
     if ( m_controller[ctrlNo] != nullptr && DriverStation::GetJoystickIsXbox(ctrlNo) )
     {
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("TeleopControl"), string("Controller 4"), string("XBOIX controller plugged in"));
+		m_controllerIndex[ OPEN ]	= ctrlNo;
+		m_buttonIDs[ OPEN ]			= IDragonGamePad::Y_BUTTON;
+		m_controllerIndex[ GRABBING_CONE ]		= ctrlNo;
+		m_buttonIDs[ GRABBING_CONE ]			= IDragonGamePad::B_BUTTON;
+		m_controllerIndex[ GRABBING_CUBE ]		= ctrlNo;
+		m_buttonIDs[ GRABBING_CUBE ]			= IDragonGamePad::POV_0;
+		m_controllerIndex[ HOLDING_CONE ]	= ctrlNo;
+		m_buttonIDs[ HOLDING_CONE ]			= IDragonGamePad::POV_90;
+		m_controllerIndex[ HOLDING_CUBE ]	= ctrlNo;
+		m_buttonIDs[ HOLDING_CUBE ]			= IDragonGamePad::POV_180;
+		m_controllerIndex[ RELEASE ]	= ctrlNo;
+		m_buttonIDs[ RELEASE ]			= IDragonGamePad::POV_270;
 	}
     else if ( m_controller[ctrlNo] != nullptr )
     {

@@ -39,7 +39,7 @@ class DigitalInputFactory
         DragonDigitalInput* CreateInput
         (
 			std::string										networkTableName,
-    		DigitalInputUsage::DIGITAL_SENSOR_USAGE			type,
+    		DigitalInputUsage::DIGITAL_INPUT_USAGE			type,
             int 						                    digitalID,
             bool						                    reversed,
 			units::time::second_t							debounceTime
@@ -48,7 +48,7 @@ class DigitalInputFactory
 		/// @brief    Get the requested Digital input
         DragonDigitalInput* GetInput
         (
-    		DigitalInputUsage::DIGITAL_SENSOR_USAGE			type
+    		DigitalInputUsage::DIGITAL_INPUT_USAGE			type
         );
 
 

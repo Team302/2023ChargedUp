@@ -27,7 +27,9 @@ class DragonLimelight;
 class HolonomicDrive;
 class IChassis;
 class TeleopControl;
-
+class AdjustableItemMgr;
+class FMSData;
+class DragonField;
 
 class Robot : public frc::TimedRobot 
 {
@@ -48,9 +50,11 @@ class Robot : public frc::TimedRobot
         IChassis*             m_chassis;
         CyclePrimitives*      m_cyclePrims; 
         HolonomicDrive*       m_holonomic;
-        bool                  m_startLogging;
         ArcadeDrive*          m_arcade;
         DragonLimelight*      m_dragonLimeLight;
         DriverFeedback*       m_driverfeedback = new DriverFeedback();
         
+        AdjustableItemMgr*    m_tuner;
+        FMSData*              m_fmsData;
+        DragonField*          m_field;
 };

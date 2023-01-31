@@ -10,7 +10,6 @@
 #include <cameraserver/CameraServer.h>
 
 #include <auton/CyclePrimitives.h>
-#include <chassis/differential/ArcadeDrive.h>
 #include <chassis/ChassisFactory.h>
 #include <chassis/IChassis.h>
 #include <chassis/holonomic/HolonomicDrive.h>
@@ -23,13 +22,16 @@
 #include <utils/LoggerEnums.h>
 #include <LoggableItemMgr.h>
 #include <DriverFeedback/DriverFeedbackStruct.h>
+#include <utils/WaypointXmlParser.h>
+#include <utils/FMSData.h>
+#include <utils/DragonField.h>
+
+#include <AdjustableItemMgr.h>
 
 using namespace std;
 
 void Robot::RobotInit() 
 {
-
-    m_startLogging = false;
     Logger::GetLogger()->PutLoggingSelectionsOnDashboard();
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("RobotInit"), string("arrived"));   
     m_controller = TeleopControl::GetInstance();
@@ -38,15 +40,17 @@ void Robot::RobotInit()
     auto XmlParser = new RobotXmlParser();
     XmlParser->ParseXML();
 
+    auto waypointParser = WaypointXmlParser::GetInstance();
+    waypointParser->ParseWaypoints();
+    //Get AdjustableItemMgr instance
+    m_tuner = AdjustableItemMgr::GetInstance();
+
     auto factory = ChassisFactory::GetChassisFactory();
     m_chassis = factory->GetIChassis();
     m_holonomic = nullptr;
-    m_arcade = nullptr;
     if (m_chassis != nullptr)
     {
-        auto type = m_chassis->GetType();
-         m_holonomic = type == IChassis::CHASSIS_TYPE::SWERVE || type == IChassis::CHASSIS_TYPE::MECANUM ? new HolonomicDrive() : nullptr;
-         m_arcade = m_chassis->GetType() == IChassis::CHASSIS_TYPE::DIFFERENTIAL ? new ArcadeDrive() : nullptr;
+        m_holonomic = new HolonomicDrive();
     }        
     
     StateMgrHelper::InitStateMgrs();
@@ -54,7 +58,9 @@ void Robot::RobotInit()
     m_cyclePrims = new CyclePrimitives();
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("RobotInit"), string("end"));
 
-    m_startLogging = true;
+
+    m_fmsData = FMSData::GetInstance();
+    m_field = new DragonField();
 }
 
 /**
@@ -71,6 +77,7 @@ void Robot::RobotPeriodic()
     if (m_chassis != nullptr)
     {
         m_chassis->UpdateOdometry();
+        m_field->UpdateRobotPosition(m_chassis->GetPose());
     }
     if (m_dragonLimeLight != nullptr)
     {
@@ -79,12 +86,11 @@ void Robot::RobotPeriodic()
         LoggerData  data = {LOGGER_LEVEL::PRINT, string("DragonLimelight"), {}, {}, {horAngle, distance}, {}};
         Logger::GetLogger()->LogData(data);
     }
-    if (m_startLogging)
-    {
-        LoggableItemMgr::GetInstance()->LogData();
-        Logger::GetLogger()->PeriodicLog();
-    }
- }
+    LoggableItemMgr::GetInstance()->LogData();
+    Logger::GetLogger()->PeriodicLog();
+
+    m_tuner->ListenForUpdates();
+}
 
 /**
  * This autonomous (along with the chooser code above) shows how to select
@@ -99,7 +105,8 @@ void Robot::RobotPeriodic()
  */
 void Robot::AutonomousInit() 
 {
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("AutonomousInit"), string("arrived"));   
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("AutonomousInit"), string("arrived"));
+
     StateMgrHelper::SetCheckGamepadInputsForStateTransitions(false);
     if (m_cyclePrims != nullptr)
     {
@@ -118,17 +125,14 @@ void Robot::AutonomousPeriodic()
 
 void Robot::TeleopInit() 
 {
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopInit"), string("arrived"));   
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopInit"), string("arrived")); 
+
     StateMgrHelper::SetCheckGamepadInputsForStateTransitions(true);
     if (m_chassis != nullptr && m_controller != nullptr)
     {
         if (m_holonomic != nullptr)
         {
             m_holonomic->Init();
-        }
-        else if (m_arcade != nullptr)
-        {
-            m_arcade->Init();
         }
     }
     StateMgrHelper::RunCurrentMechanismStates();
@@ -149,10 +153,6 @@ void Robot::TeleopPeriodic()
         if (m_holonomic != nullptr)
         {
             m_holonomic->Run();
-        }
-        else if (m_arcade != nullptr)
-        {
-            m_arcade->Run();
         }
     }
     StateMgrHelper::RunCurrentMechanismStates();

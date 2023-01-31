@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE auton SYSTEM "auton.dtd">
+<auton>
+    <primitive id="RESET_POSITION"
+			   pathname="BlueLeft1.wpilib.jason"/>
+    <primitive id="DRIVE_PATH"
+               time="4.0"
+               pathname="BlueLeft1.wpilib.jason" />
+    <primitive id="DO_NOTHING"
+               time="0.5"
+               shooter="SHOOT_HIGHGOAL_FAR"/>

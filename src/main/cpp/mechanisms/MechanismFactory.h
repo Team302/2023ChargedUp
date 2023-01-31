@@ -40,9 +40,11 @@
 #include <hw/usages/ServoMap.h>
 #include <mechanisms/MechanismTypes.h>
 #include <mechanisms/base/Mech.h>
-#include <mechanisms/example/Example.h>
 
 // @ADDMECH include for your mechanism 
+#include <mechanisms/arm/Arm.h>
+#include <mechanisms/extender/Extender.h>
+#include <mechanisms/grabber/Grabber.h>
 
 // Third Party Includes
 
@@ -77,9 +79,11 @@ class MechanismFactory
 			DragonCanCoder* 										canCoder
 		);
 		
-		inline Example* GetExample() const {return m_example;}
 		
 		// @ADDMECH  Add inline Get method for your mechanism
+		inline Arm* GetArm() const {return m_arm;}
+		inline Extender* GetExtender() const {return m_extender;}
+		inline Grabber* GetGrabber() const {return m_grabber;}
 
 		Mech* GetMechanism
 		(
@@ -106,7 +110,7 @@ class MechanismFactory
 		std::shared_ptr<DragonDigitalInput> GetDigitalInput
 		(
 			const DigitalInputMap&							digitaInputs,
-			DigitalInputUsage::DIGITAL_SENSOR_USAGE			usage
+			DigitalInputUsage::DIGITAL_INPUT_USAGE			usage
 		);
 
 		DragonAnalogInput* GetAnalogInput
@@ -119,10 +123,11 @@ class MechanismFactory
 		virtual ~MechanismFactory() = default;
 
 		static MechanismFactory*	m_mechanismFactory;
-
-		Example*                        m_example;
 		
-		// @ADDMECH  Add your mechanism here		
+		// @ADDMECH  Add your mechanism here	
+		Arm*							m_arm;
+		Extender*						m_extender;
+		Grabber*						m_grabber;	
          
 
 		

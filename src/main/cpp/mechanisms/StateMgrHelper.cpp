@@ -24,21 +24,29 @@
 #include <mechanisms/MechanismTypes.h>
 #include <mechanisms/StateMgrHelper.h>
 #include <mechanisms/StateStruc.h>
-#include <mechanisms/example/ExampleState.h>
-#include <mechanisms/example/ExampleStateMgr.h>
 #include <utils/Logger.h>
+
+//@ADDMech Add includes for mech states and mech state mgr
+#include <mechanisms/arm/ArmState.h>
+#include <mechanisms/arm/ArmStateMgr.h>
+#include <mechanisms/extender/ExtenderState.h>
+#include <mechanisms/extender/ExtenderStateMgr.h>
+#include <mechanisms/grabber/GrabberState.h>
+#include <mechanisms/grabber/GrabberStateMgr.h>
 
 using namespace std;
 
 void StateMgrHelper::InitStateMgrs()
 {
-    //ExampleStateMgr::GetInstance();
-    //@ADDMech Add mechanisms here
+    //@ADDMech Add MechanismStateMgr::GetInstanceI() here
+    ArmStateMgr::GetInstance();
+    ExtenderStateMgr::GetInstance();
+    GrabberStateMgr::GetInstance();
 }
 
 void StateMgrHelper::RunCurrentMechanismStates() 
 {
-    for (auto i=MechanismTypes::MECHANISM_TYPE::EXAMPLE+1; i<MechanismTypes::MECHANISM_TYPE::MAX_MECHANISM_TYPES; ++i)
+    for (auto i=MechanismTypes::MECHANISM_TYPE::UNKNOWN_MECHANISM+1; i<MechanismTypes::MECHANISM_TYPE::MAX_MECHANISM_TYPES; ++i)
     {
         auto mech = MechanismFactory::GetMechanismFactory()->GetMechanism(static_cast<MechanismTypes::MECHANISM_TYPE>(i));
         auto stateMgr = mech != nullptr ? mech->GetStateMgr() : nullptr;
@@ -57,7 +65,7 @@ void StateMgrHelper::SetMechanismStateFromParam
 
     if (params != nullptr)
     {
-        for (auto i=MechanismTypes::MECHANISM_TYPE::EXAMPLE+1; i<MechanismTypes::MECHANISM_TYPE::MAX_MECHANISM_TYPES; ++i)
+        for (auto i=MechanismTypes::MECHANISM_TYPE::UNKNOWN_MECHANISM+1; i<MechanismTypes::MECHANISM_TYPE::MAX_MECHANISM_TYPES; ++i)
         {
             auto mech = MechanismFactory::GetMechanismFactory()->GetMechanism(static_cast<MechanismTypes::MECHANISM_TYPE>(i));
             auto stateMgr = mech != nullptr ? mech->GetStateMgr() : nullptr;
@@ -78,7 +86,7 @@ void StateMgrHelper::SetCheckGamepadInputsForStateTransitions
     bool  check
 )
 {
-    for (auto i=MechanismTypes::MECHANISM_TYPE::EXAMPLE+1; i<MechanismTypes::MECHANISM_TYPE::MAX_MECHANISM_TYPES; ++i)
+    for (auto i=MechanismTypes::MECHANISM_TYPE::UNKNOWN_MECHANISM+1; i<MechanismTypes::MECHANISM_TYPE::MAX_MECHANISM_TYPES; ++i)
     {
         auto mech = MechanismFactory::GetMechanismFactory()->GetMechanism(static_cast<MechanismTypes::MECHANISM_TYPE>(i));
         auto stateMgr = mech != nullptr ? mech->GetStateMgr() : nullptr;
@@ -100,6 +108,8 @@ State* StateMgrHelper::CreateState
     auto controlData2 = targetData->GetController2();
     auto target = targetData->GetTarget();
     auto secondaryTarget = targetData->GetSecondTarget();
+    auto solenoidState = targetData->GetSolenoidState();
+    auto solenoid2State = targetData->GetSolenoidState();
     auto robotPitch = targetData->GetRobotPitch();
     auto function1Coeff = targetData->GetFunction1Coeff();
     auto function2Coeff = targetData->GetFunction2Coeff();
@@ -110,20 +120,23 @@ State* StateMgrHelper::CreateState
     State* thisState = nullptr;
     switch (type)
     {
-        // @ADDMECH Add case(s) tto create your state(s) 
-        case StateType::EXAMPLE_STATE:
-            thisState = new ExampleState(xmlString, id, controlData, target);
+        // @ADDMECH Add case(s) to create your state(s) 
+        // case StateType::GRABBER_STATE:
+        //      thisState = new GrabberState(xmlString, id, solenoidState, solenoid2State);
+        //     break;
+
+       case StateType::ARM_STATE:
+            thisState = new ArmState(xmlString, id, controlData, target);
             break;
 
+        case StateType::EXTENDER_STATE:
+            thisState = new ExtenderState(xmlString, id, controlData, target);
+            break;
 
-        // @ADDMECH Add case(s) to create your state(s) 
-        //case StateType::SHOOTER:
-        //    thisState = new ShooterState(controlData, 
-        //                                    controlData2, 
-        //                                    target, 
-        //                                    secondaryTarget);
-        //    break;
-
+        case StateType::GRABBER_STATE:
+            thisState = new GrabberState(xmlString, id, solenoidState, solenoid2State);
+            break;
+        
         default:
             Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, mech->GetNetworkTableName(), string("StateMgr::StateMgr"), string("unknown state"));
             break;

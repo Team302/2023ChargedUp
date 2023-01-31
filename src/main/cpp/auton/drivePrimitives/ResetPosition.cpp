@@ -41,7 +41,7 @@ void ResetPosition::Init(PrimitiveParams* params)
     if (pathToLoad != "")
     {
  	    auto deployDir = frc::filesystem::GetDeployDirectory();
-        deployDir += "/paths/" + pathToLoad;
+        deployDir += "/paths/output/" + pathToLoad;
         m_trajectory = frc::TrajectoryUtil::FromPathweaverJson(deployDir);
 
         m_chassis->ResetPose(m_trajectory.InitialPose());
