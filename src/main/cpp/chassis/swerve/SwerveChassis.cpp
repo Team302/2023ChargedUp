@@ -199,22 +199,48 @@ void SwerveChassis::Drive
     ChassisMovement             moveInfo 
 )
 {
-    auto heading = GetHeadingState(moveInfo);
-    if (heading != nullptr)
+    m_currentOrientationState = GetHeadingState(moveInfo);
+    if (m_currentOrientationState != nullptr)
     {
-        heading->UpdateChassisSpeeds(moveInfo);
+        m_currentOrientationState->UpdateChassisSpeeds(moveInfo);
     }
 
-    auto drive = GetDriveState(moveInfo);
-    if (drive != nullptr)
+    m_currentDriveState = GetDriveState(moveInfo);
+    if (m_currentDriveState != nullptr)
     {
-        auto states = drive->UpdateSwerveModuleStates(moveInfo);       
+        auto states = m_currentDriveState->UpdateSwerveModuleStates(moveInfo);       
         m_frontLeft.get()->SetDesiredState(states[LEFT_FRONT]);
         m_frontRight.get()->SetDesiredState(states[RIGHT_FRONT]);
         m_backLeft.get()->SetDesiredState(states[LEFT_BACK]);
         m_backRight.get()->SetDesiredState(states[RIGHT_BACK]); 
     }
 }
+
+ISwerveDriveOrientation* SwerveChassis::GetSpecifiedHeadingState
+(
+    ChassisOptionEnums::HeadingOption headingOption
+)
+{
+    auto itr = m_headingStateMap.find(headingOption);
+    if (itr == m_headingStateMap.end())
+    {
+        itr = m_headingStateMap.find(ChassisOptionEnums::HeadingOption::MAINTAIN);
+    }
+    return itr->second;
+}
+ISwerveDriveState* SwerveChassis::GetSpecifiedDriveState
+(
+    ChassisOptionEnums::DriveStateType driveOption
+)
+{
+    auto itr = m_driveStateMap.find(driveOption);
+    if (itr == m_driveStateMap.end())
+    {
+        return m_robotDrive;
+    }
+    return itr->second;
+} 
+
 ISwerveDriveOrientation* SwerveChassis::GetHeadingState
 (
     ChassisMovement         moveInfo
@@ -238,7 +264,23 @@ ISwerveDriveState* SwerveChassis::GetDriveState
         return m_robotDrive;
     }
     auto state = itr->second;
-    state->Init(moveInfo);
+
+    if(m_currentDriveState == nullptr)
+    {
+        m_currentDriveState = m_robotDrive;
+    }
+
+    if(state != m_currentDriveState)
+    {
+        m_initialized = false;
+    }
+
+    if(!m_initialized)
+    {
+        state->Init(moveInfo);
+        m_initialized = true;
+    }
+
     return state;
 }
 
@@ -306,7 +348,10 @@ void SwerveChassis::ResetPose
     const Rotation2d&   angle
 )
 {
-    //m_poseEstimator.ResetPosition(pose, angle);
+    m_poseEstimator.ResetPosition(angle, wpi::array<frc::SwerveModulePosition, 4>{m_frontLeft.get()->GetPosition(),
+                                  m_frontRight.get()->GetPosition(), 
+                                  m_backLeft.get()->GetPosition(),
+                                  m_backRight.get()->GetPosition()}, pose);
 
     SetEncodersToZero();
 }

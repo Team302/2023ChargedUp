@@ -155,7 +155,16 @@ class SwerveChassis : public IChassis
 
         void ReZero();
 
-    private:
+        ISwerveDriveOrientation* GetSpecifiedHeadingState
+        (
+            ChassisOptionEnums::HeadingOption headingOption
+        );
+        ISwerveDriveState* GetSpecifiedDriveState
+        (
+            ChassisOptionEnums::DriveStateType driveOption
+        ); 
+
+    private:    
         ISwerveDriveOrientation* GetHeadingState
         (
             ChassisMovement         moveInfo
@@ -163,8 +172,8 @@ class SwerveChassis : public IChassis
         ISwerveDriveState* GetDriveState
         (
             ChassisMovement         moveInfo
-        );
-        
+        );    
+
         frc::ChassisSpeeds GetFieldRelativeSpeeds
         (
             units::meters_per_second_t xSpeed,
@@ -243,5 +252,8 @@ class SwerveChassis : public IChassis
 
         const units::length::inch_t m_shootingDistance = units::length::inch_t(105.0); // was 105.0
 
-    
+        ISwerveDriveState*              m_currentDriveState;
+        ISwerveDriveOrientation*        m_currentOrientationState;
+
+        bool                            m_initialized = false;
 };

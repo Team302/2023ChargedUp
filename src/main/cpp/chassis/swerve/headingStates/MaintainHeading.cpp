@@ -16,7 +16,7 @@
 //Team302 Includes
 #include <chassis/swerve/headingStates/MaintainHeading.h>
 #include <chassis/ChassisOptionEnums.h>
-//#include <chassis/swerve/SwerveOdometry.h>
+#include <chassis/ChassisFactory.h>
 
 MaintainHeading::MaintainHeading() : ISwerveDriveOrientation(ChassisOptionEnums::HeadingOption::MAINTAIN)
 {
@@ -41,7 +41,7 @@ void MaintainHeading::UpdateChassisSpeeds(ChassisMovement& chassisMovement)
     }
     else
     {
-       // m_storedYaw = SwerveOdometry::GetInstance()->GetPose().Rotation().Degrees();
+       SetStoredHeading(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose().Rotation().Degrees());
     }
 
     rot -= correction;
