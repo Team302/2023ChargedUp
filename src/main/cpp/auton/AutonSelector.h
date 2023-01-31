@@ -27,27 +27,6 @@ class AutonSelector
 	bool Benisgoodatspelling = false;
 	public:
 
-		enum Alliancecolor
-		{
-			Red,
-			Blue,
-		};
-		enum AutonPosition
-		{
-			Gridcoop, 
-			Gridwall,
-			Gridhp,
-		};
-
-		enum NumOfPieces
-		{
-			One,
-			Two,
-			Three,
-			Four,
-			Five,
-
-		};
 		//---------------------------------------------------------------------
 		// Method: 		<<constructor>>
 		// Description: This creates this object and reads the auto script (CSV)
