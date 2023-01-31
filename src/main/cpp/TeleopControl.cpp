@@ -137,6 +137,10 @@ void TeleopControl::Initialize() const
 		m_buttonIDs[ DRIVE_TO_COL_TWO ]					= IDragonGamePad::Y_BUTTON;
 		m_controllerIndex[ DRIVE_TO_COL_THREE ]			= ctrlNo;
 		m_buttonIDs[ DRIVE_TO_COL_THREE ]				= IDragonGamePad::B_BUTTON;
+		m_controllerIndex[ DRIVE_TO_HP_LEFT ] 			= ctrlNo;
+		m_buttonIDs[ DRIVE_TO_HP_LEFT ]					= IDragonGamePad::LEFT_STICK_PRESSED;
+		m_controllerIndex[ DRIVE_TO_HP_RIGHT ] 			= ctrlNo;
+		m_buttonIDs[ DRIVE_TO_HP_RIGHT ]				= IDragonGamePad::RIGHT_STICK_PRESSED;
 	
     }
     else

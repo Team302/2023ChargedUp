@@ -89,4 +89,18 @@
               redXCoordinate="14.7"
               redYCoordinate="5.0"
               redRotation="180.0"/>
+     <waypoint identifier="HP_LEFT"
+              blueXCoordinate="1.95"
+              blueYCoordinate="5.0"
+              blueRotation="0.0"
+              redXCoordinate="14.7"
+              redYCoordinate="5.0"
+              redRotation="180.0"/>
+     <waypoint identifier="HP_RIGHT"
+              blueXCoordinate="1.95"
+              blueYCoordinate="5.0"
+              blueRotation="0.0"
+              redXCoordinate="14.7"
+              redYCoordinate="5.0"
+              redRotation="180.0"/>
 </waypoints>

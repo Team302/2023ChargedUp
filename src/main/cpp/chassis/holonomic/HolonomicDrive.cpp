@@ -172,6 +172,20 @@ void HolonomicDrive::Run()
                 moveInfo.trajectory = m_trajectoryGenerator->GenerateTrajectory(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose(), DragonTrajectoryGenerator::TARGET_POSITION::COLUMN_THREE);
                 m_generatedTrajectory = moveInfo.trajectory;
             }
+            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::DRIVE_TO_HP_LEFT))
+            {
+                moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
+                m_previousDriveState = moveInfo.driveOption;
+                moveInfo.trajectory = m_trajectoryGenerator->GenerateTrajectory(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose(), DragonTrajectoryGenerator::TARGET_POSITION::HUMAN_PLAYER_SUBSTATION);
+                m_generatedTrajectory = moveInfo.trajectory;
+            }
+            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::DRIVE_TO_HP_RIGHT))
+            {
+                moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
+                m_previousDriveState = moveInfo.driveOption;
+                moveInfo.trajectory = m_trajectoryGenerator->GenerateTrajectory(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose(), DragonTrajectoryGenerator::TARGET_POSITION::HUMAN_PLAYER_SUBSTATION);
+                m_generatedTrajectory = moveInfo.trajectory;
+            }
         }
         else
         {

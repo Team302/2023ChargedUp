@@ -50,7 +50,9 @@ class TeleopControl
             ARCADE_STEER,
             DRIVE_TO_COL_ONE,
             DRIVE_TO_COL_TWO,
-            DRIVE_TO_COL_THREE,            
+            DRIVE_TO_COL_THREE,  
+            DRIVE_TO_HP_LEFT,
+            DRIVE_TO_HP_RIGHT,          
 		    // @ADDMECH add functions here for robot
             // EXAMPLE_FORWARD,
             // EXAMPLE_REVERSE,

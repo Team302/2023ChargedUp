@@ -50,7 +50,7 @@ frc::Trajectory DragonTrajectoryGenerator::GenerateTrajectory(frc::Pose2d curren
     WAYPOINTS endWaypoint;
 
     //check if we are going to grids
-    if(endPoint != TARGET_POSITION::HUMAN_PLAYER_SUBSTATION)
+    if(endPoint == TARGET_POSITION::COLUMN_ONE || endPoint == TARGET_POSITION::COLUMN_TWO || endPoint == TARGET_POSITION::COLUMN_THREE)
     {
         double distToWallGrid = 0.0;
         double distToCoopGrid = 0.0;
@@ -145,16 +145,20 @@ frc::Trajectory DragonTrajectoryGenerator::GenerateTrajectory(frc::Pose2d curren
             }
         }
     }
-    else //we are going to human player substation
+    else if(endPoint == TARGET_POSITION::HUMAN_PLAYER_SUBSTATION_LEFT ) 
     {
-        
+        endWaypoint = WAYPOINTS::HP_LEFT;
+    }
+    else//we are going to human player substation right
+    {
+        endWaypoint = WAYPOINTS::HP_RIGHT;
+
     }
 
     double distanceToFinalPoint = 0.0;
 
     frc::Trajectory resultingTrajectory;
 
-    //if distance of the points is less that .1m away then return an empty trajectory
     if(m_fmsData->GetAllianceColor() == frc::DriverStation::Alliance::kBlue)
     {
         resultingTrajectory = frc::TrajectoryGenerator::GenerateTrajectory(currentPose, intermediatePoints, m_blueWaypoints[endWaypoint], m_config);
@@ -168,7 +172,8 @@ frc::Trajectory DragonTrajectoryGenerator::GenerateTrajectory(frc::Pose2d curren
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("TrajectoryGenerator"), std::string("DistToFinalPoint"), std::to_string(distanceToFinalPoint));
 
-    if(distanceToFinalPoint > 0.2)
+    //if distance of the points is less that .1m away then return an empty trajectory
+    if(distanceToFinalPoint > 0.05)
     {
         return resultingTrajectory;
     }

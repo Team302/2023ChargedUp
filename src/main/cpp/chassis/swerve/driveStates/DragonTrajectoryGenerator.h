@@ -44,7 +44,9 @@ class DragonTrajectoryGenerator
             GRID_HP_COL_THREE,
             GRID_WALL_INTERMEDIATE,
             GRID_COOP_INTERMEDIATE,
-            GRID_HP_INTERMEDIATE
+            GRID_HP_INTERMEDIATE,
+            HP_LEFT,
+            HP_RIGHT
         };
 
         enum TARGET_POSITION
