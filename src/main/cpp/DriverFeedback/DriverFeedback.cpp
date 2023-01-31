@@ -16,10 +16,21 @@
 
 #include <DriverFeedback/DriverFeedback.h>
 #include <DriverFeedback/DriverFeedbackStruct.h>
+#include <utils/Logger.h>
+#include <string>
 
  void DriverFeedback::UpdateFeedback(){
+
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT,std::string("Driverfeedback "),std::string("AlignedWithConeNode "),DriveteamFeedbackOptions.AlignedWithConeNode);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT,std::string("Driverfeedback "),std::string("AlignedWithCubeNode "),DriveteamFeedbackOptions.AlignedWithCubeNode);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT,std::string("Driverfeedback "),std::string("GamePieceInGrabber "),DriveteamFeedbackOptions.GamePieceInGrabber);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT,std::string("Driverfeedback "),std::string("WantCone "),DriveteamFeedbackOptions.WantCone);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT,std::string("Driverfeedback "),std::string("WantCube "),DriveteamFeedbackOptions.WantCube);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT,std::string("Driverfeedback "),std::string("GamePieceReadyToPickUp"),DriveteamFeedbackOptions.GamePieceReadyToPickUp);
+
+
     if(DriveteamFeedbackOptions.AlignedWithConeNode){
-        
+
         if(currentState!=DriverFeedbackStates::ALIGNED_WITH_CONE_NODE){
             m_LEDStates->ResetVariables();
         }

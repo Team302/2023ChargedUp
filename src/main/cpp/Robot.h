@@ -18,6 +18,7 @@
 #pragma once
 
 #include <frc/TimedRobot.h>
+#include <DriverFeedback/DriverFeedback.h>
 #include <DriverFeedback/LEDStates.h>
 
 class ArcadeDrive;
@@ -45,10 +46,11 @@ class Robot : public frc::TimedRobot
     private:
         TeleopControl*        m_controller;
         IChassis*             m_chassis;
-        CyclePrimitives*      m_cyclePrims;
+        CyclePrimitives*      m_cyclePrims; 
         HolonomicDrive*       m_holonomic;
         bool                  m_startLogging;
         ArcadeDrive*          m_arcade;
         DragonLimelight*      m_dragonLimeLight;
-        LEDStates* m_ledStates = new LEDStates();
+        DriverFeedback*       m_driverfeedback = new DriverFeedback();
+        
 };
