@@ -22,7 +22,7 @@ class DriverFeedback
 {
 	public:
     LEDStates* m_LEDStates = LEDStates::GetInstance();
-    void UpdateFeedback();
+    void UpdateFeedback(const DriveteamFeedbackOptions& options);
    
     private:
     enum DriverFeedbackStates

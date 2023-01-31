@@ -19,17 +19,17 @@
 #include <utils/Logger.h>
 #include <string>
 
- void DriverFeedback::UpdateFeedback(){
+ void DriverFeedback::UpdateFeedback(const DriveteamFeedbackOptions& options){
 
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT,std::string("Driverfeedback "),std::string("AlignedWithConeNode "),DriveteamFeedbackOptions.AlignedWithConeNode);
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT,std::string("Driverfeedback "),std::string("AlignedWithCubeNode "),DriveteamFeedbackOptions.AlignedWithCubeNode);
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT,std::string("Driverfeedback "),std::string("GamePieceInGrabber "),DriveteamFeedbackOptions.GamePieceInGrabber);
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT,std::string("Driverfeedback "),std::string("WantCone "),DriveteamFeedbackOptions.WantCone);
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT,std::string("Driverfeedback "),std::string("WantCube "),DriveteamFeedbackOptions.WantCube);
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT,std::string("Driverfeedback "),std::string("GamePieceReadyToPickUp"),DriveteamFeedbackOptions.GamePieceReadyToPickUp);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT,std::string("Driverfeedback "),std::string("AlignedWithConeNode "),options.AlignedWithConeNode);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT,std::string("Driverfeedback "),std::string("AlignedWithCubeNode "),options.AlignedWithCubeNode);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT,std::string("Driverfeedback "),std::string("GamePieceInGrabber "),options.GamePieceInGrabber);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT,std::string("Driverfeedback "),std::string("WantCone "),options.WantCone);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT,std::string("Driverfeedback "),std::string("WantCube "),options.WantCube);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT,std::string("Driverfeedback "),std::string("GamePieceReadyToPickUp"),options.GamePieceReadyToPickUp);
 
 
-    if(DriveteamFeedbackOptions.AlignedWithConeNode){
+    if(options.AlignedWithConeNode){
 
         if(currentState!=DriverFeedbackStates::ALIGNED_WITH_CONE_NODE){
             m_LEDStates->ResetVariables();
@@ -37,7 +37,7 @@
         m_LEDStates->AlternatingBlinkingPattern(LED::YELLOW);
         currentState = DriverFeedbackStates::ALIGNED_WITH_CONE_NODE;
 
-    }else if(DriveteamFeedbackOptions.AlignedWithCubeNode){
+    }else if(options.AlignedWithCubeNode){
         
         if(currentState!=DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE){
             m_LEDStates->ResetVariables();
@@ -45,7 +45,7 @@
         m_LEDStates->AlternatingBlinkingPattern(LED::PURPLE);
         currentState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
 
-    }else if(DriveteamFeedbackOptions.GamePieceInGrabber){
+    }else if(options.GamePieceInGrabber){
          
         if(currentState!=DriverFeedbackStates::GAME_PIECE_IN_GRABBER){
             m_LEDStates->ResetVariables();
@@ -53,13 +53,13 @@
         m_LEDStates->AlternatingBlinkingPattern(LED::YELLOW, LED::PURPLE);
         currentState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
 
-    }else if(DriveteamFeedbackOptions.WantCube){
+    }else if(options.WantCube){
         currentState = DriverFeedbackStates::WANT_CUBE;
 
-    }else if(DriveteamFeedbackOptions.WantCone){
+    }else if(options.WantCone){
         currentState = DriverFeedbackStates::WANT_CONE;
 
-    }else if(DriveteamFeedbackOptions.GamePieceReadyToPickUp){
+    }else if(options.GamePieceReadyToPickUp){
         currentState = DriverFeedbackStates::GAME_PIECE_READY_TO_PICK_UP;
     
     }else{

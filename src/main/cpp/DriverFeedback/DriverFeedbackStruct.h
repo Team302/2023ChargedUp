@@ -16,14 +16,14 @@
 
 #pragma once
 
-    static struct {
+    struct DriveteamFeedbackOptions {
     bool WantCube=false;
     bool WantCone=false;
     bool GamePieceReadyToPickUp=false;
     bool GamePieceInGrabber=false;
     bool AlignedWithConeNode=false;
     bool AlignedWithCubeNode=false;
-    } DriveteamFeedbackOptions;
+    };
 
 
 

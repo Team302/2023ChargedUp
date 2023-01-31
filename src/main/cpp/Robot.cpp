@@ -145,7 +145,7 @@ void Robot::TeleopPeriodic()
 {
     DriveteamFeedbackOptions options;
     options.AlignedWithConeNode = true;
-    m_driverfeedback->UpdateFeedback();
+    m_driverfeedback->UpdateFeedback(options);
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopPeriodic"), string("arrived"));   
     if (m_chassis != nullptr && m_controller != nullptr)
