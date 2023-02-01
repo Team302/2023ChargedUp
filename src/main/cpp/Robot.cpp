@@ -21,13 +21,16 @@
 #include <utils/LoggerData.h>
 #include <utils/LoggerEnums.h>
 #include <LoggableItemMgr.h>
+#include <utils/WaypointXmlParser.h>
+#include <utils/FMSData.h>
+#include <utils/DragonField.h>
+
 #include <AdjustableItemMgr.h>
 
 using namespace std;
 
 void Robot::RobotInit() 
 {
-    m_startLogging = false;
     Logger::GetLogger()->PutLoggingSelectionsOnDashboard();
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("RobotInit"), string("arrived"));   
     
@@ -37,6 +40,8 @@ void Robot::RobotInit()
     auto XmlParser = new RobotXmlParser();
     XmlParser->ParseXML();
 
+    auto waypointParser = WaypointXmlParser::GetInstance();
+    waypointParser->ParseWaypoints();
     //Get AdjustableItemMgr instance
     m_tuner = AdjustableItemMgr::GetInstance();
 
@@ -53,7 +58,9 @@ void Robot::RobotInit()
     m_cyclePrims = new CyclePrimitives();
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("RobotInit"), string("end"));
 
-    m_startLogging = true;
+
+    m_fmsData = FMSData::GetInstance();
+    m_field = new DragonField();
 }
 
 /**
@@ -69,6 +76,7 @@ void Robot::RobotPeriodic()
     if (m_chassis != nullptr)
     {
         m_chassis->UpdateOdometry();
+        m_field->UpdateRobotPosition(m_chassis->GetPose());
     }
 
     if (m_startLogging)
@@ -76,6 +84,7 @@ void Robot::RobotPeriodic()
         LoggableItemMgr::GetInstance()->LogData();
         Logger::GetLogger()->PeriodicLog();
     }
+
 
     m_tuner->ListenForUpdates();
   
@@ -95,7 +104,8 @@ void Robot::RobotPeriodic()
  */
 void Robot::AutonomousInit() 
 {
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("AutonomousInit"), string("arrived"));   
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("AutonomousInit"), string("arrived"));
+
     StateMgrHelper::SetCheckGamepadInputsForStateTransitions(false);
     if (m_cyclePrims != nullptr)
     {
@@ -114,7 +124,8 @@ void Robot::AutonomousPeriodic()
 
 void Robot::TeleopInit() 
 {
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopInit"), string("arrived"));   
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopInit"), string("arrived")); 
+
     StateMgrHelper::SetCheckGamepadInputsForStateTransitions(true);
     if (m_chassis != nullptr && m_controller != nullptr)
     {

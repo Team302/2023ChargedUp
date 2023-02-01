@@ -36,7 +36,7 @@ class DragonDigitalInput
 		DragonDigitalInput
 		(
 			std::string										networkTableName,
-    		DigitalInputUsage::DIGITAL_SENSOR_USAGE			type,
+    		DigitalInputUsage::DIGITAL_INPUT_USAGE			type,
 			int 											deviceID,		// <I> - digial io ID
 			bool											reversed,		// <I>
 			units::time::second_t							debounceTime
@@ -47,12 +47,12 @@ class DragonDigitalInput
 
 		bool Get() const;
 		int  GetChannel() const;
-		DigitalInputUsage::DIGITAL_SENSOR_USAGE GetType() const;
+		DigitalInputUsage::DIGITAL_INPUT_USAGE GetType() const;
 
 	private:
 		std::string									m_networkTableName;
 		frc::DigitalInput*							m_digital;
 		frc::Debouncer*								m_debouncer;
 		bool										m_reversed;
-		DigitalInputUsage::DIGITAL_SENSOR_USAGE  	m_type;
+		DigitalInputUsage::DIGITAL_INPUT_USAGE  	m_type;
 };

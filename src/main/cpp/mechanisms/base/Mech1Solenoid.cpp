@@ -79,5 +79,7 @@ bool Mech1Solenoid::IsSolenoidActivated() const
 /// @brief log data to the network table if it is activated and time period has past
 void Mech1Solenoid::LogInformation() const
 {
+    auto ntName = GetNetworkTableName();
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, ntName, "Solenoid", IsSolenoidActivated() );
 }
 

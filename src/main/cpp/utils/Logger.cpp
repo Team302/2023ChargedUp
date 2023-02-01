@@ -97,6 +97,16 @@ void Logger::LogData
     }
 }
 
+void Logger::LogData
+(
+    LOGGER_LEVEL        level,
+    const string&       group,
+    const string&       identifier,     
+    const char*   message                 
+)
+{
+    LogData(level, group, identifier, string(message));
+}
 /// @brief log a message
 /// @param [in] LOGGER_LEVEL: message level
 /// @param [in] std::string: network table name or classname to group messages.  If logging option is DASHBOARD, this will be the network table name

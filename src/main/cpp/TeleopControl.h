@@ -47,10 +47,40 @@ class TeleopControl
             FINDTARGET,        
             DRIVE_TO_SHOOTING_SPOT,
             ARCADE_THROTTLE,
-            ARCADE_STEER,            
+            ARCADE_STEER,
+            DRIVE_TO_COL_ONE,
+            DRIVE_TO_COL_TWO,
+            DRIVE_TO_COL_THREE,            
 		    // @ADDMECH add functions here for robot
-            EXAMPLE_FORWARD,
-            EXAMPLE_REVERSE,
+            // EXAMPLE_FORWARD,
+            // EXAMPLE_REVERSE,
+             //Arm states
+            HOLD_POSITION_ROTATE,
+            MANUAL_ROTATE,
+            CUBE_BACKROW_ROTATE,
+            CONE_BACKROW_ROTATE,
+            CUBE_MIDROW_ROTATE,
+            CONE_MIDROW_ROTATE,
+            HUMAN_PLAYER_STATION_ROTATE,
+            STARTING_POSITION_ROTATE,
+            FLOOR_POSITION_ROTATE,
+            //Extender states
+            HOLD_POSITION_EXTEND,
+            MANUAL_EXTEND_RETRACT,
+            CUBE_BACKROW_EXTEND,
+            CONE_BACKROW_EXTEND,
+            CUBE_MIDROW_EXTEND,
+            CONE_MIDROW_EXTEND,
+            HUMAN_PLAYER_STATION_EXTEND,
+            STARTING_POSITION_EXTEND,
+            FLOOR_EXTEND,
+            //Grabber states
+            OPEN,
+            GRABBING_CONE,
+            GRABBING_CUBE,
+            HOLDING_CONE,
+            HOLDING_CUBE,
+            RELEASE,
             MAX_FUNCTIONS
         };
 

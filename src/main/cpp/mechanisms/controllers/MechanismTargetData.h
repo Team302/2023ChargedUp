@@ -52,6 +52,7 @@ class MechanismTargetData
             double                                      greaterThanTransitiionTarget,
             std::string                                 greaterThanTransitionState,
             SOLENOID                                    solenoid,
+            SOLENOID                                    solenoid2,
             std::array<double,3>                        function1Coeff,
             std::array<double,3>                        function2Coeff
         );
@@ -87,6 +88,7 @@ class MechanismTargetData
         /// @brief get the solenoid state
         /// @return SOLENOID state of the solenoid
         SOLENOID GetSolenoidState() const { return m_solenoid; }
+        SOLENOID GetSolenoid2State() const { return m_solenoid2; }
 
         /// @brief  Retrieve the target value
         /// @return double - target value
@@ -111,6 +113,7 @@ class MechanismTargetData
         ControlData*                                m_controlData;
         ControlData*                                m_controlData2;
         SOLENOID                                    m_solenoid;
+        SOLENOID                                    m_solenoid2;
         double                                      m_robotPitch;
         double                                      m_lessThanTransitiionTarget;
         std::string                                 m_lessThanTransitionState;
