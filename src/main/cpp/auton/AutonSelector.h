@@ -24,8 +24,7 @@
 
 class AutonSelector
 {
-	std::string autonfile;
-	bool Benisgoodatspelling = false;
+
 	public:
 
 		enum Alliancecolor
@@ -69,10 +68,15 @@ class AutonSelector
 		//				be run.
 		// Returns:		std::string			auton file to run
 		//---------------------------------------------------------------------
-		std::string GetSelectedAutoFile(std::string filename);
+		std::string GetSelectedAutoFile();
+
+		std::string GetParkOnChargeStation();
+		std::string GetAlianceColor();
+		std::string GetStartPos();
+		std::string GetNumofPiecesinauton();
 
 	private:
-
+	bool Benisgoodatspelling = false;
 		//---------------------------------------------------------------------
 		// Method: 		FindXMLFileNames
 		// Description: This builds up a list of CSV files in the directory and
@@ -97,7 +101,9 @@ class AutonSelector
 		frc::SendableChooser<std::string> m_numofgamepiecechooser;
 		std::string m_parkonchrgstat;
 		std::string m_alliancecolor;
-		std::string m_statrpos;
+		std::string m_startpos;
 		std::string m_numofgamepiece;
+
+		std::string m_parkonchrgstatfile;
 };
 

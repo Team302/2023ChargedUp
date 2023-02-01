@@ -60,16 +60,81 @@ void AutonSelector::FindXMLFileNames()
 
 string AutonSelector::GetSelectedAutoFile()
 {
-if (m_parkonchrgstat.compare("yes")==0)
+	std::string autonfile(frc::filesystem::GetDeployDirectory());
+	autonfile += std::string ("/paths/output/");
+	autonfile += GetAlianceColor();
+	autonfile += GetStartPos();
+	autonfile += GetNumofPiecesinauton();
+	autonfile += GetParkOnChargeStation();
+	return autonfile;
+}
+
+string AutonSelector::GetParkOnChargeStation()
 {
-	auto Autonpath = frc::filesystem::GetDeployDirectory();
-	Autonpath += "paths/output/" + autonfile;
+	if (m_parkonchrgstat.compare("yes"))
+{
+	return std::string("P");
+}
+ else//(m_parkonchrgstat.compare("no"));
+{
+	return std::string("Np");
+}
+
+}
+
+string AutonSelector::GetAlianceColor()
+{
+	if (m_alliancecolor.compare("Red"))
+	{
+		return std::string("Red");
 	
+	}
+	else //(m_alliancecolor.compare("Blue"))
+	{
+		return std::string("Blue");
+	}
+}
+string AutonSelector::GetStartPos()
+{
+	if (m_startpos.compare("Gridwall"))
+	{
+	return	std::string("Wall");
+	}
+
+	else if (m_startpos.compare("Gridcoop"))
+	{
+	return	std::string("Coop");
+	
+	}
+	else (m_startpos.compare("Gridhp"));
+	{
+		return std::string("Hp");
+	}
 }
 
+string AutonSelector::GetNumofPiecesinauton()
+{
+	if (m_numofgamepiece.compare("1"))
+	{
+		return std::string("One");
+	}
+
+	else if (m_numofgamepiece.compare("2"))
+	{
+		return std::string("Two");
+	}
+
+	else if (m_numofgamepiece.compare("3"))
+	{
+		return std::string("Three");
+	}
+	else (m_numofgamepiece.compare("4"));
+	{
+		return std::string("Four");
+	}
 }
 
-
+// color strt pos num of gamepiece 
 //---------------------------------------------------------------------
 // Method: 		PutChoicesOnDashboard
 // Description: This puts the list of files in the m_csvFiles attribute
@@ -89,15 +154,16 @@ void AutonSelector::PutChoicesOnDashboard()
 	frc::SmartDashboard::PutData("Alliance color", &m_alliancecolorchooser);
 
 	//# of game pieces
-	m_startposchooser.AddOption("Gridcoop",m_statrpos);
-	m_startposchooser.AddOption("Gridwall",m_statrpos);
-	m_startposchooser.AddOption("Gridhp",m_statrpos);
+	m_startposchooser.AddOption("Gridcoop",m_startpos);
+	m_startposchooser.AddOption("Gridwall",m_startpos);
+	m_startposchooser.AddOption("Gridhp",m_startpos);
 	frc::SmartDashboard::PutData("StartPos",&m_startposchooser);
 
 	//what you want to do in auton
-	m_numofgamepiecechooser.AddOption("1 gamepiece",m_numofgamepiece);
-	m_numofgamepiecechooser.AddOption("2 gamepieces",m_numofgamepiece);
-	m_numofgamepiecechooser.AddOption("3 gamepieces",m_numofgamepiece);
+	m_numofgamepiecechooser.AddOption("1",m_numofgamepiece);
+	m_numofgamepiecechooser.AddOption("2",m_numofgamepiece);
+	m_numofgamepiecechooser.AddOption("3",m_numofgamepiece);
+	m_numofgamepiecechooser.AddOption("4",m_numofgamepiece);
 	frc::SmartDashboard::PutData("NumOfpcs",&m_numofgamepiecechooser);
 
 }
