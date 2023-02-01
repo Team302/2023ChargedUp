@@ -47,8 +47,7 @@ void AutonPreviewer::PopulateField()
 {
     std::vector<frc::Trajectory> trajectories = GetTrajectories();
     m_field->ResetField();
-    for(unsigned 
-    int i = 0; i < trajectories.size(); i++)
+    for(unsigned int i = 0; i < trajectories.size(); i++)
     {
         m_field->AddTrajectory("traj" + std::to_string(i), trajectories[i]);
     }

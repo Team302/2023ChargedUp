@@ -42,15 +42,20 @@ void DragonField::UpdateRobotPosition(frc::Pose2d robotPose)
 
 void DragonField::AddPose(std::string name, frc::Pose2d pose)
 {
+    m_objects.emplace_back(m_field.GetObject(name));
     m_field.GetObject(name)->SetPose(pose);
 }
 
 void DragonField::AddTrajectory(std::string name, frc::Trajectory trajectory)
 {
+    m_objects.emplace_back(m_field.GetObject(name));
     m_field.GetObject(name)->SetTrajectory(trajectory);
 }
 
 void DragonField::ResetField()
 {
-    m_field = frc::Field2d();
+    for(int i = 0; i < m_objects.size(); i++)
+    {
+        m_objects[i]->SetPoses(std::span<frc::Pose2d>());
+    }
 }
