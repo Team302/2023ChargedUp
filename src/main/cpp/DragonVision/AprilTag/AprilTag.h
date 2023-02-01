@@ -14,16 +14,16 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#pragma once
 
-#include <hw/DragonLimelight.h>
+
+#include <DragonVision/LimelightState.h>
 #include <utils/Logger.h>
 class DragonVIsion;
-class AprilTag : public DragonLimelight
+class AprilTag : public LimelightState
 {
     public:
         
-    AprilTag() = default;
+    AprilTag(DragonLimelight*    dragonlimelight);
     ~AprilTag() = default;
 
     // Retroreflective tape Getters
@@ -37,4 +37,6 @@ class AprilTag : public DragonLimelight
     std::vector<double> Get3DSolve() const override;
 
     //
+    private:
+    DragonLimelight* m_dragonlimelight;
 };

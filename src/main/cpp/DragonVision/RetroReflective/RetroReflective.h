@@ -21,7 +21,7 @@
 class DragonVIsion;
 class RetroReflective : public LimelightState
 {
-    public:
+ public:
         
     RetroReflective(DragonLimelight*    dragonlimelight);
     ~RetroReflective() = default;
@@ -35,7 +35,9 @@ class RetroReflective : public LimelightState
     units::time::microsecond_t GetPipelineLatency() const override;
     units::length::inch_t EstimateTargetDistance() const override;
     std::vector<double> Get3DSolve() const override;
-
-
     
+
+
+ private: 
+    DragonLimelight* m_dragonlimelight;
 };

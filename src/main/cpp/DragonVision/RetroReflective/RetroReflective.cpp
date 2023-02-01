@@ -19,7 +19,7 @@
 #include <DragonVision/RetroReflective/RetroReflective.h>
 
 using namespace std;
-RetroReflective::RetroReflective(DragonLimelight*    dragonlimelight) : LimelightState(dragonlimelight)              /// <I> - height of second target)
+RetroReflective::RetroReflective(DragonLimelight*    dragonlimelight) : LimelightState(dragonlimelight), m_dragonlimelight(dragonlimelight)             /// <I> - height of second target)
 {
 
 }
@@ -41,44 +41,44 @@ units::angle::degree_t RetroReflective::GetTargetHorizontalOffset() const
     
     if ( abs(m_limelight->GetRotation().to<double>()) < 1.0 )
     {
-        return GetTx();
+        return m_dragonlimelight->GetTx();
     }
     else if ( abs(m_limelight->GetRotation().to<double>()-90.0) < 1.0 )
     {
-        return -1.0 * GetTy();
+        return -1.0 * m_dragonlimelight->GetTy();
     }
     else if ( abs(m_limelight->GetRotation().to<double>()-180.0) < 1.0 )
     {
-        return -1.0 * GetTx();
+        return -1.0 * m_dragonlimelight->GetTx();
     }
     else if ( abs(m_limelight->GetRotation().to<double>()-270.0) < 1.0 )
     {
-        return GetTy();
+        return m_dragonlimelight->GetTy();
     }
     Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("DragonLimelight"), string("GetTargetVerticalOffset"), string("Invalid limelight rotation"));
-    return GetTx();
+    return m_dragonlimelight->GetTx();
 }
 
 units::angle::degree_t RetroReflective::GetTargetVerticalOffset() const
 {
     if ( abs(m_limelight->GetRotation().to<double>()) < 1.0 )
     {
-        return GetTy();
+        return m_dragonlimelight->GetTy();
     }
     else if ( abs(m_limelight->GetRotation().to<double>()-90.0) < 1.0 )
     {
-        return GetTx();
+        return m_dragonlimelight->GetTx();
     }
     else if ( abs(m_limelight->GetRotation().to<double>()-180.0) < 1.0 )
     {
-        return -1.0 * GetTy();
+        return -1.0 * m_dragonlimelight->GetTy();
     }
     else if ( abs(m_limelight->GetRotation().to<double>()-270.0) < 1.0 )
     {
-        return -1.0 * GetTx();
+        return -1.0 * m_dragonlimelight->GetTx();
     }
     Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("DragonLimelight"), string("GetTargetVerticalOffset"), string("Invalid limelight rotation"));
-    return GetTy();   
+    return m_dragonlimelight->GetTy();   
 }
 
 double RetroReflective::GetTargetArea() const
@@ -134,3 +134,4 @@ units::length::inch_t RetroReflective::EstimateTargetDistance() const
 
     return (m_limelight->GetTargetHeight()-m_limelight->GetMountingHeight()) / tanAngle;
 }
+

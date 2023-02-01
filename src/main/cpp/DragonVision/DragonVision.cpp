@@ -46,17 +46,17 @@ DragonVision* DragonVision::GetDragonVision
 
 //state functions
 
-/**
+
 DragonVision::DragonVision(std::string stateName, int stateId): State(stateName, stateId),
 						   m_frontDragonLimelight(LimelightFactory::GetLimelightFactory()->GetLimelight())			
 {
-	map<LIMELIGHT_STATES, DragonVision> limelightstates;
-	limelightstates[RETROREFLECTIVE] = new RetroReflective();
-	limelightstates[APRILTAG] = new AprilTag();
-	limelightstates[CUBE] = new Cube();
-	limelightstates[CONE] = new Cone();
+	map<LIMELIGHT_STATES, LimelightState*> limelightstates;
+	limelightstates[RETROREFLECTIVE] = new RetroReflective(m_frontDragonLimelight);
+	limelightstates[APRILTAG] = new AprilTag(m_frontDragonLimelight);
+	limelightstates[CUBE] = new Cube(m_frontDragonLimelight);
+	limelightstates[CONE] = new Cone(m_frontDragonLimelight);
 }
-*/
+
 void DragonVision::Init() 
 {
 

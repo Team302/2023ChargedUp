@@ -19,7 +19,10 @@
 #include <DragonVision/Cone/Cone.h>
 
 using namespace std;
+Cone::Cone(DragonLimelight*    dragonlimelight) : LimelightState(dragonlimelight), m_dragonlimelight(dragonlimelight)             /// <I> - height of second target)
+{
 
+}
 bool Cone::HasTarget() const
 {
    auto nt = m_networktable.get();
@@ -30,48 +33,52 @@ bool Cone::HasTarget() const
     return false;
 }
 
+
+
+
 units::angle::degree_t Cone::GetTargetHorizontalOffset() const
 {
-    if ( abs(m_rotation.to<double>()) < 1.0 )
+    
+    if ( abs(m_limelight->GetRotation().to<double>()) < 1.0 )
     {
-        return GetTx();
+        return m_dragonlimelight->GetTx();
     }
-    else if ( abs(m_rotation.to<double>()-90.0) < 1.0 )
+    else if ( abs(m_limelight->GetRotation().to<double>()-90.0) < 1.0 )
     {
-        return -1.0 * GetTy();
+        return -1.0 * m_dragonlimelight->GetTy();
     }
-    else if ( abs(m_rotation.to<double>()-180.0) < 1.0 )
+    else if ( abs(m_limelight->GetRotation().to<double>()-180.0) < 1.0 )
     {
-        return -1.0 * GetTx();
+        return -1.0 * m_dragonlimelight->GetTx();
     }
-    else if ( abs(m_rotation.to<double>()-270.0) < 1.0 )
+    else if ( abs(m_limelight->GetRotation().to<double>()-270.0) < 1.0 )
     {
-        return GetTy();
+        return m_dragonlimelight->GetTy();
     }
     Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("DragonLimelight"), string("GetTargetVerticalOffset"), string("Invalid limelight rotation"));
-    return GetTx();
+    return m_dragonlimelight->GetTx();
 }
 
 units::angle::degree_t Cone::GetTargetVerticalOffset() const
 {
-    if ( abs(m_rotation.to<double>()) < 1.0 )
+    if ( abs(m_limelight->GetRotation().to<double>()) < 1.0 )
     {
-        return GetTy();
+        return m_dragonlimelight->GetTy();
     }
-    else if ( abs(m_rotation.to<double>()-90.0) < 1.0 )
+    else if ( abs(m_limelight->GetRotation().to<double>()-90.0) < 1.0 )
     {
-        return GetTx();
+        return m_dragonlimelight->GetTx();
     }
-    else if ( abs(m_rotation.to<double>()-180.0) < 1.0 )
+    else if ( abs(m_limelight->GetRotation().to<double>()-180.0) < 1.0 )
     {
-        return -1.0 * GetTy();
+        return -1.0 * m_dragonlimelight->GetTy();
     }
-    else if ( abs(m_rotation.to<double>()-270.0) < 1.0 )
+    else if ( abs(m_limelight->GetRotation().to<double>()-270.0) < 1.0 )
     {
-        return -1.0 * GetTx();
+        return -1.0 * m_dragonlimelight->GetTx();
     }
     Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("DragonLimelight"), string("GetTargetVerticalOffset"), string("Invalid limelight rotation"));
-    return GetTy();   
+    return m_dragonlimelight->GetTy();   
 }
 
 double Cone::GetTargetArea() const
@@ -112,19 +119,19 @@ std::vector<double> Cone::Get3DSolve() const
 
 units::length::inch_t Cone::EstimateTargetDistance() const
 {
-    units::angle::degree_t angleFromHorizon = (GetMountingAngle() + GetTargetVerticalOffset());
+    units::angle::degree_t angleFromHorizon = (m_limelight->GetMountingAngle() + GetTargetVerticalOffset());
     units::angle::radian_t angleRad = angleFromHorizon;
     double tanAngle = tan(angleRad.to<double>());
 
-    auto deltaHgt = GetTargetHeight()-GetMountingHeight();
+    auto deltaHgt = m_limelight->GetTargetHeight()-m_limelight->GetMountingHeight();
 
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("mounting angle "), GetMountingAngle().to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("mounting angle "), m_limelight->GetMountingAngle().to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("target vertical angle "), GetTargetVerticalOffset().to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("angle radians "), angleRad.to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("deltaH "), deltaHgt.to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("tan angle "), tanAngle);
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("distance "), ((GetTargetHeight()-GetMountingHeight()) / tanAngle).to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("distance "), ((m_limelight->GetTargetHeight()-m_limelight->GetMountingHeight()) / tanAngle).to<double>());
 
-    return (GetTargetHeight()-GetMountingHeight()) / tanAngle;
+    return (m_limelight->GetTargetHeight()-m_limelight->GetMountingHeight()) / tanAngle;
 }
 

@@ -151,9 +151,11 @@ class DragonLimelight //: public IDragonSensor, public IDragonDistanceSensor
         units::length::inch_t  GetMountingHeight() const {return m_mountHeight;}
         units::length::inch_t  GetTargetHeight() const {return m_targetHeight;}
         units::angle::degree_t GetRotation() const {return m_rotation;}
-    protected:
+
         units::angle::degree_t GetTx() const;
         units::angle::degree_t GetTy() const;
+    protected:
+        
         
         std::shared_ptr<nt::NetworkTable> m_networktable;
         units::length::inch_t m_mountHeight;

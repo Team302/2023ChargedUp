@@ -48,15 +48,14 @@ class LimelightState
         ///----------------------------------------------------------------------------------
         
         // Retroreflective tape Getters
-        virtual bool HasTarget() const;
-        virtual units::angle::degree_t GetTargetHorizontalOffset() const;
-        virtual units::angle::degree_t GetTargetVerticalOffset() const;
-        virtual double GetTargetArea() const;
-        virtual units::angle::degree_t GetTargetSkew() const;
-        virtual units::time::microsecond_t GetPipelineLatency() const;
-        virtual units::length::inch_t EstimateTargetDistance() const;
-        virtual std::vector<double> Get3DSolve() const;
-        void PrintValues(); // Prints out all values to ensure everything is working and connected
+        virtual bool HasTarget() const = 0;
+        virtual units::angle::degree_t GetTargetHorizontalOffset() const = 0;
+        virtual units::angle::degree_t GetTargetVerticalOffset() const = 0;
+        virtual double GetTargetArea() const = 0;
+        virtual units::angle::degree_t GetTargetSkew() const = 0;
+        virtual units::time::microsecond_t GetPipelineLatency() const = 0;
+        virtual units::length::inch_t EstimateTargetDistance() const = 0;
+        virtual std::vector<double> Get3DSolve() const = 0;
 
     protected:
         units::angle::degree_t GetTx() const;
