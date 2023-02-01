@@ -25,6 +25,10 @@
 // Team 302 includes
 #include <auton/PrimitiveEnums.h>
 #include <chassis/ChassisOptionEnums.h>
+#include <mechanisms/arm/ArmStateMgr.h>
+#include <mechanisms/extender/ExtenderStateMgr.h>
+#include <mechanisms/grabber/GrabberStateMgr.h>
+
 
 // @ADDMECH include for your mechanism 
 
@@ -48,8 +52,13 @@ class PrimitiveParams
                 float                                               heading,
                 float                                               startDriveSpeed,
                 float                                               endDriveSpeed,
-                std::string                                         pathName
-                // @ADDMECH add parameter for your mechanism state 
+                std::string                                         pathName,
+                // @ADDMECH add parameter for your mechanism state
+                ArmStateMgr::ARM_STATE                              armState,
+                ExtenderStateMgr::EXTENDER_STATE                    extenderState,
+                GrabberStateMgr::GRABBER_STATE                      grabberState
+
+                
         );//Constructor. Takes in all parameters
 
         PrimitiveParams() = delete;
