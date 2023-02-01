@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include <TeleopControlMappingEnums.h>
+#include <teleopcontrol/TeleopControlMappingEnums.h>
 
 class IDragonGamePad
 {

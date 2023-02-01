@@ -26,7 +26,7 @@
 #include <mechanisms/base/Mech1Solenoid.h>
 #include <utils/Logger.h>
 
-#include <TeleopControl.h>
+#include <teleopcontrol/TeleopControl.h>
 
 // Third Party Includes
 

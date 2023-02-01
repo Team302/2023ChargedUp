@@ -26,13 +26,13 @@
 
 struct TeleopControlAxis
 {
-    TeleopControlMappingEnums::CONTROLLER          controllerNumber=TeleopControlMappingEnums::CONTROLLER::UNKNOWN_CONTROLLER;
-    TeleopControlMappingEnums::AXIS_IDENTIFIER     axisId=TeleopControlMappingEnums::AXIS_IDENTIFIER::UNDEFINED_AXIS;
-    TeleopControlMappingEnums::AXIS_DEADBAND       deadbandType=TeleopControlMappingEnums::AXIS_DEADBAND::NONE;
-    TeleopControlMappingEnums::AXIS_PROFILE        profile=TeleopControlMappingEnums::AXIS_PROFILE::CUBED;
-    TeleopControlMappingEnums::AXIS_DIRECTION      direction=TeleopControlMappingEnums::AXIS_DIRECTION::SYNCED;
-    double                              deadband=0.1;
-    double                              scaleFactor=1.0;
+    TeleopControlMappingEnums::CONTROLLER           controllerNumber=TeleopControlMappingEnums::CONTROLLER::UNKNOWN_CONTROLLER;
+    TeleopControlMappingEnums::AXIS_IDENTIFIER      axisId=TeleopControlMappingEnums::AXIS_IDENTIFIER::UNDEFINED_AXIS;
+    TeleopControlMappingEnums::AXIS_DEADBAND        deadbandType=TeleopControlMappingEnums::AXIS_DEADBAND::NONE;
+    TeleopControlMappingEnums::AXIS_PROFILE         profile=TeleopControlMappingEnums::AXIS_PROFILE::CUBED;
+    TeleopControlMappingEnums::AXIS_DIRECTION       direction=TeleopControlMappingEnums::AXIS_DIRECTION::SYNCED;
+    double                                          scaleFactor=1.0;
+    bool                                            initialized=false;
 };
 
 

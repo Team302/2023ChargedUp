@@ -16,7 +16,7 @@
 #include <chassis/mecanum/MecanumChassis.h>
 #include <mechanisms/StateMgrHelper.h>
 #include <RobotXmlParser.h>
-#include <TeleopControl.h>
+#include <teleopcontrol/TeleopControl.h>
 #include <utils/Logger.h>
 #include <utils/LoggerData.h>
 #include <utils/LoggerEnums.h>
@@ -34,7 +34,7 @@ void Robot::RobotInit()
     Logger::GetLogger()->PutLoggingSelectionsOnDashboard();
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("RobotInit"), string("arrived"));   
     
-    m_controller = TeleopControl::GetInstance();
+    m_controller = nullptr;
 
     // Read the XML file to build the robot 
     auto XmlParser = new RobotXmlParser();
@@ -124,6 +124,12 @@ void Robot::AutonomousPeriodic()
 void Robot::TeleopInit() 
 {
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopInit"), string("arrived")); 
+
+    if (m_controller == nullptr)
+    {
+        m_controller = TeleopControl::GetInstance();
+    }
+
 
     StateMgrHelper::SetCheckGamepadInputsForStateTransitions(true);
     if (m_chassis != nullptr && m_controller != nullptr)

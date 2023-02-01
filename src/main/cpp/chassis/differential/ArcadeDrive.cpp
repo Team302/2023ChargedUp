@@ -26,8 +26,8 @@
 #include <chassis/ChassisMovement.h>
 #include <hw/DragonPigeon.h>
 #include <gamepad/IDragonGamePad.h>
-#include <TeleopControl.h>
-#include <TeleopControlFunctions.h>
+#include <teleopcontrol/TeleopControl.h>
+#include <teleopcontrol/TeleopControlFunctions.h>
 #include <State.h>
 #include <chassis/ChassisFactory.h>
 #include <hw/factories/PigeonFactory.h>

@@ -22,7 +22,7 @@
 
 // Team 302 includes
 #include <gamepad/IDragonGamePad.h>
-#include <TeleopControlMappingEnums.h>
+#include <teleopcontrol/TeleopControlMappingEnums.h>
 
 // forward declares
 namespace frc
@@ -38,8 +38,7 @@ class DragonGamepad : public IDragonGamePad
     public:
         DragonGamepad
         (
-            int port,
-            int nmodes
+            int port
         );
         ~DragonGamepad();
 
@@ -103,7 +102,6 @@ class DragonGamepad : public IDragonGamePad
 
     private:
         frc::Joystick* m_gamepad;
-        int            m_nmodes;
         
         std::vector<AnalogAxis*> m_axis;
         std::vector<double> m_axisScale;

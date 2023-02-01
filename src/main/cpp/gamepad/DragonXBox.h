@@ -24,7 +24,7 @@
 
 // Team 302 includes
 #include <gamepad/IDragonGamePad.h>
-#include <TeleopControlMappingEnums.h>
+#include <teleopcontrol/TeleopControlMappingEnums.h>
 
 
 #include <RobinHood/robin_hood.h>
@@ -39,8 +39,7 @@ class DragonXBox : public IDragonGamePad
     public:
         DragonXBox
         (
-            int port,
-            int nmodes
+            int port
         );
 
         ~DragonXBox();
@@ -173,7 +172,6 @@ class DragonXBox : public IDragonGamePad
         
     private:
         frc::XboxController*        m_xbox;
-        int                         m_nmodes;
         //std::vector<robin_hood::unordered_map<TeleopControlMappingEnums::AXIS_IDENTIFIER, AnalogAxis*>> m_axisMaps;
         //std::vector<robot_hood::unordered_map<TeleopControlMappingEnums::BUTTON_IDENTIFIER, IButton*>> m_buttonMaps;
 

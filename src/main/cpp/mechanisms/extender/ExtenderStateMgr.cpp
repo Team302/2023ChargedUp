@@ -27,7 +27,7 @@
 // FRC includes
 
 // Team 302 includes
-#include <TeleopControl.h>
+#include <teleopcontrol/TeleopControl.h>
 #include <auton/PrimitiveParams.h>
 #include <mechanisms/MechanismFactory.h>
 #include <mechanisms/base/StateMgr.h>

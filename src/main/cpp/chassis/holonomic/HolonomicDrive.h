@@ -18,7 +18,7 @@
 //C++ Libraries
 
 //Team 302 includes
-#include <TeleopControl.h>
+#include <teleopcontrol/TeleopControl.h>
 #include <State.h>
 #include <chassis/swerve/driveStates/DragonTrajectoryGenerator.h>
 

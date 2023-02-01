@@ -28,7 +28,7 @@
 #include <mechanisms/base/Mech2IndMotors.h>
 #include <utils/Logger.h>
 
-#include <TeleopControl.h>
+#include <teleopcontrol/TeleopControl.h>
 
 // Third Party Includes
 

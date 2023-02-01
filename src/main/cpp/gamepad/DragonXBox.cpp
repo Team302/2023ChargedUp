@@ -31,7 +31,7 @@
 #include <gamepad/button/ToggleButton.h>
 #include <gamepad/DragonXBox.h>
 #include <utils/Logger.h>
-#include <TeleopControlMappingEnums.h>
+#include <teleopcontrol/TeleopControlMappingEnums.h>
 
 #include<RobinHood/robin_hood.h>
 
@@ -42,10 +42,8 @@
 
 DragonXBox::DragonXBox
 (
-    int port,
-    int nmodes
-) : m_xbox(new frc::XboxController(port)),
-    m_nmodes(nmodes)
+    int port
+) : m_xbox(new frc::XboxController(port))
 {
     // for (TeleopControlMappingEnums::CONTROL_MODE mode=TeleopControlMappingEnums::ALL; 
     //      mode != TeleopControlMappingEnums::MAX_CONTROL_MODES; ++mode )
@@ -54,49 +52,46 @@ DragonXBox::DragonXBox
     //     key = std::make_pair(mode, TeleopControlMappingEnums::LEFT_JOYSTICK_X);
     //     m_axisMap.insert(key, new AnalogAxis(m_xbox, XboxController::Axis::kLeftX, false));
     // }
-    for (auto inx=0; inx<nmodes; ++inx)
-    {
-        // Create Axis Objects
-        m_axis[inx*TeleopControlMappingEnums::MAX_AXIS+TeleopControlMappingEnums::LEFT_JOYSTICK_X] = new AnalogAxis(m_xbox, XboxController::Axis::kLeftX, false);
-        m_axis[inx*TeleopControlMappingEnums::MAX_AXIS+TeleopControlMappingEnums::LEFT_JOYSTICK_Y]  = new AnalogAxis(m_xbox, XboxController::Axis::kLeftY, true);
-        m_axis[inx*TeleopControlMappingEnums::MAX_AXIS+TeleopControlMappingEnums::LEFT_JOYSTICK_X]->DefinePerpendicularAxis(m_axis[TeleopControlMappingEnums::LEFT_JOYSTICK_Y]);
-        m_axis[inx*TeleopControlMappingEnums::MAX_AXIS+TeleopControlMappingEnums::LEFT_JOYSTICK_Y]->DefinePerpendicularAxis(m_axis[TeleopControlMappingEnums::LEFT_JOYSTICK_X]);
-        
-        m_axis[inx*TeleopControlMappingEnums::MAX_AXIS+TeleopControlMappingEnums::LEFT_TRIGGER]     = new AnalogAxis(m_xbox, XboxController::Axis::kLeftTrigger, false);
-        m_axis[inx*TeleopControlMappingEnums::MAX_AXIS+TeleopControlMappingEnums::RIGHT_TRIGGER]    = new AnalogAxis(m_xbox, XboxController::Axis::kRightTrigger, false);
+    // Create Axis Objects
+    m_axis[TeleopControlMappingEnums::LEFT_JOYSTICK_X] = new AnalogAxis(m_xbox, XboxController::Axis::kLeftX, false);
+    m_axis[TeleopControlMappingEnums::LEFT_JOYSTICK_Y]  = new AnalogAxis(m_xbox, XboxController::Axis::kLeftY, true);
+    m_axis[TeleopControlMappingEnums::LEFT_JOYSTICK_X]->DefinePerpendicularAxis(m_axis[TeleopControlMappingEnums::LEFT_JOYSTICK_Y]);
+    m_axis[TeleopControlMappingEnums::LEFT_JOYSTICK_Y]->DefinePerpendicularAxis(m_axis[TeleopControlMappingEnums::LEFT_JOYSTICK_X]);
+    
+    m_axis[TeleopControlMappingEnums::LEFT_TRIGGER]     = new AnalogAxis(m_xbox, XboxController::Axis::kLeftTrigger, false);
+    m_axis[TeleopControlMappingEnums::RIGHT_TRIGGER]    = new AnalogAxis(m_xbox, XboxController::Axis::kRightTrigger, false);
 
-        m_axis[inx*TeleopControlMappingEnums::MAX_AXIS+TeleopControlMappingEnums::RIGHT_JOYSTICK_X] = new AnalogAxis(m_xbox, XboxController::Axis::kRightX, false);
-        m_axis[inx*TeleopControlMappingEnums::MAX_AXIS+TeleopControlMappingEnums::RIGHT_JOYSTICK_Y] = new AnalogAxis(m_xbox, XboxController::Axis::kRightY, true);
-        m_axis[inx*TeleopControlMappingEnums::MAX_AXIS+TeleopControlMappingEnums::RIGHT_JOYSTICK_X]->DefinePerpendicularAxis(m_axis[TeleopControlMappingEnums::RIGHT_JOYSTICK_Y]);
-        m_axis[inx*TeleopControlMappingEnums::MAX_AXIS+TeleopControlMappingEnums::RIGHT_JOYSTICK_Y]->DefinePerpendicularAxis(m_axis[TeleopControlMappingEnums::RIGHT_JOYSTICK_X]);
+    m_axis[TeleopControlMappingEnums::RIGHT_JOYSTICK_X] = new AnalogAxis(m_xbox, XboxController::Axis::kRightX, false);
+    m_axis[TeleopControlMappingEnums::RIGHT_JOYSTICK_Y] = new AnalogAxis(m_xbox, XboxController::Axis::kRightY, true);
+    m_axis[TeleopControlMappingEnums::RIGHT_JOYSTICK_X]->DefinePerpendicularAxis(m_axis[TeleopControlMappingEnums::RIGHT_JOYSTICK_Y]);
+    m_axis[TeleopControlMappingEnums::RIGHT_JOYSTICK_Y]->DefinePerpendicularAxis(m_axis[TeleopControlMappingEnums::RIGHT_JOYSTICK_X]);
 
-        // Create DigitalButton Objects for the physical buttons
-        m_button[inx*TeleopControlMappingEnums::MAX_BUTTONS+TeleopControlMappingEnums::A_BUTTON]            = new DigitalButton(m_xbox, XboxController::Button::kA);
-        m_button[inx*TeleopControlMappingEnums::MAX_BUTTONS+TeleopControlMappingEnums::B_BUTTON]            = new DigitalButton(m_xbox, XboxController::Button::kB);
-        m_button[inx*TeleopControlMappingEnums::MAX_BUTTONS+TeleopControlMappingEnums::X_BUTTON]            = new DigitalButton(m_xbox, XboxController::Button::kX);
-        m_button[inx*TeleopControlMappingEnums::MAX_BUTTONS+TeleopControlMappingEnums::Y_BUTTON]            = new DigitalButton(m_xbox, XboxController::Button::kY);
-        m_button[inx*TeleopControlMappingEnums::MAX_BUTTONS+TeleopControlMappingEnums::LEFT_BUMPER]         = new DigitalButton(m_xbox, XboxController::Button::kLeftBumper);
-        m_button[inx*TeleopControlMappingEnums::MAX_BUTTONS+TeleopControlMappingEnums::RIGHT_BUMPER]        = new DigitalButton(m_xbox, XboxController::Button::kRightBumper);
-        m_button[inx*TeleopControlMappingEnums::MAX_BUTTONS+TeleopControlMappingEnums::SELECT_BUTTON]       = new DigitalButton(m_xbox, XboxController::Button::kBack);
-        m_button[inx*TeleopControlMappingEnums::MAX_BUTTONS+TeleopControlMappingEnums::START_BUTTON]        = new DigitalButton(m_xbox, XboxController::Button::kStart);
-        m_button[inx*TeleopControlMappingEnums::MAX_BUTTONS+TeleopControlMappingEnums::LEFT_STICK_PRESSED]  = new DigitalButton(m_xbox, XboxController::Button::kLeftStick);
-        m_button[inx*TeleopControlMappingEnums::MAX_BUTTONS+TeleopControlMappingEnums::RIGHT_STICK_PRESSED] = new DigitalButton(m_xbox, XboxController::Button::kRightStick);
-        
-        // Create AnalogButton Objects for the triggers
-        m_button[inx*TeleopControlMappingEnums::MAX_BUTTONS+TeleopControlMappingEnums::LEFT_TRIGGER_PRESSED] = new AnalogButton(m_axis[TeleopControlMappingEnums::LEFT_TRIGGER]);
-        m_button[inx*TeleopControlMappingEnums::MAX_BUTTONS+TeleopControlMappingEnums::RIGHT_TRIGGER_PRESSED] = new AnalogButton(m_axis[TeleopControlMappingEnums::RIGHT_TRIGGER]);
+    // Create DigitalButton Objects for the physical buttons
+    m_button[TeleopControlMappingEnums::A_BUTTON]            = new DigitalButton(m_xbox, XboxController::Button::kA);
+    m_button[TeleopControlMappingEnums::B_BUTTON]            = new DigitalButton(m_xbox, XboxController::Button::kB);
+    m_button[TeleopControlMappingEnums::X_BUTTON]            = new DigitalButton(m_xbox, XboxController::Button::kX);
+    m_button[TeleopControlMappingEnums::Y_BUTTON]            = new DigitalButton(m_xbox, XboxController::Button::kY);
+    m_button[TeleopControlMappingEnums::LEFT_BUMPER]         = new DigitalButton(m_xbox, XboxController::Button::kLeftBumper);
+    m_button[TeleopControlMappingEnums::RIGHT_BUMPER]        = new DigitalButton(m_xbox, XboxController::Button::kRightBumper);
+    m_button[TeleopControlMappingEnums::SELECT_BUTTON]       = new DigitalButton(m_xbox, XboxController::Button::kBack);
+    m_button[TeleopControlMappingEnums::START_BUTTON]        = new DigitalButton(m_xbox, XboxController::Button::kStart);
+    m_button[TeleopControlMappingEnums::LEFT_STICK_PRESSED]  = new DigitalButton(m_xbox, XboxController::Button::kLeftStick);
+    m_button[TeleopControlMappingEnums::RIGHT_STICK_PRESSED] = new DigitalButton(m_xbox, XboxController::Button::kRightStick);
+    
+    // Create AnalogButton Objects for the triggers
+    m_button[TeleopControlMappingEnums::LEFT_TRIGGER_PRESSED] = new AnalogButton(m_axis[TeleopControlMappingEnums::LEFT_TRIGGER]);
+    m_button[TeleopControlMappingEnums::RIGHT_TRIGGER_PRESSED] = new AnalogButton(m_axis[TeleopControlMappingEnums::RIGHT_TRIGGER]);
 
-        // Create POVButton Objects for the POV
+    // Create POVButton Objects for the POV
 
-        m_button[inx*TeleopControlMappingEnums::MAX_BUTTONS+TeleopControlMappingEnums::POV_0]   = new POVButton(m_xbox, 0);
-        m_button[inx*TeleopControlMappingEnums::MAX_BUTTONS+TeleopControlMappingEnums::POV_45]  = new POVButton(m_xbox, 45);
-        m_button[inx*TeleopControlMappingEnums::MAX_BUTTONS+TeleopControlMappingEnums::POV_90]  = new POVButton(m_xbox, 90);
-        m_button[inx*TeleopControlMappingEnums::MAX_BUTTONS+TeleopControlMappingEnums::POV_135] = new POVButton(m_xbox, 135);
-        m_button[inx*TeleopControlMappingEnums::MAX_BUTTONS+TeleopControlMappingEnums::POV_180] = new POVButton(m_xbox, 180);
-        m_button[inx*TeleopControlMappingEnums::MAX_BUTTONS+TeleopControlMappingEnums::POV_225] = new POVButton(m_xbox, 225);
-        m_button[inx*TeleopControlMappingEnums::MAX_BUTTONS+TeleopControlMappingEnums::POV_270] = new POVButton(m_xbox, 270);
-        m_button[inx*TeleopControlMappingEnums::MAX_BUTTONS+TeleopControlMappingEnums::POV_315] = new POVButton(m_xbox, 315);
-    }
+    m_button[TeleopControlMappingEnums::POV_0]   = new POVButton(m_xbox, 0);
+    m_button[TeleopControlMappingEnums::POV_45]  = new POVButton(m_xbox, 45);
+    m_button[TeleopControlMappingEnums::POV_90]  = new POVButton(m_xbox, 90);
+    m_button[TeleopControlMappingEnums::POV_135] = new POVButton(m_xbox, 135);
+    m_button[TeleopControlMappingEnums::POV_180] = new POVButton(m_xbox, 180);
+    m_button[TeleopControlMappingEnums::POV_225] = new POVButton(m_xbox, 225);
+    m_button[TeleopControlMappingEnums::POV_270] = new POVButton(m_xbox, 270);
+    m_button[TeleopControlMappingEnums::POV_315] = new POVButton(m_xbox, 315);
 }
 
 DragonXBox::~DragonXBox()

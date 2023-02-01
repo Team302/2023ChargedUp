@@ -30,8 +30,8 @@
 #include <chassis/IChassis.h>
 #include <hw/DragonPigeon.h>
 #include <gamepad/IDragonGamePad.h>
-#include <TeleopControl.h>
-#include <TeleopControlFunctions.h>
+#include <teleopcontrol/TeleopControl.h>
+#include <teleopcontrol/TeleopControlFunctions.h>
 #include <State.h>
 #include <chassis/ChassisFactory.h>
 #include <hw/factories/PigeonFactory.h>
@@ -60,6 +60,7 @@ HolonomicDrive::HolonomicDrive() : State(string("HolonomicDrive"), -1),
 /// @return void
 void HolonomicDrive::Init()
 {
+    /**
     auto controller = GetController();
     if (controller != nullptr)
     {
@@ -75,7 +76,7 @@ void HolonomicDrive::Init()
         controller->SetDeadBand(TeleopControlFunctions::HOLONOMIC_DRIVE_ROTATE, TeleopControlMappingEnums::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND);
         controller->SetAxisScaleFactor(TeleopControlFunctions::HOLONOMIC_DRIVE_ROTATE, 0.5);
     }
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("HolonomicDrive::Init"), string("end"));   
+    **/
 }
 
 /// @brief calculate the output for the wheels on the chassis from the throttle and steer components
