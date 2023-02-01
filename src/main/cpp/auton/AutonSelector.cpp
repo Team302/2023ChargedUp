@@ -106,7 +106,7 @@ string AutonSelector::GetStartPos()
 	return	std::string("Coop");
 	
 	}
-	else (m_startpos.compare("Gridhp"));
+	else //(m_startpos.compare("Gridhp"));
 	{
 		return std::string("Hp");
 	}
@@ -128,7 +128,7 @@ string AutonSelector::GetNumofPiecesinauton()
 	{
 		return std::string("Three");
 	}
-	else (m_numofgamepiece.compare("4"));
+	else //(m_numofgamepiece.compare("4"));
 	{
 		return std::string("Four");
 	}
