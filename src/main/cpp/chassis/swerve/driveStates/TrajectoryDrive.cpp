@@ -27,8 +27,8 @@ using frc::Pose2d;
 TrajectoryDrive::TrajectoryDrive(RobotDrive* robotDrive) : RobotDrive(),
     m_trajectory(),
     m_robotDrive(robotDrive),
-    m_holonomicController(frc2::PIDController{0.5, 0, 0},
-                          frc2::PIDController{0.5, 0, 0},
+    m_holonomicController(frc2::PIDController{0.5, 0.1, 0},
+                          frc2::PIDController{0.5, 0.1, 0},
                           frc::ProfiledPIDController<units::radian>{0.0, 0, 0,
                           frc::TrapezoidProfile<units::radian>::Constraints{0_rad_per_s, 0_rad_per_s / 1_s}}),
     m_desiredState(),
@@ -124,37 +124,14 @@ bool TrajectoryDrive::IsDone()
     if (!m_trajectoryStates.empty()) //If we have states... 
     {
         auto curPos = ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose();
-        
+
         // Check if the current pose and the trajectory's final pose are the same
-        if (IsSamePose(curPos, m_finalState.pose, 100.0))
+        if (IsSamePose(curPos, m_finalState.pose, 10.0))
         {
             isDone = true;
             m_whyDone = "Current Pose = Trajectory final pose";
         }
         
-        if ( !isDone )
-        {
-            // Now check if the current pose is getting closer or farther from the target pose 
-            auto trans =  m_finalState.pose - curPos;
-            auto thisDeltaX = trans.X().to<double>();
-            auto thisDeltaY = trans.Y().to<double>();
-            if (abs(trans.X().to<double>()) < m_delta.X().to<double>() && abs(trans.Y().to<double>()) < m_delta.Y().to<double>())
-            {   // Getting closer so just update the deltas
-                m_delta.X() = units::length::meter_t(thisDeltaX);
-                m_delta.Y() = units::length::meter_t(thisDeltaY);
-            }
-            else
-            {   // Getting farther away:  determine if it is because of the path curvature (not straight line between start and the end)
-                // or because we went past the target (in this case, we are done)
-                // Assume that once we get within a third of a meter (just under 12 inches), if we get
-                // farther away we are passing the target, so we should stop.  Otherwise, keep trying.
-                if ((abs(m_delta.X().to<double>()) < 0.05 && abs(m_delta.Y().to<double>()) < 0.05))
-                {
-                    isDone = true;
-                    m_whyDone = "Within 12 inches of target or getting farther away from target";
-                }
-            }
-        }       
     }
     else
     {
@@ -169,10 +146,10 @@ bool TrajectoryDrive::IsDone()
 bool TrajectoryDrive::IsSamePose(frc::Pose2d currentPose, frc::Pose2d previousPose, double tolerance)
 {
     // Detect if the two poses are the same within a tolerance
-    double dCurPosX = currentPose.X().to<double>() * 1000; //cm
-    double dCurPosY = currentPose.Y().to<double>() * 1000;
-    double dPrevPosX = previousPose.X().to<double>() * 1000;
-    double dPrevPosY = previousPose.Y().to<double>() * 1000;
+    double dCurPosX = currentPose.X().to<double>() * 100; //cm
+    double dCurPosY = currentPose.Y().to<double>() * 100;
+    double dPrevPosX = previousPose.X().to<double>() * 100;
+    double dPrevPosY = previousPose.Y().to<double>() * 100;
 
     double dDeltaX = abs(dPrevPosX - dCurPosX);
     double dDeltaY = abs(dPrevPosY - dCurPosY);

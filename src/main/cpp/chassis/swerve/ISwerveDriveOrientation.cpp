@@ -15,7 +15,7 @@
 
 //Team302 Includes
 #include <chassis/swerve/headingStates/ISwerveDriveOrientation.h>
-//#include <chassis/swerve/SwerveOdometry.h>
+#include <chassis/ChassisFactory.h>
 #include <utils/AngleUtils.h>
 
 ISwerveDriveOrientation::ISwerveDriveOrientation(ChassisOptionEnums::HeadingOption headingOption
@@ -26,9 +26,9 @@ ISwerveDriveOrientation::ISwerveDriveOrientation(ChassisOptionEnums::HeadingOpti
 
 units::angular_velocity::degrees_per_second_t ISwerveDriveOrientation::CalcHeadingCorrection(units::angle::degree_t targetAngle, double kP)
 {
-    //auto currentAngle = SwerveOdometry::GetInstance()->GetPose().Rotation().Degrees();
-    //auto errorAngle = AngleUtils::GetEquivAngle(AngleUtils::GetDeltaAngle(currentAngle, targetAngle));
-    auto errorAngle = units::angle::degree_t(0.0);
+    auto currentAngle = ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose().Rotation().Degrees();
+    auto errorAngle = AngleUtils::GetEquivAngle(AngleUtils::GetDeltaAngle(currentAngle, targetAngle));
+    
     auto correction = units::angular_velocity::degrees_per_second_t(errorAngle.to<double>()*kP);
 
     return correction;
