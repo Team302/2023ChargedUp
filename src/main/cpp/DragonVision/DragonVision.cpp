@@ -50,13 +50,11 @@ DragonVision* DragonVision::GetDragonVision
 DragonVision::DragonVision(std::string stateName, int stateId): State(stateName, stateId),
 						   m_frontDragonLimelight(LimelightFactory::GetLimelightFactory()->GetLimelight())			
 {
-	map<LIMELIGHT_STATES, LimelightState*> limelightstates;
-	limelightstates[RETROREFLECTIVE] = new RetroReflective(m_frontDragonLimelight);
-	limelightstates[APRILTAG] = new AprilTag(m_frontDragonLimelight);
-	limelightstates[CUBE] = new Cube(m_frontDragonLimelight);
-	limelightstates[CONE] = new Cone(m_frontDragonLimelight);
+	m_limelightstates[RETROREFLECTIVE] = new RetroReflective(m_frontDragonLimelight);
+	m_limelightstates[APRILTAG] = new AprilTag(m_frontDragonLimelight);
+	m_limelightstates[CUBE] = new Cube(m_frontDragonLimelight);
+	m_limelightstates[CONE] = new Cone(m_frontDragonLimelight);
 }
-
 void DragonVision::Init() 
 {
 
@@ -76,84 +74,124 @@ void DragonVision::Run()
 
 void DragonVision::SetLimelightStates(DragonVision::LIMELIGHT_STATES limelightstate)
 {
-    
-}
+    m_currentstate = m_limelightstates[limelightstate];
+} 
 
+void DragonVision::SetCurrentState(DragonVision::LIMELIGHT_STATES limelightstate)
+{
+	auto itr = m_limelightstates.find(LIMELIGHT_STATES::CUBE);
+	if (itr != m_limelightstates.end())
+	{
+		if (m_currentstate != itr->second)
+		{
+			m_currentstate = itr->second;
+		}
+	}
+}
 
 //Aligned-with functions
 
-bool DragonVision::AlignedWithCubeNode() const
+bool DragonVision::AlignedWithCubeNode()
 {
-return m_frontDragonLimelight->HasTarget();
+	SetCurrentState(LIMELIGHT_STATES::APRILTAG);
+
+	return m_frontDragonLimelight->HasTarget();
 }
-bool DragonVision::AlignedWithConeNode() const
+bool DragonVision::AlignedWithConeNode() 
 {
+	SetCurrentState(LIMELIGHT_STATES::RETROREFLECTIVE);
 return m_frontDragonLimelight->HasTarget();
 }
 
-bool DragonVision::AlignedWithSubstation() const
+bool DragonVision::AlignedWithSubstation() 
 {
+	SetCurrentState(LIMELIGHT_STATES::APRILTAG);
 return m_frontDragonLimelight->HasTarget();
 }
-bool DragonVision::AlignedWithCubeGamePiece() const
+
+bool DragonVision::AlignedWithCubeGamePiece() 
 {
+	SetCurrentState(LIMELIGHT_STATES::CUBE);
 return m_frontDragonLimelight->HasTarget();
 }   
-bool DragonVision::AlignedWithConeGamePiece() const
+
+bool DragonVision::AlignedWithConeGamePiece() 
 {
+	SetCurrentState(LIMELIGHT_STATES::CONE);
 return m_frontDragonLimelight->HasTarget();
 }
 
 // Distance methods
 
-units::length::inch_t DragonVision::DistanceFromCubeNode() const
+units::length::inch_t DragonVision::DistanceFromCubeNode() 
 {
+	SetCurrentState(LIMELIGHT_STATES::APRILTAG);
+
 return m_frontDragonLimelight->EstimateTargetDistance();
 }
-units::length::inch_t DragonVision::DistanceFromConeNode() const
+
+units::length::inch_t DragonVision::DistanceFromConeNode()
 {
+	SetCurrentState(LIMELIGHT_STATES::RETROREFLECTIVE);
 return m_frontDragonLimelight->EstimateTargetDistance();
 }
-units::length::inch_t DragonVision::DistanceFromSubstation() const
+
+units::length::inch_t DragonVision::DistanceFromSubstation() 
 {
+	SetCurrentState(LIMELIGHT_STATES::APRILTAG);
 return m_frontDragonLimelight->EstimateTargetDistance();
 }
-units::length::inch_t DragonVision::DistanceFromCubeGamePiece() const
+
+units::length::inch_t DragonVision::DistanceFromCubeGamePiece() 
 {
+	SetCurrentState(LIMELIGHT_STATES::CUBE);
 return m_frontDragonLimelight->EstimateTargetDistance();
 }
-units::length::inch_t DragonVision::DistanceFromConeGamePiece() const
+
+units::length::inch_t DragonVision::DistanceFromConeGamePiece() 
 {
+	SetCurrentState(LIMELIGHT_STATES::CONE);
 return m_frontDragonLimelight->EstimateTargetDistance();
 }
 
 //Angel Functions
 
 
-units::angle::degree_t DragonVision::AngleFromCubeNode() const
+units::angle::degree_t DragonVision::AngleFromCubeNode() 
 {
+	SetCurrentState(LIMELIGHT_STATES::APRILTAG);
+
 return m_frontDragonLimelight->GetTargetSkew();
 }
-units::angle::degree_t DragonVision::AngleFromConeNode() const
+
+units::angle::degree_t DragonVision::AngleFromConeNode() 
 {
+	SetCurrentState(LIMELIGHT_STATES::RETROREFLECTIVE);
 return m_frontDragonLimelight->GetTargetSkew();
 }
-units::angle::degree_t DragonVision::AngleFromCubeGamePiece() const
+
+units::angle::degree_t DragonVision::AngleFromCubeGamePiece() 
 {
+	SetCurrentState(LIMELIGHT_STATES::CUBE);
 return m_frontDragonLimelight->GetTargetSkew();
 } 
-units::angle::degree_t DragonVision::AngleFromConeGamePiece() const
+
+units::angle::degree_t DragonVision::AngleFromConeGamePiece() 
 {
+	SetCurrentState(LIMELIGHT_STATES::CONE);
+
 return m_frontDragonLimelight->GetTargetSkew();
 }
-units::angle::degree_t DragonVision::AngleFromSubstation() const
+
+units::angle::degree_t DragonVision::AngleFromSubstation() 
 {
+	SetCurrentState(LIMELIGHT_STATES::APRILTAG);
 return m_frontDragonLimelight->GetTargetSkew();
 }
 
 // position function
 
-int DragonVision::GetRobotPosition()  const
+int DragonVision::GetRobotPosition() const
 {
 	return 0;
 }

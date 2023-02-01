@@ -78,14 +78,6 @@ void Robot::RobotPeriodic()
         m_chassis->UpdateOdometry();
         m_field->UpdateRobotPosition(m_chassis->GetPose());
     }
-
-    if (m_startLogging)
-    {
-        LoggableItemMgr::GetInstance()->LogData();
-        Logger::GetLogger()->PeriodicLog();
-    }
-
-
     m_tuner->ListenForUpdates();
   
 }

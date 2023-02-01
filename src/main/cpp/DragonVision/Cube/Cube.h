@@ -36,8 +36,6 @@ class Cube : public LimelightState
     units::length::inch_t EstimateTargetDistance() const override;
     std::vector<double> Get3DSolve() const override;
     
-
-
  private: 
     DragonLimelight* m_dragonlimelight;
 };

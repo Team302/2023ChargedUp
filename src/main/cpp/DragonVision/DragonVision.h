@@ -19,6 +19,7 @@
 #include <map>
 #include <State.h>
 #include <hw/DragonLimelight.h>
+#include <DragonVision/LimelightState.h>
 class DragonLimelight;
 class DragonVision : public State
 {
@@ -32,37 +33,35 @@ class DragonVision : public State
             CUBE,
             CONE
         };
-    const std::string m_retroReflective = "STATE_RETROREFLECTIVE";
-    const std::string m_aprilTag = "STATE_APRILTAG";
-    const std::string m_cube = "STATE_CUBE";
-    const std::string m_cone = "STATE_CONE";
-
-    std::map<LIMELIGHT_STATES, DragonVision> limelightstates;
-
+    
     void Init() override;
     void Run() override;
     void Exit() override;
     bool AtTarget() const override;
 
-    bool AlignedWithCubeNode() const;
-    bool AlignedWithConeNode() const;
+    bool AlignedWithCubeNode();
+    bool AlignedWithConeNode();
 
-    bool AlignedWithSubstation() const;
-    bool AlignedWithCubeGamePiece() const;
-    bool AlignedWithConeGamePiece() const;
+    bool AlignedWithSubstation();
+    bool AlignedWithCubeGamePiece();
+    bool AlignedWithConeGamePiece();
 
-    units::length::inch_t DistanceFromCubeNode() const;
-    units::length::inch_t DistanceFromConeNode() const;
-    units::length::inch_t DistanceFromSubstation() const;
-    units::length::inch_t DistanceFromCubeGamePiece() const;
-    units::length::inch_t DistanceFromConeGamePiece() const;
+    units::length::inch_t DistanceFromCubeNode();
+    units::length::inch_t DistanceFromConeNode();
+    units::length::inch_t DistanceFromSubstation();
+    units::length::inch_t DistanceFromCubeGamePiece();
+    units::length::inch_t DistanceFromConeGamePiece();
 
-    units::angle::degree_t AngleFromCubeNode() const;
-    units::angle::degree_t AngleFromConeNode() const;
-    units::angle::degree_t AngleFromSubstation() const;
-    units::angle::degree_t AngleFromCubeGamePiece() const;
-    units::angle::degree_t AngleFromConeGamePiece() const;
+    units::angle::degree_t AngleFromCubeNode();
+    units::angle::degree_t AngleFromConeNode();
+    units::angle::degree_t AngleFromSubstation();
+    units::angle::degree_t AngleFromCubeGamePiece();
+    units::angle::degree_t AngleFromConeGamePiece();
 
+    void SetCurrentState
+    (
+        DragonVision::LIMELIGHT_STATES limelightstate
+    );
 
 
 
@@ -87,8 +86,10 @@ private:
     
 
     static DragonVision*	m_dragonVision;
-    DragonLimelight*           m_frontDragonLimelight;
-    
+    DragonLimelight*        m_frontDragonLimelight;
+    LimelightState*         m_currentstate;
+    std::map<LIMELIGHT_STATES, LimelightState*> m_limelightstates;
+
 };
 
 
