@@ -54,7 +54,8 @@ class DragonTrajectoryGenerator
             COLUMN_ONE,
             COLUMN_TWO,
             COLUMN_THREE,
-            HUMAN_PLAYER_SUBSTATION
+            HUMAN_PLAYER_SUBSTATION_LEFT,
+            HUMAN_PLAYER_SUBSTATION_RIGHT
         };
 
         DragonTrajectoryGenerator(units::meters_per_second_t maxVelocity,

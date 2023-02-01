@@ -2,7 +2,7 @@
 <!DOCTYPE auton SYSTEM "auton.dtd">
 <auton>
     <primitive id="RESET_POSITION"
-			   pathname="Straight1MSlow.wpilib.json"/>
+			   pathname="AtHomeStart.wpilib.json"/>
     <primitive id="DRIVE_PATH"
-               pathname="Straight1MSlow.wpilib.json"/>
+               pathname="AtHomeStart.wpilib.json"/>
 </auton>
