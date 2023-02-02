@@ -44,7 +44,7 @@
         case BLUE:
             return {0,0,255};
         case YELLOW:
-            return {204,204,0};   
+            return {255,160,0};   
         case PURPLE:
             return {75,0,130};
         case AZUL:

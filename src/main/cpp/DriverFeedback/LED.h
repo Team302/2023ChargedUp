@@ -24,7 +24,7 @@ class LED
         LED(int PWMport);
 
 
-        enum Colors{RED, GREEN, BLUE, PURPLE, YELLOW, AZUL, BLACK, WHITE, GRAY, MAX_STATE};
+        enum Colors{RED, GREEN, BLUE, PURPLE, YELLOW, AZUL, BLACK, WHITE, MAX_STATE};
 
         static constexpr int kLength = 15;
 

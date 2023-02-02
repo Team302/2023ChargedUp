@@ -16,14 +16,22 @@
 
 #pragma once
 #include <DriverFeedback/LEDStates.h>
-#include <DriverFeedback/DriverFeedbackStruct.h>
 
 class DriverFeedback
 {
 	public:
     LEDStates* m_LEDStates = LEDStates::GetInstance();
-    void UpdateFeedback(const DriveteamFeedbackOptions& options);
-   
+    void UpdateFeedback();
+    void isAlignedWithConeNode(bool AlignedWithConeNode);
+    void isAlignedWithCubeNode(bool AlignedWithCubeNode);
+    void isGamePieceInGrabber(bool GamePieceInGrabber);
+    void isWantCone(bool WantCone);
+    void isWantCube(bool WantCube);
+    void isGamePieceReadyToPickUp(bool GamePieceReadyToPickUp);
+     static DriverFeedback* GetInstance();
+
+
+
     private:
     enum DriverFeedbackStates
     {
@@ -36,6 +44,16 @@ class DriverFeedback
      NONE
      
     };
+
+
+    bool m_WantCube = false;
+    bool m_WantCone = false;
+    bool m_GamePieceReadyToPickUp = false;
+    bool m_GamePieceInGrabber = false;
+    bool m_AlignedWithConeNode = false;
+    bool m_AlignedWithCubeNode = false;
+
+    static DriverFeedback* m_instance;
 
     DriverFeedbackStates currentState = DriverFeedbackStates::NONE;
 

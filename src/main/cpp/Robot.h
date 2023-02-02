@@ -52,7 +52,7 @@ class Robot : public frc::TimedRobot
         HolonomicDrive*       m_holonomic;
         ArcadeDrive*          m_arcade;
         DragonLimelight*      m_dragonLimeLight;
-        DriverFeedback*       m_driverfeedback = new DriverFeedback();
+        DriverFeedback*       m_driverfeedback = DriverFeedback::GetInstance();
         
         AdjustableItemMgr*    m_tuner;
         FMSData*              m_fmsData;
