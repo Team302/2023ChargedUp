@@ -104,9 +104,8 @@ std::array<frc::SwerveModuleState, 4> TrajectoryDrive::UpdateSwerveModuleStates
 
         if (currentOrientationState != nullptr)
         {
-            currentOrientationState->UpdateChassisSpeeds(chassisMovement);
             currentOrientationState->SetStoredHeading(drivePathAngle);
-
+            currentOrientationState->UpdateChassisSpeeds(chassisMovement);
         }
         //Set chassisMovement speeds that will be used by RobotDrive
 
