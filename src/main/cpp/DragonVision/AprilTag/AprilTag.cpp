@@ -93,7 +93,6 @@ double AprilTag::GetTargetArea() const
 
 units::angle::degree_t AprilTag::GetTargetSkew() const
 {
- //   auto nt = m_networktable.get();
     if (m_networktable != nullptr)
     {
         return units::angle::degree_t(m_networktable->GetNumber("ts", 0.0));
@@ -111,10 +110,13 @@ units::time::microsecond_t AprilTag::GetPipelineLatency() const
     return units::time::second_t(0.0);
 }
 
-std::vector<double> AprilTag::Get3DSolve() const
+frc::Pose2d AprilTag::GetRobotPose() const
 {
-    std::vector<double> output;
-    return output;
+    if(m_networktable != nullptr)
+    {
+        auto arrayTopic = m_networktable->GetDoubleArrayTopic("botpose");
+        /// @TODO: get pose2d from the array
+    }
 }
 
 units::length::inch_t AprilTag::EstimateTargetDistance() const

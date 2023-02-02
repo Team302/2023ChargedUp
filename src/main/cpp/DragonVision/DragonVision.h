@@ -76,12 +76,6 @@ private:
     
     DragonVision(std::string     stateName,
                 int              stateId
-                /**d::unordered_map<LIMELIGHT_STATES, DragonVision> limelightstate)
-                {
-                    auto Retro = new (m_retroReflective);
-                    limelightstate[m_retroReflective] = Retro;
-                }
-                */
                 );
     
 
@@ -89,7 +83,7 @@ private:
     DragonLimelight*        m_frontDragonLimelight;
     LimelightState*         m_currentstate;
     std::map<LIMELIGHT_STATES, LimelightState*> m_limelightstates;
-
+    double                  m_tolerance = 2.0;  //allows for 2 degrees of error
 };
 
 

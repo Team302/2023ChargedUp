@@ -14,10 +14,13 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
+//FRC Includes
+#include <frc/geometry/Pose2d.h>
 
-
+//Team 302 Includes
 #include <DragonVision/LimelightState.h>
 #include <utils/Logger.h>
+
 class DragonVIsion;
 class AprilTag : public LimelightState
 {
@@ -34,9 +37,8 @@ class AprilTag : public LimelightState
     units::angle::degree_t GetTargetSkew() const override;
     units::time::microsecond_t GetPipelineLatency() const override;
     units::length::inch_t EstimateTargetDistance() const override;
-    std::vector<double> Get3DSolve() const override;
+    frc::Pose2d GetRobotPose() const;
 
-    //
     private:
     DragonLimelight* m_dragonlimelight;
 };

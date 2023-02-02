@@ -55,7 +55,6 @@ class LimelightState
         virtual units::angle::degree_t GetTargetSkew() const = 0;
         virtual units::time::microsecond_t GetPipelineLatency() const = 0;
         virtual units::length::inch_t EstimateTargetDistance() const = 0;
-        virtual std::vector<double> Get3DSolve() const = 0;
 
     protected:
         units::angle::degree_t GetTx() const;

@@ -111,12 +111,6 @@ units::time::microsecond_t Cone::GetPipelineLatency() const
     return units::time::second_t(0.0);
 }
 
-std::vector<double> Cone::Get3DSolve() const
-{
-    std::vector<double> output;
-    return output;
-}
-
 units::length::inch_t Cone::EstimateTargetDistance() const
 {
     units::angle::degree_t angleFromHorizon = (m_limelight->GetMountingAngle() + GetTargetVerticalOffset());

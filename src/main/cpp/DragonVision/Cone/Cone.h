@@ -34,10 +34,7 @@ class Cone : public LimelightState
     units::angle::degree_t GetTargetSkew() const override;
     units::time::microsecond_t GetPipelineLatency() const override;
     units::length::inch_t EstimateTargetDistance() const override;
-    std::vector<double> Get3DSolve() const override;
     
-
-
  private: 
     DragonLimelight* m_dragonlimelight;
 };

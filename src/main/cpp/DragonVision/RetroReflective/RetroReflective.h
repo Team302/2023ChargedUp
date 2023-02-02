@@ -33,10 +33,7 @@ class RetroReflective : public LimelightState
     double GetTargetArea() const override;
     units::angle::degree_t GetTargetSkew() const override;
     units::time::microsecond_t GetPipelineLatency() const override;
-    units::length::inch_t EstimateTargetDistance() const override;
-    std::vector<double> Get3DSolve() const override;
-    
-
+    units::length::inch_t EstimateTargetDistance() const override; 
 
  private: 
     DragonLimelight* m_dragonlimelight;

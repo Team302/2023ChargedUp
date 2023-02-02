@@ -33,9 +33,6 @@ bool Cube::HasTarget() const
     return false;
 }
 
-
-
-
 units::angle::degree_t Cube::GetTargetHorizontalOffset() const
 {
     
@@ -109,12 +106,6 @@ units::time::microsecond_t Cube::GetPipelineLatency() const
         return units::time::second_t(nt->GetNumber("tl", 0.0));
     }
     return units::time::second_t(0.0);
-}
-
-std::vector<double> Cube::Get3DSolve() const
-{
-    std::vector<double> output;
-    return output;
 }
 
 units::length::inch_t Cube::EstimateTargetDistance() const

@@ -95,30 +95,69 @@ bool DragonVision::AlignedWithCubeNode()
 {
 	SetCurrentState(LIMELIGHT_STATES::APRILTAG);
 
-	return m_frontDragonLimelight->HasTarget();
+	if(m_currentstate->HasTarget())
+	{
+		return m_currentstate->GetTargetHorizontalOffset().to<double>() < m_tolerance;
+	}
+	else
+	{
+		return false;
+	}
 }
 bool DragonVision::AlignedWithConeNode() 
 {
 	SetCurrentState(LIMELIGHT_STATES::RETROREFLECTIVE);
-return m_frontDragonLimelight->HasTarget();
+	
+	if(m_currentstate->HasTarget())
+	{
+		return m_currentstate->GetTargetHorizontalOffset().to<double>() < m_tolerance;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 bool DragonVision::AlignedWithSubstation() 
 {
 	SetCurrentState(LIMELIGHT_STATES::APRILTAG);
-return m_frontDragonLimelight->HasTarget();
+
+	if(m_currentstate->HasTarget())
+	{
+		return m_currentstate->GetTargetHorizontalOffset().to<double>() < m_tolerance;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 bool DragonVision::AlignedWithCubeGamePiece() 
 {
 	SetCurrentState(LIMELIGHT_STATES::CUBE);
-return m_frontDragonLimelight->HasTarget();
+
+	if(m_currentstate->HasTarget())
+	{
+		return m_currentstate->GetTargetHorizontalOffset().to<double>() < m_tolerance;
+	}
+	else
+	{
+		return false;
+	}
 }   
 
 bool DragonVision::AlignedWithConeGamePiece() 
 {
 	SetCurrentState(LIMELIGHT_STATES::CONE);
-return m_frontDragonLimelight->HasTarget();
+
+	if(m_currentstate->HasTarget())
+	{
+		return m_currentstate->GetTargetHorizontalOffset().to<double>() < m_tolerance;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 // Distance methods
@@ -127,66 +166,141 @@ units::length::inch_t DragonVision::DistanceFromCubeNode()
 {
 	SetCurrentState(LIMELIGHT_STATES::APRILTAG);
 
-return m_frontDragonLimelight->EstimateTargetDistance();
+	if(m_currentstate->HasTarget())
+	{
+		return m_currentstate->EstimateTargetDistance();
+	}
+	else
+	{
+		return units::length::inch_t(-1.0);
+	}
 }
 
 units::length::inch_t DragonVision::DistanceFromConeNode()
 {
 	SetCurrentState(LIMELIGHT_STATES::RETROREFLECTIVE);
-return m_frontDragonLimelight->EstimateTargetDistance();
+
+	if(m_currentstate->HasTarget())
+	{
+		return m_currentstate->EstimateTargetDistance();
+	}
+	else
+	{
+		return units::length::inch_t(-1.0);
+	}
 }
 
 units::length::inch_t DragonVision::DistanceFromSubstation() 
 {
 	SetCurrentState(LIMELIGHT_STATES::APRILTAG);
-return m_frontDragonLimelight->EstimateTargetDistance();
+
+	if(m_currentstate->HasTarget())
+	{
+		return m_currentstate->EstimateTargetDistance();
+	}
+	else
+	{
+		return units::length::inch_t(-1.0);
+	}
 }
 
 units::length::inch_t DragonVision::DistanceFromCubeGamePiece() 
 {
 	SetCurrentState(LIMELIGHT_STATES::CUBE);
-return m_frontDragonLimelight->EstimateTargetDistance();
+
+	if(m_currentstate->HasTarget())
+	{
+		return m_currentstate->EstimateTargetDistance();
+	}
+	else
+	{
+		return units::length::inch_t(-1.0);
+	}
 }
 
 units::length::inch_t DragonVision::DistanceFromConeGamePiece() 
 {
 	SetCurrentState(LIMELIGHT_STATES::CONE);
-return m_frontDragonLimelight->EstimateTargetDistance();
+
+	if(m_currentstate->HasTarget())
+	{
+		return m_currentstate->EstimateTargetDistance();
+	}
+	else
+	{
+		return units::length::inch_t(-1.0);
+	}
 }
 
-//Angel Functions
-
-
+//Angle Functions
 units::angle::degree_t DragonVision::AngleFromCubeNode() 
 {
 	SetCurrentState(LIMELIGHT_STATES::APRILTAG);
 
-return m_frontDragonLimelight->GetTargetSkew();
+	if(m_currentstate->HasTarget())
+	{
+		return m_currentstate->GetTargetHorizontalOffset();
+	}
+	else
+	{
+		return units::angle::degree_t(180.0); //default "no-target" value
+	}
 }
 
 units::angle::degree_t DragonVision::AngleFromConeNode() 
 {
 	SetCurrentState(LIMELIGHT_STATES::RETROREFLECTIVE);
-return m_frontDragonLimelight->GetTargetSkew();
+
+	if(m_currentstate->HasTarget())
+	{
+		return m_currentstate->GetTargetHorizontalOffset();
+	}
+	else
+	{
+		return units::angle::degree_t(180.0); //default "no-target" value
+	}
 }
 
 units::angle::degree_t DragonVision::AngleFromCubeGamePiece() 
 {
 	SetCurrentState(LIMELIGHT_STATES::CUBE);
-return m_frontDragonLimelight->GetTargetSkew();
+
+	if(m_currentstate->HasTarget())
+	{
+		return m_currentstate->GetTargetHorizontalOffset();
+	}
+	else
+	{
+		return units::angle::degree_t(180.0); //default "no-target" value
+	}
 } 
 
 units::angle::degree_t DragonVision::AngleFromConeGamePiece() 
 {
 	SetCurrentState(LIMELIGHT_STATES::CONE);
 
-return m_frontDragonLimelight->GetTargetSkew();
+	if(m_currentstate->HasTarget())
+	{
+		return m_currentstate->GetTargetHorizontalOffset();
+	}
+	else
+	{
+		return units::angle::degree_t(180.0); //default "no-target" value
+	}
 }
 
 units::angle::degree_t DragonVision::AngleFromSubstation() 
 {
 	SetCurrentState(LIMELIGHT_STATES::APRILTAG);
-return m_frontDragonLimelight->GetTargetSkew();
+
+	if(m_currentstate->HasTarget())
+	{
+		return m_currentstate->GetTargetHorizontalOffset();
+	}
+	else
+	{
+		return units::angle::degree_t(180.0); //default "no-target" value
+	}
 }
 
 // position function
