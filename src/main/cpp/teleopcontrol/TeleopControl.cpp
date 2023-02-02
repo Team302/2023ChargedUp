@@ -31,7 +31,6 @@
 #include <gamepad/DragonXBox.h>
 #include <gamepad/DragonGamePad.h>
 #include <teleopcontrol/TeleopControl.h>
-//#include <teleopcontrol/TeleopControlMap.h>
 #include <teleopcontrol/TeleopControlFunctions.h>
 #include <frc/DriverStation.h>
 #include <utils/Logger.h>
@@ -336,6 +335,21 @@ void TeleopControl::SetRumble
 	if (m_controller[ controller ] != nullptr)
 	{
 		m_controller[ controller ]->SetRumble(leftRumble, rightRumble);
+	}
+}
+
+
+
+void TeleopControl::LogInformation() const
+{
+	for (auto itr=m_axisMap.begin(); itr!=m_axisMap.end(); ++itr)
+	{
+		Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("TeleopControl-axis"), std::to_string(itr->first) , GetAxisValue(itr->first));
+	}
+
+	for (auto itr=m_buttonMap.begin(); itr!=m_buttonMap.end(); ++itr)
+	{
+		Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("TeleopControl-button"), std::to_string(itr->first) , IsButtonPressed(itr->first));
 	}
 }
 
