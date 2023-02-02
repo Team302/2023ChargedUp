@@ -29,8 +29,8 @@
 
 //Team302 includes
 #include <auton/AutonSelector.h>
-
-
+#include <utils/Logger.h>
+#include <utils/FMSData.h>
 using namespace std;
 
 //---------------------------------------------------------------------
@@ -66,6 +66,8 @@ string AutonSelector::GetSelectedAutoFile()
 	autonfile += GetStartPos();
 	autonfile += GetNumofPiecesinauton();
 	autonfile += GetParkOnChargeStation();
+	autonfile += std::string (".xml");
+	Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("xml file"), std::string("interesting string Idea"),(autonfile));
 	return autonfile;
 }
 
@@ -75,7 +77,7 @@ string AutonSelector::GetParkOnChargeStation()
 {
 	return std::string("P");
 }
- else//(m_parkonchrgstat.compare("no"));
+ 	else//(m_parkonchrgstat.compare("no"));
 {
 	return std::string("Np");
 }
@@ -84,14 +86,19 @@ string AutonSelector::GetParkOnChargeStation()
 
 string AutonSelector::GetAlianceColor()
 {
-	if (m_alliancecolor.compare("Red"))
+	if (FMSData::GetInstance()->GetAllianceColor()==frc::DriverStation::Alliance::kRed)
 	{
 		return std::string("Red");
 	
 	}
-	else //(m_alliancecolor.compare("Blue"))
+	else if (FMSData::GetInstance()->GetAllianceColor()==frc::DriverStation::Alliance::kBlue)
 	{
 		return std::string("Blue");
+	}
+	else
+	{
+		Benisgoodatspelling = (false);
+		HasError =(true);
 	}
 }
 string AutonSelector::GetStartPos()
@@ -144,14 +151,14 @@ string AutonSelector::GetNumofPiecesinauton()
 void AutonSelector::PutChoicesOnDashboard()
 {
 	//choose to park on charging station or not
-	m_chrgstatchooser.SetDefaultOption("yes", m_parkonchrgstat);
+	m_chrgstatchooser.AddOption("yes", m_parkonchrgstat);
 	m_chrgstatchooser.AddOption("no", m_parkonchrgstat);
 	frc::SmartDashboard::PutData("prkonchrgstat", &m_chrgstatchooser);
 	
 	//alliance color
-	m_alliancecolorchooser.AddOption("Red", m_alliancecolor);
-	m_alliancecolorchooser.AddOption("Blue", m_alliancecolor);
-	frc::SmartDashboard::PutData("Alliance color", &m_alliancecolorchooser);
+	//m_alliancecolorchooser.AddOption("Red", m_alliancecolor);
+	//m_alliancecolorchooser.AddOption("Blue", m_alliancecolor);
+	//frc::SmartDashboard::PutData("Alliance color", &m_alliancecolorchooser);
 
 	//# of game pieces
 	m_startposchooser.AddOption("Gridcoop",m_startpos);
