@@ -51,6 +51,7 @@ class CyclePrimitives : public State
 		void Exit() override;
 	 	bool AtTarget() const override;
 
+		AutonSelector* GetAutonSelector() const {return m_autonSelector;};
 
 	protected:
 		void GetNextPrim();

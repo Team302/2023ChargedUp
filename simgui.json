@@ -1,0 +1,12 @@
+{
+  "NTProvider": {
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/SmartDashboard/Alliance If NO FMS": "String Chooser",
+      "/SmartDashboard/Auto Modes": "String Chooser",
+      "/SmartDashboard/Field": "Field2d",
+      "/SmartDashboard/Logging Levels": "String Chooser",
+      "/SmartDashboard/Logging Options": "String Chooser"
+    }
+  }
+}
