@@ -29,7 +29,7 @@ TrajectoryDrive::TrajectoryDrive(RobotDrive* robotDrive) : RobotDrive(),
     m_robotDrive(robotDrive),
     m_holonomicController(frc2::PIDController{0.5, 0.0, 0},
                           frc2::PIDController{0.5, 0.0, 0},
-                          frc::ProfiledPIDController<units::radian>{0.0, 0, 0,
+                          frc::ProfiledPIDController<units::radian>{0.45,0.0, 0,
                           frc::TrapezoidProfile<units::radian>::Constraints{0_rad_per_s, 0_rad_per_s / 1_s}}),
     m_desiredState(),
     m_trajectoryStates(),
@@ -88,9 +88,10 @@ std::array<frc::SwerveModuleState, 4> TrajectoryDrive::UpdateSwerveModuleStates
         frc::ChassisSpeeds refChassisSpeeds;
         refChassisSpeeds = m_holonomicController.Calculate( m_chassis->GetPose(),
                                                           m_desiredState, 
-                                                          m_desiredState.pose.Rotation());
+                                                          frc::Rotation2d(chassisMovement.yawAngle));
         //Set chassisMovement speeds that will be used by RobotDrive
         chassisMovement.chassisSpeeds = refChassisSpeeds;
+
         return m_robotDrive->UpdateSwerveModuleStates(chassisMovement);
 
     }
