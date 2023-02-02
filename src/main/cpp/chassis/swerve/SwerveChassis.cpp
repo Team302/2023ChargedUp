@@ -199,12 +199,6 @@ void SwerveChassis::Drive
     ChassisMovement             moveInfo 
 )
 {
-    m_currentOrientationState = GetHeadingState(moveInfo);
-    if (m_currentOrientationState != nullptr)
-    {
-        m_currentOrientationState->SetStoredHeading(moveInfo.yawAngle);
-        m_currentOrientationState->UpdateChassisSpeeds(moveInfo);
-    }
 
     m_currentDriveState = GetDriveState(moveInfo);
     if (m_currentDriveState != nullptr)
