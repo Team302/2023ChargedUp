@@ -100,6 +100,8 @@ std::array<frc::SwerveModuleState, 4> TrajectoryDrive::UpdateSwerveModuleStates
 
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Trajectory Drive", "Yaw Angle", chassisMovement.yawAngle.to<double>());
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Trajectory Drive", "DrivePath Angle", drivePathAngle.to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Trajectory Drive", "Chassis Heading Option", chassisMovement.headingOption);
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Trajectory Drive", "Current Or", currentOrientationState);
 
 
         if (currentOrientationState != nullptr)
