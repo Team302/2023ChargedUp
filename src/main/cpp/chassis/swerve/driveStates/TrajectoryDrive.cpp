@@ -86,19 +86,27 @@ std::array<frc::SwerveModuleState, 4> TrajectoryDrive::UpdateSwerveModuleStates
 
         // Use the controller to calculate the chassis speeds for getting there
         frc::ChassisSpeeds refChassisSpeeds;
+
+        auto drivePathAngle = chassisMovement.yawAngle;
+
         refChassisSpeeds = m_holonomicController.Calculate( m_chassis->GetPose(),
                                                           m_desiredState, 
                                                           frc::Rotation2d(chassisMovement.yawAngle));
-        chassisMovement.headingOption = ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE;
         chassisMovement.chassisSpeeds = refChassisSpeeds;
+        chassisMovement.headingOption = ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE;
 
         auto swerveChassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
         auto currentOrientationState =  swerveChassis->GetHeadingState(chassisMovement);
 
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Trajectory Drive", "Yaw Angle", chassisMovement.yawAngle.to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Trajectory Drive", "DrivePath Angle", drivePathAngle.to<double>());
+
+
         if (currentOrientationState != nullptr)
         {
-            currentOrientationState->SetStoredHeading(chassisMovement.yawAngle);
             currentOrientationState->UpdateChassisSpeeds(chassisMovement);
+            currentOrientationState->SetStoredHeading(drivePathAngle);
+
         }
         //Set chassisMovement speeds that will be used by RobotDrive
 
