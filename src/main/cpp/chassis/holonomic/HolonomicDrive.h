@@ -21,6 +21,7 @@
 #include <teleopcontrol/TeleopControl.h>
 #include <State.h>
 #include <chassis/swerve/driveStates/DragonTrajectoryGenerator.h>
+#include <utils/DragonField.h>
 
 class IChassis;
 class MecanumChassis;
@@ -45,4 +46,7 @@ class HolonomicDrive : public State
         SwerveChassis*                      m_swerve;
         MecanumChassis*                     m_mecanum;
         DragonTrajectoryGenerator*                m_trajectoryGenerator;
+        ChassisOptionEnums::DriveStateType  m_previousDriveState;
+        frc::Trajectory                     m_generatedTrajectory;
+        DragonField*                        m_field;
 };

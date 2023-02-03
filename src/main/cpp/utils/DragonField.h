@@ -1,4 +1,3 @@
-
 //====================================================================================================================================================
 // Copyright 2022 Lake Orion Robotics FIRST Team 302
 //
@@ -13,59 +12,32 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
-
 #pragma once
 
-// C++ Includes
-#include <memory>
-#include <vector>
+//FRC Include
+#include <frc/smartdashboard/Field2d.h>
+#include <frc/smartdashboard/FieldObject2d.h>
+#include <frc/geometry/Pose2d.h>
+#include <frc/trajectory/Trajectory.h>
 
-// FRC includes
-#include <frc/Timer.h>
-
-// Team 302 includes
-#include <State.h>
-
-// Third Party Includes
-
-class AutonSelector;
-class IPrimitive;
-class PrimitiveFactory;
-class PrimitiveParams;
-
-class LeftIntakeStateMgr;
-class RightIntakeStateMgr;
-class ShooterStateMgr;
-class LeftIndexerStateMgr;
-class RightIndexerStateMgr;
-class LiftStateMgr;
-
-class CyclePrimitives : public State
+class DragonField
 {
-	public:
-		CyclePrimitives();
-		virtual ~CyclePrimitives() = default;
+    public:
+        DragonField();
+        ~DragonField() = default;
 
-		void Init() override;
-		void Run() override;
-		void Exit() override;
-	 	bool AtTarget() const override;
+        void UpdateRobotPosition(frc::Pose2d robotPose);
 
-		AutonSelector* GetAutonSelector() const {return m_autonSelector;};
+        void AddPose(std::string name, frc::Pose2d pose);
+        void AddTrajectory(std::string name, frc::Trajectory trajectory);
 
-	protected:
-		void GetNextPrim();
-		void RunDriveStop();
+        /// @brief get the singeleton of FMSData
+        static DragonField* GetInstance();
 
-	private:
-		std::vector<PrimitiveParams*> 	m_primParams;
-		int 							m_currentPrimSlot;
-		IPrimitive*						m_currentPrim;
-		PrimitiveFactory* 				m_primFactory;
-		IPrimitive* 					m_DriveStop;
-		AutonSelector* 					m_autonSelector;
-		std::unique_ptr<frc::Timer>     m_timer;
-		double                          m_maxTime;
-		bool							m_isDone;
+        void ResetField();
+
+    private:
+        static DragonField*	    m_instance;
+        frc::Field2d            m_field;
+        std::vector<frc::FieldObject2d*> m_objects;
 };
-

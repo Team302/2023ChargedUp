@@ -27,7 +27,8 @@ class IChassis;
 class TeleopControl;
 class AdjustableItemMgr;
 class FMSData;
-
+class DragonField;
+class AutonPreviewer;
 
 class Robot : public frc::TimedRobot 
 {
@@ -52,4 +53,6 @@ class Robot : public frc::TimedRobot
         DragonLimelight*      m_dragonLimeLight;
         AdjustableItemMgr*    m_tuner;
         FMSData*              m_fmsData;
+        DragonField*          m_field;
+        AutonPreviewer*       m_previewer;
 };

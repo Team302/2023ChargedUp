@@ -138,8 +138,11 @@ void CyclePrimitives::RunDriveStop()
 		                                   0.0,                 // heading
 		                                   0.0,                 // start drive speed
 		                                   0.0,					// end drive speed
-										   string()
+										   string(),
 										  // @ADDMECH mechanism state
+										  ArmStateMgr::ARM_STATE::HOLD_POSITION_ROTATE,
+                						  ExtenderStateMgr::EXTENDER_STATE::HOLD_POSITION_EXTEND,
+                						  GrabberStateMgr::GRABBER_STATE::HOLDING_CONE
 										 );             
 		m_DriveStop = m_primFactory->GetIPrimitive(params);
 		m_DriveStop->Init(params);
