@@ -162,7 +162,6 @@ bool TrajectoryDrive::IsDone()
         isDone = true;
     }
 
-
     return isDone;
 }
 

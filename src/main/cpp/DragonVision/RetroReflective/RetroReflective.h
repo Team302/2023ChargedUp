@@ -24,14 +24,5 @@ class RetroReflective : public LimelightState
  public:
         
     RetroReflective(DragonLimelight*    dragonlimelight, int index);
-    ~RetroReflective() = default;
-
-    // Retroreflective tape Getters
-    bool HasTarget() const override;
-    units::angle::degree_t GetTargetHorizontalOffset() const override;
-    units::angle::degree_t GetTargetVerticalOffset() const override;
-    double GetTargetArea() const override;
-    units::angle::degree_t GetTargetSkew() const override;
-    units::time::microsecond_t GetPipelineLatency() const override;
-    units::length::inch_t EstimateTargetDistance() const override; 
+    ~RetroReflective() = default; 
 };

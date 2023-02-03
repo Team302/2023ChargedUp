@@ -31,6 +31,7 @@
 // Third Party Includes
 
 using namespace std;
+
 DragonVision* DragonVision::m_dragonVision = nullptr;
 DragonVision* DragonVision::GetDragonVision
 (
@@ -97,7 +98,7 @@ bool DragonVision::AlignedWithCubeNode()
 
 	if(m_currentstate->HasTarget())
 	{
-		int id = dynamic_cast<AprilTag*>(m_currentstate)->GetTagID();
+		int id = static_cast<AprilTag*>(m_currentstate)->GetTagID();
 		if(id != 5 && id !=4) //4 and 5 are the ids of the substations
 		{
 			return m_currentstate->GetTargetHorizontalOffset().to<double>() < m_tolerance;
@@ -132,7 +133,7 @@ bool DragonVision::AlignedWithSubstation()
 
 	if(m_currentstate->HasTarget())
 	{
-		int id = dynamic_cast<AprilTag*>(m_currentstate)->GetTagID();
+		int id = static_cast<AprilTag*>(m_currentstate)->GetTagID();
 		if(id == 5 || id == 4) //4 and 5 are the ids of the substations
 		{	
 			return m_currentstate->GetTargetHorizontalOffset().to<double>() < m_tolerance;
@@ -177,14 +178,13 @@ bool DragonVision::AlignedWithConeGamePiece()
 }
 
 // Distance methods
-
 units::length::inch_t DragonVision::DistanceFromCubeNode() 
 {
 	SetCurrentState(LIMELIGHT_STATES::APRILTAG);
 
 	if(m_currentstate->HasTarget())
 	{
-		int id = dynamic_cast<AprilTag*>(m_currentstate)->GetTagID();
+		int id = static_cast<AprilTag*>(m_currentstate)->GetTagID();
 		if(id != 5 && id !=4) //4 and 5 are the ids of the substations
 		{
 			return m_currentstate->EstimateTargetDistance();
@@ -220,7 +220,7 @@ units::length::inch_t DragonVision::DistanceFromSubstation()
 
 	if(m_currentstate->HasTarget())
 	{
-		int id = dynamic_cast<AprilTag*>(m_currentstate)->GetTagID();
+		int id = static_cast<AprilTag*>(m_currentstate)->GetTagID();
 		if(id == 5 || id == 4) //4 and 5 are the ids of the substations
 		{	
 			return m_currentstate->EstimateTargetDistance();
@@ -271,7 +271,7 @@ units::angle::degree_t DragonVision::AngleFromCubeNode()
 
 	if(m_currentstate->HasTarget())
 	{
-		int id = dynamic_cast<AprilTag*>(m_currentstate)->GetTagID();
+		int id = static_cast<AprilTag*>(m_currentstate)->GetTagID();
 		if(id != 5 && id !=4) //4 and 5 are the ids of the substations
 		{
 			return m_currentstate->GetTargetHorizontalOffset();
@@ -335,7 +335,7 @@ units::angle::degree_t DragonVision::AngleFromSubstation()
 
 	if(m_currentstate->HasTarget())
 	{
-		int id = dynamic_cast<AprilTag*>(m_currentstate)->GetTagID();
+		int id = static_cast<AprilTag*>(m_currentstate)->GetTagID();
 		if(id == 5 || id == 4) //4 and 5 are the ids of the substations
 		{	
 			return m_currentstate->GetTargetHorizontalOffset();
@@ -359,7 +359,7 @@ frc::Pose2d DragonVision::GetRobotPosition()
 
 	if(m_currentstate->HasTarget())
 	{
-		return dynamic_cast<AprilTag*>(m_currentstate)->GetRobotPose();
+		return static_cast<AprilTag*>(m_currentstate)->GetRobotPose();
 	}
 	else
 	{

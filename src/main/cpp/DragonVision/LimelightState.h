@@ -49,13 +49,13 @@ class LimelightState
         ///----------------------------------------------------------------------------------
         
         // Retroreflective tape Getters
-        virtual bool HasTarget() const = 0;
-        virtual units::angle::degree_t GetTargetHorizontalOffset() const = 0;
-        virtual units::angle::degree_t GetTargetVerticalOffset() const = 0;
-        virtual double GetTargetArea() const = 0;
-        virtual units::angle::degree_t GetTargetSkew() const = 0;
-        virtual units::time::microsecond_t GetPipelineLatency() const = 0;
-        virtual units::length::inch_t EstimateTargetDistance() const = 0;
+        bool HasTarget() const;
+        units::angle::degree_t GetTargetHorizontalOffset() const;
+        units::angle::degree_t GetTargetVerticalOffset() const;
+        double GetTargetArea() const;
+        units::angle::degree_t GetTargetSkew() const;
+        units::time::microsecond_t GetPipelineLatency() const;
+        units::length::inch_t EstimateTargetDistance() const;
         int GetPipelineIndex() const {return m_index;};
 
     protected:
