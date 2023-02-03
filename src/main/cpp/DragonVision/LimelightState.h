@@ -38,7 +38,8 @@ class LimelightState
         ///-----------------------------------------------------------------------------------
         LimelightState
         (
-            DragonLimelight* dragonLimelight            /// <I> - height of second target
+            DragonLimelight* dragonLimelight,            /// <I> - height of second target
+            int index
         );
         ~LimelightState();
 
@@ -55,6 +56,7 @@ class LimelightState
         virtual units::angle::degree_t GetTargetSkew() const = 0;
         virtual units::time::microsecond_t GetPipelineLatency() const = 0;
         virtual units::length::inch_t EstimateTargetDistance() const = 0;
+        int GetPipelineIndex() const {return m_index;};
 
     protected:
         units::angle::degree_t GetTx() const;
@@ -62,5 +64,6 @@ class LimelightState
         
         DragonLimelight*        m_limelight;
         std::shared_ptr<nt::NetworkTable> m_networktable;
+        int m_index;
         double PI = 3.14159265;
 };

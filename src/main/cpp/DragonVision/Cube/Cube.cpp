@@ -16,10 +16,11 @@
 #include <DragonVision/Cube/Cube.h>
 
 using namespace std;
-Cube::Cube(DragonLimelight*    dragonlimelight) : LimelightState(dragonlimelight), m_dragonlimelight(dragonlimelight)             /// <I> - height of second target)
+Cube::Cube(DragonLimelight*    dragonlimelight, int index) : LimelightState(dragonlimelight, index)
 {
 
 }
+
 bool Cube::HasTarget() const
 {
    auto nt = m_networktable.get();
@@ -32,47 +33,46 @@ bool Cube::HasTarget() const
 
 units::angle::degree_t Cube::GetTargetHorizontalOffset() const
 {
-    
     if ( abs(m_limelight->GetRotation().to<double>()) < 1.0 )
     {
-        return m_dragonlimelight->GetTx();
+        return m_limelight->GetTx();
     }
     else if ( abs(m_limelight->GetRotation().to<double>()-90.0) < 1.0 )
     {
-        return -1.0 * m_dragonlimelight->GetTy();
+        return -1.0 * m_limelight->GetTy();
     }
     else if ( abs(m_limelight->GetRotation().to<double>()-180.0) < 1.0 )
     {
-        return -1.0 * m_dragonlimelight->GetTx();
+        return -1.0 * m_limelight->GetTx();
     }
     else if ( abs(m_limelight->GetRotation().to<double>()-270.0) < 1.0 )
     {
-        return m_dragonlimelight->GetTy();
+        return m_limelight->GetTy();
     }
     Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("DragonLimelight"), string("GetTargetVerticalOffset"), string("Invalid limelight rotation"));
-    return m_dragonlimelight->GetTx();
+    return m_limelight->GetTx();
 }
 
 units::angle::degree_t Cube::GetTargetVerticalOffset() const
 {
     if ( abs(m_limelight->GetRotation().to<double>()) < 1.0 )
     {
-        return m_dragonlimelight->GetTy();
+        return m_limelight->GetTy();
     }
     else if ( abs(m_limelight->GetRotation().to<double>()-90.0) < 1.0 )
     {
-        return m_dragonlimelight->GetTx();
+        return m_limelight->GetTx();
     }
     else if ( abs(m_limelight->GetRotation().to<double>()-180.0) < 1.0 )
     {
-        return -1.0 * m_dragonlimelight->GetTy();
+        return -1.0 * m_limelight->GetTy();
     }
     else if ( abs(m_limelight->GetRotation().to<double>()-270.0) < 1.0 )
     {
-        return -1.0 * m_dragonlimelight->GetTx();
+        return -1.0 * m_limelight->GetTx();
     }
     Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("DragonLimelight"), string("GetTargetVerticalOffset"), string("Invalid limelight rotation"));
-    return m_dragonlimelight->GetTy();   
+    return m_limelight->GetTy();   
 }
 
 double Cube::GetTargetArea() const

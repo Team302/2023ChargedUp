@@ -43,19 +43,17 @@ DragonVision* DragonVision::GetDragonVision
 	}
 	Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("DragonVision"), std::string("GetDragonVision"), "Got");
 	return DragonVision::m_dragonVision;
-	
 }
 
 //state functions
-
-
 DragonVision::DragonVision(std::string stateName, int stateId): State(stateName, stateId),
 						   m_frontDragonLimelight(LimelightFactory::GetLimelightFactory()->GetLimelight())			
 {
-	m_limelightstates[RETROREFLECTIVE] = new RetroReflective(m_frontDragonLimelight);
-	m_limelightstates[APRILTAG] = new AprilTag(m_frontDragonLimelight);
-	m_limelightstates[CUBE] = new Cube(m_frontDragonLimelight);
-	m_limelightstates[CONE] = new Cone(m_frontDragonLimelight);
+	/// @TODO: Need to find the real indexes of each pipeline and put them in constructor
+	m_limelightstates[RETROREFLECTIVE] = new RetroReflective(m_frontDragonLimelight, 0);
+	m_limelightstates[APRILTAG] = new AprilTag(m_frontDragonLimelight, 1);
+	m_limelightstates[CUBE] = new Cube(m_frontDragonLimelight, 2);
+	m_limelightstates[CONE] = new Cone(m_frontDragonLimelight, 3);
 }
 void DragonVision::Init() 
 {
@@ -71,7 +69,7 @@ bool DragonVision::AtTarget() const
 }
 void DragonVision::Run() 
 {
-
+	m_frontDragonLimelight->SetPipeline(m_currentstate->GetPipelineIndex());
 }
 
 void DragonVision::SetLimelightStates(DragonVision::LIMELIGHT_STATES limelightstate)
@@ -99,8 +97,15 @@ bool DragonVision::AlignedWithCubeNode()
 
 	if(m_currentstate->HasTarget())
 	{
-		//check apriltag id
-		return m_currentstate->GetTargetHorizontalOffset().to<double>() < m_tolerance;
+		int id = dynamic_cast<AprilTag*>(m_currentstate)->GetTagID();
+		if(id != 5 && id !=4) //4 and 5 are the ids of the substations
+		{
+			return m_currentstate->GetTargetHorizontalOffset().to<double>() < m_tolerance;
+		}
+		else
+		{
+			return false;
+		}
 	}
 	else
 	{
@@ -127,7 +132,15 @@ bool DragonVision::AlignedWithSubstation()
 
 	if(m_currentstate->HasTarget())
 	{
-		return m_currentstate->GetTargetHorizontalOffset().to<double>() < m_tolerance;
+		int id = dynamic_cast<AprilTag*>(m_currentstate)->GetTagID();
+		if(id == 5 || id == 4) //4 and 5 are the ids of the substations
+		{	
+			return m_currentstate->GetTargetHorizontalOffset().to<double>() < m_tolerance;
+		}
+		else
+		{
+			return false;
+		}
 	}
 	else
 	{
@@ -171,7 +184,15 @@ units::length::inch_t DragonVision::DistanceFromCubeNode()
 
 	if(m_currentstate->HasTarget())
 	{
-		return m_currentstate->EstimateTargetDistance();
+		int id = dynamic_cast<AprilTag*>(m_currentstate)->GetTagID();
+		if(id != 5 && id !=4) //4 and 5 are the ids of the substations
+		{
+			return m_currentstate->EstimateTargetDistance();
+		}
+		else
+		{
+			units::length::inch_t(-1.0);
+		}
 	}
 	else
 	{
@@ -199,7 +220,15 @@ units::length::inch_t DragonVision::DistanceFromSubstation()
 
 	if(m_currentstate->HasTarget())
 	{
-		return m_currentstate->EstimateTargetDistance();
+		int id = dynamic_cast<AprilTag*>(m_currentstate)->GetTagID();
+		if(id == 5 || id == 4) //4 and 5 are the ids of the substations
+		{	
+			return m_currentstate->EstimateTargetDistance();
+		}
+		else
+		{
+			return units::length::inch_t(-1.0);
+		}
 	}
 	else
 	{
@@ -242,7 +271,15 @@ units::angle::degree_t DragonVision::AngleFromCubeNode()
 
 	if(m_currentstate->HasTarget())
 	{
-		return m_currentstate->GetTargetHorizontalOffset();
+		int id = dynamic_cast<AprilTag*>(m_currentstate)->GetTagID();
+		if(id != 5 && id !=4) //4 and 5 are the ids of the substations
+		{
+			return m_currentstate->GetTargetHorizontalOffset();
+		}
+		else
+		{
+			return units::angle::degree_t(180.0); //default "no-target" value
+		}
 	}
 	else
 	{
@@ -298,7 +335,15 @@ units::angle::degree_t DragonVision::AngleFromSubstation()
 
 	if(m_currentstate->HasTarget())
 	{
-		return m_currentstate->GetTargetHorizontalOffset();
+		int id = dynamic_cast<AprilTag*>(m_currentstate)->GetTagID();
+		if(id == 5 || id == 4) //4 and 5 are the ids of the substations
+		{	
+			return m_currentstate->GetTargetHorizontalOffset();
+		}
+		else
+		{
+			return units::angle::degree_t(180.0); //default "no-target" value
+		}
 	}
 	else
 	{
@@ -314,18 +359,11 @@ frc::Pose2d DragonVision::GetRobotPosition()
 
 	if(m_currentstate->HasTarget())
 	{
-		Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("DragonVision"), std::string("GetRobotPosition"), "Have target");
-		Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("DragonVision"), std::string("GetRobotPositionX"), dynamic_cast<AprilTag*>(m_currentstate)->GetRobotPose().X().to<double>());
-		Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("DragonVision"), std::string("GetRobotPositionY"), dynamic_cast<AprilTag*>(m_currentstate)->GetRobotPose().Y().to<double>());
-		Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("DragonVision"), std::string("GetRobotPositionRotate"), dynamic_cast<AprilTag*>(m_currentstate)->GetRobotPose().Rotation().Degrees().to<double>());
 		return dynamic_cast<AprilTag*>(m_currentstate)->GetRobotPose();
-		
 	}
 	else
 	{
-		Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("DragonVision"), std::string("GetRobotPosition"), "No target");
 		return frc::Pose2d(); //default "no-target" value
-		
 	}
 }
 

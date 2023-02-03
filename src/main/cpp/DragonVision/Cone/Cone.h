@@ -23,7 +23,7 @@ class Cone : public LimelightState
 {
  public:
         
-    Cone(DragonLimelight*    dragonlimelight);
+    Cone(DragonLimelight*    dragonlimelight, int index);
     ~Cone() = default;
 
     // Retroreflective tape Getters
@@ -34,7 +34,4 @@ class Cone : public LimelightState
     units::angle::degree_t GetTargetSkew() const override;
     units::time::microsecond_t GetPipelineLatency() const override;
     units::length::inch_t EstimateTargetDistance() const override;
-    
- private: 
-    DragonLimelight* m_dragonlimelight;
 };

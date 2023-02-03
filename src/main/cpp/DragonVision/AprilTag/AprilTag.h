@@ -26,7 +26,7 @@ class AprilTag : public LimelightState
 {
     public:
         
-    AprilTag(DragonLimelight*    dragonlimelight);
+    AprilTag(DragonLimelight*    dragonlimelight, int index);
     ~AprilTag() = default;
 
     // Retroreflective tape Getters
@@ -38,7 +38,6 @@ class AprilTag : public LimelightState
     units::time::microsecond_t GetPipelineLatency() const override;
     units::length::inch_t EstimateTargetDistance() const override;
     frc::Pose2d GetRobotPose() const;
-
-    private:
-    DragonLimelight* m_dragonlimelight;
+    
+    int GetTagID();
 };

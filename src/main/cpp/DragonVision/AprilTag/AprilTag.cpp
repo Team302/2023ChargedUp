@@ -17,13 +17,15 @@
 //FRC Includes
 #include <networktables/DoubleArrayTopic.h>
 
+//Team 302 Includes
 #include <DragonVision/AprilTag/AprilTag.h>
 
 using namespace std;
-AprilTag::AprilTag(DragonLimelight*    dragonlimelight) : LimelightState(dragonlimelight), m_dragonlimelight(dragonlimelight)             /// <I> - height of second target)
+AprilTag::AprilTag(DragonLimelight*    dragonlimelight, int index) : LimelightState(dragonlimelight, index)
 {
 
 }
+
 bool AprilTag::HasTarget() const
 {
    auto nt = m_networktable.get();
@@ -34,52 +36,49 @@ bool AprilTag::HasTarget() const
     return false;
 }
 
-
-
-
 units::angle::degree_t AprilTag::GetTargetHorizontalOffset() const
 {
     
     if ( abs(m_limelight->GetRotation().to<double>()) < 1.0 )
     {
-        return m_dragonlimelight->GetTx();
+        return m_limelight->GetTx();
     }
     else if ( abs(m_limelight->GetRotation().to<double>()-90.0) < 1.0 )
     {
-        return -1.0 * m_dragonlimelight->GetTy();
+        return -1.0 * m_limelight->GetTy();
     }
     else if ( abs(m_limelight->GetRotation().to<double>()-180.0) < 1.0 )
     {
-        return -1.0 * m_dragonlimelight->GetTx();
+        return -1.0 * m_limelight->GetTx();
     }
     else if ( abs(m_limelight->GetRotation().to<double>()-270.0) < 1.0 )
     {
-        return m_dragonlimelight->GetTy();
+        return m_limelight->GetTy();
     }
     Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("DragonLimelight"), string("GetTargetVerticalOffset"), string("Invalid limelight rotation"));
-    return m_dragonlimelight->GetTx();
+    return m_limelight->GetTx();
 }
 
 units::angle::degree_t AprilTag::GetTargetVerticalOffset() const
 {
     if ( abs(m_limelight->GetRotation().to<double>()) < 1.0 )
     {
-        return m_dragonlimelight->GetTy();
+        return m_limelight->GetTy();
     }
     else if ( abs(m_limelight->GetRotation().to<double>()-90.0) < 1.0 )
     {
-        return m_dragonlimelight->GetTx();
+        return m_limelight->GetTx();
     }
     else if ( abs(m_limelight->GetRotation().to<double>()-180.0) < 1.0 )
     {
-        return -1.0 * m_dragonlimelight->GetTy();
+        return -1.0 * m_limelight->GetTy();
     }
     else if ( abs(m_limelight->GetRotation().to<double>()-270.0) < 1.0 )
     {
-        return -1.0 * m_dragonlimelight->GetTx();
+        return -1.0 * m_limelight->GetTx();
     }
     Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("DragonLimelight"), string("GetTargetVerticalOffset"), string("Invalid limelight rotation"));
-    return m_dragonlimelight->GetTy();   
+    return m_limelight->GetTy();   
 }
 
 double AprilTag::GetTargetArea() const
@@ -119,23 +118,26 @@ frc::Pose2d AprilTag::GetRobotPose() const
         auto subscriber = arrayTopic.Subscribe(std::span<const double>());
         auto value = subscriber.Get(std::span<const double>());
         if(value.size() > 0)
-        {
-            /// DEBUGGING
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("AprilTag"), string("GetRobotPose"), "Span size greater than 0");
-            
-            double xPos = value[0] + 16.459; //add 16.459 to accoutn for limelight origin being in center
+        {            
+            double xPos = value[0] + 8.2745; //add 8.2745 to accoutn for limelight origin being in center
                                     //cut the two offset in half
-            double yPos = value[1] + 8.23; //add 16.459 to accoutn for limelight origin being in center
+            double yPos = value[1] + 4.115; //add 4.115 to accoutn for limelight origin being in center
             double zRotation = value[5];
             frc::Pose2d botPose = frc::Pose2d(units::length::meter_t(xPos), units::length::meter_t(yPos), frc::Rotation2d(units::angle::degree_t(zRotation)));
             return botPose;
         }
         else
         {
-            /// DEBUGGING
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("AprilTag"), string("GetRobotPose"), "Span size not greater than 0");
             return frc::Pose2d();
         }
+    }
+}
+
+int AprilTag::GetTagID()
+{
+    if(m_networktable != nullptr)
+    {
+        return m_networktable->GetNumber("tid", 0);
     }
 }
 
@@ -146,13 +148,6 @@ units::length::inch_t AprilTag::EstimateTargetDistance() const
     double tanAngle = tan(angleRad.to<double>());
 
     auto deltaHgt = m_limelight->GetTargetHeight()-m_limelight->GetMountingHeight();
-
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("mounting angle "), m_limelight->GetMountingAngle().to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("target vertical angle "), GetTargetVerticalOffset().to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("angle radians "), angleRad.to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("deltaH "), deltaHgt.to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("tan angle "), tanAngle);
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("distance "), ((m_limelight->GetTargetHeight()-m_limelight->GetMountingHeight()) / tanAngle).to<double>());
 
     return (m_limelight->GetTargetHeight()-m_limelight->GetMountingHeight()) / tanAngle;
 }
