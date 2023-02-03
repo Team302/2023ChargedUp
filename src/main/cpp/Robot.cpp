@@ -139,20 +139,8 @@ void Robot::TeleopInit()
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopInit"), string("end"));
 }
 
-int timer = 0;
 void Robot::TeleopPeriodic() 
 {
-    if(timer<=150){
-        m_driverfeedback->isAlignedWithCubeNode(true);
-    }else if(timer<=250 && timer>150){
-        m_driverfeedback->isAlignedWithConeNode(true);
-    }else{
-        timer = 0;
-        m_driverfeedback->isAlignedWithConeNode(false);
-        m_driverfeedback->isAlignedWithCubeNode(false);
-    }
-    m_driverfeedback->UpdateFeedback();
-    timer++;
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopPeriodic"), string("arrived"));   
     if (m_chassis != nullptr && m_controller != nullptr)
@@ -177,7 +165,7 @@ void Robot::DisabledInit()
 
 void Robot::DisabledPeriodic() 
 {
-    m_driverfeedback->m_LEDStates->LEDsOff();
+
 }
 
 void Robot::TestInit() 
