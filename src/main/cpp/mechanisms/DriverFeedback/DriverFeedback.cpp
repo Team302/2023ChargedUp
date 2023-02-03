@@ -14,7 +14,7 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#include <DriverFeedback/DriverFeedback.h>
+#include <mechanisms/DriverFeedback/DriverFeedback.h>
 
 DriverFeedback* DriverFeedback::m_instance = nullptr;
 
