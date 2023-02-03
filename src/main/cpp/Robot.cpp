@@ -38,8 +38,10 @@ void Robot::RobotInit()
     
 
     m_controller = nullptr;
-    m_fmsData = FMSData::GetInstance();
-    m_field = DragonField::GetInstance();
+    //m_fmsData = FMSData::GetInstance();
+    //m_field = DragonField::GetInstance();
+    m_fmsData = nullptr;
+    m_field = nullptr;
 
 
     // Read the XML file to build the robot 
@@ -65,9 +67,9 @@ void Robot::RobotInit()
     m_previewer = new AutonPreviewer(m_cyclePrims);
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("RobotInit"), string("end"));
 
-    m_dragonLimeLight = LimelightFactory::GetLimelightFactory()->GetLimelight();
+    //m_dragonLimeLight = LimelightFactory::GetLimelightFactory()->GetLimelight();
+    m_dragonLimeLight = nullptr;
 
-    m_fmsData = FMSData::GetInstance();
 }
 
 /**
@@ -84,7 +86,7 @@ void Robot::RobotPeriodic()
     if (m_chassis != nullptr)
     {
         m_chassis->UpdateOdometry();
-        m_field->UpdateRobotPosition(m_chassis->GetPose());
+        //m_field->UpdateRobotPosition(m_chassis->GetPose());
     }
     if (m_dragonLimeLight != nullptr)
     {
@@ -152,7 +154,7 @@ void Robot::TeleopInit()
     StateMgrHelper::RunCurrentMechanismStates();
 
     //now in teleop, clear field of trajectories
-    m_field->ResetField();
+    //m_field->ResetField();
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopInit"), string("end"));
 }

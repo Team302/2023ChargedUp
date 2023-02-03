@@ -88,20 +88,26 @@ void TeleopControl::InitializeControllers() const
 {
 	for ( int inx=0; inx<DriverStation::kJoystickPorts; ++inx )
 	{
-		if (m_controller[inx] == nullptr)
+		InitializeController(inx);
+	}
+}
+
+void TeleopControl::InitializeController(int port) const
+{
+
+	if (m_controller[port] == nullptr)
+	{
+		if ( DriverStation::GetJoystickIsXbox(port) )
 		{
-			if ( DriverStation::GetJoystickIsXbox( inx ) )
-			{
-				auto xbox = new DragonXBox(inx);
-				m_controller[inx] = xbox;
-				m_numControllers++;
-			}
-			else if ( DriverStation::GetJoystickType( inx ) == GenericHID::kHID1stPerson )
-			{
-				auto gamepad = new DragonGamepad(inx);
-				m_controller[inx] = gamepad;
-				m_numControllers++;
-			}
+			auto xbox = new DragonXBox(port);
+			m_controller[port] = xbox;
+			m_numControllers++;
+		}
+		else if ( DriverStation::GetJoystickType(port) == GenericHID::kHID1stPerson )
+		{
+			auto gamepad = new DragonGamepad(port);
+			m_controller[port] = gamepad;
+			m_numControllers++;
 		}
 	}
 }

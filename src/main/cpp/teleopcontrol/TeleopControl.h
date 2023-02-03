@@ -103,6 +103,7 @@ class TeleopControl : LoggableItem
         bool IsInitialized() const;
 
         void InitializeControllers() const;
+        void InitializeController(int port) const;
         void InitializeAxes() const;
         void InitializeButtons() const;
 
