@@ -800,8 +800,8 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 		string                          stateName,
 		int                             stateId
 		$MECHANISM_CONSTRUCTOR_PARAMETER_LIST$
-		) : $MECH_BASE_CLASS$State( MechanismFactory::GetMechanismFactory()->Get$MECHANISM_NAME_LOWERCASE$(), stateName, stateId $MECHANISM_CONSTRUCTOR_ARGUMENT_LIST$),
-		m_$MECHANISM_NAME_LOWERCASE$(MechanismFactory::GetMechanismFactory()->Get$MECHANISM_NAME_LOWERCASE$())
+		) : $MECH_BASE_CLASS$State( MechanismFactory::GetMechanismFactory()->Get$MECHANISM_NAME$(), stateName, stateId $MECHANISM_CONSTRUCTOR_ARGUMENT_LIST$),
+		m_$MECHANISM_NAME_LOWERCASE$(MechanismFactory::GetMechanismFactory()->Get$MECHANISM_NAME$())
 		{
 
 		}
@@ -926,7 +926,7 @@ $MECHANISM_NAME$StateMgr* $MECHANISM_NAME$StateMgr::GetInstance()
 {
 	if ( $MECHANISM_NAME$StateMgr::m_instance == nullptr )
 	{
-        auto $MECHANISM_NAME_LOWERCASE$Ptr = MechanismFactory::GetMechanismFactory()->Get$MECHANISM_NAME_LOWERCASE$();
+        auto $MECHANISM_NAME_LOWERCASE$Ptr = MechanismFactory::GetMechanismFactory()->Get$MECHANISM_NAME$();
         if ($MECHANISM_NAME_LOWERCASE$Ptr != nullptr)
         {
             $MECHANISM_NAME$StateMgr::m_instance = new $MECHANISM_NAME$StateMgr();
@@ -939,7 +939,7 @@ $MECHANISM_NAME$StateMgr* $MECHANISM_NAME$StateMgr::GetInstance()
 
 /// @brief    initialize the state manager, parse the configuration file and create the states.
 $MECHANISM_NAME$StateMgr::$MECHANISM_NAME$StateMgr() : StateMgr(),
-                                     m_$MECHANISM_NAME_LOWERCASE$(MechanismFactory::GetMechanismFactory()-&gt;Get$MECHANISM_NAME_LOWERCASE$())
+                                     m_$MECHANISM_NAME_LOWERCASE$(MechanismFactory::GetMechanismFactory()-&gt;Get$MECHANISM_NAME$())
 {
     map&lt;string, StateStruc&gt; stateMap;
 	$STATE_MAP_INITIALIZATION$
