@@ -80,6 +80,7 @@ void Robot::RobotInit()
  */
 void Robot::RobotPeriodic() 
 {
+
     if (m_chassis != nullptr)
     {
         m_chassis->UpdateOdometry();
@@ -156,9 +157,9 @@ void Robot::TeleopInit()
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopInit"), string("end"));
 }
 
-
 void Robot::TeleopPeriodic() 
 {
+
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopPeriodic"), string("arrived"));   
     if (m_chassis != nullptr && m_controller != nullptr)
     {
@@ -175,6 +176,7 @@ void Robot::TeleopPeriodic()
 
 void Robot::DisabledInit() 
 {
+
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("DisabledInit"), string("arrived"));   
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("DisabledInit"), string("end"));   
 }
