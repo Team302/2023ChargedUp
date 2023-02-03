@@ -53,6 +53,8 @@
             return{255,255,180};
         case BLACK:
             return {0,0,0};
+        default:
+            return{0,0,0};    
         }
     }
 
