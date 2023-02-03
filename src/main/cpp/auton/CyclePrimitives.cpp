@@ -112,9 +112,8 @@ void CyclePrimitives::GetNextPrim()
 	{
 		m_currentPrim->Init(currentPrimParam);
 
-		// @ADDMECH Get your stateMgr, set its current state to match the current primitive parameter and run it
-
-
+		StateMgrHelper::SetMechanismStateFromParam(currentPrimParam);
+		
 		m_maxTime = currentPrimParam->GetTime();
 		m_timer->Reset();
 		m_timer->Start();
