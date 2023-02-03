@@ -90,7 +90,7 @@ void DrivePath::Run()
             case ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE:
                 moveInfo.headingOption = ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE;
                 moveInfo.yawAngle = units::angle::degree_t(m_heading);
-                m_chassis.get()->SetTargetHeading(units::angle::degree_t(m_heading));
+               
                 break;
             
             default:
