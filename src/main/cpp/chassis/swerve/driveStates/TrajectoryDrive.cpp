@@ -20,15 +20,15 @@
 #include <chassis/ChassisMovement.h>
 #include <chassis/ChassisFactory.h>
 #include <utils/Logger.h>
-
+#include <chassis/swerve/headingStates/SpecifiedHeading.h>
 
 using frc::Pose2d;
 
 TrajectoryDrive::TrajectoryDrive(RobotDrive* robotDrive) : RobotDrive(),
     m_trajectory(),
     m_robotDrive(robotDrive),
-    m_holonomicController(frc2::PIDController{0.5, 0.0, 0},
-                          frc2::PIDController{0.5, 0.0, 0},
+    m_holonomicController(frc2::PIDController{0.35, 0.1, 0},
+                          frc2::PIDController{0.35, 0.1, 0},
                           frc::ProfiledPIDController<units::radian>{0.0,0.0, 0,
                           frc::TrapezoidProfile<units::radian>::Constraints{0_rad_per_s, 0_rad_per_s / 1_s}}),
     m_desiredState(),
@@ -87,30 +87,23 @@ std::array<frc::SwerveModuleState, 4> TrajectoryDrive::UpdateSwerveModuleStates
         // Use the controller to calculate the chassis speeds for getting there
         frc::ChassisSpeeds refChassisSpeeds;
 
-        auto drivePathAngle = chassisMovement.yawAngle;
 
         refChassisSpeeds = m_holonomicController.Calculate( m_chassis->GetPose(),
                                                           m_desiredState, 
                                                           frc::Rotation2d(chassisMovement.yawAngle));
         chassisMovement.chassisSpeeds = refChassisSpeeds;
-        chassisMovement.headingOption = ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE;
 
-        auto swerveChassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
-        auto currentOrientationState =  swerveChassis->GetHeadingState(chassisMovement);
+         auto swerveChassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
 
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Trajectory Drive", "Yaw Angle", chassisMovement.yawAngle.to<double>());
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Trajectory Drive", "DrivePath Angle", drivePathAngle.to<double>());
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Trajectory Drive", "Chassis Heading Option", chassisMovement.headingOption);
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Trajectory Drive", "Current Or", currentOrientationState);
-
-
-        if (currentOrientationState != nullptr)
+        if (chassisMovement.headingOption == ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE)
         {
-            currentOrientationState->SetStoredHeading(drivePathAngle);
-            currentOrientationState->UpdateChassisSpeeds(chassisMovement);
+            auto specifedHeading = dynamic_cast<SpecifiedHeading*>(swerveChassis->GetHeadingState(chassisMovement));
+            chassisMovement.chassisSpeeds.omega = units::angular_velocity::radians_per_second_t(0);
+            specifedHeading->SetTargetHeading(chassisMovement.yawAngle);
+            specifedHeading->UpdateChassisSpeeds(chassisMovement);
         }
-        //Set chassisMovement speeds that will be used by RobotDrive
 
+        //Set chassisMovement speeds that will be used by RobotDrive
         return m_robotDrive->UpdateSwerveModuleStates(chassisMovement);
 
     }
@@ -124,6 +117,7 @@ std::array<frc::SwerveModuleState, 4> TrajectoryDrive::UpdateSwerveModuleStates
 
         //Set chassisMovement speeds that will be used by RobotDrive
         chassisMovement.chassisSpeeds = speeds;
+        
         return m_robotDrive->UpdateSwerveModuleStates(chassisMovement);
     }
 }
