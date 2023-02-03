@@ -16,6 +16,7 @@
 
 //FRC Include
 #include <frc/smartdashboard/Field2d.h>
+#include <frc/smartdashboard/FieldObject2d.h>
 #include <frc/geometry/Pose2d.h>
 #include <frc/trajectory/Trajectory.h>
 
@@ -28,8 +29,15 @@ class DragonField
         void UpdateRobotPosition(frc::Pose2d robotPose);
 
         void AddPose(std::string name, frc::Pose2d pose);
-        void AddTrajectroy(std::string name, frc::Trajectory trajectory);
+        void AddTrajectory(std::string name, frc::Trajectory trajectory);
+
+        /// @brief get the singeleton of FMSData
+        static DragonField* GetInstance();
+
+        void ResetField();
 
     private:
-        frc::Field2d    m_field;
+        static DragonField*	    m_instance;
+        frc::Field2d            m_field;
+        std::vector<frc::FieldObject2d*> m_objects;
 };

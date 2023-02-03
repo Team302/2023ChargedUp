@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -12,50 +12,31 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
+#pragma once
+
+//C++ Includes
+#include <string>
 
 //FRC Includes
-#include <frc/smartdashboard/SmartDashboard.h>
+#include <frc/trajectory/Trajectory.h>
 
 //Team 302 Includes
 #include <utils/DragonField.h>
+#include <auton/CyclePrimitives.h>
 
-DragonField* DragonField::m_instance = nullptr;
-
-DragonField* DragonField::GetInstance()
+class AutonPreviewer
 {
-	if ( DragonField::m_instance == nullptr )
-	{
-            DragonField::m_instance = new DragonField();
-	}
-	return DragonField::m_instance;
-}
+    public:
+        AutonPreviewer(CyclePrimitives* cyclePrims);
+        ~AutonPreviewer() = default;
 
-DragonField::DragonField()
-{
-    frc::SmartDashboard::PutData(&m_field);
-}
+        void CheckCurrentAuton();
 
-void DragonField::UpdateRobotPosition(frc::Pose2d robotPose)
-{
-    m_field.SetRobotPose(robotPose);
-}
+        void PopulateField();
 
-void DragonField::AddPose(std::string name, frc::Pose2d pose)
-{
-    m_objects.emplace_back(m_field.GetObject(name));
-    m_field.GetObject(name)->SetPose(pose);
-}
-
-void DragonField::AddTrajectory(std::string name, frc::Trajectory trajectory)
-{
-    m_objects.emplace_back(m_field.GetObject(name));
-    m_field.GetObject(name)->SetTrajectory(trajectory);
-}
-
-void DragonField::ResetField()
-{
-    for(int i = 0; i < m_objects.size(); i++)
-    {
-        m_objects[i]->SetPoses(std::span<frc::Pose2d>());
-    }
-}
+        std::vector<frc::Trajectory> GetTrajectories();
+    private:
+        AutonSelector*  m_selector;
+        std::string     m_prevChoice;
+        DragonField*    m_field;
+};
