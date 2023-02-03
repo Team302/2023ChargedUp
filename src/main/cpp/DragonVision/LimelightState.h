@@ -60,8 +60,7 @@ class LimelightState
         units::angle::degree_t GetTx() const;
         units::angle::degree_t GetTy() const;
         
+        DragonLimelight*        m_limelight;
         std::shared_ptr<nt::NetworkTable> m_networktable;
         double PI = 3.14159265;
-        DragonLimelight*        m_limelight;
-
 };

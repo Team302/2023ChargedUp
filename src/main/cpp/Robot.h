@@ -30,6 +30,9 @@ class FMSData;
 class DragonField;
 class AutonPreviewer;
 
+/// DEBUGGING
+class DragonVision;
+
 class Robot : public frc::TimedRobot 
 {
     public:
@@ -55,4 +58,5 @@ class Robot : public frc::TimedRobot
         FMSData*              m_fmsData;
         DragonField*          m_field;
         AutonPreviewer*       m_previewer;
+        DragonVision*         m_dragonVision;
 };

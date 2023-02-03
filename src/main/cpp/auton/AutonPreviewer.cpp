@@ -13,6 +13,9 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
+//C++ Includes
+#include <fstream>
+
 //FRC Includes
 #include <frc/Filesystem.h>
 #include <frc/trajectory/TrajectoryUtil.h>
@@ -92,7 +95,11 @@ std::vector<frc::Trajectory> AutonPreviewer::GetTrajectories()
 
     for(std::string path : trajectoryPaths)
     {
-        trajectories.emplace_back(frc::TrajectoryUtil::FromPathweaverJson(pathDir + path));
+        std::ifstream f(pathDir + path);
+        if(f.good())
+        {
+            trajectories.emplace_back(frc::TrajectoryUtil::FromPathweaverJson(pathDir + path));
+        }        
     }
 
     return trajectories;

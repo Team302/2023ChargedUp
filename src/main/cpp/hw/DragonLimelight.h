@@ -154,6 +154,8 @@ class DragonLimelight //: public IDragonSensor, public IDragonDistanceSensor
 
         units::angle::degree_t GetTx() const;
         units::angle::degree_t GetTy() const;
+
+        std::shared_ptr<nt::NetworkTable> GetNetworkTable() const {return m_networktable;};
     protected:
         
         

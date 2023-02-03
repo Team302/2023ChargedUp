@@ -15,7 +15,7 @@
 
 
 // C++ Includes
-
+#include <string>
 
 // FRC includes
 
@@ -27,7 +27,7 @@
 #include <DragonVision\Cube\Cube.h>
 #include <DragonVision\Cone\Cone.h>
 #include <DragonVision\AprilTag\AprilTag.h>
-#include <string>
+#include <utils/Logger.h>
 // Third Party Includes
 
 using namespace std;
@@ -41,7 +41,9 @@ DragonVision* DragonVision::GetDragonVision
 	{
 		DragonVision::m_dragonVision = new DragonVision(std::string("DragonVision"), int(-1));
 	}
+	Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("DragonVision"), std::string("GetDragonVision"), "Got");
 	return DragonVision::m_dragonVision;
+	
 }
 
 //state functions
@@ -79,7 +81,7 @@ void DragonVision::SetLimelightStates(DragonVision::LIMELIGHT_STATES limelightst
 
 void DragonVision::SetCurrentState(DragonVision::LIMELIGHT_STATES limelightstate)
 {
-	auto itr = m_limelightstates.find(LIMELIGHT_STATES::CUBE);
+	auto itr = m_limelightstates.find(limelightstate);
 	if (itr != m_limelightstates.end())
 	{
 		if (m_currentstate != itr->second)
@@ -97,6 +99,7 @@ bool DragonVision::AlignedWithCubeNode()
 
 	if(m_currentstate->HasTarget())
 	{
+		//check apriltag id
 		return m_currentstate->GetTargetHorizontalOffset().to<double>() < m_tolerance;
 	}
 	else
@@ -305,8 +308,24 @@ units::angle::degree_t DragonVision::AngleFromSubstation()
 
 // position function
 
-int DragonVision::GetRobotPosition() const
+frc::Pose2d DragonVision::GetRobotPosition()
 {
-	return 0;
+	SetCurrentState(LIMELIGHT_STATES::APRILTAG);
+
+	if(m_currentstate->HasTarget())
+	{
+		Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("DragonVision"), std::string("GetRobotPosition"), "Have target");
+		Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("DragonVision"), std::string("GetRobotPositionX"), dynamic_cast<AprilTag*>(m_currentstate)->GetRobotPose().X().to<double>());
+		Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("DragonVision"), std::string("GetRobotPositionY"), dynamic_cast<AprilTag*>(m_currentstate)->GetRobotPose().Y().to<double>());
+		Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("DragonVision"), std::string("GetRobotPositionRotate"), dynamic_cast<AprilTag*>(m_currentstate)->GetRobotPose().Rotation().Degrees().to<double>());
+		return dynamic_cast<AprilTag*>(m_currentstate)->GetRobotPose();
+		
+	}
+	else
+	{
+		Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("DragonVision"), std::string("GetRobotPosition"), "No target");
+		return frc::Pose2d(); //default "no-target" value
+		
+	}
 }
 

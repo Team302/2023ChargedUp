@@ -15,11 +15,20 @@
 //====================================================================================================================================================
 
 #pragma once
+
+//C++
 #include <string>
 #include <map>
+
+//FRC Includes
+#include <frc/geometry/Pose2d.h>
+
+//Team302 Includes
 #include <State.h>
 #include <hw/DragonLimelight.h>
 #include <DragonVision/LimelightState.h>
+
+
 class DragonLimelight;
 class DragonVision : public State
 {
@@ -69,7 +78,8 @@ class DragonVision : public State
         (
             DragonVision::LIMELIGHT_STATES limelightstate
         );
-    int GetRobotPosition() const;
+
+    frc::Pose2d GetRobotPosition();
 
 ~DragonVision() = default;
 private:

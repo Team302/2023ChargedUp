@@ -14,7 +14,8 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#pragma once
+//FRC Includes
+#include <networktables/DoubleArrayTopic.h>
 
 #include <DragonVision/AprilTag/AprilTag.h>
 
@@ -114,8 +115,27 @@ frc::Pose2d AprilTag::GetRobotPose() const
 {
     if(m_networktable != nullptr)
     {
-        auto arrayTopic = m_networktable->GetDoubleArrayTopic("botpose");
-        /// @TODO: get pose2d from the array
+        nt::DoubleArrayTopic arrayTopic = m_networktable->GetDoubleArrayTopic("botpose");
+        auto subscriber = arrayTopic.Subscribe(std::span<const double>());
+        auto value = subscriber.Get(std::span<const double>());
+        if(value.size() > 0)
+        {
+            /// DEBUGGING
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("AprilTag"), string("GetRobotPose"), "Span size greater than 0");
+            
+            double xPos = value[0] + 16.459; //add 16.459 to accoutn for limelight origin being in center
+                                    //cut the two offset in half
+            double yPos = value[1] + 8.23; //add 16.459 to accoutn for limelight origin being in center
+            double zRotation = value[5];
+            frc::Pose2d botPose = frc::Pose2d(units::length::meter_t(xPos), units::length::meter_t(yPos), frc::Rotation2d(units::angle::degree_t(zRotation)));
+            return botPose;
+        }
+        else
+        {
+            /// DEBUGGING
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("AprilTag"), string("GetRobotPose"), "Span size not greater than 0");
+            return frc::Pose2d();
+        }
     }
 }
 
