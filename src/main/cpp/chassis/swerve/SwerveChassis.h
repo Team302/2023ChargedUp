@@ -163,12 +163,13 @@ class SwerveChassis : public IChassis
         (
             ChassisOptionEnums::DriveStateType driveOption
         ); 
-
-    private:    
+        
         ISwerveDriveOrientation* GetHeadingState
         (
             ChassisMovement         moveInfo
         );
+    private:    
+        
         ISwerveDriveState* GetDriveState
         (
             ChassisMovement         moveInfo
