@@ -25,6 +25,10 @@
 // Team 302 includes
 #include <auton/PrimitiveEnums.h>
 #include <chassis/ChassisOptionEnums.h>
+#include <mechanisms/arm/ArmStateMgr.h>
+#include <mechanisms/extender/ExtenderStateMgr.h>
+#include <mechanisms/grabber/GrabberStateMgr.h>
+
 
 // @ADDMECH include for your mechanism 
 
@@ -48,8 +52,13 @@ class PrimitiveParams
                 float                                               heading,
                 float                                               startDriveSpeed,
                 float                                               endDriveSpeed,
-                std::string                                         pathName
-                // @ADDMECH add parameter for your mechanism state 
+                std::string                                         pathName,
+                // @ADDMECH add parameter for your mechanism state
+                ArmStateMgr::ARM_STATE                              armState,
+                ExtenderStateMgr::EXTENDER_STATE                    extenderState,
+                GrabberStateMgr::GRABBER_STATE                      grabberState
+
+                
         );//Constructor. Takes in all parameters
 
         PrimitiveParams() = delete;
@@ -67,6 +76,9 @@ class PrimitiveParams
         float GetDriveSpeed() const {return m_startDriveSpeed;};
         float GetEndDriveSpeed() const {return m_endDriveSpeed;};
         std::string GetPathName() const {return m_pathName;};
+        ArmStateMgr::ARM_STATE GetArmState() const {return m_armState;};
+        ExtenderStateMgr::EXTENDER_STATE GetExtenderState() const {return m_extenderState;};
+         GrabberStateMgr::GRABBER_STATE GetGrabberState() const {return m_grabberState;};
         
         // @ADDMECH Add methods to get the state mgr for mechanism 
 
@@ -88,6 +100,9 @@ class PrimitiveParams
         float                                               m_endDriveSpeed;
         std::string                                         m_pathName;
         // @ADDMECH add attribute for your mechanism state 
+        ArmStateMgr::ARM_STATE                              m_armState;
+        ExtenderStateMgr::EXTENDER_STATE                    m_extenderState;
+        GrabberStateMgr::GRABBER_STATE                      m_grabberState;
 
 };
 

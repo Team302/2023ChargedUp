@@ -166,9 +166,11 @@ PrimitiveParamsVector PrimitiveParser::ParseXML
                                                                        heading,
                                                                        startDriveSpeed,
                                                                        endDriveSpeed,
-                                                                       pathName
+                                                                       pathName,
                                                                        // @ADDMECH add parameter for your mechanism state
-
+                                                                       ArmStateMgr::ARM_STATE::HOLD_POSITION_ROTATE,
+                						                               ExtenderStateMgr::EXTENDER_STATE::HOLD_POSITION_EXTEND,
+                						                               GrabberStateMgr::GRABBER_STATE::OPEN
                                                                        ) );
                         string ntName = string("Primitive ") + to_string(paramVector.size());
                         int slot = paramVector.size() - 1;
