@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302 
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -14,49 +14,47 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
+#include <mechanisms/LEDS/LED.h>
 
-#pragma once
+    LED::LED(int PWMport){
+        m_led = new frc::AddressableLED(PWMport);
+        m_led->SetLength(kLength);
+        m_led->SetData(m_ledBuffer);
+        m_led->Start();
+    }
+    LED* LED::m_instance = nullptr;
 
-#include <frc/TimedRobot.h>
-#include <mechanisms/DriverFeedback/DriverFeedback.h>
-
-
-class ArcadeDrive;
-class CyclePrimitives;
-class DragonLimelight;
-class HolonomicDrive;
-class IChassis;
-class TeleopControl;
-class AdjustableItemMgr;
-class FMSData;
-class DragonField;
-class AutonPreviewer;
-
-class Robot : public frc::TimedRobot 
+    LED* LED::GetInstance()
 {
-    public:
-        void RobotInit() override;
-        void RobotPeriodic() override;
-        void AutonomousInit() override;
-        void AutonomousPeriodic() override;
-        void TeleopInit() override;
-        void TeleopPeriodic() override;
-        void DisabledInit() override;
-        void DisabledPeriodic() override;
-        void TestInit() override;
-        void TestPeriodic() override;
+	if ( LED::m_instance == nullptr )
+	{
+		LED::m_instance = new LED(0);
+	}
+	return LED::m_instance;
+}
 
-    private:
-        TeleopControl*        m_controller;
-        IChassis*             m_chassis;
-        CyclePrimitives*      m_cyclePrims; 
-        HolonomicDrive*       m_holonomic;
-        ArcadeDrive*          m_arcade;
-        DragonLimelight*      m_dragonLimeLight;
-        DriverFeedback*       m_driverfeedback = DriverFeedback::GetInstance();
-        
-        AdjustableItemMgr*    m_tuner;
-        FMSData*              m_fmsData;
-        DragonField*          m_field;
-        AutonPreviewer*       m_previewer;
-};
+
+    std::array<int, 3> LED::getColorValues(Colors c){
+        switch (c)
+        {
+        case RED:
+            return {255,0,0};
+        case GREEN:
+            return {0,255,0};
+        case BLUE:
+            return {0,0,255};
+        case YELLOW:
+            return {255,160,0};   
+        case PURPLE:
+            return {75,0,130};
+        case AZUL:
+            return {0,255,255};  
+        case WHITE:
+            return{255,255,180};
+        case BLACK:
+            return {0,0,0};
+        default:
+            return{0,0,0};    
+        }
+    }
+

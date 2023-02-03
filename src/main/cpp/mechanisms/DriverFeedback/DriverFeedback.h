@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302 
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -14,49 +14,51 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-
 #pragma once
+#include <mechanisms/LEDS/LEDStates.h>
 
-#include <frc/TimedRobot.h>
-#include <mechanisms/DriverFeedback/DriverFeedback.h>
-
-
-class ArcadeDrive;
-class CyclePrimitives;
-class DragonLimelight;
-class HolonomicDrive;
-class IChassis;
-class TeleopControl;
-class AdjustableItemMgr;
-class FMSData;
-class DragonField;
-class AutonPreviewer;
-
-class Robot : public frc::TimedRobot 
+class DriverFeedback
 {
-    public:
-        void RobotInit() override;
-        void RobotPeriodic() override;
-        void AutonomousInit() override;
-        void AutonomousPeriodic() override;
-        void TeleopInit() override;
-        void TeleopPeriodic() override;
-        void DisabledInit() override;
-        void DisabledPeriodic() override;
-        void TestInit() override;
-        void TestPeriodic() override;
+	public:
+    LEDStates* m_LEDStates = LEDStates::GetInstance();
+    void UpdateFeedback();
+    void isAlignedWithConeNode(bool AlignedWithConeNode);
+    void isAlignedWithCubeNode(bool AlignedWithCubeNode);
+    void isGamePieceInGrabber(bool GamePieceInGrabber);
+    void isWantCone(bool WantCone);
+    void isWantCube(bool WantCube);
+    void isGamePieceReadyToPickUp(bool GamePieceReadyToPickUp);
+    static DriverFeedback* GetInstance();
+
+
 
     private:
-        TeleopControl*        m_controller;
-        IChassis*             m_chassis;
-        CyclePrimitives*      m_cyclePrims; 
-        HolonomicDrive*       m_holonomic;
-        ArcadeDrive*          m_arcade;
-        DragonLimelight*      m_dragonLimeLight;
-        DriverFeedback*       m_driverfeedback = DriverFeedback::GetInstance();
-        
-        AdjustableItemMgr*    m_tuner;
-        FMSData*              m_fmsData;
-        DragonField*          m_field;
-        AutonPreviewer*       m_previewer;
+    enum DriverFeedbackStates
+    {
+     ALIGNED_WITH_CONE_NODE,
+     ALIGNED_WITH_CUBE_NODE,
+     GAME_PIECE_IN_GRABBER,
+     WANT_CUBE,
+     WANT_CONE,
+     GAME_PIECE_READY_TO_PICK_UP,
+     NONE
+     
+    };
+
+
+    bool m_WantCube = false;
+    bool m_WantCone = false;
+    bool m_GamePieceReadyToPickUp = false;
+    bool m_GamePieceInGrabber = false;
+    bool m_AlignedWithConeNode = false;
+    bool m_AlignedWithCubeNode = false;
+
+    static DriverFeedback* m_instance;
+
+    DriverFeedbackStates currentState = DriverFeedbackStates::NONE;
+
+
 };
+
+
+

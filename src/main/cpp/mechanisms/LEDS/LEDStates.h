@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302 
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -14,49 +14,32 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-
 #pragma once
-
-#include <frc/TimedRobot.h>
-#include <mechanisms/DriverFeedback/DriverFeedback.h>
+#include <mechanisms/LEDS/LED.h>
 
 
-class ArcadeDrive;
-class CyclePrimitives;
-class DragonLimelight;
-class HolonomicDrive;
-class IChassis;
-class TeleopControl;
-class AdjustableItemMgr;
-class FMSData;
-class DragonField;
-class AutonPreviewer;
-
-class Robot : public frc::TimedRobot 
+class LEDStates
 {
-    public:
-        void RobotInit() override;
-        void RobotPeriodic() override;
-        void AutonomousInit() override;
-        void AutonomousPeriodic() override;
-        void TeleopInit() override;
-        void TeleopPeriodic() override;
-        void DisabledInit() override;
-        void DisabledPeriodic() override;
-        void TestInit() override;
-        void TestPeriodic() override;
+	public:
+    
+    void LEDsOff();
+    void ResetVariables();
+    void ChaserPattern(LED::Colors c);
+    void BlinkingPattern(LED::Colors c);
+    void SolidColorPattern(LED::Colors c);
+    void AlternatingBlinkingPattern(LED::Colors c);
+    void AlternatingBlinkingPattern(LED::Colors c1, LED::Colors c2);
+    void ClosingInChaserPattern(LED::Colors c);
+    LED* m_LED = LED::GetInstance();
+    static LEDStates* GetInstance();
 
     private:
-        TeleopControl*        m_controller;
-        IChassis*             m_chassis;
-        CyclePrimitives*      m_cyclePrims; 
-        HolonomicDrive*       m_holonomic;
-        ArcadeDrive*          m_arcade;
-        DragonLimelight*      m_dragonLimeLight;
-        DriverFeedback*       m_driverfeedback = DriverFeedback::GetInstance();
-        
-        AdjustableItemMgr*    m_tuner;
-        FMSData*              m_fmsData;
-        DragonField*          m_field;
-        AutonPreviewer*       m_previewer;
+    
+    int loopThroughIndividualLEDs = -1;
+    int colorLoop = 0;
+    int timer;
+    static LEDStates* m_instance;
 };
+
+
+
