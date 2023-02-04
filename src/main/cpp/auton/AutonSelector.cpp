@@ -69,7 +69,7 @@ string AutonSelector::GetSelectedAutoFile()
 	autonfile += GetNumofPiecesinauton();
 	autonfile += GetParkOnChargeStation();
 	autonfile += std::string (".xml");
-
+Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("xml file1"), std::string("interesting string Idea"),autonfile);
 	if (FileExists(autonfile) ==false)
 	{
 	autonfile=frc::filesystem::GetDeployDirectory();
