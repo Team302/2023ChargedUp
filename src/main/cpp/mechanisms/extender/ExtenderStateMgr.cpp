@@ -60,7 +60,8 @@ ExtenderStateMgr* ExtenderStateMgr::GetInstance()
 
 /// @brief    initialize the state manager, parse the configuration file and create the states.
 ExtenderStateMgr::ExtenderStateMgr() : StateMgr(),
-                                     m_extender(MechanismFactory::GetMechanismFactory()->GetExtender())
+                                     m_extender(MechanismFactory::GetMechanismFactory()->GetExtender()),
+                                     m_extendedPosition(84320.3176) //22.25 inches in counts for extender
 {
     map<string, StateStruc> stateMap;
 	stateMap["HOLD_POSITION_EXTEND"] = m_hold_position_extendState;
@@ -98,6 +99,10 @@ void ExtenderStateMgr::CheckForStateTransition()
 
     if ( m_extender != nullptr )
     {    
+        //If we are hitting limit switches, reset position
+        m_extender->ResetIfFullyExtended(m_extendedPosition);
+        m_extender->ResetIfFullyRetracted();
+
         auto currentState = static_cast<EXTENDER_STATE>(GetCurrentState());
         auto targetState = currentState;
 
@@ -112,7 +117,7 @@ void ExtenderStateMgr::CheckForStateTransition()
 
             Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ExtenderMgr"), string("Extender Position"), m_extender->GetPositionInches().to<double>());
 
-            if(abs(extendRetractValue) > 0.01)
+            if(abs(extendRetractValue) > 0.05)
             {
                 targetState = EXTENDER_STATE::MANUAL_EXTEND_RETRACT;
                 m_extender->UpdateTarget(0.1 * extendRetractValue);
@@ -151,8 +156,8 @@ void ExtenderStateMgr::CheckForStateTransition()
             }
             else
             {
-                targetState = EXTENDER_STATE::MANUAL_EXTEND_RETRACT;
-                m_extender->UpdateTarget(0.0);
+                targetState = EXTENDER_STATE::HOLD_POSITION_EXTEND;
+                //m_extender->UpdateTarget(m_extender->GetTarget());
             }
         }
 
@@ -160,6 +165,9 @@ void ExtenderStateMgr::CheckForStateTransition()
         {
             SetCurrentState(targetState, true);
         }
+
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ExtenderMgr"), string("Extender Current State"), currentState);
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ExtenderMgr"), string("Current Target"), m_extender->GetTarget() );
 
 		//========= Hand modified code end section 0 ========
         //========= Do not erase this line and the one above it. They are used by the code generator =======

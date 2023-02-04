@@ -48,5 +48,8 @@ std::shared_ptr<IDragonMotorController>     motorController0
 		);
 		Extender() = delete;
 		~Extender() override = default;
+
+		void ResetIfFullyExtended(double counts);
+		void ResetIfFullyRetracted();
 		};
 	

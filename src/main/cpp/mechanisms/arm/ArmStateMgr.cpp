@@ -109,7 +109,13 @@ void ArmStateMgr::CheckForStateTransition()
         
         if(controller != nullptr)
         {
+            //If we are hitting limit switch, reset position
+            m_arm->ResetIfArmDown();
+
             double armRotateValue = controller->GetAxisValue(TeleopControl::FUNCTION_IDENTIFIER::MANUAL_ROTATE);
+
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Counts"), m_arm->GetMotor()->GetCounts());
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Arm Angle Mech"), m_arm->GetPositionDegrees().to<double>());
 
             if(abs(armRotateValue) > 0.05)
             {

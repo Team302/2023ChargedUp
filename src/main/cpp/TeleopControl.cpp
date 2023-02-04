@@ -203,6 +203,10 @@ void TeleopControl::Initialize() const
 		m_buttonIDs[ HOLD_POSITION_EXTEND ]			= IDragonGamePad::A_BUTTON;
 		m_controllerIndex[ MANUAL_EXTEND_RETRACT ]			= ctrlNo;
 		m_axisIDs[ MANUAL_EXTEND_RETRACT ]					= IDragonGamePad::LEFT_JOYSTICK_Y;
+
+		m_controllerIndex[ MANUAL_ROTATE ]			= ctrlNo;
+		m_axisIDs[ MANUAL_ROTATE ]					= IDragonGamePad::RIGHT_JOYSTICK_Y;
+
 		m_controllerIndex[ CUBE_BACKROW_EXTEND ]	= ctrlNo;
 		m_buttonIDs[ CUBE_BACKROW_EXTEND ]			= IDragonGamePad::X_BUTTON;
 		m_controllerIndex[ CONE_BACKROW_EXTEND ]	= ctrlNo;

@@ -63,7 +63,8 @@ DragonFalcon::DragonFalcon
 	m_id(deviceID),
 	m_pdp( pdpID ),
 	m_calcStruc(calcStruc),
-	m_motorType(motorType)
+	m_motorType(motorType),
+	m_inverted(false)
 {
 	m_networkTableName += string(" - motor ");
 	m_networkTableName += to_string(deviceID);
@@ -406,6 +407,7 @@ void DragonFalcon::EnableBrakeMode(bool enabled)
 
 void DragonFalcon::Invert(bool inverted)
 {
+	m_inverted = inverted;
     m_talon.get()->SetInverted(inverted);
 }
 

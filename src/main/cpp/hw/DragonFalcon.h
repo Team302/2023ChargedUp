@@ -137,6 +137,7 @@ class DragonFalcon : public IDragonMotorController
 
         double GetCountsPerRev() const override {return m_calcStruc.countsPerRev;}
         double GetGearRatio() const override { return m_calcStruc.gearRatio;}
+        bool IsMotorInverted() const override {return m_inverted;};
         bool IsForwardLimitSwitchClosed() const override;
         bool IsReverseLimitSwitchClosed() const override;
         void EnableVoltageCompensation( double fullvoltage) override;
@@ -161,5 +162,6 @@ class DragonFalcon : public IDragonMotorController
         int                                                                 m_pdp;
         DistanceAngleCalcStruc                                              m_calcStruc;
         IDragonMotorController::MOTOR_TYPE                                  m_motorType;
+        bool                                                                m_inverted;
 };
 

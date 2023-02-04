@@ -83,12 +83,26 @@ double Mech1IndMotor::GetPosition() const
 
 units::length::inch_t Mech1IndMotor::GetPositionInches() const
 {
-    return units::length::inch_t(m_motor.get()->GetCounts() / m_motor.get()->GetCountsPerInch());
+    double counts = m_motor.get()->GetCounts();
+    
+    if(m_motor.get()->IsMotorInverted())
+    {
+        counts *= -1.0;
+    }
+
+    return units::length::inch_t(counts / m_motor.get()->GetCountsPerInch());
 }
 
 units::angle::degree_t Mech1IndMotor::GetPositionDegrees() const
 {
-    return units::angle::degree_t(m_motor.get()->GetCounts() / m_motor.get()->GetCountsPerDegree());
+    double counts = m_motor.get()->GetCounts();
+
+    if(m_motor.get()->IsMotorInverted())
+    {
+        counts *= -1.0;
+    }
+
+    return units::angle::degree_t(counts / m_motor.get()->GetCountsPerDegree());
 }
 
 double Mech1IndMotor::GetSpeed() const

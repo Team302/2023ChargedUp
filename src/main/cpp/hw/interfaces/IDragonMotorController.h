@@ -138,6 +138,8 @@ class IDragonMotorController
         ) = 0;
             
         virtual double GetCountsPerRev() const = 0;
+
+        virtual bool IsMotorInverted() const = 0;
         
         IDragonMotorController() = default;
         virtual ~IDragonMotorController() = default;

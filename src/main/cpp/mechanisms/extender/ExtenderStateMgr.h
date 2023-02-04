@@ -98,5 +98,6 @@ const StateStruc m_human_player_station_extendState = { EXTENDER_STATE::HUMAN_PL
 const StateStruc m_starting_position_extendState = { EXTENDER_STATE::STARTING_POSITION_EXTEND, "STARTING_POSITION_EXTEND", StateType::EXTENDER_STATE, true };
 const StateStruc m_floor_extendState = { EXTENDER_STATE::FLOOR_EXTEND, "FLOOR_EXTEND", StateType::EXTENDER_STATE, false };
 
+        double m_extendedPosition;
 };
 
