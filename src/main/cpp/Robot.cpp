@@ -40,11 +40,11 @@ void Robot::RobotInit()
     auto XmlParser = new RobotXmlParser();
     XmlParser->ParseXML();
 
-    auto waypointParser = WaypointXmlParser::GetInstance();
+  /*  auto waypointParser = WaypointXmlParser::GetInstance();
     waypointParser->ParseWaypoints();
     //Get AdjustableItemMgr instance
     m_tuner = AdjustableItemMgr::GetInstance();
-
+*/
     auto factory = ChassisFactory::GetChassisFactory();
     m_chassis = factory->GetIChassis();
     m_holonomic = nullptr;
@@ -60,7 +60,7 @@ void Robot::RobotInit()
 
 
     m_fmsData = FMSData::GetInstance();
-    m_field = new DragonField();
+    //m_field = new DragonField();
 }
 
 /**
@@ -73,7 +73,7 @@ void Robot::RobotInit()
  */
 void Robot::RobotPeriodic() 
 {
-    if (m_chassis != nullptr)
+  /*  if (m_chassis != nullptr)
     {
         m_chassis->UpdateOdometry();
         m_field->UpdateRobotPosition(m_chassis->GetPose());
@@ -88,7 +88,7 @@ void Robot::RobotPeriodic()
     LoggableItemMgr::GetInstance()->LogData();
     Logger::GetLogger()->PeriodicLog();
 
-    m_tuner->ListenForUpdates();
+    m_tuner->ListenForUpdates();*/
 }
 
 /**
@@ -118,7 +118,7 @@ void Robot::AutonomousPeriodic()
 {
     if (m_cyclePrims != nullptr)
     {
-        m_cyclePrims->Run();
+       //m_cyclePrims->Run();
     }
 }
 

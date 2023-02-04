@@ -92,18 +92,11 @@ class AutonSelector
 		// Returns:		void
 		//---------------------------------------------------------------------
 		void PutChoicesOnDashboard();
-
+		bool FileExists(const std::string& name);
 		// Attributues
 		std::vector<std::string> m_xmlFiles;
 		frc::SendableChooser<std::string> m_chrgstatchooser;
-		frc::SendableChooser<std::string> m_alliancecolorchooser;
 		frc::SendableChooser<std::string> m_startposchooser;
 		frc::SendableChooser<std::string> m_numofgamepiecechooser;
-		std::string m_parkonchrgstat;
-		std::string m_alliancecolor;
-		std::string m_startpos;
-		std::string m_numofgamepiece;
-
-		std::string m_parkonchrgstatfile;
 };
 

@@ -19,6 +19,8 @@
 //Includes
 #include <string>
 #include <vector>
+#include <sys/stat.h>
+#include <fstream>
 
 #ifdef __linux
 #include <dirent.h>
@@ -40,7 +42,7 @@ using namespace std;
 //---------------------------------------------------------------------
 bool HasError = false;
 AutonSelector::AutonSelector() : m_xmlFiles(),
-								 m_chrgstatchooser()
+								 m_chrgstatchooser() //todo remove
 
 {
 	FindXMLFileNames();
@@ -61,19 +63,32 @@ void AutonSelector::FindXMLFileNames()
 string AutonSelector::GetSelectedAutoFile()
 {
 	std::string autonfile(frc::filesystem::GetDeployDirectory());
-	autonfile += std::string ("/paths/output/");
+	autonfile += std::string ("/auton/");
 	autonfile += GetAlianceColor();
 	autonfile += GetStartPos();
 	autonfile += GetNumofPiecesinauton();
 	autonfile += GetParkOnChargeStation();
 	autonfile += std::string (".xml");
-	Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("xml file"), std::string("interesting string Idea"),(autonfile));
+
+	if (FileExists(autonfile) ==false)
+	{
+	autonfile=frc::filesystem::GetDeployDirectory();
+	autonfile += std::string ("/auton/");
+	autonfile += GetAlianceColor();
+	autonfile += ("COOPThreeP.xml");
+	}
+	Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("xml file"), std::string("interesting string Idea"),autonfile);
 	return autonfile;
 }
 
+	bool  AutonSelector::FileExists(const std::string& name) 
+		{
+	ifstream f(name.c_str());
+	return f.good();
+		}
 string AutonSelector::GetParkOnChargeStation()
 {
-	if (m_parkonchrgstat.compare("yes"))
+	if (m_chrgstatchooser.GetSelected()=="yes")
 {
 	return std::string("P");
 }
@@ -103,39 +118,39 @@ string AutonSelector::GetAlianceColor()
 }
 string AutonSelector::GetStartPos()
 {
-	if (m_startpos.compare("Gridwall"))
+	if (m_startposchooser.GetSelected()=="Gridwall")
 	{
 	return	std::string("Wall");
 	}
 
-	else if (m_startpos.compare("Gridcoop"))
+	else if (m_startposchooser.GetSelected()=="Gridcoop")
 	{
-	return	std::string("Coop");
+	return	std::string("COOP");
 	
 	}
-	else //(m_startpos.compare("Gridhp"));
+	else 
 	{
-		return std::string("Hp");
+		return std::string("HP");
 	}
 }
 
 string AutonSelector::GetNumofPiecesinauton()
 {
-	if (m_numofgamepiece.compare("1"))
+	if (m_numofgamepiecechooser.GetSelected()=="1")
 	{
 		return std::string("One");
 	}
 
-	else if (m_numofgamepiece.compare("2"))
+	else if (m_numofgamepiecechooser.GetSelected()=="2")
 	{
 		return std::string("Two");
 	}
 
-	else if (m_numofgamepiece.compare("3"))
+	else if (m_numofgamepiecechooser.GetSelected()=="3")
 	{
 		return std::string("Three");
 	}
-	else //(m_numofgamepiece.compare("4"));
+	else
 	{
 		return std::string("Four");
 	}
@@ -149,28 +164,23 @@ string AutonSelector::GetNumofPiecesinauton()
 // Returns:		void
 //---------------------------------------------------------------------
 void AutonSelector::PutChoicesOnDashboard()
-{
+{	//dashboard wont change prkonchrgstat in .xml file
 	//choose to park on charging station or not
-	m_chrgstatchooser.AddOption("yes", m_parkonchrgstat);
-	m_chrgstatchooser.AddOption("no", m_parkonchrgstat);
+	m_chrgstatchooser.AddOption("yes", "yes");
+	m_chrgstatchooser.AddOption("no", "no");
 	frc::SmartDashboard::PutData("prkonchrgstat", &m_chrgstatchooser);
-	
-	//alliance color
-	//m_alliancecolorchooser.AddOption("Red", m_alliancecolor);
-	//m_alliancecolorchooser.AddOption("Blue", m_alliancecolor);
-	//frc::SmartDashboard::PutData("Alliance color", &m_alliancecolorchooser);
 
 	//# of game pieces
-	m_startposchooser.AddOption("Gridcoop",m_startpos);
-	m_startposchooser.AddOption("Gridwall",m_startpos);
-	m_startposchooser.AddOption("Gridhp",m_startpos);
+	m_startposchooser.AddOption("Gridcoop","Gridcoop");
+	m_startposchooser.AddOption("Gridwall","Gridwall");
+	m_startposchooser.AddOption("Gridhp","Gridhp");
 	frc::SmartDashboard::PutData("StartPos",&m_startposchooser);
 
 	//what you want to do in auton
-	m_numofgamepiecechooser.AddOption("1",m_numofgamepiece);
-	m_numofgamepiecechooser.AddOption("2",m_numofgamepiece);
-	m_numofgamepiecechooser.AddOption("3",m_numofgamepiece);
-	m_numofgamepiecechooser.AddOption("4",m_numofgamepiece);
+	m_numofgamepiecechooser.AddOption("1","1");
+	m_numofgamepiecechooser.AddOption("2","2");
+	m_numofgamepiecechooser.AddOption("3","3");
+	m_numofgamepiecechooser.AddOption("4","4");
 	frc::SmartDashboard::PutData("NumOfpcs",&m_numofgamepiecechooser);
 
 }
