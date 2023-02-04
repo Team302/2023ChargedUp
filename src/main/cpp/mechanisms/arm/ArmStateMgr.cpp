@@ -101,6 +101,7 @@ void ArmStateMgr::CheckForStateTransition()
     {    
         auto currentState = static_cast<ARM_STATE>(GetCurrentState());
         auto targetState = currentState;
+        auto prevState = currentState;
 
         //========= Do not erase this line and the one below it. They are used by the code generator ========		
 		//========= Hand modified code start section 0 ========
@@ -120,46 +121,54 @@ void ArmStateMgr::CheckForStateTransition()
             if(abs(armRotateValue) > 0.05)
             {
                 targetState = ARM_STATE::MANUAL_ROTATE;
-                m_arm->UpdateTarget(-0.2 * armRotateValue);
+                m_arm->UpdateTarget(-0.3 * armRotateValue);
                 Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("RotateValue"), armRotateValue);
                 Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("ArmRotatePercentage"), m_arm->GetTarget());
+                prevState = targetState;
             }
             else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HOLD_POSITION_ROTATE))
             {
                 targetState = ARM_STATE::HOLD_POSITION_ROTATE;
+                prevState = targetState;
             }
             else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::CONE_BACKROW_ROTATE))
             {
                 targetState = ARM_STATE::CONE_BACKROW_ROTATE;
+                prevState = targetState;
             }
             else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::CONE_BACKROW_ROTATE))
             {
                 targetState = ARM_STATE::CONE_BACKROW_ROTATE;
+                prevState = targetState;
             }
             else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::CUBE_MIDROW_ROTATE))
             {
                 targetState = ARM_STATE::CUBE_MIDROW_ROTATE;
+                prevState = targetState;
             }
             else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::CONE_MIDROW_ROTATE))
             {
                 targetState = ARM_STATE::CONE_MIDROW_ROTATE;
+                prevState = targetState;
             }
             else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HUMAN_PLAYER_STATION_ROTATE))
             {
                 targetState = ARM_STATE::HUMAN_PLAYER_STATION_ROTATE;
+                prevState = targetState;
             }
             else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::STARTING_POSITION_ROTATE))
             {
                 targetState = ARM_STATE::STARTING_POSITION_ROTATE;
+                prevState = targetState;
             }
             else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::FLOOR_POSITION_ROTATE))
             {
                 targetState = ARM_STATE::FLOOR_POSITION_ROTATE;
+                prevState = targetState;
             }
             else
             {
-                targetState = ARM_STATE::MANUAL_ROTATE;
-                m_arm->UpdateTarget(0.0);
+                targetState = ARM_STATE::HOLD_POSITION_ROTATE;
             }
         }
 
@@ -167,6 +176,7 @@ void ArmStateMgr::CheckForStateTransition()
         {
             SetCurrentState(targetState, true);
             Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Changing State to: "), targetState);
+
         }
 
 		//========= Hand modified code end section 0 ========

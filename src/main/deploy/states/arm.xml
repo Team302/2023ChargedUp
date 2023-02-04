@@ -15,8 +15,8 @@
     identifier="HoldAngle"
     mode="POSITION_DEGREES"
     constrolServer="MOTORCONTROLLER"
-    proportional="0.005"
-    integral="0.0000"
+    proportional="0.0"
+    integral="0.0"
     derivative="0.0"
     feedforward="0.0"
     izone="0.0"
@@ -35,9 +35,9 @@
     cruisevelocity="0.0" />
   <mechanismTarget
     stateIdentifier="HOLD_POSITION_ROTATE"
-    controlDataIdentifier="HoldAngle"
+    controlDataIdentifier="PercentOutput"
     controlDataIdentifier2=""
-    value="45"
+    value="0.0"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
@@ -45,7 +45,7 @@
     stateIdentifier="MANUAL_ROTATE"
     controlDataIdentifier="PercentOutput"
     controlDataIdentifier2=""
-    value="1"
+    value="0"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
