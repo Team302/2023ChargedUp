@@ -91,7 +91,7 @@
     solenoid2="NONE" />
   <mechanismTarget
     stateIdentifier="STARTING_POSITION_EXTEND"
-    controlDataIdentifier="ExtendPosition"
+    controlDataIdentifier="PercentOutput"
     controlDataIdentifier2=""
     value="0"
     secondValue=""
