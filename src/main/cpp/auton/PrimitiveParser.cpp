@@ -85,8 +85,10 @@ PrimitiveParamsVector PrimitiveParser::ParseXML
                     auto xloc = 0.0;
                     auto yloc = 0.0;
                     std::string pathName;
+                    auto armstate = ArmStateMgr::ARM_STATE::HOLD_POSITION_ROTATE;
+                    auto extenderstate = ExtenderStateMgr::EXTENDER_STATE::HOLD_POSITION_EXTEND;
+                    auto grabberstate = GrabberStateMgr::GRABBER_STATE::OPEN;
                     // @ADDMECH Initialize your mechanism state
-                    
                     for (xml_attribute attr = primitiveNode.first_attribute(); attr; attr = attr.next_attribute())
                     {
                         if ( strcmp( attr.name(), "id" ) == 0 )
@@ -147,6 +149,45 @@ PrimitiveParamsVector PrimitiveParser::ParseXML
                         {
                             pathName = attr.value();
                         }                
+                        else if ( strcmp( attr.name(), "Arm" ) == 0 )
+                        {
+                            auto armItr = ArmStateMgr::GetInstance()->m_armXmlStringToStateEnumMap.find( attr.value() );
+                            if ( armItr != ArmStateMgr::GetInstance()->m_armXmlStringToStateEnumMap.end() )
+                            {
+                                armstate = armItr->second;
+                            }
+                            else
+                            {
+                                Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("PrimitiveParser"), string("PrimitiveParser::ParseXML invalid arm state"), attr.value());
+                                hasError = true;
+                            }
+                        }
+                        else if ( strcmp( attr.name(), "Extender" ) == 0 )
+                        {
+                            auto extenderItr = ExtenderStateMgr::GetInstance()->m_extenderXmlStringToStateEnumMap.find( attr.value() );
+                            if ( extenderItr != ExtenderStateMgr::GetInstance()->m_extenderXmlStringToStateEnumMap.end() )
+                            {
+                                extenderstate = extenderItr->second;
+                            }
+                            else
+                            {
+                                Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("PrimitiveParser"), string("PrimitiveParser::ParseXML invalid extender state"), attr.value());
+                                hasError = true;
+                            }
+                        }   
+                        else if ( strcmp( attr.name(), "Grabber" ) == 0 )
+                        {
+                            auto grabberItr = GrabberStateMgr::GetInstance()->m_grabberXmlStringToStateEnumMap.find( attr.value() );
+                            if ( grabberItr != GrabberStateMgr::GetInstance()->m_grabberXmlStringToStateEnumMap.end() )
+                            {
+                                grabberstate = grabberItr->second;
+                            }
+                            else
+                            {
+                                Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("PrimitiveParser"), string("PrimitiveParser::ParseXML invalid grabber state"), attr.value());
+                                hasError = true;
+                            }
+                        } 
                         // @ADDMECH add case for your mechanism state to get the statemgr / state
 
                         else
@@ -166,9 +207,11 @@ PrimitiveParamsVector PrimitiveParser::ParseXML
                                                                        heading,
                                                                        startDriveSpeed,
                                                                        endDriveSpeed,
-                                                                       pathName
+                                                                       pathName,
                                                                        // @ADDMECH add parameter for your mechanism state
-
+                                                                       ArmStateMgr::ARM_STATE::HOLD_POSITION_ROTATE,
+                						                               ExtenderStateMgr::EXTENDER_STATE::HOLD_POSITION_EXTEND,
+                						                               GrabberStateMgr::GRABBER_STATE::OPEN
                                                                        ) );
                         string ntName = string("Primitive ") + to_string(paramVector.size());
                         int slot = paramVector.size() - 1;

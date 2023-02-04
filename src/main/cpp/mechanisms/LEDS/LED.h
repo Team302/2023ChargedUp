@@ -1,5 +1,6 @@
+
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302 
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -13,49 +14,39 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-//FRC Includes
-#include <frc/smartdashboard/SmartDashboard.h>
+#pragma once
+#include <frc/AddressableLED.h>
 
-//Team 302 Includes
-#include <utils/DragonField.h>
 
-DragonField* DragonField::m_instance = nullptr;
-
-DragonField* DragonField::GetInstance()
+class LED
 {
-	if ( DragonField::m_instance == nullptr )
-	{
-            DragonField::m_instance = new DragonField();
-	}
-	return DragonField::m_instance;
-}
+	public:
+        LED(int PWMport);
 
-DragonField::DragonField()
-{
-    frc::SmartDashboard::PutData(&m_field);
-}
 
-void DragonField::UpdateRobotPosition(frc::Pose2d robotPose)
-{
-    m_field.SetRobotPose(robotPose);
-}
+        enum Colors{RED, GREEN, BLUE, PURPLE, YELLOW, AZUL, BLACK, WHITE, MAX_STATE};
 
-void DragonField::AddPose(std::string name, frc::Pose2d pose)
-{
-    m_objects.emplace_back(m_field.GetObject(name));
-    m_field.GetObject(name)->SetPose(pose);
-}
+        static constexpr int kLength = 15;
 
-void DragonField::AddTrajectory(std::string name, frc::Trajectory trajectory)
-{
-    m_objects.emplace_back(m_field.GetObject(name));
-    m_field.GetObject(name)->SetTrajectory(trajectory);
-}
+        frc::AddressableLED* m_led;
+        std::array<frc::AddressableLED::LEDData, kLength> m_ledBuffer;
+      
+        std::array<int,3> getColorValues(Colors c);
+        ~LED();
+        LED() = delete;
 
-void DragonField::ResetField()
-{
-    for(int i = 0; i < m_objects.size(); i++)
-    {
-        m_objects[i]->SetPoses(std::span<frc::Pose2d>());
-    }
-}
+        static LED* GetInstance();
+
+        private:
+        static LED* m_instance;
+   
+        
+        
+        
+
+
+
+};
+
+
+

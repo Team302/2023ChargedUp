@@ -112,9 +112,8 @@ void CyclePrimitives::GetNextPrim()
 	{
 		m_currentPrim->Init(currentPrimParam);
 
-		// @ADDMECH Get your stateMgr, set its current state to match the current primitive parameter and run it
-
-
+		StateMgrHelper::SetMechanismStateFromParam(currentPrimParam);
+		
 		m_maxTime = currentPrimParam->GetTime();
 		m_timer->Reset();
 		m_timer->Start();
@@ -138,8 +137,11 @@ void CyclePrimitives::RunDriveStop()
 		                                   0.0,                 // heading
 		                                   0.0,                 // start drive speed
 		                                   0.0,					// end drive speed
-										   string()
+										   string(),
 										  // @ADDMECH mechanism state
+										  ArmStateMgr::ARM_STATE::HOLD_POSITION_ROTATE,
+                						  ExtenderStateMgr::EXTENDER_STATE::HOLD_POSITION_EXTEND,
+                						  GrabberStateMgr::GRABBER_STATE::HOLDING_CONE
 										 );             
 		m_DriveStop = m_primFactory->GetIPrimitive(params);
 		m_DriveStop->Init(params);

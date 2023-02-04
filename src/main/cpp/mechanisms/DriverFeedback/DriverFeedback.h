@@ -1,5 +1,6 @@
+
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302 
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -13,49 +14,51 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-//FRC Includes
-#include <frc/smartdashboard/SmartDashboard.h>
+#pragma once
+#include <mechanisms/LEDS/LEDStates.h>
 
-//Team 302 Includes
-#include <utils/DragonField.h>
-
-DragonField* DragonField::m_instance = nullptr;
-
-DragonField* DragonField::GetInstance()
+class DriverFeedback
 {
-	if ( DragonField::m_instance == nullptr )
-	{
-            DragonField::m_instance = new DragonField();
-	}
-	return DragonField::m_instance;
-}
+	public:
+    LEDStates* m_LEDStates = LEDStates::GetInstance();
+    void UpdateFeedback();
+    void isAlignedWithConeNode(bool AlignedWithConeNode);
+    void isAlignedWithCubeNode(bool AlignedWithCubeNode);
+    void isGamePieceInGrabber(bool GamePieceInGrabber);
+    void isWantCone(bool WantCone);
+    void isWantCube(bool WantCube);
+    void isGamePieceReadyToPickUp(bool GamePieceReadyToPickUp);
+    static DriverFeedback* GetInstance();
 
-DragonField::DragonField()
-{
-    frc::SmartDashboard::PutData(&m_field);
-}
 
-void DragonField::UpdateRobotPosition(frc::Pose2d robotPose)
-{
-    m_field.SetRobotPose(robotPose);
-}
 
-void DragonField::AddPose(std::string name, frc::Pose2d pose)
-{
-    m_objects.emplace_back(m_field.GetObject(name));
-    m_field.GetObject(name)->SetPose(pose);
-}
-
-void DragonField::AddTrajectory(std::string name, frc::Trajectory trajectory)
-{
-    m_objects.emplace_back(m_field.GetObject(name));
-    m_field.GetObject(name)->SetTrajectory(trajectory);
-}
-
-void DragonField::ResetField()
-{
-    for(int i = 0; i < m_objects.size(); i++)
+    private:
+    enum DriverFeedbackStates
     {
-        m_objects[i]->SetPoses(std::span<frc::Pose2d>());
-    }
-}
+     ALIGNED_WITH_CONE_NODE,
+     ALIGNED_WITH_CUBE_NODE,
+     GAME_PIECE_IN_GRABBER,
+     WANT_CUBE,
+     WANT_CONE,
+     GAME_PIECE_READY_TO_PICK_UP,
+     NONE
+     
+    };
+
+
+    bool m_WantCube = false;
+    bool m_WantCone = false;
+    bool m_GamePieceReadyToPickUp = false;
+    bool m_GamePieceInGrabber = false;
+    bool m_AlignedWithConeNode = false;
+    bool m_AlignedWithCubeNode = false;
+
+    static DriverFeedback* m_instance;
+
+    DriverFeedbackStates currentState = DriverFeedbackStates::NONE;
+
+
+};
+
+
+

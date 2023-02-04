@@ -18,6 +18,8 @@
 #pragma once
 
 #include <frc/TimedRobot.h>
+#include <mechanisms/DriverFeedback/DriverFeedback.h>
+
 
 class ArcadeDrive;
 class CyclePrimitives;
@@ -28,6 +30,7 @@ class TeleopControl;
 class AdjustableItemMgr;
 class FMSData;
 class DragonField;
+class AutonPreviewer;
 
 class Robot : public frc::TimedRobot 
 {
@@ -46,11 +49,14 @@ class Robot : public frc::TimedRobot
     private:
         TeleopControl*        m_controller;
         IChassis*             m_chassis;
-        CyclePrimitives*      m_cyclePrims;
+        CyclePrimitives*      m_cyclePrims; 
         HolonomicDrive*       m_holonomic;
         ArcadeDrive*          m_arcade;
         DragonLimelight*      m_dragonLimeLight;
+        DriverFeedback*       m_driverfeedback = DriverFeedback::GetInstance();
+        
         AdjustableItemMgr*    m_tuner;
         FMSData*              m_fmsData;
         DragonField*          m_field;
+        AutonPreviewer*       m_previewer;
 };
