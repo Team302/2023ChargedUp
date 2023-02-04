@@ -1,5 +1,6 @@
+
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302 
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -13,28 +14,51 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-//Team302 Includes
-#include <chassis/swerve/headingStates/ISwerveDriveOrientation.h>
-#include <chassis/ChassisFactory.h>
-#include <utils/AngleUtils.h>
+#pragma once
+#include <mechanisms/LEDS/LEDStates.h>
 
-ISwerveDriveOrientation::ISwerveDriveOrientation(ChassisOptionEnums::HeadingOption headingOption
-) : m_headingOption(headingOption)
+class DriverFeedback
 {
-    
-}
+	public:
+    LEDStates* m_LEDStates = LEDStates::GetInstance();
+    void UpdateFeedback();
+    void isAlignedWithConeNode(bool AlignedWithConeNode);
+    void isAlignedWithCubeNode(bool AlignedWithCubeNode);
+    void isGamePieceInGrabber(bool GamePieceInGrabber);
+    void isWantCone(bool WantCone);
+    void isWantCube(bool WantCube);
+    void isGamePieceReadyToPickUp(bool GamePieceReadyToPickUp);
+    static DriverFeedback* GetInstance();
 
-units::angular_velocity::degrees_per_second_t ISwerveDriveOrientation::CalcHeadingCorrection(units::angle::degree_t targetAngle, double kP)
-{
-    auto currentAngle = ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose().Rotation().Degrees();
-    auto errorAngle = AngleUtils::GetEquivAngle(AngleUtils::GetDeltaAngle(currentAngle, targetAngle));
-    
-    auto correction = units::angular_velocity::degrees_per_second_t(errorAngle.to<double>()*kP);
 
-    return correction;
-}
 
-void ISwerveDriveOrientation::SetStoredHeading(units::angle::degree_t heading)
-{
-    m_storedYaw = heading;
-}
+    private:
+    enum DriverFeedbackStates
+    {
+     ALIGNED_WITH_CONE_NODE,
+     ALIGNED_WITH_CUBE_NODE,
+     GAME_PIECE_IN_GRABBER,
+     WANT_CUBE,
+     WANT_CONE,
+     GAME_PIECE_READY_TO_PICK_UP,
+     NONE
+     
+    };
+
+
+    bool m_WantCube = false;
+    bool m_WantCone = false;
+    bool m_GamePieceReadyToPickUp = false;
+    bool m_GamePieceInGrabber = false;
+    bool m_AlignedWithConeNode = false;
+    bool m_AlignedWithCubeNode = false;
+
+    static DriverFeedback* m_instance;
+
+    DriverFeedbackStates currentState = DriverFeedbackStates::NONE;
+
+
+};
+
+
+

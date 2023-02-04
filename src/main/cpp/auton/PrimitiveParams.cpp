@@ -34,8 +34,11 @@ PrimitiveParams::PrimitiveParams
     float                       						heading,
     float                       						startDriveSpeed,
     float                       						endDriveSpeed,
-	std::string											pathName
+	std::string											pathName,
 	// @ADDMECH mechanism state for mech as parameter
+	ArmStateMgr::ARM_STATE                              armState,
+    ExtenderStateMgr::EXTENDER_STATE                    extenderState,
+    GrabberStateMgr::GRABBER_STATE                      grabberState
 ):	//Pass over parameters to class variables
 		m_id(id), //Primitive ID
 		m_time(time),
@@ -46,10 +49,15 @@ PrimitiveParams::PrimitiveParams
 		m_heading(heading),
 		m_startDriveSpeed(startDriveSpeed),
 		m_endDriveSpeed(endDriveSpeed),
-		m_pathName (pathName)
-		// @ADDMECH initilize state mgr attribute
+		m_pathName (pathName),
+		// @ADDMECH initilize state mgr attribute	
+		m_armState(armState),
+		m_extenderState(extenderState),
+		m_grabberState(grabberState)
 {
+
 }
+		
 
 
 

@@ -33,7 +33,6 @@ void Robot::RobotInit()
 {
     Logger::GetLogger()->PutLoggingSelectionsOnDashboard();
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("RobotInit"), string("arrived"));   
-    
     m_controller = TeleopControl::GetInstance();
     m_fmsData = FMSData::GetInstance();
     m_field = DragonField::GetInstance();
@@ -72,6 +71,7 @@ void Robot::RobotInit()
  */
 void Robot::RobotPeriodic() 
 {
+
     if (m_chassis != nullptr)
     {
         m_chassis->UpdateOdometry();
@@ -133,9 +133,9 @@ void Robot::TeleopInit()
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopInit"), string("end"));
 }
 
-
 void Robot::TeleopPeriodic() 
 {
+
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopPeriodic"), string("arrived"));   
     if (m_chassis != nullptr && m_controller != nullptr)
     {
@@ -152,6 +152,7 @@ void Robot::TeleopPeriodic()
 
 void Robot::DisabledInit() 
 {
+
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("DisabledInit"), string("arrived"));   
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("DisabledInit"), string("end"));   
 }

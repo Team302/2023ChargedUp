@@ -1,5 +1,6 @@
+
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302 
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -13,28 +14,39 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-//Team302 Includes
-#include <chassis/swerve/headingStates/ISwerveDriveOrientation.h>
-#include <chassis/ChassisFactory.h>
-#include <utils/AngleUtils.h>
+#pragma once
+#include <frc/AddressableLED.h>
 
-ISwerveDriveOrientation::ISwerveDriveOrientation(ChassisOptionEnums::HeadingOption headingOption
-) : m_headingOption(headingOption)
+
+class LED
 {
-    
-}
+	public:
+        LED(int PWMport);
 
-units::angular_velocity::degrees_per_second_t ISwerveDriveOrientation::CalcHeadingCorrection(units::angle::degree_t targetAngle, double kP)
-{
-    auto currentAngle = ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose().Rotation().Degrees();
-    auto errorAngle = AngleUtils::GetEquivAngle(AngleUtils::GetDeltaAngle(currentAngle, targetAngle));
-    
-    auto correction = units::angular_velocity::degrees_per_second_t(errorAngle.to<double>()*kP);
 
-    return correction;
-}
+        enum Colors{RED, GREEN, BLUE, PURPLE, YELLOW, AZUL, BLACK, WHITE, MAX_STATE};
 
-void ISwerveDriveOrientation::SetStoredHeading(units::angle::degree_t heading)
-{
-    m_storedYaw = heading;
-}
+        static constexpr int kLength = 15;
+
+        frc::AddressableLED* m_led;
+        std::array<frc::AddressableLED::LEDData, kLength> m_ledBuffer;
+      
+        std::array<int,3> getColorValues(Colors c);
+        ~LED();
+        LED() = delete;
+
+        static LED* GetInstance();
+
+        private:
+        static LED* m_instance;
+   
+        
+        
+        
+
+
+
+};
+
+
+
