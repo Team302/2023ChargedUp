@@ -15,7 +15,7 @@
     mountingheight="35"
     horizontaloffset="0.0"
     mountingangle="0"
-    rotation="0.0"
+    rotation="90.0"
     targetheight=""
     targetheight2=""
     defaultledmode="currentpipeline"
@@ -63,7 +63,7 @@
       turn_d="0.0"
       turn_f="0.0"
       turn_nominal_val="0.0"
-      turn_peak_val="0.9"
+      turn_peak_val="1.0"
       turn_max_acc="20"
       turn_cruise_vel="50">
       <motor
@@ -79,17 +79,13 @@
         gearRatio="6.75"
         brakeMode="true"
         follow="-1"
-        peakCurrentDuration="25.0"
-        continuousCurrentLimit="20.0"
-        peakCurrentLimit="25.0"
-        currentLimiting="true"
         forwardlimitswitch="false"
         forwardlimitswitchopen="true"
         reverselimitswitch="false"
         reverselimitswitchopen="true"
-        voltageCompensationSaturation="10.0"
+        voltageCompensationSaturation="10.5"
         voltageCompensationEnable="true"
-        countsPerInch="countsPerDegree&#x9;&#x9;    CDATA&#xD;&#xA;&gt;" />
+       />
       <motor
         usage="SWERVE_TURN"
         canId="1"
@@ -103,22 +99,18 @@
         gearRatio="1.0"
         brakeMode="true"
         follow="-1"
-        peakCurrentDuration="25.0"
-        continuousCurrentLimit="20.0"
-        peakCurrentLimit="25.0"
-        currentLimiting="true"
         forwardlimitswitch="false"
         forwardlimitswitchopen="true"
         reverselimitswitch="false"
         reverselimitswitchopen="true"
-        voltageCompensationSaturation="10.0"
+        voltageCompensationSaturation="10.5"
         voltageCompensationEnable="true"
-        countsPerInch="countsPerDegree&#x9;&#x9;    CDATA&#xD;&#xA;&gt;" />
+        countsOnTurnEncoderPerDegreesOnAngleSensor="-120.9325" />
       <cancoder
         canId="1"
         canBusName="canivore"
-        offset="157.763"
-        reverse="false" />
+        offset="123.311"
+        />
     </swervemodule>
     <swervemodule
       type="LEFT_BACK"
@@ -127,8 +119,8 @@
       turn_d="0.0"
       turn_f="0.0"
       turn_nominal_val="0.0"
-      turn_peak_val="0.9"
-      turn_max_acc="10"
+      turn_peak_val="1.0"
+      turn_max_acc="20"
       turn_cruise_vel="50">
       <motor
         usage="SWERVE_DRIVE"
@@ -143,17 +135,13 @@
         gearRatio="6.75"
         brakeMode="true"
         follow="-1"
-        peakCurrentDuration="25.0"
-        continuousCurrentLimit="20.0"
-        peakCurrentLimit="25.0"
-        currentLimiting="true"
         forwardlimitswitch="false"
         forwardlimitswitchopen="true"
         reverselimitswitch="false"
         reverselimitswitchopen="true"
-        voltageCompensationSaturation="10.0"
+        voltageCompensationSaturation="10.5"
         voltageCompensationEnable="true"
-        countsPerInch="countsPerDegree&#x9;&#x9;    CDATA&#xD;&#xA;&gt;" />
+        />
       <motor
         usage="SWERVE_TURN"
         canId="19"
@@ -167,21 +155,17 @@
         gearRatio="1.0"
         brakeMode="true"
         follow="-1"
-        peakCurrentDuration="25.0"
-        continuousCurrentLimit="20.0"
-        peakCurrentLimit="25.0"
-        currentLimiting="true"
         forwardlimitswitch="false"
         forwardlimitswitchopen="true"
         reverselimitswitch="false"
         reverselimitswitchopen="true"
-        voltageCompensationSaturation="10.0"
+        voltageCompensationSaturation="10.5"
         voltageCompensationEnable="true"
-        countsPerInch="countsPerDegree&#x9;&#x9;    CDATA&#xD;&#xA;&gt;" />
+        countsOnTurnEncoderPerDegreesOnAngleSensor="-120.9325"/>
       <cancoder
         canId="19"
         canBusName="canivore"
-        offset="-53.525"
+        offset="-4.307"
         reverse="false" />
     </swervemodule>
     <swervemodule
@@ -191,8 +175,8 @@
       turn_d="0.0"
       turn_f="0.0"
       turn_nominal_val="0.0"
-      turn_peak_val="0.9"
-      turn_max_acc="10"
+      turn_peak_val="1.0"
+      turn_max_acc="20"
       turn_cruise_vel="50">
       <motor
         usage="SWERVE_DRIVE"
@@ -207,17 +191,13 @@
         gearRatio="6.75"
         brakeMode="true"
         follow="-1"
-        peakCurrentDuration="25.0"
-        continuousCurrentLimit="20.0"
-        peakCurrentLimit="25.0"
-        currentLimiting="true"
         forwardlimitswitch="false"
         forwardlimitswitchopen="true"
         reverselimitswitch="false"
         reverselimitswitchopen="true"
-        voltageCompensationSaturation="10.0"
+        voltageCompensationSaturation="10.5"
         voltageCompensationEnable="true"
-        countsPerInch="countsPerDegree&#x9;&#x9;    CDATA&#xD;&#xA;&gt;" />
+        />
       <motor
         usage="SWERVE_TURN"
         canId="3"
@@ -231,21 +211,17 @@
         gearRatio="6.75"
         brakeMode="true"
         follow="-1"
-        peakCurrentDuration="25.0"
-        continuousCurrentLimit="20.0"
-        peakCurrentLimit="25.0"
-        currentLimiting="true"
         forwardlimitswitch="false"
         forwardlimitswitchopen="true"
         reverselimitswitch="false"
         reverselimitswitchopen="true"
-        voltageCompensationSaturation="10.0"
+        voltageCompensationSaturation="10.5"
         voltageCompensationEnable="true"
-        countsPerInch="countsPerDegree&#x9;&#x9;    CDATA&#xD;&#xA;&gt;" />
+        countsOnTurnEncoderPerDegreesOnAngleSensor="-120.9325" />
       <cancoder
         canId="3"
         canBusName="canivore"
-        offset="41.045"
+        offset="-136.143"
         reverse="false" />
     </swervemodule>
     <swervemodule
@@ -271,17 +247,13 @@
         gearRatio="6.75"
         brakeMode="true"
         follow="-1"
-        peakCurrentDuration="25.0"
-        continuousCurrentLimit="20.0"
-        peakCurrentLimit="25.0"
-        currentLimiting="true"
         forwardlimitswitch="false"
         forwardlimitswitchopen="true"
         reverselimitswitch="false"
         reverselimitswitchopen="true"
-        voltageCompensationSaturation="10.0"
+        voltageCompensationSaturation="10.5"
         voltageCompensationEnable="true"
-        countsPerInch="countsPerDegree&#x9;&#x9;    CDATA&#xD;&#xA;&gt;" />
+       />
       <motor
         usage="SWERVE_TURN"
         canId="17"
@@ -292,24 +264,20 @@
         sensorInverted="false"
         feedbackDevice="INTERNAL"
         countsPerRev="2048"
-        gearRatio="21.429"
+        gearRatio="1.0"
         brakeMode="true"
         follow="-1"
-        peakCurrentDuration="25.0"
-        continuousCurrentLimit="20.0"
-        peakCurrentLimit="25.0"
-        currentLimiting="true"
         forwardlimitswitch="false"
         forwardlimitswitchopen="true"
         reverselimitswitch="false"
         reverselimitswitchopen="true"
         voltageCompensationSaturation="10.0"
         voltageCompensationEnable="true"
-        countsPerInch="countsPerDegree&#x9;&#x9;    CDATA&#xD;&#xA;&gt;" />
+        countsOnTurnEncoderPerDegreesOnAngleSensor="-120.9325"/>
       <cancoder
         canId="17"
         canBusName="canivore"
-        offset="-106.347"
+        offset="-68.467"
         reverse="false" />
     </swervemodule>
   </chassis>
@@ -319,9 +287,9 @@
     controlFile="arm.xml">
     <motor
       usage="ARM"
-      canId="9"
+      canId="5"
       canBusName="rio"
-      pdpID="9"
+      pdpID="5"
       type="FALCON"
       inverted="false"
       sensorInverted="false"
@@ -330,19 +298,15 @@
       gearRatio="84"
       brakeMode="true"
       follow="-1"
-      peakCurrentDuration="25"
-      continuousCurrentLimit="20"
-      peakCurrentLimit="25"
-      currentLimiting="true"
       forwardlimitswitch="true"
-      forwardlimitswitchopen="false"
+      forwardlimitswitchopen="true"
       reverselimitswitch="true"
-      reverselimitswitchopen="false"
-      voltageCompensationSaturation="10"
+      reverselimitswitchopen="true"
+      voltageCompensationSaturation="10.5"
       voltageCompensationEnable="true"
-      countsPerInch="3725.135" />
+      countsPerDegree="2.256" />
     <cancoder
-      canId="9"
+      canId="5"
       canBusName="rio"
       offset="0.0"
       reverse="false" />
@@ -353,9 +317,9 @@
     controlFile="extender.xml">
     <motor
       usage="Extender"
-      canId="10"
+      canId="4"
       canBusName="rio"
-      pdpID="10"
+      pdpID="4"
       type="FALCON"
       inverted="false"
       sensorInverted="false"
@@ -364,21 +328,17 @@
       gearRatio="10"
       brakeMode="true"
       follow="-1"
-      peakCurrentDuration="25"
-      continuousCurrentLimit="20"
-      peakCurrentLimit="25"
-      currentLimiting="true"
       forwardlimitswitch="true"
-      forwardlimitswitchopen="false"
+      forwardlimitswitchopen="true"
       reverselimitswitch="true"
-      reverselimitswitchopen="false"
-      voltageCompensationSaturation="10"
+      reverselimitswitchopen="true"
+      voltageCompensationSaturation="10.5"
       voltageCompensationEnable="false"
-      countsPerInch="countsPerDegree&#x9;&#x9;    " />
+      countsPerInch="3798.116"/>
   </mechanism>
   <mechanism
     type="GRABBER"
-    networkTable=""
+    networkTable="grabberNT"
     controlFile="grabber.xml">
     <solenoid
       usage="GrabberSolenoid1"
