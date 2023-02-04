@@ -32,7 +32,6 @@ struct TeleopControlAxis
     TeleopControlMappingEnums::AXIS_PROFILE         profile=TeleopControlMappingEnums::AXIS_PROFILE::CUBED;
     TeleopControlMappingEnums::AXIS_DIRECTION       direction=TeleopControlMappingEnums::AXIS_DIRECTION::SYNCED;
     double                                          scaleFactor=1.0;
-    bool                                            initialized=false;
 };
 
 

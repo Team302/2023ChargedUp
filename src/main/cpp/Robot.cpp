@@ -48,10 +48,10 @@ void Robot::RobotInit()
     auto XmlParser = new RobotXmlParser();
     XmlParser->ParseXML();
 
-    auto waypointParser = WaypointXmlParser::GetInstance();
-    waypointParser->ParseWaypoints();
+    //auto waypointParser = WaypointXmlParser::GetInstance();
+    //waypointParser->ParseWaypoints();
     //Get AdjustableItemMgr instance
-    m_tuner = AdjustableItemMgr::GetInstance();
+    //m_tuner = AdjustableItemMgr::GetInstance();
 
     auto factory = ChassisFactory::GetChassisFactory();
     m_chassis = factory->GetIChassis();
@@ -64,11 +64,13 @@ void Robot::RobotInit()
     StateMgrHelper::InitStateMgrs();
 
     m_cyclePrims = new CyclePrimitives();
-    m_previewer = new AutonPreviewer(m_cyclePrims);
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("RobotInit"), string("end"));
+    //m_previewer = new AutonPreviewer(m_cyclePrims);
+    m_previewer = nullptr;
 
     //m_dragonLimeLight = LimelightFactory::GetLimelightFactory()->GetLimelight();
     m_dragonLimeLight = nullptr;
+    
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("RobotInit"), string("end"));
 
 }
 
@@ -98,8 +100,15 @@ void Robot::RobotPeriodic()
     LoggableItemMgr::GetInstance()->LogData();
     Logger::GetLogger()->PeriodicLog();
 
-    m_tuner->ListenForUpdates();
-    m_previewer->CheckCurrentAuton();
+    if (m_tuner != nullptr)
+    {
+        m_tuner->ListenForUpdates();
+    }
+
+    if (m_previewer != nullptr)
+    {
+        m_previewer->CheckCurrentAuton();
+    }
 }
 
 /**

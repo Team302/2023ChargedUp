@@ -45,7 +45,6 @@ using namespace frc;
 /// @brief initialize the object and validate the necessary items are not nullptrs
 HolonomicDrive::HolonomicDrive() : State(string("HolonomicDrive"), -1),
                                    m_chassis(ChassisFactory::GetChassisFactory()->GetIChassis()),
-                                   m_controller(TeleopControl::GetInstance()),
                                    m_swerve(ChassisFactory::GetChassisFactory()->GetSwerveChassis()),
                                    m_mecanum(ChassisFactory::GetChassisFactory()->GetMecanumChassis()),
                                    m_trajectoryGenerator(new DragonTrajectoryGenerator(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetMaxSpeed(),
@@ -54,10 +53,6 @@ HolonomicDrive::HolonomicDrive() : State(string("HolonomicDrive"), -1),
                                    m_generatedTrajectory(frc::Trajectory()),
                                    m_field(DragonField::GetInstance())
 {
-    if (m_controller == nullptr)
-    {
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("HolonomicDrive"), string("Constructor"), string("TeleopControl is nullptr"));
-    }
 }
 
 /// @brief initialize the profiles for the various gamepad inputs
@@ -74,7 +69,7 @@ void HolonomicDrive::Run()
     moveInfo.driveOption = ChassisOptionEnums::DriveStateType::FIELD_DRIVE;
     moveInfo.controllerType = ChassisOptionEnums::AutonControllerType::HOLONOMIC;
 
-    auto controller = GetController();
+    auto controller =TeleopControl::GetInstance();
     if (controller != nullptr && m_chassis != nullptr)
     {
         moveInfo.headingOption = ChassisOptionEnums::HeadingOption::MAINTAIN;

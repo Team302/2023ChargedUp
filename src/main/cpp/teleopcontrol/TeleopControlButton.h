@@ -28,6 +28,5 @@ struct TeleopControlButton
     TeleopControlMappingEnums::CONTROLLER          controllerNumber=TeleopControlMappingEnums::CONTROLLER::UNKNOWN_CONTROLLER;
     TeleopControlMappingEnums::BUTTON_IDENTIFIER   buttonId=TeleopControlMappingEnums::BUTTON_IDENTIFIER::UNDEFINED_BUTTON;
     TeleopControlMappingEnums::BUTTON_MODE         mode=TeleopControlMappingEnums::BUTTON_MODE::STANDARD;
-    bool                                           initialized=false;
 };
 
