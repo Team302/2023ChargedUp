@@ -40,24 +40,9 @@ using namespace std;
 // Description: This creates this object and reads the auto script (CSV)
 //  			files and displays a list on the dashboard.
 //---------------------------------------------------------------------
-bool HasError = false;
-AutonSelector::AutonSelector() : m_xmlFiles(),
-								 m_chrgstatchooser() //todo remove
-
+AutonSelector::AutonSelector()
 {
-	FindXMLFileNames();
 	PutChoicesOnDashboard();
-}
-
-//---------------------------------------------------------------------
-// Method: 		FindXMLFileNames
-// Description: This builds up a list of CSV files in the directory and
-//				stores them in the m_csvFiles attribute.
-// Returns:		void
-//---------------------------------------------------------------------
-void AutonSelector::FindXMLFileNames()
-{
-
 }
 
 string AutonSelector::GetSelectedAutoFile()
@@ -69,34 +54,28 @@ string AutonSelector::GetSelectedAutoFile()
 	autonfile += GetNumofPiecesinauton();
 	autonfile += GetParkOnChargeStation();
 	autonfile += std::string (".xml");
-Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("xml file1"), std::string("interesting string Idea"),autonfile);
+	Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string(""), std::string("determined name"),autonfile);
+
 	if (FileExists(autonfile) ==false)
 	{
-	autonfile=frc::filesystem::GetDeployDirectory();
-	autonfile += std::string ("/auton/");
-	autonfile += GetAlianceColor();
-	autonfile += ("COOPThreeP.xml");
+		autonfile=frc::filesystem::GetDeployDirectory();
+		autonfile += std::string ("/auton/");
+		autonfile += GetAlianceColor();
+		autonfile += ("COOPThreeP.xml");
 	}
-	Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("xml file"), std::string("interesting string Idea"),autonfile);
+	Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string(""), std::string("actual file"),autonfile);
 	return autonfile;
 }
 
-	bool  AutonSelector::FileExists(const std::string& name) 
-		{
+bool  AutonSelector::FileExists(const std::string& name) 
+{
 	ifstream f(name.c_str());
 	return f.good();
-		}
-string AutonSelector::GetParkOnChargeStation()
-{
-	if (m_chrgstatchooser.GetSelected()=="yes")
-{
-	return std::string("P");
-}
- 	else//(m_parkonchrgstat.compare("no"));
-{
-	return std::string("Np");
 }
 
+string AutonSelector::GetParkOnChargeStation()
+{
+	return m_chrgstatchooser.GetSelected();
 }
 
 string AutonSelector::GetAlianceColor()
@@ -104,59 +83,23 @@ string AutonSelector::GetAlianceColor()
 	if (FMSData::GetInstance()->GetAllianceColor()==frc::DriverStation::Alliance::kRed)
 	{
 		return std::string("Red");
-	
-	}
-	else if (FMSData::GetInstance()->GetAllianceColor()==frc::DriverStation::Alliance::kBlue)
-	{
-		return std::string("Blue");
 	}
 	else
 	{
-		Benisgoodatspelling = (false);
-		HasError =(true);
+		return std::string("Blue");
 	}
 }
+
 string AutonSelector::GetStartPos()
 {
-	if (m_startposchooser.GetSelected()=="Gridwall")
-	{
-	return	std::string("Wall");
-	}
-
-	else if (m_startposchooser.GetSelected()=="Gridcoop")
-	{
-	return	std::string("COOP");
-	
-	}
-	else 
-	{
-		return std::string("HP");
-	}
+	return m_startposchooser.GetSelected();
 }
 
 string AutonSelector::GetNumofPiecesinauton()
 {
-	if (m_numofgamepiecechooser.GetSelected()=="1")
-	{
-		return std::string("One");
-	}
-
-	else if (m_numofgamepiecechooser.GetSelected()=="2")
-	{
-		return std::string("Two");
-	}
-
-	else if (m_numofgamepiecechooser.GetSelected()=="3")
-	{
-		return std::string("Three");
-	}
-	else
-	{
-		return std::string("Four");
-	}
+	return m_numofgamepiecechooser.GetSelected();
 }
 
-// color strt pos num of gamepiece 
 //---------------------------------------------------------------------
 // Method: 		PutChoicesOnDashboard
 // Description: This puts the list of files in the m_csvFiles attribute
@@ -164,23 +107,19 @@ string AutonSelector::GetNumofPiecesinauton()
 // Returns:		void
 //---------------------------------------------------------------------
 void AutonSelector::PutChoicesOnDashboard()
-{	//dashboard wont change prkonchrgstat in .xml file
-	//choose to park on charging station or not
-	m_chrgstatchooser.AddOption("yes", "yes");
-	m_chrgstatchooser.AddOption("no", "no");
+{
+	m_chrgstatchooser.AddOption("yes","P");
+	m_chrgstatchooser.AddOption("no","Np");
 	frc::SmartDashboard::PutData("prkonchrgstat", &m_chrgstatchooser);
 
-	//# of game pieces
-	m_startposchooser.AddOption("Gridcoop","Gridcoop");
-	m_startposchooser.AddOption("Gridwall","Gridwall");
-	m_startposchooser.AddOption("Gridhp","Gridhp");
+	m_startposchooser.AddOption("Gridcoop","COOP");
+	m_startposchooser.AddOption("Gridwall","Wall");
+	m_startposchooser.AddOption("Gridhp","HP");
 	frc::SmartDashboard::PutData("StartPos",&m_startposchooser);
 
-	//what you want to do in auton
-	m_numofgamepiecechooser.AddOption("1","1");
-	m_numofgamepiecechooser.AddOption("2","2");
-	m_numofgamepiecechooser.AddOption("3","3");
-	m_numofgamepiecechooser.AddOption("4","4");
+	m_numofgamepiecechooser.AddOption("1","One");
+	m_numofgamepiecechooser.AddOption("2","Two");
+	m_numofgamepiecechooser.AddOption("3","Three");
+	m_numofgamepiecechooser.AddOption("4","Four");
 	frc::SmartDashboard::PutData("NumOfpcs",&m_numofgamepiecechooser);
-
 }

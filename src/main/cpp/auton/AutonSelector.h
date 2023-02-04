@@ -26,28 +26,6 @@ class AutonSelector
 {
 
 	public:
-
-		enum Alliancecolor
-		{
-			Red,
-			Blue,
-		};
-		enum AutonPosition
-		{
-			Gridcoop, 
-			Gridwall,
-			Gridhp,
-		};
-
-		enum NumOfPieces
-		{
-			One,
-			Two,
-			Three,
-			Four,
-			Five,
-
-		};
 		//---------------------------------------------------------------------
 		// Method: 		<<constructor>>
 		// Description: This creates this object and reads the auto script (CSV)
@@ -76,14 +54,6 @@ class AutonSelector
 		std::string GetNumofPiecesinauton();
 
 	private:
-	bool Benisgoodatspelling = false;
-		//---------------------------------------------------------------------
-		// Method: 		FindXMLFileNames
-		// Description: This builds up a list of CSV files in the directory and
-		//				stores them in the m_csvFiles attribute.
-		// Returns:		void
-		//---------------------------------------------------------------------
-		void FindXMLFileNames();
 
 		//---------------------------------------------------------------------
 		// Method: 		PutChoicesOnDashboard
@@ -94,7 +64,6 @@ class AutonSelector
 		void PutChoicesOnDashboard();
 		bool FileExists(const std::string& name);
 		// Attributues
-		std::vector<std::string> m_xmlFiles;
 		frc::SendableChooser<std::string> m_chrgstatchooser;
 		frc::SendableChooser<std::string> m_startposchooser;
 		frc::SendableChooser<std::string> m_numofgamepiecechooser;
