@@ -110,6 +110,7 @@
         canId="1"
         canBusName="canivore"
         offset="123.311"
+        reverse = "false"
         />
     </swervemodule>
     <swervemodule
@@ -231,7 +232,7 @@
       turn_d="0.0"
       turn_f="0.0"
       turn_nominal_val="0.0"
-      turn_peak_val="0.9"
+      turn_peak_val="1.0"
       turn_max_acc="10"
       turn_cruise_vel="50">
       <motor
@@ -271,7 +272,7 @@
         forwardlimitswitchopen="true"
         reverselimitswitch="false"
         reverselimitswitchopen="true"
-        voltageCompensationSaturation="10.0"
+        voltageCompensationSaturation="10.5"
         voltageCompensationEnable="true"
         countsOnTurnEncoderPerDegreesOnAngleSensor="-120.9325"/>
       <cancoder
