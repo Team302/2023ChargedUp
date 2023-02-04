@@ -85,11 +85,10 @@ PrimitiveParamsVector PrimitiveParser::ParseXML
                     auto xloc = 0.0;
                     auto yloc = 0.0;
                     std::string pathName;
-                    // @ADDMECH Initialize your mechanism state
                     auto armstate = ArmStateMgr::ARM_STATE::HOLD_POSITION_ROTATE;
                     auto extenderstate = ExtenderStateMgr::EXTENDER_STATE::HOLD_POSITION_EXTEND;
                     auto grabberstate = GrabberStateMgr::GRABBER_STATE::OPEN;
-                    
+                    // @ADDMECH Initialize your mechanism state
                     for (xml_attribute attr = primitiveNode.first_attribute(); attr; attr = attr.next_attribute())
                     {
                         if ( strcmp( attr.name(), "id" ) == 0 )
