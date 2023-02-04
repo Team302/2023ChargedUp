@@ -170,7 +170,7 @@ units::length::inch_t DragonVision::DistanceFromCubeNode()
 		}
 		else
 		{
-			units::length::inch_t(-1.0);
+			return units::length::inch_t(-1.0);
 		}
 	}
 	else
