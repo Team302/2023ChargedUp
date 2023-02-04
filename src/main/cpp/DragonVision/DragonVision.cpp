@@ -23,9 +23,6 @@
 
 #include <DragonVision/DragonVision.h>
 #include <hw\factories\LimelightFactory.h>
-#include <DragonVision\RetroReflective\RetroReflective.h>
-#include <DragonVision\Cube\Cube.h>
-#include <DragonVision\Cone\Cone.h>
 #include <DragonVision\AprilTag\AprilTag.h>
 #include <utils/Logger.h>
 // Third Party Includes
@@ -47,35 +44,14 @@ DragonVision* DragonVision::GetDragonVision
 }
 
 //state functions
-DragonVision::DragonVision(std::string stateName, int stateId): State(stateName, stateId),
+DragonVision::DragonVision(std::string stateName, int stateId):
 						   m_frontDragonLimelight(LimelightFactory::GetLimelightFactory()->GetLimelight())			
 {
 	/// @TODO: Need to find the real indexes of each pipeline and put them in constructor
-	m_limelightstates[RETROREFLECTIVE] = new RetroReflective(m_frontDragonLimelight, 0);
+	m_limelightstates[RETROREFLECTIVE] = new LimelightState(m_frontDragonLimelight, 0);
 	m_limelightstates[APRILTAG] = new AprilTag(m_frontDragonLimelight, 1);
-	m_limelightstates[CUBE] = new Cube(m_frontDragonLimelight, 2);
-	m_limelightstates[CONE] = new Cone(m_frontDragonLimelight, 3);
-}
-void DragonVision::Init() 
-{
-
-}
-void DragonVision::Exit() 
-{
-
-}
-bool DragonVision::AtTarget() const
-{
-	return false;
-}
-void DragonVision::Run() 
-{
-	m_frontDragonLimelight->SetPipeline(m_currentstate->GetPipelineIndex());
-}
-
-void DragonVision::SetLimelightStates(DragonVision::LIMELIGHT_STATES limelightstate)
-{
-    m_currentstate = m_limelightstates[limelightstate];
+	m_limelightstates[CUBE] = new LimelightState(m_frontDragonLimelight, 2);
+	m_limelightstates[CONE] = new LimelightState(m_frontDragonLimelight, 3);
 } 
 
 void DragonVision::SetCurrentState(DragonVision::LIMELIGHT_STATES limelightstate)
@@ -88,6 +64,8 @@ void DragonVision::SetCurrentState(DragonVision::LIMELIGHT_STATES limelightstate
 			m_currentstate = itr->second;
 		}
 	}
+
+	m_frontDragonLimelight->SetPipeline(m_currentstate->GetPipelineIndex());
 }
 
 //Aligned-with functions
@@ -113,6 +91,7 @@ bool DragonVision::AlignedWithCubeNode()
 		return false;
 	}
 }
+
 bool DragonVision::AlignedWithConeNode() 
 {
 	SetCurrentState(LIMELIGHT_STATES::RETROREFLECTIVE);

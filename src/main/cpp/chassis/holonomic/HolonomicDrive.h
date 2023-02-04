@@ -22,6 +22,7 @@
 #include <State.h>
 #include <chassis/swerve/driveStates/DragonTrajectoryGenerator.h>
 #include <utils/DragonField.h>
+#include <DragonVision/DragonVision.h>
 
 class IChassis;
 class MecanumChassis;
@@ -49,4 +50,5 @@ class HolonomicDrive : public State
         ChassisOptionEnums::DriveStateType  m_previousDriveState;
         frc::Trajectory                     m_generatedTrajectory;
         DragonField*                        m_field;
+        DragonVision*                       m_vision;
 };

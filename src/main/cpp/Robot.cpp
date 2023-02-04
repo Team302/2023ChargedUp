@@ -25,11 +25,7 @@
 #include <utils/FMSData.h>
 #include <utils/DragonField.h>
 #include <auton/AutonPreviewer.h>
-
 #include <AdjustableItemMgr.h>
-
-/// DEBUGGING
-#include <DragonVision/DragonVision.h>
 
 using namespace std;
 
@@ -64,9 +60,6 @@ void Robot::RobotInit()
     m_cyclePrims = new CyclePrimitives();
     m_previewer = new AutonPreviewer(m_cyclePrims);
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("RobotInit"), string("end"));
-
-    /// DEBUGGING
-    m_dragonVision = DragonVision::GetDragonVision();
 }
 
 /**
@@ -82,8 +75,7 @@ void Robot::RobotPeriodic()
     if (m_chassis != nullptr)
     {
         m_chassis->UpdateOdometry();
-        //m_field->UpdateRobotPosition(m_chassis->GetPose());
-        m_field->UpdateRobotPosition(m_dragonVision->GetRobotPosition());
+        m_field->UpdateRobotPosition(m_chassis->GetPose());
     }
     m_tuner->ListenForUpdates();
     m_previewer->CheckCurrentAuton();

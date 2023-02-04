@@ -51,7 +51,8 @@ HolonomicDrive::HolonomicDrive() : State(string("HolonomicDrive"), -1),
                                                                                 ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetMaxAcceleration())),
                                    m_previousDriveState(ChassisOptionEnums::DriveStateType::FIELD_DRIVE),
                                    m_generatedTrajectory(frc::Trajectory()),
-                                   m_field(DragonField::GetInstance())
+                                   m_field(DragonField::GetInstance()),
+                                   m_vision(DragonVision::GetDragonVision())
 {
     if (m_controller == nullptr)
     {
@@ -182,13 +183,6 @@ void HolonomicDrive::Run()
             moveInfo.driveOption = m_previousDriveState;
             moveInfo.trajectory = m_generatedTrajectory;
         }
-        
-        //add button to drive to loading zone
-
-        //if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HOLD_POSITION))
-        //{
-            //m_chassis.get()->DriveHoldPosition();
-        //}
 
         auto maxSpeed = m_chassis->GetMaxSpeed();
         auto maxAngSpeed = m_chassis->GetMaxAngularSpeed();
@@ -212,6 +206,12 @@ void HolonomicDrive::Run()
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("Vx"), moveInfo.chassisSpeeds.vx.to<double>());
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("Vy"), moveInfo.chassisSpeeds.vy.to<double>());
 
+        //Reset position based on april tag readings
+        if(abs(m_vision->GetRobotPosition().X().to<double>()) > 0.0 && abs(m_vision->GetRobotPosition().Y().to<double>()) > 0.0) //check if we have a valid pose from the limelight
+        {
+            dynamic_cast<SwerveChassis*>(m_chassis)->ResetPose(m_vision->GetRobotPosition()); //if we have a valid pose, reset chassis position
+        }
+        
         m_chassis->Drive(moveInfo);
     }
     else

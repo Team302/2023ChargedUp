@@ -24,13 +24,12 @@
 #include <frc/geometry/Pose2d.h>
 
 //Team302 Includes
-#include <State.h>
 #include <hw/DragonLimelight.h>
 #include <DragonVision/LimelightState.h>
 
 
 class DragonLimelight;
-class DragonVision : public State
+class DragonVision
 {
     public:
         static DragonVision* GetDragonVision();
@@ -42,11 +41,6 @@ class DragonVision : public State
             CUBE,
             CONE
         };
-    
-    void Init() override;
-    void Run() override;
-    void Exit() override;
-    bool AtTarget() const override;
 
     bool AlignedWithCubeNode();
     bool AlignedWithConeNode();
@@ -67,22 +61,14 @@ class DragonVision : public State
     units::angle::degree_t AngleFromCubeGamePiece();
     units::angle::degree_t AngleFromConeGamePiece();
 
-    void SetCurrentState
-    (
-        DragonVision::LIMELIGHT_STATES limelightstate
-    );
-
-
-
-    void SetLimelightStates
-        (
-            DragonVision::LIMELIGHT_STATES limelightstate
-        );
-
     frc::Pose2d GetRobotPosition();
 
 ~DragonVision() = default;
 private:
+    void SetCurrentState
+    (
+        DragonVision::LIMELIGHT_STATES limelightstate
+    );
     
     DragonVision(std::string     stateName,
                 int              stateId
