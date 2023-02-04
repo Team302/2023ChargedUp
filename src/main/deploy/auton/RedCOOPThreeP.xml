@@ -13,13 +13,13 @@
     <primitive id="DRIVE_PATH"
                pathname="RedCOOP1.wpilib.json"
                headingOption="SPECIFIED_ANGLE"
-               heading="0"
+               heading="175.0"
                time="5.0"
                />
     <!--pick up cube-->
     <primitive id="DO_NOTHING"
                headingOption="SPECIFIED_ANGLE"
-               heading="0"
+               heading="175.0"
                time="2.0"
                />
     <!--drive to GRID_COOP_COL_TWO-->
@@ -39,13 +39,13 @@
     <primitive id="DRIVE_PATH"
                pathname="RedCOOP3.wpilib.json"
                headingOption="SPECIFIED_ANGLE"
-               heading="0"
+               heading="175.0"
                time="5.0"
                />
     <!--pick up cone-->
     <primitive id="DO_NOTHING"
                headingOption="SPECIFIED_ANGLE"
-               heading="0"
+               heading="175.0"
                time="2.0"
                />  
     <!--drive to GRID_COOP_COL_THREE-->
@@ -65,7 +65,7 @@
     <primitive id="DRIVE_PATH"
                pathname="RedCOOP5.wpilib.json"
                headingOption="SPECIFIED_ANGLE"
-               heading="0"
+               heading="175.0"
                time="5.0"
                />
 </auton>
