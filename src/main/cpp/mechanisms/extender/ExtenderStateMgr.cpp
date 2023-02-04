@@ -117,10 +117,10 @@ void ExtenderStateMgr::CheckForStateTransition()
 
             Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ExtenderMgr"), string("Extender Position"), m_extender->GetPositionInches().to<double>());
 
-            if(abs(extendRetractValue) > 0.05)
+            if(abs(extendRetractValue) > 0.1)
             {
                 targetState = EXTENDER_STATE::MANUAL_EXTEND_RETRACT;
-                m_extender->UpdateTarget(0.1 * extendRetractValue);
+                m_extender->UpdateTarget(0.5 * extendRetractValue);
             }
             else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::CUBE_BACKROW_EXTEND))
             {
