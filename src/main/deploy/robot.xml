@@ -65,7 +65,8 @@
       turn_nominal_val="0.0"
       turn_peak_val="1.0"
       turn_max_acc="20"
-      turn_cruise_vel="50">
+      turn_cruise_vel="50"
+      countsOnTurnEncoderPerDegreesOnAngleSensor="-120.9325" >
       <motor
         usage="SWERVE_DRIVE"
         canId="0"
@@ -105,7 +106,7 @@
         reverselimitswitchopen="true"
         voltageCompensationSaturation="10.5"
         voltageCompensationEnable="true"
-        countsOnTurnEncoderPerDegreesOnAngleSensor="-120.9325" />
+        />
       <cancoder
         canId="1"
         canBusName="canivore"
@@ -122,7 +123,8 @@
       turn_nominal_val="0.0"
       turn_peak_val="1.0"
       turn_max_acc="20"
-      turn_cruise_vel="50">
+      turn_cruise_vel="50"
+      countsOnTurnEncoderPerDegreesOnAngleSensor="-120.9325" >
       <motor
         usage="SWERVE_DRIVE"
         canId="18"
@@ -162,7 +164,7 @@
         reverselimitswitchopen="true"
         voltageCompensationSaturation="10.5"
         voltageCompensationEnable="true"
-        countsOnTurnEncoderPerDegreesOnAngleSensor="-120.9325"/>
+        />
       <cancoder
         canId="19"
         canBusName="canivore"
@@ -178,7 +180,8 @@
       turn_nominal_val="0.0"
       turn_peak_val="1.0"
       turn_max_acc="20"
-      turn_cruise_vel="50">
+      turn_cruise_vel="50"
+      countsOnTurnEncoderPerDegreesOnAngleSensor="-120.9325" >
       <motor
         usage="SWERVE_DRIVE"
         canId="2"
@@ -218,7 +221,7 @@
         reverselimitswitchopen="true"
         voltageCompensationSaturation="10.5"
         voltageCompensationEnable="true"
-        countsOnTurnEncoderPerDegreesOnAngleSensor="-120.9325" />
+         />
       <cancoder
         canId="3"
         canBusName="canivore"
@@ -234,7 +237,8 @@
       turn_nominal_val="0.0"
       turn_peak_val="1.0"
       turn_max_acc="10"
-      turn_cruise_vel="50">
+      turn_cruise_vel="50"
+      countsOnTurnEncoderPerDegreesOnAngleSensor="-120.9325" >
       <motor
         usage="SWERVE_DRIVE"
         canId="16"
@@ -254,6 +258,7 @@
         reverselimitswitchopen="true"
         voltageCompensationSaturation="10.5"
         voltageCompensationEnable="true"
+       
        />
       <motor
         usage="SWERVE_TURN"
@@ -274,7 +279,7 @@
         reverselimitswitchopen="true"
         voltageCompensationSaturation="10.5"
         voltageCompensationEnable="true"
-        countsOnTurnEncoderPerDegreesOnAngleSensor="-120.9325"/>
+        />
       <cancoder
         canId="17"
         canBusName="canivore"
