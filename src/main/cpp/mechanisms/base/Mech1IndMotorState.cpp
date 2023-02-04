@@ -149,9 +149,26 @@ bool Mech1IndMotorState::AtTarget() const
     auto same = true;
     if ( m_mechanism != nullptr )
     {
+        double motorPosition = 0.0;
+        if(m_control->GetMode() == ControlModes::CONTROL_TYPE::POSITION_INCH)
+        {
+            motorPosition = m_mechanism->GetPositionInches().to<double>();
+        }
+        else if(m_control->GetMode() == ControlModes::CONTROL_TYPE::POSITION_DEGREES)
+        {
+            motorPosition = m_mechanism->GetPositionDegrees().to<double>();
+        }
+
         if ( m_positionBased && !m_speedBased )
         {
-            same = ( abs( m_target - m_mechanism->GetPosition())  < 1.0 );
+            if(m_control->GetMode() == ControlModes::CONTROL_TYPE::POSITION_INCH)
+            {
+                same = ( abs( m_target - motorPosition)  < 0.1 );
+            }
+            else if(m_control->GetMode() == ControlModes::CONTROL_TYPE::POSITION_DEGREES)
+            {
+                same = ( abs( m_target - motorPosition)  < 0.5 );
+            }
         }
         else if ( !m_positionBased && m_speedBased )
         {
@@ -159,7 +176,7 @@ bool Mech1IndMotorState::AtTarget() const
         }
         else if ( m_positionBased && m_speedBased )
         {
-            same = ( ( abs( m_target - m_mechanism->GetPosition())  < 1.0 ) ||
+            same = ( ( abs( m_target - motorPosition)  < 0.1 ) ||
                      ( abs( m_target - m_mechanism->GetSpeed())     < 1.0 ) );
         }
     }

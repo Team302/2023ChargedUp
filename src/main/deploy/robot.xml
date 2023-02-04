@@ -297,7 +297,7 @@
       canBusName="rio"
       pdpID="5"
       type="FALCON"
-      inverted="false"
+      inverted="true"
       sensorInverted="false"
       feedbackDevice="INTERNAL"
       countsPerRev="2048"
@@ -340,7 +340,7 @@
       reverselimitswitchopen="true"
       voltageCompensationSaturation="10.5"
       voltageCompensationEnable="false"
-      countsPerInch="3798.116"/>
+      countsPerInch="3811.0878"/>
   </mechanism>
   <mechanism
     type="GRABBER"

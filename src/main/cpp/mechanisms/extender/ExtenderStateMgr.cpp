@@ -35,6 +35,7 @@
 #include <mechanisms/extender/extender.h>
 #include <mechanisms/extender/extenderState.h>
 #include <mechanisms/extender/extenderStateMgr.h>
+#include <utils/Logger.h>
 
 // Third Party Includes
 
@@ -71,7 +72,6 @@ stateMap["CONE_MIDROW_EXTEND"] = m_cone_midrow_extendState;
 stateMap["HUMAN_PLAYER_STATION_EXTEND"] = m_human_player_station_extendState;
 stateMap["STARTING_POSITION_EXTEND"] = m_starting_position_extendState;
 stateMap["FLOOR_EXTEND"] = m_floor_extendState;
-
 
     Init(m_extender, stateMap);
     if (m_extender != nullptr)
@@ -110,13 +110,14 @@ void ExtenderStateMgr::CheckForStateTransition()
         {
             double extendRetractValue = controller->GetAxisValue(TeleopControl::FUNCTION_IDENTIFIER::MANUAL_EXTEND_RETRACT);
 
-            if(abs(extendRetractValue) > 0.05)
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ExtenderMgr"), string("Extender Position"), m_extender->GetPositionInches().to<double>());
+
+            if(abs(extendRetractValue) > 0.01)
             {
                 targetState = EXTENDER_STATE::MANUAL_EXTEND_RETRACT;
-                m_extender->UpdateTarget(extendRetractValue);
+                m_extender->UpdateTarget(0.1 * extendRetractValue);
             }
-
-            if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::CUBE_BACKROW_EXTEND))
+            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::CUBE_BACKROW_EXTEND))
             {
                 targetState = EXTENDER_STATE::CUBE_BACKROW_EXTEND;
             }
@@ -150,7 +151,8 @@ void ExtenderStateMgr::CheckForStateTransition()
             }
             else
             {
-                targetState = EXTENDER_STATE::STARTING_POSITION_EXTEND;
+                targetState = EXTENDER_STATE::MANUAL_EXTEND_RETRACT;
+                m_extender->UpdateTarget(0.0);
             }
         }
 

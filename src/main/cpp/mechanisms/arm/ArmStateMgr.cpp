@@ -35,6 +35,7 @@
 #include <mechanisms/arm/arm.h>
 #include <mechanisms/arm/armState.h>
 #include <mechanisms/arm/armStateMgr.h>
+#include <utils/Logger.h>
 
 // Third Party Includes
 
@@ -113,10 +114,11 @@ void ArmStateMgr::CheckForStateTransition()
             if(abs(armRotateValue) > 0.05)
             {
                 targetState = ARM_STATE::MANUAL_ROTATE;
-                m_arm->UpdateTarget(armRotateValue);
+                m_arm->UpdateTarget(-0.2 * armRotateValue);
+                Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("RotateValue"), armRotateValue);
+                Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("ArmRotatePercentage"), m_arm->GetTarget());
             }
-
-            if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HOLD_POSITION_ROTATE))
+            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HOLD_POSITION_ROTATE))
             {
                 targetState = ARM_STATE::HOLD_POSITION_ROTATE;
             }
@@ -150,13 +152,15 @@ void ArmStateMgr::CheckForStateTransition()
             }
             else
             {
-                targetState = ARM_STATE::STARTING_POSITION_ROTATE;
+                targetState = ARM_STATE::MANUAL_ROTATE;
+                m_arm->UpdateTarget(0.0);
             }
         }
 
         if (targetState != currentState)
         {
             SetCurrentState(targetState, true);
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Changing State to: "), targetState);
         }
 
 		//========= Hand modified code end section 0 ========
