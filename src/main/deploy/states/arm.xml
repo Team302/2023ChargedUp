@@ -4,7 +4,7 @@
     identifier="RotateToAngle"
     mode="POSITION_DEGREES"
     constrolServer="MOTORCONTROLLER"
-    proportional="0.005"
+    proportional="0.0005"
     integral="0.0"
     derivative="0.0"
     feedforward="0.0"
@@ -35,7 +35,7 @@
     cruisevelocity="0.0" />
   <mechanismTarget
     stateIdentifier="HOLD_POSITION_ROTATE"
-    controlDataIdentifier="PercentOutput"
+    controlDataIdentifier="HoldAngle"
     controlDataIdentifier2=""
     value="0.0"
     secondValue=""

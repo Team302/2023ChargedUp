@@ -85,10 +85,11 @@ units::length::inch_t Mech1IndMotor::GetPositionInches() const
 {
     double counts = m_motor.get()->GetCounts();
     
+    /* If sensor invted works we can get rid fo this logic
     if(m_motor.get()->IsMotorInverted())
     {
         counts *= -1.0;
-    }
+    }*/
 
     return units::length::inch_t(counts / m_motor.get()->GetCountsPerInch());
 }
