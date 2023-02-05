@@ -171,12 +171,25 @@ void ArmStateMgr::CheckForStateTransition()
                 targetState = ARM_STATE::HOLD_POSITION_ROTATE;
             }
         }
+        
+        double fTerm = 0;
 
         if (targetState != currentState)
         {
             SetCurrentState(targetState, true);
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Changing State to: "), targetState);
 
+            if(targetState ==  ARM_STATE::HOLD_POSITION_ROTATE)
+
+                //Get Arm Target from prevState
+                //m_arm->UpdateTarget(m_arm->GetTarget()) how do we get the target from the previous state
+
+                if( m_arm->GetPositionDegrees().to<double>() < 12.0) //Floor arm angle
+                {
+                    //Upated ControlDate F term based on Angle of the arm (Create funciton based on data on arm and eventually add extenstion)
+                    //fTerm = find voltage needed to hold arm up at different angles, eventually add extendor 
+                    //m_arm->SetControlConstants(m_arm->GetMotor().get()->GetID(),);
+                }
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Changing State to: "), targetState);
         }
 
 		//========= Hand modified code end section 0 ========
