@@ -2,6 +2,7 @@ plugins {
     id "cpp"
     id "google-test-test-suite"
     id "edu.wpi.first.GradleRIO" version "2023.2.1"
+    id 'com.diffplug.spotless' version '6.12.0'
 }
 
 // Define my targets (RoboRIO) and artifacts (deployable files)
