@@ -61,6 +61,7 @@ ExtenderStateMgr* ExtenderStateMgr::GetInstance()
 /// @brief    initialize the state manager, parse the configuration file and create the states.
 ExtenderStateMgr::ExtenderStateMgr() : StateMgr(),
                                      m_extender(MechanismFactory::GetMechanismFactory()->GetExtender()),
+                                     m_prevState(EXTENDER_STATE::STARTING_POSITION_EXTEND),
                                      m_extendedPosition(84320.3176) //22.25 inches in counts for extender
 {
     map<string, StateStruc> stateMap;
@@ -125,49 +126,58 @@ void ExtenderStateMgr::CheckForStateTransition()
             else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::CUBE_BACKROW_EXTEND))
             {
                 targetState = EXTENDER_STATE::CUBE_BACKROW_EXTEND;
+                m_prevState = targetState;
             }
             else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HOLD_POSITION_EXTEND))
             {
                 targetState = EXTENDER_STATE::HOLD_POSITION_EXTEND;
+                m_prevState = targetState;
             }
             else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::CONE_BACKROW_EXTEND))
             {
                 targetState = EXTENDER_STATE::CONE_BACKROW_EXTEND;
+                m_prevState = targetState;
             }
             else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::CUBE_MIDROW_EXTEND))
             {
                 targetState = EXTENDER_STATE::CUBE_MIDROW_EXTEND;
+                m_prevState = targetState;
             }
             else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::CONE_MIDROW_EXTEND))
             {
                 targetState = EXTENDER_STATE::CONE_MIDROW_EXTEND;
+                m_prevState = targetState;
             }
             else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HUMAN_PLAYER_STATION_EXTEND))
             {
                 targetState = EXTENDER_STATE::HUMAN_PLAYER_STATION_EXTEND;
+                m_prevState = targetState;
             }
             else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::STARTING_POSITION_EXTEND))
             {
                 targetState = EXTENDER_STATE::STARTING_POSITION_EXTEND;
+                m_prevState = targetState;
             }
             else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::FLOOR_EXTEND))
             {
                 targetState = EXTENDER_STATE::FLOOR_EXTEND;
+                m_prevState = targetState;
             }
             else
             {
                 targetState = EXTENDER_STATE::HOLD_POSITION_EXTEND;
-                //m_extender->UpdateTarget(m_extender->GetTarget());
             }
         }
 
         if (targetState != currentState)
         {
             SetCurrentState(targetState, true);
-        }
 
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ExtenderMgr"), string("Extender Current State"), currentState);
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ExtenderMgr"), string("Current Target"), m_extender->GetTarget() );
+            if(targetState == EXTENDER_STATE::HOLD_POSITION_EXTEND)
+            {
+                m_extender->UpdateTarget(dynamic_cast<Mech1IndMotorState*>(GetStateVector()[m_prevState])->GetCurrentTarget()); //Get the target of the previous state by referencing the state vector
+            }
+        }
 
 		//========= Hand modified code end section 0 ========
         //========= Do not erase this line and the one above it. They are used by the code generator =======

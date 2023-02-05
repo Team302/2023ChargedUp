@@ -86,6 +86,9 @@ FLOOR_POSITION_ROTATE
         
         Arm*                                m_arm;
 
+        ARM_STATE                           m_prevState;
+        double                              m_fTerm;
+
 		static ArmStateMgr*	m_instance;
 
 		const StateStruc m_hold_position_rotateState = { ARM_STATE::HOLD_POSITION_ROTATE, "HOLD_POSITION_ROTATE", StateType::ARM_STATE, false };

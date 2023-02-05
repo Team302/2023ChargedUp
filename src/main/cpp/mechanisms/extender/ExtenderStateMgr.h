@@ -86,6 +86,8 @@ FLOOR_EXTEND
         
         Extender*                                m_extender;
 
+        EXTENDER_STATE                           m_prevState;
+
 		static ExtenderStateMgr*	m_instance;
 
 		const StateStruc m_hold_position_extendState = { EXTENDER_STATE::HOLD_POSITION_EXTEND, "HOLD_POSITION_EXTEND", StateType::EXTENDER_STATE, false };

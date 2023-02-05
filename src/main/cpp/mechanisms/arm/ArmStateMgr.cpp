@@ -60,7 +60,9 @@ ArmStateMgr* ArmStateMgr::GetInstance()
 
 /// @brief    initialize the state manager, parse the configuration file and create the states.
 ArmStateMgr::ArmStateMgr() : StateMgr(),
-                                     m_arm(MechanismFactory::GetMechanismFactory()->GetArm())
+                                     m_arm(MechanismFactory::GetMechanismFactory()->GetArm()),
+                                     m_prevState(ARM_STATE::STARTING_POSITION_ROTATE),
+                                     m_fTerm(0.0)
 {
     map<string, StateStruc> stateMap;
 	stateMap["HOLD_POSITION_ROTATE"] = m_hold_position_rotateState;
@@ -101,7 +103,6 @@ void ArmStateMgr::CheckForStateTransition()
     {    
         auto currentState = static_cast<ARM_STATE>(GetCurrentState());
         auto targetState = currentState;
-        auto prevState = currentState;
 
         //========= Do not erase this line and the one below it. They are used by the code generator ========		
 		//========= Hand modified code start section 0 ========
@@ -124,72 +125,73 @@ void ArmStateMgr::CheckForStateTransition()
                 m_arm->UpdateTarget(-0.3 * armRotateValue);
                 Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("RotateValue"), armRotateValue);
                 Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("ArmRotatePercentage"), m_arm->GetTarget());
-                prevState = targetState;
+
+                //To do preveious state for, we need to hold the current position in degrees and then set the target to that, current it would set the target to 0 degrees
+                //m_prevState = targetState;
             }
             else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HOLD_POSITION_ROTATE))
             {
                 targetState = ARM_STATE::HOLD_POSITION_ROTATE;
-                prevState = targetState;
+                m_prevState = targetState;
             }
             else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::CONE_BACKROW_ROTATE))
             {
                 targetState = ARM_STATE::CONE_BACKROW_ROTATE;
-                prevState = targetState;
+                m_prevState = targetState;
             }
             else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::CONE_BACKROW_ROTATE))
             {
                 targetState = ARM_STATE::CONE_BACKROW_ROTATE;
-                prevState = targetState;
+                m_prevState = targetState;
             }
             else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::CUBE_MIDROW_ROTATE))
             {
                 targetState = ARM_STATE::CUBE_MIDROW_ROTATE;
-                prevState = targetState;
+                m_prevState = targetState;
             }
             else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::CONE_MIDROW_ROTATE))
             {
                 targetState = ARM_STATE::CONE_MIDROW_ROTATE;
-                prevState = targetState;
+                m_prevState = targetState;
             }
             else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HUMAN_PLAYER_STATION_ROTATE))
             {
                 targetState = ARM_STATE::HUMAN_PLAYER_STATION_ROTATE;
-                prevState = targetState;
+                m_prevState = targetState;
             }
             else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::STARTING_POSITION_ROTATE))
             {
                 targetState = ARM_STATE::STARTING_POSITION_ROTATE;
-                prevState = targetState;
+                m_prevState = targetState;
             }
             else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::FLOOR_POSITION_ROTATE))
             {
                 targetState = ARM_STATE::FLOOR_POSITION_ROTATE;
-                prevState = targetState;
+                m_prevState = targetState;
             }
             else
             {
                 targetState = ARM_STATE::HOLD_POSITION_ROTATE;
             }
         }
-        
-        double fTerm = 0;
 
         if (targetState != currentState)
         {
             SetCurrentState(targetState, true);
-
-            if(targetState ==  ARM_STATE::HOLD_POSITION_ROTATE)
-
-                //Get Arm Target from prevState
-                //m_arm->UpdateTarget(m_arm->GetTarget()) how do we get the target from the previous state
+             
+            if(targetState == ARM_STATE::HOLD_POSITION_ROTATE)
+            {
+                //Get Arm Target from m_prevState
+                m_arm->UpdateTarget(dynamic_cast<Mech1IndMotorState*>(GetStateVector()[m_prevState])->GetCurrentTarget()); //Get the target of the previous state by referencing the state vector
 
                 if( m_arm->GetPositionDegrees().to<double>() < 12.0) //Floor arm angle
                 {
                     //Upated ControlDate F term based on Angle of the arm (Create funciton based on data on arm and eventually add extenstion)
-                    //fTerm = find voltage needed to hold arm up at different angles, eventually add extendor 
+                    //m_fTerm = find voltage needed to hold arm up at different angles, eventually add extendor 
                     //m_arm->SetControlConstants(m_arm->GetMotor().get()->GetID(),);
                 }
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Changing State to: "), targetState);
+            }
+            
         }
 
 		//========= Hand modified code end section 0 ========
