@@ -97,10 +97,11 @@ units::angle::degree_t Mech1IndMotor::GetPositionDegrees() const
 {
     double counts = m_motor.get()->GetCounts();
 
+    /* If sensor invted works we can get rid fo this logic
     if(m_motor.get()->IsMotorInverted())
     {
         counts *= -1.0;
-    }
+    }*/
 
     return units::angle::degree_t(counts / m_motor.get()->GetCountsPerDegree());
 }

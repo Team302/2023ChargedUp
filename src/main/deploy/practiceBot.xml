@@ -298,7 +298,7 @@
       pdpID="5"
       type="FALCON"
       inverted="true"
-      sensorInverted="false"
+      sensorInverted="true"
       feedbackDevice="INTERNAL"
       countsPerRev="2048"
       gearRatio="84"
