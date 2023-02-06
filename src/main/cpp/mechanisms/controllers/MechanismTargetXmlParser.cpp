@@ -23,7 +23,7 @@
 
 // Team 302 includes
 #include <mechanisms/controllers/MechanismTargetData.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 #include <mechanisms/controllers/MechanismTargetXmlParser.h>
 
 // Third Party Includes

@@ -25,7 +25,7 @@
 // Team 302 includes
 #include <mechanisms/controllers/ControlData.h>
 #include <mechanisms/controllers/ControlModes.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 #include <mechanisms/controllers/ControlDataXmlParser.h>
 
 // Third Party Includes

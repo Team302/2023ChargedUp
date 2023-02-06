@@ -21,7 +21,7 @@
 #include <frc/Solenoid.h>
 #include <hw/DragonSolenoid.h>
 #include <hw/usages/SolenoidUsage.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
 using namespace frc;
 using namespace std;

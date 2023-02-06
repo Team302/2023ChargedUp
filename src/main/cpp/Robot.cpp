@@ -17,10 +17,10 @@
 #include <mechanisms/StateMgrHelper.h>
 #include <RobotXmlParser.h>
 #include <teleopcontrol/TeleopControl.h>
-#include <utils/Logger.h>
-#include <utils/LoggerData.h>
-#include <utils/LoggerEnums.h>
-#include <LoggableItemMgr.h>
+#include <utils/logging/Logger.h>
+#include <utils/logging/LoggerData.h>
+#include <utils/logging/LoggerEnums.h>
+#include <utils/logging/LoggableItemMgr.h>
 #include <hw/factories/LimelightFactory.h>
 #include <utils/WaypointXmlParser.h>
 #include <utils/FMSData.h>

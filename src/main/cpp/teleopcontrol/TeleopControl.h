@@ -31,7 +31,7 @@
 #include <teleopcontrol/TeleopControlButton.h>
 #include <teleopcontrol/TeleopControlFunctions.h>
 #include <teleopcontrol/TeleopControlMappingEnums.h>
-#include <LoggableItem.h>
+#include <utils/logging/LoggableItem.h>
 
 
 // third part
@@ -72,7 +72,7 @@ class TeleopControl : LoggableItem
 
         void SetRumble
         (
-            TeleopControlFunctions::FUNCTION  button,         // <I> - controller with this function
+            TeleopControlFunctions::FUNCTION    button,         // <I> - controller with this function
             bool                                leftRumble,     // <I> - rumble left
             bool                                rightRumble     // <I> - rumble right
         );
@@ -123,14 +123,14 @@ class TeleopControl : LoggableItem
         //------------------------------------------------------------------
         void SetAxisScaleFactor
         (
-            TeleopControlFunctions::FUNCTION  axis,          // <I> - axis number to update
+            TeleopControlFunctions::FUNCTION    axis,          // <I> - axis number to update
             double                              scaleFactor    // <I> - scale factor used to limit the range
         );
 
         void SetDeadBand
         (
-            TeleopControlFunctions::FUNCTION  axis,
-            TeleopControlMappingEnums::AXIS_DEADBAND       deadband
+            TeleopControlFunctions::FUNCTION            axis,
+            TeleopControlMappingEnums::AXIS_DEADBAND    deadband
         );
 
         //------------------------------------------------------------------
@@ -140,8 +140,8 @@ class TeleopControl : LoggableItem
         //------------------------------------------------------------------
         void SetAxisProfile
         (
-            TeleopControlFunctions::FUNCTION      axis,       // <I> - axis number to update
-			TeleopControlMappingEnums::AXIS_PROFILE			profile     // <I> - profile to use
+            TeleopControlFunctions::FUNCTION        axis,       // <I> - axis number to update
+			TeleopControlMappingEnums::AXIS_PROFILE profile     // <I> - profile to use
         );
 
 
@@ -328,59 +328,89 @@ class TeleopControl : LoggableItem
         const TeleopControlAxis extra4LJoystickX = {TeleopControlMappingEnums::EXTRA4, TeleopControlMappingEnums::LEFT_JOYSTICK_X, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::SYNCED, 1.0};
         const TeleopControlAxis extra4LJoystickY = {TeleopControlMappingEnums::EXTRA4, TeleopControlMappingEnums::LEFT_JOYSTICK_Y, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::REVERSED, 1.0};
         const TeleopControlAxis extra4RJoystickX = {TeleopControlMappingEnums::EXTRA4, TeleopControlMappingEnums::RIGHT_JOYSTICK_X, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::SYNCED, 1.0};
-        const TeleopControlAxis extra4RJoystickY = {TeleopControlMappingEnums::EXTRA4, TeleopControlMappingEnums::RIGHT_JOYSTICK_X, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::REVERSED, 1.0};
+        const TeleopControlAxis extra4RJoystickY = {TeleopControlMappingEnums::EXTRA4, TeleopControlMappingEnums::RIGHT_JOYSTICK_Y, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::REVERSED, 1.0};
         const TeleopControlAxis extra4LTrigger   = {TeleopControlMappingEnums::EXTRA4, TeleopControlMappingEnums::LEFT_TRIGGER, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::SYNCED, 1.0};
         const TeleopControlAxis extra4RTrigger   = {TeleopControlMappingEnums::EXTRA4, TeleopControlMappingEnums::RIGHT_TRIGGER, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::SYNCED, 1.0};
 
 	    // @ADDMECH add functions mapping to axes
         robin_hood::unordered_map<TeleopControlFunctions::FUNCTION, const TeleopControlAxis> m_axisMap
         {
-            {TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_FORWARD, driverLJoystickY},
-            {TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_STRAFE, driverLJoystickX},
-            {TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_ROTATE, driverRJoystickX},
-            {TeleopControlFunctions::FUNCTION::MANUAL_ROTATE, extra1LJoystickY},
-            {TeleopControlFunctions::FUNCTION::MANUAL_EXTEND_RETRACT, extra2LJoystickY}
+            {TeleopControlFunctions::HOLONOMIC_DRIVE_FORWARD, driverLJoystickY},
+            {TeleopControlFunctions::HOLONOMIC_DRIVE_STRAFE, driverLJoystickX},
+            {TeleopControlFunctions::HOLONOMIC_DRIVE_ROTATE, driverRJoystickX},
+            {TeleopControlFunctions::MANUAL_ROTATE, extra1LJoystickY},
+            {TeleopControlFunctions::MANUAL_EXTEND_RETRACT, extra2LJoystickY},
+
+            {TeleopControlFunctions::DUMMYA1, extra4LJoystickX},
+            {TeleopControlFunctions::DUMMYA2, extra4LJoystickY},
+            {TeleopControlFunctions::DUMMYA3, extra4RJoystickX},
+            {TeleopControlFunctions::DUMMYA4, extra4RJoystickY},
+            {TeleopControlFunctions::DUMMYA5, extra4LTrigger},
+            {TeleopControlFunctions::DUMMYA6, extra4RTrigger}
+            
         };
 
 
 	    // @ADDMECH add functions mapping to buttons
         robin_hood::unordered_map<TeleopControlFunctions::FUNCTION, const TeleopControlButton> m_buttonMap
         {
-            {TeleopControlFunctions::FUNCTION::FINDTARGET, driverLBumper},
-            {TeleopControlFunctions::FUNCTION::HOLONOMIC_ROTATE_FRONT, driverDPad0},
-            {TeleopControlFunctions::FUNCTION::HOLONOMIC_ROTATE_BACK, driverDPad180},
-            {TeleopControlFunctions::FUNCTION::HOLONOMIC_ROTATE_LEFT, driverDPad270},
-            {TeleopControlFunctions::FUNCTION::HOLONOMIC_ROTATE_RIGHT, driverDPad90},
-            {TeleopControlFunctions::FUNCTION::DRIVE_TO_COL_ONE, driverXButton},
-            {TeleopControlFunctions::FUNCTION::DRIVE_TO_COL_TWO, driverYButton},
-            {TeleopControlFunctions::FUNCTION::DRIVE_TO_COL_THREE, driverBButton},
-            {TeleopControlFunctions::FUNCTION::REZERO_PIGEON, driverAButton},
-            {TeleopControlFunctions::FUNCTION::HOLD_POSITION, driverRBumper},
+            {TeleopControlFunctions::FINDTARGET, driverLBumper},
+            {TeleopControlFunctions::HOLONOMIC_ROTATE_FRONT, driverDPad0},
+            {TeleopControlFunctions::HOLONOMIC_ROTATE_BACK, driverDPad180},
+            {TeleopControlFunctions::HOLONOMIC_ROTATE_LEFT, driverDPad270},
+            {TeleopControlFunctions::HOLONOMIC_ROTATE_RIGHT, driverDPad90},
+            {TeleopControlFunctions::DRIVE_TO_COL_ONE, driverXButton},
+            {TeleopControlFunctions::DRIVE_TO_COL_TWO, driverYButton},
+            {TeleopControlFunctions::DRIVE_TO_COL_THREE, driverBButton},
+            {TeleopControlFunctions::REZERO_PIGEON, driverAButton},
+            {TeleopControlFunctions::HOLD_POSITION, driverRBumper},
 
-            {TeleopControlFunctions::FUNCTION::HOLD_POSITION_ROTATE, extra1AButton},
-            {TeleopControlFunctions::FUNCTION::CUBE_BACKROW_ROTATE, extra1XButton},
-            {TeleopControlFunctions::FUNCTION::CUBE_MIDROW_ROTATE, extra1BButton},
-            {TeleopControlFunctions::FUNCTION::CONE_BACKROW_ROTATE, extra1YButton},
-            {TeleopControlFunctions::FUNCTION::CONE_MIDROW_ROTATE, extra1DPad0},
-            {TeleopControlFunctions::FUNCTION::HUMAN_PLAYER_STATION_ROTATE, extra1DPad90},
-            {TeleopControlFunctions::FUNCTION::FLOOR_POSITION_ROTATE, extra1DPad270},
-            {TeleopControlFunctions::FUNCTION::STARTING_POSITION_ROTATE, extra1DPad180},
+            {TeleopControlFunctions::HOLD_POSITION_ROTATE, extra1AButton},
+            {TeleopControlFunctions::CUBE_BACKROW_ROTATE, extra1XButton},
+            {TeleopControlFunctions::CUBE_MIDROW_ROTATE, extra1BButton},
+            {TeleopControlFunctions::CONE_BACKROW_ROTATE, extra1YButton},
+            {TeleopControlFunctions::CONE_MIDROW_ROTATE, extra1DPad0},
+            {TeleopControlFunctions::HUMAN_PLAYER_STATION_ROTATE, extra1DPad90},
+            {TeleopControlFunctions::FLOOR_POSITION_ROTATE, extra1DPad270},
+            {TeleopControlFunctions::STARTING_POSITION_ROTATE, extra1DPad180},
 
-            {TeleopControlFunctions::FUNCTION::HOLD_POSITION_EXTEND, extra2AButton},
-            {TeleopControlFunctions::FUNCTION::CUBE_BACKROW_EXTEND, extra2XButton},
-            {TeleopControlFunctions::FUNCTION::CUBE_MIDROW_EXTEND, extra2BButton},
-            {TeleopControlFunctions::FUNCTION::CONE_BACKROW_EXTEND, extra2YButton},
-            {TeleopControlFunctions::FUNCTION::CONE_MIDROW_EXTEND, extra2DPad0},
-            {TeleopControlFunctions::FUNCTION::HUMAN_PLAYER_STATION_EXTEND, extra2DPad90},
-            {TeleopControlFunctions::FUNCTION::FLOOR_EXTEND, extra2DPad270},
-            {TeleopControlFunctions::FUNCTION::STARTING_POSITION_EXTEND, extra2DPad180},
+            {TeleopControlFunctions::HOLD_POSITION_EXTEND, extra2AButton},
+            {TeleopControlFunctions::CUBE_BACKROW_EXTEND, extra2XButton},
+            {TeleopControlFunctions::CUBE_MIDROW_EXTEND, extra2BButton},
+            {TeleopControlFunctions::CONE_BACKROW_EXTEND, extra2YButton},
+            {TeleopControlFunctions::CONE_MIDROW_EXTEND, extra2DPad0},
+            {TeleopControlFunctions::HUMAN_PLAYER_STATION_EXTEND, extra2DPad90},
+            {TeleopControlFunctions::FLOOR_EXTEND, extra2DPad270},
+            {TeleopControlFunctions::STARTING_POSITION_EXTEND, extra2DPad180},
 
-            {TeleopControlFunctions::FUNCTION::OPEN, extra3YButton},
-            {TeleopControlFunctions::FUNCTION::HOLDING_CUBE, extra3DPad0},
-            {TeleopControlFunctions::FUNCTION::HOLDING_CONE, extra3BButton},
-            {TeleopControlFunctions::FUNCTION::GRABBING_CUBE, extra3DPad180},
-            {TeleopControlFunctions::FUNCTION::GRABBING_CONE , extra3DPad90},
-            {TeleopControlFunctions::FUNCTION::RELEASE, extra3DPad270}
+            {TeleopControlFunctions::OPEN, extra3YButton},
+            {TeleopControlFunctions::HOLDING_CUBE, extra3DPad0},
+            {TeleopControlFunctions::HOLDING_CONE, extra3BButton},
+            {TeleopControlFunctions::GRABBING_CUBE, extra3DPad180},
+            {TeleopControlFunctions::GRABBING_CONE , extra3DPad90},
+            {TeleopControlFunctions::RELEASE, extra3DPad270},
+
+            {TeleopControlFunctions::DUMMY1, extra4AButton},
+            {TeleopControlFunctions::DUMMY2, extra4BButton},
+            {TeleopControlFunctions::DUMMY3, extra4XButton},
+            {TeleopControlFunctions::DUMMY4, extra4YButton},
+            {TeleopControlFunctions::DUMMY5, extra4LBumper},
+            {TeleopControlFunctions::DUMMY6, extra4RBumper},
+            {TeleopControlFunctions::DUMMY7, extra4SelectButton},
+            {TeleopControlFunctions::DUMMY8, extra4StartButton},
+            {TeleopControlFunctions::DUMMY9, extra4LStickPressed},
+            {TeleopControlFunctions::DUMMY10, extra4RStickPressed},
+            {TeleopControlFunctions::DUMMY11, extra4LTriggerPressed},
+            {TeleopControlFunctions::DUMMY12, extra4RTriggerPressed},
+            {TeleopControlFunctions::DUMMY13, extra4DPad0},
+            {TeleopControlFunctions::DUMMY14, extra4DPad45},
+            {TeleopControlFunctions::DUMMY15, extra4DPad90},
+            {TeleopControlFunctions::DUMMY16, extra4DPad135},
+            {TeleopControlFunctions::DUMMY17, extra4DPad180},
+            {TeleopControlFunctions::DUMMY18, extra4DPad225},
+            {TeleopControlFunctions::DUMMY19, extra4DPad270},
+            {TeleopControlFunctions::DUMMY20, extra4DPad315}
+        
         };
 
 };

@@ -29,7 +29,7 @@
 
 // Team 302 includes
 #include <hw/DragonLimelight.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
 // Third Party Includes
 

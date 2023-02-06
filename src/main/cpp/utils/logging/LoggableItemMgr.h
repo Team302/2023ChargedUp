@@ -15,33 +15,26 @@
 //====================================================================================================================================================
 
 #pragma once
-#include <string>
+#include <vector>
 
 #include <utils/logging/LoggableItem.h>
 
-///	 @interface     State
-///  @brief      	Interface for state classes
-class State : public LoggableItem
+class LoggableItemMgr 
 {
-	public:
-        State
-        (
-            std::string     stateName,
-            int             stateId
-        );
-        State() = delete;
-        ~State() = default;
+    public:
 
-        virtual void Init() = 0;
-        virtual void Run() = 0;
-        virtual void Exit() = 0;
-        virtual bool AtTarget() const = 0;
-        void LogInformation() const override;
-        
-        inline std::string GetStateName() const {return m_stateName;}
-        inline int GetStateId() const {return m_stateId;}
-    
+        static LoggableItemMgr* GetInstance();
+        void RegisterLoggableItem
+        (
+            LoggableItem*       item
+        );
+        void LogData() const;
+
     private:
-        std::string     m_stateName;
-        int             m_stateId;
+        LoggableItemMgr();
+        ~LoggableItemMgr() = default;
+
+        std::vector<LoggableItem*>  m_loggableItems;
+
+        static LoggableItemMgr* m_instance;
 };

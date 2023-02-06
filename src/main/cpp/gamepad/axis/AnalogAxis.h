@@ -108,6 +108,7 @@ class AnalogAxis
         /// @return double - raw axis value 
         //==================================================================================
         virtual double GetRawValue();
+        double GetRawInvertedValue();
 
         inline frc::GenericHID* GetGameePad() const { return m_gamepad;}
         inline int GetAxisID() const { return m_axis;}

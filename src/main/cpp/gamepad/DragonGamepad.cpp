@@ -28,7 +28,7 @@
 #include <gamepad/DragonGamepad.h>
 #include <teleopcontrol/TeleopControlMappingEnums.h>
 
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
 using namespace std;
 using namespace frc;

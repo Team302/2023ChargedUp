@@ -30,7 +30,7 @@
 #include <gamepad/button/POVButton.h>
 #include <gamepad/button/ToggleButton.h>
 #include <gamepad/DragonXBox.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 #include <teleopcontrol/TeleopControlMappingEnums.h>
 
 #include<RobinHood/robin_hood.h>

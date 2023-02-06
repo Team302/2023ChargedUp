@@ -45,9 +45,9 @@ class DeadbandValue : public IDeadband
         /// Description:    Apply the standard deadband
         /// </summary>
         //==================================================================================
-        double ApplyDeadband
+        void ApplyDeadband
         (
-            double      inputVal            // <I> - value to apply profile to
+            double&      inputVal            // <I> - value to apply profile to
         ) const override;
 
         

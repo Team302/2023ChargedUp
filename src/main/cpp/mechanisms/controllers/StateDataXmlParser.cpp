@@ -43,7 +43,7 @@
 #include <mechanisms/controllers/MechanismTargetData.h>
 #include <mechanisms/MechanismFactory.h>
 #include <mechanisms/MechanismTypes.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 #include <mechanisms/controllers/ControlDataXmlParser.h>
 #include <mechanisms/controllers/MechanismTargetXmlParser.h>
 #include <mechanisms/controllers/StateDataXmlParser.h>

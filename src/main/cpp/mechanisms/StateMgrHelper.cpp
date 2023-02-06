@@ -24,7 +24,7 @@
 #include <mechanisms/MechanismTypes.h>
 #include <mechanisms/StateMgrHelper.h>
 #include <mechanisms/StateStruc.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
 //@ADDMech Add includes for mech states and mech state mgr
 #include <mechanisms/arm/ArmState.h>

@@ -34,7 +34,7 @@
 #include <hw/usages/MotorControllerUsage.h>
 #include <hw/DistanceAngleCalcStruc.h>
 #include <utils/ConversionUtils.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
 // Third Party Includes
 #include <ctre/phoenix/motorcontrol/can/WPI_TalonSRX.h>

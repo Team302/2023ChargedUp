@@ -24,7 +24,7 @@
 #include <hw/DragonLeds.h>
 #include <hw/xml/LedXmlParser.h>
 #include <utils/HardwareIDValidation.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
 // Third Party Includes
 #include <pugixml/pugixml.hpp>

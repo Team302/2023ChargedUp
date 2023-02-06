@@ -34,7 +34,7 @@
 #include <teleopcontrol/TeleopControl.h>
 #include <teleopcontrol/TeleopControlFunctions.h>
 #include <frc/DriverStation.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
 //using namespace frc;
 //using namespace std;

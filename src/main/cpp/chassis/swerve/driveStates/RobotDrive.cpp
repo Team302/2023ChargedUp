@@ -24,7 +24,7 @@
 #include <chassis/swerve/driveStates/RobotDrive.h>
 #include <chassis/ChassisFactory.h>
 #include <chassis/ChassisMovement.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
 using std::string;
 

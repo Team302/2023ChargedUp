@@ -32,7 +32,7 @@
 #include <gamepad/axis/ScaledDeadbandValue.h>
 #include <gamepad/axis/SquaredProfile.h>
 #include <gamepad/IDragonGamePad.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
 // Third Party Includes
 #include <units/dimensionless.h>
@@ -73,31 +73,24 @@ double AnalogAxis::GetAxisValue()
 {
     if (m_gamepad != nullptr)
     {
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("AnalogAxis"), string("GetAxisValue"), string("arrived"));
         auto value = GetRawValue();
-        value = m_deadband->ApplyDeadband(value);
-        value = m_profile->ApplyProfile(value);
-        value = m_scale->Scale(value);
-        value = m_inversion->ApplyInversion(value);
-        
-        /**
-        if (value != 0.0)
+        m_deadband->ApplyDeadband(value);
+        m_profile->ApplyProfile(value);
+        m_scale->Scale(value);
+        m_inversion->ApplyInversion(value);
+
+        if (m_secondaryAxis != nullptr)
         {
-            if (m_secondaryAxis != nullptr)
+            auto raw1 = GetRawInvertedValue();
+            auto raw2 = m_secondaryAxis->GetRawInvertedValue();
+            if (abs(raw2) > 0.05)
             {
-                auto value2 = m_secondaryAxis->GetAxisValue();
-                if (value2 != 0.0)
-                {
-                    auto angle = atan(value2/value);
-                    auto cosAngle = abs(cos(angle));
-                    value /= cosAngle;
-                }
+                auto angle = atan2(raw2, raw1);
+                value *= abs(cos(angle));
             }
         }
-        **/
         return value;
     }
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT_ONCE, string("AnalogAxis::GetAxisValue"), string("Gamepad"), string("m_gamepad is Nullptr"));
     return 0.0;
 }
 
@@ -215,6 +208,14 @@ double AnalogAxis::GetRawValue()
     }
 
     return 0.0;
+}
+
+double AnalogAxis::GetRawInvertedValue()
+{
+    auto val = GetRawValue();
+    m_deadband->ApplyDeadband(val);
+    m_inversion->ApplyInversion(val);
+    return val;
 }
 
 void AnalogAxis::DefinePerpendicularAxis

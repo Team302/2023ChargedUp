@@ -1,12 +1,4 @@
 
-/*========================================================================================================
- * ScaledAxis.cpp
- *========================================================================================================
- *
- * File Description:  This scales an axis.
- *
- *========================================================================================================*/
-
 //====================================================================================================================================================
 // Copyright 2022 Lake Orion Robotics FIRST Team 302 
 //
@@ -59,12 +51,12 @@ void ScaledAxis::SetScaleFactor
 /// Description:    Multiply the output by the scale factor
 /// </summary>
 //==================================================================================
-double ScaledAxis::Scale
+void ScaledAxis::Scale
 (
-    double      inputVal            // <I> - value to scale     
+    double&    inputVal            // <I> - value to scale     
 ) const
 {
-    return (inputVal * m_scale);
+    inputVal *= m_scale;
 }
 
 

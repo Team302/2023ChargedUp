@@ -15,33 +15,28 @@
 //====================================================================================================================================================
 
 #pragma once
+
+// standard C++ includes
 #include <string>
+#include <utility>
+#include <vector>
 
-#include <utils/logging/LoggableItem.h>
+// Team 302 includs
+#include <utils/logging/LoggerEnums.h>
 
-///	 @interface     State
-///  @brief      	Interface for state classes
-class State : public LoggableItem
+typedef std::pair<std::string, bool> LoggerBoolValue;
+typedef std::pair<std::string, double> LoggerDoubleValue;
+typedef std::pair<std::string, int> LoggerIntValue;
+typedef std::pair<std::string, std::string> LoggerStringValue;
+
+struct LoggerData
 {
-	public:
-        State
-        (
-            std::string     stateName,
-            int             stateId
-        );
-        State() = delete;
-        ~State() = default;
-
-        virtual void Init() = 0;
-        virtual void Run() = 0;
-        virtual void Exit() = 0;
-        virtual bool AtTarget() const = 0;
-        void LogInformation() const override;
-        
-        inline std::string GetStateName() const {return m_stateName;}
-        inline int GetStateId() const {return m_stateId;}
-    
-    private:
-        std::string     m_stateName;
-        int             m_stateId;
+    LOGGER_LEVEL                    level;
+    const std::string&              group;
+    std::vector<LoggerBoolValue>    bools;
+    std::vector<LoggerDoubleValue>  doubles;
+    std::vector<LoggerIntValue>     ints;
+    std::vector<LoggerStringValue>  strings;
 };
+
+

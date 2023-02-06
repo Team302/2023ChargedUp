@@ -41,12 +41,11 @@ NoDeadbandValue* NoDeadbandValue::GetInstance()
 /// Description:    Apply the standard deadband
 /// </summary>
 //==================================================================================
-double NoDeadbandValue::ApplyDeadband
+void NoDeadbandValue::ApplyDeadband
 (
-    double inputVal // <I> - value to apply profile to
+    double& inputVal // <I> - value to apply profile to
 ) const
 {
-    return inputVal;
 }
 
 

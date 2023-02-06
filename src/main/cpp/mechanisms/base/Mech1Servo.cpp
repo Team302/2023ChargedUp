@@ -25,7 +25,7 @@
 #include <hw/DragonServo.h>
 #include <mechanisms/base/Mech.h>
 #include <mechanisms/base/Mech1Servo.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
 // Third Party Includes
 

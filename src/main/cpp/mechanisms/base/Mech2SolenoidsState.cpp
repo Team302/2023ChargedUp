@@ -24,7 +24,7 @@
 #include <State.h>
 #include <mechanisms/base/Mech2SolenoidsState.h>
 #include <mechanisms/base/Mech2Solenoids.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
 #include <teleopcontrol/TeleopControl.h>
 

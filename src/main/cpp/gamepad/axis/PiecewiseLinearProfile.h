@@ -41,11 +41,10 @@ class PiecewiseLinearProfile : public IProfile
         //==================================================================================
         /// @brief:    Apply the profile
         /// @param  double inputVal - value to be scaled (have profile applied to)
-        /// @return double - scaled value
         //==================================================================================
-        double ApplyProfile
+        void ApplyProfile
         (
-            double      inputVal            
+            double&      inputVal            
         ) const override;
 
     private:

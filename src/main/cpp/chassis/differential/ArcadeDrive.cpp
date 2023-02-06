@@ -31,7 +31,7 @@
 #include <State.h>
 #include <chassis/ChassisFactory.h>
 #include <hw/factories/PigeonFactory.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
 using namespace std;
 using namespace frc;
