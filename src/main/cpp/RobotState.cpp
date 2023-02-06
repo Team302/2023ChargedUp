@@ -47,7 +47,7 @@ void RobotState::Run(){
     if(frc::DriverStation::IsEnabled){
         m_driveTeamFeedback->TeleopEnabled(frc::DriverStation::IsTeleopEnabled());
         m_driveTeamFeedback->AutonomousEnabled(frc::DriverStation::IsAutonomousEnabled());
-        
+
         if (m_chassis != nullptr)
         {
             m_chassis->UpdateOdometry();
@@ -58,7 +58,6 @@ void RobotState::Run(){
 
     }
     if(frc::DriverStation::IsTeleopEnabled){
-        StateMgrHelper::RunCurrentMechanismStates();
 
     }
 

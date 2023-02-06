@@ -31,11 +31,16 @@ class DriverFeedback
     void RunLEDS();
     static DriverFeedback* GetInstance();
 
+    void AutonomousEnabled(bool enabled);
+    void TeleopEnabled(bool enabled);
 
-    bool AutonomousEnabled;
-    bool TeleopEnabled;
+    
     
     private:
+    
+    bool m_AutonomousEnabled;
+    bool m_TeleopEnabled;
+
     enum DriverFeedbackStates
     {
      ALIGNED_WITH_CONE_NODE,

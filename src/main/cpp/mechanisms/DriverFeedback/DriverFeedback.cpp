@@ -132,3 +132,9 @@ void DriverFeedback::GamePieceReadyToPickUp(bool GamePieceReadyToPickUp)
 {
     DriverFeedback::m_GamePieceReadyToPickUp = GamePieceReadyToPickUp;
 }
+void DriverFeedback::AutonomousEnabled(bool enabled){
+    m_AutonomousEnabled = enabled;
+}
+void DriverFeedback::TeleopEnabled(bool enabled){
+    m_TeleopEnabled = enabled;
+}
