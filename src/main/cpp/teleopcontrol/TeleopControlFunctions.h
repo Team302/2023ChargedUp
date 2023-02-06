@@ -45,7 +45,7 @@ class TeleopControlFunctions
             DRIVE_TO_COL_ONE,
             DRIVE_TO_COL_TWO,
             DRIVE_TO_COL_THREE,            
-		    // @ADDMECH add functions here for robot
+
              //Arm states
             HOLD_POSITION_ROTATE,
             MANUAL_ROTATE,
@@ -73,34 +73,6 @@ class TeleopControlFunctions
             HOLDING_CONE,
             HOLDING_CUBE,
             RELEASE,
-
-            DUMMY1,
-            DUMMY2,
-            DUMMY3,
-            DUMMY4,
-            DUMMY5,
-            DUMMY6, 
-            DUMMY7, 
-            DUMMY8,
-            DUMMY9,
-            DUMMY10, 
-            DUMMY11,
-            DUMMY12,
-            DUMMY13,
-            DUMMY14,
-            DUMMY15,
-            DUMMY16,
-            DUMMY17,
-            DUMMY18,
-            DUMMY19,
-            DUMMY20,
-
-            DUMMYA1,
-            DUMMYA2,
-            DUMMYA3,
-            DUMMYA4,
-            DUMMYA5,
-            DUMMYA6, 
             
             MAX_FUNCTIONS
         };

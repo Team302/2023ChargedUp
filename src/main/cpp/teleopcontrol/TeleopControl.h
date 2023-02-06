@@ -339,15 +339,7 @@ class TeleopControl : LoggableItem
             {TeleopControlFunctions::HOLONOMIC_DRIVE_STRAFE, driverLJoystickX},
             {TeleopControlFunctions::HOLONOMIC_DRIVE_ROTATE, driverRJoystickX},
             {TeleopControlFunctions::MANUAL_ROTATE, extra1LJoystickY},
-            {TeleopControlFunctions::MANUAL_EXTEND_RETRACT, extra2LJoystickY},
-
-            {TeleopControlFunctions::DUMMYA1, extra4LJoystickX},
-            {TeleopControlFunctions::DUMMYA2, extra4LJoystickY},
-            {TeleopControlFunctions::DUMMYA3, extra4RJoystickX},
-            {TeleopControlFunctions::DUMMYA4, extra4RJoystickY},
-            {TeleopControlFunctions::DUMMYA5, extra4LTrigger},
-            {TeleopControlFunctions::DUMMYA6, extra4RTrigger}
-            
+            {TeleopControlFunctions::MANUAL_EXTEND_RETRACT, extra2LJoystickY}            
         };
 
 
@@ -388,28 +380,7 @@ class TeleopControl : LoggableItem
             {TeleopControlFunctions::HOLDING_CONE, extra3BButton},
             {TeleopControlFunctions::GRABBING_CUBE, extra3DPad180},
             {TeleopControlFunctions::GRABBING_CONE , extra3DPad90},
-            {TeleopControlFunctions::RELEASE, extra3DPad270},
-
-            {TeleopControlFunctions::DUMMY1, extra4AButton},
-            {TeleopControlFunctions::DUMMY2, extra4BButton},
-            {TeleopControlFunctions::DUMMY3, extra4XButton},
-            {TeleopControlFunctions::DUMMY4, extra4YButton},
-            {TeleopControlFunctions::DUMMY5, extra4LBumper},
-            {TeleopControlFunctions::DUMMY6, extra4RBumper},
-            {TeleopControlFunctions::DUMMY7, extra4SelectButton},
-            {TeleopControlFunctions::DUMMY8, extra4StartButton},
-            {TeleopControlFunctions::DUMMY9, extra4LStickPressed},
-            {TeleopControlFunctions::DUMMY10, extra4RStickPressed},
-            {TeleopControlFunctions::DUMMY11, extra4LTriggerPressed},
-            {TeleopControlFunctions::DUMMY12, extra4RTriggerPressed},
-            {TeleopControlFunctions::DUMMY13, extra4DPad0},
-            {TeleopControlFunctions::DUMMY14, extra4DPad45},
-            {TeleopControlFunctions::DUMMY15, extra4DPad90},
-            {TeleopControlFunctions::DUMMY16, extra4DPad135},
-            {TeleopControlFunctions::DUMMY17, extra4DPad180},
-            {TeleopControlFunctions::DUMMY18, extra4DPad225},
-            {TeleopControlFunctions::DUMMY19, extra4DPad270},
-            {TeleopControlFunctions::DUMMY20, extra4DPad315}
+            {TeleopControlFunctions::RELEASE, extra3DPad270}
         
         };
 
