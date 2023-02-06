@@ -33,7 +33,6 @@
 #include <utils/logging/Logger.h>
 #include <teleopcontrol/TeleopControlMappingEnums.h>
 
-#include<RobinHood/robin_hood.h>
 
  using namespace std;
  using namespace frc;
@@ -45,13 +44,6 @@ DragonXBox::DragonXBox
     int port
 ) : m_xbox(new frc::XboxController(port))
 {
-    // for (TeleopControlMappingEnums::CONTROL_MODE mode=TeleopControlMappingEnums::ALL; 
-    //      mode != TeleopControlMappingEnums::MAX_CONTROL_MODES; ++mode )
-    // {
-    //     std::pair<TeleopControlMappingEnums::CONTROL_MODE, TeleopControlMappingEnums::AXIS_IDENTIFIER> key;
-    //     key = std::make_pair(mode, TeleopControlMappingEnums::LEFT_JOYSTICK_X);
-    //     m_axisMap.insert(key, new AnalogAxis(m_xbox, XboxController::Axis::kLeftX, false));
-    // }
     // Create Axis Objects
     m_axis[TeleopControlMappingEnums::LEFT_JOYSTICK_X] = new AnalogAxis(m_xbox, XboxController::Axis::kLeftX, false);
     m_axis[TeleopControlMappingEnums::LEFT_JOYSTICK_Y]  = new AnalogAxis(m_xbox, XboxController::Axis::kLeftY, true);
