@@ -51,12 +51,11 @@ CubedProfile* CubedProfile::GetInstance()
 //==================================================================================
 /// @brief    Apply the profile
 /// @param [in] value that needs the profile (scaling) applied
-/// @return double profiled (scaled) value
 //==================================================================================
-double CubedProfile::ApplyProfile
+void CubedProfile::ApplyProfile
 (
-    double      inputVal            // <I> - value to apply profile to
+    double&      inputVal            // <I> - value to apply profile to
 ) const 
 {
-    return pow( inputVal, 3.0 );
+    inputVal = pow( inputVal, 3.0 );
 }

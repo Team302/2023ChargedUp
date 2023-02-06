@@ -23,7 +23,7 @@
 // Team 302 includes
 #include <State.h>
 #include <mechanisms/StateStruc.h>
-#include <LoggableItem.h>
+#include <utils/logging/LoggableItem.h>
 
 // forward declare 
 class Mech;

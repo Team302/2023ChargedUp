@@ -32,7 +32,7 @@
 #include <gamepad/axis/ScaledDeadbandValue.h>
 #include <gamepad/axis/SquaredProfile.h>
 #include <gamepad/IDragonGamePad.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
 // Third Party Includes
 #include <units/dimensionless.h>
@@ -73,55 +73,48 @@ double AnalogAxis::GetAxisValue()
 {
     if (m_gamepad != nullptr)
     {
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("AnalogAxis"), string("GetAxisValue"), string("arrived"));
         auto value = GetRawValue();
-        value = m_deadband->ApplyDeadband(value);
-        value = m_profile->ApplyProfile(value);
-        value = m_scale->Scale(value);
-        value = m_inversion->ApplyInversion(value);
-        
-        /**
-        if (value != 0.0)
+        m_deadband->ApplyDeadband(value);
+        m_profile->ApplyProfile(value);
+        m_scale->Scale(value);
+        m_inversion->ApplyInversion(value);
+
+        if (m_secondaryAxis != nullptr)
         {
-            if (m_secondaryAxis != nullptr)
+            auto raw1 = GetRawInvertedValue();
+            auto raw2 = m_secondaryAxis->GetRawInvertedValue();
+            if (abs(raw2) > 0.05)
             {
-                auto value2 = m_secondaryAxis->GetAxisValue();
-                if (value2 != 0.0)
-                {
-                    auto angle = atan(value2/value);
-                    auto cosAngle = abs(cos(angle));
-                    value /= cosAngle;
-                }
+                auto angle = atan2(raw2, raw1);
+                value *= abs(cos(angle));
             }
         }
-        **/
         return value;
     }
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT_ONCE, string("AnalogAxis::GetAxisValue"), string("Gamepad"), string("m_gamepad is Nullptr"));
     return 0.0;
 }
 
 //================================================================================================
 /// @brief  Set the deadband type
-/// @param  IDragonGamePad::AXIS_DEADBAND type - deadband option
+/// @param  TeleopControlMappingEnums::AXIS_DEADBAND type - deadband option
 /// @return void
 //================================================================================================
 void AnalogAxis::SetDeadBand
 (
-    IDragonGamePad::AXIS_DEADBAND   type            /// <I> - deadband option
+    TeleopControlMappingEnums::AXIS_DEADBAND   type            /// <I> - deadband option
 )
 {
     switch (type)
     {
-        case IDragonGamePad::AXIS_DEADBAND::NONE:
+        case TeleopControlMappingEnums::AXIS_DEADBAND::NONE:
             m_deadband = NoDeadbandValue::GetInstance();
             break;
 
-        case IDragonGamePad::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND:
+        case TeleopControlMappingEnums::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND:
             m_deadband = DeadbandValue::GetInstance();
             break;
 
-        case IDragonGamePad::AXIS_DEADBAND::APPLY_SCALED_DEADBAND:
+        case TeleopControlMappingEnums::AXIS_DEADBAND::APPLY_SCALED_DEADBAND:
             m_deadband = ScaledDeadbandValue::GetInstance();
             break;
 
@@ -135,25 +128,25 @@ void AnalogAxis::SetDeadBand
 
 //================================================================================================
 /// @brief  Set the axis profile (cubed, linear, etc.)
-/// @param  IDragonGamePad::AXIS_PROFILE profile - profile option
+/// @param  TeleopControlMappingEnums::AXIS_PROFILE profile - profile option
 /// @return void
 //================================================================================================
 void AnalogAxis::SetAxisProfile
 (
-     IDragonGamePad::AXIS_PROFILE    profile         /// <I> - axis profile
+     TeleopControlMappingEnums::AXIS_PROFILE    profile         /// <I> - axis profile
 )
 {
     switch (profile)
     {
-        case IDragonGamePad::AXIS_PROFILE::CUBED:
+        case TeleopControlMappingEnums::AXIS_PROFILE::CUBED:
             m_profile = CubedProfile::GetInstance();
             break;
 
-        case IDragonGamePad::AXIS_PROFILE::SQUARED:
+        case TeleopControlMappingEnums::AXIS_PROFILE::SQUARED:
             m_profile = SquaredProfile::GetInstance();
             break;
 
-        case IDragonGamePad::AXIS_PROFILE::LINEAR:
+        case TeleopControlMappingEnums::AXIS_PROFILE::LINEAR:
             m_profile = LinearProfile::GetInstance();
             break;
 
@@ -215,6 +208,14 @@ double AnalogAxis::GetRawValue()
     }
 
     return 0.0;
+}
+
+double AnalogAxis::GetRawInvertedValue()
+{
+    auto val = GetRawValue();
+    m_deadband->ApplyDeadband(val);
+    m_inversion->ApplyInversion(val);
+    return val;
 }
 
 void AnalogAxis::DefinePerpendicularAxis

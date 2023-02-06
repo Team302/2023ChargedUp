@@ -25,7 +25,7 @@
 
 // Team 302 includes
 #include <utils/HardwareIDValidation.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 #include <hw/xml/PCMXmlParser.h>
 
 // Third Party Includes

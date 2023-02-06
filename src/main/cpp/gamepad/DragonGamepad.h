@@ -22,6 +22,7 @@
 
 // Team 302 includes
 #include <gamepad/IDragonGamePad.h>
+#include <teleopcontrol/TeleopControlMappingEnums.h>
 
 // forward declares
 namespace frc
@@ -45,52 +46,52 @@ class DragonGamepad : public IDragonGamePad
 
         bool IsButtonPressed
         (
-            BUTTON_IDENTIFIER button
+            TeleopControlMappingEnums::BUTTON_IDENTIFIER button
         ) const override;
 
         void SetAxisDeadband
         (
-            AXIS_IDENTIFIER axis,
-            AXIS_DEADBAND type
+            TeleopControlMappingEnums::AXIS_IDENTIFIER axis,
+            TeleopControlMappingEnums::AXIS_DEADBAND type
         ) override;
 
         void SetAxisProfile
         (
-            AXIS_IDENTIFIER axis,
-            AXIS_PROFILE curve
+            TeleopControlMappingEnums::AXIS_IDENTIFIER axis,
+            TeleopControlMappingEnums::AXIS_PROFILE curve
         ) override;
 
         void SetAxisScale
         (
-            AXIS_IDENTIFIER axis,
+            TeleopControlMappingEnums::AXIS_IDENTIFIER axis,
             double scaleFactor
         ) override;
 
         void SetAxisFlipped
         (
-            AXIS_IDENTIFIER    			        axis,       // <I> - axis identifier to modify
+            TeleopControlMappingEnums::AXIS_IDENTIFIER    			        axis,       // <I> - axis identifier to modify
             bool                                isFlipped   // <I> - true - invert axis, false - no inversion
         ) override;
        
         void SetButtonMode
         (
-            BUTTON_IDENTIFIER button,
-            BUTTON_MODE mode
+            TeleopControlMappingEnums::BUTTON_IDENTIFIER button,
+            TeleopControlMappingEnums::BUTTON_MODE mode
         ) override;
 
         double GetAxisValue
         (
-            AXIS_IDENTIFIER axis
+            TeleopControlMappingEnums::AXIS_IDENTIFIER axis
         ) const override;
 
         bool WasButtonPressed
         (
-            BUTTON_IDENTIFIER button
+            TeleopControlMappingEnums::BUTTON_IDENTIFIER button
         ) const override;
 
         bool WasButtonReleased
         (
-            BUTTON_IDENTIFIER button
+            TeleopControlMappingEnums::BUTTON_IDENTIFIER button
         ) const override;
 
         void SetRumble
@@ -105,7 +106,7 @@ class DragonGamepad : public IDragonGamePad
         std::vector<AnalogAxis*> m_axis;
         std::vector<double> m_axisScale;
         std::vector<double> m_axisInversionFactor;
-        std::vector<AXIS_PROFILE> m_axisProfile;
+        std::vector<TeleopControlMappingEnums::AXIS_PROFILE> m_axisProfile;
 
         std::vector<IButton*> m_button;
 

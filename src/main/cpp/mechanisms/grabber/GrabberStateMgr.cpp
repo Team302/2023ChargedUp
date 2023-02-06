@@ -27,7 +27,7 @@
 // FRC includes
 
 // Team 302 includes
-#include <TeleopControl.h>
+#include <teleopcontrol/TeleopControl.h>
 #include <auton/PrimitiveParams.h>
 #include <mechanisms/MechanismFactory.h>
 #include <mechanisms/base/StateMgr.h>
@@ -102,30 +102,29 @@ void GrabberStateMgr::CheckForStateTransition()
 		//========= Hand modified code start section 0 ========
 		
         auto controller = TeleopControl::GetInstance();
-        
         if(controller != nullptr)
         {
-            if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::OPEN))
+            if (controller->IsButtonPressed(TeleopControlFunctions::OPEN))
             {
                 targetState = GRABBER_STATE::OPEN;
             }
-            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::GRABBING_CONE))
+            else if (controller->IsButtonPressed(TeleopControlFunctions::GRABBING_CONE))
             {
                 targetState = GRABBER_STATE::GRABBING_CONE;
             }
-            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::GRABBING_CUBE))
+            else if (controller->IsButtonPressed(TeleopControlFunctions::GRABBING_CUBE))
             {
                 targetState = GRABBER_STATE::GRABBING_CUBE;
             }
-            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HOLDING_CONE))
+            else if (controller->IsButtonPressed(TeleopControlFunctions::HOLDING_CONE))
             {
                 targetState = GRABBER_STATE::HOLDING_CONE;
             }
-            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HOLDING_CUBE))
+            else if (controller->IsButtonPressed(TeleopControlFunctions::HOLDING_CUBE))
             {
                 targetState = GRABBER_STATE::HOLDING_CUBE;
             }
-            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::RELEASE))
+            else if (controller->IsButtonPressed(TeleopControlFunctions::RELEASE))
             {
                 targetState = GRABBER_STATE::RELEASE;
             }

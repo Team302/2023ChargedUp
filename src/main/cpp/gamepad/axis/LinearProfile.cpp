@@ -41,11 +41,10 @@ LinearProfile* LinearProfile::GetInstance()
 /// Description:    Apply the profile
 /// </summary>
 //==================================================================================
-double LinearProfile::ApplyProfile
+void LinearProfile::ApplyProfile
 (
-    double      inputVal            // <I> - value to apply profile to
+    double&     inputVal            // <I> - value to apply profile to
 ) const 
 {
-    return inputVal;
 }
 

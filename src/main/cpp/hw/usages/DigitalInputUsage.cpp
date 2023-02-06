@@ -32,7 +32,7 @@
 
 					// Team 302 includes
 					#include <hw/usages/DigitalInputUsage.h>
-					#include <utils/logger.h>
+					#include <utils/logging/Logger.h>
 
 					// Third Party Includes
 

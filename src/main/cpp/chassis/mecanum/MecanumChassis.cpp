@@ -32,7 +32,7 @@
 #include <hw/factories/PigeonFactory.h>
 #include <hw/DragonPigeon.h>
 #include <utils/ConversionUtils.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
 #include <chassis/mecanum/MecanumChassis.h>
 #include <chassis/ChassisOptionEnums.h>
