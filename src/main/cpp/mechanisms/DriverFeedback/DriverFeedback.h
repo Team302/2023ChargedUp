@@ -22,16 +22,19 @@ class DriverFeedback
 	public:
     LEDStates* m_LEDStates = LEDStates::GetInstance();
     void UpdateFeedback();
-    void isAlignedWithConeNode(bool AlignedWithConeNode);
-    void isAlignedWithCubeNode(bool AlignedWithCubeNode);
-    void isGamePieceInGrabber(bool GamePieceInGrabber);
-    void isWantCone(bool WantCone);
-    void isWantCube(bool WantCube);
-    void isGamePieceReadyToPickUp(bool GamePieceReadyToPickUp);
+    void AlignedWithConeNode(bool AlignedWithConeNode);
+    void AlignedWithCubeNode(bool AlignedWithCubeNode);
+    void GamePieceInGrabber(bool GamePieceInGrabber);
+    void WantCone(bool WantCone);
+    void WantCube(bool WantCube);
+    void GamePieceReadyToPickUp(bool GamePieceReadyToPickUp);
+    void RunLEDS();
     static DriverFeedback* GetInstance();
 
 
-
+    bool AutonomousEnabled;
+    bool TeleopEnabled;
+    
     private:
     enum DriverFeedbackStates
     {

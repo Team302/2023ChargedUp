@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2023 Lake Orion Robotics FIRST Team 302 
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -16,96 +16,119 @@
 
 #include <mechanisms/DriverFeedback/DriverFeedback.h>
 
-DriverFeedback* DriverFeedback::m_instance = nullptr;
+DriverFeedback *DriverFeedback::m_instance = nullptr;
 
-DriverFeedback* DriverFeedback::GetInstance()
+DriverFeedback *DriverFeedback::GetInstance()
 {
-    if ( DriverFeedback::m_instance == nullptr )
-	{
-		DriverFeedback::m_instance = new DriverFeedback();
-	}
-	return DriverFeedback::m_instance;
+    if (DriverFeedback::m_instance == nullptr)
+    {
+        DriverFeedback::m_instance = new DriverFeedback();
+    }
+    return DriverFeedback::m_instance;
 }
 
- void DriverFeedback::UpdateFeedback(){
+void DriverFeedback::UpdateFeedback()
+{
+    if (TeleopEnabled)
+    {
+        if (DriverFeedback::m_AlignedWithConeNode)
+        {
 
-    if(DriverFeedback::m_AlignedWithConeNode){
-
-        if(currentState!=DriverFeedbackStates::ALIGNED_WITH_CONE_NODE){
-            m_LEDStates->ResetVariables();
+            if (currentState != DriverFeedbackStates::ALIGNED_WITH_CONE_NODE)
+            {
+                m_LEDStates->ResetVariables();
+            }
+            m_LEDStates->ClosingInChaserPattern(LED::YELLOW);
+            currentState = DriverFeedbackStates::ALIGNED_WITH_CONE_NODE;
         }
-        m_LEDStates->ClosingInChaserPattern(LED::YELLOW);
-        currentState = DriverFeedbackStates::ALIGNED_WITH_CONE_NODE;
+        else if (DriverFeedback::m_AlignedWithCubeNode)
+        {
 
-    }else if(DriverFeedback::m_AlignedWithCubeNode){
-        
-        if(currentState!=DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE){
-            m_LEDStates->ResetVariables();
+            if (currentState != DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE)
+            {
+                m_LEDStates->ResetVariables();
+            }
+            m_LEDStates->ClosingInChaserPattern(LED::PURPLE);
+            currentState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
         }
-        m_LEDStates->ClosingInChaserPattern(LED::PURPLE);
-        currentState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
+        else if (DriverFeedback::m_GamePieceInGrabber)
+        {
 
-    }else if(DriverFeedback::m_GamePieceInGrabber){
-         
-        if(currentState!=DriverFeedbackStates::GAME_PIECE_IN_GRABBER){
-            m_LEDStates->ResetVariables();
+            if (currentState != DriverFeedbackStates::GAME_PIECE_IN_GRABBER)
+            {
+                m_LEDStates->ResetVariables();
+            }
+            m_LEDStates->AlternatingBlinkingPattern(LED::YELLOW, LED::PURPLE);
+            currentState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
         }
-        m_LEDStates->AlternatingBlinkingPattern(LED::YELLOW, LED::PURPLE);
-        currentState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
+        else if (DriverFeedback::m_WantCube)
+        {
 
-    }else if(DriverFeedback::m_WantCube){
-
-         if(currentState!=DriverFeedbackStates::WANT_CUBE){
-            m_LEDStates->ResetVariables();
+            if (currentState != DriverFeedbackStates::WANT_CUBE)
+            {
+                m_LEDStates->ResetVariables();
+            }
+            m_LEDStates->SolidColorPattern(LED::PURPLE);
+            currentState = DriverFeedbackStates::WANT_CUBE;
         }
-        m_LEDStates->SolidColorPattern(LED::PURPLE);
-        currentState = DriverFeedbackStates::WANT_CUBE;
+        else if (DriverFeedback::m_WantCone)
+        {
 
-    }else if(DriverFeedback::m_WantCone){
-        
-         if(currentState!=DriverFeedbackStates::WANT_CONE){
-            m_LEDStates->ResetVariables();
+            if (currentState != DriverFeedbackStates::WANT_CONE)
+            {
+                m_LEDStates->ResetVariables();
+            }
+            m_LEDStates->SolidColorPattern(LED::YELLOW);
+            currentState = DriverFeedbackStates::WANT_CONE;
         }
-        m_LEDStates->SolidColorPattern(LED::YELLOW);
-        currentState = DriverFeedbackStates::WANT_CONE;
+        else if (DriverFeedback::m_GamePieceReadyToPickUp)
+        {
 
-
-    }else if(DriverFeedback::m_GamePieceReadyToPickUp){
- 
-         if(currentState!=DriverFeedbackStates::GAME_PIECE_READY_TO_PICK_UP){
-            m_LEDStates->ResetVariables();
+            if (currentState != DriverFeedbackStates::GAME_PIECE_READY_TO_PICK_UP)
+            {
+                m_LEDStates->ResetVariables();
+            }
+            m_LEDStates->SolidColorPattern(LED::GREEN);
+            currentState = DriverFeedbackStates::GAME_PIECE_READY_TO_PICK_UP;
         }
-        m_LEDStates->SolidColorPattern(LED::GREEN);
-        currentState = DriverFeedbackStates::GAME_PIECE_READY_TO_PICK_UP;
+        else
+        {
 
-    
-    }else{
-        
-         if(currentState!=DriverFeedbackStates::NONE){
-            m_LEDStates->ResetVariables();
+            if (currentState != DriverFeedbackStates::NONE)
+            {
+                m_LEDStates->ResetVariables();
+            }
+            m_LEDStates->SolidColorPattern(LED::BLACK);
+            currentState = DriverFeedbackStates::NONE;
         }
-        m_LEDStates->SolidColorPattern(LED::BLACK);
+    }
+    else if(AutonomousEnabled)
+    {
+        m_LEDStates->ChaserPattern(LED::GREEN); 
         currentState = DriverFeedbackStates::NONE;
-
-    
     }
 }
- void DriverFeedback::isAlignedWithConeNode(bool AlignedWithConeNode){
+void DriverFeedback::AlignedWithConeNode(bool AlignedWithConeNode)
+{
     DriverFeedback::m_AlignedWithConeNode = AlignedWithConeNode;
- }
- void DriverFeedback::isAlignedWithCubeNode(bool AlignedWithCubeNode){
+}
+void DriverFeedback::AlignedWithCubeNode(bool AlignedWithCubeNode)
+{
     DriverFeedback::m_AlignedWithCubeNode = AlignedWithCubeNode;
- }   
- void DriverFeedback::isWantCone(bool WantCone){
-    DriverFeedback::m_WantCone= WantCone;
- }
- void DriverFeedback::isWantCube(bool WantCube){
+}
+void DriverFeedback::WantCone(bool WantCone)
+{
+    DriverFeedback::m_WantCone = WantCone;
+}
+void DriverFeedback::WantCube(bool WantCube)
+{
     DriverFeedback::m_WantCube = WantCube;
- }
- void DriverFeedback::isGamePieceInGrabber(bool GamePieceInGrabber){
+}
+void DriverFeedback::GamePieceInGrabber(bool GamePieceInGrabber)
+{
     DriverFeedback::m_GamePieceInGrabber = GamePieceInGrabber;
- }
- void DriverFeedback::isGamePieceReadyToPickUp(bool GamePieceReadyToPickUp){
-
+}
+void DriverFeedback::GamePieceReadyToPickUp(bool GamePieceReadyToPickUp)
+{
     DriverFeedback::m_GamePieceReadyToPickUp = GamePieceReadyToPickUp;
- }
+}

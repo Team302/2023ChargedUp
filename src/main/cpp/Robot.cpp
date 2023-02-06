@@ -34,6 +34,7 @@ void Robot::RobotInit()
 {
     Logger::GetLogger()->PutLoggingSelectionsOnDashboard();
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("RobotInit"), string("arrived"));   
+    
     m_controller = TeleopControl::GetInstance();
     m_fmsData = FMSData::GetInstance();
     m_field = DragonField::GetInstance();
