@@ -35,7 +35,7 @@
 #include <mechanisms/arm/arm.h>
 #include <mechanisms/arm/armState.h>
 #include <mechanisms/arm/armStateMgr.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
 // Third Party Includes
 
@@ -113,7 +113,7 @@ void ArmStateMgr::CheckForStateTransition()
             //If we are hitting limit switch, reset position
             m_arm->ResetIfArmDown();
 
-            double armRotateValue = controller->GetAxisValue(TeleopControl::FUNCTION_IDENTIFIER::MANUAL_ROTATE);
+            double armRotateValue = controller->GetAxisValue(TeleopControlFunctions::MANUAL_ROTATE);
 
             Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Counts"), m_arm->GetMotor()->GetCounts());
             Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Arm Angle Mech"), m_arm->GetPositionDegrees().to<double>());
@@ -128,7 +128,7 @@ void ArmStateMgr::CheckForStateTransition()
                 //To do preveious state for, we need to hold the current position in degrees and then set the target to that, current it would set the target to 0 degrees
                 //m_prevState = targetState;
             }
-            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HOLD_POSITION_ROTATE))
+            else if (controller->IsButtonPressed(TeleopControlFunctions::HOLD_POSITION_ROTATE))
             {
                 targetState = ARM_STATE::HOLD_POSITION_ROTATE;
                 m_prevState = targetState;

@@ -35,7 +35,7 @@
 #include <mechanisms/extender/extender.h>
 #include <mechanisms/extender/extenderState.h>
 #include <mechanisms/extender/extenderStateMgr.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
 // Third Party Includes
 
@@ -122,7 +122,7 @@ void ExtenderStateMgr::CheckForStateTransition()
                 targetState = EXTENDER_STATE::MANUAL_EXTEND_RETRACT;
                 m_extender->UpdateTarget(0.5 * extendRetractValue);
             }
-            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::CUBE_BACKROW_EXTEND))
+            else if (controller->IsButtonPressed(TeleopControlFunctions::CUBE_BACKROW_EXTEND))
             {
                 targetState = EXTENDER_STATE::CUBE_BACKROW_EXTEND;
                 m_prevState = targetState;
