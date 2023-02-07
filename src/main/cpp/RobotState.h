@@ -35,6 +35,8 @@ class RobotState
 	public:
     void Init();
     void Run();
+    static RobotState* GetInstance();
+
         
     private:
 
@@ -51,6 +53,8 @@ class RobotState
         FMSData*              m_fmsData;
         DragonField*          m_field;
         AutonPreviewer*       m_previewer;
+        
+        static RobotState*    m_instance;
         
 
    

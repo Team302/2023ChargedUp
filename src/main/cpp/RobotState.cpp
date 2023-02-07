@@ -28,6 +28,15 @@
 #include <auton/AutonPreviewer.h>
 #include <mechanisms/DriverFeedback/DriverFeedback.h>
 
+RobotState* RobotState::m_instance = nullptr;
+
+RobotState* RobotState::GetInstance(){
+    if (RobotState::m_instance == nullptr){
+        RobotState::m_instance = new RobotState();
+    }
+    return RobotState::m_instance;
+}
+
 
 void RobotState::Init(){
     m_fmsData = FMSData::GetInstance();
@@ -38,13 +47,12 @@ void RobotState::Init(){
     
     StateMgrHelper::InitStateMgrs();
 
-    m_previewer = new AutonPreviewer(m_cyclePrims);
     m_driveTeamFeedback = DriverFeedback::GetInstance();
-    
+        
 }
 
 void RobotState::Run(){
-    if(frc::DriverStation::IsEnabled){
+    if(frc::DriverStation::IsEnabled()){
         m_driveTeamFeedback->TeleopEnabled(frc::DriverStation::IsTeleopEnabled());
         m_driveTeamFeedback->AutonomousEnabled(frc::DriverStation::IsAutonomousEnabled());
 
@@ -53,19 +61,20 @@ void RobotState::Run(){
             m_chassis->UpdateOdometry();
             m_field->UpdateRobotPosition(m_chassis->GetPose());
         }
-
+        m_driveTeamFeedback->AlignedWithConeNode(true);
         m_driveTeamFeedback->UpdateFeedback();
 
-    }
-    if(frc::DriverStation::IsTeleopEnabled){
 
     }
-
-    if(frc::DriverStation::IsAutonomousEnabled){
+    if(frc::DriverStation::IsTeleopEnabled()){
 
     }
 
-    if(frc::DriverStation::IsDisabled){
+    if(frc::DriverStation::IsAutonomousEnabled()){
+
+    }
+
+    if(frc::DriverStation::IsDisabled()){
         m_driveTeamFeedback->m_LEDStates->LEDsOff();
     }
 }

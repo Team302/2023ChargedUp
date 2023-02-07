@@ -34,6 +34,8 @@ class DriverFeedback
     void AutonomousEnabled(bool enabled);
     void TeleopEnabled(bool enabled);
 
+    void UpdateLEDStates();
+
     
     
     private:

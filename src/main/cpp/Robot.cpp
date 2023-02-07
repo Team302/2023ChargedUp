@@ -25,6 +25,7 @@
 #include <utils/FMSData.h>
 #include <utils/DragonField.h>
 #include <auton/AutonPreviewer.h>
+#include <RobotState.h>
 
 #include <AdjustableItemMgr.h>
 
@@ -36,8 +37,6 @@ void Robot::RobotInit()
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("RobotInit"), string("arrived"));   
     
     m_controller = TeleopControl::GetInstance();
-    m_fmsData = FMSData::GetInstance();
-    m_field = DragonField::GetInstance();
 
     // Read the XML file to build the robot 
     auto XmlParser = new RobotXmlParser();
@@ -48,15 +47,15 @@ void Robot::RobotInit()
     //Get AdjustableItemMgr instance
     m_tuner = AdjustableItemMgr::GetInstance();
 
-    auto factory = ChassisFactory::GetChassisFactory();
-    m_chassis = factory->GetIChassis();
+    m_robotState = RobotState::GetInstance();
+    m_robotState->Init();
+
     m_holonomic = nullptr;
     if (m_chassis != nullptr)
     {
         m_holonomic = new HolonomicDrive();
     }        
     
-    StateMgrHelper::InitStateMgrs();
 
     m_cyclePrims = new CyclePrimitives();
     m_previewer = new AutonPreviewer(m_cyclePrims);
@@ -74,11 +73,6 @@ void Robot::RobotInit()
 void Robot::RobotPeriodic() 
 {
 
-    if (m_chassis != nullptr)
-    {
-        m_chassis->UpdateOdometry();
-        m_field->UpdateRobotPosition(m_chassis->GetPose());
-    }
     if (m_dragonLimeLight != nullptr)
     {
         LoggerDoubleValue horAngle = {string("Horizontal Angle"), m_dragonLimeLight->GetTargetHorizontalOffset().to<double>()};
@@ -91,6 +85,7 @@ void Robot::RobotPeriodic()
 
     m_tuner->ListenForUpdates();
     m_previewer->CheckCurrentAuton();
+    m_robotState->Run();
 }
 
 /**
