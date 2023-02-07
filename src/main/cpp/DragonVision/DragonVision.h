@@ -62,13 +62,13 @@ class DragonVision
     units::angle::degree_t AngleFromConeGamePiece();
 
     frc::Pose2d GetRobotPosition();
-
-~DragonVision() = default;
-private:
-    void SetCurrentState
+void SetCurrentState
     (
         DragonVision::LIMELIGHT_STATES limelightstate
     );
+~DragonVision() = default;
+private:
+    
     
     DragonVision(std::string     stateName,
                 int              stateId
@@ -80,6 +80,7 @@ private:
     LimelightState*         m_currentstate;
     std::map<LIMELIGHT_STATES, LimelightState*> m_limelightstates;
     double                  m_tolerance = 2.0;  //allows for 2 degrees of error
+    
 };
 
 

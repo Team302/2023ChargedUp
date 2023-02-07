@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-/// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+/// Copyright 2022 Lake Orion Robotics FIRST Team 302
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 /// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -12,7 +12,6 @@
 /// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 /// OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
-
 
 // C++ Includes
 #include <string>
@@ -29,13 +28,12 @@
 
 using namespace std;
 
-DragonVision* DragonVision::m_dragonVision = nullptr;
-DragonVision* DragonVision::GetDragonVision
-(
-	
+DragonVision *DragonVision::m_dragonVision = nullptr;
+DragonVision *DragonVision::GetDragonVision(
+
 )
 {
-	if ( DragonVision::m_dragonVision == nullptr )
+	if (DragonVision::m_dragonVision == nullptr)
 	{
 		DragonVision::m_dragonVision = new DragonVision(std::string("DragonVision"), int(-1));
 	}
@@ -43,41 +41,35 @@ DragonVision* DragonVision::GetDragonVision
 	return DragonVision::m_dragonVision;
 }
 
-//state functions
-DragonVision::DragonVision(std::string stateName, int stateId):
-						   m_frontDragonLimelight(LimelightFactory::GetLimelightFactory()->GetLimelight())			
+// state functions
+DragonVision::DragonVision(std::string stateName, int stateId) : m_frontDragonLimelight(LimelightFactory::GetLimelightFactory()->GetLimelight())
 {
 	/// @TODO: Need to find the real indexes of each pipeline and put them in constructor
-	m_limelightstates[RETROREFLECTIVE] = new LimelightState(m_frontDragonLimelight, 0);
-	m_limelightstates[APRILTAG] = new AprilTag(m_frontDragonLimelight, 1);
-	m_limelightstates[CUBE] = new LimelightState(m_frontDragonLimelight, 2);
-	m_limelightstates[CONE] = new LimelightState(m_frontDragonLimelight, 3);
-} 
+	m_limelightstates[RETROREFLECTIVE] = new LimelightState(m_frontDragonLimelight, RETROREFLECTIVE);
+	m_limelightstates[APRILTAG] = new AprilTag(m_frontDragonLimelight, APRILTAG);
+	m_limelightstates[CUBE] = new LimelightState(m_frontDragonLimelight, CUBE);
+	m_limelightstates[CONE] = new LimelightState(m_frontDragonLimelight, CONE);
+}
 
 void DragonVision::SetCurrentState(DragonVision::LIMELIGHT_STATES limelightstate)
 {
-	auto itr = m_limelightstates.find(limelightstate);
-	if (itr != m_limelightstates.end())
-	{
-		if (m_currentstate != itr->second)
-		{
-			m_currentstate = itr->second;
-		}
-	}
-
+	m_currentstate = m_limelightstates[limelightstate];
 	m_frontDragonLimelight->SetPipeline(m_currentstate->GetPipelineIndex());
+
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Loop Counter"), string("Limelight State"), m_currentstate->GetPipelineIndex());
+
 }
 
-//Aligned-with functions
+// Aligned-with functions
 
 bool DragonVision::AlignedWithCubeNode()
 {
 	SetCurrentState(LIMELIGHT_STATES::APRILTAG);
 
-	if(m_currentstate->HasTarget())
+	if (m_currentstate->HasTarget())
 	{
-		int id = static_cast<AprilTag*>(m_currentstate)->GetTagID();
-		if(id != 5 && id !=4) //4 and 5 are the ids of the substations
+		int id = static_cast<AprilTag *>(m_currentstate)->GetTagID();
+		if (id != 5 && id != 4) // 4 and 5 are the ids of the substations
 		{
 			return m_currentstate->GetTargetHorizontalOffset().to<double>() < m_tolerance;
 		}
@@ -92,11 +84,11 @@ bool DragonVision::AlignedWithCubeNode()
 	}
 }
 
-bool DragonVision::AlignedWithConeNode() 
+bool DragonVision::AlignedWithConeNode()
 {
 	SetCurrentState(LIMELIGHT_STATES::RETROREFLECTIVE);
-	
-	if(m_currentstate->HasTarget())
+
+	if (m_currentstate->HasTarget())
 	{
 		return m_currentstate->GetTargetHorizontalOffset().to<double>() < m_tolerance;
 	}
@@ -106,15 +98,15 @@ bool DragonVision::AlignedWithConeNode()
 	}
 }
 
-bool DragonVision::AlignedWithSubstation() 
+bool DragonVision::AlignedWithSubstation()
 {
 	SetCurrentState(LIMELIGHT_STATES::APRILTAG);
 
-	if(m_currentstate->HasTarget())
+	if (m_currentstate->HasTarget())
 	{
-		int id = static_cast<AprilTag*>(m_currentstate)->GetTagID();
-		if(id == 5 || id == 4) //4 and 5 are the ids of the substations
-		{	
+		int id = static_cast<AprilTag *>(m_currentstate)->GetTagID();
+		if (id == 5 || id == 4) // 4 and 5 are the ids of the substations
+		{
 			return m_currentstate->GetTargetHorizontalOffset().to<double>() < m_tolerance;
 		}
 		else
@@ -128,11 +120,11 @@ bool DragonVision::AlignedWithSubstation()
 	}
 }
 
-bool DragonVision::AlignedWithCubeGamePiece() 
+bool DragonVision::AlignedWithCubeGamePiece()
 {
 	SetCurrentState(LIMELIGHT_STATES::CUBE);
 
-	if(m_currentstate->HasTarget())
+	if (m_currentstate->HasTarget())
 	{
 		return m_currentstate->GetTargetHorizontalOffset().to<double>() < m_tolerance;
 	}
@@ -140,13 +132,13 @@ bool DragonVision::AlignedWithCubeGamePiece()
 	{
 		return false;
 	}
-}   
+}
 
-bool DragonVision::AlignedWithConeGamePiece() 
+bool DragonVision::AlignedWithConeGamePiece()
 {
 	SetCurrentState(LIMELIGHT_STATES::CONE);
 
-	if(m_currentstate->HasTarget())
+	if (m_currentstate->HasTarget())
 	{
 		return m_currentstate->GetTargetHorizontalOffset().to<double>() < m_tolerance;
 	}
@@ -157,14 +149,14 @@ bool DragonVision::AlignedWithConeGamePiece()
 }
 
 // Distance methods
-units::length::inch_t DragonVision::DistanceFromCubeNode() 
+units::length::inch_t DragonVision::DistanceFromCubeNode()
 {
 	SetCurrentState(LIMELIGHT_STATES::APRILTAG);
 
-	if(m_currentstate->HasTarget())
+	if (m_currentstate->HasTarget())
 	{
-		int id = static_cast<AprilTag*>(m_currentstate)->GetTagID();
-		if(id != 5 && id !=4) //4 and 5 are the ids of the substations
+		int id = static_cast<AprilTag *>(m_currentstate)->GetTagID();
+		if (id != 5 && id != 4) // 4 and 5 are the ids of the substations
 		{
 			return m_currentstate->EstimateTargetDistance();
 		}
@@ -183,7 +175,7 @@ units::length::inch_t DragonVision::DistanceFromConeNode()
 {
 	SetCurrentState(LIMELIGHT_STATES::RETROREFLECTIVE);
 
-	if(m_currentstate->HasTarget())
+	if (m_currentstate->HasTarget())
 	{
 		return m_currentstate->EstimateTargetDistance();
 	}
@@ -193,15 +185,15 @@ units::length::inch_t DragonVision::DistanceFromConeNode()
 	}
 }
 
-units::length::inch_t DragonVision::DistanceFromSubstation() 
+units::length::inch_t DragonVision::DistanceFromSubstation()
 {
 	SetCurrentState(LIMELIGHT_STATES::APRILTAG);
 
-	if(m_currentstate->HasTarget())
+	if (m_currentstate->HasTarget())
 	{
-		int id = static_cast<AprilTag*>(m_currentstate)->GetTagID();
-		if(id == 5 || id == 4) //4 and 5 are the ids of the substations
-		{	
+		int id = static_cast<AprilTag *>(m_currentstate)->GetTagID();
+		if (id == 5 || id == 4) // 4 and 5 are the ids of the substations
+		{
 			return m_currentstate->EstimateTargetDistance();
 		}
 		else
@@ -215,11 +207,11 @@ units::length::inch_t DragonVision::DistanceFromSubstation()
 	}
 }
 
-units::length::inch_t DragonVision::DistanceFromCubeGamePiece() 
+units::length::inch_t DragonVision::DistanceFromCubeGamePiece()
 {
 	SetCurrentState(LIMELIGHT_STATES::CUBE);
 
-	if(m_currentstate->HasTarget())
+	if (m_currentstate->HasTarget())
 	{
 		return m_currentstate->EstimateTargetDistance();
 	}
@@ -229,11 +221,11 @@ units::length::inch_t DragonVision::DistanceFromCubeGamePiece()
 	}
 }
 
-units::length::inch_t DragonVision::DistanceFromConeGamePiece() 
+units::length::inch_t DragonVision::DistanceFromConeGamePiece()
 {
 	SetCurrentState(LIMELIGHT_STATES::CONE);
 
-	if(m_currentstate->HasTarget())
+	if (m_currentstate->HasTarget())
 	{
 		return m_currentstate->EstimateTargetDistance();
 	}
@@ -243,90 +235,90 @@ units::length::inch_t DragonVision::DistanceFromConeGamePiece()
 	}
 }
 
-//Angle Functions
-units::angle::degree_t DragonVision::AngleFromCubeNode() 
+// Angle Functions
+units::angle::degree_t DragonVision::AngleFromCubeNode()
 {
 	SetCurrentState(LIMELIGHT_STATES::APRILTAG);
 
-	if(m_currentstate->HasTarget())
+	if (m_currentstate->HasTarget())
 	{
-		int id = static_cast<AprilTag*>(m_currentstate)->GetTagID();
-		if(id != 5 && id !=4) //4 and 5 are the ids of the substations
+		int id = static_cast<AprilTag *>(m_currentstate)->GetTagID();
+		if (id != 5 && id != 4) // 4 and 5 are the ids of the substations
 		{
 			return m_currentstate->GetTargetHorizontalOffset();
 		}
 		else
 		{
-			return units::angle::degree_t(180.0); //default "no-target" value
+			return units::angle::degree_t(180.0); // default "no-target" value
 		}
 	}
 	else
 	{
-		return units::angle::degree_t(180.0); //default "no-target" value
+		return units::angle::degree_t(180.0); // default "no-target" value
 	}
 }
 
-units::angle::degree_t DragonVision::AngleFromConeNode() 
+units::angle::degree_t DragonVision::AngleFromConeNode()
 {
 	SetCurrentState(LIMELIGHT_STATES::RETROREFLECTIVE);
 
-	if(m_currentstate->HasTarget())
+	if (m_currentstate->HasTarget())
 	{
 		return m_currentstate->GetTargetHorizontalOffset();
 	}
 	else
 	{
-		return units::angle::degree_t(180.0); //default "no-target" value
+		return units::angle::degree_t(180.0); // default "no-target" value
 	}
 }
 
-units::angle::degree_t DragonVision::AngleFromCubeGamePiece() 
+units::angle::degree_t DragonVision::AngleFromCubeGamePiece()
 {
 	SetCurrentState(LIMELIGHT_STATES::CUBE);
 
-	if(m_currentstate->HasTarget())
+	if (m_currentstate->HasTarget())
 	{
 		return m_currentstate->GetTargetHorizontalOffset();
 	}
 	else
 	{
-		return units::angle::degree_t(180.0); //default "no-target" value
-	}
-} 
-
-units::angle::degree_t DragonVision::AngleFromConeGamePiece() 
-{
-	SetCurrentState(LIMELIGHT_STATES::CONE);
-
-	if(m_currentstate->HasTarget())
-	{
-		return m_currentstate->GetTargetHorizontalOffset();
-	}
-	else
-	{
-		return units::angle::degree_t(180.0); //default "no-target" value
+		return units::angle::degree_t(180.0); // default "no-target" value
 	}
 }
 
-units::angle::degree_t DragonVision::AngleFromSubstation() 
+units::angle::degree_t DragonVision::AngleFromConeGamePiece()
+{
+	SetCurrentState(LIMELIGHT_STATES::CONE);
+
+	if (m_currentstate->HasTarget())
+	{
+		return m_currentstate->GetTargetHorizontalOffset();
+	}
+	else
+	{
+		return units::angle::degree_t(180.0); // default "no-target" value
+	}
+}
+
+units::angle::degree_t DragonVision::AngleFromSubstation()
 {
 	SetCurrentState(LIMELIGHT_STATES::APRILTAG);
 
-	if(m_currentstate->HasTarget())
+	if (m_currentstate->HasTarget())
 	{
-		int id = static_cast<AprilTag*>(m_currentstate)->GetTagID();
-		if(id == 5 || id == 4) //4 and 5 are the ids of the substations
-		{	
+		int id = static_cast<AprilTag *>(m_currentstate)->GetTagID();
+		if (id == 5 || id == 4) // 4 and 5 are the ids of the substations
+		{
 			return m_currentstate->GetTargetHorizontalOffset();
 		}
 		else
 		{
-			return units::angle::degree_t(180.0); //default "no-target" value
+			return units::angle::degree_t(180.0); // default "no-target" value
 		}
 	}
 	else
 	{
-		return units::angle::degree_t(180.0); //default "no-target" value
+		return units::angle::degree_t(180.0); // default "no-target" value
 	}
 }
 
@@ -336,13 +328,12 @@ frc::Pose2d DragonVision::GetRobotPosition()
 {
 	SetCurrentState(LIMELIGHT_STATES::APRILTAG);
 
-	if(m_currentstate->HasTarget())
+	if (m_currentstate->HasTarget())
 	{
-		return static_cast<AprilTag*>(m_currentstate)->GetRobotPose();
+		return static_cast<AprilTag *>(m_currentstate)->GetRobotPose();
 	}
 	else
 	{
-		return frc::Pose2d(); //default "no-target" value
+		return frc::Pose2d(); // default "no-target" value
 	}
 }
-
