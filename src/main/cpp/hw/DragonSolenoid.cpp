@@ -35,7 +35,7 @@ DragonSolenoid::DragonSolenoid
     bool                            reversed
 )
 {
-    InitSingle(networkTableName, usage, pcmID, PneumaticsModuleType::CTREPCM, channel, reversed);
+    InitSingle(networkTableName, usage, pcmID, PneumaticsModuleType::REVPH, channel, reversed);
 }
 
 DragonSolenoid::DragonSolenoid
