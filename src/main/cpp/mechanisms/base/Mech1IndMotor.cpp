@@ -76,14 +76,36 @@ void Mech1IndMotor::UpdateTarget
     Update();
 }
 
-
 double Mech1IndMotor::GetPosition() const
-
 {
     return m_motor.get()->GetRotations() * 360.0;
 }
 
+units::length::inch_t Mech1IndMotor::GetPositionInches() const
+{
+    double counts = m_motor.get()->GetCounts();
+    
+    /* If sensor invted works we can get rid fo this logic
+    if(m_motor.get()->IsMotorInverted())
+    {
+        counts *= -1.0;
+    }*/
 
+    return units::length::inch_t(counts / m_motor.get()->GetCountsPerInch());
+}
+
+units::angle::degree_t Mech1IndMotor::GetPositionDegrees() const
+{
+    double counts = m_motor.get()->GetCounts();
+
+    /* If sensor invted works we can get rid fo this logic
+    if(m_motor.get()->IsMotorInverted())
+    {
+        counts *= -1.0;
+    }*/
+
+    return units::angle::degree_t(counts / m_motor.get()->GetCountsPerDegree());
+}
 
 double Mech1IndMotor::GetSpeed() const
 

@@ -48,5 +48,7 @@ std::shared_ptr<IDragonMotorController>     motorController0
 		);
 		Arm() = delete;
 		~Arm() override = default;
+
+		void ResetIfArmDown();
 		};
 	

@@ -99,7 +99,7 @@ shared_ptr<IDragonMotorController> MotorXmlParser::ParseXML
             canID = attr.as_int();
             hasError = HardwareIDValidation::ValidateCANID( canID, string( "MotorXmlParser::ParseXML" ) );
         }
-        else if (strcmp(attr.name(), "canbus") == 0)
+        else if (strcmp(attr.name(), "canBusName") == 0)
         {
             canBusName = attr.as_string();
         }
