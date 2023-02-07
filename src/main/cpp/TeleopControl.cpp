@@ -178,6 +178,8 @@ void TeleopControl::Initialize() const
 		m_buttonIDs[ CUBE_MIDROW_ROTATE ]			= IDragonGamePad::B_BUTTON;
 		m_controllerIndex[ CONE_MIDROW_ROTATE ]		= ctrlNo;
 		m_buttonIDs[ CONE_MIDROW_ROTATE ]			= IDragonGamePad::POV_0;
+		m_controllerIndex[ MANUAL_EXTEND_RETRACT ]			= ctrlNo;
+		m_axisIDs[ MANUAL_EXTEND_RETRACT ]					= IDragonGamePad::RIGHT_JOYSTICK_Y;
 
 		m_controllerIndex[ HUMAN_PLAYER_STATION_ROTATE ]	= ctrlNo;
 		m_buttonIDs[ HUMAN_PLAYER_STATION_ROTATE ]			= IDragonGamePad::POV_90;

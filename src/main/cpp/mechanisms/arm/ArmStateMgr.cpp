@@ -184,7 +184,7 @@ void ArmStateMgr::CheckForStateTransition()
                 //Get Arm Target from m_prevState
                 m_arm->UpdateTarget(dynamic_cast<Mech1IndMotorState*>(GetStateVector()[m_prevState])->GetCurrentTarget()); //Get the target of the previous state by referencing the state vector
 
-                if( m_arm->GetPositionDegrees().to<double>() < 12.0) //Floor arm angle
+                if( m_arm->GetPositionDegrees().to<double>() < 4.5) //Floor arm angle
                 {
                     //Upated ControlDate F term based on Angle of the arm (Create funciton based on data on arm and eventually add extenstion)
                     //m_fTerm = find voltage needed to hold arm up at different angles, eventually add extendor 

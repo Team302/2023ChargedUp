@@ -310,7 +310,7 @@
       reverselimitswitchopen="true"
       voltageCompensationSaturation="10.5"
       voltageCompensationEnable="true"
-      countsPerDegree="455.15" />
+      countsPerDegree="-455.15" />
     <cancoder
       canId="5"
       canBusName="rio"
