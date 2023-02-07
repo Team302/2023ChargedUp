@@ -23,7 +23,7 @@
 #include <mechanisms/base/Mech.h>
 #include <mechanisms/base/Mech2Solenoids.h>
 #include <hw/DragonSolenoid.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 #include <mechanisms/base/StateMgr.h>
 
 // Third Party Includes

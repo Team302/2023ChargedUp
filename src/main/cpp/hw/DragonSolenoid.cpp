@@ -21,7 +21,7 @@
 #include <frc/Solenoid.h>
 #include <hw/DragonSolenoid.h>
 #include <hw/usages/SolenoidUsage.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
 using namespace frc;
 using namespace std;
@@ -35,7 +35,7 @@ DragonSolenoid::DragonSolenoid
     bool                            reversed
 )
 {
-    InitSingle(networkTableName, usage, pcmID, PneumaticsModuleType::CTREPCM, channel, reversed);
+    InitSingle(networkTableName, usage, pcmID, PneumaticsModuleType::REVPH, channel, reversed);
 }
 
 DragonSolenoid::DragonSolenoid

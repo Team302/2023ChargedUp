@@ -14,22 +14,25 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
+// co-Author: notcharlie, creator of dumb code / copy paster of better code
+
 //Includes
 #include <string>
 #include <vector>
+#include <sys/stat.h>
+#include <fstream>
 
 #ifdef __linux
 #include <dirent.h>
 #endif
 
-#include <frc/SmartDashboard/SendableChooser.h>
 #include <frc/SmartDashboard/SmartDashboard.h>
 #include <frc/Filesystem.h>
 
 //Team302 includes
 #include <auton/AutonSelector.h>
-
-
+#include <utils/logging/Logger.h>
+#include <utils/FMSData.h>
 using namespace std;
 
 //---------------------------------------------------------------------
@@ -37,66 +40,64 @@ using namespace std;
 // Description: This creates this object and reads the auto script (CSV)
 //  			files and displays a list on the dashboard.
 //---------------------------------------------------------------------
-AutonSelector::AutonSelector() : m_xmlFiles(),
-								 m_chooser()
+AutonSelector::AutonSelector()
 {
-	FindXMLFileNames();
 	PutChoicesOnDashboard();
 }
 
-//---------------------------------------------------------------------
-// Method: 		GetSelectedAutoFile
-// Description: This returns the selected auton file to run.  If it
-//  			returns "Do Nothing", it is indicating no auton should
-//				be run.
-// Returns:		std::string			auton file to run
-//---------------------------------------------------------------------
-std::string AutonSelector::GetSelectedAutoFile()
+string AutonSelector::GetSelectedAutoFile()
 {
-	return m_chooser.GetSelected();
+	std::string autonfile(frc::filesystem::GetDeployDirectory());
+	autonfile += std::string ("/auton/");
+	autonfile += GetAlianceColor();
+	autonfile += GetStartPos();
+	autonfile += GetNumofPiecesinauton();
+	autonfile += GetParkOnChargeStation();
+	autonfile += std::string (".xml");
+	Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string(""), std::string("determined name"),autonfile);
+
+	if (FileExists(autonfile) ==false)
+	{
+		autonfile=frc::filesystem::GetDeployDirectory();
+		autonfile += std::string ("/auton/");
+		autonfile += GetAlianceColor();
+		autonfile += ("COOPThreeP.xml");
+	}
+	Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string(""), std::string("actual file"),autonfile);
+	return autonfile;
 }
 
-//---------------------------------------------------------------------
-// Method: 		FindXMLFileNames
-// Description: This builds up a list of CSV files in the directory and
-//				stores them in the m_csvFiles attribute.
-// Returns:		void
-//---------------------------------------------------------------------
-void AutonSelector::FindXMLFileNames()
+bool  AutonSelector::FileExists(const std::string& name) 
 {
-#ifdef __linux__
-	//struct dirent* files;
+	ifstream f(name.c_str());
+	return f.good();
+}
 
-	auto deployDir = frc::filesystem::GetDeployDirectory();
-	auto autonDir = deployDir + "/auton/";
-	DIR* directory = opendir(autonDir.c_str());
+string AutonSelector::GetParkOnChargeStation()
+{
+	return m_chrgstatchooser.GetSelected();
+}
 
-	if (directory != nullptr)
+string AutonSelector::GetAlianceColor()
+{
+	if (FMSData::GetInstance()->GetAllianceColor()==frc::DriverStation::Alliance::kRed)
 	{
-		while (true)
-		{
-			auto files = readdir(directory);
-			if (files == nullptr)
-			{
-				break;
-			}
-			else 
-			{
-				auto filename = string( files->d_name);
-				if ( filename != "." && filename != ".." && filename != "auton.dtd" )
-				{
-					m_xmlFiles.emplace_back(string(files->d_name));
-				}
-
-			} 
-		}
+		return std::string("Red");
 	}
 	else
 	{
-		// error condition need to handle
+		return std::string("Blue");
 	}
-#endif
-// TODO handle windows so the simulator works
+}
+
+string AutonSelector::GetStartPos()
+{
+	return m_startposchooser.GetSelected();
+}
+
+string AutonSelector::GetNumofPiecesinauton()
+{
+	return m_numofgamepiecechooser.GetSelected();
 }
 
 //---------------------------------------------------------------------
@@ -107,22 +108,18 @@ void AutonSelector::FindXMLFileNames()
 //---------------------------------------------------------------------
 void AutonSelector::PutChoicesOnDashboard()
 {
-	auto gotDefault = false;
-	for (unsigned int inx = 0; inx < m_xmlFiles.size(); ++inx)
-	{
-		if(m_xmlFiles[inx] != "." && m_xmlFiles[inx] != "..")
-		{
-			if ( !gotDefault )
-			{
-				m_chooser.SetDefaultOption(  m_xmlFiles[inx], m_xmlFiles[inx] );
-				gotDefault = true;
-			}
-			else
-			{
-				m_chooser.AddOption( m_xmlFiles[inx], m_xmlFiles[inx]);	
-			}
-		}
-	}
-	frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
-}
+	m_chrgstatchooser.AddOption("yes","P");
+	m_chrgstatchooser.AddOption("no","Np");
+	frc::SmartDashboard::PutData("prkonchrgstat", &m_chrgstatchooser);
 
+	m_startposchooser.AddOption("Gridcoop","COOP");
+	m_startposchooser.AddOption("Gridwall","Wall");
+	m_startposchooser.AddOption("Gridhp","HP");
+	frc::SmartDashboard::PutData("StartPos",&m_startposchooser);
+
+	m_numofgamepiecechooser.AddOption("1","One");
+	m_numofgamepiecechooser.AddOption("2","Two");
+	m_numofgamepiecechooser.AddOption("3","Three");
+	m_numofgamepiecechooser.AddOption("4","Four");
+	frc::SmartDashboard::PutData("NumOfpcs",&m_numofgamepiecechooser);
+}

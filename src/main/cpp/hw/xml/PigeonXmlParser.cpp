@@ -24,7 +24,7 @@
 #include <hw/xml/PigeonXmlParser.h>
 #include <hw/DragonPigeon.h>
 #include <utils/HardwareIDValidation.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 #include <hw/factories/PigeonFactory.h>
 
 // Third Party Includes
@@ -64,7 +64,7 @@ DragonPigeon* PigeonXmlParser::ParseXML
             canID = attr.as_int();
             hasError = HardwareIDValidation::ValidateCANID( canID, string( "Pigeon::ParseXML" ) );
         }
-        else if (strcmp(attr.name(), "canbus") == 0)
+        else if (strcmp(attr.name(), "canBusName") == 0)
         {
             canBusName = attr.as_string();
         }

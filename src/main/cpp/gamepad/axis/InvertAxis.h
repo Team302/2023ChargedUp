@@ -43,9 +43,9 @@ class InvertAxis
         (
             bool      isInverted           
         );
-        double ApplyInversion
+        void ApplyInversion
         (
-            double value
+            double& value
         ) const;
         
     private:

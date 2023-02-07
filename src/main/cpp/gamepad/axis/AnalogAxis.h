@@ -59,22 +59,22 @@ class AnalogAxis
 
         //================================================================================================
         /// @brief  Set the deadband type
-        /// @param  IDragonGamePad::AXIS_DEADBAND type - deadband option
+        /// @param  TeleopControlMappingEnums::AXIS_DEADBAND type - deadband option
         /// @return void
         //================================================================================================
         void SetDeadBand
         (
-            IDragonGamePad::AXIS_DEADBAND   type            
+            TeleopControlMappingEnums::AXIS_DEADBAND   type            
         );
 
         //================================================================================================
         /// @brief  Set the axis profile (cubed, linear, etc.)
-        /// @param  IDragonGamePad::AXIS_PROFILE profile - profile option
+        /// @param  TeleopControlMappingEnums::AXIS_PROFILE profile - profile option
         /// @return void
         //================================================================================================
         void SetAxisProfile
         (
-            IDragonGamePad::AXIS_PROFILE    profile         
+            TeleopControlMappingEnums::AXIS_PROFILE    profile         
         );
 
         void SetInverted
@@ -108,6 +108,7 @@ class AnalogAxis
         /// @return double - raw axis value 
         //==================================================================================
         virtual double GetRawValue();
+        double GetRawInvertedValue();
 
         inline frc::GenericHID* GetGameePad() const { return m_gamepad;}
         inline int GetAxisID() const { return m_axis;}

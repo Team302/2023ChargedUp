@@ -24,7 +24,7 @@
 #include <hw/DragonDigitalInput.h>
 #include <hw/usages/DigitalInputUsage.h>
 #include <utils/HardwareIDValidation.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 #include <hw/xml/DigitalInputXmlParser.h>
 
 // Third Party includes

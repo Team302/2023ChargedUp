@@ -16,11 +16,12 @@
 #include <chassis/mecanum/MecanumChassis.h>
 #include <mechanisms/StateMgrHelper.h>
 #include <RobotXmlParser.h>
-#include <TeleopControl.h>
-#include <utils/Logger.h>
-#include <utils/LoggerData.h>
-#include <utils/LoggerEnums.h>
-#include <LoggableItemMgr.h>
+#include <teleopcontrol/TeleopControl.h>
+#include <utils/logging/Logger.h>
+#include <utils/logging/LoggerData.h>
+#include <utils/logging/LoggerEnums.h>
+#include <utils/logging/LoggableItemMgr.h>
+#include <hw/factories/LimelightFactory.h>
 #include <utils/WaypointXmlParser.h>
 #include <utils/FMSData.h>
 #include <utils/DragonField.h>
@@ -36,14 +37,17 @@ void Robot::RobotInit()
     Logger::GetLogger()->PutLoggingSelectionsOnDashboard();
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("RobotInit"), string("arrived"));   
     
-    m_controller = TeleopControl::GetInstance();
 
+
+    m_controller = nullptr;
+    
     // Read the XML file to build the robot 
     auto XmlParser = new RobotXmlParser();
     XmlParser->ParseXML();
 
     auto waypointParser = WaypointXmlParser::GetInstance();
     waypointParser->ParseWaypoints();
+
     //Get AdjustableItemMgr instance
     m_tuner = AdjustableItemMgr::GetInstance();
 
@@ -58,8 +62,12 @@ void Robot::RobotInit()
     
 
     m_cyclePrims = new CyclePrimitives();
-    m_previewer = new AutonPreviewer(m_cyclePrims);
+    m_previewer = new AutonPreviewer(m_cyclePrims);  // TODO:: Move to DriveTeamFeedback
+
+    m_dragonLimeLight = LimelightFactory::GetLimelightFactory()->GetLimelight();  // ToDo:: Move to Dragon Vision
+    
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("RobotInit"), string("end"));
+
 }
 
 /**
@@ -73,6 +81,13 @@ void Robot::RobotInit()
 void Robot::RobotPeriodic() 
 {
 
+    if (m_chassis != nullptr)
+    {
+        m_chassis->UpdateOdometry();  // ToDo:: Move to RobotState
+        m_field->UpdateRobotPosition(m_chassis->GetPose());  // ToDo:: Move to DriveTeamFeedback (also don't assume m_field isn't a nullptr)
+    }
+
+    // ToDo:: Move to Dragon Vision
     if (m_dragonLimeLight != nullptr)
     {
         LoggerDoubleValue horAngle = {string("Horizontal Angle"), m_dragonLimeLight->GetTargetHorizontalOffset().to<double>()};
@@ -83,9 +98,21 @@ void Robot::RobotPeriodic()
     LoggableItemMgr::GetInstance()->LogData();
     Logger::GetLogger()->PeriodicLog();
 
-    m_tuner->ListenForUpdates();
-    m_previewer->CheckCurrentAuton();
-    m_robotState->Run();
+
+    if (m_tuner != nullptr)
+    {
+        m_tuner->ListenForUpdates();
+    }
+
+    // ToDo:: Move to DriveTeamFeedback
+    if (m_previewer != nullptr)
+    {
+        m_previewer->CheckCurrentAuton();
+    }
+    if (m_robotState != nullptr)
+    {
+        m_robotState->Run();
+    }
 }
 
 /**
@@ -123,6 +150,12 @@ void Robot::TeleopInit()
 {
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopInit"), string("arrived")); 
 
+    if (m_controller == nullptr)
+    {
+        m_controller = TeleopControl::GetInstance();
+    }
+
+
     StateMgrHelper::SetCheckGamepadInputsForStateTransitions(true);
     if (m_chassis != nullptr && m_controller != nullptr)
     {
@@ -134,7 +167,7 @@ void Robot::TeleopInit()
     StateMgrHelper::RunCurrentMechanismStates();
 
     //now in teleop, clear field of trajectories
-    m_field->ResetField();
+    m_field->ResetField();  // ToDo:  Move to DriveTeamFeedback
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopInit"), string("end"));
 }

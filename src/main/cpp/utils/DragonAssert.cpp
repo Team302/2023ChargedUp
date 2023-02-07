@@ -26,7 +26,7 @@
 
 // Team 302 includes
 #include <utils/DragonAssert.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
 
 // Third Party Includes

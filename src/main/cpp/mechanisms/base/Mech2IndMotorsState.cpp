@@ -26,9 +26,9 @@
 #include <mechanisms/controllers/ControlData.h>
 #include <mechanisms/controllers/MechanismTargetData.h>
 #include <mechanisms/base/Mech2IndMotors.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
-#include <TeleopControl.h>
+#include <teleopcontrol/TeleopControl.h>
 
 // Third Party Includes
 

@@ -25,7 +25,7 @@
 #include <hw/ctreadapters/DragonControlToCTREAdapter.h>
 #include <hw/factories/DragonControlToCTREAdapterFactory.h>
 #include <mechanisms/controllers/ControlData.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
 #include <hw/ctreadapters/DragonControlToCTREAdapter.h>
 #include <hw/ctreadapters/DragonPercentOutputToCTREAdapter.h>

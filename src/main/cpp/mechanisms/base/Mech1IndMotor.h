@@ -20,6 +20,10 @@
 #include <memory>
 #include <string>
 
+//FRC Includes
+#include <units/length.h>
+#include <units/angle.h>
+
 // Team 302 includes
 #include <mechanisms/base/Mech.h>
 #include <mechanisms/MechanismTypes.h>
@@ -60,8 +64,16 @@ class Mech1IndMotor :  public Mech
         );
 
         /// @brief  Return the current position of the mechanism.  The value is in inches or degrees.
-        /// @return double	position in inches (translating mechanisms) or degrees (rotating mechanisms)
+        /// @return double motor rotations in degrees
         double GetPosition() const;
+
+        /// @brief  Return the current position of the mechanism.  The value is in inches.
+        /// @return units::length::inch_t	position in inches
+        units::length::inch_t GetPositionInches() const;
+
+        /// @brief  Return the current position of the mechanism in degrees
+        /// @return units::angle::degree_t	position in degrees
+        units::angle::degree_t GetPositionDegrees() const;
 
         /// @brief  Get the current speed of the mechanism.  The value is in inches per second or degrees per second.
         /// @return double	speed in inches/second (translating mechanisms) or degrees/second (rotating mechanisms)

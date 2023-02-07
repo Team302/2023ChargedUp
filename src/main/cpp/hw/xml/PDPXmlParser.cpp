@@ -27,7 +27,7 @@
 // Team 302 includes
 #include <hw/factories/PDPFactory.h>
 #include <utils/HardwareIDValidation.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 #include <hw/xml/PDPXmlParser.h>
 
 // Third Party Includes

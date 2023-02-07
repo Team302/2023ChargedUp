@@ -62,6 +62,7 @@ class DragonTalonSRX : public IDragonMotorController
         std::shared_ptr<frc::MotorController> GetSpeedController() const override;
         double GetCurrent() const override;
         IDragonMotorController::MOTOR_TYPE GetMotorType() const override;
+        bool IsMotorInverted() const override {return m_inverted;};
 
         // Setters (override)
         void Set(double value) override;
@@ -165,6 +166,7 @@ class DragonTalonSRX : public IDragonMotorController
         int                                                                 m_pdp;
         DistanceAngleCalcStruc                                              m_calcStruc;
         IDragonMotorController::MOTOR_TYPE                                  m_motorType;
+        bool                                                                m_inverted;
 };
 
 typedef std::vector<DragonTalonSRX*> DragonTalonSRXVector;

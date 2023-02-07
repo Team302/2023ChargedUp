@@ -86,17 +86,20 @@ FLOOR_POSITION_ROTATE
         
         Arm*                                m_arm;
 
+        ARM_STATE                           m_prevState;
+        double                              m_fTerm;
+
 		static ArmStateMgr*	m_instance;
 
-		const StateStruc m_hold_position_rotateState = { ARM_STATE::HOLD_POSITION_ROTATE, "HOLD_POSITION_ROTATE", StateType::ARM_STATE, true };
-const StateStruc m_manual_rotateState = { ARM_STATE::MANUAL_ROTATE, "MANUAL_ROTATE", StateType::ARM_STATE, true };
-const StateStruc m_cube_backrow_rotateState = { ARM_STATE::CUBE_BACKROW_ROTATE, "CUBE_BACKROW_ROTATE", StateType::ARM_STATE, true };
-const StateStruc m_cone_backrow_rotateState = { ARM_STATE::CONE_BACKROW_ROTATE, "CONE_BACKROW_ROTATE", StateType::ARM_STATE, true };
-const StateStruc m_cube_midrow_rotateState = { ARM_STATE::CUBE_MIDROW_ROTATE, "CUBE_MIDROW_ROTATE", StateType::ARM_STATE, true };
-const StateStruc m_cone_midrow_rotateState = { ARM_STATE::CONE_MIDROW_ROTATE, "CONE_MIDROW_ROTATE", StateType::ARM_STATE, true };
-const StateStruc m_human_player_station_rotateState = { ARM_STATE::HUMAN_PLAYER_STATION_ROTATE, "HUMAN_PLAYER_STATION_ROTATE", StateType::ARM_STATE, true };
+		const StateStruc m_hold_position_rotateState = { ARM_STATE::HOLD_POSITION_ROTATE, "HOLD_POSITION_ROTATE", StateType::ARM_STATE, false };
+const StateStruc m_manual_rotateState = { ARM_STATE::MANUAL_ROTATE, "MANUAL_ROTATE", StateType::ARM_STATE, false };
+const StateStruc m_cube_backrow_rotateState = { ARM_STATE::CUBE_BACKROW_ROTATE, "CUBE_BACKROW_ROTATE", StateType::ARM_STATE, false };
+const StateStruc m_cone_backrow_rotateState = { ARM_STATE::CONE_BACKROW_ROTATE, "CONE_BACKROW_ROTATE", StateType::ARM_STATE, false };
+const StateStruc m_cube_midrow_rotateState = { ARM_STATE::CUBE_MIDROW_ROTATE, "CUBE_MIDROW_ROTATE", StateType::ARM_STATE, false };
+const StateStruc m_cone_midrow_rotateState = { ARM_STATE::CONE_MIDROW_ROTATE, "CONE_MIDROW_ROTATE", StateType::ARM_STATE, false };
+const StateStruc m_human_player_station_rotateState = { ARM_STATE::HUMAN_PLAYER_STATION_ROTATE, "HUMAN_PLAYER_STATION_ROTATE", StateType::ARM_STATE, false };
 const StateStruc m_starting_position_rotateState = { ARM_STATE::STARTING_POSITION_ROTATE, "STARTING_POSITION_ROTATE", StateType::ARM_STATE, true };
-const StateStruc m_floor_position_rotateState = { ARM_STATE::FLOOR_POSITION_ROTATE, "FLOOR_POSITION_ROTATE", StateType::ARM_STATE, true };
+const StateStruc m_floor_position_rotateState = { ARM_STATE::FLOOR_POSITION_ROTATE, "FLOOR_POSITION_ROTATE", StateType::ARM_STATE, false };
 
 };
 
