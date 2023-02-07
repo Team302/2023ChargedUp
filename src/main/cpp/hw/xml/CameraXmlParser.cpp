@@ -30,7 +30,7 @@
 #include <cscore_cpp.h>
 
 // Team302 includes
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 #include <hw/xml/CameraXmlParser.h>
 
 // Third Party includes

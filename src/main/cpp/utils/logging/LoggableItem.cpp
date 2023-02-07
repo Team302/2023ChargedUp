@@ -16,8 +16,8 @@
 // FRC includes
 
 // Team 302 includes
-#include <LoggableItem.h>
-#include <LoggableItemMgr.h>
+#include <utils/logging/LoggableItem.h>
+#include <utils/logging/LoggableItemMgr.h>
 
 // Third Party Includes
 

@@ -16,108 +16,11 @@
 
 #pragma once
 
+#include <teleopcontrol/TeleopControlMappingEnums.h>
 
 class IDragonGamePad
 {
     public:
-        enum BUTTON_IDENTIFIER
-        {
-            UNDEFINED_BUTTON = -1,
-            A_BUTTON,
-            B_BUTTON,
-            X_BUTTON,
-            Y_BUTTON,
-            LEFT_BUMPER,
-            RIGHT_BUMPER,
-            SELECT_BUTTON,
-            START_BUTTON,
-            LEFT_STICK_PRESSED,
-            RIGHT_STICK_PRESSED,
-            LEFT_TRIGGER_PRESSED,
-            RIGHT_TRIGGER_PRESSED,
-            POV_0,
-            POV_45,
-            POV_90,
-            POV_135,
-            POV_180,
-            POV_225,
-            POV_270,
-            POV_315,
-            GAMEPAD_SWITCH_18,
-            GAMEPAD_SWITCH_19,
-            GAMEPAD_SWITCH_20,
-            GAMEPAD_SWITCH_21,
-            GAMEPAD_BUTTON_14_UP,
-            GAMEPAD_BUTTON_14_DOWN,
-            GAMEPAD_BUTTON_15_UP,
-            GAMEPAD_BUTTON_15_DOWN,
-            GAMEPAD_BUTTON_1,
-            GAMEPAD_BUTTON_2,
-            GAMEPAD_BUTTON_3,
-            GAMEPAD_BUTTON_4,
-            GAMEPAD_BUTTON_5,
-            GAMEPAD_BUTTON_6,
-            GAMEPAD_BUTTON_7,
-            GAMEPAD_BUTTON_8,
-            GAMEPAD_BUTTON_9,
-            GAMEPAD_BUTTON_10,
-            GAMEPAD_BUTTON_11,
-            GAMEPAD_BUTTON_12,
-            GAMEPAD_BUTTON_13,
-            GAMEPAD_DIAL_22,
-            GAMEPAD_DIAL_23,
-            GAMEPAD_DIAL_24,
-            GAMEPAD_DIAL_25,
-            GAMEPAD_DIAL_26,
-            GAMEPAD_DIAL_27,
-            GAMEPAD_BIG_RED_BUTTON,
-            MAX_BUTTONS
-        };
-
-
-        // TODO:  Add debouncing
-        enum BUTTON_MODE
-        {
-            STANDARD,
-            TOGGLE,
-            MAX_BUTTON_MODES
-       };
-
-        enum AXIS_IDENTIFIER
-        {
-            UNDEFINED_AXIS = -1,
-            LEFT_JOYSTICK_X,
-            LEFT_JOYSTICK_Y,
-            RIGHT_JOYSTICK_X,
-            RIGHT_JOYSTICK_Y,
-            LEFT_TRIGGER,
-            RIGHT_TRIGGER,
-            GAMEPAD_AXIS_16,
-            GAMEPAD_AXIS_17,
-            LEFT_ANALOG_BUTTON_AXIS,
-            RIGHT_ANALOG_BUTTON_AXIS,
-            DIAL_ANALOG_BUTTON_AXIS,
-            MAX_AXIS
-        };
-
-
-        enum AXIS_DEADBAND
-        {
-            NONE,
-            APPLY_STANDARD_DEADBAND,
-            APPLY_SCALED_DEADBAND,
-            MAX_DEADBANDS
-        };
-
-        enum AXIS_PROFILE
-        {
-            LINEAR,
-            SQUARED,
-            CUBED,
-            PIECEWISE_LINEAR,
-            MAX_PROFILES
-        };
-
         IDragonGamePad() = default;
         ~IDragonGamePad() = default;
 
@@ -130,7 +33,7 @@ class IDragonGamePad
         ///-------------------------------------------------------------------------------------------------
         virtual double GetAxisValue
         (
-            AXIS_IDENTIFIER    axis        // <I> - axis identifier to read
+            TeleopControlMappingEnums::AXIS_IDENTIFIER    axis        // <I> - axis identifier to read
         ) const = 0;
 
         ///-------------------------------------------------------------------------------------------------
@@ -141,7 +44,7 @@ class IDragonGamePad
         ///-------------------------------------------------------------------------------------------------
         virtual bool IsButtonPressed
         (
-            BUTTON_IDENTIFIER    button         // <I> - button to check
+            TeleopControlMappingEnums::BUTTON_IDENTIFIER    button         // <I> - button to check
         ) const = 0;
 
         
@@ -155,7 +58,7 @@ class IDragonGamePad
         //==================================================================================
         virtual bool WasButtonReleased
         (
-            BUTTON_IDENTIFIER    button         // <I> - button to check
+            TeleopControlMappingEnums::BUTTON_IDENTIFIER    button         // <I> - button to check
         ) const = 0;        
 
         //==================================================================================
@@ -167,7 +70,7 @@ class IDragonGamePad
         //==================================================================================
         virtual bool WasButtonPressed
         (
-            BUTTON_IDENTIFIER    button         // <I> - button to check
+            TeleopControlMappingEnums::BUTTON_IDENTIFIER    button         // <I> - button to check
         ) const = 0; 
         //setters
 
@@ -181,8 +84,8 @@ class IDragonGamePad
         //==================================================================================
         virtual void SetAxisDeadband
         (
-            AXIS_IDENTIFIER axis, /// <I> - axis to modify
-            AXIS_DEADBAND type    /// <I> - deadband option
+            TeleopControlMappingEnums::AXIS_IDENTIFIER axis, /// <I> - axis to modify
+            TeleopControlMappingEnums::AXIS_DEADBAND type    /// <I> - deadband option
         ) = 0;
         
         ///-------------------------------------------------------------------------------------------------
@@ -198,8 +101,8 @@ class IDragonGamePad
         ///-------------------------------------------------------------------------------------------------
         virtual void SetAxisProfile
         (
-            AXIS_IDENTIFIER           axis,       // <I> - axis identifier to modify
-            AXIS_PROFILE  	   curve       // <I> - the definition of the sensitivity
+            TeleopControlMappingEnums::AXIS_IDENTIFIER           axis,       // <I> - axis identifier to modify
+            TeleopControlMappingEnums::AXIS_PROFILE  	   curve       // <I> - the definition of the sensitivity
         ) = 0;
 
 
@@ -213,14 +116,14 @@ class IDragonGamePad
         ///-------------------------------------------------------------------------------------------------
         virtual void SetAxisScale
         (
-            AXIS_IDENTIFIER    			        axis,       // <I> - axis identifier to modify
+           TeleopControlMappingEnums::AXIS_IDENTIFIER    			        axis,       // <I> - axis identifier to modify
             double                              scaleFactor // <I> - value  (0 < scale <= 1.0) to scale the axis value
         ) = 0;
 
 
         virtual void SetAxisFlipped
         (
-            AXIS_IDENTIFIER    			        axis,       // <I> - axis identifier to modify
+            TeleopControlMappingEnums::AXIS_IDENTIFIER    			        axis,       // <I> - axis identifier to modify
             bool                                isFlipped   // <I> - true - invert axis, false - no inversion
         ) = 0;
 
@@ -236,8 +139,8 @@ class IDragonGamePad
         //==================================================================================
         virtual void SetButtonMode
         (
-            BUTTON_IDENTIFIER button, /// <I> - button to check
-            BUTTON_MODE mode          /// <I> - button behavior
+            TeleopControlMappingEnums::BUTTON_IDENTIFIER button, /// <I> - button to check
+            TeleopControlMappingEnums::BUTTON_MODE mode          /// <I> - button behavior
         ) = 0;
 
         virtual void SetRumble

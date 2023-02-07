@@ -30,7 +30,7 @@
 
 // Team 302 Includes
 #include <utils/UsageValidation.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
 // Third Party Includes
 

@@ -24,7 +24,7 @@
 #include <State.h>
 #include <mechanisms/base/Mech1ServoState.h>
 #include <mechanisms/base/Mech1Servo.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
 // Third Party Includes
 

@@ -19,7 +19,7 @@
 #include <hw/DragonLimelight.h>
 #include <hw/factories/LimelightFactory.h>
 #include <hw/xml/LimelightXmlParser.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 #include <utils/UsageValidation.h>
 
 #include <pugixml/pugixml.hpp>

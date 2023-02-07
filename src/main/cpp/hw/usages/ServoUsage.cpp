@@ -31,7 +31,7 @@
 
 					// Team 302 includes
 					#include <hw/usages/ServoUsage.h>
-					#include <utils/Logger.h>
+					#include <utils/logging/Logger.h>
 
 					// Third Party Includes
 

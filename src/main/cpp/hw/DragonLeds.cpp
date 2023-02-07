@@ -20,7 +20,7 @@
 
 #include <hw/DragonLeds.h>
 #include <frc/AddressableLED.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
 using namespace frc;
 using namespace std;

@@ -36,7 +36,7 @@
 #include <mechanisms/base/Mech.h>
 #include <mechanisms/MechanismFactory.h>
 #include <mechanisms/MechanismTypes.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 // @ADDMECH include for your mechanism 
 #include <mechanisms/arm/Arm.h>
 #include <mechanisms/extender/Extender.h>

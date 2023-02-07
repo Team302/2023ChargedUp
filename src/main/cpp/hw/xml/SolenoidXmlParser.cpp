@@ -30,7 +30,7 @@
 #include <hw/DragonSolenoid.h>
 #include <hw/usages/SolenoidUsage.h>
 #include <utils/HardwareIDValidation.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
 
 // Third Party Includes
