@@ -45,7 +45,7 @@
 #include <mechanisms/base/MechanismXmlParser.h>
 #include <mechanisms/MechanismFactory.h>
 #include <mechanisms/MechanismTypes.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
 // Third Party Includes
 #include <pugixml/pugixml.hpp>

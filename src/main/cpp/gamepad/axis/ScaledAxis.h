@@ -58,9 +58,9 @@ class ScaledAxis
         /// Description:    Multiply the output by the scale factor
         /// </summary>
         //==================================================================================
-        double Scale
+        void Scale
         (
-            double      inputVal            // <I> - value to scale     
+            double&     inputVal            // <I> - value to scale     
        ) const;
 
     private:

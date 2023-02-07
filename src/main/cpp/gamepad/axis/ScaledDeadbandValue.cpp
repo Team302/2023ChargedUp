@@ -43,18 +43,18 @@ ScaledDeadbandValue* ScaledDeadbandValue::GetInstance()
 /// Description:    Apply the standard deadband
 /// </summary>
 //==================================================================================
-double ScaledDeadbandValue::ApplyDeadband
+void ScaledDeadbandValue::ApplyDeadband
 (
-    double inputVal // <I> - value to apply profile to
+    double& inputVal // <I> - value to apply profile to
 ) const
 {
     DeadbandValue* deadband = DeadbandValue::GetInstance();
-    double val = deadband->ApplyDeadband(inputVal);
+    deadband->ApplyDeadband(inputVal);
     double range = 1.0 - M_LOWER_DEADBAND_VALUE;
-    double offsetFromMin = std::abs(val) - M_LOWER_DEADBAND_VALUE;
-    double multiplier = (val < 0.0) ? -1.0 : 1.0;
+    double offsetFromMin = std::abs(inputVal) - M_LOWER_DEADBAND_VALUE;
+    double multiplier = (inputVal < 0.0) ? -1.0 : 1.0;
 
-    return (multiplier * offsetFromMin / range);
+    inputVal = multiplier * offsetFromMin / range;
 }
 
 

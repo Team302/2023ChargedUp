@@ -24,7 +24,7 @@
 #include <hw/DragonCanCoder.h>
 #include <hw/xml/CancoderXmlParser.h>
 #include <utils/HardwareIDValidation.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
 // third party includes
 #include <pugixml/pugixml.hpp>

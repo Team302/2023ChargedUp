@@ -29,16 +29,15 @@ void InvertAxis::SetInverted
     m_isInverted = isInverted;
 }
 
-double InvertAxis::ApplyInversion
+void InvertAxis::ApplyInversion
 (
-    double      inputVal            // <I> - value to scale     
+    double&      inputVal            // <I> - value to scale     
 ) const
 {
     if (m_isInverted)
     {
-        return inputVal * -1.0;
+        inputVal *= -1.0;
     }
-    return inputVal;
 }
 
 

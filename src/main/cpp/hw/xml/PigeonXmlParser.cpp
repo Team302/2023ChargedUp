@@ -24,7 +24,7 @@
 #include <hw/xml/PigeonXmlParser.h>
 #include <hw/DragonPigeon.h>
 #include <utils/HardwareIDValidation.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 #include <hw/factories/PigeonFactory.h>
 
 // Third Party Includes

@@ -31,7 +31,7 @@
 #include <auton/PrimitiveParser.h>
 #include <auton/drivePrimitives/IPrimitive.h>
 #include <mechanisms/MechanismFactory.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 #include <mechanisms/StateMgrHelper.h>
 #include <chassis/IChassis.h>
 #include <chassis/ChassisOptionEnums.h>

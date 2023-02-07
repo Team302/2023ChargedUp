@@ -27,7 +27,7 @@
 // FRC includes
 
 // Team 302 includes
-#include <TeleopControl.h>
+#include <teleopcontrol/TeleopControl.h>
 #include <auton/PrimitiveParams.h>
 #include <mechanisms/MechanismFactory.h>
 #include <mechanisms/base/StateMgr.h>
@@ -111,10 +111,9 @@ void ExtenderStateMgr::CheckForStateTransition()
 		//========= Hand modified code start section 0 ========
 	
         auto controller = TeleopControl::GetInstance();
-        
         if(controller != nullptr)
         {
-            double extendRetractValue = controller->GetAxisValue(TeleopControl::FUNCTION_IDENTIFIER::MANUAL_EXTEND_RETRACT);
+            double extendRetractValue = controller->GetAxisValue(TeleopControlFunctions::MANUAL_EXTEND_RETRACT);
 
             Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ExtenderMgr"), string("Extender Position"), m_extender->GetPositionInches().to<double>());
 
@@ -128,37 +127,37 @@ void ExtenderStateMgr::CheckForStateTransition()
                 targetState = EXTENDER_STATE::CUBE_BACKROW_EXTEND;
                 m_prevState = targetState;
             }
-            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HOLD_POSITION_EXTEND))
+            else if (controller->IsButtonPressed(TeleopControlFunctions::HOLD_POSITION_EXTEND))
             {
                 targetState = EXTENDER_STATE::HOLD_POSITION_EXTEND;
                 m_prevState = targetState;
             }
-            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::CONE_BACKROW_EXTEND))
+            else if (controller->IsButtonPressed(TeleopControlFunctions::CONE_BACKROW_EXTEND))
             {
                 targetState = EXTENDER_STATE::CONE_BACKROW_EXTEND;
                 m_prevState = targetState;
             }
-            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::CUBE_MIDROW_EXTEND))
+            else if (controller->IsButtonPressed(TeleopControlFunctions::CUBE_MIDROW_EXTEND))
             {
                 targetState = EXTENDER_STATE::CUBE_MIDROW_EXTEND;
                 m_prevState = targetState;
             }
-            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::CONE_MIDROW_EXTEND))
+            else if (controller->IsButtonPressed(TeleopControlFunctions::CONE_MIDROW_EXTEND))
             {
                 targetState = EXTENDER_STATE::CONE_MIDROW_EXTEND;
                 m_prevState = targetState;
             }
-            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HUMAN_PLAYER_STATION_EXTEND))
+            else if (controller->IsButtonPressed(TeleopControlFunctions::HUMAN_PLAYER_STATION_EXTEND))
             {
                 targetState = EXTENDER_STATE::HUMAN_PLAYER_STATION_EXTEND;
                 m_prevState = targetState;
             }
-            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::STARTING_POSITION_EXTEND))
+            else if (controller->IsButtonPressed(TeleopControlFunctions::STARTING_POSITION_EXTEND))
             {
                 targetState = EXTENDER_STATE::STARTING_POSITION_EXTEND;
                 m_prevState = targetState;
             }
-            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::FLOOR_EXTEND))
+            else if (controller->IsButtonPressed(TeleopControlFunctions::FLOOR_EXTEND))
             {
                 targetState = EXTENDER_STATE::FLOOR_EXTEND;
                 m_prevState = targetState;

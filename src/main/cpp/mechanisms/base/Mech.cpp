@@ -23,7 +23,7 @@
 #include <mechanisms/base/Mech.h>
 #include <mechanisms/MechanismTypes.h>
 #include <utils/DragonAssert.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
 // Third Party Includes
 #include <units/time.h>

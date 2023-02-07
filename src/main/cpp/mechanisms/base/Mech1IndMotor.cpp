@@ -27,7 +27,7 @@
 #include <mechanisms/base/Mech1IndMotor.h>
 #include <mechanisms/base/Mech1IndMotor.h>
 #include <hw/interfaces/IDragonMotorController.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
 // Third Party Includes
 #include <units/time.h>

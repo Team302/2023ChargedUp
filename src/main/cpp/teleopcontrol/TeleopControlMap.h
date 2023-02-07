@@ -1,0 +1,284 @@
+
+//====================================================================================================================================================
+// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+// OR OTHER DEALINGS IN THE SOFTWARE.
+//====================================================================================================================================================
+
+#pragma once 
+
+// C++ Includes
+
+// FRC includes
+
+// Team 302 includes
+#include <gamepad/IDragonGamePad.h>
+#include <teleopcontrol/TeleopControlAxis.h>
+#include <teleopcontrol/TeleopControlButton.h>
+#include <teleopcontrol/TeleopControlFunctions.h>
+
+#include <RobinHood/robin_hood.h>
+
+
+class TeleopControlMap
+{
+    public:
+
+        const TeleopControlButton driverAButton         = {TeleopControlMappingEnums::DRIVER, TeleopControlMappingEnums::A_BUTTON, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton driverBButton         = {TeleopControlMappingEnums::DRIVER, TeleopControlMappingEnums::B_BUTTON, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton driverXButton         = {TeleopControlMappingEnums::DRIVER, TeleopControlMappingEnums::X_BUTTON, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton driverYButton         = {TeleopControlMappingEnums::DRIVER, TeleopControlMappingEnums::Y_BUTTON, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton driverLBumper         = {TeleopControlMappingEnums::DRIVER, TeleopControlMappingEnums::LEFT_BUMPER, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton driverRBumper         = {TeleopControlMappingEnums::DRIVER, TeleopControlMappingEnums::RIGHT_BUMPER, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton driverSelectButton    = {TeleopControlMappingEnums::DRIVER, TeleopControlMappingEnums::SELECT_BUTTON, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton driverStartButton     = {TeleopControlMappingEnums::DRIVER, TeleopControlMappingEnums::START_BUTTON, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton driverLStickPressed   = {TeleopControlMappingEnums::DRIVER, TeleopControlMappingEnums::LEFT_STICK_PRESSED, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton driverRStickPressed   = {TeleopControlMappingEnums::DRIVER, TeleopControlMappingEnums::RIGHT_STICK_PRESSED, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton driverLTriggerPressed = {TeleopControlMappingEnums::DRIVER, TeleopControlMappingEnums::LEFT_TRIGGER_PRESSED, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton driverRTriggerPressed = {TeleopControlMappingEnums::DRIVER, TeleopControlMappingEnums::RIGHT_TRIGGER_PRESSED, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton driverDPad0           = {TeleopControlMappingEnums::DRIVER, TeleopControlMappingEnums::POV_0, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton driverDPad45          = {TeleopControlMappingEnums::DRIVER, TeleopControlMappingEnums::POV_45, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton driverDPad90          = {TeleopControlMappingEnums::DRIVER, TeleopControlMappingEnums::POV_90, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton driverDPad135         = {TeleopControlMappingEnums::DRIVER, TeleopControlMappingEnums::POV_135, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton driverDPad180         = {TeleopControlMappingEnums::DRIVER, TeleopControlMappingEnums::POV_180, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton driverDPad225         = {TeleopControlMappingEnums::DRIVER, TeleopControlMappingEnums::POV_225, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton driverDPad270         = {TeleopControlMappingEnums::DRIVER, TeleopControlMappingEnums::POV_270, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton driverDPad315         = {TeleopControlMappingEnums::DRIVER, TeleopControlMappingEnums::POV_315, TeleopControlMappingEnums::STANDARD};
+
+        const TeleopControlButton copilotAButton         = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::A_BUTTON, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton copilotBButton         = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::B_BUTTON, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton copilotXButton         = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::X_BUTTON, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton copilotYButton         = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::Y_BUTTON, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton copil9tLBumper         = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::LEFT_BUMPER, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton copilotRBumper         = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::RIGHT_BUMPER, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton copilotSelectButton    = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::SELECT_BUTTON, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton copilotStartButton     = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::START_BUTTON, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton copilotLStickPressed   = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::LEFT_STICK_PRESSED, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton copilotRStickPressed   = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::RIGHT_STICK_PRESSED, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton copilotLTriggerPressed = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::LEFT_TRIGGER_PRESSED, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton copilotRTriggerPressed = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::RIGHT_TRIGGER_PRESSED, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton copilotDPad0           = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::POV_0, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton copilotDPad45          = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::POV_45, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton copilotDPad90          = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::POV_90, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton copilotDPad135         = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::POV_135, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton copilotDPad180         = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::POV_180, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton copilotDPad225         = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::POV_225, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton copilotDPad270         = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::POV_270, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton copilotDPad315         = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::POV_315, TeleopControlMappingEnums::STANDARD};
+
+        const TeleopControlButton extra1AButton         = {TeleopControlMappingEnums::EXTRA1, TeleopControlMappingEnums::A_BUTTON, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra1BButton         = {TeleopControlMappingEnums::EXTRA1, TeleopControlMappingEnums::B_BUTTON, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra1XButton         = {TeleopControlMappingEnums::EXTRA1, TeleopControlMappingEnums::X_BUTTON, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra1YButton         = {TeleopControlMappingEnums::EXTRA1, TeleopControlMappingEnums::Y_BUTTON, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra1LBumper         = {TeleopControlMappingEnums::EXTRA1, TeleopControlMappingEnums::LEFT_BUMPER, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra1RBumper         = {TeleopControlMappingEnums::EXTRA1, TeleopControlMappingEnums::RIGHT_BUMPER, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra1SelectButton    = {TeleopControlMappingEnums::EXTRA1, TeleopControlMappingEnums::SELECT_BUTTON, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra1StartButton     = {TeleopControlMappingEnums::EXTRA1, TeleopControlMappingEnums::START_BUTTON, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra1LStickPressed   = {TeleopControlMappingEnums::EXTRA1, TeleopControlMappingEnums::LEFT_STICK_PRESSED, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra1RStickPressed   = {TeleopControlMappingEnums::EXTRA1, TeleopControlMappingEnums::RIGHT_STICK_PRESSED, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra1LTriggerPressed = {TeleopControlMappingEnums::EXTRA1, TeleopControlMappingEnums::LEFT_TRIGGER_PRESSED, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra1RTriggerPressed = {TeleopControlMappingEnums::EXTRA1, TeleopControlMappingEnums::RIGHT_TRIGGER_PRESSED, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra1DPad0           = {TeleopControlMappingEnums::EXTRA1, TeleopControlMappingEnums::POV_0, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra1DPad45          = {TeleopControlMappingEnums::EXTRA1, TeleopControlMappingEnums::POV_45, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra1DPad90          = {TeleopControlMappingEnums::EXTRA1, TeleopControlMappingEnums::POV_90, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra1DPad135         = {TeleopControlMappingEnums::EXTRA1, TeleopControlMappingEnums::POV_135, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra1DPad180         = {TeleopControlMappingEnums::EXTRA1, TeleopControlMappingEnums::POV_180, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra1DPad225         = {TeleopControlMappingEnums::EXTRA1, TeleopControlMappingEnums::POV_225, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra1DPad270         = {TeleopControlMappingEnums::EXTRA1, TeleopControlMappingEnums::POV_270, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra1DPad315         = {TeleopControlMappingEnums::EXTRA1, TeleopControlMappingEnums::POV_315, TeleopControlMappingEnums::STANDARD};
+
+        const TeleopControlButton extra2AButton         = {TeleopControlMappingEnums::EXTRA2, TeleopControlMappingEnums::A_BUTTON, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra2BButton         = {TeleopControlMappingEnums::EXTRA2, TeleopControlMappingEnums::B_BUTTON, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra2XButton         = {TeleopControlMappingEnums::EXTRA2, TeleopControlMappingEnums::X_BUTTON, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra2YButton         = {TeleopControlMappingEnums::EXTRA2, TeleopControlMappingEnums::Y_BUTTON, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra2LBumper         = {TeleopControlMappingEnums::EXTRA2, TeleopControlMappingEnums::LEFT_BUMPER, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra2RBumper         = {TeleopControlMappingEnums::EXTRA2, TeleopControlMappingEnums::RIGHT_BUMPER, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra2SelectButton    = {TeleopControlMappingEnums::EXTRA2, TeleopControlMappingEnums::SELECT_BUTTON, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra2StartButton     = {TeleopControlMappingEnums::EXTRA2, TeleopControlMappingEnums::START_BUTTON, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra2LStickPressed   = {TeleopControlMappingEnums::EXTRA2, TeleopControlMappingEnums::LEFT_STICK_PRESSED, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra2RStickPressed   = {TeleopControlMappingEnums::EXTRA2, TeleopControlMappingEnums::RIGHT_STICK_PRESSED, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra2LTriggerPressed = {TeleopControlMappingEnums::EXTRA2, TeleopControlMappingEnums::LEFT_TRIGGER_PRESSED, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra2RTriggerPressed = {TeleopControlMappingEnums::EXTRA2, TeleopControlMappingEnums::RIGHT_TRIGGER_PRESSED, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra2DPad0           = {TeleopControlMappingEnums::EXTRA2, TeleopControlMappingEnums::POV_0, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra2DPad45          = {TeleopControlMappingEnums::EXTRA2, TeleopControlMappingEnums::POV_45, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra2DPad90          = {TeleopControlMappingEnums::EXTRA2, TeleopControlMappingEnums::POV_90, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra2DPad135         = {TeleopControlMappingEnums::EXTRA2, TeleopControlMappingEnums::POV_135, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra2DPad180         = {TeleopControlMappingEnums::EXTRA2, TeleopControlMappingEnums::POV_180, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra2DPad225         = {TeleopControlMappingEnums::EXTRA2, TeleopControlMappingEnums::POV_225, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra2DPad270         = {TeleopControlMappingEnums::EXTRA2, TeleopControlMappingEnums::POV_270, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra2DPad315         = {TeleopControlMappingEnums::EXTRA2, TeleopControlMappingEnums::POV_315, TeleopControlMappingEnums::STANDARD};
+
+        const TeleopControlButton extra3AButton         = {TeleopControlMappingEnums::EXTRA3, TeleopControlMappingEnums::A_BUTTON, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra3BButton         = {TeleopControlMappingEnums::EXTRA3, TeleopControlMappingEnums::B_BUTTON, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra3XButton         = {TeleopControlMappingEnums::EXTRA3, TeleopControlMappingEnums::X_BUTTON, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra3YButton         = {TeleopControlMappingEnums::EXTRA3, TeleopControlMappingEnums::Y_BUTTON, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra3LBumper         = {TeleopControlMappingEnums::EXTRA3, TeleopControlMappingEnums::LEFT_BUMPER, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra3RBumper         = {TeleopControlMappingEnums::EXTRA3, TeleopControlMappingEnums::RIGHT_BUMPER, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra3SelectButton    = {TeleopControlMappingEnums::EXTRA3, TeleopControlMappingEnums::SELECT_BUTTON, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra3StartButton     = {TeleopControlMappingEnums::EXTRA3, TeleopControlMappingEnums::START_BUTTON, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra3LStickPressed   = {TeleopControlMappingEnums::EXTRA3, TeleopControlMappingEnums::LEFT_STICK_PRESSED, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra3RStickPressed   = {TeleopControlMappingEnums::EXTRA3, TeleopControlMappingEnums::RIGHT_STICK_PRESSED, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra3LTriggerPressed = {TeleopControlMappingEnums::EXTRA3, TeleopControlMappingEnums::LEFT_TRIGGER_PRESSED, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra3RTriggerPressed = {TeleopControlMappingEnums::EXTRA3, TeleopControlMappingEnums::RIGHT_TRIGGER_PRESSED, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra3DPad0           = {TeleopControlMappingEnums::EXTRA3, TeleopControlMappingEnums::POV_0, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra3DPad45          = {TeleopControlMappingEnums::EXTRA3, TeleopControlMappingEnums::POV_45, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra3DPad90          = {TeleopControlMappingEnums::EXTRA3, TeleopControlMappingEnums::POV_90, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra3DPad135         = {TeleopControlMappingEnums::EXTRA3, TeleopControlMappingEnums::POV_135, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra3DPad180         = {TeleopControlMappingEnums::EXTRA3, TeleopControlMappingEnums::POV_180, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra3DPad225         = {TeleopControlMappingEnums::EXTRA3, TeleopControlMappingEnums::POV_225, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra3DPad270         = {TeleopControlMappingEnums::EXTRA3, TeleopControlMappingEnums::POV_270, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra3DPad315         = {TeleopControlMappingEnums::EXTRA3, TeleopControlMappingEnums::POV_315, TeleopControlMappingEnums::STANDARD};
+
+        const TeleopControlButton extra4AButton         = {TeleopControlMappingEnums::EXTRA4, TeleopControlMappingEnums::A_BUTTON, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra4BButton         = {TeleopControlMappingEnums::EXTRA4, TeleopControlMappingEnums::B_BUTTON, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra4XButton         = {TeleopControlMappingEnums::EXTRA4, TeleopControlMappingEnums::X_BUTTON, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra4YButton         = {TeleopControlMappingEnums::EXTRA4, TeleopControlMappingEnums::Y_BUTTON, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra4LBumper         = {TeleopControlMappingEnums::EXTRA4, TeleopControlMappingEnums::LEFT_BUMPER, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra4RBumper         = {TeleopControlMappingEnums::EXTRA4, TeleopControlMappingEnums::RIGHT_BUMPER, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra4SelectButton    = {TeleopControlMappingEnums::EXTRA4, TeleopControlMappingEnums::SELECT_BUTTON, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra4StartButton     = {TeleopControlMappingEnums::EXTRA4, TeleopControlMappingEnums::START_BUTTON, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra4LStickPressed   = {TeleopControlMappingEnums::EXTRA4, TeleopControlMappingEnums::LEFT_STICK_PRESSED, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra4RStickPressed   = {TeleopControlMappingEnums::EXTRA4, TeleopControlMappingEnums::RIGHT_STICK_PRESSED, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra4LTriggerPressed = {TeleopControlMappingEnums::EXTRA4, TeleopControlMappingEnums::LEFT_TRIGGER_PRESSED, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra4RTriggerPressed = {TeleopControlMappingEnums::EXTRA4, TeleopControlMappingEnums::RIGHT_TRIGGER_PRESSED, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra4DPad0           = {TeleopControlMappingEnums::EXTRA4, TeleopControlMappingEnums::POV_0, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra4DPad45          = {TeleopControlMappingEnums::EXTRA4, TeleopControlMappingEnums::POV_45, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra4DPad90          = {TeleopControlMappingEnums::EXTRA4, TeleopControlMappingEnums::POV_90, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra4DPad135         = {TeleopControlMappingEnums::EXTRA4, TeleopControlMappingEnums::POV_135, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra4DPad180         = {TeleopControlMappingEnums::EXTRA4, TeleopControlMappingEnums::POV_180, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra4DPad225         = {TeleopControlMappingEnums::EXTRA4, TeleopControlMappingEnums::POV_225, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra4DPad270         = {TeleopControlMappingEnums::EXTRA4, TeleopControlMappingEnums::POV_270, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton extra4DPad315         = {TeleopControlMappingEnums::EXTRA4, TeleopControlMappingEnums::POV_315, TeleopControlMappingEnums::STANDARD};
+
+
+        robin_hood::unordered_map<TeleopControlFunctions::FUNCTION, const TeleopControlButton> buttonMap
+        {
+            {TeleopControlFunctions::FUNCTION::FINDTARGET, driverLBumper},
+            {TeleopControlFunctions::FUNCTION::HOLONOMIC_ROTATE_FRONT, driverDPad0},
+            {TeleopControlFunctions::FUNCTION::HOLONOMIC_ROTATE_BACK, driverDPad180},
+            {TeleopControlFunctions::FUNCTION::HOLONOMIC_ROTATE_LEFT, driverDPad270},
+            {TeleopControlFunctions::FUNCTION::HOLONOMIC_ROTATE_RIGHT, driverDPad90},
+            {TeleopControlFunctions::FUNCTION::DRIVE_TO_COL_ONE, driverXButton},
+            {TeleopControlFunctions::FUNCTION::DRIVE_TO_COL_TWO, driverYButton},
+            {TeleopControlFunctions::FUNCTION::DRIVE_TO_COL_THREE, driverBButton},
+            {TeleopControlFunctions::FUNCTION::REZERO_PIGEON, driverAButton},
+            {TeleopControlFunctions::FUNCTION::HOLD_POSITION, driverRBumper},
+
+            {TeleopControlFunctions::FUNCTION::HOLD_POSITION_ROTATE, extra1AButton},
+            {TeleopControlFunctions::FUNCTION::CUBE_BACKROW_ROTATE, extra1XButton},
+            {TeleopControlFunctions::FUNCTION::CUBE_MIDROW_ROTATE, extra1BButton},
+            {TeleopControlFunctions::FUNCTION::CONE_BACKROW_ROTATE, extra1YButton},
+            {TeleopControlFunctions::FUNCTION::CONE_MIDROW_ROTATE, extra1DPad0},
+            {TeleopControlFunctions::FUNCTION::HUMAN_PLAYER_STATION_ROTATE, extra1DPad90},
+            {TeleopControlFunctions::FUNCTION::FLOOR_POSITION_ROTATE, extra1DPad270},
+            {TeleopControlFunctions::FUNCTION::STARTING_POSITION_ROTATE, extra1DPad180},
+
+            {TeleopControlFunctions::FUNCTION::HOLD_POSITION_EXTEND, extra2AButton},
+            {TeleopControlFunctions::FUNCTION::CUBE_BACKROW_EXTEND, extra2XButton},
+            {TeleopControlFunctions::FUNCTION::CUBE_MIDROW_EXTEND, extra2BButton},
+            {TeleopControlFunctions::FUNCTION::CONE_BACKROW_EXTEND, extra2YButton},
+            {TeleopControlFunctions::FUNCTION::CONE_MIDROW_EXTEND, extra2DPad0},
+            {TeleopControlFunctions::FUNCTION::HUMAN_PLAYER_STATION_EXTEND, extra2DPad90},
+            {TeleopControlFunctions::FUNCTION::FLOOR_EXTEND, extra2DPad270},
+            {TeleopControlFunctions::FUNCTION::STARTING_POSITION_EXTEND, extra2DPad180},
+
+            {TeleopControlFunctions::FUNCTION::OPEN, extra3YButton},
+            {TeleopControlFunctions::FUNCTION::HOLDING_CUBE, extra3DPad0},
+            {TeleopControlFunctions::FUNCTION::HOLDING_CONE, extra3BButton},
+            {TeleopControlFunctions::FUNCTION::GRABBING_CUBE, extra3DPad180},
+            {TeleopControlFunctions::FUNCTION::GRABBING_CONE , extra3DPad90},
+            {TeleopControlFunctions::FUNCTION::RELEASE, extra3DPad270},
+
+            {TeleopControlFunctions::FUNCTION::DUMMY1, extra4AButton},
+            {TeleopControlFunctions::FUNCTION::DUMMY2, extra4BButton},
+            {TeleopControlFunctions::FUNCTION::DUMMY3, extra4XButton},
+            {TeleopControlFunctions::FUNCTION::DUMMY4, extra4YButton},
+            {TeleopControlFunctions::FUNCTION::DUMMY5, extra4LBumper},
+            {TeleopControlFunctions::FUNCTION::DUMMY6, extra4RBumper},
+            {TeleopControlFunctions::FUNCTION::DUMMY7, extra4SelectButton},
+            {TeleopControlFunctions::FUNCTION::DUMMY8, extra4StartButton},
+            {TeleopControlFunctions::FUNCTION::DUMMY9, extra4LTriggerPressed},
+            {TeleopControlFunctions::FUNCTION::DUMMY10, extra4RTriggerPressed},
+            {TeleopControlFunctions::FUNCTION::DUMMY11, extra4DPad0},
+            {TeleopControlFunctions::FUNCTION::DUMMY12, extra4DPad45},
+            {TeleopControlFunctions::FUNCTION::DUMMY13, extra4DPad90},
+            {TeleopControlFunctions::FUNCTION::DUMMY14, extra4DPad135},
+            {TeleopControlFunctions::FUNCTION::DUMMY15, extra4DPad180},
+            {TeleopControlFunctions::FUNCTION::DUMMY16, extra4DPad225},
+            {TeleopControlFunctions::FUNCTION::DUMMY17, extra4DPad270},
+            {TeleopControlFunctions::FUNCTION::DUMMY18, extra4DPad315},
+            {TeleopControlFunctions::FUNCTION::DUMMY19, extra4LStickPressed},
+            {TeleopControlFunctions::FUNCTION::DUMMY20, extra4RStickPressed}
+            
+
+        };
+
+
+        const TeleopControlAxis driverLJoystickX = {TeleopControlMappingEnums::DRIVER, TeleopControlMappingEnums::LEFT_JOYSTICK_X, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::REVERSED, 0.1, 0.6};
+        const TeleopControlAxis driverLJoystickY = {TeleopControlMappingEnums::DRIVER, TeleopControlMappingEnums::LEFT_JOYSTICK_Y, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::REVERSED, 0.1, 0.6};
+        const TeleopControlAxis driverRJoystickX = {TeleopControlMappingEnums::DRIVER, TeleopControlMappingEnums::RIGHT_JOYSTICK_X, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::SYNCED, 0.1, 0.5};
+        const TeleopControlAxis driverRJoystickY = {TeleopControlMappingEnums::DRIVER, TeleopControlMappingEnums::RIGHT_JOYSTICK_X, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::REVERSED, 0.1, 1.0};
+        const TeleopControlAxis driverLTrigger   = {TeleopControlMappingEnums::DRIVER, TeleopControlMappingEnums::LEFT_TRIGGER, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::SYNCED, 0.1, 1.0};
+        const TeleopControlAxis driverRTrigger   = {TeleopControlMappingEnums::DRIVER, TeleopControlMappingEnums::RIGHT_TRIGGER, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::SYNCED, 0.1, 1.0};
+
+        const TeleopControlAxis copilotLJoystickX = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::LEFT_JOYSTICK_X, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::SYNCED, 0.1, 1.0};
+        const TeleopControlAxis copilotLJoystickY = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::LEFT_JOYSTICK_Y, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::REVERSED, 0.1, 1.0};
+        const TeleopControlAxis copilotRJoystickX = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::RIGHT_JOYSTICK_X, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::SYNCED, 0.1, 1.0};
+        const TeleopControlAxis copilotRJoystickY = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::RIGHT_JOYSTICK_X, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::REVERSED, 0.1, 1.0};
+        const TeleopControlAxis copilotLTrigger   = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::LEFT_TRIGGER, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::SYNCED, 0.1, 1.0};
+        const TeleopControlAxis copilotRTrigger   = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::RIGHT_TRIGGER, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::SYNCED, 0.1, 1.0};
+
+        const TeleopControlAxis extra1LJoystickX = {TeleopControlMappingEnums::EXTRA1, TeleopControlMappingEnums::LEFT_JOYSTICK_X, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::SYNCED, 0.1, 1.0};
+        const TeleopControlAxis extra1LJoystickY = {TeleopControlMappingEnums::EXTRA1, TeleopControlMappingEnums::LEFT_JOYSTICK_Y, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::REVERSED, 0.1, 1.0};
+        const TeleopControlAxis extra1RJoystickX = {TeleopControlMappingEnums::EXTRA1, TeleopControlMappingEnums::RIGHT_JOYSTICK_X, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::SYNCED, 0.1, 1.0};
+        const TeleopControlAxis extra1RJoystickY = {TeleopControlMappingEnums::EXTRA1, TeleopControlMappingEnums::RIGHT_JOYSTICK_X, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::REVERSED, 0.1, 1.0};
+        const TeleopControlAxis extra1LTrigger   = {TeleopControlMappingEnums::EXTRA1, TeleopControlMappingEnums::LEFT_TRIGGER, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::SYNCED, 0.1, 1.0};
+        const TeleopControlAxis extra1RTrigger   = {TeleopControlMappingEnums::EXTRA1, TeleopControlMappingEnums::RIGHT_TRIGGER, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::SYNCED, 0.1, 1.0};
+
+        const TeleopControlAxis extra2LJoystickX = {TeleopControlMappingEnums::EXTRA2, TeleopControlMappingEnums::LEFT_JOYSTICK_X, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::SYNCED, 0.1, 1.0};
+        const TeleopControlAxis extra2LJoystickY = {TeleopControlMappingEnums::EXTRA2, TeleopControlMappingEnums::LEFT_JOYSTICK_Y, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::REVERSED, 0.1, 1.0};
+        const TeleopControlAxis extra2RJoystickX = {TeleopControlMappingEnums::EXTRA2, TeleopControlMappingEnums::RIGHT_JOYSTICK_X, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::SYNCED, 0.1, 1.0};
+        const TeleopControlAxis extra2RJoystickY = {TeleopControlMappingEnums::EXTRA2, TeleopControlMappingEnums::RIGHT_JOYSTICK_X, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::REVERSED, 0.1, 1.0};
+        const TeleopControlAxis extra2LTrigger   = {TeleopControlMappingEnums::EXTRA2, TeleopControlMappingEnums::LEFT_TRIGGER, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::SYNCED, 0.1, 1.0};
+        const TeleopControlAxis extra2RTrigger   = {TeleopControlMappingEnums::EXTRA2, TeleopControlMappingEnums::RIGHT_TRIGGER, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::SYNCED, 0.1, 1.0};
+
+        const TeleopControlAxis extra3LJoystickX = {TeleopControlMappingEnums::EXTRA3, TeleopControlMappingEnums::LEFT_JOYSTICK_X, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::SYNCED, 0.1, 1.0};
+        const TeleopControlAxis extra3LJoystickY = {TeleopControlMappingEnums::EXTRA3, TeleopControlMappingEnums::LEFT_JOYSTICK_Y, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::REVERSED, 0.1, 1.0};
+        const TeleopControlAxis extra3RJoystickX = {TeleopControlMappingEnums::EXTRA3, TeleopControlMappingEnums::RIGHT_JOYSTICK_X, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::SYNCED, 0.1, 1.0};
+        const TeleopControlAxis extra3RJoystickY = {TeleopControlMappingEnums::EXTRA3, TeleopControlMappingEnums::RIGHT_JOYSTICK_X, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::REVERSED, 0.1, 1.0};
+        const TeleopControlAxis extra3LTrigger   = {TeleopControlMappingEnums::EXTRA3, TeleopControlMappingEnums::LEFT_TRIGGER, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::SYNCED, 0.1, 1.0};
+        const TeleopControlAxis extra3RTrigger   = {TeleopControlMappingEnums::EXTRA3, TeleopControlMappingEnums::RIGHT_TRIGGER, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::SYNCED, 0.1, 1.0};
+
+        const TeleopControlAxis extra4LJoystickX = {TeleopControlMappingEnums::EXTRA4, TeleopControlMappingEnums::LEFT_JOYSTICK_X, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::SYNCED, 0.1, 1.0};
+        const TeleopControlAxis extra4LJoystickY = {TeleopControlMappingEnums::EXTRA4, TeleopControlMappingEnums::LEFT_JOYSTICK_Y, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::REVERSED, 0.1, 1.0};
+        const TeleopControlAxis extra4RJoystickX = {TeleopControlMappingEnums::EXTRA4, TeleopControlMappingEnums::RIGHT_JOYSTICK_X, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::SYNCED, 0.1, 1.0};
+        const TeleopControlAxis extra4RJoystickY = {TeleopControlMappingEnums::EXTRA4, TeleopControlMappingEnums::RIGHT_JOYSTICK_X, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::REVERSED, 0.1, 1.0};
+        const TeleopControlAxis extra4LTrigger   = {TeleopControlMappingEnums::EXTRA4, TeleopControlMappingEnums::LEFT_TRIGGER, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::SYNCED, 0.1, 1.0};
+        const TeleopControlAxis extra4RTrigger   = {TeleopControlMappingEnums::EXTRA4, TeleopControlMappingEnums::RIGHT_TRIGGER, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::SYNCED, 0.1, 1.0};
+
+        robin_hood::unordered_map<TeleopControlFunctions::FUNCTION, const TeleopControlAxis> axisMap
+        {
+            {TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_FORWARD, driverLJoystickY},
+            {TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_STRAFE, driverLJoystickX},
+            {TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_ROTATE, driverRJoystickX},
+            {TeleopControlFunctions::FUNCTION::MANUAL_ROTATE, extra1LJoystickY},
+            {TeleopControlFunctions::FUNCTION::MANUAL_EXTEND_RETRACT, extra2LJoystickY},
+
+            {TeleopControlFunctions::FUNCTION::DUMMYA1, extra4LJoystickX},
+            {TeleopControlFunctions::FUNCTION::DUMMYA2, extra4LJoystickY},
+            {TeleopControlFunctions::FUNCTION::DUMMYA3, extra4RJoystickX},
+            {TeleopControlFunctions::FUNCTION::DUMMYA4, extra4RJoystickY},
+            {TeleopControlFunctions::FUNCTION::DUMMYA5, extra4LTrigger},
+            {TeleopControlFunctions::FUNCTION::DUMMYA6, extra4RTrigger}
+
+        };
+};

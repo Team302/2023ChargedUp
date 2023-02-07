@@ -31,7 +31,7 @@
 #include <chassis/ChassisOptionEnums.h>
 #include <chassis/ChassisFactory.h>
 #include <chassis/IChassis.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 #include <chassis/swerve/driveStates/TrajectoryDrive.h>
 
 
