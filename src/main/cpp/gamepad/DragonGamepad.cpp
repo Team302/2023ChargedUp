@@ -117,14 +117,6 @@ DragonGamepad::DragonGamepad
     m_button[TeleopControlMappingEnums::GAMEPAD_BUTTON_15_UP] = new DigitalButton(m_gamepad, LEVER_15_UP_DIGITAL_ID);
     m_button[TeleopControlMappingEnums::GAMEPAD_BUTTON_15_DOWN] = new DigitalButton(m_gamepad, LEVER_15_DOWN_DIGITAL_ID);
 
-    /**
-    m_axis[DUMMY1] = new AnalogAxis(m_gamepad, dummy1,false);
-    m_axis[DUMMY1]->SetDeadBand( AXIS_DEADBAND::NONE);
-    m_axis[DUMMY2] = new AnalogAxis(m_gamepad, dummy2,false);
-    m_axis[DUMMY2]->SetDeadBand( AXIS_DEADBAND::NONE);
-    m_axis[DUMMY3] = new AnalogAxis(m_gamepad, dummy3,false);
-    m_axis[DUMMY3]->SetDeadBand( AXIS_DEADBAND::NONE);
-    **/
 }
 
 DragonGamepad::~DragonGamepad()
