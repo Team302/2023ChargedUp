@@ -105,8 +105,8 @@ void GrabberStateMgr::CheckForGamepadTransitions()
 {
     if ( m_grabber != nullptr )
     {   
-        auto m_currentState = static_cast<GRABBER_STATE>(GetCurrentState());
-        auto m_targetState = m_currentState;
+        m_currentState = static_cast<GRABBER_STATE>(GetCurrentState());
+        m_targetState = m_currentState;
 		
         auto controller = TeleopControl::GetInstance();
         if(controller != nullptr)

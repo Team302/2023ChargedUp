@@ -62,6 +62,8 @@ ExtenderStateMgr* ExtenderStateMgr::GetInstance()
 ExtenderStateMgr::ExtenderStateMgr() : StateMgr(),
                                      m_extender(MechanismFactory::GetMechanismFactory()->GetExtender()),
                                      m_prevState(EXTENDER_STATE::STARTING_POSITION_EXTEND),
+                                     m_currentState(EXTENDER_STATE::STARTING_POSITION_EXTEND),
+                                     m_targetState(EXTENDER_STATE::STARTING_POSITION_EXTEND),
                                      m_extendedPosition(84320.3176) //22.25 inches in counts for extender
 {
     map<string, StateStruc> stateMap;
@@ -84,7 +86,7 @@ stateMap["FLOOR_EXTEND"] = m_floor_extendState;
 
 /// @brief  Get the current Parameter parm value for the state of this mechanism
 /// @param PrimitiveParams* currentParams current set of primitive parameters
-/// @returns int state id - -1 indicates that there is not a state to set
+/// @returns int state id - -1 indicates that there is not a state to settargetState
 int ExtenderStateMgr::GetCurrentStateParam
 (
     PrimitiveParams*    currentParams
@@ -94,21 +96,13 @@ int ExtenderStateMgr::GetCurrentStateParam
     return StateMgr::GetCurrentStateParam(currentParams);
 }
 
-/// @brief Check if driver inputs or sensors trigger a state transition
-void ExtenderStateMgr::CheckForStateTransition()
+/// @brief Check sensors to determine target state
+void ExtenderStateMgr::CheckForSensorTransitions()
 {
-
     if ( m_extender != nullptr )
-    {    
-        //If we are hitting limit switches, reset position
-        m_extender->ResetIfFullyExtended(m_extendedPosition);
-        m_extender->ResetIfFullyRetracted();
-
-        auto currentState = static_cast<EXTENDER_STATE>(GetCurrentState());
-        auto targetState = currentState;
-
-        //========= Do not erase this line and the one below it. They are used by the code generator ========		
-		//========= Hand modified code start section 0 ========
+    {   
+        m_currentState = static_cast<EXTENDER_STATE>(GetCurrentState());
+        m_targetState = m_currentState;
 	
         auto controller = TeleopControl::GetInstance();
         if(controller != nullptr)
@@ -119,67 +113,83 @@ void ExtenderStateMgr::CheckForStateTransition()
 
             if(abs(extendRetractValue) > 0.1)
             {
-                targetState = EXTENDER_STATE::MANUAL_EXTEND_RETRACT;
+                m_targetState = EXTENDER_STATE::MANUAL_EXTEND_RETRACT;
                 m_extender->UpdateTarget(0.5 * extendRetractValue);
             }
             else if (controller->IsButtonPressed(TeleopControlFunctions::CUBE_BACKROW_EXTEND))
             {
-                targetState = EXTENDER_STATE::CUBE_BACKROW_EXTEND;
-                m_prevState = targetState;
+                m_targetState = EXTENDER_STATE::CUBE_BACKROW_EXTEND;
+                m_prevState = m_targetState;
             }
             else if (controller->IsButtonPressed(TeleopControlFunctions::HOLD_POSITION_EXTEND))
             {
-                targetState = EXTENDER_STATE::HOLD_POSITION_EXTEND;
-                m_prevState = targetState;
+                m_targetState = EXTENDER_STATE::HOLD_POSITION_EXTEND;
+                m_prevState = m_targetState;
             }
             else if (controller->IsButtonPressed(TeleopControlFunctions::CONE_BACKROW_EXTEND))
             {
-                targetState = EXTENDER_STATE::CONE_BACKROW_EXTEND;
-                m_prevState = targetState;
+                m_targetState = EXTENDER_STATE::CONE_BACKROW_EXTEND;
+                m_prevState = m_targetState;
             }
             else if (controller->IsButtonPressed(TeleopControlFunctions::CUBE_MIDROW_EXTEND))
             {
-                targetState = EXTENDER_STATE::CUBE_MIDROW_EXTEND;
-                m_prevState = targetState;
+                m_targetState = EXTENDER_STATE::CUBE_MIDROW_EXTEND;
+                m_prevState = m_targetState;
             }
             else if (controller->IsButtonPressed(TeleopControlFunctions::CONE_MIDROW_EXTEND))
             {
-                targetState = EXTENDER_STATE::CONE_MIDROW_EXTEND;
-                m_prevState = targetState;
+                m_targetState = EXTENDER_STATE::CONE_MIDROW_EXTEND;
+                m_prevState = m_targetState;
             }
             else if (controller->IsButtonPressed(TeleopControlFunctions::HUMAN_PLAYER_STATION_EXTEND))
             {
-                targetState = EXTENDER_STATE::HUMAN_PLAYER_STATION_EXTEND;
-                m_prevState = targetState;
+                m_targetState = EXTENDER_STATE::HUMAN_PLAYER_STATION_EXTEND;
+                m_prevState = m_targetState;
             }
             else if (controller->IsButtonPressed(TeleopControlFunctions::STARTING_POSITION_EXTEND))
             {
-                targetState = EXTENDER_STATE::STARTING_POSITION_EXTEND;
-                m_prevState = targetState;
+                m_targetState = EXTENDER_STATE::STARTING_POSITION_EXTEND;
+                m_prevState = m_targetState;
             }
             else if (controller->IsButtonPressed(TeleopControlFunctions::FLOOR_EXTEND))
             {
-                targetState = EXTENDER_STATE::FLOOR_EXTEND;
-                m_prevState = targetState;
+                m_targetState = EXTENDER_STATE::FLOOR_EXTEND;
+                m_prevState = m_targetState;
             }
             else
             {
-                targetState = EXTENDER_STATE::HOLD_POSITION_EXTEND;
+                m_targetState = EXTENDER_STATE::HOLD_POSITION_EXTEND;
             }
         }
+    }
+}
 
-        if (targetState != currentState)
+/// @brief Check driver input to determine target state
+void ExtenderStateMgr::CheckForGamepadTransitions()
+{
+    if ( m_extender != nullptr )
+    {   
+        //If we are hitting limit switches, reset position
+        m_extender->ResetIfFullyExtended(m_extendedPosition);
+        m_extender->ResetIfFullyRetracted();
+    }
+}
+
+/// @brief Check if driver inputs or sensors trigger a state transition
+void ExtenderStateMgr::CheckForStateTransition()
+{
+
+    if ( m_extender != nullptr )
+    {    
+        if (m_targetState != m_currentState)
         {
-            SetCurrentState(targetState, true);
+            SetCurrentState(m_targetState, true);
 
-            if(targetState == EXTENDER_STATE::HOLD_POSITION_EXTEND)
+            if(m_targetState == EXTENDER_STATE::HOLD_POSITION_EXTEND)
             {
                 m_extender->UpdateTarget(dynamic_cast<Mech1IndMotorState*>(GetStateVector()[m_prevState])->GetCurrentTarget()); //Get the target of the previous state by referencing the state vector
             }
         }
-
-		//========= Hand modified code end section 0 ========
-        //========= Do not erase this line and the one above it. They are used by the code generator =======
     }
 }
 

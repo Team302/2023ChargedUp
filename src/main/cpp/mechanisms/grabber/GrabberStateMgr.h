@@ -88,11 +88,11 @@ RELEASE
 		static GrabberStateMgr*	m_instance;
 
 		const StateStruc m_openState = { GRABBER_STATE::OPEN, "OPEN", StateType::GRABBER_STATE, true };
-const StateStruc m_grabbing_coneState = { GRABBER_STATE::GRABBING_CONE, "GRABBING_CONE", StateType::GRABBER_STATE, true };
-const StateStruc m_grabbing_cubeState = { GRABBER_STATE::GRABBING_CUBE, "GRABBING_CUBE", StateType::GRABBER_STATE, true };
-const StateStruc m_holding_coneState = { GRABBER_STATE::HOLDING_CONE, "HOLDING_CONE", StateType::GRABBER_STATE, true };
-const StateStruc m_holding_cubeState = { GRABBER_STATE::HOLDING_CUBE, "HOLDING_CUBE", StateType::GRABBER_STATE, true };
-const StateStruc m_releaseState = { GRABBER_STATE::RELEASE, "RELEASE", StateType::GRABBER_STATE, true };
+const StateStruc m_grabbing_coneState = { GRABBER_STATE::GRABBING_CONE, "GRABBING_CONE", StateType::GRABBER_STATE, false };
+const StateStruc m_grabbing_cubeState = { GRABBER_STATE::GRABBING_CUBE, "GRABBING_CUBE", StateType::GRABBER_STATE, false };
+const StateStruc m_holding_coneState = { GRABBER_STATE::HOLDING_CONE, "HOLDING_CONE", StateType::GRABBER_STATE, false };
+const StateStruc m_holding_cubeState = { GRABBER_STATE::HOLDING_CUBE, "HOLDING_CUBE", StateType::GRABBER_STATE, false };
+const StateStruc m_releaseState = { GRABBER_STATE::RELEASE, "RELEASE", StateType::GRABBER_STATE, false };
 
 };
 
