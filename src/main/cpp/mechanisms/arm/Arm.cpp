@@ -53,7 +53,7 @@ std::shared_ptr<IDragonMotorController>     motorController0
 
 void Arm::ResetIfArmDown()
 {
-	if(GetMotor().get()->IsForwardLimitSwitchClosed())
+	if(GetMotor().get()->IsReverseLimitSwitchClosed())
 	{
 		auto motor = GetMotor().get()->GetSpeedController();
 		auto fx = dynamic_cast<ctre::phoenix::motorcontrol::can::WPI_TalonFX*>(motor.get());
