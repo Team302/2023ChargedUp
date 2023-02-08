@@ -19,8 +19,9 @@
 #include <vector>
 #include <RobotStateChanges.h>
 #include <RobotStateChangeBroker.h>
+#include <IRobotStateChangeSubscriber.h>
 
-RobotStateChangeBroker::RototStateChangeBroker
+RobotStateChangeBroker::RobotStateChangeBroker
 (
     RobotStateChanges::StateChange change
 ) : m_change(change),
@@ -31,7 +32,7 @@ RobotStateChangeBroker::RototStateChangeBroker
 
 void RobotStateChangeBroker::AddSubscriber
 (
-    IDragonStateChangeSubscriber* subscriber
+    IRobotStateChangeSubscriber* subscriber
 )
 {
     for (auto item : m_subscribers)

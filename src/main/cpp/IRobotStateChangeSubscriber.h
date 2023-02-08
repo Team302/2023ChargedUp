@@ -16,23 +16,14 @@
 
 #pragma once
 
-#include <vector>
 #include <RobotStateChanges.h>
-#include <IRobotStateChangeSubscriber.h>
 
-class RobotStateChangeBroker
+
+class IRobotStateChangeSubscriber
 {
-	public:
-
-		RobotStateChangeBroker() = delete;
-		RobotStateChangeBroker(RobotStateChanges::StateChange change);
-		~RobotStateChangeBroker() = default;
-
-		void AddSubscriber(IRobotStateChangeSubscriber* subscriber);
-
-  		void Notify(int value);
-	
-	private:
-  		RobotStateChanges::StateChange m_change;
-  		std::vector<IRobotStateChangeSubscriber*> m_subscribers;
+    IRobotStateChangeSubscriber() = default;
+    ~IRobotStateChangeSubscriber() = default;
+    
+    virtual void Update(RobotStateChanges::StateChange change, int value) = 0;
 };
+

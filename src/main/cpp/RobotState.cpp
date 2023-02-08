@@ -22,7 +22,7 @@
 #include <chassis/ChassisFactory.h>
 #include <chassis/IChassis.h>
 #include <mechanisms/StateMgrHelper.h>
-#include <TeleopControl.h>
+#include <teleopcontrol/TeleopControl.h>
 #include <utils/FMSData.h>
 #include <utils/DragonField.h>
 #include <auton/AutonPreviewer.h>
