@@ -1,11 +1,4 @@
 
-/*========================================================================================================
- * SquaredProfile.cpp
- *========================================================================================================
- *
- * File Description:  This applies a squared value profile to the input values.
- *
- *========================================================================================================*/
 
 //====================================================================================================================================================
 // Copyright 2022 Lake Orion Robotics FIRST Team 302 
@@ -51,11 +44,11 @@ SquaredProfile* SquaredProfile::GetInstance()
 /// Description:    Apply the profile
 /// </summary>
 //==================================================================================
-double SquaredProfile::ApplyProfile
+void SquaredProfile::ApplyProfile
 (
-    double      inputVal            // <I> - value to apply profile to
+    double&     inputVal            // <I> - value to apply profile to
 ) const 
 {
-    return ( inputVal * inputVal );  // chose to be explicit instead of using the general pow function as this should be faster
+    inputVal *= inputVal;  // chose to be explicit instead of using the general pow function as this should be faster
 }
 

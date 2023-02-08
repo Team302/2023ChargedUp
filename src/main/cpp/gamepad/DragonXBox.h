@@ -17,11 +17,14 @@
 
 #pragma once
 
+//#include <map>
+
 // FRC includes
 #include <frc/XboxController.h>
 
 // Team 302 includes
 #include <gamepad/IDragonGamePad.h>
+#include <teleopcontrol/TeleopControlMappingEnums.h>
 
 // forward declares
 class AnalogAxis;
@@ -47,7 +50,7 @@ class DragonXBox : public IDragonGamePad
         ///-------------------------------------------------------------------------------------------------
         double GetAxisValue
         (
-            AXIS_IDENTIFIER    axis        // <I> - axis identifier to read
+            TeleopControlMappingEnums::AXIS_IDENTIFIER    axis        // <I> - axis identifier to read
         ) const override;
 
         ///-------------------------------------------------------------------------------------------------
@@ -58,7 +61,7 @@ class DragonXBox : public IDragonGamePad
         ///-------------------------------------------------------------------------------------------------
         bool IsButtonPressed
         (
-            BUTTON_IDENTIFIER    button         // <I> - button to check
+            TeleopControlMappingEnums::BUTTON_IDENTIFIER    button         // <I> - button to check
         ) const override;
         
 
@@ -71,7 +74,7 @@ class DragonXBox : public IDragonGamePad
         //==================================================================================
         bool WasButtonReleased
         (
-            BUTTON_IDENTIFIER    button         // <I> - button to check
+            TeleopControlMappingEnums::BUTTON_IDENTIFIER    button         // <I> - button to check
         ) const override;
         
 
@@ -84,7 +87,7 @@ class DragonXBox : public IDragonGamePad
         //==================================================================================
         bool WasButtonPressed
         (
-            BUTTON_IDENTIFIER    button         // <I> - button to check
+            TeleopControlMappingEnums::BUTTON_IDENTIFIER    button         // <I> - button to check
         ) const override;
  
 
@@ -100,8 +103,8 @@ class DragonXBox : public IDragonGamePad
         //==================================================================================
         void SetAxisDeadband
         (
-            AXIS_IDENTIFIER axis, /// <I> - axis to modify
-            AXIS_DEADBAND type    /// <I> - deadband option
+            TeleopControlMappingEnums::AXIS_IDENTIFIER axis, /// <I> - axis to modify
+            TeleopControlMappingEnums::AXIS_DEADBAND type    /// <I> - deadband option
         ) override;
 
         ///-------------------------------------------------------------------------------------------------
@@ -117,8 +120,8 @@ class DragonXBox : public IDragonGamePad
         ///-------------------------------------------------------------------------------------------------
         void SetAxisProfile
         (
-            AXIS_IDENTIFIER                 axis,       // <I> - axis identifier to modify
-            AXIS_PROFILE  	                curve       // <I> - the definition of the sensitivity
+            TeleopControlMappingEnums::AXIS_IDENTIFIER                 axis,       // <I> - axis identifier to modify
+            TeleopControlMappingEnums::AXIS_PROFILE  	                curve       // <I> - the definition of the sensitivity
         ) override;
 
 
@@ -132,14 +135,14 @@ class DragonXBox : public IDragonGamePad
         ///-------------------------------------------------------------------------------------------------
         void SetAxisScale
         (
-            AXIS_IDENTIFIER    			        axis,       // <I> - axis identifier to modify
-            double                              scaleFactor // <I> - value  (0 < scale <= 1.0) to scale the axis value
+            TeleopControlMappingEnums::AXIS_IDENTIFIER axis,       // <I> - axis identifier to modify
+            double scaleFactor // <I> - value  (0 < scale <= 1.0) to scale the axis value
         ) override;
 
         void SetAxisFlipped
         (
-            AXIS_IDENTIFIER    			        axis,       // <I> - axis identifier to modify
-            bool                                isFlipped   // <I> - true - invert axis, false - no inversion
+            TeleopControlMappingEnums::AXIS_IDENTIFIER axis,       // <I> - axis identifier to modify
+            bool isFlipped   // <I> - true - invert axis, false - no inversion
         ) override;
        
         //==================================================================================
@@ -154,8 +157,8 @@ class DragonXBox : public IDragonGamePad
         //==================================================================================
         void SetButtonMode
         (
-            BUTTON_IDENTIFIER button, /// <I> - button to check
-            BUTTON_MODE mode          /// <I> - button behavior
+            TeleopControlMappingEnums::BUTTON_IDENTIFIER button, /// <I> - button to check
+            TeleopControlMappingEnums::BUTTON_MODE mode          /// <I> - button behavior
         ) override;
 
         void SetRumble
@@ -166,8 +169,8 @@ class DragonXBox : public IDragonGamePad
         
     private:
         frc::XboxController*        m_xbox;
-        AnalogAxis*                 m_axis[MAX_AXIS];
-        IButton*                    m_button[MAX_BUTTONS];
+        AnalogAxis*                 m_axis[TeleopControlMappingEnums::MAX_AXIS];
+        IButton*                    m_button[TeleopControlMappingEnums::MAX_BUTTONS];
         
 
         DragonXBox() = delete;

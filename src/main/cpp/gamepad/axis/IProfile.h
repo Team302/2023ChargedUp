@@ -42,9 +42,9 @@ class IProfile
         /// Description:    Apply the profile
         /// </summary>
         //==================================================================================
-        virtual double ApplyProfile
+        virtual void ApplyProfile
         (
-            double      inputVal            // <I> - value to apply profile to
+            double&      inputVal            // <I> - value to apply profile to
         ) const = 0;
 
 };

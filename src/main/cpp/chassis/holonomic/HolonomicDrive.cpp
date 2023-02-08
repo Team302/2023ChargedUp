@@ -30,11 +30,12 @@
 #include <chassis/IChassis.h>
 #include <hw/DragonPigeon.h>
 #include <gamepad/IDragonGamePad.h>
-#include <TeleopControl.h>
+#include <teleopcontrol/TeleopControl.h>
+#include <teleopcontrol/TeleopControlFunctions.h>
 #include <State.h>
 #include <chassis/ChassisFactory.h>
 #include <hw/factories/PigeonFactory.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 #include <chassis/swerve/driveStates/DragonTrajectoryGenerator.h>
 #include <utils/DragonField.h>
 
@@ -44,7 +45,6 @@ using namespace frc;
 /// @brief initialize the object and validate the necessary items are not nullptrs
 HolonomicDrive::HolonomicDrive() : State(string("HolonomicDrive"), -1),
                                    m_chassis(ChassisFactory::GetChassisFactory()->GetIChassis()),
-                                   m_controller(TeleopControl::GetInstance()),
                                    m_swerve(ChassisFactory::GetChassisFactory()->GetSwerveChassis()),
                                    m_mecanum(ChassisFactory::GetChassisFactory()->GetMecanumChassis()),
                                    m_trajectoryGenerator(new DragonTrajectoryGenerator(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetMaxSpeed(),
@@ -53,59 +53,36 @@ HolonomicDrive::HolonomicDrive() : State(string("HolonomicDrive"), -1),
                                    m_generatedTrajectory(frc::Trajectory()),
                                    m_field(DragonField::GetInstance())
 {
-    if (m_controller == nullptr)
-    {
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("HolonomicDrive"), string("Constructor"), string("TeleopControl is nullptr"));
-    }
 }
 
 /// @brief initialize the profiles for the various gamepad inputs
 /// @return void
 void HolonomicDrive::Init()
 {
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("HolonomicDrive::Init"), string("arrived"));   
-    auto controller = GetController();
-    if (controller != nullptr)
-    {
-        controller->SetAxisProfile(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_FORWARD, IDragonGamePad::AXIS_PROFILE::CUBED);
-        controller->SetDeadBand(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_FORWARD, IDragonGamePad::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND);
-        controller->SetAxisScaleFactor(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_FORWARD, 0.6);
-
-        controller->SetAxisProfile(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_STRAFE, IDragonGamePad::AXIS_PROFILE::CUBED);
-        controller->SetDeadBand(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_STRAFE, IDragonGamePad::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND);
-        controller->SetAxisScaleFactor(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_STRAFE, -0.6);
-
-        controller->SetAxisProfile(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_ROTATE, IDragonGamePad::AXIS_PROFILE::CUBED);
-        controller->SetDeadBand(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_ROTATE, IDragonGamePad::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND);
-        controller->SetAxisScaleFactor(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_ROTATE, 0.5);
-    }
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("HolonomicDrive::Init"), string("end"));   
 }
 
 /// @brief calculate the output for the wheels on the chassis from the throttle and steer components
 /// @return void
 void HolonomicDrive::Run()
 {
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("HolonomicDrive::Run"), string("begin"));
-
     ChassisMovement moveInfo;
     moveInfo.driveOption = ChassisOptionEnums::DriveStateType::FIELD_DRIVE;
     moveInfo.controllerType = ChassisOptionEnums::AutonControllerType::HOLONOMIC;
 
-    auto controller = GetController();
+    auto controller =TeleopControl::GetInstance();
     if (controller != nullptr && m_chassis != nullptr)
     {
         moveInfo.headingOption = ChassisOptionEnums::HeadingOption::MAINTAIN;
-        if (controller->IsButtonPressed(TeleopControl::FINDTARGET))
+        if (controller->IsButtonPressed(TeleopControlFunctions::FINDTARGET))
         {
             moveInfo.headingOption = ChassisOptionEnums::HeadingOption::TOWARD_GOAL;
         }                                       
-        else if (controller->IsButtonPressed(TeleopControl::DRIVE_TO_SHOOTING_SPOT))
+        else if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_SHOOTING_SPOT))
         {
             moveInfo.headingOption = ChassisOptionEnums::HeadingOption::TOWARD_GOAL;
         }
         
-        if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::REZERO_PIGEON))
+        if (controller->IsButtonPressed(TeleopControlFunctions::REZERO_PIGEON))
         {
             auto factory = PigeonFactory::GetFactory();
             auto m_pigeon = factory->GetPigeon(DragonPigeon::PIGEON_USAGE::CENTER_OF_ROBOT);
@@ -122,22 +99,22 @@ void HolonomicDrive::Run()
             auto wheelbase = m_swerve->GetWheelBase();
             auto track = m_swerve->GetTrack();
 
-            if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_ROTATE_FRONT))
+            if (controller->IsButtonPressed(TeleopControlFunctions::HOLONOMIC_ROTATE_FRONT))
             {
                 moveInfo.centerOfRotationOffset.X = wheelbase/2.0;
                 moveInfo.centerOfRotationOffset.Y = units::length::inch_t(0.0);
             }
-            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_ROTATE_RIGHT))
+            else if (controller->IsButtonPressed(TeleopControlFunctions::HOLONOMIC_ROTATE_RIGHT))
             {
                 moveInfo.centerOfRotationOffset.X = units::length::inch_t(0.0);
                 moveInfo.centerOfRotationOffset.Y = track/2.0;
             }
-            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_ROTATE_LEFT))
+            else if (controller->IsButtonPressed(TeleopControlFunctions::HOLONOMIC_ROTATE_LEFT))
             {
                 moveInfo.centerOfRotationOffset.X = units::length::inch_t(0.0);
                 moveInfo.centerOfRotationOffset.Y = -1.0*track/2.0;
             }
-            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_ROTATE_BACK))
+            else if (controller->IsButtonPressed(TeleopControlFunctions::HOLONOMIC_ROTATE_BACK))
             {
                 moveInfo.centerOfRotationOffset.X = -1.0*wheelbase/2.0;
                 moveInfo.centerOfRotationOffset.Y = units::length::inch_t(0.0);
@@ -152,7 +129,7 @@ void HolonomicDrive::Run()
         //Automated driving
         if(m_previousDriveState != ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE)
         {
-            if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::DRIVE_TO_COL_ONE))
+            if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_COL_ONE))
             {
                 moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
                 m_previousDriveState = moveInfo.driveOption;
@@ -160,7 +137,7 @@ void HolonomicDrive::Run()
                 m_generatedTrajectory = moveInfo.trajectory;
                 m_field->AddTrajectory("DriverAssist", m_generatedTrajectory);
             }
-            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::DRIVE_TO_COL_TWO))
+            else if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_COL_TWO))
             {
                 moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
                 m_previousDriveState = moveInfo.driveOption;
@@ -168,7 +145,7 @@ void HolonomicDrive::Run()
                 m_generatedTrajectory = moveInfo.trajectory;
                 m_field->AddTrajectory("DriverAssist", m_generatedTrajectory);
             }
-            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::DRIVE_TO_COL_THREE))
+            else if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_COL_THREE))
             {
                 moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
                 m_previousDriveState = moveInfo.driveOption;
@@ -185,7 +162,7 @@ void HolonomicDrive::Run()
         
         //add button to drive to loading zone
 
-        //if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HOLD_POSITION))
+        //if (controller->IsButtonPressed(TeleopControlFunctions::::HOLD_POSITION))
         //{
             //m_chassis.get()->DriveHoldPosition();
         //}
@@ -193,9 +170,9 @@ void HolonomicDrive::Run()
         auto maxSpeed = m_chassis->GetMaxSpeed();
         auto maxAngSpeed = m_chassis->GetMaxAngularSpeed();
 
-        auto forward = controller->GetAxisValue(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_FORWARD);
-        auto strafe = controller->GetAxisValue(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_STRAFE);
-        auto rotate = controller->GetAxisValue(TeleopControl::FUNCTION_IDENTIFIER::HOLONOMIC_DRIVE_ROTATE);
+        auto forward = controller->GetAxisValue(TeleopControlFunctions::HOLONOMIC_DRIVE_FORWARD);
+        auto strafe = controller->GetAxisValue(TeleopControlFunctions::HOLONOMIC_DRIVE_STRAFE);
+        auto rotate = controller->GetAxisValue(TeleopControlFunctions::HOLONOMIC_DRIVE_ROTATE);
 
         if(abs(forward) > 0.05 || abs(strafe) > 0.05 || abs(rotate) > 0.05)
         {
@@ -218,7 +195,6 @@ void HolonomicDrive::Run()
     {
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("Run"), string("nullptr"));
     }
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("HolonomicDrive::Run"), string("end"));   
 }
 
 void HolonomicDrive::Exit()

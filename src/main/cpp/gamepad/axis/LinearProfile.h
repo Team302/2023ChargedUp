@@ -55,9 +55,9 @@ class LinearProfile : public IProfile
         /// Description:    Apply the profile
         /// </summary>
         //==================================================================================
-        double ApplyProfile
+        void ApplyProfile
         (
-            double      inputVal            // <I> - value to apply profile to
+            double&     inputVal            // <I> - value to apply profile to
         ) const override;
 
     private:

@@ -27,7 +27,7 @@
 // FRC includes
 
 // Team 302 includes
-#include <TeleopControl.h>
+#include <teleopcontrol/TeleopControl.h>
 #include <auton/PrimitiveParams.h>
 #include <mechanisms/MechanismFactory.h>
 #include <mechanisms/base/StateMgr.h>
@@ -59,7 +59,9 @@ GrabberStateMgr* GrabberStateMgr::GetInstance()
 
 /// @brief    initialize the state manager, parse the configuration file and create the states.
 GrabberStateMgr::GrabberStateMgr() : StateMgr(),
-                                     m_grabber(MechanismFactory::GetMechanismFactory()->GetGrabber())
+                                     m_grabber(MechanismFactory::GetMechanismFactory()->GetGrabber()),
+                                     m_currentState(GRABBER_STATE::OPEN),
+                                     m_targetState(GRABBER_STATE::OPEN)
 {
     map<string, StateStruc> stateMap;
 	stateMap["OPEN"] = m_openState;
@@ -89,59 +91,68 @@ int GrabberStateMgr::GetCurrentStateParam
     return StateMgr::GetCurrentStateParam(currentParams);
 }
 
+/// @brief Check for sensor input to transition
+void GrabberStateMgr::CheckForSensorTransitions()
+{
+    if ( m_grabber != nullptr )
+    {   
+        //look at banner sensor to determine target state
+    }
+}
+
+/// @brief Check for gamepad input to transition
+void GrabberStateMgr::CheckForGamepadTransitions()
+{
+    if ( m_grabber != nullptr )
+    {   
+        m_currentState = static_cast<GRABBER_STATE>(GetCurrentState());
+        m_targetState = m_currentState;
+		
+        auto controller = TeleopControl::GetInstance();
+        if(controller != nullptr)
+        {
+            if (controller->IsButtonPressed(TeleopControlFunctions::OPEN))
+            {
+                m_targetState = GRABBER_STATE::OPEN;
+            }
+            else if (controller->IsButtonPressed(TeleopControlFunctions::GRABBING_CONE))
+            {
+                m_targetState = GRABBER_STATE::GRABBING_CONE;
+            }
+            else if (controller->IsButtonPressed(TeleopControlFunctions::GRABBING_CUBE))
+            {
+                m_targetState = GRABBER_STATE::GRABBING_CUBE;
+            }
+            else if (controller->IsButtonPressed(TeleopControlFunctions::HOLDING_CONE))
+            {
+                m_targetState = GRABBER_STATE::HOLDING_CONE;
+            }
+            else if (controller->IsButtonPressed(TeleopControlFunctions::HOLDING_CUBE))
+            {
+                m_targetState = GRABBER_STATE::HOLDING_CUBE;
+            }
+            else if (controller->IsButtonPressed(TeleopControlFunctions::RELEASE))
+            {
+                m_targetState = GRABBER_STATE::RELEASE;
+            }
+            else
+            {
+                m_targetState = GRABBER_STATE::OPEN;
+            }
+        }
+    }
+}
+
 /// @brief Check if driver inputs or sensors trigger a state transition
 void GrabberStateMgr::CheckForStateTransition()
 {
 
     if ( m_grabber != nullptr )
     {    
-        auto currentState = static_cast<GRABBER_STATE>(GetCurrentState());
-        auto targetState = currentState;
-
-        //========= Do not erase this line and the one below it. They are used by the code generator ========		
-		//========= Hand modified code start section 0 ========
-		
-        auto controller = TeleopControl::GetInstance();
-        
-        if(controller != nullptr)
+        if (m_targetState != m_currentState)
         {
-            if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::OPEN))
-            {
-                targetState = GRABBER_STATE::OPEN;
-            }
-            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::GRABBING_CONE))
-            {
-                targetState = GRABBER_STATE::GRABBING_CONE;
-            }
-            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::GRABBING_CUBE))
-            {
-                targetState = GRABBER_STATE::GRABBING_CUBE;
-            }
-            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HOLDING_CONE))
-            {
-                targetState = GRABBER_STATE::HOLDING_CONE;
-            }
-            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::HOLDING_CUBE))
-            {
-                targetState = GRABBER_STATE::HOLDING_CUBE;
-            }
-            else if (controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::RELEASE))
-            {
-                targetState = GRABBER_STATE::RELEASE;
-            }
-            else
-            {
-                targetState = GRABBER_STATE::OPEN;
-            }
+            SetCurrentState(m_targetState, true);
         }
-
-        if (targetState != currentState)
-        {
-            SetCurrentState(targetState, true);
-        }
-
-		//========= Hand modified code end section 0 ========
-        //========= Do not erase this line and the one above it. They are used by the code generator =======
     }
 }
 

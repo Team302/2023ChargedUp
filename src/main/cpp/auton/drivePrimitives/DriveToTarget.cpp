@@ -38,7 +38,7 @@ using namespace frc;
 #include <auton/drivePrimitives/DriveToTarget.h>
 #include <auton/PrimitiveParams.h>
 #include <hw/interfaces/IDragonDistanceSensor.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
 DriveToTarget::DriveToTarget() :
 	m_sensor( nullptr ),

@@ -23,7 +23,7 @@
 
 //Team 302 Includes
 #include <utils/NetworkTableReader.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
 using namespace std;
 

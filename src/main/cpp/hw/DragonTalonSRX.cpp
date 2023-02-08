@@ -34,7 +34,7 @@
 #include <hw/usages/MotorControllerUsage.h>
 #include <hw/DistanceAngleCalcStruc.h>
 #include <utils/ConversionUtils.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
 // Third Party Includes
 #include <ctre/phoenix/motorcontrol/can/WPI_TalonSRX.h>
@@ -64,7 +64,8 @@ DragonTalonSRX::DragonTalonSRX
 	m_id(deviceID),
 	m_pdp( pdpID ),
 	m_calcStruc(calcStruc),
-	m_motorType(motorType)
+	m_motorType(motorType),
+	m_inverted(false)
 {
 	m_networkTableName += string(" - motor ");
 	m_networkTableName += to_string(deviceID);
@@ -316,6 +317,7 @@ void DragonTalonSRX::EnableBrakeMode(bool enabled)
 
 void DragonTalonSRX::Invert(bool inverted)
 {
+	m_inverted = inverted;
     m_talon.get()->SetInverted(inverted);
 }
 

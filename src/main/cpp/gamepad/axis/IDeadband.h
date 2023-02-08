@@ -33,9 +33,9 @@ class IDeadband
         /// Description:    Apply the standard deadband
         /// </summary>
         //==================================================================================
-        virtual double ApplyDeadband
+        virtual void ApplyDeadband
         (
-            double inputVal            // <I> - value to apply profile to
+            double& inputVal            // <I> - value to apply profile to
         ) const = 0;
 
     protected:

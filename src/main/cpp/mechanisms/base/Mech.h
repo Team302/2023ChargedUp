@@ -20,7 +20,7 @@
 #include <string>
 
 // Team 302 includes
-#include <LoggableItem.h>
+#include <utils/logging/LoggableItem.h>
 #include <mechanisms/MechanismTypes.h>
 
 // Forward Declares

@@ -22,7 +22,7 @@
 #include <chassis/swerve/driveStates/DragonTrajectoryGenerator.h>
 #include <chassis/ChassisFactory.h>
 #include <utils/WaypointXmlParser.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 #include <utils/Waypoint2d.h>
 #include <utils/FMSData.h>
 #include <utils/DistanceBetweenPoses.h>

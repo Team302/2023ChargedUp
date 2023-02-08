@@ -4,8 +4,8 @@
     identifier="HoldPosition"
     mode="POSITION_INCH"
     constrolServer="MOTORCONTROLLER"
-    proportional="0.3"
-    integral="0.0"
+    proportional="0.04"
+    integral="0.000075"
     derivative="0.0"
     feedforward="0.0"
     izone="0.0"
@@ -13,10 +13,10 @@
     cruisevelocity="0.0" />
   <controlData
     identifier="ExtendPosition"
-    mode="PERCENT_OUTPUT"
+    mode="POSITION_INCH"
     constrolServer="MOTORCONTROLLER"
-    proportional="0.1"
-    integral="0.0"
+    proportional="0.04"
+    integral="0.000075"
     derivative="0.0"
     feedforward="0.0"
     izone="0.0"
@@ -35,9 +35,9 @@
     cruisevelocity="0.0" />
   <mechanismTarget
     stateIdentifier="HOLD_POSITION_EXTEND"
-    controlDataIdentifier="ExtendPosition"
+    controlDataIdentifier="PercentOutput"
     controlDataIdentifier2=""
-    value="10"
+    value="0.0"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
@@ -45,7 +45,7 @@
     stateIdentifier="MANUAL_EXTEND_RETRACT"
     controlDataIdentifier="PercentOutput"
     controlDataIdentifier2=""
-    value="1"
+    value="0.0"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
@@ -91,7 +91,7 @@
     solenoid2="NONE" />
   <mechanismTarget
     stateIdentifier="STARTING_POSITION_EXTEND"
-    controlDataIdentifier="ExtendPosition"
+    controlDataIdentifier="PercentOutput"
     controlDataIdentifier2=""
     value="0"
     secondValue=""
