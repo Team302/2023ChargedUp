@@ -77,6 +77,8 @@ FLOOR_POSITION_ROTATE
             PrimitiveParams*    currentParams
         ) override;
 
+        void CheckForSensorTransitions() override;
+        void CheckForGamepadTransitions() override;
         void CheckForStateTransition() override;
 		
     private:
@@ -87,6 +89,9 @@ FLOOR_POSITION_ROTATE
         Arm*                                m_arm;
 
         ARM_STATE                           m_prevState;
+        ARM_STATE                           m_currentState;
+        ARM_STATE                           m_targetState;
+
         double                              m_fTerm;
 
 		static ArmStateMgr*	m_instance;
