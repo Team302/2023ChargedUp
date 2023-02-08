@@ -45,7 +45,7 @@ class TeleopControlFunctions
             DRIVE_TO_COL_ONE,
             DRIVE_TO_COL_TWO,
             DRIVE_TO_COL_THREE,            
-
+            DRIVE_TO_HUMAN_PLAYER,
              //Arm states
             HOLD_POSITION_ROTATE,
             MANUAL_ROTATE,
@@ -73,7 +73,15 @@ class TeleopControlFunctions
             HOLDING_CONE,
             HOLDING_CUBE,
             RELEASE,
-            
+            CYCLE_GRABBER,
+            //Active intake controls?
+            INTAKE, 
+            EXPEL,
+            //notcharlie states
+            STARTING_POSITION,
+            LOW,
+            MED,
+            HIGH,
             MAX_FUNCTIONS
         };
 };
