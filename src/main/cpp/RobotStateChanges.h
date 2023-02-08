@@ -18,19 +18,63 @@
 
 class RobotStateChanges
 {
-	public:
-        enum StateChange
-        {
-            DesiredGamePiece,
-            HaveGamePiece,
-            ArmExtenderState,
-            ArmRotateState,
-            GrabberState,
-            DesiredPlacementLocation,
-            DesiredPlacementDepth,
-            ChassisLiftStatus,
-            DriveAssistMode,
-            GameState
-        };
+public:
+    enum StateChange
+    {
+        DesiredGamePiece,
+        HaveGamePiece,
+        ArmExtenderState,
+        ArmRotateState,
+        GrabberState,
+        DesiredPlacementLocation,
+        DesiredPlacementDepth,
+        ChassisLiftStatus,
+        DriveAssistMode,
+        GameState
+    };
 
+    enum GamePiece
+    {
+        Cone,
+        Cube,
+        None
+    };
+
+    enum PlacementLocation
+    {
+        HPGridLeftPole,
+        HPGridCenterShelf,
+        HPGridRightPole,
+        CoopGridLeftPole,
+        CoopGridCenterShelf,
+        CoopGridRightPole,
+        WallGridLeftPole,
+        WallGridCenterShelf,
+        WallGridRightPole
+    };
+
+    enum PlacementDepth
+    {
+        Floor,
+        MiddleRow,
+        BackRow
+    };
+
+    enum ChassisLift
+    {
+        NotTilted,
+        Tilted
+    };
+
+    enum DriveAssist
+    {
+        Off,
+        On
+    };
+
+    enum GameState
+    {
+        Auton,
+        Teleop
+    };
 };
