@@ -72,6 +72,8 @@ RELEASE
         ) override;
 
         void CheckForStateTransition() override;
+        void CheckForSensorTransitions() override;
+        void CheckForGamepadTransitions() override;
 		
     private:
 	
@@ -79,6 +81,9 @@ RELEASE
         ~GrabberStateMgr() = default;
         
         Grabber*                                m_grabber;
+
+        GRABBER_STATE                           m_currentState;
+        GRABBER_STATE                           m_targetState;
 
 		static GrabberStateMgr*	m_instance;
 

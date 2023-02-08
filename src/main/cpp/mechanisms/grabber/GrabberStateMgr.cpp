@@ -59,7 +59,9 @@ GrabberStateMgr* GrabberStateMgr::GetInstance()
 
 /// @brief    initialize the state manager, parse the configuration file and create the states.
 GrabberStateMgr::GrabberStateMgr() : StateMgr(),
-                                     m_grabber(MechanismFactory::GetMechanismFactory()->GetGrabber())
+                                     m_grabber(MechanismFactory::GetMechanismFactory()->GetGrabber()),
+                                     m_currentState(GRABBER_STATE::OPEN),
+                                     m_targetState(GRABBER_STATE::OPEN)
 {
     map<string, StateStruc> stateMap;
 	stateMap["OPEN"] = m_openState;
@@ -89,58 +91,68 @@ int GrabberStateMgr::GetCurrentStateParam
     return StateMgr::GetCurrentStateParam(currentParams);
 }
 
-/// @brief Check if driver inputs or sensors trigger a state transition
-void GrabberStateMgr::CheckForStateTransition()
+/// @brief Check for sensor input to transition
+void GrabberStateMgr::CheckForSensorTransitions()
 {
-
     if ( m_grabber != nullptr )
-    {    
-        auto currentState = static_cast<GRABBER_STATE>(GetCurrentState());
-        auto targetState = currentState;
+    {   
+        //look at banner sensor to determine target state
+    }
+}
 
-        //========= Do not erase this line and the one below it. They are used by the code generator ========		
-		//========= Hand modified code start section 0 ========
+/// @brief Check for gamepad input to transition
+void GrabberStateMgr::CheckForGamepadTransitions()
+{
+    if ( m_grabber != nullptr )
+    {   
+        auto m_currentState = static_cast<GRABBER_STATE>(GetCurrentState());
+        auto m_targetState = m_currentState;
 		
         auto controller = TeleopControl::GetInstance();
         if(controller != nullptr)
         {
             if (controller->IsButtonPressed(TeleopControlFunctions::OPEN))
             {
-                targetState = GRABBER_STATE::OPEN;
+                m_targetState = GRABBER_STATE::OPEN;
             }
             else if (controller->IsButtonPressed(TeleopControlFunctions::GRABBING_CONE))
             {
-                targetState = GRABBER_STATE::GRABBING_CONE;
+                m_targetState = GRABBER_STATE::GRABBING_CONE;
             }
             else if (controller->IsButtonPressed(TeleopControlFunctions::GRABBING_CUBE))
             {
-                targetState = GRABBER_STATE::GRABBING_CUBE;
+                m_targetState = GRABBER_STATE::GRABBING_CUBE;
             }
             else if (controller->IsButtonPressed(TeleopControlFunctions::HOLDING_CONE))
             {
-                targetState = GRABBER_STATE::HOLDING_CONE;
+                m_targetState = GRABBER_STATE::HOLDING_CONE;
             }
             else if (controller->IsButtonPressed(TeleopControlFunctions::HOLDING_CUBE))
             {
-                targetState = GRABBER_STATE::HOLDING_CUBE;
+                m_targetState = GRABBER_STATE::HOLDING_CUBE;
             }
             else if (controller->IsButtonPressed(TeleopControlFunctions::RELEASE))
             {
-                targetState = GRABBER_STATE::RELEASE;
+                m_targetState = GRABBER_STATE::RELEASE;
             }
             else
             {
-                targetState = GRABBER_STATE::OPEN;
+                m_targetState = GRABBER_STATE::OPEN;
             }
         }
+    }
+}
 
-        if (targetState != currentState)
+/// @brief Check if driver inputs or sensors trigger a state transition
+void GrabberStateMgr::CheckForStateTransition()
+{
+
+    if ( m_grabber != nullptr )
+    {    
+        if (m_targetState != m_currentState)
         {
-            SetCurrentState(targetState, true);
+            SetCurrentState(m_targetState, true);
         }
-
-		//========= Hand modified code end section 0 ========
-        //========= Do not erase this line and the one above it. They are used by the code generator =======
     }
 }
 
