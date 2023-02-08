@@ -16,65 +16,119 @@
 #include <RobotState.h>
 
 #include <string>
+#include <vector>
 
-#include <cameraserver/CameraServer.h>
-#include <auton/CyclePrimitives.h>
 #include <chassis/ChassisFactory.h>
 #include <chassis/IChassis.h>
-#include <mechanisms/StateMgrHelper.h>
+#include <RobotStateChangeBroker.h>
 #include <teleopcontrol/TeleopControl.h>
-#include <utils/FMSData.h>
 #include <utils/DragonField.h>
-#include <auton/AutonPreviewer.h>
-#include <mechanisms/DriverFeedback/DriverFeedback.h>
 
-RobotState* RobotState::m_instance = nullptr;
+using frc::DriverStation;
 
-RobotState* RobotState::GetInstance(){
-    if (RobotState::m_instance == nullptr){
+RobotState *RobotState::m_instance = nullptr;
+
+RobotState *RobotState::GetInstance()
+{
+    if (RobotState::m_instance == nullptr)
+    {
         RobotState::m_instance = new RobotState();
     }
     return RobotState::m_instance;
 }
 
+RobotState::RobotState() : m_chassis(nullptr),
+                           m_field(nullptr),
+                           m_brokers(),
+                           m_gamePiece(RobotStateChanges::GamePiece::None),
+                           m_gamePhase(RobotStateChanges::Disabled)
+{
+    m_brokers.reserve(RobotStateChanges::LoopCounter);
+    auto start = static_cast<int>(RobotStateChanges::DesiredGamePiece);
+    auto end = static_cast<int>(RobotStateChanges::LoopCounter);
+    for (auto i = start; i < end; ++i)
+    {
+        m_brokers.emplace_back(new RobotStateChangeBroker(static_cast<RobotStateChanges::StateChange>(i)));
+    }
+}
 
-void RobotState::Init(){
-    m_fmsData = FMSData::GetInstance();
+RobotState::~RobotState()
+{
+    for (auto broker : m_brokers)
+    {
+        delete broker;
+    }
+    m_brokers.clear();
+}
+
+void RobotState::Init()
+{
     m_field = DragonField::GetInstance();
 
     auto factory = ChassisFactory::GetChassisFactory();
     m_chassis = factory->GetIChassis();
-    
-    StateMgrHelper::InitStateMgrs();
-
-    m_driveTeamFeedback = DriverFeedback::GetInstance();
-        
 }
 
-void RobotState::Run(){
-    if(frc::DriverStation::IsEnabled()){
-        m_driveTeamFeedback->TeleopEnabled(frc::DriverStation::IsTeleopEnabled());
-        m_driveTeamFeedback->AutonomousEnabled(frc::DriverStation::IsAutonomousEnabled());
+void RobotState::Run()
+{
+    PublishGameStateChanges();
+    if (m_chassis != nullptr)
+    {
+        m_chassis->UpdateOdometry();
+    }
+    // TODO: Add reading of telop control to switch game piece desired
 
-        if (m_chassis != nullptr)
+    // TODO: move to DriveTeamFeedback
+    if (m_field != nullptr)
+    {
+        m_field->UpdateRobotPosition(m_chassis->GetPose());
+    }
+}
+
+void RobotState::RegisterForStateChanges(
+    IRobotStateChangeSubscriber *subscriber,
+    RobotStateChanges::StateChange change)
+{
+    auto slot = static_cast<unsigned int>(change);
+    if (slot < m_brokers.size())
+    {
+        m_brokers[slot]->AddSubscriber(subscriber);
+    }
+}
+
+void RobotState::PublishStateChange(
+    RobotStateChanges::StateChange change,
+    int newValue)
+{
+    auto slot = static_cast<unsigned int>(change);
+    if (slot < m_brokers.size())
+    {
+        m_brokers[slot]->Notify(newValue);
+    }
+}
+
+void RobotState::PublishGameStateChanges()
+{
+    auto gameState = m_gamePhase;
+    if (frc::DriverStation::IsEnabled())
+    {
+        if (DriverStation::IsAutonomousEnabled())
         {
-            m_chassis->UpdateOdometry();
-            m_field->UpdateRobotPosition(m_chassis->GetPose());
+            gameState = RobotStateChanges::Auton;
         }
-        m_driveTeamFeedback->AlignedWithConeNode(true);
-        m_driveTeamFeedback->UpdateFeedback();
-
-
+        else if (DriverStation::IsTeleopEnabled())
+        {
+            gameState = RobotStateChanges::Teleop;
+        }
     }
-    if(frc::DriverStation::IsTeleopEnabled()){
-
-    }
-
-    if(frc::DriverStation::IsAutonomousEnabled()){
-
+    else
+    {
+        gameState = RobotStateChanges::Disabled;
     }
 
-    if(frc::DriverStation::IsDisabled()){
-        m_driveTeamFeedback->m_LEDStates->LEDsOff();
+    if (gameState != m_gamePhase)
+    {
+        m_gamePhase = gameState;
+        PublishStateChange(RobotStateChanges::GameState, gameState);
     }
 }

@@ -30,7 +30,8 @@ public:
         DesiredPlacementDepth,
         ChassisLiftStatus,
         DriveAssistMode,
-        GameState
+        GameState,
+        LoopCounter
     };
 
     enum GamePiece
@@ -72,9 +73,10 @@ public:
         On
     };
 
-    enum GameState
+    enum GamePhase
     {
         Auton,
-        Teleop
+        Teleop,
+        Disabled
     };
 };

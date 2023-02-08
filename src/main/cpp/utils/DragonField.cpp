@@ -13,21 +13,21 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-//FRC Includes
+// FRC Includes
 #include <frc/smartdashboard/SmartDashboard.h>
 
-//Team 302 Includes
+// Team 302 Includes
 #include <utils/DragonField.h>
 
-DragonField* DragonField::m_instance = nullptr;
+DragonField *DragonField::m_instance = nullptr;
 
-DragonField* DragonField::GetInstance()
+DragonField *DragonField::GetInstance()
 {
-	if ( DragonField::m_instance == nullptr )
-	{
-            DragonField::m_instance = new DragonField();
-	}
-	return DragonField::m_instance;
+    if (DragonField::m_instance == nullptr)
+    {
+        DragonField::m_instance = new DragonField();
+    }
+    return DragonField::m_instance;
 }
 
 DragonField::DragonField()
@@ -54,8 +54,8 @@ void DragonField::AddTrajectory(std::string name, frc::Trajectory trajectory)
 
 void DragonField::ResetField()
 {
-    for(int i = 0; i < m_objects.size(); i++)
+    for (auto object : m_objects)
     {
-        m_objects[i]->SetPoses(std::span<frc::Pose2d>());
+        object->SetPoses(std::span<frc::Pose2d>());
     }
 }

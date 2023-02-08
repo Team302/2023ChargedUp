@@ -15,47 +15,37 @@
 //====================================================================================================================================================
 
 #pragma once
+#include <vector>
+
 #include <frc/DriverStation.h>
 
+#include <RobotStateChanges.h>
 
-class ArcadeDrive;
-class CyclePrimitives;
-class DragonLimelight;
-class HolonomicDrive;
-class IChassis;
-class TeleopControl;
-class AdjustableItemMgr;
-class FMSData;
 class DragonField;
-class AutonPreviewer;
-class DriverFeedback;
+class IChassis;
+class IRobotStateChangeSubscriber;
+class RobotStateChangeBroker;
 
-class RobotState 
+class RobotState
 {
-	public:
+public:
     void Init();
     void Run();
-    static RobotState* GetInstance();
+    static RobotState *GetInstance();
+    void RegisterForStateChanges(IRobotStateChangeSubscriber *subscriber, RobotStateChanges::StateChange change);
+    void PublishStateChange(RobotStateChanges::StateChange change, int newValue);
 
-        
-    private:
+private:
+    void PublishGameStateChanges();
 
-        DriverFeedback*       m_driveTeamFeedback;
-        TeleopControl*        m_controller;
-        IChassis*             m_chassis;
-        CyclePrimitives*      m_cyclePrims; 
-        HolonomicDrive*       m_holonomic;
-        ArcadeDrive*          m_arcade;
-        
-        DragonLimelight*      m_dragonLimeLight;
-        
-        AdjustableItemMgr*    m_tuner;
-        FMSData*              m_fmsData;
-        DragonField*          m_field;
-        AutonPreviewer*       m_previewer;
-        
-        static RobotState*    m_instance;
-        
+    RobotState();
+    ~RobotState();
 
-   
+    IChassis *m_chassis;
+    DragonField *m_field;
+    std::vector<RobotStateChangeBroker *> m_brokers;
+    RobotStateChanges::GamePiece m_gamePiece;
+    RobotStateChanges::GamePhase m_gamePhase;
+
+    static RobotState *m_instance;
 };
