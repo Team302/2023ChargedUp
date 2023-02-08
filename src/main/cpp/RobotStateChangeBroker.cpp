@@ -14,8 +14,6 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#pragma once
-
 #include <vector>
 #include <RobotStateChanges.h>
 #include <RobotStateChangeBroker.h>
@@ -32,21 +30,24 @@ RobotStateChangeBroker::RobotStateChangeBroker
 
 void RobotStateChangeBroker::AddSubscriber
 (
-    IRobotStateChangeSubscriber* subscriber
+    IRobotStateChangeSubscriber* item
 )
 {
-    for (auto item : m_subscribers)
+    for (auto subscriber : m_subscribers)
     {
-        if (item == subscriber)
+        if (subscriber == item)
         {
             return;
         }
     }
-    m_subscribers.emplace_back(subscriber);
+    m_subscribers.emplace_back(item);
 }
 
 void RobotStateChangeBroker::Notify(int value)
 {
-
+    for (auto subscriber : m_subscribers)
+    {
+        subscriber->Update(m_change, value);
+    }
 }
 

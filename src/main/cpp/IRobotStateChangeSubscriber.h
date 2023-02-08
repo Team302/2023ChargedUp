@@ -21,9 +21,10 @@
 
 class IRobotStateChangeSubscriber
 {
-    IRobotStateChangeSubscriber() = default;
-    ~IRobotStateChangeSubscriber() = default;
-    
-    virtual void Update(RobotStateChanges::StateChange change, int value) = 0;
+    public:
+        IRobotStateChangeSubscriber() = default;
+        ~IRobotStateChangeSubscriber() = default;
+
+        virtual void Update(RobotStateChanges::StateChange change, int value) = 0;
 };
 
