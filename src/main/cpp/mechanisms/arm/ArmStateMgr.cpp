@@ -62,6 +62,8 @@ ArmStateMgr* ArmStateMgr::GetInstance()
 ArmStateMgr::ArmStateMgr() : StateMgr(),
                                      m_arm(MechanismFactory::GetMechanismFactory()->GetArm()),
                                      m_prevState(ARM_STATE::STARTING_POSITION_ROTATE),
+                                     m_currentState(ARM_STATE::STARTING_POSITION_ROTATE),
+                                     m_targetState(ARM_STATE::STARTING_POSITION_ROTATE),
                                      m_fTerm(0.0)
 {
     map<string, StateStruc> stateMap;
@@ -95,24 +97,17 @@ int ArmStateMgr::GetCurrentStateParam
     return StateMgr::GetCurrentStateParam(currentParams);
 }
 
-/// @brief Check if driver inputs or sensors trigger a state transition
-void ArmStateMgr::CheckForStateTransition()
+/// @brief Check driver inputs for a state transition
+void ArmStateMgr::CheckForGamepadTransitions()
 {
-
     if ( m_arm != nullptr )
-    {    
-        auto currentState = static_cast<ARM_STATE>(GetCurrentState());
-        auto targetState = currentState;
+    {
+        m_currentState = static_cast<ARM_STATE>(GetCurrentState());
+        m_targetState = m_currentState;
 
-        //========= Do not erase this line and the one below it. They are used by the code generator ========		
-		//========= Hand modified code start section 0 ========
-	
-     	auto controller = TeleopControl::GetInstance();
+        auto controller = TeleopControl::GetInstance();
         if(controller != nullptr)
         {
-            //If we are hitting limit switch, reset position
-            m_arm->ResetIfArmDown();
-
             double armRotateValue = controller->GetAxisValue(TeleopControlFunctions::MANUAL_ROTATE);
 
             Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Counts"), m_arm->GetMotor()->GetCounts());
@@ -120,66 +115,92 @@ void ArmStateMgr::CheckForStateTransition()
 
             if(abs(armRotateValue) > 0.05)
             {
-                targetState = ARM_STATE::MANUAL_ROTATE;
+                m_targetState = ARM_STATE::MANUAL_ROTATE;
                 m_arm->UpdateTarget(0.3 * armRotateValue);
                 Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("RotateValue"), armRotateValue);
                 Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("ArmRotatePercentage"), m_arm->GetTarget());
 
                 //To do preveious state for, we need to hold the current position in degrees and then set the target to that, current it would set the target to 0 degrees
-                //m_prevState = targetState;
+                //m_prevState = m_targetState;
             }
             else if (controller->IsButtonPressed(TeleopControlFunctions::HOLD_POSITION_ROTATE))
             {
-                targetState = ARM_STATE::HOLD_POSITION_ROTATE;
-                m_prevState = targetState;
+                m_targetState = ARM_STATE::HOLD_POSITION_ROTATE;
+                m_prevState = m_targetState;
             }
             else if (controller->IsButtonPressed(TeleopControlFunctions::CONE_BACKROW_ROTATE))
             {
-                targetState = ARM_STATE::CONE_BACKROW_ROTATE;
-                m_prevState = targetState;
+                m_targetState = ARM_STATE::CONE_BACKROW_ROTATE;
+                m_prevState = m_targetState;
             }
             else if (controller->IsButtonPressed(TeleopControlFunctions::CONE_BACKROW_ROTATE))
             {
-                targetState = ARM_STATE::CONE_BACKROW_ROTATE;
-                m_prevState = targetState;
+                m_targetState = ARM_STATE::CONE_BACKROW_ROTATE;
+                m_prevState = m_targetState;
             }
             else if (controller->IsButtonPressed(TeleopControlFunctions::CUBE_MIDROW_ROTATE))
             {
-                targetState = ARM_STATE::CUBE_MIDROW_ROTATE;
-                m_prevState = targetState;
+                m_targetState = ARM_STATE::CUBE_MIDROW_ROTATE;
+                m_prevState = m_targetState;
             }
             else if (controller->IsButtonPressed(TeleopControlFunctions::CONE_MIDROW_ROTATE))
             {
-                targetState = ARM_STATE::CONE_MIDROW_ROTATE;
-                m_prevState = targetState;
+                m_targetState = ARM_STATE::CONE_MIDROW_ROTATE;
+                m_prevState = m_targetState;
             }
             else if (controller->IsButtonPressed(TeleopControlFunctions::HUMAN_PLAYER_STATION_ROTATE))
             {
-                targetState = ARM_STATE::HUMAN_PLAYER_STATION_ROTATE;
-                m_prevState = targetState;
+                m_targetState = ARM_STATE::HUMAN_PLAYER_STATION_ROTATE;
+                m_prevState = m_targetState;
             }
             else if (controller->IsButtonPressed(TeleopControlFunctions::STARTING_POSITION_ROTATE))
             {
-                targetState = ARM_STATE::STARTING_POSITION_ROTATE;
-                m_prevState = targetState;
+                m_targetState = ARM_STATE::STARTING_POSITION_ROTATE;
+                m_prevState = m_targetState;
             }
             else if (controller->IsButtonPressed(TeleopControlFunctions::FLOOR_POSITION_ROTATE))
             {
-                targetState = ARM_STATE::FLOOR_POSITION_ROTATE;
-                m_prevState = targetState;
+                m_targetState = ARM_STATE::FLOOR_POSITION_ROTATE;
+                m_prevState = m_targetState;
             }
             else
             {
-                targetState = ARM_STATE::HOLD_POSITION_ROTATE;
+                m_targetState = ARM_STATE::HOLD_POSITION_ROTATE;
             }
         }
+    }
+}
 
-        if (targetState != currentState)
+/// @brief Check sensors for a state transition
+void ArmStateMgr::CheckForSensorTransitions()
+{
+    if ( m_arm != nullptr )
+    {
+        m_currentState = static_cast<ARM_STATE>(GetCurrentState());
+        m_targetState = m_currentState;
+
+        //If we are hitting limit switch, reset position
+        m_arm->ResetIfArmDown();
+
+        //Check arm angle and run any states dependent on it
+    }
+}
+
+/// @brief Check if driver inputs or sensors trigger a state transition
+void ArmStateMgr::CheckForStateTransition()
+{
+
+    CheckForSensorTransitions();
+    if (m_checkGamePadTransitions)
+    {
+        CheckForGamepadTransitions();
+    }
+
+        if (m_targetState != m_currentState)
         {
-            SetCurrentState(targetState, true);
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Target"), m_arm->GetTarget());
-
-            if(targetState == ARM_STATE::HOLD_POSITION_ROTATE)
+            SetCurrentState(m_targetState, true);
+             
+            if(m_targetState == ARM_STATE::HOLD_POSITION_ROTATE)
             {
                 //Get Arm Target from m_prevState
                 m_arm->UpdateTarget(dynamic_cast<Mech1IndMotorState*>(GetStateVector()[m_prevState])->GetCurrentTarget()); //Get the target of the previous state by referencing the state vector
@@ -193,10 +214,6 @@ void ArmStateMgr::CheckForStateTransition()
             }
             
         }
-
-		//========= Hand modified code end section 0 ========
-        //========= Do not erase this line and the one above it. They are used by the code generator =======
-    }
 }
 
 

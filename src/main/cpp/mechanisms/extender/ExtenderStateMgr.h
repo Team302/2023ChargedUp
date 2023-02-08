@@ -78,6 +78,8 @@ FLOOR_EXTEND
         ) override;
 
         void CheckForStateTransition() override;
+        void CheckForSensorTransitions() override;
+        void CheckForGamepadTransitions() override;
 		
     private:
 	
@@ -87,6 +89,8 @@ FLOOR_EXTEND
         Extender*                                m_extender;
 
         EXTENDER_STATE                           m_prevState;
+        EXTENDER_STATE                           m_currentState;
+        EXTENDER_STATE                           m_targetState;
 
 		static ExtenderStateMgr*	m_instance;
 

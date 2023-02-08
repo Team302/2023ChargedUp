@@ -93,6 +93,9 @@ class DragonSolenoid
             bool reversed
         );
 
+        double m_minPressure = 60.0; //PSI
+        double m_maxPressure = 120.0; //PSI
+
         std::string                             m_networkTableName;
         SolenoidUsage::SOLENOID_USAGE           m_usage;
         frc::Solenoid*                          m_solenoid;
