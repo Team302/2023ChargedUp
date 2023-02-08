@@ -115,8 +115,8 @@ void ArmStateMgr::CheckForGamepadTransitions()
 
             if(abs(armRotateValue) > 0.05)
             {
-                m_targetState = ARM_STATE::MANUAL_ROTATE;
-                m_arm->UpdateTarget(-0.3 * armRotateValue);
+                targetState = ARM_STATE::MANUAL_ROTATE;
+                m_arm->UpdateTarget(0.3 * armRotateValue);
                 Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("RotateValue"), armRotateValue);
                 Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("ArmRotatePercentage"), m_arm->GetTarget());
 
@@ -209,7 +209,7 @@ void ArmStateMgr::CheckForStateTransition()
                 {
                     //Upated ControlDate F term based on Angle of the arm (Create funciton based on data on arm and eventually add extenstion)
                     //m_fTerm = find voltage needed to hold arm up at different angles, eventually add extendor 
-                    //m_arm->SetControlConstants(m_arm->GetMotor().get()->GetID(),);
+                    //m_arm->GetMotor().get()->SetControlConstants(0,);
                 }
             }
             
