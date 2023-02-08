@@ -115,7 +115,7 @@ void ArmStateMgr::CheckForGamepadTransitions()
 
             if(abs(armRotateValue) > 0.05)
             {
-                targetState = ARM_STATE::MANUAL_ROTATE;
+                m_targetState = ARM_STATE::MANUAL_ROTATE;
                 m_arm->UpdateTarget(0.3 * armRotateValue);
                 Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("RotateValue"), armRotateValue);
                 Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("ArmRotatePercentage"), m_arm->GetTarget());
