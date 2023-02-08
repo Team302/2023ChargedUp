@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2023 Lake Orion Robotics FIRST Team 302 
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -16,11 +16,12 @@
 
 #pragma once
 #include <mechanisms/LEDS/LEDStates.h>
+#include <IRobotStateChangeSubscriber.h>
 
-class DriverFeedback
+class DriverFeedback : public IRobotStateChangeSubscriber
 {
-	public:
-    LEDStates* m_LEDStates = LEDStates::GetInstance();
+public:
+    LEDStates *m_LEDStates = LEDStates::GetInstance();
     void UpdateFeedback();
     void AlignedWithConeNode(bool AlignedWithConeNode);
     void AlignedWithCubeNode(bool AlignedWithCubeNode);
@@ -29,32 +30,33 @@ class DriverFeedback
     void WantCube(bool WantCube);
     void GamePieceReadyToPickUp(bool GamePieceReadyToPickUp);
     void RunLEDS();
-    static DriverFeedback* GetInstance();
+    static DriverFeedback *GetInstance();
 
     void AutonomousEnabled(bool enabled);
     void TeleopEnabled(bool enabled);
 
     void UpdateLEDStates();
 
-    
-    
-    private:
-    
+    void Update(RobotStateChanges::StateChange change, int value) override;
+
+private:
+    DriverFeedback();
+    ~DriverFeedback() = default;
+
     bool m_AutonomousEnabled;
     bool m_TeleopEnabled;
 
     enum DriverFeedbackStates
     {
-     ALIGNED_WITH_CONE_NODE,
-     ALIGNED_WITH_CUBE_NODE,
-     GAME_PIECE_IN_GRABBER,
-     WANT_CUBE,
-     WANT_CONE,
-     GAME_PIECE_READY_TO_PICK_UP,
-     NONE
-     
-    };
+        ALIGNED_WITH_CONE_NODE,
+        ALIGNED_WITH_CUBE_NODE,
+        GAME_PIECE_IN_GRABBER,
+        WANT_CUBE,
+        WANT_CONE,
+        GAME_PIECE_READY_TO_PICK_UP,
+        NONE
 
+    };
 
     bool m_WantCube = false;
     bool m_WantCone = false;
@@ -63,12 +65,7 @@ class DriverFeedback
     bool m_AlignedWithConeNode = false;
     bool m_AlignedWithCubeNode = false;
 
-    static DriverFeedback* m_instance;
+    static DriverFeedback *m_instance;
 
     DriverFeedbackStates currentState = DriverFeedbackStates::NONE;
-
-
 };
-
-
-

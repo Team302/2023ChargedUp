@@ -14,6 +14,9 @@
 //====================================================================================================================================================
 
 #include <mechanisms/DriverFeedback/DriverFeedback.h>
+#include <RobotState.h>
+#include <RobotStateChanges.h>
+#include <IRobotStateChangeSubscriber.h>
 
 DriverFeedback *DriverFeedback::m_instance = nullptr;
 
@@ -136,4 +139,25 @@ void DriverFeedback::AutonomousEnabled(bool enabled)
 void DriverFeedback::TeleopEnabled(bool enabled)
 {
     m_TeleopEnabled = enabled;
+}
+
+DriverFeedback::DriverFeedback() : IRobotStateChangeSubscriber()
+{
+    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::DesiredGamePiece);
+    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::GameState);
+}
+void DriverFeedback::Update(RobotStateChanges::StateChange change, int value)
+{
+    if (change == RobotStateChanges::DesiredGamePiece)
+    {
+        auto gamepiece = static_cast<RobotStateChanges::GamePiece>(value);
+        m_WantCube = gamepiece == RobotStateChanges::Cube;
+        m_WantCone = gamepiece == RobotStateChanges::Cone;
+    }
+    else if (change == RobotStateChanges::GameState)
+    {
+        auto state = static_cast<RobotStateChanges::GamePhase>(value);
+        m_AutonomousEnabled = state == RobotStateChanges::Auton;
+        m_TeleopEnabled = state == RobotStateChanges::Teleop;
+    }
 }
