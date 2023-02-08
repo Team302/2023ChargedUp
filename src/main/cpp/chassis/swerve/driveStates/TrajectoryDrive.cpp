@@ -27,7 +27,7 @@ using frc::Pose2d;
 TrajectoryDrive::TrajectoryDrive(RobotDrive* robotDrive) : RobotDrive(),
     m_trajectory(),
     m_robotDrive(robotDrive),
-    m_holonomicController(frc2::PIDController{10, 0.5, 0},
+    m_holonomicController(frc2::PIDController{1.0, 0.5, 0},
                           frc2::PIDController{1.0, 0.5, 0},
                           frc::ProfiledPIDController<units::radian>{0.0,0.0, 0,
                           frc::TrapezoidProfile<units::radian>::Constraints{0_rad_per_s, 0_rad_per_s / 1_s}}),
@@ -141,14 +141,13 @@ bool TrajectoryDrive::IsDone()
         auto curPos = ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose();
 
         // Check if the current pose and the trajectory's final pose are the same
-        /*
+        
         if (IsSamePose(curPos, m_finalState.pose, 10.0))
         {
             isDone = true;
             m_whyDone = "Current Pose = Trajectory final pose";
             Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "trajectory drive", "why done", m_whyDone);   
         }
-        */
         
     }
     else

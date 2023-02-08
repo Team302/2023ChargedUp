@@ -31,7 +31,7 @@
                />
     <!--drive to charing station-->
     <primitive id="DRIVE_PATH"
-               pathname="BlueHPOne3.wpilib.json"
+               pathname="BlueHPTwo3.wpilib.json"
                headingOption="SPECIFIED_ANGLE"
                heading="0"
                time="5.0"
