@@ -21,7 +21,6 @@
 class DriverFeedback : public IRobotStateChangeSubscriber
 {
 public:
-    LEDStates *m_LEDStates = LEDStates::GetInstance();
     void UpdateFeedback();
 
     static DriverFeedback *GetInstance();
@@ -49,6 +48,7 @@ private:
 
     };
 
+    LEDStates *m_LEDStates = LEDStates::GetInstance();
     bool m_WantCube = false;
     bool m_WantCone = false;
     bool m_GamePieceReadyToPickUp = false;

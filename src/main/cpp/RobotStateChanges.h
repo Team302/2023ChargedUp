@@ -44,14 +44,16 @@ public:
     enum PlacementLocation
     {
         HPGridLeftPole,
-        HPGridCenterShelf,
         HPGridRightPole,
         CoopGridLeftPole,
-        CoopGridCenterShelf,
         CoopGridRightPole,
         WallGridLeftPole,
+        WallGridRightPole,
+        PoleShelfTransition,
+        HPGridCenterShelf,
+        CoopGridCenterShelf,
         WallGridCenterShelf,
-        WallGridRightPole
+        MaxLocations
     };
 
     enum PlacementDepth

@@ -38,9 +38,8 @@ RobotState *RobotState::GetInstance()
 }
 
 RobotState::RobotState() : m_chassis(nullptr),
-                           m_field(nullptr),
                            m_brokers(),
-                           m_gamePiece(RobotStateChanges::GamePiece::None),
+                           m_gamePiece(RobotStateChanges::GamePiece::Cone),
                            m_gamePhase(RobotStateChanges::Disabled)
 {
     m_brokers.reserve(RobotStateChanges::LoopCounter);
@@ -63,8 +62,6 @@ RobotState::~RobotState()
 
 void RobotState::Init()
 {
-    m_field = DragonField::GetInstance();
-
     auto factory = ChassisFactory::GetChassisFactory();
     m_chassis = factory->GetIChassis();
 }
@@ -77,12 +74,12 @@ void RobotState::Run()
         m_chassis->UpdateOdometry();
     }
     // TODO: Add reading of telop control to switch game piece desired
-
-    // TODO: move to DriveTeamFeedback
-    if (m_field != nullptr)
+    auto controller = TeleopControl::GetInstance();
+    if (controller != nullptr)
     {
-        m_field->UpdateRobotPosition(m_chassis->GetPose());
+        m_gamePiece = controller->IsButtonPressed(TeleopControlFunctions::)
     }
+    PublishStateChange(RobotStateChanges::DesiredGamePiece, RobotStateChanges::Cube);
 }
 
 void RobotState::RegisterForStateChanges(
@@ -121,7 +118,7 @@ void RobotState::PublishGameStateChanges()
             gameState = RobotStateChanges::Teleop;
         }
     }
-    else
+    else if (gameState != RobotStateChanges::Disabled)
     {
         gameState = RobotStateChanges::Disabled;
     }

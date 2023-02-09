@@ -21,7 +21,6 @@
 
 #include <RobotStateChanges.h>
 
-class DragonField;
 class IChassis;
 class IRobotStateChangeSubscriber;
 class RobotStateChangeBroker;
@@ -42,7 +41,6 @@ private:
     ~RobotState();
 
     IChassis *m_chassis;
-    DragonField *m_field;
     std::vector<RobotStateChangeBroker *> m_brokers;
     RobotStateChanges::GamePiece m_gamePiece;
     RobotStateChanges::GamePhase m_gamePhase;
