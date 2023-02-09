@@ -42,6 +42,7 @@ using namespace std;
 
 ArmStateMgr *ArmStateMgr::m_instance = nullptr;
 ArmStateMgr *ArmStateMgr::GetInstance()
+
 {
     if (ArmStateMgr::m_instance == nullptr)
     {
@@ -59,8 +60,7 @@ ArmStateMgr::ArmStateMgr() : StateMgr(),
                              m_arm(MechanismFactory::GetMechanismFactory()->GetArm()),
                              m_prevState(ARM_STATE::STARTING_POSITION_ROTATE),
                              m_currentState(ARM_STATE::STARTING_POSITION_ROTATE),
-                             m_targetState(ARM_STATE::STARTING_POSITION_ROTATE),
-                             m_error(0.0)
+                             m_targetState(ARM_STATE::STARTING_POSITION_ROTATE)
 {
     map<string, StateStruc> stateMap;
     stateMap["HOLD_POSITION_ROTATE"] = m_hold_position_rotateState;
@@ -97,18 +97,14 @@ void ArmStateMgr::CheckForGamepadTransitions()
     {
         m_currentState = static_cast<ARM_STATE>(GetCurrentState());
         m_targetState = m_currentState;
-
-        m_error = m_arm->GetTarget() - m_arm->GetPositionDegrees().to<double>();
-
         auto controller = TeleopControl::GetInstance();
+
         if (controller != nullptr)
         {
             double armRotateValue = controller->GetAxisValue(TeleopControlFunctions::MANUAL_ROTATE);
 
             Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Counts"), m_arm->GetMotor()->GetCounts());
             Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Arm Angle Mech"), m_arm->GetPositionDegrees().to<double>());
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Erro"), m_error);
-
             if (abs(armRotateValue) > 0.05)
             {
                 m_targetState = ARM_STATE::MANUAL_ROTATE;
@@ -118,11 +114,6 @@ void ArmStateMgr::CheckForGamepadTransitions()
 
                 // To do preveious state for, we need to hold the current position in degrees and then set the target to that, current it would set the target to 0 degrees
                 // m_prevState = m_targetState;
-            }
-            else if (controller->IsButtonPressed(TeleopControlFunctions::HOLD_POSITION_ROTATE))
-            {
-                m_targetState = ARM_STATE::HOLD_POSITION_ROTATE;
-                m_prevState = m_targetState;
             }
             else if (controller->IsButtonPressed(TeleopControlFunctions::CONE_BACKROW_ROTATE))
             {
@@ -163,6 +154,11 @@ void ArmStateMgr::CheckForGamepadTransitions()
             {
                 m_targetState = ARM_STATE::HOLD_POSITION_ROTATE;
             }
+            // If arm is at target and the prev state hasn't changed then stay in hold
+            if (ArmState().AtTarget() && m_prevState == m_targetState)
+            {
+                m_targetState = ARM_STATE::HOLD_POSITION_ROTATE;
+            }
         }
     }
 }
@@ -200,14 +196,18 @@ void ArmStateMgr::CheckForStateTransition()
 
         if (m_targetState == ARM_STATE::HOLD_POSITION_ROTATE)
         {
-            // Get Arm Target from m_prevState
-            if (m_arm->GetPositionDegrees().to<double>() > 27.5) // Floor arm angle
+            // holding currently based on just "F term" need to update to funciton with extender potentially.
+            if (m_arm->GetPositionDegrees().to<double>() > 50.0)
             {
-                m_arm->UpdateTarget(0.0485); // Get the target of the previous state by referencing the state vector
+                m_arm->UpdateTarget(0.0495);
+            }
+            else if (m_arm->GetPositionDegrees().to<double>() > 27.5)
+            {
+                m_arm->UpdateTarget(0.0485);
             }
             else if (m_arm->GetPositionDegrees().to<double>() > 4.5) // Floor arm angle
             {
-                m_arm->UpdateTarget(0.0425); // Get the target of the previous state by referencing the state vector
+                m_arm->UpdateTarget(0.0425);
             }
         }
     }

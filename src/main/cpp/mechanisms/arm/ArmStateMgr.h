@@ -86,8 +86,6 @@ private:
     ARM_STATE m_currentState;
     ARM_STATE m_targetState;
 
-    double m_error;
-
     static ArmStateMgr *m_instance;
 
     const StateStruc m_hold_position_rotateState = {ARM_STATE::HOLD_POSITION_ROTATE, "HOLD_POSITION_ROTATE", StateType::ARM_STATE, false};
