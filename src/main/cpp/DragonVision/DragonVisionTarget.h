@@ -15,36 +15,37 @@
 //====================================================================================================================================================
 
 #pragma once
-#include <string>
-#include <State.h>
-#include <hw/DragonLimelight.h>
-#include <DragonVision/DragonVisionTarget.h>
+#include <units/angle.h>
+#include <units/length.h>
+#include <units/time.h>
 
-class DragonLimelight;
-class DragonVision : public State
+class DragonVisionTarget
 {
-    public:
-        static DragonVision* GetDragonVision();
+public:
+    enum TYPE
+    {
+        RETRO_REFLECTIVE,
+        APRIL_TAG,
+        CUBE,
+        CONE,
+        MAX_TYPE
+    };
 
-    void Init() override;
-    void Run() override;
-    void Exit() override;
-    bool AtTarget() const override;
+    DragonVisionTarget(TYPE targetType,
+                       units::length::inch_t distanceFromTarget,
+                       units::angle::degree_t angleFromTarget,
+                       units::time::millisecond_t latency);
 
-    units::length::inch_t GetDistanceFromTarget() const;
-    units::angle::degree_t GetAngleFromTarget() const;
+    ~DragonVisionTarget() = default;
 
-    int GetRobotPosition() const;
-   
+    units::length::inch_t getDistanceFromTarget();
+    units::angle::degree_t getAngleFromTarget();
+    TYPE getTargetType();
+    units::time::millisecond_t getLatency();
+
 private:
-    
-    DragonVision(std::string     stateName,
-                int              stateId);
-    ~DragonVision() = default;
-
-    static DragonVision*	m_dragonVision;
-    DragonLimelight*           m_frontDragonLimelight;
-    
+    units::length::inch_t m_distanceFromTarget;
+    units::angle::degree_t m_angleFromTarget;
+    TYPE m_targetType;
+    units::time::millisecond_t m_latency;
 };
-
-
