@@ -105,10 +105,10 @@ State *StateMgrHelper::CreateState(
     auto target = targetData->GetTarget();
     // auto secondaryTarget = targetData->GetSecondTarget();
     auto solenoidState = targetData->GetSolenoidState();
-    auto solenoid2State = targetData->GetSolenoidState();
-    // auto robotPitch = targetData->GetRobotPitch();
-    // auto function1Coeff = targetData->GetFunction1Coeff();
-    // auto function2Coeff = targetData->GetFunction2Coeff();
+    // auto solenoid2State = targetData->GetSolenoidState();
+    //  auto robotPitch = targetData->GetRobotPitch();
+    //  auto function1Coeff = targetData->GetFunction1Coeff();
+    //  auto function2Coeff = targetData->GetFunction2Coeff();
     auto type = stateInfo.type;
     auto xmlString = stateInfo.xmlIdentifier;
     auto id = stateInfo.id;
@@ -125,7 +125,6 @@ State *StateMgrHelper::CreateState(
         thisState = new ArmState(xmlString, id, controlData, target);
         break;
 
-
     case StateType::MANUAL_ARM_STATE:
         thisState = new ArmManualState(xmlString, id, controlData, target);
         break;
@@ -139,7 +138,7 @@ State *StateMgrHelper::CreateState(
         break;
 
     case StateType::GRABBER_STATE:
-        thisState = new GrabberState(xmlString, id, solenoidState, solenoid2State);
+        thisState = new GrabberState(xmlString, id, solenoidState);
         break;
 
     default:
