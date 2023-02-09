@@ -34,6 +34,8 @@
 #include <mechanisms/arm/arm.h>
 #include <mechanisms/arm/armState.h>
 #include <mechanisms/arm/armStateMgr.h>
+#include <robotstate/RobotState.h>
+#include <robotstate/RobotStateChanges.h>
 #include <utils/logging/Logger.h>
 
 // Third Party Includes
@@ -180,6 +182,7 @@ void ArmStateMgr::CheckForStateTransition()
     if (m_targetState != m_currentState)
     {
         SetCurrentState(m_targetState, true);
+        RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmRotateState, m_targetState);
 
         if (m_targetState == ARM_STATE::HOLD_POSITION_ROTATE)
         {
