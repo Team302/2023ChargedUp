@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-/// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+/// Copyright 2022 Lake Orion Robotics FIRST Team 302
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 /// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -13,62 +13,43 @@
 /// OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-
 // C++ Includes
-
 
 // FRC includes
 
 // Team 302 includes
+#include <DragonVision/DragonVisionTarget.h>
 
-
-#include <DragonVision/DragonVision.h>
-#include <hw\factories\LimelightFactory.h>
-
-#include <string>
 // Third Party Includes
 
 using namespace std;
-DragonVision* DragonVision::m_dragonVision = nullptr;
-DragonVision* DragonVision::GetDragonVision
-(
-	
-)
+
+DragonVisionTarget::DragonVisionTarget(TYPE targetType,
+									   units::length::inch_t distanceFromTarget,
+									   units::angle::degree_t angleFromTarget,
+									   units::time::millisecond_t latency)
 {
-	if ( DragonVision::m_dragonVision == nullptr )
-	{
-		DragonVision::m_dragonVision = new DragonVision(std::string("DragonVision"), int(-1));
-	}
-	return DragonVision::m_dragonVision;
+	m_targetType = targetType;
+	m_distanceFromTarget = distanceFromTarget;
+	m_angleFromTarget = angleFromTarget;
+	m_latency = latency;
 }
 
-//state functions
-
-
-DragonVision::DragonVision(std::string stateName, int stateId): State(stateName, stateId),
-						   m_frontDragonLimelight(LimelightFactory::GetLimelightFactory()->GetLimelight())				
+units::length::inch_t DragonVisionTarget::getDistanceFromTarget()
 {
-	
-}
-void DragonVision::Init() 
-{
-
-}
-void DragonVision::Exit() 
-{
-
-}
-bool DragonVision::AtTarget() const
-{
-	return false;
-}
-void DragonVision::Run() 
-{
-
+	return m_distanceFromTarget;
 }
 
-int DragonVision::GetRobotPosition()  const
+units::angle::degree_t DragonVisionTarget::getAngleFromTarget()
 {
-	return 0;
+	return m_angleFromTarget;
 }
 
+DragonVisionTarget::TYPE DragonVisionTarget::getTargetType()
+{
+	return m_targetType;
+}
+units::time::millisecond_t DragonVisionTarget::getLatency()
+{
+	return m_latency;
+}
