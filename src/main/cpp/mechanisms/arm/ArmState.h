@@ -32,7 +32,7 @@ class Arm;
 class ArmState : public Mech1IndMotorState
 {
 public:
-	ArmState();
+	ArmState() = delete;
 	~ArmState() = default;
 	ArmState(
 		std::string stateName,

@@ -155,7 +155,7 @@ void ArmStateMgr::CheckForGamepadTransitions()
                 m_targetState = ARM_STATE::HOLD_POSITION_ROTATE;
             }
             // If arm is at target and the prev state hasn't changed then stay in hold
-            if (ArmState().AtTarget() && m_prevState == m_targetState)
+            if (GetCurrentStatePtr()->AtTarget() && m_prevState == m_targetState)
             {
                 m_targetState = ARM_STATE::HOLD_POSITION_ROTATE;
             }
