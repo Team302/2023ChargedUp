@@ -1,6 +1,5 @@
-
 //====================================================================================================================================================
-// Copyright 2023 Lake Orion Robotics FIRST Team 302 
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -14,51 +13,28 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#pragma once
-#include <mechanisms/LEDS/LEDStates.h>
+#include <mechanisms/extender/ExtenderState.h>
 
-class DriverFeedback
+class ControlData;
+class Extender;
+class TeleopControl;
+
+class ExtenderManualState : public ExtenderState
 {
-	public:
-    LEDStates* m_LEDStates = LEDStates::GetInstance();
-    void UpdateFeedback();
-    void isAlignedWithConeNode(bool AlignedWithConeNode);
-    void isAlignedWithCubeNode(bool AlignedWithCubeNode);
-    void isGamePieceInGrabber(bool GamePieceInGrabber);
-    void isWantCone(bool WantCone);
-    void isWantCube(bool WantCube);
-    void isGamePieceReadyToPickUp(bool GamePieceReadyToPickUp);
-    static DriverFeedback* GetInstance();
+public:
+    ExtenderManualState() = delete;
+    ExtenderManualState(std::string stateName,
+                        int stateId,
+                        ControlData *control0,
+                        double target0);
 
+    ~ExtenderManualState() = default;
 
+    void Init() override;
+    void Run() override;
+    bool AtTarget() const override;
 
-    private:
-    enum DriverFeedbackStates
-    {
-     ALIGNED_WITH_CONE_NODE,
-     ALIGNED_WITH_CUBE_NODE,
-     GAME_PIECE_IN_GRABBER,
-     WANT_CUBE,
-     WANT_CONE,
-     GAME_PIECE_READY_TO_PICK_UP,
-     NONE
-     
-    };
-
-
-    bool m_WantCube = false;
-    bool m_WantCone = false;
-    bool m_GamePieceReadyToPickUp = false;
-    bool m_GamePieceInGrabber = false;
-    bool m_AlignedWithConeNode = false;
-    bool m_AlignedWithCubeNode = false;
-
-    static DriverFeedback* m_instance;
-
-    DriverFeedbackStates currentState = DriverFeedbackStates::NONE;
-
-
+private:
+    Extender *m_extender;
+    TeleopControl *m_controller;
 };
-
-
-

@@ -28,8 +28,10 @@
 
 //@ADDMech Add includes for mech states and mech state mgr
 #include <mechanisms/arm/ArmState.h>
+#include <mechanisms/arm/ArmManualState.h>
 #include <mechanisms/arm/ArmStateMgr.h>
 #include <mechanisms/extender/ExtenderState.h>
+#include <mechanisms/extender/ExtenderManualState.h>
 #include <mechanisms/extender/ExtenderStateMgr.h>
 #include <mechanisms/grabber/GrabberState.h>
 #include <mechanisms/grabber/GrabberStateMgr.h>
@@ -99,14 +101,14 @@ State *StateMgrHelper::CreateState(
     MechanismTargetData *targetData)
 {
     auto controlData = targetData->GetController();
-    auto controlData2 = targetData->GetController2();
+    // auto controlData2 = targetData->GetController2();
     auto target = targetData->GetTarget();
-    auto secondaryTarget = targetData->GetSecondTarget();
+    // auto secondaryTarget = targetData->GetSecondTarget();
     auto solenoidState = targetData->GetSolenoidState();
     auto solenoid2State = targetData->GetSolenoidState();
-    auto robotPitch = targetData->GetRobotPitch();
-    auto function1Coeff = targetData->GetFunction1Coeff();
-    auto function2Coeff = targetData->GetFunction2Coeff();
+    // auto robotPitch = targetData->GetRobotPitch();
+    // auto function1Coeff = targetData->GetFunction1Coeff();
+    // auto function2Coeff = targetData->GetFunction2Coeff();
     auto type = stateInfo.type;
     auto xmlString = stateInfo.xmlIdentifier;
     auto id = stateInfo.id;
@@ -123,12 +125,21 @@ State *StateMgrHelper::CreateState(
         thisState = new ArmState(xmlString, id, controlData, target);
         break;
 
+
+    case StateType::MANUAL_ARM_STATE:
+        thisState = new ArmManualState(xmlString, id, controlData, target);
+        break;
+
     case StateType::EXTENDER_STATE:
         thisState = new ExtenderState(xmlString, id, controlData, target);
         break;
 
+    case StateType::MANUAL_EXTENDER_STATE:
+        thisState = new ExtenderManualState(xmlString, id, controlData, target);
+        break;
+
     case StateType::GRABBER_STATE:
-        thisState = new GrabberState(xmlString, id, solenoidState);
+        thisState = new GrabberState(xmlString, id, solenoidState, solenoid2State);
         break;
 
     default:

@@ -34,6 +34,8 @@
 #include <mechanisms/grabber/grabber.h>
 #include <mechanisms/grabber/grabberState.h>
 #include <mechanisms/grabber/grabberStateMgr.h>
+#include <robotstate/RobotState.h>
+#include <robotstate/RobotStateChanges.h>
 
 // Third Party Includes
 
@@ -62,6 +64,7 @@ GrabberStateMgr::GrabberStateMgr() : StateMgr(),
     map<string, StateStruc> stateMap;
     stateMap["OPEN"] = m_openState;
     stateMap["GRAB"] = m_grabState;
+
 
     Init(m_grabber, stateMap);
     if (m_grabber != nullptr)
@@ -125,6 +128,7 @@ void GrabberStateMgr::CheckForStateTransition()
         if (m_targetState != m_currentState)
         {
             SetCurrentState(m_targetState, true);
+            RobotState::GetInstance()->PublishStateChange(RobotStateChanges::GrabberState, m_targetState);
         }
     }
 }
