@@ -34,7 +34,6 @@ class GrabberState : public Mech1SolenoidState
 public:
 	GrabberState() = delete;
 	GrabberState(
-		/// @TODO: Add grabber in constructor to match Mech1SolenoidState
 		std::string stateName,
 		int stateId,
 		MechanismTargetData::SOLENOID solState);
