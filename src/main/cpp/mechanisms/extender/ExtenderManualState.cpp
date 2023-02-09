@@ -41,3 +41,8 @@ void ExtenderManualState::Run()
         m_extender->GetMotor().get()->Set(percent);
     }
 }
+
+bool ExtenderManualState::AtTarget() const
+{
+    return true;
+}

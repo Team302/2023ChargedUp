@@ -41,3 +41,8 @@ void ArmManualState::Run()
         m_arm->GetMotor().get()->Set(percent);
     }
 }
+
+bool ArmManualState::AtTarget() const
+{
+    return true;
+}
