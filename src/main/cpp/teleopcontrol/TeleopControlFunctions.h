@@ -42,10 +42,13 @@ class TeleopControlFunctions
             DRIVE_TO_SHOOTING_SPOT,
             ARCADE_THROTTLE,
             ARCADE_STEER,            
-            DRIVE_TO_COL_ONE,
-            DRIVE_TO_COL_TWO,
-            DRIVE_TO_COL_THREE,            
-
+            DRIVE_TO_WALL_GRID,
+            DRIVE_TO_COOP_GRID,
+            DRIVE_TO_HP_GRID,            
+            DRIVE_TO_HUMAN_PLAYER_RIGHT,
+            DRIVE_TO_HUMAN_PLAYER_LEFT,
+            BALANCE_MODE,
+            AUTO_BALANCE,
              //Arm states
             HOLD_POSITION_ROTATE,
             MANUAL_ROTATE,
@@ -66,6 +69,8 @@ class TeleopControlFunctions
             HUMAN_PLAYER_STATION_EXTEND,
             STARTING_POSITION_EXTEND,
             FLOOR_EXTEND,
+            FRONT_LEFT_BUMPER_TURNABOUT_POINT,
+            FRONT_RIGHT_BUMPER_TURNABOUT_POINT,
             //Grabber states
             OPEN,
             GRABBING_CONE,
@@ -73,7 +78,16 @@ class TeleopControlFunctions
             HOLDING_CONE,
             HOLDING_CUBE,
             RELEASE,
-            
+            CYCLE_GRABBER,
+            //Active intake controls?
+            INTAKE, 
+            EXPEL,
+            //notcharlie states
+            STARTING_POSITION,
+            LOW,
+            MED,
+            HIGH,
+            HUMAN_PLAYER_LEVEL,
             MAX_FUNCTIONS
         };
 };
