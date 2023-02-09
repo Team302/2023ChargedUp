@@ -30,7 +30,6 @@
 
 // Third Party Includes
 
-
 using namespace std;
 using namespace frc;
 
@@ -40,47 +39,37 @@ using namespace frc;
 #include <hw/interfaces/IDragonDistanceSensor.h>
 #include <utils/logging/Logger.h>
 
-DriveToTarget::DriveToTarget() :
-	m_sensor( nullptr ),
-	m_underDistanceCounts( 0 ),
-	m_minTimeToRun( 0 )
+DriveToTarget::DriveToTarget() : m_sensor(nullptr),
+                                 m_underDistanceCounts(0),
+                                 m_minTimeToRun(0)
 {
-    //auto factory = DistanceSensorFactory::GetFactory();
-    //if ( factory != nullptr )
-    //{
-      //  m_sensor = factory->GetSensor( IDragonSensor::SENSOR_USAGE::FORWARD_SENSOR );
-    //}
 }
 
-
-void DriveToTarget::Init
-(
-    PrimitiveParams* params
-)
+void DriveToTarget::Init(
+    PrimitiveParams *params)
 {
-    if ( m_sensor != nullptr )
+    if (m_sensor != nullptr)
     {
-        params->SetDistance( m_sensor->GetDistance() );
-	    m_minTimeToRun = 0.3;
+        params->SetDistance(m_sensor->GetDistance());
+        m_minTimeToRun = 0.3;
         m_underDistanceCounts = 0;
 
-        DriveDistance::Init( params );
+        DriveDistance::Init(params);
     }
     else
     {
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("DriveToTarget"), string("DriveToTarget"), string("No Lidar") );
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("DriveToTarget"), string("DriveToTarget"), string("No Lidar"));
     }
-
 }
 
 void DriveToTarget::Run()
 {
-    if ( m_sensor != nullptr)
+    if (m_sensor != nullptr)
     {
         DriveDistance::Run();
-        if (m_minTimeToRun <= 0) 
+        if (m_minTimeToRun <= 0)
         {
-            if ( m_sensor->GetDistance() <= MIN_CUBE_DISTANCE ) 
+            if (m_sensor->GetDistance() <= MIN_CUBE_DISTANCE)
             {
                 m_underDistanceCounts++;
             }
@@ -92,7 +81,7 @@ void DriveToTarget::Run()
 
 bool DriveToTarget::IsDone()
 {
-	bool done = m_underDistanceCounts >= UNDER_DISTANCE_COUNT_THRESHOLD;
+    bool done = m_underDistanceCounts >= UNDER_DISTANCE_COUNT_THRESHOLD;
 
-	return ( DriveDistance::IsDone() || done );
+    return (DriveDistance::IsDone() || done);
 }

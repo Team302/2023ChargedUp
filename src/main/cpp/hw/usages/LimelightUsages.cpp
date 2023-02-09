@@ -1,6 +1,5 @@
-
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -13,38 +12,49 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
-
 // C++ Includes
+#include <map>
+#include <memory>
+#include <string>
 
-// FRC Includes
+// FRC includes
 
-// Team 302 Includes
-#include <chassis/holonomic/FieldDriveUtils.h>
-#include <hw/DragonPigeon.h>
-#include <utils/ConversionUtils.h>
-
-// frc Includes
-#include <frc/kinematics/ChassisSpeeds.h>
+// Team 302 includes
+#include <hw/usages/LimelightUsages.h>
+#include <utils/logging/Logger.h>
 
 // Third Party Includes
 
-using namespace frc;
+using namespace std;
 
-/// @brief convert chassis speeds specified in Field Oriented values to Robot Values
-/// @param [in] ChassisSpeeds the desired kinemetics of the chassis in a field oriented frame
-/// @param [in] DragonPigeon gyro which has the angle the robot is facing
-/// @returns ChassisSpeeds the converted speeds in the robot frame
-ChassisSpeeds FieldDriveUtils::ConvertFieldOrientedToRobot(
-    ChassisSpeeds input,
-    DragonPigeon *pigeon)
+LimelightUsages *LimelightUsages::m_instance = nullptr;
+LimelightUsages *LimelightUsages::GetInstance()
 {
-    auto heading = pigeon != nullptr ? pigeon->GetYaw() : 0.0;
-    heading = ConversionUtils::DegreesToRadians(heading);
+    if (m_instance == nullptr)
+    {
+        m_instance = new LimelightUsages();
+    }
+    return m_instance;
+}
 
-    ChassisSpeeds output;
-    output.vx = input.vx * cos(heading) - input.vy * sin(heading);
-    output.vy = input.vx * sin(heading) + input.vy * cos(heading);
-    output.omega = input.omega;
+LimelightUsages::LimelightUsages()
+{
+    m_usageMap["MAINLIMELIGHT"] = LIMELIGHT_USAGE::PRIMARY;
+    m_usageMap["SECONDARYLIMELIGHT"] = LIMELIGHT_USAGE::SECONDARY;
+}
 
-    return output;
+LimelightUsages::~LimelightUsages()
+{
+    m_usageMap.clear();
+}
+
+LimelightUsages::LIMELIGHT_USAGE LimelightUsages::GetUsage(string usageString)
+{
+    auto it = m_usageMap.find(usageString);
+    if (it != m_usageMap.end())
+    {
+        return it->second;
+    }
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("LimelightUsages::GetUsage"), string("unknown usage"), usageString);
+    return LimelightUsages::LIMELIGHT_USAGE::UNKNOWN_USAGE;
 }
