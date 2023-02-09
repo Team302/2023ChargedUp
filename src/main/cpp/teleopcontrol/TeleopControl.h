@@ -189,7 +189,7 @@ class TeleopControl : LoggableItem
         const TeleopControlButton copilotBButton         = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::B_BUTTON, TeleopControlMappingEnums::STANDARD};
         const TeleopControlButton copilotXButton         = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::X_BUTTON, TeleopControlMappingEnums::STANDARD};
         const TeleopControlButton copilotYButton         = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::Y_BUTTON, TeleopControlMappingEnums::STANDARD};
-        const TeleopControlButton copil9tLBumper         = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::LEFT_BUMPER, TeleopControlMappingEnums::STANDARD};
+        const TeleopControlButton copilotLBumper         = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::LEFT_BUMPER, TeleopControlMappingEnums::STANDARD};
         const TeleopControlButton copilotRBumper         = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::RIGHT_BUMPER, TeleopControlMappingEnums::STANDARD};
         const TeleopControlButton copilotSelectButton    = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::SELECT_BUTTON, TeleopControlMappingEnums::STANDARD};
         const TeleopControlButton copilotStartButton     = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::START_BUTTON, TeleopControlMappingEnums::STANDARD};
@@ -339,7 +339,9 @@ class TeleopControl : LoggableItem
             {TeleopControlFunctions::HOLONOMIC_DRIVE_STRAFE, driverLJoystickX},
             {TeleopControlFunctions::HOLONOMIC_DRIVE_ROTATE, driverRJoystickX},
             {TeleopControlFunctions::MANUAL_ROTATE, extra1LJoystickY},
-            {TeleopControlFunctions::MANUAL_EXTEND_RETRACT, extra2LJoystickY}            
+            {TeleopControlFunctions::MANUAL_EXTEND_RETRACT, extra2LJoystickY},
+            {TeleopControlFunctions::HOLD_POSITION_ROTATE, copilotLJoystickY},
+            {TeleopControlFunctions::MANUAL_EXTEND_RETRACT, copilotRJoystickY}            
         };
 
 
@@ -351,11 +353,29 @@ class TeleopControl : LoggableItem
             {TeleopControlFunctions::HOLONOMIC_ROTATE_BACK, driverDPad180},
             {TeleopControlFunctions::HOLONOMIC_ROTATE_LEFT, driverDPad270},
             {TeleopControlFunctions::HOLONOMIC_ROTATE_RIGHT, driverDPad90},
-            {TeleopControlFunctions::DRIVE_TO_COL_ONE, driverXButton},
-            {TeleopControlFunctions::DRIVE_TO_COL_TWO, driverYButton},
-            {TeleopControlFunctions::DRIVE_TO_COL_THREE, driverBButton},
+            {TeleopControlFunctions::DRIVE_TO_WALL_GRID, driverXButton},
+            {TeleopControlFunctions::DRIVE_TO_COOP_GRID, driverYButton},
+            {TeleopControlFunctions::DRIVE_TO_HP_GRID, driverBButton},
             {TeleopControlFunctions::REZERO_PIGEON, driverAButton},
             {TeleopControlFunctions::HOLD_POSITION, driverRBumper},
+            {TeleopControlFunctions::BALANCE_MODE, driverBButton},
+            {TeleopControlFunctions::AUTO_BALANCE, driverLStickPressed},
+            {TeleopControlFunctions::DRIVE_TO_HUMAN_PLAYER_LEFT, driverLStickPressed},
+            {TeleopControlFunctions::DRIVE_TO_HUMAN_PLAYER_RIGHT, driverRStickPressed},
+            {TeleopControlFunctions::FRONT_LEFT_BUMPER_TURNABOUT_POINT, driverRBumper},
+            {TeleopControlFunctions::FRONT_RIGHT_BUMPER_TURNABOUT_POINT, driverLBumper},
+            {TeleopControlFunctions::HOLD_POSITION, driverStartButton},
+
+            //co-pilot controls
+
+            {TeleopControlFunctions::STARTING_POSITION_EXTEND, copilotStartButton},
+            {TeleopControlFunctions::CYCLE_GRABBER, copilotSelectButton},
+            {TeleopControlFunctions::HUMAN_PLAYER_LEVEL, copilotBButton},
+            {TeleopControlFunctions::LOW, copilotAButton},
+            {TeleopControlFunctions::MED, copilotXButton},
+            {TeleopControlFunctions::HIGH, copilotYButton},
+            {TeleopControlFunctions::OPEN, copilotLBumper},
+            {TeleopControlFunctions::RELEASE, copilotRBumper},
 
             {TeleopControlFunctions::HOLD_POSITION_ROTATE, extra1AButton},
             {TeleopControlFunctions::CUBE_BACKROW_ROTATE, extra1XButton},
@@ -373,7 +393,6 @@ class TeleopControl : LoggableItem
             {TeleopControlFunctions::CONE_MIDROW_EXTEND, extra2DPad0},
             {TeleopControlFunctions::HUMAN_PLAYER_STATION_EXTEND, extra2DPad90},
             {TeleopControlFunctions::FLOOR_EXTEND, extra2DPad270},
-            {TeleopControlFunctions::STARTING_POSITION_EXTEND, extra2DPad180},
 
             {TeleopControlFunctions::OPEN, extra3YButton},
             {TeleopControlFunctions::HOLDING_CUBE, extra3DPad0},
