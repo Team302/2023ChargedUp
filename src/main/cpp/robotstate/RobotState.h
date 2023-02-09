@@ -14,40 +14,36 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
+#pragma once
 #include <vector>
-#include <RobotStateChanges.h>
-#include <RobotStateChangeBroker.h>
-#include <IRobotStateChangeSubscriber.h>
 
-RobotStateChangeBroker::RobotStateChangeBroker
-(
-    RobotStateChanges::StateChange change
-) : m_change(change),
-    m_subscribers()
+#include <frc/DriverStation.h>
+
+#include <robotstate/RobotStateChanges.h>
+
+class IChassis;
+class IRobotStateChangeSubscriber;
+class RobotStateChangeBroker;
+
+class RobotState
 {
+public:
+    void Init();
+    void Run();
+    static RobotState *GetInstance();
+    void RegisterForStateChanges(IRobotStateChangeSubscriber *subscriber, RobotStateChanges::StateChange change);
+    void PublishStateChange(RobotStateChanges::StateChange change, int newValue);
 
-}
+private:
+    void PublishGameStateChanges();
 
-void RobotStateChangeBroker::AddSubscriber
-(
-    IRobotStateChangeSubscriber* item
-)
-{
-    for (auto subscriber : m_subscribers)
-    {
-        if (subscriber == item)
-        {
-            return;
-        }
-    }
-    m_subscribers.emplace_back(item);
-}
+    RobotState();
+    ~RobotState();
 
-void RobotStateChangeBroker::Notify(int value)
-{
-    for (auto subscriber : m_subscribers)
-    {
-        subscriber->Update(m_change, value);
-    }
-}
+    IChassis *m_chassis;
+    std::vector<RobotStateChangeBroker *> m_brokers;
+    RobotStateChanges::GamePiece m_gamePiece;
+    RobotStateChanges::GamePhase m_gamePhase;
 
+    static RobotState *m_instance;
+};

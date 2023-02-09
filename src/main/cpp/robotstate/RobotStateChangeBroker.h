@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2023 Lake Orion Robotics FIRST Team 302 
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -15,31 +15,23 @@
 //====================================================================================================================================================
 
 #pragma once
-#include <mechanisms/LEDS/LED.h>
 
+#include <vector>
+#include <robotstate/RobotStateChanges.h>
+#include <robotstate/IRobotStateChangeSubscriber.h>
 
-class LEDStates
+class RobotStateChangeBroker
 {
-	public:
-    
-    void LEDsOff();
-    void ResetVariables();
-    void ChaserPattern(LED::Colors c);
-    void BlinkingPattern(LED::Colors c);
-    void SolidColorPattern(LED::Colors c);
-    void AlternatingBlinkingPattern(LED::Colors c);
-    void AlternatingBlinkingPattern(LED::Colors c1, LED::Colors c2);
-    void ClosingInChaserPattern(LED::Colors c);
-    LED* m_LED = LED::GetInstance();
-    static LEDStates* GetInstance();
+public:
+	RobotStateChangeBroker() = delete;
+	RobotStateChangeBroker(RobotStateChanges::StateChange change);
+	~RobotStateChangeBroker() = default;
 
-    private:
-    
-    int loopThroughIndividualLEDs = -1;
-    int colorLoop = 0;
-    int timer;
-    static LEDStates* m_instance;
+	void AddSubscriber(IRobotStateChangeSubscriber *subscriber);
+
+	void Notify(int value);
+
+private:
+	RobotStateChanges::StateChange m_change;
+	std::vector<IRobotStateChangeSubscriber *> m_subscribers;
 };
-
-
-

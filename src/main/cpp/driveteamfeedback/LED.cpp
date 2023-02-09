@@ -14,49 +14,47 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#pragma once
-#include <mechanisms/LEDS/LEDStates.h>
-#include <IRobotStateChangeSubscriber.h>
+#include <driveteamfeedback/LED.h>
 
-class DriverFeedback : public IRobotStateChangeSubscriber
+LED::LED(int PWMport)
 {
-public:
-    void UpdateFeedback();
+    m_led = new frc::AddressableLED(PWMport);
+    m_led->SetLength(kLength);
+    m_led->SetData(m_ledBuffer);
+    m_led->Start();
+}
+LED *LED::m_instance = nullptr;
 
-    static DriverFeedback *GetInstance();
-
-    void UpdateLEDStates();
-
-    void Update(RobotStateChanges::StateChange change, int value) override;
-
-private:
-    DriverFeedback();
-    ~DriverFeedback() = default;
-
-    bool m_AutonomousEnabled;
-    bool m_TeleopEnabled;
-
-    enum DriverFeedbackStates
+LED *LED::GetInstance()
+{
+    if (LED::m_instance == nullptr)
     {
-        ALIGNED_WITH_CONE_NODE,
-        ALIGNED_WITH_CUBE_NODE,
-        GAME_PIECE_IN_GRABBER,
-        WANT_CUBE,
-        WANT_CONE,
-        GAME_PIECE_READY_TO_PICK_UP,
-        NONE
+        LED::m_instance = new LED(0);
+    }
+    return LED::m_instance;
+}
 
-    };
-
-    LEDStates *m_LEDStates = LEDStates::GetInstance();
-    bool m_WantCube = false;
-    bool m_WantCone = false;
-    bool m_GamePieceReadyToPickUp = false;
-    bool m_GamePieceInGrabber = false;
-    bool m_AlignedWithConeNode = false;
-    bool m_AlignedWithCubeNode = false;
-
-    static DriverFeedback *m_instance;
-
-    DriverFeedbackStates currentState = DriverFeedbackStates::NONE;
-};
+std::array<int, 3> LED::getColorValues(Colors c)
+{
+    switch (c)
+    {
+    case RED:
+        return {255, 0, 0};
+    case GREEN:
+        return {0, 255, 0};
+    case BLUE:
+        return {0, 0, 255};
+    case YELLOW:
+        return {255, 160, 0};
+    case PURPLE:
+        return {75, 0, 130};
+    case AZUL:
+        return {0, 255, 255};
+    case WHITE:
+        return {255, 255, 180};
+    case BLACK:
+        return {0, 0, 0};
+    default:
+        return {0, 0, 0};
+    }
+}

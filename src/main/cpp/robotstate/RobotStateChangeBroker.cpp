@@ -14,25 +14,40 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#pragma once
-
 #include <vector>
-#include <RobotStateChanges.h>
-#include <IRobotStateChangeSubscriber.h>
+#include <robotstate/RobotStateChanges.h>
+#include <robotstate/RobotStateChangeBroker.h>
+#include <robotstate/IRobotStateChangeSubscriber.h>
 
-class RobotStateChangeBroker
+RobotStateChangeBroker::RobotStateChangeBroker
+(
+    RobotStateChanges::StateChange change
+) : m_change(change),
+    m_subscribers()
 {
-	public:
 
-		RobotStateChangeBroker() = delete;
-		RobotStateChangeBroker(RobotStateChanges::StateChange change);
-		~RobotStateChangeBroker() = default;
+}
 
-		void AddSubscriber(IRobotStateChangeSubscriber* subscriber);
+void RobotStateChangeBroker::AddSubscriber
+(
+    IRobotStateChangeSubscriber* item
+)
+{
+    for (auto subscriber : m_subscribers)
+    {
+        if (subscriber == item)
+        {
+            return;
+        }
+    }
+    m_subscribers.emplace_back(item);
+}
 
-  		void Notify(int value);
-	
-	private:
-  		RobotStateChanges::StateChange m_change;
-  		std::vector<IRobotStateChangeSubscriber*> m_subscribers;
-};
+void RobotStateChangeBroker::Notify(int value)
+{
+    for (auto subscriber : m_subscribers)
+    {
+        subscriber->Update(m_change, value);
+    }
+}
+

@@ -15,35 +15,14 @@
 //====================================================================================================================================================
 
 #pragma once
-#include <vector>
 
-#include <frc/DriverStation.h>
+#include <robotstate/RobotStateChanges.h>
 
-#include <RobotStateChanges.h>
-
-class IChassis;
-class IRobotStateChangeSubscriber;
-class RobotStateChangeBroker;
-
-class RobotState
+class IRobotStateChangeSubscriber
 {
 public:
-    void Init();
-    void Run();
-    static RobotState *GetInstance();
-    void RegisterForStateChanges(IRobotStateChangeSubscriber *subscriber, RobotStateChanges::StateChange change);
-    void PublishStateChange(RobotStateChanges::StateChange change, int newValue);
+    IRobotStateChangeSubscriber() = default;
+    ~IRobotStateChangeSubscriber() = default;
 
-private:
-    void PublishGameStateChanges();
-
-    RobotState();
-    ~RobotState();
-
-    IChassis *m_chassis;
-    std::vector<RobotStateChangeBroker *> m_brokers;
-    RobotStateChanges::GamePiece m_gamePiece;
-    RobotStateChanges::GamePhase m_gamePhase;
-
-    static RobotState *m_instance;
+    virtual void Update(RobotStateChanges::StateChange change, int value) = 0;
 };

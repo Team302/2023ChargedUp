@@ -13,14 +13,14 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //======================================================\==============================================================================================
 
-#include <RobotState.h>
+#include <robotstate/RobotState.h>
 
 #include <string>
 #include <vector>
 
 #include <chassis/ChassisFactory.h>
 #include <chassis/IChassis.h>
-#include <RobotStateChangeBroker.h>
+#include <robotstate/RobotStateChangeBroker.h>
 #include <teleopcontrol/TeleopControl.h>
 #include <utils/DragonField.h>
 
@@ -77,9 +77,11 @@ void RobotState::Run()
     auto controller = TeleopControl::GetInstance();
     if (controller != nullptr)
     {
-        m_gamePiece = controller->IsButtonPressed(TeleopControlFunctions::)
+        if (controller->IsButtonPressed(TeleopControlFunctions::CYCLE_GRABBER))
+        {
+            m_gamePiece = (m_gamePiece == RobotStateChanges::Cube) ? RobotStateChanges::Cone : RobotStateChanges::Cube;
+        }
     }
-    PublishStateChange(RobotStateChanges::DesiredGamePiece, RobotStateChanges::Cube);
 }
 
 void RobotState::RegisterForStateChanges(

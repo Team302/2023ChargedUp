@@ -15,16 +15,48 @@
 //====================================================================================================================================================
 
 #pragma once
+#include <driveteamfeedback/LEDStates.h>
+#include <robotstate/IRobotStateChangeSubscriber.h>
 
-#include <RobotStateChanges.h>
-
-
-class IRobotStateChangeSubscriber
+class DriverFeedback : public IRobotStateChangeSubscriber
 {
-    public:
-        IRobotStateChangeSubscriber() = default;
-        ~IRobotStateChangeSubscriber() = default;
+public:
+    void UpdateFeedback();
 
-        virtual void Update(RobotStateChanges::StateChange change, int value) = 0;
+    static DriverFeedback *GetInstance();
+
+    void UpdateLEDStates();
+
+    void Update(RobotStateChanges::StateChange change, int value) override;
+
+private:
+    DriverFeedback();
+    ~DriverFeedback() = default;
+
+    bool m_AutonomousEnabled;
+    bool m_TeleopEnabled;
+
+    enum DriverFeedbackStates
+    {
+        ALIGNED_WITH_CONE_NODE,
+        ALIGNED_WITH_CUBE_NODE,
+        GAME_PIECE_IN_GRABBER,
+        WANT_CUBE,
+        WANT_CONE,
+        GAME_PIECE_READY_TO_PICK_UP,
+        NONE
+
+    };
+
+    LEDStates *m_LEDStates = LEDStates::GetInstance();
+    bool m_WantCube = false;
+    bool m_WantCone = false;
+    bool m_GamePieceReadyToPickUp = false;
+    bool m_GamePieceInGrabber = false;
+    bool m_AlignedWithConeNode = false;
+    bool m_AlignedWithCubeNode = false;
+
+    static DriverFeedback *m_instance;
+
+    DriverFeedbackStates currentState = DriverFeedbackStates::NONE;
 };
-

@@ -13,10 +13,10 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#include <mechanisms/DriverFeedback/DriverFeedback.h>
-#include <RobotState.h>
-#include <RobotStateChanges.h>
-#include <IRobotStateChangeSubscriber.h>
+#include <driveteamfeedback/DriverFeedback.h>
+#include <robotstate/RobotState.h>
+#include <robotstate/RobotStateChanges.h>
+#include <robotstate/IRobotStateChangeSubscriber.h>
 
 DriverFeedback *DriverFeedback::m_instance = nullptr;
 
