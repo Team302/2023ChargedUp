@@ -22,13 +22,13 @@ public:
     enum StateChange
     {
         DesiredGamePiece,
-        HaveGamePiece,
+        HoldingGamePiece,
         ArmExtenderState,
         ArmRotateState,
         GrabberState,
         DesiredPlacementLocation,
         DesiredPlacementDepth,
-        ChassisLiftStatus,
+        ChassisTipStatus,
         DriveAssistMode,
         GameState,
         LoopCounter
@@ -63,7 +63,7 @@ public:
         BackRow
     };
 
-    enum ChassisLift
+    enum ChassisTilt
     {
         NotTilted,
         Tilted
@@ -75,7 +75,7 @@ public:
         On
     };
 
-    enum GamePhase
+    enum GamePeriod
     {
         Auton,
         Teleop,

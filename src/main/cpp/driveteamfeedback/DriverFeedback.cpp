@@ -122,7 +122,7 @@ void DriverFeedback::Update(RobotStateChanges::StateChange change, int value)
     }
     else if (change == RobotStateChanges::GameState)
     {
-        auto state = static_cast<RobotStateChanges::GamePhase>(value);
+        auto state = static_cast<RobotStateChanges::GamePeriod>(value);
         m_AutonomousEnabled = state == RobotStateChanges::Auton;
         m_TeleopEnabled = state == RobotStateChanges::Teleop;
     }

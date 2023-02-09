@@ -43,7 +43,7 @@ private:
     IChassis *m_chassis;
     std::vector<RobotStateChangeBroker *> m_brokers;
     RobotStateChanges::GamePiece m_gamePiece;
-    RobotStateChanges::GamePhase m_gamePhase;
+    RobotStateChanges::GamePeriod m_gamePhase;
 
     static RobotState *m_instance;
 };
