@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -14,50 +14,71 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-
 #pragma once
 
-#include <frc/TimedRobot.h>
-
-
-class ArcadeDrive;
-class CyclePrimitives;
-class DragonLimelight;
-class HolonomicDrive;
-class IChassis;
-class TeleopControl;
-class AdjustableItemMgr;
-class FMSData;
-class DragonField;
-class AutonPreviewer;
-class RobotState;
-
-class Robot : public frc::TimedRobot 
+class RobotStateChanges
 {
-    public:
-        void RobotInit() override;
-        void RobotPeriodic() override;
-        void AutonomousInit() override;
-        void AutonomousPeriodic() override;
-        void TeleopInit() override;
-        void TeleopPeriodic() override;
-        void DisabledInit() override;
-        void DisabledPeriodic() override;
-        void TestInit() override;
-        void TestPeriodic() override;
+public:
+    enum StateChange
+    {
+        DesiredGamePiece,
+        HoldingGamePiece,
+        ArmExtenderState,
+        ArmRotateState,
+        GrabberState,
+        DesiredPlacementLocation,
+        DesiredPlacementDepth,
+        ChassisTipStatus,
+        DriveAssistMode,
+        GameState,
+        LoopCounter
+    };
 
-    private:
-        TeleopControl*        m_controller;
-        IChassis*             m_chassis;
-        CyclePrimitives*      m_cyclePrims; 
-        HolonomicDrive*       m_holonomic;
-        ArcadeDrive*          m_arcade;
-        
-        DragonLimelight*      m_dragonLimeLight;
-        
-        AdjustableItemMgr*    m_tuner;
-        FMSData*              m_fmsData;
-        DragonField*          m_field;
-        AutonPreviewer*       m_previewer;
-        RobotState*           m_robotState;
+    enum GamePiece
+    {
+        Cone,
+        Cube,
+        None
+    };
+
+    enum PlacementLocation
+    {
+        HPGridLeftPole,
+        HPGridRightPole,
+        CoopGridLeftPole,
+        CoopGridRightPole,
+        WallGridLeftPole,
+        WallGridRightPole,
+        PoleShelfTransition,
+        HPGridCenterShelf,
+        CoopGridCenterShelf,
+        WallGridCenterShelf,
+        MaxLocations
+    };
+
+    enum PlacementDepth
+    {
+        Floor,
+        MiddleRow,
+        BackRow
+    };
+
+    enum ChassisTilt
+    {
+        NotTilted,
+        Tilted
+    };
+
+    enum DriveAssist
+    {
+        Off,
+        On
+    };
+
+    enum GamePeriod
+    {
+        Auton,
+        Teleop,
+        Disabled
+    };
 };

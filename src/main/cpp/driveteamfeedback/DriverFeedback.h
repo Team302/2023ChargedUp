@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -14,50 +14,49 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-
 #pragma once
+#include <driveteamfeedback/LEDStates.h>
+#include <robotstate/IRobotStateChangeSubscriber.h>
 
-#include <frc/TimedRobot.h>
-
-
-class ArcadeDrive;
-class CyclePrimitives;
-class DragonLimelight;
-class HolonomicDrive;
-class IChassis;
-class TeleopControl;
-class AdjustableItemMgr;
-class FMSData;
-class DragonField;
-class AutonPreviewer;
-class RobotState;
-
-class Robot : public frc::TimedRobot 
+class DriverFeedback : public IRobotStateChangeSubscriber
 {
-    public:
-        void RobotInit() override;
-        void RobotPeriodic() override;
-        void AutonomousInit() override;
-        void AutonomousPeriodic() override;
-        void TeleopInit() override;
-        void TeleopPeriodic() override;
-        void DisabledInit() override;
-        void DisabledPeriodic() override;
-        void TestInit() override;
-        void TestPeriodic() override;
+public:
+    void UpdateFeedback();
 
-    private:
-        TeleopControl*        m_controller;
-        IChassis*             m_chassis;
-        CyclePrimitives*      m_cyclePrims; 
-        HolonomicDrive*       m_holonomic;
-        ArcadeDrive*          m_arcade;
-        
-        DragonLimelight*      m_dragonLimeLight;
-        
-        AdjustableItemMgr*    m_tuner;
-        FMSData*              m_fmsData;
-        DragonField*          m_field;
-        AutonPreviewer*       m_previewer;
-        RobotState*           m_robotState;
+    static DriverFeedback *GetInstance();
+
+    void UpdateLEDStates();
+
+    void Update(RobotStateChanges::StateChange change, int value) override;
+
+private:
+    DriverFeedback();
+    ~DriverFeedback() = default;
+
+    bool m_AutonomousEnabled;
+    bool m_TeleopEnabled;
+
+    enum DriverFeedbackStates
+    {
+        ALIGNED_WITH_CONE_NODE,
+        ALIGNED_WITH_CUBE_NODE,
+        GAME_PIECE_IN_GRABBER,
+        WANT_CUBE,
+        WANT_CONE,
+        GAME_PIECE_READY_TO_PICK_UP,
+        NONE
+
+    };
+
+    LEDStates *m_LEDStates = LEDStates::GetInstance();
+    bool m_WantCube = false;
+    bool m_WantCone = false;
+    bool m_GamePieceReadyToPickUp = false;
+    bool m_GamePieceInGrabber = false;
+    bool m_AlignedWithConeNode = false;
+    bool m_AlignedWithCubeNode = false;
+
+    static DriverFeedback *m_instance;
+
+    DriverFeedbackStates currentState = DriverFeedbackStates::NONE;
 };
