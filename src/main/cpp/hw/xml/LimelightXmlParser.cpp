@@ -18,23 +18,23 @@
 
 #include <hw/DragonLimelight.h>
 #include <hw/factories/LimelightFactory.h>
+#include <hw/usages/LimelightUsages.h>
 #include <hw/xml/LimelightXmlParser.h>
 #include <utils/logging/Logger.h>
-#include <utils/UsageValidation.h>
 
 #include <pugixml/pugixml.hpp>
 
 using namespace std;
 
-DragonLimelight* LimelightXmlParser::ParseXML(pugi::xml_node    limelightNode)
+DragonLimelight *LimelightXmlParser::ParseXML(pugi::xml_node limelightNode)
 {
     // initialize the output
-    DragonLimelight* limelight = nullptr;
+    DragonLimelight *limelight = nullptr;
 
     bool hasError = false;
 
     // initialize attributes to default values
-    IDragonSensor::SENSOR_USAGE usage = IDragonSensor::SENSOR_USAGE::UNKNOWN_SENSOR;
+    LimelightUsages::LIMELIGHT_USAGE usage = LimelightUsages::UNKNOWN_USAGE;
     std::string tableName = "";
     units::length::inch_t mountingHeight = units::length::inch_t(0.0);
     units::length::inch_t horizontalOffset = units::length::inch_t(0.0);
@@ -55,118 +55,117 @@ DragonLimelight* LimelightXmlParser::ParseXML(pugi::xml_node    limelightNode)
     for (pugi::xml_attribute attr = limelightNode.first_attribute(); attr && !hasError; attr = attr.next_attribute())
     {
         // validate/set the usage
-        if ( strcmp( attr.name(), "usage" ) == 0 )
+        if (strcmp(attr.name(), "usage") == 0)
         {
-            usage = UsageValidation::ValidateSensorUsage( attr.value(), "LimelightXmlParser::ParseXML");
-            if ( usage == IDragonSensor::SENSOR_USAGE::UNKNOWN_SENSOR)
+            usage = LimelightUsages::GetInstance()->GetUsage(attr.value());
+            if (usage == LimelightUsages::UNKNOWN_USAGE)
             {
                 hasError = true;
             }
         }
-        else if ( strcmp( attr.name(), "tablename" ) == 0 )
+        else if (strcmp(attr.name(), "tablename") == 0)
         {
             tableName = attr.value();
         }
-        else if ( strcmp( attr.name(), "mountingheight" ) == 0 )
+        else if (strcmp(attr.name(), "mountingheight") == 0)
         {
             mountingHeight = units::length::inch_t(attr.as_double());
         }
-        else if ( strcmp( attr.name(), "horizontaloffset" ) == 0 )
+        else if (strcmp(attr.name(), "horizontaloffset") == 0)
         {
             horizontalOffset = units::length::inch_t(attr.as_double());
         }
-        else if ( strcmp( attr.name(), "mountingangle" ) == 0 )
+        else if (strcmp(attr.name(), "mountingangle") == 0)
         {
             mountingAngle = units::angle::degree_t(attr.as_double());
         }
-        else if ( strcmp( attr.name(), "rotation" ) == 0 )
+        else if (strcmp(attr.name(), "rotation") == 0)
         {
             rotation = units::angle::degree_t(attr.as_double());
         }
-        else if ( strcmp( attr.name(), "targetheight" ) == 0 )
+        else if (strcmp(attr.name(), "targetheight") == 0)
         {
             targetHeight = units::length::inch_t(attr.as_double());
         }
-        else if ( strcmp( attr.name(), "targetheight2" ) == 0 )
+        else if (strcmp(attr.name(), "targetheight2") == 0)
         {
             targetHeight2 = units::length::inch_t(attr.as_double());
         }
-        else if ( strcmp( attr.name(), "defaultledmode" ) == 0 )
+        else if (strcmp(attr.name(), "defaultledmode") == 0)
         {
-            if ( strcmp( attr.value(), "currentpipeline") == 0 )
+            if (strcmp(attr.value(), "currentpipeline") == 0)
             {
                 ledMode = DragonLimelight::LED_MODE::LED_DEFAULT;
             }
-            else if ( strcmp( attr.value(), "off") == 0 )
+            else if (strcmp(attr.value(), "off") == 0)
             {
                 ledMode = DragonLimelight::LED_MODE::LED_OFF;
             }
-            else if ( strcmp( attr.value(), "blink") == 0 )
+            else if (strcmp(attr.value(), "blink") == 0)
             {
                 ledMode = DragonLimelight::LED_MODE::LED_BLINK;
             }
-            else if ( strcmp( attr.value(), "on") == 0 )
+            else if (strcmp(attr.value(), "on") == 0)
             {
                 ledMode = DragonLimelight::LED_MODE::LED_ON;
             }
-        }        
-        else if ( strcmp( attr.name(), "defaultcammode" ) == 0 )
+        }
+        else if (strcmp(attr.name(), "defaultcammode") == 0)
         {
-            if ( strcmp( attr.value(), "drivercamera")==0)
+            if (strcmp(attr.value(), "drivercamera") == 0)
             {
                 camMode = DragonLimelight::CAM_MODE::CAM_DRIVER;
             }
-        }        
-        else if ( strcmp( attr.name(), "streammode" ) == 0 )
+        }
+        else if (strcmp(attr.name(), "streammode") == 0)
         {
-            if ( strcmp( attr.value(), "pipmain") == 0 )
+            if (strcmp(attr.value(), "pipmain") == 0)
             {
                 streamMode = DragonLimelight::STREAM_MODE::STREAM_MAIN_AND_SECOND;
             }
-            else if ( strcmp( attr.value(), "pipsecondary" ) == 0 )
+            else if (strcmp(attr.value(), "pipsecondary") == 0)
             {
                 streamMode = DragonLimelight::STREAM_MODE::STREAM_SECOND_AND_MAIN;
             }
-        }        
-        else if ( strcmp( attr.name(), "snapshots" ) == 0 )
+        }
+        else if (strcmp(attr.name(), "snapshots") == 0)
         {
-            if ( strcmp( attr.value(), "twopersec") == 0 )
+            if (strcmp(attr.value(), "twopersec") == 0)
             {
                 snapMode = DragonLimelight::SNAPSHOT_MODE::SNAP_ON;
             }
         }
-        else if ( strcmp( attr.name(), "crosshairx" ) == 0 )
+        else if (strcmp(attr.name(), "crosshairx") == 0)
         {
             defaultXHairX = attr.as_double();
-        }        
-        else if ( strcmp( attr.name(), "crosshairy" ) == 0 )
+        }
+        else if (strcmp(attr.name(), "crosshairy") == 0)
         {
             defaultXHairY = attr.as_double();
-        }        
-        else if ( strcmp( attr.name(), "secondcrosshairx" ) == 0 )
+        }
+        else if (strcmp(attr.name(), "secondcrosshairx") == 0)
         {
             secXHairX = attr.as_double();
-        }        
-        else if ( strcmp( attr.name(), "secondcrosshairy" ) == 0 )
+        }
+        else if (strcmp(attr.name(), "secondcrosshairy") == 0)
         {
             secXHairY = attr.as_double();
         }
 
-
-		//todo:  add cross hair stuff/streaming options -- everything after target heights
+        // todo:  add cross hair stuff/streaming options -- everything after target heights
         else
         {
             string msg = "unknown attribute ";
             msg += attr.name();
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("LimelightXmlParser"), string("ParseXML"), msg );
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("LimelightXmlParser"), string("ParseXML"), msg);
             hasError = true;
         }
     }
 
-    if(!hasError)
+    if (!hasError)
     {
-        limelight = LimelightFactory::GetLimelightFactory()->CreateLimelight
-        (
+        limelight = LimelightFactory::GetLimelightFactory()->CreateLimelight(
+            usage,
             tableName,
             mountingHeight,
             horizontalOffset,
@@ -181,8 +180,7 @@ DragonLimelight* LimelightXmlParser::ParseXML(pugi::xml_node    limelightNode)
             defaultXHairX,
             defaultXHairY,
             secXHairX,
-            secXHairY
-        );
+            secXHairY);
     }
     return limelight;
 }
