@@ -23,17 +23,8 @@ class DriverFeedback : public IRobotStateChangeSubscriber
 public:
     LEDStates *m_LEDStates = LEDStates::GetInstance();
     void UpdateFeedback();
-    void AlignedWithConeNode(bool AlignedWithConeNode);
-    void AlignedWithCubeNode(bool AlignedWithCubeNode);
-    void GamePieceInGrabber(bool GamePieceInGrabber);
-    void WantCone(bool WantCone);
-    void WantCube(bool WantCube);
-    void GamePieceReadyToPickUp(bool GamePieceReadyToPickUp);
-    void RunLEDS();
-    static DriverFeedback *GetInstance();
 
-    void AutonomousEnabled(bool enabled);
-    void TeleopEnabled(bool enabled);
+    static DriverFeedback *GetInstance();
 
     void UpdateLEDStates();
 

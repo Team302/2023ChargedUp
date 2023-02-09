@@ -107,40 +107,6 @@ void DriverFeedback::UpdateLEDStates()
     }
 }
 
-void DriverFeedback::AlignedWithConeNode(bool AlignedWithConeNode)
-{
-    DriverFeedback::m_AlignedWithConeNode = AlignedWithConeNode;
-}
-void DriverFeedback::AlignedWithCubeNode(bool AlignedWithCubeNode)
-{
-    DriverFeedback::m_AlignedWithCubeNode = AlignedWithCubeNode;
-}
-void DriverFeedback::WantCone(bool WantCone)
-{
-    DriverFeedback::m_WantCone = WantCone;
-}
-void DriverFeedback::WantCube(bool WantCube)
-{
-    DriverFeedback::m_WantCube = WantCube;
-}
-void DriverFeedback::GamePieceInGrabber(bool GamePieceInGrabber)
-{
-    DriverFeedback::m_GamePieceInGrabber = GamePieceInGrabber;
-}
-void DriverFeedback::GamePieceReadyToPickUp(bool GamePieceReadyToPickUp)
-{
-    DriverFeedback::m_GamePieceReadyToPickUp = GamePieceReadyToPickUp;
-}
-
-void DriverFeedback::AutonomousEnabled(bool enabled)
-{
-    m_AutonomousEnabled = enabled;
-}
-void DriverFeedback::TeleopEnabled(bool enabled)
-{
-    m_TeleopEnabled = enabled;
-}
-
 DriverFeedback::DriverFeedback() : IRobotStateChangeSubscriber()
 {
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::DesiredGamePiece);
