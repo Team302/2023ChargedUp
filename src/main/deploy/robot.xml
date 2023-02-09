@@ -347,14 +347,9 @@
     networkTable="grabberNT"
     controlFile="grabber.xml">
     <solenoid
-      usage="GrabberSolenoid1"
+      usage="GrabberSolenoid"
       canId="1"
       channel="0"
-      reversed="false" />
-    <solenoid
-      usage="GrabberSolenoid2"
-      canId="1"
-      channel="1"
       reversed="false" />
   </mechanism>
   <roborio
