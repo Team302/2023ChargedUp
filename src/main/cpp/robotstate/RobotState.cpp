@@ -74,11 +74,14 @@ void RobotState::Run()
         m_chassis->UpdateOdometry();
     }
 
-    auto controller = TeleopControl::GetInstance();
-    if (controller != nullptr && controller->IsButtonPressed(TeleopControlFunctions::CYCLE_GRABBER))
+    if (DriverStation::IsTeleopEnabled())
     {
-        m_gamePiece = (m_gamePiece == RobotStateChanges::Cube) ? RobotStateChanges::Cone : RobotStateChanges::Cube;
-        PublishStateChange(RobotStateChanges::DesiredGamePiece, m_gamePiece);
+        auto controller = TeleopControl::GetInstance();
+        if (controller != nullptr && controller->IsButtonPressed(TeleopControlFunctions::CYCLE_GRABBER))
+        {
+            m_gamePiece = (m_gamePiece == RobotStateChanges::Cube) ? RobotStateChanges::Cone : RobotStateChanges::Cube;
+            PublishStateChange(RobotStateChanges::DesiredGamePiece, m_gamePiece);
+        }
     }
 }
 
