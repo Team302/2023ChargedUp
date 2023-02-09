@@ -63,11 +63,8 @@ GrabberStateMgr::GrabberStateMgr() : StateMgr(),
 {
     map<string, StateStruc> stateMap;
     stateMap["OPEN"] = m_openState;
-    stateMap["GRABBING_CONE"] = m_grabbing_coneState;
-    stateMap["GRABBING_CUBE"] = m_grabbing_cubeState;
-    stateMap["HOLDING_CONE"] = m_holding_coneState;
-    stateMap["HOLDING_CUBE"] = m_holding_cubeState;
-    stateMap["RELEASE"] = m_releaseState;
+    stateMap["GRAB"] = m_grabState;
+
 
     Init(m_grabber, stateMap);
     if (m_grabber != nullptr)
@@ -110,25 +107,9 @@ void GrabberStateMgr::CheckForGamepadTransitions()
             {
                 m_targetState = GRABBER_STATE::OPEN;
             }
-            else if (controller->IsButtonPressed(TeleopControlFunctions::GRABBING_CONE))
+            else if (controller->IsButtonPressed(TeleopControlFunctions::GRAB))
             {
-                m_targetState = GRABBER_STATE::GRABBING_CONE;
-            }
-            else if (controller->IsButtonPressed(TeleopControlFunctions::GRABBING_CUBE))
-            {
-                m_targetState = GRABBER_STATE::GRABBING_CUBE;
-            }
-            else if (controller->IsButtonPressed(TeleopControlFunctions::HOLDING_CONE))
-            {
-                m_targetState = GRABBER_STATE::HOLDING_CONE;
-            }
-            else if (controller->IsButtonPressed(TeleopControlFunctions::HOLDING_CUBE))
-            {
-                m_targetState = GRABBER_STATE::HOLDING_CUBE;
-            }
-            else if (controller->IsButtonPressed(TeleopControlFunctions::RELEASE))
-            {
-                m_targetState = GRABBER_STATE::RELEASE;
+                m_targetState = GRABBER_STATE::GRAB;
             }
             else
             {

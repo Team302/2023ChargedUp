@@ -125,6 +125,7 @@ State *StateMgrHelper::CreateState(
         thisState = new ArmState(xmlString, id, controlData, target);
         break;
 
+
     case StateType::MANUAL_ARM_STATE:
         thisState = new ArmManualState(xmlString, id, controlData, target);
         break;

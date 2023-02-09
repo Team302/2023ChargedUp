@@ -375,7 +375,7 @@ class TeleopControl : LoggableItem
             {TeleopControlFunctions::MED, copilotXButton},
             {TeleopControlFunctions::HIGH, copilotYButton},
             {TeleopControlFunctions::OPEN, copilotLBumper},
-            {TeleopControlFunctions::RELEASE, copilotRBumper},
+            {TeleopControlFunctions::GRAB, copilotRBumper},
 
             {TeleopControlFunctions::HOLD_POSITION_ROTATE, extra1AButton},
             {TeleopControlFunctions::CUBE_BACKROW_ROTATE, extra1XButton},
@@ -395,11 +395,7 @@ class TeleopControl : LoggableItem
             {TeleopControlFunctions::FLOOR_EXTEND, extra2DPad270},
 
             {TeleopControlFunctions::OPEN, extra3YButton},
-            {TeleopControlFunctions::HOLDING_CUBE, extra3DPad0},
-            {TeleopControlFunctions::HOLDING_CONE, extra3BButton},
-            {TeleopControlFunctions::GRABBING_CUBE, extra3DPad180},
-            {TeleopControlFunctions::GRABBING_CONE , extra3DPad90},
-            {TeleopControlFunctions::RELEASE, extra3DPad270}
+            {TeleopControlFunctions::GRAB, extra3DPad270}
         
         };
 

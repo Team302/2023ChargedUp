@@ -45,27 +45,26 @@ using frc::Timer;
 using std::make_unique;
 using std::string;
 
-
 CyclePrimitives::CyclePrimitives() : State(string("CyclePrimitives"), 0),
-									 m_primParams(), 
-									 m_currentPrimSlot(0), 
-								     m_currentPrim(nullptr), 
+									 m_primParams(),
+									 m_currentPrimSlot(0),
+									 m_currentPrim(nullptr),
 									 m_primFactory(
-									 PrimitiveFactory::GetInstance()), 
-									 m_DriveStop(nullptr), 
-									 m_autonSelector( new AutonSelector()) ,
-									 m_timer( make_unique<Timer>()),
-									 m_maxTime( 0.0 ),
-									 m_isDone( false )
+										 PrimitiveFactory::GetInstance()),
+									 m_DriveStop(nullptr),
+									 m_autonSelector(new AutonSelector()),
+									 m_timer(make_unique<Timer>()),
+									 m_maxTime(0.0),
+									 m_isDone(false)
 {
 }
 
 void CyclePrimitives::Init()
 {
-	m_currentPrimSlot = 0; //Reset current prim
+	m_currentPrimSlot = 0; // Reset current prim
 	m_primParams.clear();
 
-	m_primParams = PrimitiveParser::ParseXML( m_autonSelector->GetSelectedAutoFile() );
+	m_primParams = PrimitiveParser::ParseXML(m_autonSelector->GetSelectedAutoFile());
 	if (!m_primParams.empty())
 	{
 		GetNextPrim();
@@ -87,15 +86,14 @@ void CyclePrimitives::Run()
 	else
 	{
 		m_isDone = true;
-		m_primParams.clear();	// clear the primitive params vector
-		m_currentPrimSlot = 0;  //Reset current prim slot
+		m_primParams.clear();  // clear the primitive params vector
+		m_currentPrimSlot = 0; // Reset current prim slot
 		RunDriveStop();
 	}
 }
 
 void CyclePrimitives::Exit()
 {
-	
 }
 
 bool CyclePrimitives::AtTarget() const
@@ -105,7 +103,7 @@ bool CyclePrimitives::AtTarget() const
 
 void CyclePrimitives::GetNextPrim()
 {
-	PrimitiveParams* currentPrimParam = (m_currentPrimSlot < (int) m_primParams.size()) ? m_primParams[m_currentPrimSlot] : nullptr;
+	PrimitiveParams *currentPrimParam = (m_currentPrimSlot < (int)m_primParams.size()) ? m_primParams[m_currentPrimSlot] : nullptr;
 
 	m_currentPrim = (currentPrimParam != nullptr) ? m_primFactory->GetIPrimitive(currentPrimParam) : nullptr;
 	if (m_currentPrim != nullptr)
@@ -113,7 +111,7 @@ void CyclePrimitives::GetNextPrim()
 		m_currentPrim->Init(currentPrimParam);
 
 		StateMgrHelper::SetMechanismStateFromParam(currentPrimParam);
-		
+
 		m_maxTime = currentPrimParam->GetTime();
 		m_timer->Reset();
 		m_timer->Start();
@@ -125,33 +123,24 @@ void CyclePrimitives::GetNextPrim()
 void CyclePrimitives::RunDriveStop()
 {
 	if (m_DriveStop == nullptr)
-	{	
-		auto time = DriverStation::GetMatchType() != DriverStation::MatchType::kNone ? 
-							 DriverStation::GetMatchTime() : 15.0;
-		auto params = new PrimitiveParams( DO_NOTHING,          // identifier
-		                                   time,              	// time
-		                                   0.0,                 // distance
-		                                   0.0,                 // target x location
-		                                   0.0,                 // target y location
-										   ChassisOptionEnums::HeadingOption::MAINTAIN,
-		                                   0.0,                 // heading
-		                                   0.0,                 // start drive speed
-		                                   0.0,					// end drive speed
-										   string(),
+	{
+		auto time = DriverStation::GetMatchType() != DriverStation::MatchType::kNone ? DriverStation::GetMatchTime() : 15.0;
+		auto params = new PrimitiveParams(DO_NOTHING, // identifier
+										  time,		  // time
+										  0.0,		  // distance
+										  0.0,		  // target x location
+										  0.0,		  // target y location
+										  ChassisOptionEnums::HeadingOption::MAINTAIN,
+										  0.0, // heading
+										  0.0, // start drive speed
+										  0.0, // end drive speed
+										  string(),
 										  // @ADDMECH mechanism state
 										  ArmStateMgr::ARM_STATE::HOLD_POSITION_ROTATE,
-                						  ExtenderStateMgr::EXTENDER_STATE::HOLD_POSITION_EXTEND,
-                						  GrabberStateMgr::GRABBER_STATE::HOLDING_CONE
-										 );             
+										  ExtenderStateMgr::EXTENDER_STATE::HOLD_POSITION_EXTEND,
+										  GrabberStateMgr::GRABBER_STATE::OPEN);
 		m_DriveStop = m_primFactory->GetIPrimitive(params);
 		m_DriveStop->Init(params);
 	}
 	m_DriveStop->Run();
 }
-
-
-
-
-
-
-
