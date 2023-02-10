@@ -86,12 +86,10 @@ private:
     ARM_STATE m_currentState;
     ARM_STATE m_targetState;
 
-    double m_fTerm;
-
     static ArmStateMgr *m_instance;
 
     const StateStruc m_hold_position_rotateState = {ARM_STATE::HOLD_POSITION_ROTATE, "HOLD_POSITION_ROTATE", StateType::ARM_STATE, false};
-    const StateStruc m_manual_rotateState = {ARM_STATE::MANUAL_ROTATE, "MANUAL_ROTATE", StateType::MANUAL_ARM_STATE, false};
+    const StateStruc m_manual_rotateState = {ARM_STATE::MANUAL_ROTATE, "MANUAL_ROTATE", StateType::ARM_STATE, false};
     const StateStruc m_cube_backrow_rotateState = {ARM_STATE::CUBE_BACKROW_ROTATE, "CUBE_BACKROW_ROTATE", StateType::ARM_STATE, false};
     const StateStruc m_cone_backrow_rotateState = {ARM_STATE::CONE_BACKROW_ROTATE, "CONE_BACKROW_ROTATE", StateType::ARM_STATE, false};
     const StateStruc m_cube_midrow_rotateState = {ARM_STATE::CUBE_MIDROW_ROTATE, "CUBE_MIDROW_ROTATE", StateType::ARM_STATE, false};
