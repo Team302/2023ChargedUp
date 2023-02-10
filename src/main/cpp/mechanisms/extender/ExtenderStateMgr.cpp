@@ -167,9 +167,10 @@ void ExtenderStateMgr::CheckForGamepadTransitions()
 /// @brief Check if driver inputs or sensors trigger a state transition
 void ExtenderStateMgr::CheckForStateTransition()
 {
-
+    CheckForSensorTransitions();
     if (m_extender != nullptr)
     {
+        CheckForGamepadTransitions();
         if (m_targetState != m_currentState)
         {
             SetCurrentState(m_targetState, true);

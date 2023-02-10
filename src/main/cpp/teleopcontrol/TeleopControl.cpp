@@ -31,7 +31,6 @@
 #include <gamepad/DragonXBox.h>
 #include <gamepad/DragonGamePad.h>
 #include <teleopcontrol/TeleopControl.h>
-#include <teleopcontrol/TeleopControlMap.h>
 #include <teleopcontrol/TeleopControlFunctions.h>
 #include <frc/DriverStation.h>
 #include <utils/logging/Logger.h>
@@ -71,9 +70,7 @@ TeleopControl *TeleopControl::GetInstance()
 //              It maps the functions to the buttons/axis.
 //---------------------------------------------------------------------------------
 TeleopControl::TeleopControl() : m_controller(),
-								 m_numControllers(0),
-								 m_axisMap(TeleopControlMap::),
-								 m_buttonMap(TeleopControlMap::buttonMap)
+								 m_numControllers(0)
 
 {
 	for (auto i = 0; i < DriverStation::kJoystickPorts; ++i)
