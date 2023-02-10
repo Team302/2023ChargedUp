@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -22,9 +22,7 @@
 
 // Team 302 includes
 
-
 // Third Party Includes
-
 
 //==================================================================================
 /// <summary>
@@ -32,25 +30,17 @@
 /// Description:    This provides scaling for an axis.
 /// </summary>
 //==================================================================================
-class InvertAxis 
+class InvertAxis
 {
-    public:
+public:
+    InvertAxis();
+    ~InvertAxis() = default;
 
-        InvertAxis();
-        ~InvertAxis() = default;
+    void SetInverted(
+        bool isInverted);
+    void ApplyInversion(
+        double &value) const;
 
-        void SetInverted
-        (
-            bool      isInverted           
-        );
-        void ApplyInversion
-        (
-            double& value
-        ) const;
-        
-    private:
-
-        bool m_isInverted;
-
+private:
+    bool m_isInverted;
 };
-

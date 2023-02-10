@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-/// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+/// Copyright 2023 Lake Orion Robotics FIRST Team 302
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 /// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -23,42 +23,38 @@
 
 class Mech1IndMotorState : public State
 {
-    public:
+public:
+    Mech1IndMotorState(
+        Mech1IndMotor *mechanism,
+        std::string stateName,
+        int stateId,
+        ControlData *control,
+        double target);
+    Mech1IndMotorState() = delete;
+    ~Mech1IndMotorState() = default;
 
-        Mech1IndMotorState
-        (
-            Mech1IndMotor*                  mechanism,
-            std::string                     stateName,
-            int                             stateId,
-            ControlData*                    control,
-            double                          target
-        );
-        Mech1IndMotorState() = delete;
-        ~Mech1IndMotorState() = default;
+    void Init() override;
+    void Run() override;
+    void Exit() override;
+    bool AtTarget() const override;
 
-        void Init() override;
-        void Run() override;
-        void Exit() override;
-        bool AtTarget() const override;
+    void LogInformation() const override;
 
-        void LogInformation() const override;
+    double GetCurrentTarget() const { return m_target; }
+    double GetOriginalTarget() const { return m_originalTarget; }
+    double GetRPS() const { return m_mechanism->GetSpeed(); }
 
-        double GetCurrentTarget() const {return m_target;}
-        double GetOriginalTarget() const {return m_originalTarget;}
-        double GetRPS() const {return m_mechanism->GetSpeed();}
+    /// May move to protected later
+    void SetTarget(double newTarget) { m_target = newTarget; }
 
-        ///May move to protected later
-        void SetTarget(double newTarget) {m_target = newTarget;}
+protected:
+    ControlData *GetControlData() const { return m_control; }
 
-    protected:
-        ControlData*    GetControlData() const {return m_control;}
-
-    private:
-
-        Mech1IndMotor*                  m_mechanism;
-        ControlData*                    m_control;
-        double                          m_target;
-        const double                    m_originalTarget;
-        bool                            m_positionBased;
-        bool                            m_speedBased;
+private:
+    Mech1IndMotor *m_mechanism;
+    ControlData *m_control;
+    double m_target;
+    const double m_originalTarget;
+    bool m_positionBased;
+    bool m_speedBased;
 };

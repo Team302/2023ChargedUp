@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -13,7 +13,6 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
-
 
 #pragma once
 
@@ -31,96 +30,82 @@
 #include <ctre/phoenix/ErrorCode.h>
 #include <ctre/phoenix/motorcontrol/can/WPI_TalonSRX.h>
 
-
 class DragonTalonBase : public IDragonMotorController
 {
-    public:
+public:
+    // Constructors
+    DragonTalonBase() = delete;
+    DragonTalonBase(
+        MotorControllerUsage::MOTOR_CONTROLLER_USAGE deviceType,
+        int deviceID,
+        int pdpID,
+        int countsPerRev,
+        double gearRatio,
+        double countsPerInch,
+        double countsPerDegree,
+        IDragonMotorController::MOTOR_TYPE motortype
 
-        // Constructors
-        DragonTalonBase() = delete;
-        DragonTalonBase
-        (
-            MotorControllerUsage::MOTOR_CONTROLLER_USAGE deviceType, 
-            int deviceID, 
-            int pdpID, 
-            int countsPerRev, 
-            double gearRatio,
-            double countsPerInch,
-            double countsPerDegree,
-            IDragonMotorController::MOTOR_TYPE motortype
+    );
+    virtual ~DragonTalonBase() = default;
 
-        );
-        virtual ~DragonTalonBase() = default;
+    // Getters (override)
+    double GetRotations() const override;
+    double GetRPS() const override;
+    MotorControllerUsage::MOTOR_CONTROLLER_USAGE GetType() const override;
+    int GetID() const override;
+    std::shared_ptr<frc::MotorController> GetSpeedController() const override;
+    double GetCurrent() const override;
+    IDragonMotorController::MOTOR_TYPE GetMotorType() const override;
 
+    // Setters (override)
+    void SetControlMode(ControlModes::CONTROL_TYPE mode) override; //: D
+    void Set(double value) override;
+    void Set(std::shared_ptr<nt::NetworkTable> nt, double value) override;
+    void SetRotationOffset(double rotations) override;
+    void SetVoltageRamping(double ramping, double rampingClosedLoop = -1) override; // seconds 0 to full, set to 0 to disable
+    void EnableCurrentLimiting(bool enabled) override;
+    void EnableBrakeMode(bool enabled) override;
+    void Invert(bool inverted) override;
+    void SetSensorInverted(bool inverted) override;
 
-        // Getters (override)
-        double GetRotations() const override;
-        double GetRPS() const override;
-        MotorControllerUsage::MOTOR_CONTROLLER_USAGE GetType() const override;
-        int GetID() const override;
-        std::shared_ptr<frc::MotorController> GetSpeedController() const override;
-        double GetCurrent() const override;
-        IDragonMotorController::MOTOR_TYPE GetMotorType() const override;
+    /// @brief  Set the control constants (e.g. PIDF values).
+    /// @param [in] int             slot - hardware slot to use
+    /// @param [in] ControlData*    pid - the control constants
+    /// @return void
+    void SetControlConstants(int slot, ControlData *controlInfo) override;
+    // Method:		SelectClosedLoopProfile
+    // Description:	Selects which profile slot to use for closed-loop control
+    // Returns:		void
+    void SelectClosedLoopProfile(int slot, int pidIndex); // <I> - 0 for primary closed loop, 1 for cascaded closed-loop
 
-        // Setters (override)
-        void SetControlMode(ControlModes::CONTROL_TYPE mode) override; //:D
-        void Set(double value) override;
-        void Set(std::shared_ptr<nt::NetworkTable> nt, double value) override;
-        void SetRotationOffset(double rotations) override;
-        void SetVoltageRamping(double ramping, double rampingClosedLoop = -1) override; // seconds 0 to full, set to 0 to disable
-        void EnableCurrentLimiting(bool enabled) override; 
-        void EnableBrakeMode(bool enabled) override; 
-        void Invert(bool inverted) override; 
-        void SetSensorInverted(bool inverted) override;
+    int ConfigSelectedFeedbackSensor(
+        ctre::phoenix::motorcontrol::FeedbackDevice feedbackDevice,
+        int pidIdx,
+        int timeoutMs);
+    int ConfigSelectedFeedbackSensor(
+        ctre::phoenix::motorcontrol::RemoteFeedbackDevice feedbackDevice,
+        int pidIdx,
+        int timeoutMs);
+    int ConfigPeakCurrentLimit(int amps, int timeoutMs);
+    int ConfigPeakCurrentDuration(int milliseconds, int timeoutMs);
+    int ConfigContinuousCurrentLimit(int amps, int timeoutMs);
 
-        /// @brief  Set the control constants (e.g. PIDF values).
-        /// @param [in] int             slot - hardware slot to use
-        /// @param [in] ControlData*    pid - the control constants
-        /// @return void
-        void SetControlConstants(int slot, ControlData* controlInfo) override;
-        // Method:		SelectClosedLoopProfile
-        // Description:	Selects which profile slot to use for closed-loop control
-        // Returns:		void
-        void SelectClosedLoopProfile(int slot, int pidIndex);// <I> - 0 for primary closed loop, 1 for cascaded closed-loop
+    void SetAsFollowerMotor(int masterCANID);
 
-        int ConfigSelectedFeedbackSensor
-        (
-            ctre::phoenix::motorcontrol::FeedbackDevice feedbackDevice, 
-            int pidIdx, 
-            int timeoutMs
-        ); 
-        int ConfigSelectedFeedbackSensor
-        (
-            ctre::phoenix::motorcontrol::RemoteFeedbackDevice feedbackDevice, 
-            int pidIdx, 
-            int timeoutMs
-        ); 
-        int ConfigPeakCurrentLimit(int amps, int timeoutMs); 
-        int ConfigPeakCurrentDuration(int milliseconds, int timeoutMs); 
-        int ConfigContinuousCurrentLimit(int amps, int timeoutMs); 
+    void SetForwardLimitSwitch(
+        bool normallyOpen);
 
-        void SetAsFollowerMotor(int masterCANID); 
+    void SetReverseLimitSwitch(
+        bool normallyOpen);
 
-        void SetForwardLimitSwitch
-        ( 
-            bool normallyOpen
-        );
+    void SetRemoteSensor(
+        int canID,
+        ctre::phoenix::motorcontrol::RemoteSensorSource deviceType) override;
 
-        void SetReverseLimitSwitch
-        (
-            bool normallyOpen
-        );
+    void SetDiameter(double diameter) override;
 
-        void SetRemoteSensor
-        (
-            int                                             canID,
-            ctre::phoenix::motorcontrol::RemoteSensorSource deviceType
-        ) override;
-
-        void SetDiameter( double diameter ) override;
-
-        double GetCountsPerRev() const override {return m_countsPerRev;}
-        /**
+    double GetCountsPerRev() const override { return m_countsPerRev; }
+    /**
         void UpdateFramePeriods
         (
 	        ctre::phoenix::motorcontrol::StatusFrameEnhanced	frame,

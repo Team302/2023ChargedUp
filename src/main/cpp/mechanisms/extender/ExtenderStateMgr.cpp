@@ -34,6 +34,8 @@
 #include <mechanisms/extender/extender.h>
 #include <mechanisms/extender/extenderState.h>
 #include <mechanisms/extender/extenderStateMgr.h>
+#include <robotstate/RobotState.h>
+#include <robotstate/RobotStateChanges.h>
 #include <utils/logging/Logger.h>
 
 // Third Party Includes
@@ -101,8 +103,6 @@ void ExtenderStateMgr::CheckForGamepadTransitions()
         auto controller = TeleopControl::GetInstance();
         if (controller != nullptr)
         {
-            double extendRetractValue = controller->GetAxisValue(TeleopControlFunctions::MANUAL_EXTEND_RETRACT);
-
             Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ExtenderMgr"), string("Extender Position"), m_extender->GetPositionInches().to<double>());
             Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ExtenderMgr"), string("Extender % Value"), extendRetractValue);
 
@@ -180,11 +180,13 @@ void ExtenderStateMgr::CheckForStateTransition()
         CheckForGamepadTransitions();
     }
 
+
     if (m_extender != nullptr)
     {
         if (m_targetState != m_currentState)
         {
             SetCurrentState(m_targetState, true);
+            RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmExtenderState, m_targetState);
 
             if (m_targetState == EXTENDER_STATE::HOLD_POSITION_EXTEND)
             {

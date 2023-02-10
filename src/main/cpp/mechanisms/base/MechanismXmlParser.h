@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -19,20 +19,16 @@
 // Third Party includes
 #include <pugixml/pugixml.hpp>
 
-
 /// @class MechansimXmlParser
 /// @brief Create a mechaism from an XML definition
 class MechanismXmlParser
 {
-    public:
-        MechanismXmlParser() = default;
-        virtual ~MechanismXmlParser() = default;
+public:
+    MechanismXmlParser() = default;
+    virtual ~MechanismXmlParser() = default;
 
-    	/// @brief  Parse the mechanism element (and it children).  When this is done the mechanism exists 
-        ///         that can be retrieved from the factory.
-        void ParseXML
-        (
-            pugi::xml_node      mechanismNode
-        );
+    /// @brief  Parse the mechanism element (and it children).  When this is done the mechanism exists
+    ///         that can be retrieved from the factory.
+    void ParseXML(
+        pugi::xml_node mechanismNode);
 };
-

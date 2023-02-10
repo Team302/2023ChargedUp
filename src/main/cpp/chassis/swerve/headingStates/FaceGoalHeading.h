@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -15,21 +15,21 @@
 
 #pragma once
 
-//Team302 Includes
+// Team302 Includes
 #include <chassis/swerve/headingStates/ISwerveDriveOrientation.h>
 #include <chassis/DragonTargetFinder.h>
 #include <hw/DragonLimelight.h>
 
 class FaceGoalHeading : public ISwerveDriveOrientation
 {
-    public:
-        FaceGoalHeading();
-        ~FaceGoalHeading();
+public:
+    FaceGoalHeading();
+    ~FaceGoalHeading();
 
-        void UpdateChassisSpeeds(ChassisMovement& chassisMovement) override;
+    void UpdateChassisSpeeds(ChassisMovement &chassisMovement) override;
 
-    private:
-        DragonTargetFinder     m_targetFinder;
+private:
+    DragonTargetFinder m_targetFinder;
 
-        DragonLimelight*        m_limelight;
+    DragonLimelight *m_limelight;
 };

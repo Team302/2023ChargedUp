@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -14,12 +14,11 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-
 // C++ Includes
 #include <memory>
 #include <string>
 #include <utility>
-//#include <vector>
+// #include <vector>
 
 // FRC includes
 
@@ -36,15 +35,15 @@
 #include <frc/DriverStation.h>
 #include <utils/logging/Logger.h>
 
-//using namespace frc;
-//using namespace std;
+// using namespace frc;
+// using namespace std;
 
+using frc::DriverStation;
+using frc::GenericHID;
 using std::make_pair;
 using std::pair;
 using std::string;
 using std::vector;
-using frc::DriverStation;
-using frc::GenericHID;
 
 //----------------------------------------------------------------------------------
 // Method:      GetInstance
@@ -52,18 +51,18 @@ using frc::GenericHID;
 //              single class instance will be returned.
 // Returns:     OperatorInterface*  instance of this class
 //----------------------------------------------------------------------------------
-TeleopControl* TeleopControl::m_instance = nullptr; // initialize the instance variable to nullptr
-TeleopControl* TeleopControl::GetInstance()
+TeleopControl *TeleopControl::m_instance = nullptr; // initialize the instance variable to nullptr
+TeleopControl *TeleopControl::GetInstance()
 {
-    if ( TeleopControl::m_instance == nullptr )
-    {
-        TeleopControl::m_instance = new TeleopControl();
-    }
+	if (TeleopControl::m_instance == nullptr)
+	{
+		TeleopControl::m_instance = new TeleopControl();
+	}
 	if (TeleopControl::m_instance != nullptr && !TeleopControl::m_instance->IsInitialized())
 	{
 		TeleopControl::m_instance->Initialize();
 	}
-    return TeleopControl::m_instance;
+	return TeleopControl::m_instance;
 }
 //----------------------------------------------------------------------------------
 // Method:      OperatorInterface <<constructor>>
@@ -72,9 +71,9 @@ TeleopControl* TeleopControl::GetInstance()
 //---------------------------------------------------------------------------------
 TeleopControl::TeleopControl() : m_controller(),
 								 m_numControllers(0)
-								 
+
 {
-	for (auto i=0; i<DriverStation::kJoystickPorts; ++i)
+	for (auto i = 0; i < DriverStation::kJoystickPorts; ++i)
 	{
 		m_controller[i] = nullptr;
 	}
@@ -92,7 +91,7 @@ void TeleopControl::Initialize()
 
 void TeleopControl::InitializeControllers()
 {
-	for ( int inx=0; inx<DriverStation::kJoystickPorts; ++inx )
+	for (int inx = 0; inx < DriverStation::kJoystickPorts; ++inx)
 	{
 		InitializeController(inx);
 	}
@@ -103,13 +102,13 @@ void TeleopControl::InitializeController(int port)
 
 	if (m_controller[port] == nullptr)
 	{
-		if ( DriverStation::GetJoystickIsXbox(port) )
+		if (DriverStation::GetJoystickIsXbox(port))
 		{
 			auto xbox = new DragonXBox(port);
 			m_controller[port] = xbox;
 			m_numControllers++;
 		}
-		else if ( DriverStation::GetJoystickType(port) == GenericHID::kHID1stPerson )
+		else if (DriverStation::GetJoystickType(port) == GenericHID::kHID1stPerson)
 		{
 			auto gamepad = new DragonGamepad(port);
 			m_controller[port] = gamepad;
@@ -123,7 +122,6 @@ void TeleopControl::InitializeController(int port)
 		}
 	}
 }
-
 
 void TeleopControl::InitializeAxes(int port)
 {
@@ -139,7 +137,7 @@ void TeleopControl::InitializeAxes(int port)
 				m_controller[port]->SetAxisDeadband(axisInfo.axisId, axisInfo.deadbandType);
 				m_controller[port]->SetAxisProfile(axisInfo.axisId, axisInfo.profile);
 				m_controller[port]->SetAxisScale(axisInfo.axisId, axisInfo.scaleFactor);
-				m_controller[port]->SetAxisFlipped(axisInfo.axisId, axisInfo.direction!=TeleopControlMappingEnums::AXIS_DIRECTION::SYNCED);			
+				m_controller[port]->SetAxisFlipped(axisInfo.axisId, axisInfo.direction != TeleopControlMappingEnums::AXIS_DIRECTION::SYNCED);
 			}
 		}
 	}
@@ -163,13 +161,12 @@ void TeleopControl::InitializeButtons(int port)
 			}
 		}
 	}
-
 }
 vector<TeleopControlFunctions::FUNCTION> TeleopControl::GetAxisFunctionsOnController(int controller)
 {
 	vector<TeleopControlFunctions::FUNCTION> functions;
 
-	for (auto itr=m_axisMap.begin(); itr!= m_axisMap.end(); ++itr)
+	for (auto itr = m_axisMap.begin(); itr != m_axisMap.end(); ++itr)
 	{
 		if (itr->second.controllerNumber == controller)
 		{
@@ -183,7 +180,7 @@ vector<TeleopControlFunctions::FUNCTION> TeleopControl::GetButtonFunctionsOnCont
 {
 	vector<TeleopControlFunctions::FUNCTION> functions;
 
-	for (auto itr=m_buttonMap.begin(); itr!= m_buttonMap.end(); ++itr)
+	for (auto itr = m_buttonMap.begin(); itr != m_buttonMap.end(); ++itr)
 	{
 		if (itr->second.controllerNumber == controller)
 		{
@@ -193,13 +190,11 @@ vector<TeleopControlFunctions::FUNCTION> TeleopControl::GetButtonFunctionsOnCont
 	return functions;
 }
 
-
-pair<IDragonGamePad*, TeleopControlMappingEnums::AXIS_IDENTIFIER> TeleopControl::GetAxisInfo
-(
-	TeleopControlFunctions::FUNCTION  function          // <I> - controller with this function
+pair<IDragonGamePad *, TeleopControlMappingEnums::AXIS_IDENTIFIER> TeleopControl::GetAxisInfo(
+	TeleopControlFunctions::FUNCTION function // <I> - controller with this function
 )
 {
-	IDragonGamePad* controller = nullptr;
+	IDragonGamePad *controller = nullptr;
 	TeleopControlMappingEnums::AXIS_IDENTIFIER axis = TeleopControlMappingEnums::AXIS_IDENTIFIER::UNDEFINED_AXIS;
 
 	if (!IsInitialized())
@@ -213,19 +208,18 @@ pair<IDragonGamePad*, TeleopControlMappingEnums::AXIS_IDENTIFIER> TeleopControl:
 		auto axisInfo = itr->second;
 		if (m_controller[axisInfo.controllerNumber] != nullptr)
 		{
-		    controller = m_controller[axisInfo.controllerNumber];
-		    axis = axisInfo.axisId;
+			controller = m_controller[axisInfo.controllerNumber];
+			axis = axisInfo.axisId;
 		}
 	}
 	return make_pair(controller, axis);
 }
 
-pair<IDragonGamePad*, TeleopControlMappingEnums::BUTTON_IDENTIFIER> TeleopControl::GetButtonInfo
-(
-	TeleopControlFunctions::FUNCTION  function          // <I> - controller with this function
+pair<IDragonGamePad *, TeleopControlMappingEnums::BUTTON_IDENTIFIER> TeleopControl::GetButtonInfo(
+	TeleopControlFunctions::FUNCTION function // <I> - controller with this function
 )
 {
-	IDragonGamePad* controller = nullptr;
+	IDragonGamePad *controller = nullptr;
 	TeleopControlMappingEnums::BUTTON_IDENTIFIER btn = TeleopControlMappingEnums::UNDEFINED_BUTTON;
 
 	if (!IsInitialized())
@@ -256,69 +250,63 @@ pair<IDragonGamePad*, TeleopControlMappingEnums::BUTTON_IDENTIFIER> TeleopContro
 //              become 1.0)
 // Returns:     void
 //------------------------------------------------------------------
-void TeleopControl::SetAxisScaleFactor
-(
-    TeleopControlFunctions::FUNCTION  	function,      // <I> - function that will update an axis
-    double                                  scaleFactor    // <I> - scale factor used to limit the range
+void TeleopControl::SetAxisScaleFactor(
+	TeleopControlFunctions::FUNCTION function, // <I> - function that will update an axis
+	double scaleFactor						   // <I> - scale factor used to limit the range
 )
 {
 	auto info = GetAxisInfo(function);
 	if (info.first != nullptr && info.second != TeleopControlMappingEnums::AXIS_IDENTIFIER::UNDEFINED_AXIS)
-    {
- 		info.first->SetAxisScale(info.second,scaleFactor);
-    }
+	{
+		info.first->SetAxisScale(info.second, scaleFactor);
+	}
 }
 
-void TeleopControl::SetDeadBand
-(
-	TeleopControlFunctions::FUNCTION		function,
-	TeleopControlMappingEnums::AXIS_DEADBAND			deadband    
-)
+void TeleopControl::SetDeadBand(
+	TeleopControlFunctions::FUNCTION function,
+	TeleopControlMappingEnums::AXIS_DEADBAND deadband)
 {
 	auto info = GetAxisInfo(function);
 	if (info.first != nullptr && info.second != TeleopControlMappingEnums::AXIS_IDENTIFIER::UNDEFINED_AXIS)
-    {
-    	info.first->SetAxisDeadband(info.second, deadband);
-    }
+	{
+		info.first->SetAxisDeadband(info.second, deadband);
+	}
 }
-
 
 //------------------------------------------------------------------
 // Method:      SetAxisProfile
 // Description: Sets the axis profile for the specifed axis
 // Returns:     void
 //------------------------------------------------------------------
-void TeleopControl::SetAxisProfile
-(
-    TeleopControlFunctions::FUNCTION  function,       // <I> - function that will update an axis
-    TeleopControlMappingEnums::AXIS_PROFILE        profile         // <I> - profile to use
+void TeleopControl::SetAxisProfile(
+	TeleopControlFunctions::FUNCTION function,		// <I> - function that will update an axis
+	TeleopControlMappingEnums::AXIS_PROFILE profile // <I> - profile to use
 )
 {
 	auto info = GetAxisInfo(function);
 	if (info.first != nullptr && info.second != TeleopControlMappingEnums::AXIS_IDENTIFIER::UNDEFINED_AXIS)
-    {
+	{
 		info.first->SetAxisProfile(info.second, profile);
-    }
+	}
 }
- 
+
 //------------------------------------------------------------------
 // Method:      GetAxisValue
 // Description: Reads the joystick axis, removes any deadband (small
 //              value) and then scales as requested.
 // Returns:     double   -  scaled axis value
 //------------------------------------------------------------------
-double TeleopControl::GetAxisValue
-(
-    TeleopControlFunctions::FUNCTION  function    // <I> - function that whose axis will be read
+double TeleopControl::GetAxisValue(
+	TeleopControlFunctions::FUNCTION function // <I> - function that whose axis will be read
 )
 {
-    double value = 0.0;
+	double value = 0.0;
 	auto info = GetAxisInfo(function);
 	if (info.first != nullptr && info.second != TeleopControlMappingEnums::AXIS_IDENTIFIER::UNDEFINED_AXIS)
-    {
+	{
 		value = info.first->GetAxisValue(info.second);
-    }
-    return value;
+	}
+	return value;
 }
 
 //------------------------------------------------------------------
@@ -327,27 +315,23 @@ double TeleopControl::GetAxisValue
 //              and triggers to be treated as buttons.
 // Returns:     bool   -  scaled axis value
 //------------------------------------------------------------------
-bool TeleopControl::IsButtonPressed
-(
-    TeleopControlFunctions::FUNCTION  function    // <I> - function that whose button will be read
+bool TeleopControl::IsButtonPressed(
+	TeleopControlFunctions::FUNCTION function // <I> - function that whose button will be read
 )
 {
-    bool isSelected = false;
+	bool isSelected = false;
 	auto info = GetButtonInfo(function);
 	if (info.first != nullptr && info.second != TeleopControlMappingEnums::UNDEFINED_BUTTON)
-    {
-   		isSelected = info.first->IsButtonPressed(info.second);
-    }
-    return isSelected;
+	{
+		isSelected = info.first->IsButtonPressed(info.second);
+	}
+	return isSelected;
 }
 
-
-
-void TeleopControl::SetRumble
-(
-	TeleopControlFunctions::FUNCTION  function,       // <I> - controller with this function
-	bool                                leftRumble,     // <I> - rumble left
-	bool                                rightRumble     // <I> - rumble right
+void TeleopControl::SetRumble(
+	TeleopControlFunctions::FUNCTION function, // <I> - controller with this function
+	bool leftRumble,						   // <I> - rumble left
+	bool rightRumble						   // <I> - rumble right
 )
 {
 
@@ -356,51 +340,47 @@ void TeleopControl::SetRumble
 	{
 		info.first->SetRumble(leftRumble, rightRumble);
 	}
-    else
-	{   
+	else
+	{
 		auto info2 = GetAxisInfo(function);
-		if (info2.first != nullptr)	
+		if (info2.first != nullptr)
 		{
 			info2.first->SetRumble(leftRumble, rightRumble);
-		}	
+		}
 	}
 }
 
-void TeleopControl::SetRumble
-(
-	int                                 controller,     // <I> - controller to rumble
-	bool                                leftRumble,     // <I> - rumble left
-	bool                                rightRumble     // <I> - rumble right
+void TeleopControl::SetRumble(
+	int controller,	 // <I> - controller to rumble
+	bool leftRumble, // <I> - rumble left
+	bool rightRumble // <I> - rumble right
 )
 {
-	if (m_controller[ controller ] != nullptr)
+	if (m_controller[controller] != nullptr)
 	{
-		m_controller[ controller ]->SetRumble(leftRumble, rightRumble);
+		m_controller[controller]->SetRumble(leftRumble, rightRumble);
 	}
 }
-
-
 
 void TeleopControl::LogInformation() const
 {
-	auto self = const_cast<TeleopControl*>(this);
-	for ( int inx=0; inx<DriverStation::kJoystickPorts; ++inx )
+	auto self = const_cast<TeleopControl *>(this);
+	for (int inx = 0; inx < DriverStation::kJoystickPorts; ++inx)
 	{
 		if (m_controller[inx] != nullptr)
 		{
 			auto functions = self->GetAxisFunctionsOnController(inx);
 			for (auto function : functions)
 			{
-				Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("TeleopControl-axis"), std::to_string(function) , self->GetAxisValue(function));
+				Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("TeleopControl-axis"), std::to_string(function), self->GetAxisValue(function));
 			}
 
 			functions.clear();
 			functions = self->GetButtonFunctionsOnController(inx);
 			for (auto function : functions)
 			{
-				Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("TeleopControl-button"), std::to_string(function) , self->IsButtonPressed(function));
+				Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("TeleopControl-button"), std::to_string(function), self->IsButtonPressed(function));
 			}
 		}
 	}
 }
-

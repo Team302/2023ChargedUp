@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -13,30 +13,27 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-//C++ Includes
+// C++ Includes
 #include <string>
 
-//FRC Includes
+// FRC Includes
 #include <networktables/NetworkTable.h>
 #include <networktables/NetworkTableEntry.h>
 #include <networktables/NetworkTableInstance.h>
 
 class NetworkTableReader
 {
-    public:
-        
+public:
+    std::string GetNetworkTableString(std::string ntName, std::string ntString);
 
-        std::string GetNetworkTableString(std::string ntName, std::string ntString);
+    double GetNetworkTableDouble(std::string ntName, std::string ntDouble);
 
-        double GetNetworkTableDouble(std::string ntName, std::string ntDouble);
+    NetworkTableReader *GetReader();
 
-        NetworkTableReader* GetReader();
+private:
+    nt::NetworkTableInstance m_instance = nt::NetworkTableInstance::GetDefault();
+    NetworkTableReader *m_reader = nullptr;
 
-    private:
-        nt::NetworkTableInstance m_instance = nt::NetworkTableInstance::GetDefault();
-        NetworkTableReader* m_reader = nullptr;
-
-        NetworkTableReader();
-        ~NetworkTableReader() = default;
-
+    NetworkTableReader();
+    ~NetworkTableReader() = default;
 };

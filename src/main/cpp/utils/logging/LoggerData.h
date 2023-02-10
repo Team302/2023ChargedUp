@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -31,12 +31,10 @@ typedef std::pair<std::string, std::string> LoggerStringValue;
 
 struct LoggerData
 {
-    LOGGER_LEVEL                    level;
-    const std::string&              group;
-    std::vector<LoggerBoolValue>    bools;
-    std::vector<LoggerDoubleValue>  doubles;
-    std::vector<LoggerIntValue>     ints;
-    std::vector<LoggerStringValue>  strings;
+    LOGGER_LEVEL level;
+    const std::string &group;
+    std::vector<LoggerBoolValue> bools;
+    std::vector<LoggerDoubleValue> doubles;
+    std::vector<LoggerIntValue> ints;
+    std::vector<LoggerStringValue> strings;
 };
-
-

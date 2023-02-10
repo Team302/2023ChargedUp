@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -24,34 +24,29 @@
 
 // Third Party Includes
 
-
-
 #include <auton/PrimitiveEnums.h>
 
 class IPrimitive;
 class PrimitiveParams;
 
-class PrimitiveFactory 
+class PrimitiveFactory
 {
 public:
-
-
-	PrimitiveFactory();
-	virtual ~PrimitiveFactory();
-	static PrimitiveFactory* GetInstance();
-	IPrimitive* GetIPrimitive(PrimitiveParams* primitivePasser);
+    PrimitiveFactory();
+    virtual ~PrimitiveFactory();
+    static PrimitiveFactory *GetInstance();
+    IPrimitive *GetIPrimitive(PrimitiveParams *primitivePasser);
 
 private:
-    static PrimitiveFactory* m_instance;
-    IPrimitive* m_DriveStop;
-    IPrimitive* m_driveTime;
-    IPrimitive* m_driveDistance;
-    IPrimitive* m_turnAngle;
-    IPrimitive* m_DriveHoldPosition;
-    IPrimitive* m_driveToWall;
-    IPrimitive* m_driveLidarDistance;
-    IPrimitive* m_autoShoot;
-    IPrimitive* m_resetPosition;
-    IPrimitive* m_drivePath;
+    static PrimitiveFactory *m_instance;
+    IPrimitive *m_DriveStop;
+    IPrimitive *m_driveTime;
+    IPrimitive *m_driveDistance;
+    IPrimitive *m_turnAngle;
+    IPrimitive *m_DriveHoldPosition;
+    IPrimitive *m_driveToWall;
+    IPrimitive *m_driveLidarDistance;
+    IPrimitive *m_autoShoot;
+    IPrimitive *m_resetPosition;
+    IPrimitive *m_drivePath;
 };
-

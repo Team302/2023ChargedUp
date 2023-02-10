@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -14,8 +14,7 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-
-#pragma once 
+#pragma once
 
 #include <string>
 #include <vector>
@@ -24,42 +23,37 @@
 
 #include <frc/Servo.h>
 
-
 class DragonServo
 {
-	public:
+public:
+	DragonServo() = delete;
 
-		DragonServo() = delete;
+	//------------------------------------------------------------------------------
+	// Method:		<<constructor>>
+	// Description:	Create Servos for use in robot mechanisms
+	//------------------------------------------------------------------------------
+	DragonServo(
+		ServoUsage::SERVO_USAGE deviceUsage, // <I> - Usage of the servo
+		int deviceID,						 // <I> - PWM ID
+		double minAngle,					 // <I> - Minimun desired angle
+		double maxAngle						 // <I> - Maximum desired angle
+	);
 
-		//------------------------------------------------------------------------------
-		// Method:		<<constructor>>
-		// Description:	Create Servos for use in robot mechanisms
-		//------------------------------------------------------------------------------
-		DragonServo
-		(
-			ServoUsage::SERVO_USAGE 	deviceUsage,		// <I> - Usage of the servo
-			int 						deviceID,			// <I> - PWM ID
-			double 						minAngle,			// <I> - Minimun desired angle
-			double						maxAngle			// <I> - Maximum desired angle
-		);
+	virtual ~DragonServo() = default;
 
-		virtual ~DragonServo() = default;
+	void Set(double value);
+	void SetOffline();
+	double Get() const;
+	void SetAngle(double angle);
+	double GetAngle() const;
 
-		void Set(double value);
-	    void SetOffline();
-		double Get() const;
-		void SetAngle(double angle);
-		double GetAngle() const;
+	ServoUsage::SERVO_USAGE GetUsage() const;
+	void MoveToMaxAngle();
+	void MoveToMinAngle();
 
-		ServoUsage::SERVO_USAGE GetUsage() const;
-		void MoveToMaxAngle();
-		void MoveToMinAngle();
-
-
-	private:
-		ServoUsage::SERVO_USAGE		m_usage;
-		frc::Servo*                 m_servo;
-		double 						m_minAngle;
-		double						m_maxAngle;
-
+private:
+	ServoUsage::SERVO_USAGE m_usage;
+	frc::Servo *m_servo;
+	double m_minAngle;
+	double m_maxAngle;
 };

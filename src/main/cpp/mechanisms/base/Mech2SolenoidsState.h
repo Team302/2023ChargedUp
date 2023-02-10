@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-/// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+/// Copyright 2023 Lake Orion Robotics FIRST Team 302
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 /// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -26,24 +26,20 @@ class Mech2Solenoids;
 
 class Mech2SolenoidsState : public Mech1SolenoidState
 {
-    public:
+public:
+    Mech2SolenoidsState(
+        Mech2Solenoids *mechanism,
+        std::string stateName,
+        int stateId,
+        MechanismTargetData::SOLENOID solState,
+        MechanismTargetData::SOLENOID solState2);
+    Mech2SolenoidsState() = delete;
+    ~Mech2SolenoidsState() = default;
 
-        Mech2SolenoidsState
-        (
-            Mech2Solenoids*                 mechanism,
-            std::string                     stateName,
-            int                             stateId,
-            MechanismTargetData::SOLENOID   solState,
-            MechanismTargetData::SOLENOID   solState2
-        );
-        Mech2SolenoidsState() = delete;
-        ~Mech2SolenoidsState() = default;
+    void Run() override;
+    void LogInformation() const override;
 
-        void Run() override;
-        void LogInformation() const override;
-
-    private:
-
-        Mech2Solenoids*                 m_mechanism;
-        MechanismTargetData::SOLENOID   m_solenoidState2;
+private:
+    Mech2Solenoids *m_mechanism;
+    MechanismTargetData::SOLENOID m_solenoidState2;
 };

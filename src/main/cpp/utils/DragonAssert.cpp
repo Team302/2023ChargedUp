@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -28,34 +28,29 @@
 #include <utils/DragonAssert.h>
 #include <utils/logging/Logger.h>
 
-
 // Third Party Includes
 
 using namespace frc;
 using namespace std;
 
-
 /// @brief Find or create the singleton DragonAssert
 /// @returns DragonAssert* pointer to the DragonAssert
-DragonAssert* DragonAssert::m_instance = nullptr;
-DragonAssert* DragonAssert::GetDragonAssert()
+DragonAssert *DragonAssert::m_instance = nullptr;
+DragonAssert *DragonAssert::GetDragonAssert()
 {
-    if ( DragonAssert::m_instance == nullptr )
+    if (DragonAssert::m_instance == nullptr)
     {
         DragonAssert::m_instance = new DragonAssert();
     }
     return DragonAssert::m_instance;
 }
 
-
 /// @brief assert if condition is false
 /// @param [in] bool    condition to check
 /// @param [in] std::string: message/value
-void DragonAssert::Assert
-(
-    bool                condition,
-    std::string         msg
-)
+void DragonAssert::Assert(
+    bool condition,
+    std::string msg)
 {
     if (m_option == DragonAssert::DRAGONASSERT_OPTION::PROCESS && !condition)
     {
@@ -64,16 +59,14 @@ void DragonAssert::Assert
     }
 }
 
-/// @brief assert if condition is false.  In NO_OP mode, the condition will be returned instead of asserting & 
+/// @brief assert if condition is false.  In NO_OP mode, the condition will be returned instead of asserting &
 /// @brief message will be logged if failed.  This is useful for if conditionals.
 /// @param [in] bool    condition to check
 /// @param [in] std::string: message/value
 /// @returns true if condition is true, otherwise asserts/gives message
-bool DragonAssert::Always
-(
-    bool                condition,
-    std::string         msg
-)
+bool DragonAssert::Always(
+    bool condition,
+    std::string msg)
 {
     if (!condition)
     {
@@ -86,16 +79,14 @@ bool DragonAssert::Always
     return condition;
 }
 
-/// @brief assert if condition is true. In NO_OP mode, the condition will be returned instead of asserting & 
+/// @brief assert if condition is true. In NO_OP mode, the condition will be returned instead of asserting &
 /// @brief message will be logged if failed.  This is useful for if conditionals.
 /// @param [in] bool    condition to check
 /// @param [in] std::string: message/value
 /// @returns true if condition is false, otherwise asserts/gives message
-bool DragonAssert::Never
-(
-    bool                condition,
-    std::string         msg
-)
+bool DragonAssert::Never(
+    bool condition,
+    std::string msg)
 {
     if (condition)
     {
@@ -104,11 +95,10 @@ bool DragonAssert::Never
         {
             assert(!condition);
         }
-    }    
+    }
     return !condition;
 }
 
-
-DragonAssert::DragonAssert() : m_option(DRAGONASSERT_OPTION::NO_OP) 
+DragonAssert::DragonAssert() : m_option(DRAGONASSERT_OPTION::NO_OP)
 {
 }

@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -188,11 +188,7 @@ public:
         {TeleopControlFunctions::FUNCTION::STARTING_POSITION_EXTEND, extra2DPad180},
 
         {TeleopControlFunctions::FUNCTION::OPEN, extra3YButton},
-        {TeleopControlFunctions::FUNCTION::HOLDING_CUBE, extra3DPad0},
-        {TeleopControlFunctions::FUNCTION::HOLDING_CONE, extra3BButton},
-        {TeleopControlFunctions::FUNCTION::GRABBING_CUBE, extra3DPad180},
-        {TeleopControlFunctions::FUNCTION::GRABBING_CONE, extra3DPad90},
-        {TeleopControlFunctions::FUNCTION::RELEASE, extra3DPad270}
+        {TeleopControlFunctions::FUNCTION::GRAB, extra3DPad270}
 
     };
 
@@ -243,6 +239,7 @@ public:
         {TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_STRAFE, driverLJoystickX},
         {TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_ROTATE, driverRJoystickX},
         {TeleopControlFunctions::FUNCTION::MANUAL_ROTATE, extra1LJoystickY},
+        {TeleopControlFunctions::FUNCTION::MANUAL_EXTEND_RETRACT, extra2LJoystickY}
 
     };
 };

@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -19,22 +19,19 @@
 
 #include <utils/logging/LoggableItem.h>
 
-class LoggableItemMgr 
+class LoggableItemMgr
 {
-    public:
+public:
+    static LoggableItemMgr *GetInstance();
+    void RegisterLoggableItem(
+        LoggableItem *item);
+    void LogData() const;
 
-        static LoggableItemMgr* GetInstance();
-        void RegisterLoggableItem
-        (
-            LoggableItem*       item
-        );
-        void LogData() const;
+private:
+    LoggableItemMgr();
+    ~LoggableItemMgr() = default;
 
-    private:
-        LoggableItemMgr();
-        ~LoggableItemMgr() = default;
+    std::vector<LoggableItem *> m_loggableItems;
 
-        std::vector<LoggableItem*>  m_loggableItems;
-
-        static LoggableItemMgr* m_instance;
+    static LoggableItemMgr *m_instance;
 };

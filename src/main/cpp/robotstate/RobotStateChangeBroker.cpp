@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2023 Lake Orion Robotics FIRST Team 302 
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -14,39 +14,34 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#pragma once
-#include <frc/AddressableLED.h>
+#include <vector>
+#include <robotstate/RobotStateChanges.h>
+#include <robotstate/RobotStateChangeBroker.h>
+#include <robotstate/IRobotStateChangeSubscriber.h>
 
-
-class LED
+RobotStateChangeBroker::RobotStateChangeBroker(
+    RobotStateChanges::StateChange change) : m_change(change),
+                                             m_subscribers()
 {
-	public:
-        LED(int PWMport);
+}
 
+void RobotStateChangeBroker::AddSubscriber(
+    IRobotStateChangeSubscriber *item)
+{
+    for (auto subscriber : m_subscribers)
+    {
+        if (subscriber == item)
+        {
+            return;
+        }
+    }
+    m_subscribers.emplace_back(item);
+}
 
-        enum Colors{RED, GREEN, BLUE, PURPLE, YELLOW, AZUL, BLACK, WHITE, MAX_STATE};
-
-        static constexpr int kLength = 15;
-
-        frc::AddressableLED* m_led;
-        std::array<frc::AddressableLED::LEDData, kLength> m_ledBuffer;
-      
-        std::array<int,3> getColorValues(Colors c);
-        ~LED();
-        LED() = delete;
-
-        static LED* GetInstance();
-
-        private:
-        static LED* m_instance;
-   
-        
-        
-        
-
-
-
-};
-
-
-
+void RobotStateChangeBroker::Notify(int value)
+{
+    for (auto subscriber : m_subscribers)
+    {
+        subscriber->Update(m_change, value);
+    }
+}

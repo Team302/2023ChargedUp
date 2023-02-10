@@ -13,7 +13,7 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-//Team 302 Includes
+// Team 302 Includes
 #include <utils/DistanceBetweenPoses.h>
 
 /// @brief Find the distance between two poses by using the Pythagorean Formula
@@ -22,6 +22,6 @@
 /// @return frc::Translation2d - the difference in X value and the distance in Y value
 
 double DistanceBetweenPoses::GetDeltaBetweenPoses(frc::Pose2d poseOne, frc::Pose2d poseTwo)
-{    
-    return sqrt(pow((poseTwo.X() - poseOne.X()).to<double>(),2) + pow((poseTwo.Y() - poseOne.Y()).to<double>(),2));
+{
+    return sqrt(pow((poseTwo.X() - poseOne.X()).to<double>(), 2) + pow((poseTwo.Y() - poseOne.Y()).to<double>(), 2));
 }

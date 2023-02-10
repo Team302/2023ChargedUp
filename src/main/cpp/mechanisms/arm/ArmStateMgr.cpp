@@ -34,6 +34,8 @@
 #include <mechanisms/arm/arm.h>
 #include <mechanisms/arm/armState.h>
 #include <mechanisms/arm/armStateMgr.h>
+#include <robotstate/RobotState.h>
+#include <robotstate/RobotStateChanges.h>
 #include <utils/logging/Logger.h>
 
 // Third Party Includes
@@ -42,7 +44,6 @@ using namespace std;
 
 ArmStateMgr *ArmStateMgr::m_instance = nullptr;
 ArmStateMgr *ArmStateMgr::GetInstance()
-
 {
     if (ArmStateMgr::m_instance == nullptr)
     {
@@ -61,6 +62,7 @@ ArmStateMgr::ArmStateMgr() : StateMgr(),
                              m_prevState(ARM_STATE::STARTING_POSITION_ROTATE),
                              m_currentState(ARM_STATE::STARTING_POSITION_ROTATE),
                              m_targetState(ARM_STATE::STARTING_POSITION_ROTATE)
+
 {
     map<string, StateStruc> stateMap;
     stateMap["HOLD_POSITION_ROTATE"] = m_hold_position_rotateState;
@@ -101,8 +103,6 @@ void ArmStateMgr::CheckForGamepadTransitions()
 
         if (controller != nullptr)
         {
-            double armRotateValue = controller->GetAxisValue(TeleopControlFunctions::MANUAL_ROTATE);
-
             Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Counts"), m_arm->GetMotor()->GetCounts());
             Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Arm Angle Mech"), m_arm->GetPositionDegrees().to<double>());
             if (abs(armRotateValue) > 0.05)
@@ -114,6 +114,7 @@ void ArmStateMgr::CheckForGamepadTransitions()
 
                 // To do preveious state for, we need to hold the current position in degrees and then set the target to that, current it would set the target to 0 degrees
                 // m_prevState = m_targetState;
+
             }
             else if (controller->IsButtonPressed(TeleopControlFunctions::CONE_BACKROW_ROTATE))
             {
@@ -193,6 +194,8 @@ void ArmStateMgr::CheckForStateTransition()
     if (m_targetState != m_currentState)
     {
         SetCurrentState(m_targetState, true);
+        RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmRotateState, m_targetState);
+
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Target"), m_arm->GetTarget());
 
         if (m_targetState == ARM_STATE::HOLD_POSITION_ROTATE)
@@ -213,3 +216,4 @@ void ArmStateMgr::CheckForStateTransition()
         }
     }
 }
+

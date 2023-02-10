@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -14,39 +14,39 @@
 //====================================================================================================================================================
 #pragma once
 
-//FRC Includes
+// FRC Includes
 #include <frc/SmartDashboard/SendableChooser.h>
 #include <frc/DriverStation.h>
 
 class FMSData
 {
-    public:
-        enum ALLIANCE_COLOR
-        {
-            BLUE,
-            RED,
-            INVALID
-        };
+public:
+    enum ALLIANCE_COLOR
+    {
+        BLUE,
+        RED,
+        INVALID
+    };
 
-        FMSData();
-        ~FMSData() = default;
+    FMSData();
+    ~FMSData() = default;
 
-        /// @brief Get the alliance color from dashboard or FMS when available
-        /// @return the current alliance
-        frc::DriverStation::Alliance GetAllianceColor();
+    /// @brief Get the alliance color from dashboard or FMS when available
+    /// @return the current alliance
+    frc::DriverStation::Alliance GetAllianceColor();
 
-        /// @brief Check if we are connected to FMS
-        void CheckForFMS();
+    /// @brief Check if we are connected to FMS
+    void CheckForFMS();
 
-        /// @brief get the singeleton of FMSData
-        static FMSData* GetInstance();
+    /// @brief get the singeleton of FMSData
+    static FMSData *GetInstance();
 
-    private:
-        static FMSData*	m_instance;
+private:
+    static FMSData *m_instance;
 
-        frc::SendableChooser<std::string>                                   m_allianceColorChooser;
-        std::unordered_map<frc::DriverStation::Alliance, ALLIANCE_COLOR>    m_colorMap;
-        bool                                                                m_hasFMS;
-        frc::DriverStation::Alliance                                        m_color;
-        bool                                                                m_polledFMS;
+    frc::SendableChooser<std::string> m_allianceColorChooser;
+    std::unordered_map<frc::DriverStation::Alliance, ALLIANCE_COLOR> m_colorMap;
+    bool m_hasFMS;
+    frc::DriverStation::Alliance m_color;
+    bool m_polledFMS;
 };

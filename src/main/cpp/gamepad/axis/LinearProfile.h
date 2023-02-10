@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -23,10 +23,7 @@
 // Team 302 includes
 #include <gamepad/axis/IProfile.h>
 
-
 // Third Party Includes
-
-
 
 //==================================================================================
 /// <summary>
@@ -36,35 +33,29 @@
 //==================================================================================
 class LinearProfile : public IProfile
 {
-    public:
+public:
+    //==================================================================================
+    /// <summary>
+    /// Method:         GetInstance
+    /// Description:    Static singleton method to create the object
+    /// Returns:        LinearProfile*  Singleton linear profile object
+    /// </summary>
+    //==================================================================================
+    static LinearProfile *GetInstance();
 
-    
-        //==================================================================================
-        /// <summary>
-        /// Method:         GetInstance
-        /// Description:    Static singleton method to create the object
-        /// Returns:        LinearProfile*  Singleton linear profile object
-        /// </summary>
-        //==================================================================================
-        static LinearProfile* GetInstance();
+    //==================================================================================
+    /// <summary>
+    /// Method:         ApplyProfile
+    /// Description:    Apply the profile
+    /// </summary>
+    //==================================================================================
+    void ApplyProfile(
+        double &inputVal // <I> - value to apply profile to
+    ) const override;
 
+private:
+    LinearProfile() = default;
+    ~LinearProfile() = default;
 
-        //==================================================================================
-        /// <summary>
-        /// Method:         ApplyProfile
-        /// Description:    Apply the profile
-        /// </summary>
-        //==================================================================================
-        void ApplyProfile
-        (
-            double&     inputVal            // <I> - value to apply profile to
-        ) const override;
-
-    private:
-        LinearProfile() = default;
-        ~LinearProfile() = default;
-
-        static LinearProfile*       m_instance;
-
+    static LinearProfile *m_instance;
 };
-

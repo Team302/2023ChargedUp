@@ -14,16 +14,16 @@
 //====================================================================================================================================================
 #pragma once
 
-//FRC Includes
+// FRC Includes
 #include <frc/geometry/Pose2d.h>
 #include <frc/geometry/Translation2d.h>
 
 class DistanceBetweenPoses
 {
-    public:
-        DistanceBetweenPoses() = default;
-        ~DistanceBetweenPoses() = default;
+public:
+    DistanceBetweenPoses() = default;
+    ~DistanceBetweenPoses() = default;
 
-        static double GetDeltaBetweenPoses(frc::Pose2d translationOne,
-                                                        frc::Pose2d translationTwo);
+    static double GetDeltaBetweenPoses(frc::Pose2d translationOne,
+                                       frc::Pose2d translationTwo);
 };
