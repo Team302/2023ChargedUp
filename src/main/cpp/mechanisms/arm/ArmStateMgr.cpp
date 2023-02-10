@@ -103,20 +103,7 @@ void ArmStateMgr::CheckForGamepadTransitions()
 
         if (controller != nullptr)
         {
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Counts"), m_arm->GetMotor()->GetCounts());
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Arm Angle Mech"), m_arm->GetPositionDegrees().to<double>());
-            if (abs(armRotateValue) > 0.05)
-            {
-                m_targetState = ARM_STATE::MANUAL_ROTATE;
-                m_arm->UpdateTarget(0.3 * armRotateValue);
-                Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("RotateValue"), armRotateValue);
-                Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("ArmRotatePercentage"), m_arm->GetTarget());
-
-                // To do preveious state for, we need to hold the current position in degrees and then set the target to that, current it would set the target to 0 degrees
-                // m_prevState = m_targetState;
-
-            }
-            else if (controller->IsButtonPressed(TeleopControlFunctions::CONE_BACKROW_ROTATE))
+            if (controller->IsButtonPressed(TeleopControlFunctions::CONE_BACKROW_ROTATE))
             {
                 m_targetState = ARM_STATE::CONE_BACKROW_ROTATE;
                 m_prevState = m_targetState;
@@ -216,4 +203,3 @@ void ArmStateMgr::CheckForStateTransition()
         }
     }
 }
-

@@ -103,15 +103,8 @@ void ExtenderStateMgr::CheckForGamepadTransitions()
         auto controller = TeleopControl::GetInstance();
         if (controller != nullptr)
         {
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ExtenderMgr"), string("Extender Position"), m_extender->GetPositionInches().to<double>());
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ExtenderMgr"), string("Extender % Value"), extendRetractValue);
 
-            if (abs(extendRetractValue) > 0.1)
-            {
-                m_targetState = EXTENDER_STATE::MANUAL_EXTEND_RETRACT;
-                m_extender->UpdateTarget(0.5 * extendRetractValue);
-            }
-            else if (controller->IsButtonPressed(TeleopControlFunctions::CUBE_BACKROW_EXTEND))
+            if (controller->IsButtonPressed(TeleopControlFunctions::CUBE_BACKROW_EXTEND))
             {
                 m_targetState = EXTENDER_STATE::CUBE_BACKROW_EXTEND;
                 m_prevState = m_targetState;
@@ -179,7 +172,6 @@ void ExtenderStateMgr::CheckForStateTransition()
     {
         CheckForGamepadTransitions();
     }
-
 
     if (m_extender != nullptr)
     {
