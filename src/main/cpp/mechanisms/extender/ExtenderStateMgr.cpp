@@ -93,7 +93,7 @@ int ExtenderStateMgr::GetCurrentStateParam(
 }
 
 /// @brief Check sensors to determine target state
-void ExtenderStateMgr::CheckForSensorTransitions()
+void ExtenderStateMgr::CheckForGamepadTransitions()
 {
     if (m_extender != nullptr)
     {
@@ -103,7 +103,6 @@ void ExtenderStateMgr::CheckForSensorTransitions()
         auto controller = TeleopControl::GetInstance();
         if (controller != nullptr)
         {
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ExtenderMgr"), string("Extender Position"), m_extender->GetPositionInches().to<double>());
 
             if (controller->IsButtonPressed(TeleopControlFunctions::CUBE_BACKROW_EXTEND))
             {
@@ -154,7 +153,7 @@ void ExtenderStateMgr::CheckForSensorTransitions()
 }
 
 /// @brief Check driver input to determine target state
-void ExtenderStateMgr::CheckForGamepadTransitions()
+void ExtenderStateMgr::CheckForSensorTransitions()
 {
     if (m_extender != nullptr)
     {
@@ -167,6 +166,12 @@ void ExtenderStateMgr::CheckForGamepadTransitions()
 /// @brief Check if driver inputs or sensors trigger a state transition
 void ExtenderStateMgr::CheckForStateTransition()
 {
+    CheckForSensorTransitions();
+
+    if (m_checkGamePadTransitions)
+    {
+        CheckForGamepadTransitions();
+    }
 
     if (m_extender != nullptr)
     {
