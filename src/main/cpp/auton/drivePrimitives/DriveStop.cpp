@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -33,28 +33,26 @@
 
 // Third Party Includes
 
-
 using namespace std;
 using namespace frc;
 
 //========================================================================================================
 /// @class  DriveStop
-/// @brief  This is an auton primitive that causes the chassis to not drive 
+/// @brief  This is an auton primitive that causes the chassis to not drive
 //========================================================================================================
-
 
 /// @brief constructor that creates/initializes the object
 DriveStop::DriveStop() : m_maxTime(0.0),
 						 m_currentTime(0.0),
-						 m_chassis( ChassisFactory::GetChassisFactory()->GetIChassis()),
-						 m_timer( make_unique<Timer>() )
+						 m_chassis(ChassisFactory::GetChassisFactory()->GetIChassis()),
+						 m_timer(make_unique<Timer>())
 {
 }
 
 /// @brief initialize this usage of the primitive
 /// @param PrimitiveParms* params the drive parameters
 /// @return void
-void DriveStop::Init(PrimitiveParams* params) 
+void DriveStop::Init(PrimitiveParams *params)
 {
 	m_maxTime = params->GetTime();
 	m_timer->Reset();
@@ -64,7 +62,7 @@ void DriveStop::Init(PrimitiveParams* params)
 
 /// @brief run the primitive (periodic routine)
 /// @return void
-void DriveStop::Run() 
+void DriveStop::Run()
 {
 	if (m_chassis.get() != nullptr)
 	{
@@ -76,13 +74,13 @@ void DriveStop::Run()
 	}
 	else
 	{
-		Logger::GetLogger()->LogData( LOGGER_LEVEL::PRINT_ONCE, string("DriveStop"), string( "DriveStop::Run" ), string( "chassis not found") );
+		Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT_ONCE, string("DriveStop"), string("DriveStop::Run"), string("chassis not found"));
 	}
 }
 
 /// @brief check if the end condition has been met
 /// @return bool true means the end condition was reached, false means it hasn't
-bool DriveStop::IsDone() 
+bool DriveStop::IsDone()
 {
 	return m_timer->AdvanceIfElapsed(units::second_t(m_maxTime));
 }

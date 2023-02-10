@@ -1,6 +1,5 @@
-
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -17,27 +16,35 @@
 #pragma once
 
 // C++ Includes
+#include <map>
+#include <memory>
 #include <string>
 
+// FRC includes
 
-// Team 302 Includes
-#include <hw/interfaces/IDragonSensor.h>
+// Team 302 includes
 
-class UsageValidation
+// Third Party Includes
+
+class LimelightUsages
 {
-    public:
-        UsageValidation() = delete;
-        ~UsageValidation() = delete;
 
-        /// @brief  Check the sensor usage string and convert it to the IDragonSensor::Sensor_Usage value.   
-        /// @brief  If it is an invalid string, the logger utility will be called.
-        /// @returns      IDragonSensor::Sensor_USAGE
-        static IDragonSensor::SENSOR_USAGE ValidateSensorUsage
-        (
-            std::string  usageString,   // <I> - Usage String to validate and convert
-            std::string  methodID       // <I> - class::method identifier for message
-        );
+public:
+    enum LIMELIGHT_USAGE
+    {
+        PRIMARY,
+        SECONDARY,
+        UNKNOWN_USAGE
+    };
 
+    static LimelightUsages *GetInstance();
+
+    LIMELIGHT_USAGE GetUsage(std::string usageString);
+
+private:
+    static LimelightUsages *m_instance;
+    LimelightUsages();
+    ~LimelightUsages();
+
+    std::map<std::string, LIMELIGHT_USAGE> m_usageMap;
 };
-
-

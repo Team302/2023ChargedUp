@@ -1,7 +1,7 @@
 
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -30,42 +30,38 @@
 
 // Third Party Includes
 
-
 using namespace std;
-    
-PiecewiseLinearProfile::PiecewiseLinearProfile() :  IProfile(),
-                                                    m_intercept(0.25),
-                                                    m_inflectionX(0.8),
-                                                    m_inflectionY(0.6)
+
+PiecewiseLinearProfile::PiecewiseLinearProfile() : IProfile(),
+                                                   m_intercept(0.25),
+                                                   m_inflectionX(0.8),
+                                                   m_inflectionY(0.6)
 {
 }
-
-
 
 //==================================================================================
 /// @brief    Apply the profile
 /// @param [in] value that needs the profile (scaling) applied
 /// @return double profiled (scaled) value
 //==================================================================================
-void PiecewiseLinearProfile::ApplyProfile
-(
-    double&     inputVal            // <I> - value to apply profile to
-) const 
+void PiecewiseLinearProfile::ApplyProfile(
+    double &inputVal // <I> - value to apply profile to
+) const
 {
     if (inputVal > m_intercept)
     {
-        inputVal = m_inflectionY + (inputVal-m_intercept)*((1.0-m_inflectionY)/(1-m_intercept));
+        inputVal = m_inflectionY + (inputVal - m_intercept) * ((1.0 - m_inflectionY) / (1 - m_intercept));
     }
     else if (inputVal >= 0.0)
     {
-        inputVal =  m_intercept + ((m_inflectionY-m_intercept) / m_inflectionX) * inputVal ;
+        inputVal = m_intercept + ((m_inflectionY - m_intercept) / m_inflectionX) * inputVal;
     }
     else if (inputVal >= -m_intercept)
     {
-        inputVal =  (-m_intercept + ((m_inflectionY-m_intercept)/m_inflectionX) * inputVal);
+        inputVal = (-m_intercept + ((m_inflectionY - m_intercept) / m_inflectionX) * inputVal);
     }
     else
     {
-        inputVal =  (-m_inflectionY + (inputVal+m_intercept)*((1-m_inflectionY)/(1-m_intercept)));
+        inputVal = (-m_inflectionY + (inputVal + m_intercept) * ((1 - m_inflectionY) / (1 - m_intercept)));
     }
 }

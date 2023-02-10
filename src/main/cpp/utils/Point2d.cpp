@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -21,17 +21,17 @@ Point2d::Point2d()
     Y = units::meter_t(0.0);
 }
 
-Point2d Point2d::operator+(const Point2d& other)
+Point2d Point2d::operator+(const Point2d &other)
 {
-    return Point2d( X + other.X, Y + other.Y);
+    return Point2d(X + other.X, Y + other.Y);
 }
 
-Point2d Point2d::operator-(const Point2d& other)
+Point2d Point2d::operator-(const Point2d &other)
 {
-    return Point2d( X - other.X, Y - other.Y);
+    return Point2d(X - other.X, Y - other.Y);
 }
 
-bool Point2d::operator==(const Point2d& other)
+bool Point2d::operator==(const Point2d &other)
 {
     return X == other.X && Y == other.Y;
 }

@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-/// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+/// Copyright 2023 Lake Orion Robotics FIRST Team 302
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 /// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -24,26 +24,22 @@
 
 using namespace std;
 
-
-LoggableItemMgr* LoggableItemMgr::m_instance = nullptr;
-LoggableItemMgr* LoggableItemMgr::GetInstance()
+LoggableItemMgr *LoggableItemMgr::m_instance = nullptr;
+LoggableItemMgr *LoggableItemMgr::GetInstance()
 {
-	if ( LoggableItemMgr::m_instance == nullptr )
-	{
+    if (LoggableItemMgr::m_instance == nullptr)
+    {
         LoggableItemMgr::m_instance = new LoggableItemMgr();
-	}
-	return LoggableItemMgr::m_instance;
+    }
+    return LoggableItemMgr::m_instance;
 }
-
 
 /// @brief    initialize the state manager, parse the configuration file and create the states.
 LoggableItemMgr::LoggableItemMgr() : m_loggableItems()
 {
-}   
-void LoggableItemMgr::RegisterLoggableItem
-(
-    LoggableItem*       item
-)
+}
+void LoggableItemMgr::RegisterLoggableItem(
+    LoggableItem *item)
 {
     m_loggableItems.emplace_back(item);
 }

@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-/// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+/// Copyright 2023 Lake Orion Robotics FIRST Team 302
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 /// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -24,29 +24,25 @@ class Mech1Servo;
 
 class Mech1ServoState : public State
 {
-    public:
+public:
+    Mech1ServoState(
+        Mech1Servo *mechanism,
+        std::string stateName,
+        int stateId,
+        double target);
+    Mech1ServoState() = delete;
+    ~Mech1ServoState() = default;
 
-        Mech1ServoState
-        (
-            Mech1Servo*                     mechanism,
-            std::string                     stateName,
-            int                             stateId,
-            double                          target
-        );
-        Mech1ServoState() = delete;
-        ~Mech1ServoState() = default;
+    void Init() override;
+    void Run() override;
+    void Exit() override;
+    bool AtTarget() const override;
 
-        void Init() override;
-        void Run() override;
-        void Exit() override;
-        bool AtTarget() const override;
+    void LogInformation() const override;
 
-        void LogInformation() const override;
+    double GetTarget() const { return m_target; }
 
-        double GetTarget() const {return m_target;}
-
-    private:
-
-        Mech1Servo*                     m_mechanism;
-        double                          m_target;
+private:
+    Mech1Servo *m_mechanism;
+    double m_target;
 };

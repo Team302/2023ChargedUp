@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -68,9 +68,9 @@ void ArcadeDrive::Run()
         auto steer = m_controller->GetAxisValue(TeleopControlFunctions::FUNCTION::ARCADE_STEER);
 
         ChassisMovement moveInfo;
-         
+
         moveInfo.chassisSpeeds.vx = throttle * m_chassis->GetMaxSpeed();
-        moveInfo.chassisSpeeds.vy = 0_mps; //units::velocity::meters_per_second_t(0)
+        moveInfo.chassisSpeeds.vy = 0_mps; // units::velocity::meters_per_second_t(0)
         moveInfo.chassisSpeeds.omega = steer * m_chassis->GetMaxAngularSpeed();
         m_chassis->Drive(moveInfo);
     }

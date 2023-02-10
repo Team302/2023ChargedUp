@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -18,7 +18,6 @@
 /// @brief XML parsing for motor definitions.  This definition will construct the solenoids.
 ///     This parsing leverages the 3rd party Open Source Pugixml library (https://pugixml.org/).
 
-
 // C++ Includes
 #include <memory>
 #include <string>
@@ -32,7 +31,6 @@
 #include <utils/HardwareIDValidation.h>
 #include <utils/logging/Logger.h>
 
-
 // Third Party Includes
 #include <pugixml/pugixml.hpp>
 
@@ -42,11 +40,9 @@ using namespace std;
 
 /// @brief  Parse a solenoid XML element and create a DragonSolenoid from its definition.
 /// @return std::shared_ptr<DragonSolenoid> solenoid pointer (or nullptr if XML is ill-formed)
-shared_ptr<DragonSolenoid> SolenoidXmlParser::ParseXML
-(
-    string              networkTableName,
-    xml_node            solenoidNode
-)
+shared_ptr<DragonSolenoid> SolenoidXmlParser::ParseXML(
+    string networkTableName,
+    xml_node solenoidNode)
 {
     // initialize the output
     shared_ptr<DragonSolenoid> solenoid;
@@ -61,22 +57,22 @@ shared_ptr<DragonSolenoid> SolenoidXmlParser::ParseXML
 
     for (xml_attribute attr = solenoidNode.first_attribute(); attr && !hasError; attr = attr.next_attribute())
     {
-        if ( strcmp( attr.name(), "usage" ) == 0 )
+        if (strcmp(attr.name(), "usage") == 0)
         {
-             usage = SolenoidUsage::GetInstance()->GetUsage( string(attr.value()));
+            usage = SolenoidUsage::GetInstance()->GetUsage(string(attr.value()));
         }
-        else if ( strcmp( attr.name(), "canId" ) == 0 )
+        else if (strcmp(attr.name(), "canId") == 0)
         {
             pcmID = attr.as_int();
-            hasError = HardwareIDValidation::ValidateCANID( pcmID, string( "SolenoidXmlParser::ParseXML" ) );
+            hasError = HardwareIDValidation::ValidateCANID(pcmID, string("SolenoidXmlParser::ParseXML"));
         }
-        else if ( strcmp( attr.name(), "channel" ) == 0 )
+        else if (strcmp(attr.name(), "channel") == 0)
         {
             channel = attr.as_int();
-            hasError = HardwareIDValidation::ValidateSolenoidChannel( channel, string( "SolenoidXmlParser::ParseXML" ) );
+            hasError = HardwareIDValidation::ValidateSolenoidChannel(channel, string("SolenoidXmlParser::ParseXML"));
         }
-		// brake mode (or coast)
-        else if ( strcmp( attr.name(), "reversed" ) == 0 )
+        // brake mode (or coast)
+        else if (strcmp(attr.name(), "reversed") == 0)
         {
             reversed = attr.as_bool();
         }
@@ -84,16 +80,14 @@ shared_ptr<DragonSolenoid> SolenoidXmlParser::ParseXML
         {
             string msg = "Invalid attribute";
             msg += attr.name();
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("Solenoid "), string("ParseXML "), msg );
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("Solenoid "), string("ParseXML "), msg);
             hasError = true;
         }
     }
 
-    if ( !hasError )
+    if (!hasError)
     {
-        solenoid = make_shared<DragonSolenoid>( networkTableName, usage, pcmID, channel, reversed );
+        solenoid = make_shared<DragonSolenoid>(networkTableName, usage, pcmID, channel, reversed);
     }
     return solenoid;
 }
-
-

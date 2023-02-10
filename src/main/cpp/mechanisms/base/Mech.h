@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -30,46 +30,42 @@ class StateMgr;
 ///  @brief	base mechanism class
 class Mech : public LoggableItem
 {
-	public:
-        /// @brief create the general mechanism
-        /// @param [in] MechanismTypes::MECHANISM_TYPE the type of mechansim
-        /// @param [in] std::string the name of the file that will set control parameters for this mechanism
-        /// @param [in] std::string the name of the network table for logging information
-        Mech
-        (
-            MechanismTypes::MECHANISM_TYPE  type,
-            std::string                     controlFileName,
-            std::string                     networkTableName
-        );
+public:
+    /// @brief create the general mechanism
+    /// @param [in] MechanismTypes::MECHANISM_TYPE the type of mechansim
+    /// @param [in] std::string the name of the file that will set control parameters for this mechanism
+    /// @param [in] std::string the name of the network table for logging information
+    Mech(
+        MechanismTypes::MECHANISM_TYPE type,
+        std::string controlFileName,
+        std::string networkTableName);
 
-        /// @brief          Indicates the type of mechanism this is
-        /// @return         MechanismTypes::MECHANISM_TYPE
-        virtual MechanismTypes::MECHANISM_TYPE GetType() const;
+    /// @brief          Indicates the type of mechanism this is
+    /// @return         MechanismTypes::MECHANISM_TYPE
+    virtual MechanismTypes::MECHANISM_TYPE GetType() const;
 
-        /// @brief indicate the file used to get the control parameters from
-        /// @return std::string the name of the file 
-        virtual std::string GetControlFileName() const;
+    /// @brief indicate the file used to get the control parameters from
+    /// @return std::string the name of the file
+    virtual std::string GetControlFileName() const;
 
-        /// @brief indicate the Network Table name used to setting tracking parameters
-        /// @return std::string the name of the network table 
-        virtual std::string GetNetworkTableName() const;
+    /// @brief indicate the Network Table name used to setting tracking parameters
+    /// @return std::string the name of the network table
+    virtual std::string GetNetworkTableName() const;
 
-        /// @brief log data to the network table if it is activated and time period has past
-        void LogInformation() const override;
+    /// @brief log data to the network table if it is activated and time period has past
+    void LogInformation() const override;
 
-        virtual StateMgr* GetStateMgr() const;
-        virtual void AddStateMgr
-        (
-            StateMgr*       mgr
-        );
+    virtual StateMgr *GetStateMgr() const;
+    virtual void AddStateMgr(
+        StateMgr *mgr);
 
-	    virtual ~Mech() = default;
+    virtual ~Mech() = default;
 
-    private:
-	    Mech() = delete;
+private:
+    Mech() = delete;
 
-        MechanismTypes::MECHANISM_TYPE  m_type;
-        std::string                     m_controlFile;
-        std::string                     m_ntName;
-        StateMgr*                       m_stateMgr;
+    MechanismTypes::MECHANISM_TYPE m_type;
+    std::string m_controlFile;
+    std::string m_ntName;
+    StateMgr *m_stateMgr;
 };

@@ -1,4 +1,3 @@
-
 //====================================================================================================================================================
 // Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
@@ -13,23 +12,49 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
+// C++ Includes
+#include <map>
+#include <memory>
+#include <string>
 
-#pragma once
+// FRC includes
 
-#include <frc/BuiltInAccelerometer.h>
+// Team 302 includes
+#include <hw/usages/LimelightUsages.h>
+#include <utils/logging/Logger.h>
 
-class DragonRoboRioAccelXDownYRight : public frc::BuiltInAccelerometer
+// Third Party Includes
+
+using namespace std;
+
+LimelightUsages *LimelightUsages::m_instance = nullptr;
+LimelightUsages *LimelightUsages::GetInstance()
 {
-public:
-	DragonRoboRioAccelXDownYRight() = default;
-	virtual ~DragonRoboRioAccelXDownYRight() = default;
+    if (m_instance == nullptr)
+    {
+        m_instance = new LimelightUsages();
+    }
+    return m_instance;
+}
 
-	/// @return The acceleration of the roboRIO along the robot X axis (forward) in g-forces
-	inline double GetX() override { return -1.0 * BuiltInAccelerometer::GetZ(); }
+LimelightUsages::LimelightUsages()
+{
+    m_usageMap["MAINLIMELIGHT"] = LIMELIGHT_USAGE::PRIMARY;
+    m_usageMap["SECONDARYLIMELIGHT"] = LIMELIGHT_USAGE::SECONDARY;
+}
 
-	/// @return The acceleration of the roboRIO along the robot Y axis (left) in g-forces
-	inline double GetY() override { return -1.0 * BuiltInAccelerometer::GetY(); }
+LimelightUsages::~LimelightUsages()
+{
+    m_usageMap.clear();
+}
 
-	/// @return The acceleration of the roboRIO along the robot Z axis (up) in g-forces
-	inline double GetZ() override { return -1.0 * BuiltInAccelerometer::GetX(); }
-};
+LimelightUsages::LIMELIGHT_USAGE LimelightUsages::GetUsage(string usageString)
+{
+    auto it = m_usageMap.find(usageString);
+    if (it != m_usageMap.end())
+    {
+        return it->second;
+    }
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("LimelightUsages::GetUsage"), string("unknown usage"), usageString);
+    return LimelightUsages::LIMELIGHT_USAGE::UNKNOWN_USAGE;
+}

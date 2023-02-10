@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -13,22 +13,18 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-//Team302 Includes
+// Team302 Includes
 #include <chassis/swerve/driveStates/StopDrive.h>
 #include <chassis/ChassisMovement.h>
 
-std::array<frc::SwerveModuleState, 4> StopDrive::UpdateSwerveModuleStates
-(
-    ChassisMovement& chassisMovement
-)
+std::array<frc::SwerveModuleState, 4> StopDrive::UpdateSwerveModuleStates(
+    ChassisMovement &chassisMovement)
 {
     return {*m_flState, *m_frState, *m_blState, *m_brState};
 }
 
-void StopDrive::Init
-(
-    ChassisMovement& chassisMovement
-)
+void StopDrive::Init(
+    ChassisMovement &chassisMovement)
 {
-    //Should we do anything here?
+    // Should we do anything here?
 }

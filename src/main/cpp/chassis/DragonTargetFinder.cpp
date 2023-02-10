@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -19,7 +19,7 @@
 
 using namespace std;
 
-// in: 
+// in:
 // out: Pose2d Field position of target center x,y,r(0_deg)
 frc::Pose2d DragonTargetFinder::GetPosCenterTarget() const
 {
@@ -30,10 +30,9 @@ frc::Pose2d DragonTargetFinder::GetPosCenterTarget() const
 // out:
 void DragonTargetFinder::setPosCenterTarget(double x, double y)
 {
-    frc::Pose2d TempPose = frc::Pose2d(units::length::meter_t(x), units::length::meter_t(y),0_deg);
+    frc::Pose2d TempPose = frc::Pose2d(units::length::meter_t(x), units::length::meter_t(y), 0_deg);
     PosCenterTarget = TempPose;
 }
-
 
 // in: Current Position Pose2d
 // out: Rotation2d Current rotation relative to field frame.
@@ -97,7 +96,7 @@ double DragonTargetFinder::GetAngle2Target(frc::Pose2d lCurPose)
     // α = arcsin(a / c)
     // β = arcsin(b / c)
 
-    //frc::Rotation2d Dist2TargetR = Distance2Target.Rotation();
+    // frc::Rotation2d Dist2TargetR = Distance2Target.Rotation();
 
     double dAngleARad = dDistY2Target / dHypotenuse;
     double dAngleAA = asin(dAngleARad);
@@ -106,28 +105,28 @@ double DragonTargetFinder::GetAngle2Target(frc::Pose2d lCurPose)
     double dAngleBB = asin(dAngleBRad);
 
     // Chassis Quadarant location based on radians to target.  ///////////////
-    //int iQuadrantsLoc = 0; // Quadrants I,II,III,IV.  Standard radians rotation counter clockwise
+    // int iQuadrantsLoc = 0; // Quadrants I,II,III,IV.  Standard radians rotation counter clockwise
 
     double dDeg2Target = (dAngleAA * (180.0 / numbers::pi)); // convert rad to degrees.
     double dDeg2TargetB = (dAngleBB * (180.0 / numbers::pi));
 
     if ((dAngleAA) < 0 && (dAngleBB > 0))
     {
-        //iQuadrantsLoc = 1;
+        // iQuadrantsLoc = 1;
     } // neg quadraunt
     if ((dAngleAA) < 0 && (dAngleBB < 0))
     {
-        //iQuadrantsLoc = 2;
+        // iQuadrantsLoc = 2;
         dDeg2Target = -90 + dDeg2TargetB;
     } // neg quadraunt
     if ((dAngleAA) > 0 && (dAngleBB < 0))
     {
-        //iQuadrantsLoc = 3;
+        // iQuadrantsLoc = 3;
         dDeg2Target = 90 + abs(dDeg2TargetB);
     } // Pos quadraunt
     if ((dAngleAA) > 0 && (dAngleBB > 0))
     {
-        //iQuadrantsLoc = 4;
+        // iQuadrantsLoc = 4;
     } // Pos quadraunt
     /////////////////////////////////////////////////////////////////////
 
@@ -165,8 +164,8 @@ double DragonTargetFinder::GetTargetAngleD(frc::Pose2d lCurPose)
     return dTargetAngle;
 }
 
-    // in: Pose2d
-    // out: Target angle in Rotation 2d... Field angle robot center to center target
+// in: Pose2d
+// out: Target angle in Rotation 2d... Field angle robot center to center target
 frc::Rotation2d DragonTargetFinder::GetTargetAngleR2d(frc::Pose2d lCurPose)
 {
     frc::Rotation2d xCurRot2d = GetCurrentRotaion(lCurPose);

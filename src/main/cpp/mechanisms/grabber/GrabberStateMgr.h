@@ -43,20 +43,12 @@ public:
     enum GRABBER_STATE
     {
         OPEN,
-        GRABBING_CONE,
-        GRABBING_CUBE,
-        HOLDING_CONE,
-        HOLDING_CUBE,
-        RELEASE
+        GRAB
     };
 
     const std::map<const std::string, GRABBER_STATE> m_grabberXmlStringToStateEnumMap{
         {"OPEN", GRABBER_STATE::OPEN},
-        {"GRABBING_CONE", GRABBER_STATE::GRABBING_CONE},
-        {"GRABBING_CUBE", GRABBER_STATE::GRABBING_CUBE},
-        {"HOLDING_CONE", GRABBER_STATE::HOLDING_CONE},
-        {"HOLDING_CUBE", GRABBER_STATE::HOLDING_CUBE},
-        {"RELEASE", GRABBER_STATE::RELEASE}};
+        {"GRAB", GRABBER_STATE::GRAB}};
 
     /// @brief  Find or create the state manmanager
     static GrabberStateMgr *GetInstance();
@@ -86,9 +78,5 @@ private:
     static GrabberStateMgr *m_instance;
 
     const StateStruc m_openState = {GRABBER_STATE::OPEN, "OPEN", StateType::GRABBER_STATE, true};
-    const StateStruc m_grabbing_coneState = {GRABBER_STATE::GRABBING_CONE, "GRABBING_CONE", StateType::GRABBER_STATE, false};
-    const StateStruc m_grabbing_cubeState = {GRABBER_STATE::GRABBING_CUBE, "GRABBING_CUBE", StateType::GRABBER_STATE, false};
-    const StateStruc m_holding_coneState = {GRABBER_STATE::HOLDING_CONE, "HOLDING_CONE", StateType::GRABBER_STATE, false};
-    const StateStruc m_holding_cubeState = {GRABBER_STATE::HOLDING_CUBE, "HOLDING_CUBE", StateType::GRABBER_STATE, false};
-    const StateStruc m_releaseState = {GRABBER_STATE::RELEASE, "RELEASE", StateType::GRABBER_STATE, false};
+    const StateStruc m_grabState = {GRABBER_STATE::GRAB, "GRAB", StateType::GRABBER_STATE, true};
 };

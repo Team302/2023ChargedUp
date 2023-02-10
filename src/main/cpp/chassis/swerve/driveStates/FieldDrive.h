@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -15,27 +15,24 @@
 
 #pragma once
 
-//FRC Includes
+// FRC Includes
 #include <frc/kinematics/SwerveModuleState.h>
 #include <frc/kinematics/ChassisSpeeds.h>
 
-//Team302 Includes
+// Team302 Includes
 #include <chassis/swerve/driveStates/RobotDrive.h>
 
 class FieldDrive : public RobotDrive
 {
-    public:
-        FieldDrive(RobotDrive* robotDrive);
+public:
+    FieldDrive(RobotDrive *robotDrive);
 
-        std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates
-        (
-            ChassisMovement& chassisMovement
-        ) override;
+    std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates(
+        ChassisMovement &chassisMovement) override;
 
-        void Init
-        (
-            ChassisMovement& chassisMovement
-        ) override;
-    private:
-        RobotDrive*              m_robotDrive;
+    void Init(
+        ChassisMovement &chassisMovement) override;
+
+private:
+    RobotDrive *m_robotDrive;
 };
