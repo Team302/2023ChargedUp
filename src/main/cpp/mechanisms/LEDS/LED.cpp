@@ -41,7 +41,8 @@
 
         m_led = new frc::AddressableLED(PWMport);
         m_led->SetLength(kLength);
-        m_led->SetData(m_ledBuffer);
+        std::span thisspan{m_ledBuffer.data(), m_ledBuffer.size()};
+        m_led->SetData(thisspan);
         m_led->Start();
         
     }
