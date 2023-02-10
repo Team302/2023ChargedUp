@@ -99,6 +99,7 @@ void GrabberStateMgr::CheckForGamepadTransitions()
 {
     if (m_grabber != nullptr)
     {
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "GrabberStateMgr", string("CheckForGamepad"), "Not Nullptr");
         m_currentState = static_cast<GRABBER_STATE>(GetCurrentState());
         m_targetState = m_currentState;
 
@@ -131,7 +132,7 @@ void GrabberStateMgr::CheckForStateTransition()
         if (m_targetState != m_currentState)
         {
             SetCurrentState(m_targetState, true);
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, "GrabberStateMgr", string("CurrentState"), to_string(m_targetState));
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "GrabberStateMgr", string("CurrentState"), to_string(m_targetState));
             RobotState::GetInstance()->PublishStateChange(RobotStateChanges::GrabberState, m_targetState);
         }
     }
