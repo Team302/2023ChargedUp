@@ -75,6 +75,8 @@ private:
     GRABBER_STATE m_currentState;
     GRABBER_STATE m_targetState;
 
+    bool m_followOtherMechs = false;
+
     static GrabberStateMgr *m_instance;
 
     const StateStruc m_openState = {GRABBER_STATE::OPEN, "OPEN", StateType::GRABBER_STATE, true};

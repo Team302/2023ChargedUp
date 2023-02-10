@@ -56,7 +56,7 @@ public:
     const TeleopControlButton copilotBButton = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::B_BUTTON, TeleopControlMappingEnums::STANDARD};
     const TeleopControlButton copilotXButton = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::X_BUTTON, TeleopControlMappingEnums::STANDARD};
     const TeleopControlButton copilotYButton = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::Y_BUTTON, TeleopControlMappingEnums::STANDARD};
-    const TeleopControlButton copil9tLBumper = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::LEFT_BUMPER, TeleopControlMappingEnums::STANDARD};
+    const TeleopControlButton copilotLBumper = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::LEFT_BUMPER, TeleopControlMappingEnums::STANDARD};
     const TeleopControlButton copilotRBumper = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::RIGHT_BUMPER, TeleopControlMappingEnums::STANDARD};
     const TeleopControlButton copilotSelectButton = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::SELECT_BUTTON, TeleopControlMappingEnums::STANDARD};
     const TeleopControlButton copilotStartButton = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::START_BUTTON, TeleopControlMappingEnums::STANDARD};
@@ -163,11 +163,30 @@ public:
         {TeleopControlFunctions::FUNCTION::HOLONOMIC_ROTATE_BACK, driverDPad180},
         {TeleopControlFunctions::FUNCTION::HOLONOMIC_ROTATE_LEFT, driverDPad270},
         {TeleopControlFunctions::FUNCTION::HOLONOMIC_ROTATE_RIGHT, driverDPad90},
-        {TeleopControlFunctions::FUNCTION::DRIVE_TO_COL_ONE, driverXButton},
-        {TeleopControlFunctions::FUNCTION::DRIVE_TO_COL_TWO, driverYButton},
-        {TeleopControlFunctions::FUNCTION::DRIVE_TO_COL_THREE, driverBButton},
+        {TeleopControlFunctions::FUNCTION::DRIVE_TO_LEFT_COLUMN, driverXButton},
+        {TeleopControlFunctions::FUNCTION::DRIVE_TO_MIDDLE_COLUMN, driverYButton},
+        {TeleopControlFunctions::FUNCTION::DRIVE_TO_RIGHT_COLUMN, driverBButton},
         {TeleopControlFunctions::FUNCTION::REZERO_PIGEON, driverAButton},
         {TeleopControlFunctions::FUNCTION::HOLD_POSITION, driverRBumper},
+
+        {TeleopControlFunctions::BALANCE_MODE, driverBButton},
+        {TeleopControlFunctions::AUTO_BALANCE, driverLStickPressed},
+        {TeleopControlFunctions::DRIVE_TO_HUMAN_PLAYER_LEFT, driverLStickPressed},
+        {TeleopControlFunctions::DRIVE_TO_HUMAN_PLAYER_RIGHT, driverRStickPressed},
+        {TeleopControlFunctions::FRONT_LEFT_BUMPER_TURNABOUT_POINT, driverRBumper},
+        {TeleopControlFunctions::FRONT_RIGHT_BUMPER_TURNABOUT_POINT, driverLBumper},
+        {TeleopControlFunctions::HOLD_POSITION, driverStartButton},
+
+        // co-pilot controls
+
+        {TeleopControlFunctions::STARTING_POSITION_EXTEND, copilotStartButton},
+        {TeleopControlFunctions::CYCLE_GRABBER, copilotSelectButton},
+        {TeleopControlFunctions::HUMAN_PLAYER_STATION, copilotBButton},
+        {TeleopControlFunctions::FLOOR_POSITION, copilotAButton},
+        {TeleopControlFunctions::MIDROW, copilotXButton},
+        {TeleopControlFunctions::BACKROW, copilotYButton},
+        {TeleopControlFunctions::OPEN, copilotLBumper},
+        {TeleopControlFunctions::GRAB, copilotRBumper},
 
         {TeleopControlFunctions::FUNCTION::HOLD_POSITION_ROTATE, extra1AButton},
         {TeleopControlFunctions::FUNCTION::CUBE_BACKROW_ROTATE, extra1XButton},
@@ -238,6 +257,10 @@ public:
         {TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_FORWARD, driverLJoystickY},
         {TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_STRAFE, driverLJoystickX},
         {TeleopControlFunctions::FUNCTION::HOLONOMIC_DRIVE_ROTATE, driverRJoystickX},
+
+        {TeleopControlFunctions::FUNCTION::MANUAL_ROTATE, copilotLJoystickY},
+        {TeleopControlFunctions::FUNCTION::MANUAL_EXTEND_RETRACT, copilotRJoystickY},
+
         {TeleopControlFunctions::FUNCTION::MANUAL_ROTATE, extra1LJoystickY},
         {TeleopControlFunctions::FUNCTION::MANUAL_EXTEND_RETRACT, extra2LJoystickY}
 

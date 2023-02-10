@@ -71,6 +71,8 @@ GrabberStateMgr::GrabberStateMgr() : StateMgr(),
     {
         m_grabber->AddStateMgr(this);
     }
+
+    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::ArmRotateState);
 }
 
 /// @brief  Get the current Parameter parm value for the state of this mechanism
@@ -89,6 +91,12 @@ void GrabberStateMgr::CheckForSensorTransitions()
     if (m_grabber != nullptr)
     {
         // look at banner sensor to determine target state
+        // if (bannersensor->DetectsObject())
+        //{
+        // m_targetState = GRABBER_STATE::GRAB;
+        //}
+        // else...
+        // if()
     }
 }
 
@@ -111,10 +119,6 @@ void GrabberStateMgr::CheckForGamepadTransitions()
             {
                 m_targetState = GRABBER_STATE::GRAB;
             }
-            else
-            {
-                m_targetState = GRABBER_STATE::OPEN;
-            }
         }
     }
 }
@@ -122,13 +126,37 @@ void GrabberStateMgr::CheckForGamepadTransitions()
 /// @brief Check if driver inputs or sensors trigger a state transition
 void GrabberStateMgr::CheckForStateTransition()
 {
-
+    CheckForSensorTransitions();
     if (m_grabber != nullptr)
     {
+        if (!m_followOtherMechs)
+        {
+            CheckForGamepadTransitions();
+        }
+
         if (m_targetState != m_currentState)
         {
             SetCurrentState(m_targetState, true);
             RobotState::GetInstance()->PublishStateChange(RobotStateChanges::GrabberState, m_targetState);
+        }
+    }
+}
+
+void GrabberStateMgr::Update(RobotStateChanges::StateChange change, int value)
+{
+    if (change == RobotStateChanges::StateChange::ArmRotateState)
+    {
+        // If we are going to the HP substation, open the grabber, otherwise follow the sensors or gamepad input
+        // don't update m_followOtherMechs in HOLD_POSITION because we will go to that after reaching HP target, then open the grabber <- We dont want this
+        ArmStateMgr::ARM_STATE armState = static_cast<ArmStateMgr::ARM_STATE>(value);
+        if (armState == ArmStateMgr::ARM_STATE::HUMAN_PLAYER_STATION_ROTATE)
+        {
+            m_targetState = GRABBER_STATE::OPEN;
+            m_followOtherMechs = true;
+        }
+        else if (armState != ArmStateMgr::ARM_STATE::HOLD_POSITION_ROTATE)
+        {
+            m_followOtherMechs = false;
         }
     }
 }
