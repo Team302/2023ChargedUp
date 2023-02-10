@@ -25,29 +25,28 @@
 using namespace frc;
 using namespace std;
 
-DragonLeds* DragonLeds::m_instance = nullptr;
-DragonLeds* DragonLeds::GetInstance()
+DragonLeds *DragonLeds::m_instance = nullptr;
+DragonLeds *DragonLeds::GetInstance()
 {
-	if ( DragonLeds::m_instance == nullptr )
-	{
-		DragonLeds::m_instance = new DragonLeds();
-	}
-	return DragonLeds::m_instance;
+    if (DragonLeds::m_instance == nullptr)
+    {
+        DragonLeds::m_instance = new DragonLeds();
+    }
+    return DragonLeds::m_instance;
 }
 
-DragonLeds::DragonLeds() :  m_leds(),
-                            m_num(0),
-                            m_ledData(),
-                            m_firstPixelHue(0),
-                            m_colorChaseStart(0)
+DragonLeds::DragonLeds() : m_leds(),
+                           m_num(0),
+                           m_ledData(),
+                           m_firstPixelHue(0),
+                           m_colorChaseStart(0)
 {
 }
-void DragonLeds::Initialize
-(
-	int 						deviceID,			// <I> - PWM ID
-	int  						numLeds 			// <I> - number of LEDs
+void DragonLeds::Initialize(
+    int deviceID, // <I> - PWM ID
+    int numLeds   // <I> - number of LEDs
 
-) 
+)
 {
     if (!IsInitialized())
     {
@@ -56,7 +55,7 @@ void DragonLeds::Initialize
         m_firstPixelHue = 0;
         m_colorChaseStart = 0;
         m_ledData.resize(numLeds);
-        for (auto i=0; i<numLeds; ++i)
+        for (auto i = 0; i < numLeds; ++i)
         {
             m_ledData[i].SetRGB(0, 255, 0);
         }
@@ -72,40 +71,37 @@ bool DragonLeds::IsInitialized() const
     return m_num > 0;
 }
 
-
-void DragonLeds::SetColor
-(
-    LedColor   color
-)
+void DragonLeds::SetColor(
+    LedColor color)
 {
     switch (color)
     {
-        case SOLID_RED:
-            for (auto i=0; i<m_num; ++i)
-            {
-                m_ledData[i].SetRGB(255, 0, 0);
-            }
-            break;
+    case SOLID_RED:
+        for (auto i = 0; i < m_num; ++i)
+        {
+            m_ledData[i].SetRGB(255, 0, 0);
+        }
+        break;
     case SOLID_GREEN:
-            for (auto i=0; i<m_num; ++i)
-            {
-                m_ledData[i].SetRGB(0, 255, 0);
-            }
+        for (auto i = 0; i < m_num; ++i)
+        {
+            m_ledData[i].SetRGB(0, 255, 0);
+        }
         break;
     case SOLID_BLUE:
-            for (auto i=0; i<m_num; ++i)
-            {
-                m_ledData[i].SetRGB(0, 0, 255);
-            }
+        for (auto i = 0; i < m_num; ++i)
+        {
+            m_ledData[i].SetRGB(0, 0, 255);
+        }
         break;
-    
+
     default:
         break;
     }
 
     if (color != m_color)
     {
-        for (auto i=m_colorChaseStart; i<m_colorChaseStart+3 && i<m_num; ++i)
+        for (auto i = m_colorChaseStart; i < m_colorChaseStart + 3 && i < m_num; ++i)
         {
             m_ledData[i].SetRGB(0, 0, 0);
         }
@@ -113,7 +109,7 @@ void DragonLeds::SetColor
     }
     else
     {
-        m_colorChaseStart =  0;
+        m_colorChaseStart = 0;
     }
     m_firstPixelHue = 0;
     m_color = color;
@@ -121,7 +117,7 @@ void DragonLeds::SetColor
 
 void DragonLeds::SetRainbow()
 {
-    for (auto i=0; i<m_num; ++i) 
+    for (auto i = 0; i < m_num; ++i)
     {
         // Calculate the hue - hue is easier for rainbows because the color
         // shape is a circle so only one value needs to precess
@@ -129,7 +125,7 @@ void DragonLeds::SetRainbow()
         // Set the value
         m_ledData[i].SetHSV(pixelHue, 255, 128);
     }
-    m_firstPixelHue += 3;  // Increase by to make the rainbow "move"
-    m_firstPixelHue %= 180;  // Check bounds
-    m_colorChaseStart =  0;
+    m_firstPixelHue += 3;   // Increase by to make the rainbow "move"
+    m_firstPixelHue %= 180; // Check bounds
+    m_colorChaseStart = 0;
 }

@@ -15,29 +15,30 @@
 
 #pragma once
 
-//C++ Includes
+// C++ Includes
 #include <vector>
 
-//FRC Includes
+// FRC Includes
 #include <frc/geometry/Translation2d.h>
 
-//Team 302 Includes
+// Team 302 Includes
 #include <utils/Waypoint2d.h>
 
 class WaypointXmlParser
 {
-    public:
-        WaypointXmlParser() = default;
-        ~WaypointXmlParser() = default;
+public:
+    WaypointXmlParser() = default;
+    ~WaypointXmlParser() = default;
 
-        /// @brief  Find or create the Waypoint parser
-		static WaypointXmlParser* GetInstance();
+    /// @brief  Find or create the Waypoint parser
+    static WaypointXmlParser *GetInstance();
 
-        void ParseWaypoints();
+    void ParseWaypoints();
 
-        std::vector<Waypoint2d> GetWaypoints() const {return m_waypoints;};
-    private:
-        static WaypointXmlParser*	m_instance;
+    std::vector<Waypoint2d> GetWaypoints() const { return m_waypoints; };
 
-        std::vector<Waypoint2d> m_waypoints;
+private:
+    static WaypointXmlParser *m_instance;
+
+    std::vector<Waypoint2d> m_waypoints;
 };

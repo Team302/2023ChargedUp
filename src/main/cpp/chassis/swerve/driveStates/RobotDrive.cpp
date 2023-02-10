@@ -15,11 +15,11 @@
 
 #include <string>
 
-//FRC Includes
+// FRC Includes
 #include <units/velocity.h>
 #include <units/angle.h>
 
-//Team302 Includes
+// Team302 Includes
 
 #include <chassis/swerve/driveStates/RobotDrive.h>
 #include <chassis/ChassisFactory.h>
@@ -28,14 +28,14 @@
 
 using std::string;
 
-RobotDrive::RobotDrive() :  ISwerveDriveState::ISwerveDriveState(),
-                            m_flState(),
-                            m_frState(),
-                            m_blState(),
-                            m_brState(),
-                            m_wheelbase(units::length::inch_t(20.0)),
-                            m_wheeltrack(units::length::inch_t(20.0)),
-                            m_maxspeed(units::velocity::feet_per_second_t(1.0))
+RobotDrive::RobotDrive() : ISwerveDriveState::ISwerveDriveState(),
+                           m_flState(),
+                           m_frState(),
+                           m_blState(),
+                           m_brState(),
+                           m_wheelbase(units::length::inch_t(20.0)),
+                           m_wheeltrack(units::length::inch_t(20.0)),
+                           m_maxspeed(units::velocity::feet_per_second_t(1.0))
 {
     auto chassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
     if (chassis != nullptr)
@@ -50,10 +50,8 @@ RobotDrive::RobotDrive() :  ISwerveDriveState::ISwerveDriveState(),
     }
 }
 
-std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates
-(
-    ChassisMovement& chassisMovement
-)
+std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates(
+    ChassisMovement &chassisMovement)
 {
     // These calculations are based on Ether's Chief Delphi derivation
     // The only changes are that that derivation is based on positive angles being clockwise
@@ -87,7 +85,7 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates
 
     units::velocity::meters_per_second_t omegaW = omega.to<double>() * centerOfRotationW / 1_s;
     units::velocity::meters_per_second_t omegaL = omega.to<double>() * centerOfRotationL / 1_s;
-    
+
     auto a = vx - omegaL;
     auto b = vx + omegaL;
     auto c = vy - omegaW;
@@ -96,35 +94,35 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates
     // here we'll negate the angle to conform to the positive CCW convention
     m_flState.angle = units::angle::radian_t(atan2(b.to<double>(), d.to<double>()));
     m_flState.angle = -1.0 * m_flState.angle.Degrees();
-    m_flState.speed = units::velocity::meters_per_second_t(sqrt( pow(b.to<double>(),2) + pow(d.to<double>(),2) ));
+    m_flState.speed = units::velocity::meters_per_second_t(sqrt(pow(b.to<double>(), 2) + pow(d.to<double>(), 2)));
     double maxCalcSpeed = abs(m_flState.speed.to<double>());
 
     m_frState.angle = units::angle::radian_t(atan2(b.to<double>(), c.to<double>()));
     m_frState.angle = -1.0 * m_frState.angle.Degrees();
-    m_frState.speed = units::velocity::meters_per_second_t(sqrt( pow(b.to<double>(),2) + pow(c.to<double>(),2) ));
-    if (abs(m_frState.speed.to<double>())>maxCalcSpeed)
+    m_frState.speed = units::velocity::meters_per_second_t(sqrt(pow(b.to<double>(), 2) + pow(c.to<double>(), 2)));
+    if (abs(m_frState.speed.to<double>()) > maxCalcSpeed)
     {
         maxCalcSpeed = abs(m_frState.speed.to<double>());
     }
 
     m_blState.angle = units::angle::radian_t(atan2(a.to<double>(), d.to<double>()));
     m_blState.angle = -1.0 * m_blState.angle.Degrees();
-    m_blState.speed = units::velocity::meters_per_second_t(sqrt( pow(a.to<double>(),2) + pow(d.to<double>(),2) ));
-    if (abs(m_blState.speed.to<double>())>maxCalcSpeed)
+    m_blState.speed = units::velocity::meters_per_second_t(sqrt(pow(a.to<double>(), 2) + pow(d.to<double>(), 2)));
+    if (abs(m_blState.speed.to<double>()) > maxCalcSpeed)
     {
         maxCalcSpeed = abs(m_blState.speed.to<double>());
     }
 
     m_brState.angle = units::angle::radian_t(atan2(a.to<double>(), c.to<double>()));
     m_brState.angle = -1.0 * m_brState.angle.Degrees();
-    m_brState.speed = units::velocity::meters_per_second_t(sqrt( pow(a.to<double>(),2) + pow(c.to<double>(),2) ));
-    if (abs(m_brState.speed.to<double>())>maxCalcSpeed)
+    m_brState.speed = units::velocity::meters_per_second_t(sqrt(pow(a.to<double>(), 2) + pow(c.to<double>(), 2)));
+    if (abs(m_brState.speed.to<double>()) > maxCalcSpeed)
     {
         maxCalcSpeed = abs(m_brState.speed.to<double>());
     }
 
     // normalize speeds if necessary (maxCalcSpeed > max attainable speed)
-    if ( maxCalcSpeed > m_maxspeed.to<double>() )
+    if (maxCalcSpeed > m_maxspeed.to<double>())
     {
         auto ratio = m_maxspeed.to<double>() / maxCalcSpeed;
         m_flState.speed *= ratio;
@@ -136,10 +134,7 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates
     return {m_flState, m_frState, m_blState, m_brState};
 }
 
-void RobotDrive::Init
-(
-    ChassisMovement& chassisMovement
-)
+void RobotDrive::Init(
+    ChassisMovement &chassisMovement)
 {
-
 }

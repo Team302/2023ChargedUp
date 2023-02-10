@@ -20,4 +20,4 @@
 
 #include <hw/DragonAnalogInput.h>
 
-typedef std::map <DragonAnalogInput::ANALOG_SENSOR_TYPE, DragonAnalogInput*> AnalogInputMap;
+typedef std::map<DragonAnalogInput::ANALOG_SENSOR_TYPE, DragonAnalogInput *> AnalogInputMap;

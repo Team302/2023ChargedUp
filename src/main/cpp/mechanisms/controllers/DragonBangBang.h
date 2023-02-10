@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+// Copyright 2022 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -17,21 +17,16 @@
 
 class DragonBangBang
 {
-    public:
-        DragonBangBang
-        (
-            double  tolerance
-        );
-        DragonBangBang() = delete;
-        ~DragonBangBang() = default;
+public:
+    DragonBangBang(
+        double tolerance);
+    DragonBangBang() = delete;
+    ~DragonBangBang() = default;
 
-        double Calculate
-        (
-            double currentVal,
-            double targetVal
-        );
+    double Calculate(
+        double currentVal,
+        double targetVal);
 
-    private:
-        double m_tolerance;
+private:
+    double m_tolerance;
 };
-

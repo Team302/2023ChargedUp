@@ -28,23 +28,22 @@
 
 class PrimitiveParams;
 
-class DriveDistance : public SuperDrive 
+class DriveDistance : public SuperDrive
 {
 public:
 	bool IsDone() override;
-	void Init(PrimitiveParams* params) override;
+	void Init(PrimitiveParams *params) override;
 	void Run() override;
 	DriveDistance();
 	virtual ~DriveDistance() = default;
 
 protected:
-    void SetDistance
-    (
-        double distance
-    );
+	void SetDistance(
+		double distance);
+
 private:
 	void CalculateSlowDownDistance();
-	PrimitiveParams* m_params;
+	PrimitiveParams *m_params;
 
 	double m_targetDistance;
 	double m_initialDistance;
@@ -58,8 +57,7 @@ private:
 	bool m_arcing;
 
 	const double SPEED_THRESHOLD = 1.5;
-	const double MIN_SPEED_COUNT_TIME = 0.5; //seconds before we start checking for wall collisions
+	const double MIN_SPEED_COUNT_TIME = 0.5; // seconds before we start checking for wall collisions
 	const int UNDER_SPEED_COUNT_THRESHOLD = 4;
-	const double DECEL_TIME_MULTIPLIER = 0.85; //0.75
+	const double DECEL_TIME_MULTIPLIER = 0.85; // 0.75
 };
-

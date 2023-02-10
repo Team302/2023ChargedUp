@@ -14,8 +14,7 @@
 /// OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-
-#pragma once 
+#pragma once
 
 // Team 302 includes
 #include <hw/DragonLeds.h>
@@ -25,15 +24,12 @@
 
 class LedXmlParser
 {
-    public:
-        LedXmlParser() = default;
-        virtual ~LedXmlParser() = default;
+public:
+    LedXmlParser() = default;
+    virtual ~LedXmlParser() = default;
 
-
-        /// @brief Parse a servo XML element and create a DragonServo from its definition.
-        /// @return std::shared_ptr<DragonServo> servo
-        DragonLeds* ParseXML
-        (
-            pugi::xml_node      ledNode
-        );
+    /// @brief Parse a servo XML element and create a DragonServo from its definition.
+    /// @return std::shared_ptr<DragonServo> servo
+    DragonLeds *ParseXML(
+        pugi::xml_node ledNode);
 };

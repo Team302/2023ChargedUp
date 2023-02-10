@@ -24,22 +24,18 @@
 
 class AnalogInputXmlParser
 {
-    public:
+public:
+    AnalogInputXmlParser() = default;
+    virtual ~AnalogInputXmlParser() = default;
 
-		AnalogInputXmlParser() = default;
-        virtual ~AnalogInputXmlParser() = default;
-
-
-        //-----------------------------------------------------------------------
-        // Method:      ParseXML
-        // Description: Parse a analogSensor XML element and create a DragonAnalogInput from
-        //              its definition.
-        // Returns:     DragonAnalogInput*      AnalogInput (or nullptr if XML
-        //                                  	is ill-formed
-        //-----------------------------------------------------------------------
-        static DragonAnalogInput* ParseXML
-        (
-            std::string         networkTableName,
-            pugi::xml_node      sensorNode
-        );
+    //-----------------------------------------------------------------------
+    // Method:      ParseXML
+    // Description: Parse a analogSensor XML element and create a DragonAnalogInput from
+    //              its definition.
+    // Returns:     DragonAnalogInput*      AnalogInput (or nullptr if XML
+    //                                  	is ill-formed
+    //-----------------------------------------------------------------------
+    static DragonAnalogInput *ParseXML(
+        std::string networkTableName,
+        pugi::xml_node sensorNode);
 };

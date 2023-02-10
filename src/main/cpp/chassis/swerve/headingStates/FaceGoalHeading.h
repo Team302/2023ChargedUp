@@ -15,21 +15,21 @@
 
 #pragma once
 
-//Team302 Includes
+// Team302 Includes
 #include <chassis/swerve/headingStates/ISwerveDriveOrientation.h>
 #include <chassis/DragonTargetFinder.h>
 #include <hw/DragonLimelight.h>
 
 class FaceGoalHeading : public ISwerveDriveOrientation
 {
-    public:
-        FaceGoalHeading();
-        ~FaceGoalHeading();
+public:
+    FaceGoalHeading();
+    ~FaceGoalHeading();
 
-        void UpdateChassisSpeeds(ChassisMovement& chassisMovement) override;
+    void UpdateChassisSpeeds(ChassisMovement &chassisMovement) override;
 
-    private:
-        DragonTargetFinder     m_targetFinder;
+private:
+    DragonTargetFinder m_targetFinder;
 
-        DragonLimelight*        m_limelight;
+    DragonLimelight *m_limelight;
 };

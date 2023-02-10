@@ -19,20 +19,16 @@
 // Third Party includes
 #include <pugixml/pugixml.hpp>
 
-
 /// @class MechansimXmlParser
 /// @brief Create a mechaism from an XML definition
 class MechanismXmlParser
 {
-    public:
-        MechanismXmlParser() = default;
-        virtual ~MechanismXmlParser() = default;
+public:
+    MechanismXmlParser() = default;
+    virtual ~MechanismXmlParser() = default;
 
-    	/// @brief  Parse the mechanism element (and it children).  When this is done the mechanism exists 
-        ///         that can be retrieved from the factory.
-        void ParseXML
-        (
-            pugi::xml_node      mechanismNode
-        );
+    /// @brief  Parse the mechanism element (and it children).  When this is done the mechanism exists
+    ///         that can be retrieved from the factory.
+    void ParseXML(
+        pugi::xml_node mechanismNode);
 };
-

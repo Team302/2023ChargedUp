@@ -13,7 +13,7 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
-   
+
 #pragma once
 
 #include <string>
@@ -21,23 +21,18 @@
 
 class DragonCanCoder : public ctre::phoenix::sensors::WPI_CANCoder
 {
-	public:
-		DragonCanCoder
-		(
-	        std::string		        	networkTableName,
-            std::string                 usage,
-			int 						canID,
-			std::string					canBusName,
-            double                      offset,
-            bool                        reverse
-		);
-		virtual ~DragonCanCoder() = default;
-        std::string GetUsage() const {return m_usage;}
+public:
+	DragonCanCoder(
+		std::string networkTableName,
+		std::string usage,
+		int canID,
+		std::string canBusName,
+		double offset,
+		bool reverse);
+	virtual ~DragonCanCoder() = default;
+	std::string GetUsage() const { return m_usage; }
 
-	private:
-		std::string						m_networkTableName;
-		std::string  				    m_usage;
+private:
+	std::string m_networkTableName;
+	std::string m_usage;
 };
-
-
-

@@ -27,21 +27,17 @@ namespace frc
 
 /// @class PCMXmlParser
 /// @brief XML parsing for the PCM node in the Robot definition xml file.  Upon successful parsing, it will
-///        create a Compressor object and solenoid objects. The parsing leverages the 3rd party Open Source 
+///        create a Compressor object and solenoid objects. The parsing leverages the 3rd party Open Source
 ///        Pugixml library (https://pugixml.org/).
 class PCMXmlParser
 {
-    public:
+public:
+    PCMXmlParser() = default;
+    virtual ~PCMXmlParser() = default;
 
-        PCMXmlParser() = default;
-        virtual ~PCMXmlParser() = default;
-
-        /// @brief      Parse a pcm XML element and create a PowerDistributionPanel* from its definition.
-        /// @param [in] xml_node PDPNode the <PDP element in the xml document
-        /// @return     PowerDistributionPanel*   PDP object
-        frc::Compressor* ParseXML
-        (
-            pugi::xml_node      PDPNode
-        );
+    /// @brief      Parse a pcm XML element and create a PowerDistributionPanel* from its definition.
+    /// @param [in] xml_node PDPNode the <PDP element in the xml document
+    /// @return     PowerDistributionPanel*   PDP object
+    frc::Compressor *ParseXML(
+        pugi::xml_node PDPNode);
 };
-

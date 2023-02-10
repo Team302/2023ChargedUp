@@ -27,25 +27,22 @@
 // Third Party includes
 #include <pugixml/pugixml.hpp>
 
-
 /// @class ChassisXmlParser
-/// @brief Create a chassis from an XML definition that includes the chassis type, wheel diameter, 
+/// @brief Create a chassis from an XML definition that includes the chassis type, wheel diameter,
 ///        wheel based (front to back distance) and track (side to side distance on axle).
 class ChassisXmlParser
 {
-	public:
-		/// @brief construct a ChassisXmlParser object
-		ChassisXmlParser() = default;
+public:
+	/// @brief construct a ChassisXmlParser object
+	ChassisXmlParser() = default;
 
-		/// @brief destroy a ChassisXmlParser object and free the memory
-		virtual ~ChassisXmlParser() = default;
+	/// @brief destroy a ChassisXmlParser object and free the memory
+	virtual ~ChassisXmlParser() = default;
 
-    	/// @brief  Parse the chassie element (and it children).  When this is done a IChassis object exists.
-		///		   It can be retrieved from the factory.
-		/// @param [in]  pugi::xml_node the chassis element in the XML document
-    	/// @return std::shared_ptr<IChassis> 
-		IChassis*  ParseXML
-		(
-			pugi::xml_node      chassisNode
-		);
+	/// @brief  Parse the chassie element (and it children).  When this is done a IChassis object exists.
+	///		   It can be retrieved from the factory.
+	/// @param [in]  pugi::xml_node the chassis element in the XML document
+	/// @return std::shared_ptr<IChassis>
+	IChassis *ParseXML(
+		pugi::xml_node chassisNode);
 };

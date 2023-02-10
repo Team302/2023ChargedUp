@@ -13,13 +13,13 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-//C++ Includes
+// C++ Includes
 #include <memory>
 #include <string>
 
 #include <frc/Filesystem.h>
 
-//Team 302 includes
+// Team 302 includes
 #include <auton/drivePrimitives/ResetPosition.h>
 #include <auton/PrimitiveParams.h>
 #include <auton/drivePrimitives/IPrimitive.h>
@@ -34,13 +34,13 @@ ResetPosition::ResetPosition() : m_chassis(ChassisFactory::GetChassisFactory()->
 {
 }
 
-void ResetPosition::Init(PrimitiveParams* params)
+void ResetPosition::Init(PrimitiveParams *params)
 {
     string pathToLoad = params->GetPathName();
 
     if (pathToLoad != "")
     {
- 	    auto deployDir = frc::filesystem::GetDeployDirectory();
+        auto deployDir = frc::filesystem::GetDeployDirectory();
         deployDir += "/paths/output/" + pathToLoad;
         m_trajectory = frc::TrajectoryUtil::FromPathweaverJson(deployDir);
 
@@ -51,13 +51,11 @@ void ResetPosition::Init(PrimitiveParams* params)
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Reset Position"), string("Auton Info: InitialPoseX"), m_trajectory.InitialPose().X().to<double>());
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Reset Position"), string("Auton Info: InitialPoseY"), m_trajectory.InitialPose().Y().to<double>());
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Reset Position"), string("Auton Info: InitialPoseOmega"), m_trajectory.InitialPose().Rotation().Degrees().to<double>());
-        
     }
 }
 
 void ResetPosition::Run()
 {
-
 }
 
 bool ResetPosition::IsDone()

@@ -21,35 +21,31 @@
 // Third Party Includes
 #include <pugixml/pugixml.hpp>
 
-
 class CameraXmlParser
 {
-    public:
+public:
+    // todo: eliminate this enum
+    enum PIXEL_FORMAT
+    {
+        UNKNOWN_PIXEL_FORMAT = -1,
+        KMJPEG,
+        KYUYV,
+        KRGB565,
+        KBGR,
+        KGRAY
+    };
 
-        // todo: eliminate this enum
-        enum PIXEL_FORMAT
-        {
-                UNKNOWN_PIXEL_FORMAT = -1,
-                KMJPEG,
-                KYUYV,
-                KRGB565,
-                KBGR,
-                KGRAY
-        };
+    CameraXmlParser() = default;
+    virtual ~CameraXmlParser() = default;
 
-        CameraXmlParser() = default;
-        virtual ~CameraXmlParser() = default;
+    ///-----------------------------------------------------------------------
+    /// Method:      ParseXML
+    /// @brief       Parse a Camera XML element....
+    /// @param		 pugi::xml_node cameraNode   XML <camera node
+    /// @return
+    ///				 cs::UsbCamera USB camera reference
+    ///-----------------------------------------------------------------------
+    cs::UsbCamera ParseXML(pugi::xml_node cameraNode);
 
-        ///-----------------------------------------------------------------------
-        /// Method:      ParseXML
-        /// @brief       Parse a Camera XML element....
-        /// @param		 pugi::xml_node cameraNode   XML <camera node
-        /// @return     
-        ///				 cs::UsbCamera USB camera reference
-        ///-----------------------------------------------------------------------
-        cs::UsbCamera ParseXML( pugi::xml_node	cameraNode  );
-
-    private:
-
+private:
 };
-

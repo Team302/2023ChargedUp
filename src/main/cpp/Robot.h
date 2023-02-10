@@ -14,11 +14,9 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-
 #pragma once
 
 #include <frc/TimedRobot.h>
-
 
 class ArcadeDrive;
 class CyclePrimitives;
@@ -32,32 +30,32 @@ class DragonField;
 class AutonPreviewer;
 class RobotState;
 
-class Robot : public frc::TimedRobot 
+class Robot : public frc::TimedRobot
 {
-    public:
-        void RobotInit() override;
-        void RobotPeriodic() override;
-        void AutonomousInit() override;
-        void AutonomousPeriodic() override;
-        void TeleopInit() override;
-        void TeleopPeriodic() override;
-        void DisabledInit() override;
-        void DisabledPeriodic() override;
-        void TestInit() override;
-        void TestPeriodic() override;
+public:
+    void RobotInit() override;
+    void RobotPeriodic() override;
+    void AutonomousInit() override;
+    void AutonomousPeriodic() override;
+    void TeleopInit() override;
+    void TeleopPeriodic() override;
+    void DisabledInit() override;
+    void DisabledPeriodic() override;
+    void TestInit() override;
+    void TestPeriodic() override;
 
-    private:
-        TeleopControl*        m_controller;
-        IChassis*             m_chassis;
-        CyclePrimitives*      m_cyclePrims; 
-        HolonomicDrive*       m_holonomic;
-        ArcadeDrive*          m_arcade;
-        
-        DragonLimelight*      m_dragonLimeLight;
-        
-        AdjustableItemMgr*    m_tuner;
-        FMSData*              m_fmsData;
-        DragonField*          m_field;
-        AutonPreviewer*       m_previewer;
-        RobotState*           m_robotState;
+private:
+    TeleopControl *m_controller;
+    IChassis *m_chassis;
+    CyclePrimitives *m_cyclePrims;
+    HolonomicDrive *m_holonomic;
+    ArcadeDrive *m_arcade;
+
+    DragonLimelight *m_dragonLimeLight;
+
+    AdjustableItemMgr *m_tuner;
+    FMSData *m_fmsData;
+    DragonField *m_field;
+    AutonPreviewer *m_previewer;
+    RobotState *m_robotState;
 };

@@ -13,10 +13,10 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-//FRC Includes
+// FRC Includes
 #include <frc/geometry/Rotation2d.h>
 
-//Team302 Includes
+// Team302 Includes
 #include <chassis/swerve/driveStates/HoldDrive.h>
 
 HoldDrive::HoldDrive()
@@ -26,18 +26,13 @@ HoldDrive::HoldDrive()
     m_blState->angle = {units::angle::degree_t(135)};
     m_brState->angle = {units::angle::degree_t(-135)};
 }
-std::array<frc::SwerveModuleState, 4> HoldDrive::UpdateSwerveModuleStates
-(
-    ChassisMovement& chassisMovement
-)
+std::array<frc::SwerveModuleState, 4> HoldDrive::UpdateSwerveModuleStates(
+    ChassisMovement &chassisMovement)
 {
     return {*m_flState, *m_frState, *m_blState, *m_brState};
 }
 
-void HoldDrive::Init
-(
-    ChassisMovement& chassisMovement
-)
+void HoldDrive::Init(
+    ChassisMovement &chassisMovement)
 {
-
 }

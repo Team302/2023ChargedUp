@@ -14,8 +14,7 @@
 /// OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-
-#pragma once 
+#pragma once
 
 // C++ Includes
 
@@ -24,13 +23,11 @@
 
 class RoboRioXmlParser
 {
-    public:
-        RoboRioXmlParser() = default;
-        virtual ~RoboRioXmlParser() = default;
+public:
+    RoboRioXmlParser() = default;
+    virtual ~RoboRioXmlParser() = default;
 
-        /// @brief Parse a roborio XML element and create a DragonRoboRioAccelerometer from its definition.
-        void ParseXML
-        (
-            pugi::xml_node      roboRioNode
-        );
+    /// @brief Parse a roborio XML element and create a DragonRoboRioAccelerometer from its definition.
+    void ParseXML(
+        pugi::xml_node roboRioNode);
 };

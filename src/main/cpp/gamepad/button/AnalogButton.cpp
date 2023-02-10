@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+// Copyright 2022 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -19,7 +19,6 @@
 #include <gamepad/button/AnalogButton.h>
 #include <gamepad/IDragonGamePad.h>
 
-
 using namespace std;
 
 //==================================================================================
@@ -28,37 +27,35 @@ using namespace std;
 /// Description:    This treats a analog input as a button on a gamepad.
 /// </summary>
 //==================================================================================
-AnalogButton::AnalogButton
-(
-    AnalogAxis*                         axis,           // <I> - axis to turn into a button
-    double                              minValue,       // <I> - minimum value for true 
-    double                              maxValue        // <I> - maximum value for true 
-) : m_axis( axis ), 
-    m_minValue( minValue ),
-    m_maxValue( maxValue )                                  
+AnalogButton::AnalogButton(
+    AnalogAxis *axis, // <I> - axis to turn into a button
+    double minValue,  // <I> - minimum value for true
+    double maxValue   // <I> - maximum value for true
+    ) : m_axis(axis),
+        m_minValue(minValue),
+        m_maxValue(maxValue)
 {
 }
 
-AnalogButton::AnalogButton
-(
-    AnalogAxis*                         axis            // <I> - axis to turn into a button
-) : m_axis( axis ), 
-    m_minValue( 0.2 ),
-    m_maxValue( 1.0 )                                  
+AnalogButton::AnalogButton(
+    AnalogAxis *axis // <I> - axis to turn into a button
+    ) : m_axis(axis),
+        m_minValue(0.2),
+        m_maxValue(1.0)
 {
 }
 
 //==================================================================================
 /// <summary>
 /// Method:         IsButtonPressed
-/// Description:    Read the button and return true if it is pressed and false if 
+/// Description:    Read the button and return true if it is pressed and false if
 ///                 it isn't.
 /// </summary>
 //==================================================================================
-bool AnalogButton::IsButtonPressed() const 
+bool AnalogButton::IsButtonPressed() const
 {
     bool pressed = false;
-    if ( m_axis != nullptr )
+    if (m_axis != nullptr)
     {
         auto axisValue = m_axis->GetAxisValue();
         pressed = (axisValue > m_minValue);
@@ -66,14 +63,12 @@ bool AnalogButton::IsButtonPressed() const
     return pressed;
 }
 
-bool AnalogButton::WasButtonReleased() const 
+bool AnalogButton::WasButtonReleased() const
 {
     return !IsButtonPressed();
 }
 
-bool AnalogButton::WasButtonPressed() const 
+bool AnalogButton::WasButtonPressed() const
 {
     return IsButtonPressed();
 }
-
-

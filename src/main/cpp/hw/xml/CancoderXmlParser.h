@@ -27,16 +27,14 @@
 
 class CancoderXmlParser
 {
-    public:
-        CancoderXmlParser() = default;
-        virtual ~CancoderXmlParser() = default;
+public:
+    CancoderXmlParser() = default;
+    virtual ~CancoderXmlParser() = default;
 
-        /// @brief parses the cancoder node in the robot.xml file and creates a cancoder
-        /// @param [in] xml_node - the cancoder element in the xml file
-        /// @return shared_ptr<CANCoder
-        DragonCanCoder* ParseXML 
-        (
-            std::string         networkTableName,
-            pugi::xml_node      CanCoderNode
-        );
+    /// @brief parses the cancoder node in the robot.xml file and creates a cancoder
+    /// @param [in] xml_node - the cancoder element in the xml file
+    /// @return shared_ptr<CANCoder
+    DragonCanCoder *ParseXML(
+        std::string networkTableName,
+        pugi::xml_node CanCoderNode);
 };

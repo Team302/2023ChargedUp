@@ -14,7 +14,6 @@
 /// OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-
 #pragma once
 
 // C++ Includes
@@ -42,26 +41,21 @@ class ControlData;
 
 class DragonControlToCTREAdapterFactory
 {
-	public:
-		static DragonControlToCTREAdapterFactory* GetFactory();
-        DragonControlToCTREAdapter* CreateAdapter
-        (
-            std::string                                                     networkTableName,  
-            int                                                             controllerSlot, 
-            ControlData*                                                    controlInfo,          
-            DistanceAngleCalcStruc                                          calcStruc,                          
-            ctre::phoenix::motorcontrol::can::WPI_BaseMotorController*      controller
-        );
-        DragonControlToCTREAdapter* CreatePercentOuptutAdapter
-        (
-            std::string                                                     networkTableName,  
-            ctre::phoenix::motorcontrol::can::WPI_BaseMotorController*      controller
-        );
+public:
+    static DragonControlToCTREAdapterFactory *GetFactory();
+    DragonControlToCTREAdapter *CreateAdapter(
+        std::string networkTableName,
+        int controllerSlot,
+        ControlData *controlInfo,
+        DistanceAngleCalcStruc calcStruc,
+        ctre::phoenix::motorcontrol::can::WPI_BaseMotorController *controller);
+    DragonControlToCTREAdapter *CreatePercentOuptutAdapter(
+        std::string networkTableName,
+        ctre::phoenix::motorcontrol::can::WPI_BaseMotorController *controller);
 
+private:
+    DragonControlToCTREAdapterFactory() = default;
+    ~DragonControlToCTREAdapterFactory() = default;
 
-	private:
-		DragonControlToCTREAdapterFactory() = default;
-		~DragonControlToCTREAdapterFactory() = default;
-
-		static DragonControlToCTREAdapterFactory*	m_factory;
+    static DragonControlToCTREAdapterFactory *m_factory;
 };

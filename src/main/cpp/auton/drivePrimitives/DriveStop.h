@@ -30,45 +30,42 @@
 // forward declares
 class PrimitiveParams;
 
-
 namespace frc
 {
 	class Timer;
 }
 
-
 //========================================================================================================
 /// @class  DriveStop
-/// @brief  This is an auton primitive that causes the chassis to not drive 
+/// @brief  This is an auton primitive that causes the chassis to not drive
 //========================================================================================================
 
-class DriveStop : public IPrimitive 
+class DriveStop : public IPrimitive
 {
-	public:
-		/// @brief constructor that creates/initializes the object
-		DriveStop();
+public:
+	/// @brief constructor that creates/initializes the object
+	DriveStop();
 
-		/// @brief destructor, clean  up the memory from this object
-		virtual ~DriveStop() = default;
+	/// @brief destructor, clean  up the memory from this object
+	virtual ~DriveStop() = default;
 
-		/// @brief initialize this usage of the primitive
-		/// @param PrimitiveParms* params the drive parameters
-		/// @return void
-		void Init(PrimitiveParams* params) override;
-		
-		/// @brief run the primitive (periodic routine)
-		/// @return void
-		void Run() override;
+	/// @brief initialize this usage of the primitive
+	/// @param PrimitiveParms* params the drive parameters
+	/// @return void
+	void Init(PrimitiveParams *params) override;
 
-		/// @brief check if the end condition has been met
-		/// @return bool true means the end condition was reached, false means it hasn't
-		bool IsDone() override;
+	/// @brief run the primitive (periodic routine)
+	/// @return void
+	void Run() override;
 
-	private:
-		float m_maxTime;		//Target time
-		float m_currentTime;	//Time since init
-		std::shared_ptr<IChassis> m_chassis;	
-		std::unique_ptr<frc::Timer> m_timer;
-		double						m_heading;
+	/// @brief check if the end condition has been met
+	/// @return bool true means the end condition was reached, false means it hasn't
+	bool IsDone() override;
+
+private:
+	float m_maxTime;	 // Target time
+	float m_currentTime; // Time since init
+	std::shared_ptr<IChassis> m_chassis;
+	std::unique_ptr<frc::Timer> m_timer;
+	double m_heading;
 };
-

@@ -1,7 +1,7 @@
 
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+// Copyright 2022 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -24,9 +24,7 @@
 // Team 302 includes
 #include <gamepad/axis/IProfile.h>
 
-
 // Third Party Includes
-
 
 //========================================================================================================
 /// @class PiecewiseLinearProfile
@@ -34,25 +32,19 @@
 //========================================================================================================
 class PiecewiseLinearProfile : public IProfile
 {
-    public:
-        PiecewiseLinearProfile();
-        ~PiecewiseLinearProfile() = default;
+public:
+    PiecewiseLinearProfile();
+    ~PiecewiseLinearProfile() = default;
 
-        //==================================================================================
-        /// @brief:    Apply the profile
-        /// @param  double inputVal - value to be scaled (have profile applied to)
-        //==================================================================================
-        void ApplyProfile
-        (
-            double&      inputVal            
-        ) const override;
+    //==================================================================================
+    /// @brief:    Apply the profile
+    /// @param  double inputVal - value to be scaled (have profile applied to)
+    //==================================================================================
+    void ApplyProfile(
+        double &inputVal) const override;
 
-    private:
-
-        double              m_intercept;
-        double              m_inflectionX;
-        double              m_inflectionY;
-
-
+private:
+    double m_intercept;
+    double m_inflectionX;
+    double m_inflectionY;
 };
-

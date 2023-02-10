@@ -20,14 +20,12 @@
 
 #include <pugixml/pugixml.hpp>
 
-class LimelightXmlParser 
+class LimelightXmlParser
 {
-  public:
-      LimelightXmlParser() = default;
-      virtual ~LimelightXmlParser() = default;
+public:
+  LimelightXmlParser() = default;
+  virtual ~LimelightXmlParser() = default;
 
-      DragonLimelight* ParseXML
-      (
-        pugi::xml_node    limelightNode
-      );
+  DragonLimelight *ParseXML(
+      pugi::xml_node limelightNode);
 };

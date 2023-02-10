@@ -1,7 +1,7 @@
 
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+// Copyright 2022 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -30,15 +30,14 @@
 
 // Third Party Includes
 
-
 using namespace std;
-    
+
 //==================================================================================
 /// @brief    Static singleton method to create the object
 /// @return   CubedProfile*  Singleton cubed profile object
 //==================================================================================
-CubedProfile* CubedProfile::m_instance = nullptr;
-CubedProfile* CubedProfile::GetInstance()
+CubedProfile *CubedProfile::m_instance = nullptr;
+CubedProfile *CubedProfile::GetInstance()
 {
     if (m_instance == nullptr)
     {
@@ -47,15 +46,13 @@ CubedProfile* CubedProfile::GetInstance()
     return m_instance;
 }
 
-
 //==================================================================================
 /// @brief    Apply the profile
 /// @param [in] value that needs the profile (scaling) applied
 //==================================================================================
-void CubedProfile::ApplyProfile
-(
-    double&      inputVal            // <I> - value to apply profile to
-) const 
+void CubedProfile::ApplyProfile(
+    double &inputVal // <I> - value to apply profile to
+) const
 {
-    inputVal = pow( inputVal, 3.0 );
+    inputVal = pow(inputVal, 3.0);
 }

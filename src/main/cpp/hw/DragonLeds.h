@@ -14,59 +14,49 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-
-#pragma once 
+#pragma once
 #include <memory>
 #include <vector>
 
 #include <frc/AddressableLED.h>
 
-
 class DragonLeds
 {
-	public:
+public:
+	enum LedColor
+	{
+		SOLID_RED,
+		SOLID_GREEN,
+		SOLID_BLUE
+	};
 
-		enum LedColor
-		{
-			SOLID_RED,
-			SOLID_GREEN,
-			SOLID_BLUE
-		};
+	static DragonLeds *GetInstance();
 
-		static DragonLeds* GetInstance();
+	//------------------------------------------------------------------------------
+	// Method:		<<constructor>>
+	// Description:	Create Servos for use in robot mechanisms
+	//------------------------------------------------------------------------------
+	void Initialize(
+		int deviceID, // <I> - PWM ID
+		int nleds	  // <I> - number of leds
+	);
+	bool IsInitialized() const;
 
+	void SetColor(
+		LedColor color);
 
-		//------------------------------------------------------------------------------
-		// Method:		<<constructor>>
-		// Description:	Create Servos for use in robot mechanisms
-		//------------------------------------------------------------------------------
-		void Initialize
-		(
-			int 						deviceID,			// <I> - PWM ID
-			int 						nleds   			// <I> - number of leds
-		);
-		bool IsInitialized() const;
+	void SetRainbow();
 
+private:
+	DragonLeds();
+	virtual ~DragonLeds() = default;
 
-		void SetColor
-		(
-			LedColor 	color
-		);
+	std::unique_ptr<frc::AddressableLED> m_leds;
+	int m_num;
+	std::vector<frc::AddressableLED::LEDData> m_ledData;
+	int m_firstPixelHue;
+	int m_colorChaseStart;
+	LedColor m_color;
 
-		void SetRainbow();
-
-	private:
-		DragonLeds();
-		virtual ~DragonLeds() = default;
-
-
-		std::unique_ptr<frc::AddressableLED>        m_leds;
-        int                                         m_num;
-		std::vector<frc::AddressableLED::LEDData>   m_ledData;
-		int											m_firstPixelHue;
-		int											m_colorChaseStart;
-		LedColor									m_color;
-
-		static DragonLeds*	m_instance;
-
+	static DragonLeds *m_instance;
 };

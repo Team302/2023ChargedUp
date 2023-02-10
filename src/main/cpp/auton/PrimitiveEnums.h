@@ -24,21 +24,17 @@
 
 // Third Party Includes
 
-
-
-       enum PRIMITIVE_IDENTIFIER
-         {
-             UNKNOWN_PRIMITIVE = -1,
-             DO_NOTHING,
-             HOLD_POSITION,
-             DRIVE_DISTANCE,
-             DRIVE_TIME,
-			       DRIVE_TO_WALL,
-             TURN_ANGLE_ABS,
-             TURN_ANGLE_REL,
-             DRIVE_PATH,
-             RESET_POSITION,
-             MAX_AUTON_PRIMITIVES
-         };
-
-
+enum PRIMITIVE_IDENTIFIER
+{
+  UNKNOWN_PRIMITIVE = -1,
+  DO_NOTHING,
+  HOLD_POSITION,
+  DRIVE_DISTANCE,
+  DRIVE_TIME,
+  DRIVE_TO_WALL,
+  TURN_ANGLE_ABS,
+  TURN_ANGLE_REL,
+  DRIVE_PATH,
+  RESET_POSITION,
+  MAX_AUTON_PRIMITIVES
+};

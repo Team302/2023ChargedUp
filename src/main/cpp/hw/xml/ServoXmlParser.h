@@ -14,8 +14,7 @@
 /// OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-
-#pragma once 
+#pragma once
 
 // C++ Includes
 #include <string>
@@ -27,16 +26,13 @@ class DragonServo;
 
 class ServoXmlParser
 {
-    public:
-        ServoXmlParser() = default;
-        virtual ~ServoXmlParser() = default;
+public:
+    ServoXmlParser() = default;
+    virtual ~ServoXmlParser() = default;
 
-
-        /// @brief Parse a servo XML element and create a DragonServo from its definition.
-        /// @return std::shared_ptr<DragonServo> servo
-        DragonServo* ParseXML
-        (
-            std::string         networkTableName,
-            pugi::xml_node      ServoNode
-        );
+    /// @brief Parse a servo XML element and create a DragonServo from its definition.
+    /// @return std::shared_ptr<DragonServo> servo
+    DragonServo *ParseXML(
+        std::string networkTableName,
+        pugi::xml_node ServoNode);
 };

@@ -15,30 +15,29 @@
 
 #pragma once
 
-//C++ Libraries
+// C++ Libraries
 #include <memory>
 
-//#include <frc/drive/Vector2d.h>
+// #include <frc/drive/Vector2d.h>
 
-//Team 302 includes
+// Team 302 includes
 #include <chassis/differential/DifferentialChassis.h>
 #include <teleopcontrol/TeleopControl.h>
 #include <State.h>
 
 class ArcadeDrive : public State
 {
-    public:
+public:
+    ArcadeDrive();
+    ~ArcadeDrive() = default;
 
-        ArcadeDrive();
-        ~ArcadeDrive() = default;
+    void Init() override;
+    void Run() override;
+    void Exit() override;
+    bool AtTarget() const override;
 
-        void Init() override;
-        void Run() override;
-        void Exit() override;
-        bool AtTarget() const override;
-
-    private:
-        inline TeleopControl* GetController() const { return m_controller; }
-        std::shared_ptr<DifferentialChassis>        m_chassis;
-        TeleopControl*                              m_controller;
+private:
+    inline TeleopControl *GetController() const { return m_controller; }
+    std::shared_ptr<DifferentialChassis> m_chassis;
+    TeleopControl *m_controller;
 };

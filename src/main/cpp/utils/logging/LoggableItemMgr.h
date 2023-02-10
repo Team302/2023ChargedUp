@@ -19,22 +19,19 @@
 
 #include <utils/logging/LoggableItem.h>
 
-class LoggableItemMgr 
+class LoggableItemMgr
 {
-    public:
+public:
+    static LoggableItemMgr *GetInstance();
+    void RegisterLoggableItem(
+        LoggableItem *item);
+    void LogData() const;
 
-        static LoggableItemMgr* GetInstance();
-        void RegisterLoggableItem
-        (
-            LoggableItem*       item
-        );
-        void LogData() const;
+private:
+    LoggableItemMgr();
+    ~LoggableItemMgr() = default;
 
-    private:
-        LoggableItemMgr();
-        ~LoggableItemMgr() = default;
+    std::vector<LoggableItem *> m_loggableItems;
 
-        std::vector<LoggableItem*>  m_loggableItems;
-
-        static LoggableItemMgr* m_instance;
+    static LoggableItemMgr *m_instance;
 };

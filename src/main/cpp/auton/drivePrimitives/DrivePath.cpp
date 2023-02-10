@@ -13,10 +13,10 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-//C++
+// C++
 #include <string>
 
-//FRC Includes
+// FRC Includes
 #include <frc/controller/PIDController.h>
 #include <frc/controller/ProfiledPIDController.h>
 #include <frc/kinematics/ChassisSpeeds.h>
@@ -34,7 +34,6 @@
 #include <utils/logging/Logger.h>
 #include <chassis/swerve/driveStates/TrajectoryDrive.h>
 
-
 using namespace std;
 using namespace frc;
 
@@ -45,56 +44,56 @@ DrivePath::DrivePath() : m_chassis(ChassisFactory::GetChassisFactory()->GetIChas
                          m_trajectory(),
                          m_runHoloController(true),
                          m_ramseteController(),
-                         //max velocity of 1 rotation per second and a max acceleration of 180 degrees per second squared.
+                         // max velocity of 1 rotation per second and a max acceleration of 180 degrees per second squared.
                          m_headingOption(ChassisOptionEnums::HeadingOption::MAINTAIN),
                          m_heading(0.0),
-                         m_maxTime(-1.0), 
+                         m_maxTime(-1.0),
                          m_ntName("DrivePath")
 
 {
 }
 void DrivePath::Init(PrimitiveParams *params)
 {
-    m_pathname = params->GetPathName(); //Grabs path name from auton xml
+    m_pathname = params->GetPathName(); // Grabs path name from auton xml
     m_ntName = string("DrivePath: ") + m_pathname;
     m_headingOption = params->GetHeadingOption();
     m_heading = params->GetHeading();
     m_maxTime = params->GetTime();
 
-    //Start timeout timer for path
+    // Start timeout timer for path
     m_timer.get()->Reset();
     m_timer.get()->Start();
 
-    GetTrajectory(params->GetPathName());  //Parses path from json file based on path name given in xml
+    GetTrajectory(params->GetPathName()); // Parses path from json file based on path name given in xml
 }
 void DrivePath::Run()
 {
-    
+
     ChassisMovement moveInfo;
     moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
     moveInfo.controllerType = ChassisOptionEnums::AutonControllerType::HOLONOMIC;
     moveInfo.headingOption = ChassisOptionEnums::HeadingOption::MAINTAIN;
-    
+
     // Use the controller to calculate the chassis speeds for getting there
     if (m_runHoloController)
     {
         switch (m_headingOption)
         {
-            case ChassisOptionEnums::HeadingOption::MAINTAIN:
-               break;
+        case ChassisOptionEnums::HeadingOption::MAINTAIN:
+            break;
 
-            case ChassisOptionEnums::HeadingOption::TOWARD_GOAL:
-                moveInfo.headingOption = ChassisOptionEnums::HeadingOption::TOWARD_GOAL;
-                break;
+        case ChassisOptionEnums::HeadingOption::TOWARD_GOAL:
+            moveInfo.headingOption = ChassisOptionEnums::HeadingOption::TOWARD_GOAL;
+            break;
 
-            case ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE:
-                moveInfo.headingOption = ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE;
-                moveInfo.yawAngle = units::angle::degree_t(m_heading);
-               
-                break;
-            
-            default:
-                break;
+        case ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE:
+            moveInfo.headingOption = ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE;
+            moveInfo.yawAngle = units::angle::degree_t(m_heading);
+
+            break;
+
+        default:
+            break;
         }
     }
     else
@@ -108,42 +107,41 @@ void DrivePath::Run()
 
 bool DrivePath::IsDone()
 {
-    
-    if(m_timer.get()->Get().to<double>() > m_maxTime && m_timer.get()->Get().to<double>() > 0)
+
+    if (m_timer.get()->Get().to<double>() > m_maxTime && m_timer.get()->Get().to<double>() > 0)
     {
         return true;
     }
     else
     {
-        SwerveChassis* swerveChassis = dynamic_cast<SwerveChassis*>(m_chassis.get());
-        TrajectoryDrive* trajectoryDrive = dynamic_cast<TrajectoryDrive*>(swerveChassis->GetSpecifiedDriveState(ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE));
+        SwerveChassis *swerveChassis = dynamic_cast<SwerveChassis *>(m_chassis.get());
+        TrajectoryDrive *trajectoryDrive = dynamic_cast<TrajectoryDrive *>(swerveChassis->GetSpecifiedDriveState(ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE));
 
-        if(trajectoryDrive->IsDone()) //TrajectoryDrive is done -> log the reason why and end drive path primitive
+        if (trajectoryDrive->IsDone()) // TrajectoryDrive is done -> log the reason why and end drive path primitive
         {
             Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "WhyDone", trajectoryDrive->WhyDone());
             return true;
         }
-        else //TrajectoryDrive isn't done
+        else // TrajectoryDrive isn't done
         {
             return false;
         }
 
-       return false;
+        return false;
     }
 }
 
-void DrivePath::GetTrajectory //Parses pathweaver json to create a series of points that we can drive the robot to
-(
-    string  path
-)
+void DrivePath::GetTrajectory // Parses pathweaver json to create a series of points that we can drive the robot to
+    (
+        string path)
 {
     if (!path.empty()) // only go if path name found
     {
         // Read path into trajectory for deploy directory.  JSON File ex. Bounce1.wpilib.json
-    	auto deployDir = frc::filesystem::GetDeployDirectory();
-        deployDir += "/paths/output/" + path;     
-        
-        m_trajectory = frc::TrajectoryUtil::FromPathweaverJson(deployDir);  //Creates a trajectory or path that can be used in the code, parsed from pathweaver json
-        m_timer.get()->Reset();  
+        auto deployDir = frc::filesystem::GetDeployDirectory();
+        deployDir += "/paths/output/" + path;
+
+        m_trajectory = frc::TrajectoryUtil::FromPathweaverJson(deployDir); // Creates a trajectory or path that can be used in the code, parsed from pathweaver json
+        m_timer.get()->Reset();
     }
 }

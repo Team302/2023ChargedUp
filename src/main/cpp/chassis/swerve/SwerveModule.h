@@ -13,10 +13,9 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-
 #pragma once
 
-//C++ Includes
+// C++ Includes
 #include <memory>
 #include <string>
 
@@ -45,123 +44,111 @@
 
 // Third Party Includes
 
-
-class SwerveModule 
+class SwerveModule
 {
-    public:
-        enum ModuleID
-        {
-            LEFT_FRONT,
-            RIGHT_FRONT,
-            LEFT_BACK,
-            RIGHT_BACK
-        };
+public:
+    enum ModuleID
+    {
+        LEFT_FRONT,
+        RIGHT_FRONT,
+        LEFT_BACK,
+        RIGHT_BACK
+    };
 
-        /// @brief Constructs a Swerve Module.  This is assuming 2 TalonFX (Falcons) with a CanCoder for the turn angle
-        /// @param [in] ModuleID                                                type:           Which Swerve Module is it
-        /// @param [in] shared_ptr<IDragonMotorController>                      driveMotor:     Motor that makes the robot move  
-        /// @param [in] shared_ptr<IDragonMotorController>                      turnMotor:      Motor that turns the swerve module 
-        /// @param [in] DragonCanCoder*       		                            canCoder:       Sensor for detecting the angle of the wheel
-        SwerveModule( ModuleID                                                  type, 
-                      std::shared_ptr<IDragonMotorController>                   driveMotor, 
-                      std::shared_ptr<IDragonMotorController>                   turningMotor,
-                      DragonCanCoder*                               		    canCoder, 
-                      double                                                    turnP,
-                      double                                                    turnI,
-                      double                                                    turnD,
-                      double                                                    turnF,
-                      double                                                    turnNominalPos,
-                      double                                                    turnNominalNeg,
-                      double                                                    turnMaxAcc,
-                      double                                                    turnCruiseVel,
-                      double                                                    countsOnTurnEncoderPerDegreesOnAngleSensor
-                    );
+    /// @brief Constructs a Swerve Module.  This is assuming 2 TalonFX (Falcons) with a CanCoder for the turn angle
+    /// @param [in] ModuleID                                                type:           Which Swerve Module is it
+    /// @param [in] shared_ptr<IDragonMotorController>                      driveMotor:     Motor that makes the robot move
+    /// @param [in] shared_ptr<IDragonMotorController>                      turnMotor:      Motor that turns the swerve module
+    /// @param [in] DragonCanCoder*       		                            canCoder:       Sensor for detecting the angle of the wheel
+    SwerveModule(ModuleID type,
+                 std::shared_ptr<IDragonMotorController> driveMotor,
+                 std::shared_ptr<IDragonMotorController> turningMotor,
+                 DragonCanCoder *canCoder,
+                 double turnP,
+                 double turnI,
+                 double turnD,
+                 double turnF,
+                 double turnNominalPos,
+                 double turnNominalNeg,
+                 double turnMaxAcc,
+                 double turnCruiseVel,
+                 double countsOnTurnEncoderPerDegreesOnAngleSensor);
 
-        void Init
-        (
-            units::length::inch_t                                       wheelDiameter,
-            units::velocity::meters_per_second_t                        maxVelocity,
-            units::angular_velocity::radians_per_second_t               maxAngularVelocity,
-            units::acceleration::meters_per_second_squared_t            maxAcceleration,
-            units::angular_acceleration::radians_per_second_squared_t   maxAngularAcceleration,
-            frc::Translation2d                                          offsetFromRobotCenter
-        );
-        
-        /// @brief Turn all of the wheel to zero degrees yaw according to the pigeon
-        /// @returns void
-        void ZeroAlignModule();
+    void Init(
+        units::length::inch_t wheelDiameter,
+        units::velocity::meters_per_second_t maxVelocity,
+        units::angular_velocity::radians_per_second_t maxAngularVelocity,
+        units::acceleration::meters_per_second_squared_t maxAcceleration,
+        units::angular_acceleration::radians_per_second_squared_t maxAngularAcceleration,
+        frc::Translation2d offsetFromRobotCenter);
 
-        /// @brief Set all motor encoders to zero
-        /// @returns void
-        void SetEncodersToZero();
+    /// @brief Turn all of the wheel to zero degrees yaw according to the pigeon
+    /// @returns void
+    void ZeroAlignModule();
 
-        ///@brief
-        /// @returns
-        double GetEncoderValues();
+    /// @brief Set all motor encoders to zero
+    /// @returns void
+    void SetEncodersToZero();
 
-        /// @brief Get the current state of the module (speed of the wheel and angle of the wheel)
-        /// @returns SwerveModuleState
-        frc::SwerveModuleState GetState() const;
-        frc::SwerveModulePosition GetPosition() const;
+    ///@brief
+    /// @returns
+    double GetEncoderValues();
 
-        /// @brief Set the current state of the module (speed of the wheel and angle of the wheel)
-        /// @param [in] const SwerveModuleState& referenceState:   state to set the module to
-        /// @returns void
-        void SetDesiredState(const frc::SwerveModuleState& state);
+    /// @brief Get the current state of the module (speed of the wheel and angle of the wheel)
+    /// @returns SwerveModuleState
+    frc::SwerveModuleState GetState() const;
+    frc::SwerveModulePosition GetPosition() const;
 
-        void RunCurrentState();
+    /// @brief Set the current state of the module (speed of the wheel and angle of the wheel)
+    /// @param [in] const SwerveModuleState& referenceState:   state to set the module to
+    /// @returns void
+    void SetDesiredState(const frc::SwerveModuleState &state);
 
-        /// @brief Return which module this is
-        /// @returns ModuleID
-        ModuleID GetType() {return m_type;}
-        units::length::inch_t GetWheelDiameter() const {return m_wheelDiameter;}
+    void RunCurrentState();
 
-        void StopMotors();
+    /// @brief Return which module this is
+    /// @returns ModuleID
+    ModuleID GetType() { return m_type; }
+    units::length::inch_t GetWheelDiameter() const { return m_wheelDiameter; }
 
-        frc::Pose2d GetCurrentPose(PoseEstimatorEnum opt);
+    void StopMotors();
 
-        void UpdateCurrPose
-        (
-            units::length::meter_t  x,
-            units::length::meter_t  y
-        );
+    frc::Pose2d GetCurrentPose(PoseEstimatorEnum opt);
 
-        
-    private:
-        // Note:  the following was taken from the WPI code and tweaked because we were seeing some weird 
-        //        reversals that we believe was due to not using a tolerance
-        frc::SwerveModuleState Optimize
-        ( 
-            const frc::SwerveModuleState& desiredState,
-            const frc::Rotation2d& currentAngle
-        );
+    void UpdateCurrPose(
+        units::length::meter_t x,
+        units::length::meter_t y);
 
+private:
+    // Note:  the following was taken from the WPI code and tweaked because we were seeing some weird
+    //        reversals that we believe was due to not using a tolerance
+    frc::SwerveModuleState Optimize(
+        const frc::SwerveModuleState &desiredState,
+        const frc::Rotation2d &currentAngle);
 
-        void SetDriveSpeed( units::velocity::meters_per_second_t speed );
-        void SetTurnAngle( units::angle::degree_t angle );
+    void SetDriveSpeed(units::velocity::meters_per_second_t speed);
+    void SetTurnAngle(units::angle::degree_t angle);
 
+    ModuleID m_type;
 
-        ModuleID                                            m_type;
+    std::shared_ptr<IDragonMotorController> m_driveMotor;
+    std::shared_ptr<IDragonMotorController> m_turnMotor;
+    DragonCanCoder *m_turnSensor;
 
-        std::shared_ptr<IDragonMotorController>             m_driveMotor;
-        std::shared_ptr<IDragonMotorController>             m_turnMotor;
-        DragonCanCoder*                                     m_turnSensor;
+    ControlData *m_driveVelocityControlData;
+    ControlData *m_drivePercentControlData;
+    ControlData *m_turnPositionControlData;
 
-        ControlData*                                        m_driveVelocityControlData;
-        ControlData*                                        m_drivePercentControlData;
-        ControlData*                                        m_turnPositionControlData;
+    units::length::inch_t m_wheelDiameter;
 
+    std::string m_nt;
 
-        units::length::inch_t                               m_wheelDiameter;
+    frc::SwerveModuleState m_activeState;
+    frc::Pose2d m_currentPose;
+    units::angular_velocity::revolutions_per_minute_t m_currentSpeed;
+    double m_currentRotations;
 
-        std::string                                         m_nt;     
-
-        frc::SwerveModuleState                              m_activeState;
-        frc::Pose2d                                         m_currentPose;
-        units::angular_velocity::revolutions_per_minute_t   m_currentSpeed;
-        double                                              m_currentRotations;
-
-        units::velocity::meters_per_second_t                m_maxVelocity;
-        bool                                                m_runClosedLoopDrive;
-        double                                              m_countsOnTurnEncoderPerDegreesOnAngleSensor;
+    units::velocity::meters_per_second_t m_maxVelocity;
+    bool m_runClosedLoopDrive;
+    double m_countsOnTurnEncoderPerDegreesOnAngleSensor;
 };

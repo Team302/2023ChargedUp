@@ -23,25 +23,23 @@
 ///  @brief      	Interface for state classes
 class State : public LoggableItem
 {
-	public:
-        State
-        (
-            std::string     stateName,
-            int             stateId
-        );
-        State() = delete;
-        ~State() = default;
+public:
+    State(
+        std::string stateName,
+        int stateId);
+    State() = delete;
+    ~State() = default;
 
-        virtual void Init() = 0;
-        virtual void Run() = 0;
-        virtual void Exit() = 0;
-        virtual bool AtTarget() const = 0;
-        void LogInformation() const override;
-        
-        inline std::string GetStateName() const {return m_stateName;}
-        inline int GetStateId() const {return m_stateId;}
-    
-    private:
-        std::string     m_stateName;
-        int             m_stateId;
+    virtual void Init() = 0;
+    virtual void Run() = 0;
+    virtual void Exit() = 0;
+    virtual bool AtTarget() const = 0;
+    void LogInformation() const override;
+
+    inline std::string GetStateName() const { return m_stateName; }
+    inline int GetStateId() const { return m_stateId; }
+
+private:
+    std::string m_stateName;
+    int m_stateId;
 };

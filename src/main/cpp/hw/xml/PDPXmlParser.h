@@ -24,24 +24,19 @@ namespace frc
     class PowerDistribution;
 }
 
-
 /// @class PDPXmlParser
 /// @brief XML parsing for the PDP node in the Robot definition xml file.  Upon successful parsing, it will
-///        create a Compressor object and solenoid objects. The parsing leverages the 3rd party Open Source 
+///        create a Compressor object and solenoid objects. The parsing leverages the 3rd party Open Source
 ///        Pugixml library (https://pugixml.org/).
 class PDPXmlParser
 {
-    public:
+public:
+    PDPXmlParser() = default;
+    virtual ~PDPXmlParser() = default;
 
-        PDPXmlParser() = default;
-        virtual ~PDPXmlParser() = default;
-
-        /// @brief      Parse a PDP XML element and create a PowerDistributionPanel* from its definition.
-        /// @param [in] xml_node PDPNode the <PDP element in the xml document
-        /// @return     PowerDistributionPanel*   PDP object
-        frc::PowerDistribution* ParseXML
-        (
-            pugi::xml_node      PDPNode
-        );
+    /// @brief      Parse a PDP XML element and create a PowerDistributionPanel* from its definition.
+    /// @param [in] xml_node PDPNode the <PDP element in the xml document
+    /// @return     PowerDistributionPanel*   PDP object
+    frc::PowerDistribution *ParseXML(
+        pugi::xml_node PDPNode);
 };
-

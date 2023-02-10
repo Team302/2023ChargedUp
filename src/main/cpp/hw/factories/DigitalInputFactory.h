@@ -29,33 +29,25 @@ class DragonDigitalInput;
 
 class DigitalInputFactory
 {
-	public:
+public:
+	static DigitalInputFactory *GetFactory();
 
-		static DigitalInputFactory* GetFactory();
+	/// @brief      Create the requested Digital input
+	/// @returns 	DigitalInput*
+	DragonDigitalInput *CreateInput(
+		std::string networkTableName,
+		DigitalInputUsage::DIGITAL_INPUT_USAGE type,
+		int digitalID,
+		bool reversed,
+		units::time::second_t debounceTime);
 
+	/// @brief    Get the requested Digital input
+	DragonDigitalInput *GetInput(
+		DigitalInputUsage::DIGITAL_INPUT_USAGE type);
 
-		/// @brief      Create the requested Digital input
-		/// @returns 	DigitalInput* 
-        DragonDigitalInput* CreateInput
-        (
-			std::string										networkTableName,
-    		DigitalInputUsage::DIGITAL_INPUT_USAGE			type,
-            int 						                    digitalID,
-            bool						                    reversed,
-			units::time::second_t							debounceTime
-        );
+private:
+	DigitalInputFactory();
+	~DigitalInputFactory();
 
-		/// @brief    Get the requested Digital input
-        DragonDigitalInput* GetInput
-        (
-    		DigitalInputUsage::DIGITAL_INPUT_USAGE			type
-        );
-
-
-	private:
-		DigitalInputFactory();
-		~DigitalInputFactory();
-
-		static DigitalInputFactory*	m_factory;
-			
+	static DigitalInputFactory *m_factory;
 };

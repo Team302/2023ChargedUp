@@ -13,30 +13,27 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-//C++ Includes
+// C++ Includes
 #include <string>
 
-//FRC Includes
+// FRC Includes
 #include <networktables/NetworkTable.h>
 #include <networktables/NetworkTableEntry.h>
 #include <networktables/NetworkTableInstance.h>
 
 class NetworkTableReader
 {
-    public:
-        
+public:
+    std::string GetNetworkTableString(std::string ntName, std::string ntString);
 
-        std::string GetNetworkTableString(std::string ntName, std::string ntString);
+    double GetNetworkTableDouble(std::string ntName, std::string ntDouble);
 
-        double GetNetworkTableDouble(std::string ntName, std::string ntDouble);
+    NetworkTableReader *GetReader();
 
-        NetworkTableReader* GetReader();
+private:
+    nt::NetworkTableInstance m_instance = nt::NetworkTableInstance::GetDefault();
+    NetworkTableReader *m_reader = nullptr;
 
-    private:
-        nt::NetworkTableInstance m_instance = nt::NetworkTableInstance::GetDefault();
-        NetworkTableReader* m_reader = nullptr;
-
-        NetworkTableReader();
-        ~NetworkTableReader() = default;
-
+    NetworkTableReader();
+    ~NetworkTableReader() = default;
 };

@@ -20,53 +20,43 @@
 
 class HardwareIDValidation
 {
-    public:
-        /// @brief      Check the CAN ID against the valid range.  If it is invalid the logger utility will be called.
-        /// @returns    bool: true  - valid, false - invalid
-        static bool ValidateCANID
-        (
-            int          canID,         // <I> - CAN ID to validate
-            std::string  methodID       // <I> - class::method identifier for message
-        );
+public:
+    /// @brief      Check the CAN ID against the valid range.  If it is invalid the logger utility will be called.
+    /// @returns    bool: true  - valid, false - invalid
+    static bool ValidateCANID(
+        int canID,           // <I> - CAN ID to validate
+        std::string methodID // <I> - class::method identifier for message
+    );
 
-        /// @brief      Check the PDP ID against the valid range.  If it is invalid the logger utility will be called.
-        /// @returns    bool: true  - valid, false - invalid
-        static bool ValidatePDPID
-        (
-            int          pdpID,         // <I> - PDP ID to validate
-            std::string  methodID       // <I> - class::method identifier for message
-        );
-        
-        /// @brief      Check the Digitial IO ID against the valid range.  If it is invalid the logger utility will be called.
-        /// @returns    bool: true  - valid, false - invalid
-        static bool ValidateDIOID
-        (
-            int          dioID,         // <I> - DIO ID to validate
-            std::string  methodID       // <I> - class::method identifier for message
-        );
+    /// @brief      Check the PDP ID against the valid range.  If it is invalid the logger utility will be called.
+    /// @returns    bool: true  - valid, false - invalid
+    static bool ValidatePDPID(
+        int pdpID,           // <I> - PDP ID to validate
+        std::string methodID // <I> - class::method identifier for message
+    );
 
-        /// @brief      Check the solenoid channel ID against the valid range.  If it is invalid the logger utility will be called.
-        /// @returns    bool: true  - valid, false - invalid
-        static bool ValidateSolenoidChannel
-        (
-            int          channel,       // <I> - Solenoid Channel to validate
-            std::string  methodID       // <I> - class::method identifier for message
-        );
+    /// @brief      Check the Digitial IO ID against the valid range.  If it is invalid the logger utility will be called.
+    /// @returns    bool: true  - valid, false - invalid
+    static bool ValidateDIOID(
+        int dioID,           // <I> - DIO ID to validate
+        std::string methodID // <I> - class::method identifier for message
+    );
 
-    private:
-    
-        /// @brief      Check the ID against the valid range.  If it is invalid the logger utility will be called.
-        /// @returns    bool: true  - valid, false - invalid
-        static bool ValidateID
-        (
-            int          id,            // <I> - ID to validate
-            int          minID,         // <I> - minimum ID
-            int          maxID,         // <I> - maximum ID
-            std::string  methodID,      // <I> - class::method identifier for message
-            std::string  errorMsg       // <I> - error message
-        );
+    /// @brief      Check the solenoid channel ID against the valid range.  If it is invalid the logger utility will be called.
+    /// @returns    bool: true  - valid, false - invalid
+    static bool ValidateSolenoidChannel(
+        int channel,         // <I> - Solenoid Channel to validate
+        std::string methodID // <I> - class::method identifier for message
+    );
 
-
+private:
+    /// @brief      Check the ID against the valid range.  If it is invalid the logger utility will be called.
+    /// @returns    bool: true  - valid, false - invalid
+    static bool ValidateID(
+        int id,               // <I> - ID to validate
+        int minID,            // <I> - minimum ID
+        int maxID,            // <I> - maximum ID
+        std::string methodID, // <I> - class::method identifier for message
+        std::string errorMsg  // <I> - error message
+    );
 };
-
-

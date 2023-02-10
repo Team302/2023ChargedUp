@@ -24,17 +24,15 @@
 
 // Third Party Includes
 
-
-
 #include <auton/drivePrimitives/SuperDrive.h>
 
 class PrimitiveParams;
 
-class DriveToWall : public SuperDrive 
+class DriveToWall : public SuperDrive
 {
 public:
 	bool IsDone() override;
-	void Init(PrimitiveParams* params) override;
+	void Init(PrimitiveParams *params) override;
 	void Run() override;
 	DriveToWall();
 	virtual ~DriveToWall() = default;
@@ -45,6 +43,4 @@ private:
 	int m_underSpeedCounts;
 	const float SPEED_THRESHOLD = 3;
 	const int UNDER_SPEED_COUNT_THRESHOLD = 2;
-
 };
-

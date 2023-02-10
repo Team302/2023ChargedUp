@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+// Copyright 2022 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -30,23 +30,22 @@ using namespace std;
 /// Description:    This is the standard button on a gamepad.
 /// </summary>
 //==================================================================================
-DigitalButton::DigitalButton
-(
-    frc::GenericHID*                    gamepad,        // <I> - gamepad to query
-    int                                 buttonID        // <I> - button ID this maps to           
-) : m_gamepad(gamepad),                               
-    m_button(buttonID)
+DigitalButton::DigitalButton(
+    frc::GenericHID *gamepad, // <I> - gamepad to query
+    int buttonID              // <I> - button ID this maps to
+    ) : m_gamepad(gamepad),
+        m_button(buttonID)
 {
 }
 
 //==================================================================================
 /// <summary>
 /// Method:         IsButtonPressed
-/// Description:    Read the button and return true if it is pressed and false if 
+/// Description:    Read the button and return true if it is pressed and false if
 ///                 it isn't.
 /// </summary>
 //==================================================================================
-bool DigitalButton::IsButtonPressed() const 
+bool DigitalButton::IsButtonPressed() const
 {
     if (m_gamepad != nullptr)
     {
@@ -56,7 +55,7 @@ bool DigitalButton::IsButtonPressed() const
     return false;
 }
 
-bool DigitalButton::WasButtonReleased() const 
+bool DigitalButton::WasButtonReleased() const
 {
     if (m_gamepad != nullptr)
     {
@@ -66,14 +65,12 @@ bool DigitalButton::WasButtonReleased() const
     return false;
 }
 
-bool DigitalButton::WasButtonPressed() const 
+bool DigitalButton::WasButtonPressed() const
 {
     if (m_gamepad != nullptr)
     {
-        return  m_gamepad->GetRawButtonPressed(m_button);
+        return m_gamepad->GetRawButtonPressed(m_button);
     }
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT_ONCE, string("DigitalButton::WasButtonPressed"), string("Gampad"), string("is Nullptr"));
     return false;
 }
-
-

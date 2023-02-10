@@ -16,7 +16,7 @@
 
 // co-Author: notcharlie, creator of dumb code / copy paster of better code
 
-//Includes
+// Includes
 #include <string>
 #include <vector>
 #include <sys/stat.h>
@@ -29,7 +29,7 @@
 #include <frc/SmartDashboard/SmartDashboard.h>
 #include <frc/Filesystem.h>
 
-//Team302 includes
+// Team302 includes
 #include <auton/AutonSelector.h>
 #include <utils/logging/Logger.h>
 #include <utils/FMSData.h>
@@ -48,26 +48,26 @@ AutonSelector::AutonSelector()
 string AutonSelector::GetSelectedAutoFile()
 {
 	std::string autonfile(frc::filesystem::GetDeployDirectory());
-	autonfile += std::string ("/auton/");
+	autonfile += std::string("/auton/");
 	autonfile += GetAlianceColor();
 	autonfile += GetStartPos();
 	autonfile += GetNumofPiecesinauton();
 	autonfile += GetParkOnChargeStation();
-	autonfile += std::string (".xml");
-	Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string(""), std::string("determined name"),autonfile);
+	autonfile += std::string(".xml");
+	Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string(""), std::string("determined name"), autonfile);
 
-	if (FileExists(autonfile) ==false)
+	if (FileExists(autonfile) == false)
 	{
-		autonfile=frc::filesystem::GetDeployDirectory();
-		autonfile += std::string ("/auton/");
+		autonfile = frc::filesystem::GetDeployDirectory();
+		autonfile += std::string("/auton/");
 		autonfile += GetAlianceColor();
 		autonfile += ("COOPThreeP.xml");
 	}
-	Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string(""), std::string("actual file"),autonfile);
+	Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string(""), std::string("actual file"), autonfile);
 	return autonfile;
 }
 
-bool  AutonSelector::FileExists(const std::string& name) 
+bool AutonSelector::FileExists(const std::string &name)
 {
 	ifstream f(name.c_str());
 	return f.good();
@@ -80,7 +80,7 @@ string AutonSelector::GetParkOnChargeStation()
 
 string AutonSelector::GetAlianceColor()
 {
-	if (FMSData::GetInstance()->GetAllianceColor()==frc::DriverStation::Alliance::kRed)
+	if (FMSData::GetInstance()->GetAllianceColor() == frc::DriverStation::Alliance::kRed)
 	{
 		return std::string("Red");
 	}
@@ -108,18 +108,18 @@ string AutonSelector::GetNumofPiecesinauton()
 //---------------------------------------------------------------------
 void AutonSelector::PutChoicesOnDashboard()
 {
-	m_chrgstatchooser.AddOption("yes","P");
-	m_chrgstatchooser.AddOption("no","Np");
+	m_chrgstatchooser.AddOption("yes", "P");
+	m_chrgstatchooser.AddOption("no", "Np");
 	frc::SmartDashboard::PutData("prkonchrgstat", &m_chrgstatchooser);
 
-	m_startposchooser.AddOption("Gridcoop","COOP");
-	m_startposchooser.AddOption("Gridwall","Wall");
-	m_startposchooser.AddOption("Gridhp","HP");
-	frc::SmartDashboard::PutData("StartPos",&m_startposchooser);
+	m_startposchooser.AddOption("Gridcoop", "COOP");
+	m_startposchooser.AddOption("Gridwall", "Wall");
+	m_startposchooser.AddOption("Gridhp", "HP");
+	frc::SmartDashboard::PutData("StartPos", &m_startposchooser);
 
-	m_numofgamepiecechooser.AddOption("1","One");
-	m_numofgamepiecechooser.AddOption("2","Two");
-	m_numofgamepiecechooser.AddOption("3","Three");
-	m_numofgamepiecechooser.AddOption("4","Four");
-	frc::SmartDashboard::PutData("NumOfpcs",&m_numofgamepiecechooser);
+	m_numofgamepiecechooser.AddOption("1", "One");
+	m_numofgamepiecechooser.AddOption("2", "Two");
+	m_numofgamepiecechooser.AddOption("3", "Three");
+	m_numofgamepiecechooser.AddOption("4", "Four");
+	frc::SmartDashboard::PutData("NumOfpcs", &m_numofgamepiecechooser);
 }

@@ -15,37 +15,38 @@
 
 #pragma once
 
-//Team302 Includes
+// Team302 Includes
 #include <chassis/ChassisOptionEnums.h>
 #include <chassis/ChassisMovement.h>
 
 class ISwerveDriveOrientation
 {
-    public:
-        ISwerveDriveOrientation() = delete;
-        ~ISwerveDriveOrientation() = default;
+public:
+    ISwerveDriveOrientation() = delete;
+    ~ISwerveDriveOrientation() = default;
 
-        ISwerveDriveOrientation(ChassisOptionEnums::HeadingOption headingOption);
+    ISwerveDriveOrientation(ChassisOptionEnums::HeadingOption headingOption);
 
-        /// @brief Updated incoming chassis speeds to do heading action, precursor to ISwerveDriveState
-        /// @param [in] ChassisMovement& chassisMovement - Incomign chassis speeds to edit for heading option
-        void virtual UpdateChassisSpeeds(ChassisMovement& chassisMovement) = 0;
+    /// @brief Updated incoming chassis speeds to do heading action, precursor to ISwerveDriveState
+    /// @param [in] ChassisMovement& chassisMovement - Incomign chassis speeds to edit for heading option
+    void virtual UpdateChassisSpeeds(ChassisMovement &chassisMovement) = 0;
 
-        /// @brief Calculate heading correction
-        /// @param [in] rot - incoming rotation to correct for
-        /// @param [in] kP - porportional constant to correct with
-        units::angular_velocity::degrees_per_second_t CalcHeadingCorrection(units::angle::degree_t targetAngle, double kP);
+    /// @brief Calculate heading correction
+    /// @param [in] rot - incoming rotation to correct for
+    /// @param [in] kP - porportional constant to correct with
+    units::angular_velocity::degrees_per_second_t CalcHeadingCorrection(units::angle::degree_t targetAngle, double kP);
 
-        /// @brief Returns the heading option
-        /// @return ChassisOptionEnums::HeadingOption - current heading option
-        ChassisOptionEnums::HeadingOption GetHeadingOption() const {return m_headingOption;};
+    /// @brief Returns the heading option
+    /// @return ChassisOptionEnums::HeadingOption - current heading option
+    ChassisOptionEnums::HeadingOption GetHeadingOption() const { return m_headingOption; };
 
-        /// @brief Set the stored heading for the orientation options
-        void SetStoredHeading(units::angle::degree_t heading);
-    protected:
-        ChassisOptionEnums::HeadingOption      m_headingOption;
-        units::angle::degree_t          m_storedYaw;
+    /// @brief Set the stored heading for the orientation options
+    void SetStoredHeading(units::angle::degree_t heading);
 
-        double m_kPMaintainHeadingControl = 1.5;
-        double m_kPGoalHeadingControl = 6.0;
+protected:
+    ChassisOptionEnums::HeadingOption m_headingOption;
+    units::angle::degree_t m_storedYaw;
+
+    double m_kPMaintainHeadingControl = 1.5;
+    double m_kPGoalHeadingControl = 6.0;
 };

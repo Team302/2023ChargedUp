@@ -15,27 +15,24 @@
 
 #pragma once
 
-//FRC Includes
+// FRC Includes
 #include <frc/kinematics/SwerveModuleState.h>
 #include <frc/kinematics/ChassisSpeeds.h>
 
-//Team302 Includes
+// Team302 Includes
 #include <chassis/swerve/driveStates/RobotDrive.h>
 
 class FieldDrive : public RobotDrive
 {
-    public:
-        FieldDrive(RobotDrive* robotDrive);
+public:
+    FieldDrive(RobotDrive *robotDrive);
 
-        std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates
-        (
-            ChassisMovement& chassisMovement
-        ) override;
+    std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates(
+        ChassisMovement &chassisMovement) override;
 
-        void Init
-        (
-            ChassisMovement& chassisMovement
-        ) override;
-    private:
-        RobotDrive*              m_robotDrive;
+    void Init(
+        ChassisMovement &chassisMovement) override;
+
+private:
+    RobotDrive *m_robotDrive;
 };

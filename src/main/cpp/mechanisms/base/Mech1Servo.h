@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+// Copyright 2022 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -29,37 +29,28 @@ class DragonServo;
 
 class Mech1Servo : public Mech
 {
-	public:
-        /// @brief Create a generic mechanism wiht 1 servo 
-        /// @param [in] std::shared_ptr<DragonServo> servo used by this mechanism
-        Mech1Servo
-        (
-            MechanismTypes::MECHANISM_TYPE              type,
-            std::string                                 controlFileName,
-            std::string                                 networkTableName,
-            DragonServo*                                servo
-        );
-	    Mech1Servo() = delete;
-	    virtual ~Mech1Servo() = default;
+public:
+    /// @brief Create a generic mechanism wiht 1 servo
+    /// @param [in] std::shared_ptr<DragonServo> servo used by this mechanism
+    Mech1Servo(
+        MechanismTypes::MECHANISM_TYPE type,
+        std::string controlFileName,
+        std::string networkTableName,
+        DragonServo *servo);
+    Mech1Servo() = delete;
+    virtual ~Mech1Servo() = default;
 
+    /// @brief      Move servo to the desired angle
+    /// @param [in] double angle: Target angle in degrees
+    /// @return     void
+    void SetAngle(
+        double angle);
 
-        /// @brief      Move servo to the desired angle
-        /// @param [in] double angle: Target angle in degrees
-        /// @return     void
-        void SetAngle
-        (
-            double angle       
-        );
+    double GetAngle() const;
 
-        double GetAngle() const;
-        
+    /// @brief log data to the network table if it is activated and time period has past
+    void LogInformation() const override;
 
-        /// @brief log data to the network table if it is activated and time period has past
-        void LogInformation() const override;
-
-    private:
-        DragonServo*                                m_servo;
+private:
+    DragonServo *m_servo;
 };
-
-
-

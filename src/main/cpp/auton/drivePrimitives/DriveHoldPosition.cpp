@@ -30,47 +30,47 @@
 
 // Third Party Includes
 
-
 using namespace std;
 using namespace frc;
 
-DriveHoldPosition::DriveHoldPosition() :
-		m_chassis( ChassisFactory::GetChassisFactory()->GetIChassis()), //Get chassis from chassis factory
-		m_timeRemaining(0.0)       //Value will be changed in init
+DriveHoldPosition::DriveHoldPosition() : m_chassis(ChassisFactory::GetChassisFactory()->GetIChassis()), // Get chassis from chassis factory
+										 m_timeRemaining(0.0)											// Value will be changed in init
 {
 }
 
-void DriveHoldPosition::Init(PrimitiveParams* params) {
+void DriveHoldPosition::Init(PrimitiveParams *params)
+{
 
-	//Get timeRemaining from m_params
+	// Get timeRemaining from m_params
 	m_timeRemaining = params->GetTime();
-	auto cd = make_shared<ControlData>( ControlModes::CONTROL_TYPE::POSITION_INCH, 
-							   			ControlModes::CONTROL_RUN_LOCS::MOTOR_CONTROLLER,
-							   			string("DriveHoldPosition"),
-							   			10.0,
-							   			0.0,
-							   			0.0,
-							   			0.0,
-							   			0.0,
-							   			0.0,
-							   			0.0,
-							   			1.0,
-							  			0.0   );
-	//m_chassis->SetControlConstants( cd.get() );
-	//auto left = m_chassis->GetCurrentLeftPosition();
-	//auto right = m_chassis->GetCurrentRightPosition();
+	auto cd = make_shared<ControlData>(ControlModes::CONTROL_TYPE::POSITION_INCH,
+									   ControlModes::CONTROL_RUN_LOCS::MOTOR_CONTROLLER,
+									   string("DriveHoldPosition"),
+									   10.0,
+									   0.0,
+									   0.0,
+									   0.0,
+									   0.0,
+									   0.0,
+									   0.0,
+									   1.0,
+									   0.0);
+	// m_chassis->SetControlConstants( cd.get() );
+	// auto left = m_chassis->GetCurrentLeftPosition();
+	// auto right = m_chassis->GetCurrentRightPosition();
 
-	//m_chassis->SetOutput( ControlModes::CONTROL_TYPE::POSITION_INCH, left, right );	
+	// m_chassis->SetOutput( ControlModes::CONTROL_TYPE::POSITION_INCH, left, right );
 }
 
-void DriveHoldPosition::Run() {
-	//Decrement time remaining
+void DriveHoldPosition::Run()
+{
+	// Decrement time remaining
 	m_timeRemaining -= IPrimitive::LOOP_LENGTH;
-
 }
 
-bool DriveHoldPosition::IsDone() {
-	//Return true when the time runs out
+bool DriveHoldPosition::IsDone()
+{
+	// Return true when the time runs out
 	bool holdDone = ((m_timeRemaining <= (IPrimitive::LOOP_LENGTH / 2.0)));
 	return holdDone;
 }

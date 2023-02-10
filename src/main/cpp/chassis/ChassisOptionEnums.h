@@ -17,36 +17,36 @@
 
 class ChassisOptionEnums
 {
-    public:
-        enum HeadingOption
-        {
-            MAINTAIN,
-            TOWARD_GOAL,
-            SPECIFIED_ANGLE
-        };
+public:
+    enum HeadingOption
+    {
+        MAINTAIN,
+        TOWARD_GOAL,
+        SPECIFIED_ANGLE
+    };
 
-        enum DriveStateType
-        {
-            ROBOT_DRIVE,
-            FIELD_DRIVE,
-            TRAJECTORY_DRIVE,
-            POLAR_DRIVE,
-            HOLD_DRIVE,
-            STOP_DRIVE
-        };
-    
-        enum NoMovementOption
-        {
-            STOP,
-            HOLD_POSITION
-        };
-    
-        enum AutonControllerType
-        {
-            RAMSETE,
-            HOLONOMIC
-        };
+    enum DriveStateType
+    {
+        ROBOT_DRIVE,
+        FIELD_DRIVE,
+        TRAJECTORY_DRIVE,
+        POLAR_DRIVE,
+        HOLD_DRIVE,
+        STOP_DRIVE
+    };
 
-    ChassisOptionEnums() = delete;   
+    enum NoMovementOption
+    {
+        STOP,
+        HOLD_POSITION
+    };
+
+    enum AutonControllerType
+    {
+        RAMSETE,
+        HOLONOMIC
+    };
+
+    ChassisOptionEnums() = delete;
     ~ChassisOptionEnums() = delete;
 };

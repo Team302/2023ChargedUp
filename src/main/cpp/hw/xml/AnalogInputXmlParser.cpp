@@ -13,7 +13,7 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
-   
+
 // --------------------------------------------------------------------------------------------
 // AnalogInputXmlParser.cpp
 // --------------------------------------------------------------------------------------------
@@ -59,7 +59,6 @@
 // Third Party includes
 #include <pugixml/pugixml.hpp>
 
-
 using namespace frc;
 using namespace std;
 
@@ -70,80 +69,78 @@ using namespace std;
 // Returns:     DragonAnalogInput*      AnalogInput (or nullptr if XML
 //                                  	is ill-formed
 //-----------------------------------------------------------------------
-DragonAnalogInput* AnalogInputXmlParser::ParseXML
-(
-    string              networkTableName,
-    pugi::xml_node      motorNode
-)
+DragonAnalogInput *AnalogInputXmlParser::ParseXML(
+    string networkTableName,
+    pugi::xml_node motorNode)
 {
-	DragonAnalogInput* sensor = nullptr;
+    DragonAnalogInput *sensor = nullptr;
     DragonAnalogInput::ANALOG_SENSOR_TYPE type = DragonAnalogInput::ANALOG_GENERAL;
-	int 						analogID = 0;
-    float						voltageMin = 0.0;
-    float						voltageMax = 5.0;
-    float 						outputMin  = 0.0;
-    float						outputMax  = 1.0;
+    int analogID = 0;
+    float voltageMin = 0.0;
+    float voltageMax = 5.0;
+    float outputMin = 0.0;
+    float outputMax = 1.0;
 
     bool hasError = false;
 
     for (pugi::xml_attribute attr = motorNode.first_attribute(); attr; attr = attr.next_attribute())
     {
-        if ( strcmp( attr.name(), "type" ) == 0 )
+        if (strcmp(attr.name(), "type") == 0)
         {
-        	int iVal = attr.as_int();
-        	switch ( iVal )
-        	{
-                case DragonAnalogInput::ANALOG_GENERAL:
-                    type = DragonAnalogInput::ANALOG_GENERAL;
-                    break;
+            int iVal = attr.as_int();
+            switch (iVal)
+            {
+            case DragonAnalogInput::ANALOG_GENERAL:
+                type = DragonAnalogInput::ANALOG_GENERAL;
+                break;
 
-                case DragonAnalogInput::ANALOG_GYRO:
-                    type = DragonAnalogInput::ANALOG_GYRO;
-                    break;
+            case DragonAnalogInput::ANALOG_GYRO:
+                type = DragonAnalogInput::ANALOG_GYRO;
+                break;
 
-                case DragonAnalogInput::POTENTIOMETER:
-                    type = DragonAnalogInput::POTENTIOMETER;
-                    break;
+            case DragonAnalogInput::POTENTIOMETER:
+                type = DragonAnalogInput::POTENTIOMETER;
+                break;
 
-                case DragonAnalogInput::PRESSURE_GAUGE:
-                    type = DragonAnalogInput::PRESSURE_GAUGE;
-                    break;
+            case DragonAnalogInput::PRESSURE_GAUGE:
+                type = DragonAnalogInput::PRESSURE_GAUGE;
+                break;
 
-                default:
-                    printf( "==>> AnalogInputXmlParser::ParseXML: invalid type %d \n", iVal );
-                    break;
-        	}
+            default:
+                printf("==>> AnalogInputXmlParser::ParseXML: invalid type %d \n", iVal);
+                break;
+            }
         }
-        else if ( strcmp( attr.name(), "analogId" ) == 0 )
+        else if (strcmp(attr.name(), "analogId") == 0)
         {
-        	analogID = attr.as_int();
+            analogID = attr.as_int();
         }
-        else if ( strcmp( attr.name(), "voltageMin" ) == 0 )
+        else if (strcmp(attr.name(), "voltageMin") == 0)
         {
-        	voltageMin = attr.as_float();
+            voltageMin = attr.as_float();
         }
-        else if ( strcmp( attr.name(), "voltageMax" ) == 0 )
+        else if (strcmp(attr.name(), "voltageMax") == 0)
         {
-        	voltageMax = attr.as_float();
+            voltageMax = attr.as_float();
         }
-        else if ( strcmp( attr.name(), "outputMin" ) == 0 )
+        else if (strcmp(attr.name(), "outputMin") == 0)
         {
-        	outputMin = attr.as_float();
+            outputMin = attr.as_float();
         }
-        else if ( strcmp( attr.name(), "outputMax" ) == 0 )
+        else if (strcmp(attr.name(), "outputMax") == 0)
         {
-        	outputMax = attr.as_float();
+            outputMax = attr.as_float();
         }
         else
         {
-            printf( "AnalogInputXmlParser::ParseXML: invalid attribute %s \n", attr.name() );
+            printf("AnalogInputXmlParser::ParseXML: invalid attribute %s \n", attr.name());
             hasError = true;
         }
     }
 
-    if ( !hasError )
+    if (!hasError)
     {
-    	sensor = new DragonAnalogInput(networkTableName, type, analogID, voltageMin, voltageMax, outputMin, outputMax );
+        sensor = new DragonAnalogInput(networkTableName, type, analogID, voltageMin, voltageMax, outputMin, outputMax);
     }
     return sensor;
 }

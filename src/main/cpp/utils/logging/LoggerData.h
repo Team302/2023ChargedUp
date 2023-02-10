@@ -31,12 +31,10 @@ typedef std::pair<std::string, std::string> LoggerStringValue;
 
 struct LoggerData
 {
-    LOGGER_LEVEL                    level;
-    const std::string&              group;
-    std::vector<LoggerBoolValue>    bools;
-    std::vector<LoggerDoubleValue>  doubles;
-    std::vector<LoggerIntValue>     ints;
-    std::vector<LoggerStringValue>  strings;
+    LOGGER_LEVEL level;
+    const std::string &group;
+    std::vector<LoggerBoolValue> bools;
+    std::vector<LoggerDoubleValue> doubles;
+    std::vector<LoggerIntValue> ints;
+    std::vector<LoggerStringValue> strings;
 };
-
-

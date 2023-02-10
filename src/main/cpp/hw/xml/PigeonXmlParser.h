@@ -23,21 +23,16 @@ class DragonPigeon;
 
 class PigeonXmlParser
 {
-    public:
+public:
+    PigeonXmlParser() = default;
+    virtual ~PigeonXmlParser() = default;
 
-        PigeonXmlParser() = default;
-        virtual ~PigeonXmlParser() = default;
-
-
-        //-----------------------------------------------------------------------
-        // Method:      ParseXML
-        // Description: Parse a pigeon XML element and create a DragonPigeon from
-        //              its definition.
-        // Returns:     DragonPigeon*       pigeon IMU (or nullptr if XML is ill-formed)
-        //-----------------------------------------------------------------------
-        DragonPigeon* ParseXML
-        (
-            pugi::xml_node      pigeonNode
-        );
+    //-----------------------------------------------------------------------
+    // Method:      ParseXML
+    // Description: Parse a pigeon XML element and create a DragonPigeon from
+    //              its definition.
+    // Returns:     DragonPigeon*       pigeon IMU (or nullptr if XML is ill-formed)
+    //-----------------------------------------------------------------------
+    DragonPigeon *ParseXML(
+        pugi::xml_node pigeonNode);
 };
-

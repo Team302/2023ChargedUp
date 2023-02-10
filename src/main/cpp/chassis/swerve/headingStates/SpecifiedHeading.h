@@ -17,18 +17,18 @@
 
 #include <units/angle.h>
 
-//Team302 Includes
+// Team302 Includes
 #include <chassis/swerve/headingStates/ISwerveDriveOrientation.h>
 #include <chassis/ChassisOptionEnums.h>
 
 class SpecifiedHeading : public ISwerveDriveOrientation
 {
-    public:
-        SpecifiedHeading();
-        ~SpecifiedHeading();
-        void UpdateChassisSpeeds(ChassisMovement& chassisMovement) override;
-        void SetTargetHeading(units::angle::degree_t targetAngle);
+public:
+    SpecifiedHeading();
+    ~SpecifiedHeading();
+    void UpdateChassisSpeeds(ChassisMovement &chassisMovement) override;
+    void SetTargetHeading(units::angle::degree_t targetAngle);
 
-    private:
-        units::angle::degree_t      m_targetAngle;
+private:
+    units::angle::degree_t m_targetAngle;
 };

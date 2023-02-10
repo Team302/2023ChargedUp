@@ -19,24 +19,23 @@
 // FRC includes
 #include <frc/PowerDistribution.h>
 
-
 /// @class PDPFactory
 /// @brief This controls the creation of the PDP
 class PDPFactory
 {
-	public:
-		/// @brief  Find or create the analog input factory
-		/// @return PDPFactory* pointer to the factory
-		static PDPFactory* GetFactory();
+public:
+	/// @brief  Find or create the analog input factory
+	/// @return PDPFactory* pointer to the factory
+	static PDPFactory *GetFactory();
 
-        frc::PowerDistribution* GetPDP() const { return m_pdp; };
-        frc::PowerDistribution* CreatePDP(int canID, frc::PowerDistribution::ModuleType type);
+	frc::PowerDistribution *GetPDP() const { return m_pdp; };
+	frc::PowerDistribution *CreatePDP(int canID, frc::PowerDistribution::ModuleType type);
 
-	private:
-		PDPFactory();
-		virtual ~PDPFactory() = default;
+private:
+	PDPFactory();
+	virtual ~PDPFactory() = default;
 
-        frc::PowerDistribution* m_pdp;
+	frc::PowerDistribution *m_pdp;
 
-		static PDPFactory*	m_factory;
+	static PDPFactory *m_factory;
 };

@@ -14,39 +14,39 @@
 //====================================================================================================================================================
 #pragma once
 
-//FRC Includes
+// FRC Includes
 #include <frc/SmartDashboard/SendableChooser.h>
 #include <frc/DriverStation.h>
 
 class FMSData
 {
-    public:
-        enum ALLIANCE_COLOR
-        {
-            BLUE,
-            RED,
-            INVALID
-        };
+public:
+    enum ALLIANCE_COLOR
+    {
+        BLUE,
+        RED,
+        INVALID
+    };
 
-        FMSData();
-        ~FMSData() = default;
+    FMSData();
+    ~FMSData() = default;
 
-        /// @brief Get the alliance color from dashboard or FMS when available
-        /// @return the current alliance
-        frc::DriverStation::Alliance GetAllianceColor();
+    /// @brief Get the alliance color from dashboard or FMS when available
+    /// @return the current alliance
+    frc::DriverStation::Alliance GetAllianceColor();
 
-        /// @brief Check if we are connected to FMS
-        void CheckForFMS();
+    /// @brief Check if we are connected to FMS
+    void CheckForFMS();
 
-        /// @brief get the singeleton of FMSData
-        static FMSData* GetInstance();
+    /// @brief get the singeleton of FMSData
+    static FMSData *GetInstance();
 
-    private:
-        static FMSData*	m_instance;
+private:
+    static FMSData *m_instance;
 
-        frc::SendableChooser<std::string>                                   m_allianceColorChooser;
-        std::unordered_map<frc::DriverStation::Alliance, ALLIANCE_COLOR>    m_colorMap;
-        bool                                                                m_hasFMS;
-        frc::DriverStation::Alliance                                        m_color;
-        bool                                                                m_polledFMS;
+    frc::SendableChooser<std::string> m_allianceColorChooser;
+    std::unordered_map<frc::DriverStation::Alliance, ALLIANCE_COLOR> m_colorMap;
+    bool m_hasFMS;
+    frc::DriverStation::Alliance m_color;
+    bool m_polledFMS;
 };

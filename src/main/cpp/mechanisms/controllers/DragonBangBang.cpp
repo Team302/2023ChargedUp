@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+// Copyright 2022 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -17,18 +17,13 @@
 
 using namespace std;
 
-DragonBangBang::DragonBangBang
-(
-    double  tolerance
-) : m_tolerance(tolerance)
+DragonBangBang::DragonBangBang(
+    double tolerance) : m_tolerance(tolerance)
 {
-
 }
-double DragonBangBang::Calculate
-(
+double DragonBangBang::Calculate(
     double currentVal,
-    double targetVal
-)
+    double targetVal)
 {
     auto error = (targetVal - currentVal) / targetVal;
     if (error > abs(m_tolerance))

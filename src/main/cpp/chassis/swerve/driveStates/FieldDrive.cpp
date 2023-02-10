@@ -15,21 +15,19 @@
 
 #include <frc/geometry/Rotation2d.h>
 
-//Team302 Includes
+// Team302 Includes
 #include <chassis/swerve/driveStates/FieldDrive.h>
 #include <chassis/ChassisFactory.h>
 
 using frc::Rotation2d;
 
-FieldDrive::FieldDrive(RobotDrive* robotDrive) : RobotDrive(),
+FieldDrive::FieldDrive(RobotDrive *robotDrive) : RobotDrive(),
                                                  m_robotDrive(robotDrive)
 {
 }
 
-std::array<frc::SwerveModuleState, 4> FieldDrive::UpdateSwerveModuleStates
-(
-    ChassisMovement& chassisMovement
-)
+std::array<frc::SwerveModuleState, 4> FieldDrive::UpdateSwerveModuleStates(
+    ChassisMovement &chassisMovement)
 {
     frc::ChassisSpeeds fieldRelativeSpeeds = frc::ChassisSpeeds::FromFieldRelativeSpeeds(chassisMovement.chassisSpeeds.vx,
                                                                                          chassisMovement.chassisSpeeds.vy,
@@ -40,11 +38,7 @@ std::array<frc::SwerveModuleState, 4> FieldDrive::UpdateSwerveModuleStates
     return m_robotDrive->UpdateSwerveModuleStates(chassisMovement);
 }
 
-void FieldDrive::Init
-(
-    ChassisMovement& chassisMovement
-)
+void FieldDrive::Init(
+    ChassisMovement &chassisMovement)
 {
-    
 }
-

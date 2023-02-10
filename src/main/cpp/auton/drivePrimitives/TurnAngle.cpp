@@ -36,14 +36,13 @@
 
 // Third Party Includes
 
-
 using namespace std;
 using namespace frc;
 
-//Team302 includes
+// Team302 includes
 
-TurnAngle::TurnAngle() : m_chassis( ChassisFactory::GetChassisFactory()->GetIChassis()),
-						 m_timer( make_unique<Timer>() ),
+TurnAngle::TurnAngle() : m_chassis(ChassisFactory::GetChassisFactory()->GetIChassis()),
+						 m_timer(make_unique<Timer>()),
 						 m_targetAngle(0.0),
 						 m_maxTime(0.0),
 						 m_leftPos(0.0),
@@ -54,38 +53,38 @@ TurnAngle::TurnAngle() : m_chassis( ChassisFactory::GetChassisFactory()->GetICha
 {
 }
 
-void TurnAngle::Init(PrimitiveParams* params) 
+void TurnAngle::Init(PrimitiveParams *params)
 {
 	m_isDone = false;
 	auto startHeading = 0.0;
 	auto pigeon = PigeonFactory::GetFactory()->GetPigeon(DragonPigeon::PIGEON_USAGE::CENTER_OF_ROBOT);
-	if ( pigeon != nullptr )
+	if (pigeon != nullptr)
 	{
 		startHeading = pigeon->GetYaw();
 		m_targetAngle = startHeading + params->GetHeading();
 	}
 
-	auto cd = make_shared<ControlData>( ControlModes::CONTROL_TYPE::POSITION_INCH, 
-									ControlModes::CONTROL_RUN_LOCS::MOTOR_CONTROLLER,
-									string("TurnAngle"),
-									3.0,
-									0.0,
-									0.0,
-									0.0,
-									0.0,
-									0.0,
-									0.0,
-									1.0,
-									0.0   );
+	auto cd = make_shared<ControlData>(ControlModes::CONTROL_TYPE::POSITION_INCH,
+									   ControlModes::CONTROL_RUN_LOCS::MOTOR_CONTROLLER,
+									   string("TurnAngle"),
+									   3.0,
+									   0.0,
+									   0.0,
+									   0.0,
+									   0.0,
+									   0.0,
+									   0.0,
+									   1.0,
+									   0.0);
 
 	m_maxTime = params->GetTime();
 	m_timer->Reset();
 	m_timer->Start();
 }
 
-void TurnAngle::Run() //best method ever. Does nothing, and should do nothing... NOT ANYMORE, BUDDY!
+void TurnAngle::Run() // best method ever. Does nothing, and should do nothing... NOT ANYMORE, BUDDY!
 {
-	if ( m_pigeon != nullptr )
+	if (m_pigeon != nullptr)
 	{
 		m_heading = m_pigeon->GetYaw();
 	}
@@ -96,26 +95,25 @@ void TurnAngle::Run() //best method ever. Does nothing, and should do nothing...
 	speeds.vx = 0_mps;
 	speeds.vy = 0_mps;
 	speeds.omega = sign ? units::degrees_per_second_t(90.0) : units::degrees_per_second_t(-90.0);
-	//m_chassis->Drive(speeds, IChassis::CHASSIS_DRIVE_MODE::ROBOT_ORIENTED,Chassis::HEADING_OPTION::DEFAULT);
+	// m_chassis->Drive(speeds, IChassis::CHASSIS_DRIVE_MODE::ROBOT_ORIENTED,Chassis::HEADING_OPTION::DEFAULT);
 }
 
-bool TurnAngle::IsDone() 
+bool TurnAngle::IsDone()
 {
-	if (!m_isDone) 
+	if (!m_isDone)
 	{
-		if ( m_pigeon != nullptr )
+		if (m_pigeon != nullptr)
 		{
 			m_heading = m_pigeon->GetYaw();
 		}
-		if (abs(m_targetAngle - m_heading) < ANGLE_THRESH) 
+		if (abs(m_targetAngle - m_heading) < ANGLE_THRESH)
 		{
 			m_isDone = true;
 			ChassisSpeeds speeds;
 			speeds.vx = 0_mps;
 			speeds.vy = 0_mps;
 			speeds.omega = units::degrees_per_second_t(0.0);
-			//m_chassis->Drive(speeds, IChassis::CHASSIS_DRIVE_MODE::ROBOT_ORIENTED, IChassis::HEADING_OPTION::DEFAULT);
-
+			// m_chassis->Drive(speeds, IChassis::CHASSIS_DRIVE_MODE::ROBOT_ORIENTED, IChassis::HEADING_OPTION::DEFAULT);
 		}
 	}
 	return m_isDone; //|| m_timer->HasPeriodPassed( m_maxTime );

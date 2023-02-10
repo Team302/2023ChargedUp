@@ -15,20 +15,24 @@
 
 #pragma once
 
-//FRC Includes
+// FRC Includes
 #include <units/length.h>
 
 class Point2d
 {
-    public:
-        Point2d();
+public:
+    Point2d();
 
-        Point2d(units::meter_t x, units::meter_t y) {X= x; Y= y;};
+    Point2d(units::meter_t x, units::meter_t y)
+    {
+        X = x;
+        Y = y;
+    };
 
-        Point2d operator+(const Point2d& other);
-        Point2d operator-(const Point2d& other);
-        bool operator==(const Point2d& other);
+    Point2d operator+(const Point2d &other);
+    Point2d operator-(const Point2d &other);
+    bool operator==(const Point2d &other);
 
-        units::meter_t X;
-        units::meter_t Y;
+    units::meter_t X;
+    units::meter_t Y;
 };

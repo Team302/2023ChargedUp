@@ -14,7 +14,7 @@
 //====================================================================================================================================================
 #pragma once
 
-//FRC Include
+// FRC Include
 #include <frc/smartdashboard/Field2d.h>
 #include <frc/smartdashboard/FieldObject2d.h>
 #include <frc/geometry/Pose2d.h>
@@ -22,22 +22,22 @@
 
 class DragonField
 {
-    public:
-        DragonField();
-        ~DragonField() = default;
+public:
+    DragonField();
+    ~DragonField() = default;
 
-        void UpdateRobotPosition(frc::Pose2d robotPose);
+    void UpdateRobotPosition(frc::Pose2d robotPose);
 
-        void AddPose(std::string name, frc::Pose2d pose);
-        void AddTrajectory(std::string name, frc::Trajectory trajectory);
+    void AddPose(std::string name, frc::Pose2d pose);
+    void AddTrajectory(std::string name, frc::Trajectory trajectory);
 
-        /// @brief get the singeleton of FMSData
-        static DragonField* GetInstance();
+    /// @brief get the singeleton of FMSData
+    static DragonField *GetInstance();
 
-        void ResetField();
+    void ResetField();
 
-    private:
-        static DragonField*	    m_instance;
-        frc::Field2d            m_field;
-        std::vector<frc::FieldObject2d*> m_objects;
+private:
+    static DragonField *m_instance;
+    frc::Field2d m_field;
+    std::vector<frc::FieldObject2d *> m_objects;
 };

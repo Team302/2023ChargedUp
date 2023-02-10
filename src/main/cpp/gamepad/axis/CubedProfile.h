@@ -1,7 +1,7 @@
 
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+// Copyright 2022 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -25,29 +25,23 @@
 //========================================================================================================
 class CubedProfile : public IProfile
 {
-    public:
+public:
+    //==================================================================================
+    /// @brief  Static singleton method to create the object
+    /// @return CubedProfile*  Singleton cubed profile object
+    //==================================================================================
+    static CubedProfile *GetInstance();
 
-        //==================================================================================
-        /// @brief  Static singleton method to create the object
-        /// @return CubedProfile*  Singleton cubed profile object
-        //==================================================================================
-        static CubedProfile* GetInstance();
+    //==================================================================================
+    /// @brief:    Apply the profile
+    /// @param  double inputVal - value to be scaled (have profile applied to)
+    //==================================================================================
+    void ApplyProfile(
+        double &inputVal) const override;
 
+private:
+    CubedProfile() = default;
+    ~CubedProfile() = default;
 
-        //==================================================================================
-        /// @brief:    Apply the profile
-        /// @param  double inputVal - value to be scaled (have profile applied to)
-        //==================================================================================
-        void ApplyProfile
-        (
-            double&    inputVal            
-        ) const override;
-
-    private:
-        CubedProfile() = default;
-        ~CubedProfile() = default;
-
-        static CubedProfile*       m_instance;
-
+    static CubedProfile *m_instance;
 };
-

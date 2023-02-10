@@ -41,104 +41,99 @@
 
 using namespace frc;
 
-
 /// @brief    Find or create the factory
 /// @returns  BuiltInAccelerometerFactory* pointer to the factory
-DragonRoboRioAccelerometerFactory* DragonRoboRioAccelerometerFactory::m_factory = nullptr;
-DragonRoboRioAccelerometerFactory* DragonRoboRioAccelerometerFactory::GetInstance()
+DragonRoboRioAccelerometerFactory *DragonRoboRioAccelerometerFactory::m_factory = nullptr;
+DragonRoboRioAccelerometerFactory *DragonRoboRioAccelerometerFactory::GetInstance()
 {
-	if ( DragonRoboRioAccelerometerFactory::m_factory == nullptr )
-	{
-		DragonRoboRioAccelerometerFactory::m_factory = new DragonRoboRioAccelerometerFactory();
-	}
-	return DragonRoboRioAccelerometerFactory::m_factory;
+    if (DragonRoboRioAccelerometerFactory::m_factory == nullptr)
+    {
+        DragonRoboRioAccelerometerFactory::m_factory = new DragonRoboRioAccelerometerFactory();
+    }
+    return DragonRoboRioAccelerometerFactory::m_factory;
 }
 
-
 /// @brief      Create the Builtin Accelerometer
-/// @returns 	frc::BuiltInAccelerometer* 
-BuiltInAccelerometer* DragonRoboRioAccelerometerFactory::CreateAccelerometer
-(
-    RoboRioOrientation::ROBORIO_ORIENTATION		orientation
-)
+/// @returns 	frc::BuiltInAccelerometer*
+BuiltInAccelerometer *DragonRoboRioAccelerometerFactory::CreateAccelerometer(
+    RoboRioOrientation::ROBORIO_ORIENTATION orientation)
 {
     if (m_accel == nullptr)
     {
         switch (orientation)
         {
-            // Z Axis Up
-            case RoboRioOrientation::ROBORIO_ORIENTATION::X_FORWARD_Y_LEFT:
-                m_accel = new BuiltInAccelerometer();
-                break;
+        // Z Axis Up
+        case RoboRioOrientation::ROBORIO_ORIENTATION::X_FORWARD_Y_LEFT:
+            m_accel = new BuiltInAccelerometer();
+            break;
 
-            case RoboRioOrientation::ROBORIO_ORIENTATION::X_LEFT_Y_BACKWARD:
-                m_accel = new DragonRoboRioAccelXLeftYBackward();
-                break;
+        case RoboRioOrientation::ROBORIO_ORIENTATION::X_LEFT_Y_BACKWARD:
+            m_accel = new DragonRoboRioAccelXLeftYBackward();
+            break;
 
-            case RoboRioOrientation::ROBORIO_ORIENTATION::X_BACKWARD_Y_RIGHT:
-                m_accel = new DragonRoboRioAccelXBackwardYRight();
-                break;
+        case RoboRioOrientation::ROBORIO_ORIENTATION::X_BACKWARD_Y_RIGHT:
+            m_accel = new DragonRoboRioAccelXBackwardYRight();
+            break;
 
-            case RoboRioOrientation::ROBORIO_ORIENTATION::X_RIGHT_Y_FORWARD:
-                m_accel = new DragonRoboRioAccelXRightYForward();
-                break;
+        case RoboRioOrientation::ROBORIO_ORIENTATION::X_RIGHT_Y_FORWARD:
+            m_accel = new DragonRoboRioAccelXRightYForward();
+            break;
 
-            // Z Axis Down
-            case RoboRioOrientation::ROBORIO_ORIENTATION::X_FORWARD_Y_RIGHT:
-                m_accel = new DragonRoboRioAccelXForwardYRight();
-                break;
+        // Z Axis Down
+        case RoboRioOrientation::ROBORIO_ORIENTATION::X_FORWARD_Y_RIGHT:
+            m_accel = new DragonRoboRioAccelXForwardYRight();
+            break;
 
-            case RoboRioOrientation::ROBORIO_ORIENTATION::X_LEFT_Y_FORWARD:
-                m_accel = new DragonRoboRioAccelXLeftYForward();
-                break;
+        case RoboRioOrientation::ROBORIO_ORIENTATION::X_LEFT_Y_FORWARD:
+            m_accel = new DragonRoboRioAccelXLeftYForward();
+            break;
 
-            case RoboRioOrientation::ROBORIO_ORIENTATION::X_BACKWARD_Y_LEFT:
-                m_accel = new DragonRoboRioAccelXBackwardYLeft();
-                break;
+        case RoboRioOrientation::ROBORIO_ORIENTATION::X_BACKWARD_Y_LEFT:
+            m_accel = new DragonRoboRioAccelXBackwardYLeft();
+            break;
 
-            case RoboRioOrientation::ROBORIO_ORIENTATION::X_RIGHT_Y_BACKWARD:
-                m_accel = new DragonRoboRioAccelXRightYBackward();
-                break;
+        case RoboRioOrientation::ROBORIO_ORIENTATION::X_RIGHT_Y_BACKWARD:
+            m_accel = new DragonRoboRioAccelXRightYBackward();
+            break;
 
-            // Z Axis Backward
-            case RoboRioOrientation::ROBORIO_ORIENTATION::X_UP_Y_LEFT:
-                m_accel = new DragonRoboRioAccelXUpYLeft();
-                break;
+        // Z Axis Backward
+        case RoboRioOrientation::ROBORIO_ORIENTATION::X_UP_Y_LEFT:
+            m_accel = new DragonRoboRioAccelXUpYLeft();
+            break;
 
-            case RoboRioOrientation::ROBORIO_ORIENTATION::X_LEFT_Y_DOWN:
-                m_accel = new DragonRoboRioAccelXLeftYDown();
-                break;
+        case RoboRioOrientation::ROBORIO_ORIENTATION::X_LEFT_Y_DOWN:
+            m_accel = new DragonRoboRioAccelXLeftYDown();
+            break;
 
-            case RoboRioOrientation::ROBORIO_ORIENTATION::X_DOWN_Y_RIGHT:
-                m_accel = new DragonRoboRioAccelXDownYRight();
-                break;
+        case RoboRioOrientation::ROBORIO_ORIENTATION::X_DOWN_Y_RIGHT:
+            m_accel = new DragonRoboRioAccelXDownYRight();
+            break;
 
-            case RoboRioOrientation::ROBORIO_ORIENTATION::X_RIGHT_Y_UP:
-                m_accel = new DragonRoboRioAccelXRightYUp();
-                break;
+        case RoboRioOrientation::ROBORIO_ORIENTATION::X_RIGHT_Y_UP:
+            m_accel = new DragonRoboRioAccelXRightYUp();
+            break;
 
-            // Z Axis Forward
-            case RoboRioOrientation::ROBORIO_ORIENTATION::X_UP_Y_RIGHT:
-                m_accel = new DragonRoboRioAccelXUpYRight();
-                break;
+        // Z Axis Forward
+        case RoboRioOrientation::ROBORIO_ORIENTATION::X_UP_Y_RIGHT:
+            m_accel = new DragonRoboRioAccelXUpYRight();
+            break;
 
-            case RoboRioOrientation::ROBORIO_ORIENTATION::X_LEFT_Y_UP:
-                m_accel = new DragonRoboRioAccelXLeftYUp();
-                break;
+        case RoboRioOrientation::ROBORIO_ORIENTATION::X_LEFT_Y_UP:
+            m_accel = new DragonRoboRioAccelXLeftYUp();
+            break;
 
-            case RoboRioOrientation::ROBORIO_ORIENTATION::X_DOWN_Y_LEFT:
-                m_accel = new DragonRoboRioAccelXDownYLeft();
-                break;
+        case RoboRioOrientation::ROBORIO_ORIENTATION::X_DOWN_Y_LEFT:
+            m_accel = new DragonRoboRioAccelXDownYLeft();
+            break;
 
-            case RoboRioOrientation::ROBORIO_ORIENTATION::X_RIGHT_Y_DOWN:
-                m_accel = new DragonRoboRioAccelXRightYDown();
-                break;
+        case RoboRioOrientation::ROBORIO_ORIENTATION::X_RIGHT_Y_DOWN:
+            m_accel = new DragonRoboRioAccelXRightYDown();
+            break;
 
-            default:
-                m_accel = new BuiltInAccelerometer();
-                break;
+        default:
+            m_accel = new BuiltInAccelerometer();
+            break;
         }
-        
     }
     return m_accel;
 }

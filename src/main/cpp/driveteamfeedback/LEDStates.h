@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2023 Lake Orion Robotics FIRST Team 302 
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -17,11 +17,9 @@
 #pragma once
 #include <driveteamfeedback/LED.h>
 
-
 class LEDStates
 {
-	public:
-    
+public:
     void LEDsOff();
     void ResetVariables();
     void ChaserPattern(LED::Colors c);
@@ -30,16 +28,12 @@ class LEDStates
     void AlternatingBlinkingPattern(LED::Colors c);
     void AlternatingBlinkingPattern(LED::Colors c1, LED::Colors c2);
     void ClosingInChaserPattern(LED::Colors c);
-    LED* m_LED = LED::GetInstance();
-    static LEDStates* GetInstance();
+    LED *m_LED = LED::GetInstance();
+    static LEDStates *GetInstance();
 
-    private:
-    
+private:
     int loopThroughIndividualLEDs = -1;
     int colorLoop = 0;
     int timer;
-    static LEDStates* m_instance;
+    static LEDStates *m_instance;
 };
-
-
-

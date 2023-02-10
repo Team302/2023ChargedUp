@@ -20,51 +20,45 @@
 #include <ctre/phoenix/sensors/WPI_Pigeon2.h>
 #include <ctre/Phoenix.h>
 
-
 class DragonPigeon
 {
-    public:
-		enum PIGEON_TYPE
-		{
-			PIGEON1,
-			PIGEON2
-		};
+public:
+    enum PIGEON_TYPE
+    {
+        PIGEON1,
+        PIGEON2
+    };
 
-		enum PIGEON_USAGE
-		{
-			CENTER_OF_ROBOT,
-			CENTER_OF_SHOOTER
-		};
+    enum PIGEON_USAGE
+    {
+        CENTER_OF_ROBOT,
+        CENTER_OF_SHOOTER
+    };
 
-        DragonPigeon
-        (
-            int                         canID,
-            std::string                 canBusName,
-            DragonPigeon::PIGEON_USAGE  usage,
-            DragonPigeon::PIGEON_TYPE   type,
-            double                      rotation
-        );
-        DragonPigeon() = delete;
-        virtual ~DragonPigeon() = default;
+    DragonPigeon(
+        int canID,
+        std::string canBusName,
+        DragonPigeon::PIGEON_USAGE usage,
+        DragonPigeon::PIGEON_TYPE type,
+        double rotation);
+    DragonPigeon() = delete;
+    virtual ~DragonPigeon() = default;
 
-        double GetPitch();
-        double GetRoll();
-        double GetYaw();
-        void ReZeroPigeon( double angleDeg, int timeoutMs = 0);
+    double GetPitch();
+    double GetRoll();
+    double GetYaw();
+    void ReZeroPigeon(double angleDeg, int timeoutMs = 0);
 
-    private:
+private:
+    ctre::phoenix::sensors::WPI_PigeonIMU *m_pigeon;
+    ctre::phoenix::sensors::WPI_Pigeon2 *m_pigeon2;
 
-        ctre::phoenix::sensors::WPI_PigeonIMU* m_pigeon;
-        ctre::phoenix::sensors::WPI_Pigeon2* m_pigeon2;
+    double m_initialYaw;
+    double m_initialPitch;
+    double m_initialRoll;
 
-        double m_initialYaw;
-        double m_initialPitch;
-        double m_initialRoll;
-
-        // these methods correct orientation, but do not apply the initial offsets
-        double GetRawYaw();
-        double GetRawRoll();
-        double GetRawPitch();
+    // these methods correct orientation, but do not apply the initial offsets
+    double GetRawYaw();
+    double GetRawRoll();
+    double GetRawPitch();
 };
-
-

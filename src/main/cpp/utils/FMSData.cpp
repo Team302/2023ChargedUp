@@ -13,29 +13,28 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-//FRC Includes
+// FRC Includes
 #include <frc/SmartDashboard/SmartDashboard.h>
 #include <frc/DriverStation.h>
 
-//Team 302 Includes
+// Team 302 Includes
 #include <utils/FMSData.h>
 
-FMSData* FMSData::m_instance = nullptr;
+FMSData *FMSData::m_instance = nullptr;
 
-FMSData* FMSData::GetInstance()
+FMSData *FMSData::GetInstance()
 {
-	if ( FMSData::m_instance == nullptr )
-	{
-            FMSData::m_instance = new FMSData();
-	}
-	return FMSData::m_instance;
-    
+    if (FMSData::m_instance == nullptr)
+    {
+        FMSData::m_instance = new FMSData();
+    }
+    return FMSData::m_instance;
 }
 
 FMSData::FMSData() : m_allianceColorChooser(),
-                    m_hasFMS(false),
-                    m_color(frc::DriverStation::Alliance::kInvalid),
-                    m_polledFMS(false)
+                     m_hasFMS(false),
+                     m_color(frc::DriverStation::Alliance::kInvalid),
+                     m_polledFMS(false)
 {
     m_allianceColorChooser.SetDefaultOption("UNKNOWN Alliance", "Invalid");
     m_allianceColorChooser.AddOption("Red Alliance", "Red");
@@ -46,22 +45,22 @@ FMSData::FMSData() : m_allianceColorChooser(),
 
 frc::DriverStation::Alliance FMSData::GetAllianceColor()
 {
-    if(!m_polledFMS)
+    if (!m_polledFMS)
     {
         CheckForFMS();
-        
-        if(m_hasFMS)
+
+        if (m_hasFMS)
         {
             m_color = frc::DriverStation::GetAlliance();
             m_polledFMS = true;
         }
         else
         {
-            if(m_allianceColorChooser.GetSelected() == "Red")
+            if (m_allianceColorChooser.GetSelected() == "Red")
             {
                 m_color = frc::DriverStation::Alliance::kRed;
             }
-            else if(m_allianceColorChooser.GetSelected() == "Blue")
+            else if (m_allianceColorChooser.GetSelected() == "Blue")
             {
                 m_color = frc::DriverStation::Alliance::kBlue;
             }
@@ -73,7 +72,7 @@ frc::DriverStation::Alliance FMSData::GetAllianceColor()
 
 void FMSData::CheckForFMS()
 {
-    if(frc::DriverStation::IsFMSAttached() && !m_hasFMS)
+    if (frc::DriverStation::IsFMSAttached() && !m_hasFMS)
     {
         m_hasFMS = true;
     }

@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+// Copyright 2022 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -28,18 +28,16 @@
 using namespace frc;
 using namespace std;
 
-DragonDigitalInput::DragonDigitalInput
-(
-	string										networkTableName,
-	DigitalInputUsage::DIGITAL_INPUT_USAGE		usage,	    	// <I> - Usage of the digital input
-	int 										deviceID,		// <I> - digial io ID
-	bool										reversed,		// <I>
-	units::time::second_t						debounceTime
-) : m_networkTableName(networkTableName),
-	m_digital(new DigitalInput(deviceID)),
-	m_debouncer(new Debouncer(debounceTime, Debouncer::DebounceType::kBoth)),
-	m_reversed(reversed),
-	m_type(usage)
+DragonDigitalInput::DragonDigitalInput(
+	string networkTableName,
+	DigitalInputUsage::DIGITAL_INPUT_USAGE usage, // <I> - Usage of the digital input
+	int deviceID,								  // <I> - digial io ID
+	bool reversed,								  // <I>
+	units::time::second_t debounceTime) : m_networkTableName(networkTableName),
+										  m_digital(new DigitalInput(deviceID)),
+										  m_debouncer(new Debouncer(debounceTime, Debouncer::DebounceType::kBoth)),
+										  m_reversed(reversed),
+										  m_type(usage)
 {
 }
 
@@ -50,12 +48,12 @@ DragonDigitalInput::~DragonDigitalInput()
 
 DigitalInputUsage::DIGITAL_INPUT_USAGE DragonDigitalInput::GetType() const
 {
-    return m_type;
+	return m_type;
 }
 
 bool DragonDigitalInput::Get() const
 {
-	if ( m_digital != nullptr )
+	if (m_digital != nullptr)
 	{
 		if (m_debouncer != nullptr)
 		{
@@ -68,17 +66,16 @@ bool DragonDigitalInput::Get() const
 	}
 	else
 	{
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, m_networkTableName, string("DigitalInput"), string("Not created") );
+		Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, m_networkTableName, string("DigitalInput"), string("Not created"));
 	}
 	return false;
 }
-int  DragonDigitalInput::GetChannel() const
+int DragonDigitalInput::GetChannel() const
 {
 	int channel = 0;
-	if ( m_digital != nullptr )
+	if (m_digital != nullptr)
 	{
 		channel = m_digital->GetChannel();
 	}
 	return channel;
 }
-

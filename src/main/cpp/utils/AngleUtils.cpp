@@ -32,23 +32,21 @@ using namespace std;
 /// @param [in] targetAngle - angle to go to
 /// @returns units::angle::degree_t the angle to traverse to get from the startingAngle
 ///                                 to the targetAngle within 1 rotation
-units::angle::degree_t AngleUtils::GetDeltaAngle
-(
-    units::angle::degree_t  startingAngle,
-    units::angle::degree_t  targetAngle
-)
+units::angle::degree_t AngleUtils::GetDeltaAngle(
+    units::angle::degree_t startingAngle,
+    units::angle::degree_t targetAngle)
 {
     // start by making sure the angles are between -180 and 180 degrees
     auto normTarget = GetEquivAngle(targetAngle);
-    auto normStart  = GetEquivAngle(startingAngle);
+    auto normStart = GetEquivAngle(startingAngle);
 
     // compute delta which is between 0 and 360 degrees
     auto delta = units::angle::degree_t(normTarget - normStart);
 
-    // if moving 3/4 of a turn or more in one direction, is the same as turning less  
-    // than a quarter turn in the other direction. This is accounting for roll-over 
-    // situations.   Not going to a bigger angle because this necessitates dealing 
-    // with potentially reversing the wheel direction in some cases.  So, we'll let 
+    // if moving 3/4 of a turn or more in one direction, is the same as turning less
+    // than a quarter turn in the other direction. This is accounting for roll-over
+    // situations.   Not going to a bigger angle because this necessitates dealing
+    // with potentially reversing the wheel direction in some cases.  So, we'll let
     // downstream code deal with these cases.
     if (delta.to<double>() > 270.0)
     {
@@ -61,21 +59,18 @@ units::angle::degree_t AngleUtils::GetDeltaAngle
     return delta;
 }
 
-
 /// @brief make sure the angle is between -180.0_deg and 180.0_deg and if it isn't find
 ///        its equivalent angle within that range
 /// @param [in] units::angle::degree_t  angle - angle to check
 /// @returns units::angle::degree_t angle within range of -180_deg to 180.0_deg
-units::angle::degree_t AngleUtils::GetEquivAngle
-(
-    units::angle::degree_t  angle
-)
+units::angle::degree_t AngleUtils::GetEquivAngle(
+    units::angle::degree_t angle)
 {
     units::angle::degree_t angleInRange = angle;
-  // make sure the delta is between -180.0 and 180.0
+    // make sure the delta is between -180.0 and 180.0
     if (angleInRange < -180.0_deg)
     {
-        while (angleInRange < -180.0_deg )
+        while (angleInRange < -180.0_deg)
         {
             angleInRange = angleInRange + 360.0_deg;
         }
@@ -89,4 +84,3 @@ units::angle::degree_t AngleUtils::GetEquivAngle
     }
     return angleInRange;
 }
-

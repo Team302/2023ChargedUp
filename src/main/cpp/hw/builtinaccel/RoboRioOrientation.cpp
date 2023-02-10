@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-/// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+/// Copyright 2022 Lake Orion Robotics FIRST Team 302
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 /// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -13,7 +13,6 @@
 /// OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-
 // FRC includes
 
 // Team 302 includes
@@ -21,12 +20,12 @@
 
 // Third Party Includes
 
-RoboRioOrientation* RoboRioOrientation::m_instance = nullptr;
-RoboRioOrientation* RoboRioOrientation::GetInstance()
+RoboRioOrientation *RoboRioOrientation::m_instance = nullptr;
+RoboRioOrientation *RoboRioOrientation::GetInstance()
 {
-	if ( RoboRioOrientation::m_instance == nullptr )
+	if (RoboRioOrientation::m_instance == nullptr)
 	{
-	    RoboRioOrientation::m_instance = new RoboRioOrientation();
+		RoboRioOrientation::m_instance = new RoboRioOrientation();
 	}
 	return RoboRioOrientation::m_instance;
 }

@@ -14,7 +14,6 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-
 //========================================================================================================
 /// StateDataXmlParser.cpp
 //========================================================================================================
@@ -54,34 +53,31 @@
 using namespace pugi;
 using namespace std;
 
-
 /// @brief      Parse a mechanismState.xml file
 /// @param [in] MechanismTypes::MECHANISM_TYPE  - mechanism that the states are for
 /// @return     state data
-vector<MechanismTargetData*> StateDataXmlParser::ParseXML
-(
-    MechanismTypes::MECHANISM_TYPE mechanism
-)
+vector<MechanismTargetData *> StateDataXmlParser::ParseXML(
+    MechanismTypes::MECHANISM_TYPE mechanism)
 {
     bool hasError = false;
-    vector<MechanismTargetData*> targetDataVector;
+    vector<MechanismTargetData *> targetDataVector;
 
     // set the file to parse
-	auto filename = frc::filesystem::GetDeployDirectory();
+    auto filename = frc::filesystem::GetDeployDirectory();
     filename += string("/states/");
     auto mech = MechanismFactory::GetMechanismFactory()->GetMechanism(mechanism);
     if (mech == nullptr)
     {
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("StateDataXmlParser"), string("ParseXML"), string("invalid mechanism") );
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("StateDataXmlParser"), string("ParseXML"), string("invalid mechanism"));
         hasError = true;
     }
 
-    if ( !hasError && mech != nullptr)
+    if (!hasError && mech != nullptr)
     {
         auto mechFile = mech->GetControlFileName();
         if (mechFile.empty())
         {
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("StateDataXmlParser"), string("ParseXML"), string("mechanism without control file") );
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("StateDataXmlParser"), string("ParseXML"), string("mechanism without control file"));
             hasError = true;
         }
 
@@ -98,35 +94,35 @@ vector<MechanismTargetData*> StateDataXmlParser::ParseXML
                 unique_ptr<ControlDataXmlParser> controlDataXML = make_unique<ControlDataXmlParser>();
                 unique_ptr<MechanismTargetXmlParser> mechanismTargetXML = make_unique<MechanismTargetXmlParser>();
 
-                vector<ControlData*> controlDataVector;
+                vector<ControlData *> controlDataVector;
 
                 // get the root node <robot>
                 xml_node parent = doc.root();
                 for (xml_node node = parent.first_child(); node; node = node.next_sibling())
-                {   
+                {
                     // loop through the direct children of <robot> and call the appropriate parser
                     for (xml_node child = node.first_child(); child; child = child.next_sibling())
                     {
                         if (strcmp(child.name(), "controlData") == 0)
                         {
-                            controlDataVector.push_back( controlDataXML.get()->ParseXML( child ) );
+                            controlDataVector.push_back(controlDataXML.get()->ParseXML(child));
                         }
                         else if (strcmp(child.name(), "mechanismTarget") == 0)
                         {
-                            targetDataVector.push_back( mechanismTargetXML.get()->ParseXML( child ) );
+                            targetDataVector.push_back(mechanismTargetXML.get()->ParseXML(child));
                         }
                         else
                         {
                             string msg = "unknown child ";
                             msg += child.name();
-                            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("StateDataXmlParser"), string("ParseXML"), msg );
+                            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("StateDataXmlParser"), string("ParseXML"), msg);
                         }
                     }
                 }
-                
-                for ( auto td : targetDataVector )
+
+                for (auto td : targetDataVector)
                 {
-                    td->Update( controlDataVector );
+                    td->Update(controlDataVector);
                 }
             }
             else
@@ -134,20 +130,20 @@ vector<MechanismTargetData*> StateDataXmlParser::ParseXML
                 string msg = "XML [";
                 msg += filename;
                 msg += "] parsed with errors, attr value: [";
-                msg += doc.child( "prototype" ).attribute( "attr" ).value();
+                msg += doc.child("prototype").attribute("attr").value();
                 msg += "]";
-                Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("StateDataXmlParser"), string("ParseXML (1) "), msg );
+                Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("StateDataXmlParser"), string("ParseXML (1) "), msg);
 
                 msg = "Error description: ";
                 msg += result.description();
-                Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("StateDataXmlParser"), string("ParseXML (2) "), msg );
+                Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("StateDataXmlParser"), string("ParseXML (2) "), msg);
 
                 msg = "Error offset: ";
                 msg += result.offset;
                 msg += " error at ...";
                 msg += filename;
                 msg += result.offset;
-                Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("StateDataXmlParser"), string("ParseXML (3) "), msg );
+                Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("StateDataXmlParser"), string("ParseXML (3) "), msg);
             }
         }
     }

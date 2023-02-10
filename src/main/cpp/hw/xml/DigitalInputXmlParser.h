@@ -26,17 +26,12 @@
 // Third Party includes
 #include <pugixml/pugixml.hpp>
 
-
 class DigitalInputXmlParser
 {
-    public:
-
-        DigitalInputXmlParser() = default;
-        virtual ~DigitalInputXmlParser() = default;
-        std::shared_ptr<DragonDigitalInput> ParseXML
-        (
-            std::string         networkTableName,
-            pugi::xml_node      DigitalNode
-        );
-
+public:
+    DigitalInputXmlParser() = default;
+    virtual ~DigitalInputXmlParser() = default;
+    std::shared_ptr<DragonDigitalInput> ParseXML(
+        std::string networkTableName,
+        pugi::xml_node DigitalNode);
 };

@@ -68,9 +68,9 @@ void ArcadeDrive::Run()
         auto steer = m_controller->GetAxisValue(TeleopControlFunctions::FUNCTION::ARCADE_STEER);
 
         ChassisMovement moveInfo;
-         
+
         moveInfo.chassisSpeeds.vx = throttle * m_chassis->GetMaxSpeed();
-        moveInfo.chassisSpeeds.vy = 0_mps; //units::velocity::meters_per_second_t(0)
+        moveInfo.chassisSpeeds.vy = 0_mps; // units::velocity::meters_per_second_t(0)
         moveInfo.chassisSpeeds.omega = steer * m_chassis->GetMaxAngularSpeed();
         m_chassis->Drive(moveInfo);
     }

@@ -28,21 +28,16 @@
 
 class SolenoidXmlParser
 {
-    public:
+public:
+    SolenoidXmlParser() = default;
+    virtual ~SolenoidXmlParser() = default;
 
-        SolenoidXmlParser() = default;
-        virtual ~SolenoidXmlParser() = default;
+    /// @brief  Parse a solenoid XML element and create a DragonSolenoid from its definition.
+    /// @return std::shared_ptr<DragonSolenoid> solenoid pointer (or nullptr if XML is ill-formed)
+    std::shared_ptr<DragonSolenoid> ParseXML(
+        std::string networkTableName,
+        pugi::xml_node solenoidNode /// <I> - xml Solenoid node
+    );
 
-
-        /// @brief  Parse a solenoid XML element and create a DragonSolenoid from its definition.
-        /// @return std::shared_ptr<DragonSolenoid> solenoid pointer (or nullptr if XML is ill-formed)
-        std::shared_ptr<DragonSolenoid> ParseXML
-        (
-            std::string         networkTableName,
-            pugi::xml_node      solenoidNode   /// <I> - xml Solenoid node
-        );
-
-    private:
+private:
 };
-
-

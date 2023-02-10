@@ -13,15 +13,15 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-//C++ Includes
+// C++ Includes
 #include <string>
 
-//FRC Includes
+// FRC Includes
 #include <networktables/NetworkTable.h>
 #include <networktables/NetworkTableEntry.h>
 #include <networktables/NetworkTableInstance.h>
 
-//Team 302 Includes
+// Team 302 Includes
 #include <utils/NetworkTableReader.h>
 #include <utils/logging/Logger.h>
 
@@ -31,13 +31,13 @@ NetworkTableReader::NetworkTableReader()
 {
 }
 
-NetworkTableReader* NetworkTableReader::GetReader()
+NetworkTableReader *NetworkTableReader::GetReader()
 {
-    	if ( m_reader == nullptr )
-	{
-		m_reader = new NetworkTableReader();
-	}
-	return m_reader;
+    if (m_reader == nullptr)
+    {
+        m_reader = new NetworkTableReader();
+    }
+    return m_reader;
 }
 
 string NetworkTableReader::GetNetworkTableString(string ntName, string ntString)
@@ -54,7 +54,6 @@ string NetworkTableReader::GetNetworkTableString(string ntName, string ntString)
         Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("NetworkTableReader"), string("GetNetorkTableString"), string("Network Table is a nullptr"));
         return string("Table is nullptr");
     }
-
 }
 
 double NetworkTableReader::GetNetworkTableDouble(string ntName, string ntDouble)
@@ -63,12 +62,12 @@ double NetworkTableReader::GetNetworkTableDouble(string ntName, string ntDouble)
     if (table != nullptr)
     {
         double value = table.get()->GetNumber(ntDouble, 0);
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("NetworkTableReader"),  string("GetNetorkTableDouble"), string("Error accessing NT value, invalid number"));
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("NetworkTableReader"), string("GetNetorkTableDouble"), string("Error accessing NT value, invalid number"));
         return value;
     }
     else
     {
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("NetworkTableReader"),  string("GetNetorkTableDouble"), string("Network Table is a nullptr"));
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("NetworkTableReader"), string("GetNetorkTableDouble"), string("Network Table is a nullptr"));
         return 0.0;
     }
 }

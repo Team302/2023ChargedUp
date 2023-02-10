@@ -33,14 +33,14 @@
 //========================================================================================================
 class RobotXmlParser
 {
-    public:
-        RobotXmlParser() = default;
-        virtual ~RobotXmlParser() = default;
+public:
+    RobotXmlParser() = default;
+    virtual ~RobotXmlParser() = default;
 
-        //================================================================================================
-        /// Method:      ParseXML
-        /// Description: Parse a robot.xml file
-        /// Returns:     void
-        //================================================================================================
-        void ParseXML();
+    //================================================================================================
+    /// Method:      ParseXML
+    /// Description: Parse a robot.xml file
+    /// Returns:     void
+    //================================================================================================
+    void ParseXML();
 };

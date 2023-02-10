@@ -30,26 +30,24 @@
 
 // Third Party Includes
 
-
 using namespace std;
 using namespace frc;
 
-//Includes
+// Includes
 #include <cmath>
 
-//Team302 includes
+// Team302 includes
 #include <auton/drivePrimitives/DriveToWall.h>
 #include <chassis/ChassisFactory.h>
 
-DriveToWall::DriveToWall() :
-	SuperDrive(),
-	m_minimumTime(0),
-	m_timeRemaining(0),
-	m_underSpeedCounts(0)
+DriveToWall::DriveToWall() : SuperDrive(),
+							 m_minimumTime(0),
+							 m_timeRemaining(0),
+							 m_underSpeedCounts(0)
 {
 }
 
-void DriveToWall::Init(PrimitiveParams* params) 
+void DriveToWall::Init(PrimitiveParams *params)
 {
 	SuperDrive::Init(params);
 	m_timeRemaining = params->GetTime();
@@ -57,22 +55,21 @@ void DriveToWall::Init(PrimitiveParams* params)
 	m_minimumTime = 0.3;
 }
 
-void DriveToWall::Run() 
+void DriveToWall::Run()
 {
-	if (m_minimumTime <= 0) 
+	if (m_minimumTime <= 0)
 	{
-		//if (abs( ChassisFactory::GetChassisFactory()->GetIChassis()->GetCurrentSpeed()) < SPEED_THRESHOLD) 
+		// if (abs( ChassisFactory::GetChassisFactory()->GetIChassis()->GetCurrentSpeed()) < SPEED_THRESHOLD)
 		//{
 		//	m_underSpeedCounts++;
-		//}
+		// }
 	}
 
 	m_minimumTime -= IPrimitive::LOOP_LENGTH;
 	m_timeRemaining -= IPrimitive::LOOP_LENGTH;
 }
 
-bool DriveToWall::IsDone() 
+bool DriveToWall::IsDone()
 {
 	return (m_underSpeedCounts >= UNDER_SPEED_COUNT_THRESHOLD) && m_timeRemaining <= 0;
 }
-

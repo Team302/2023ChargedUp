@@ -30,22 +30,21 @@
 class IChassis;
 class PrimitiveParams;
 
-class DriveHoldPosition : public IPrimitive 
+class DriveHoldPosition : public IPrimitive
 {
 public:
-	void Init(PrimitiveParams*	params) override;
+	void Init(PrimitiveParams *params) override;
 	void Run() override;
 	bool IsDone() override;
 	DriveHoldPosition();
 	virtual ~DriveHoldPosition() = default;
 
 private:
-	const float kP = 10; //50, /75
+	const float kP = 10; // 50, /75
 	const float kI = 0.0;
 	const float kD = 0.0;
 	const float kF = 0.0;
-	//Objects
+	// Objects
 	std::shared_ptr<IChassis> m_chassis;
-	double m_timeRemaining; //In seconds
+	double m_timeRemaining; // In seconds
 };
-

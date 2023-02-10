@@ -24,23 +24,21 @@
 
 // Third Party Includes
 
-//Includes
-//Team302 includes
+// Includes
+// Team302 includes
 #include <auton/drivePrimitives/SuperDrive.h>
 
 class PrimitiveParams;
 
-class DriveTime: public SuperDrive 
+class DriveTime : public SuperDrive
 {
 public:
 	DriveTime();
 	virtual ~DriveTime() = default;
-	void Init(PrimitiveParams* params) override;
+	void Init(PrimitiveParams *params) override;
 	void Run() override;
 	bool IsDone() override;
 
 private:
-	float m_timeRemaining;          //In seconds
-
+	float m_timeRemaining; // In seconds
 };
-

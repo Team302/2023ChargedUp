@@ -15,12 +15,12 @@
 //====================================================================================================================================================
 
 #pragma once
-   
+
 struct DistanceAngleCalcStruc
 {
-    int         countsPerRev;
-    double      gearRatio;
-    double      diameter;
-    double      countsPerInch;
-    double      countsPerDegree;
+    int countsPerRev;
+    double gearRatio;
+    double diameter;
+    double countsPerInch;
+    double countsPerDegree;
 };

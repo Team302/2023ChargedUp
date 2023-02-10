@@ -19,32 +19,29 @@
 #include <units/length.h>
 #include <units/velocity.h>
 
-//Team302 Includes
+// Team302 Includes
 #include <chassis/swerve/SwerveChassis.h>
 #include <chassis/swerve/driveStates/ISwerveDriveState.h>
 #include <chassis/ChassisMovement.h>
 
 class RobotDrive : public ISwerveDriveState
 {
-    public:
-        RobotDrive();
+public:
+    RobotDrive();
 
-        std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates
-        (
-            ChassisMovement& chassisMovement
-        ) override;
+    std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates(
+        ChassisMovement &chassisMovement) override;
 
-        void Init
-        (
-            ChassisMovement& chassisMovement
-        ) override;
-    protected:
-        frc::SwerveModuleState  m_flState;
-        frc::SwerveModuleState  m_frState;
-        frc::SwerveModuleState  m_blState;
-        frc::SwerveModuleState  m_brState;
+    void Init(
+        ChassisMovement &chassisMovement) override;
 
-        units::length::inch_t   m_wheelbase;
-        units::length::inch_t   m_wheeltrack;
-        units::velocity::feet_per_second_t  m_maxspeed;
+protected:
+    frc::SwerveModuleState m_flState;
+    frc::SwerveModuleState m_frState;
+    frc::SwerveModuleState m_blState;
+    frc::SwerveModuleState m_brState;
+
+    units::length::inch_t m_wheelbase;
+    units::length::inch_t m_wheeltrack;
+    units::velocity::feet_per_second_t m_maxspeed;
 };

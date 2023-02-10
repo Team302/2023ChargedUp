@@ -27,29 +27,26 @@
 using namespace std;
 using namespace ctre::phoenix::motorcontrol::can;
 
-DifferentialChassis::DifferentialChassis
-(
-    shared_ptr<IDragonMotorController>             leftMotor, 
-    shared_ptr<IDragonMotorController>             rightMotor,
-    units::meter_t                                 trackWidth,
-    units::velocity::meters_per_second_t           maxSpeed,
-    units::angular_velocity::degrees_per_second_t  maxAngSpeed,
-    units::length::inch_t                          wheelDiameter,
-    string                                         networktablename,
-    string                                         controlfilename 
-) : IChassis(),
-    m_leftMotor(leftMotor),
-    m_rightMotor(rightMotor),
-    m_maxSpeed(maxSpeed),
-    m_maxAngSpeed(maxAngSpeed),
-    m_wheelDiameter(wheelDiameter),
-    m_track(trackWidth),
-    m_kinematics(new frc::DifferentialDriveKinematics(trackWidth)),
-    //m_differentialOdometry(new frc::DifferentialDriveOdometry(frc::Rotation2d(), frc::Pose2d())),
-    m_controlFile(controlfilename),
-    m_ntName(networktablename)
+DifferentialChassis::DifferentialChassis(
+    shared_ptr<IDragonMotorController> leftMotor,
+    shared_ptr<IDragonMotorController> rightMotor,
+    units::meter_t trackWidth,
+    units::velocity::meters_per_second_t maxSpeed,
+    units::angular_velocity::degrees_per_second_t maxAngSpeed,
+    units::length::inch_t wheelDiameter,
+    string networktablename,
+    string controlfilename) : IChassis(),
+                              m_leftMotor(leftMotor),
+                              m_rightMotor(rightMotor),
+                              m_maxSpeed(maxSpeed),
+                              m_maxAngSpeed(maxAngSpeed),
+                              m_wheelDiameter(wheelDiameter),
+                              m_track(trackWidth),
+                              m_kinematics(new frc::DifferentialDriveKinematics(trackWidth)),
+                              // m_differentialOdometry(new frc::DifferentialDriveOdometry(frc::Rotation2d(), frc::Pose2d())),
+                              m_controlFile(controlfilename),
+                              m_ntName(networktablename)
 {
-
 }
 
 IChassis::CHASSIS_TYPE DifferentialChassis::GetType() const
@@ -57,7 +54,7 @@ IChassis::CHASSIS_TYPE DifferentialChassis::GetType() const
     return IChassis::CHASSIS_TYPE::DIFFERENTIAL;
 }
 
-//Moves the robot
+// Moves the robot
 void DifferentialChassis::Drive(ChassisMovement moveInfo)
 {
     auto chassisSpeeds = moveInfo.chassisSpeeds;
@@ -65,11 +62,11 @@ void DifferentialChassis::Drive(ChassisMovement moveInfo)
     wheels.Desaturate(m_maxSpeed);
     if (m_leftMotor.get() != nullptr)
     {
-        m_leftMotor.get()->Set(wheels.left/m_maxSpeed);
+        m_leftMotor.get()->Set(wheels.left / m_maxSpeed);
     }
     if (m_rightMotor.get() != nullptr)
     {
-        m_rightMotor.get()->Set(wheels.right/m_maxSpeed);
+        m_rightMotor.get()->Set(wheels.right / m_maxSpeed);
     }
 }
 void DifferentialChassis::Drive()
@@ -77,25 +74,21 @@ void DifferentialChassis::Drive()
     // No-op
 }
 
-void DifferentialChassis::SetTargetHeading(units::angle::degree_t targetYaw) 
+void DifferentialChassis::SetTargetHeading(units::angle::degree_t targetYaw)
 {
-    
 }
-
 
 frc::Pose2d DifferentialChassis::GetPose() const
 {
     return frc::Pose2d();
 }
 
-void DifferentialChassis::ResetPose(const frc::Pose2d& pose)
+void DifferentialChassis::ResetPose(const frc::Pose2d &pose)
 {
-
 }
 
 void DifferentialChassis::UpdateOdometry()
 {
-    
 }
 
 units::velocity::meters_per_second_t DifferentialChassis::GetMaxSpeed() const
@@ -111,7 +104,7 @@ units::angular_velocity::radians_per_second_t DifferentialChassis::GetMaxAngular
 units::length::inch_t DifferentialChassis::GetWheelDiameter() const
 {
     return units::length::inch_t(4);
-}    
+}
 
 units::length::inch_t DifferentialChassis::GetTrack() const
 {
@@ -129,16 +122,15 @@ void DifferentialChassis::SetEncodersToZero()
     if (m_leftMotor.get() != nullptr)
     {
         auto motor = m_leftMotor.get()->GetSpeedController();
-        auto fx = dynamic_cast<WPI_TalonFX*>(motor.get());
+        auto fx = dynamic_cast<WPI_TalonFX *>(motor.get());
         auto driveMotorSensors = fx->GetSensorCollection();
         driveMotorSensors.SetIntegratedSensorPosition(0, 0);
     }
     if (m_rightMotor.get() != nullptr)
     {
         auto motor = m_rightMotor.get()->GetSpeedController();
-        auto fx = dynamic_cast<WPI_TalonFX*>(motor.get());
+        auto fx = dynamic_cast<WPI_TalonFX *>(motor.get());
         auto driveMotorSensors = fx->GetSensorCollection();
         driveMotorSensors.SetIntegratedSensorPosition(0, 0);
     }
 }
-

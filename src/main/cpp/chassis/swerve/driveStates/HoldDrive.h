@@ -15,30 +15,27 @@
 
 #pragma once
 
-//C++ Includes
+// C++ Includes
 #include <array>
 
-//Team302 Includes
+// Team302 Includes
 #include <chassis/swerve/driveStates/ISwerveDriveState.h>
 
 class HoldDrive : public ISwerveDriveState
 {
-    public:
-        HoldDrive();
-        ~HoldDrive();
+public:
+    HoldDrive();
+    ~HoldDrive();
 
-        std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates
-        (
-            ChassisMovement& chassisMovement
-        ) override;
+    std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates(
+        ChassisMovement &chassisMovement) override;
 
-        void Init
-        (
-            ChassisMovement& chassisMovement
-        ) override;
-    private:
-        frc::SwerveModuleState* m_flState = new frc::SwerveModuleState();
-        frc::SwerveModuleState* m_frState = new frc::SwerveModuleState();
-        frc::SwerveModuleState* m_blState = new frc::SwerveModuleState();
-        frc::SwerveModuleState* m_brState = new frc::SwerveModuleState();
+    void Init(
+        ChassisMovement &chassisMovement) override;
+
+private:
+    frc::SwerveModuleState *m_flState = new frc::SwerveModuleState();
+    frc::SwerveModuleState *m_frState = new frc::SwerveModuleState();
+    frc::SwerveModuleState *m_blState = new frc::SwerveModuleState();
+    frc::SwerveModuleState *m_brState = new frc::SwerveModuleState();
 };

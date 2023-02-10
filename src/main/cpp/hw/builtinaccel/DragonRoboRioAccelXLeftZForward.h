@@ -13,26 +13,23 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
-   
+
 #pragma once
 
 #include <frc/BuiltInAccelerometer.h>
 
 class DragonRoboRioAccelXUpZLeft : public frc::BuiltInAccelerometer
 {
-	public:
-		DragonRoboRioAccelXUpZLeft() = default;
-		virtual ~DragonRoboRioAccelXUpZLeft() = default;
+public:
+	DragonRoboRioAccelXUpZLeft() = default;
+	virtual ~DragonRoboRioAccelXUpZLeft() = default;
 
-		 /// @return The acceleration of the roboRIO along the robot X axis (forward) in g-forces
-		inline double GetX() override {return -1.0 * BuiltInAccelerometer::GetY();}
+	/// @return The acceleration of the roboRIO along the robot X axis (forward) in g-forces
+	inline double GetX() override { return -1.0 * BuiltInAccelerometer::GetY(); }
 
-		 /// @return The acceleration of the roboRIO along the robot Y axis (left) in g-forces
-		inline double GetY() override {return BuiltInAccelerometer::GetZ();}
+	/// @return The acceleration of the roboRIO along the robot Y axis (left) in g-forces
+	inline double GetY() override { return BuiltInAccelerometer::GetZ(); }
 
-		 /// @return The acceleration of the roboRIO along the robot Z axis (up) in g-forces
-		inline double GetZ() override {return BuiltInAccelerometer::GetX();}
+	/// @return The acceleration of the roboRIO along the robot Z axis (up) in g-forces
+	inline double GetZ() override { return BuiltInAccelerometer::GetX(); }
 };
-
-
-

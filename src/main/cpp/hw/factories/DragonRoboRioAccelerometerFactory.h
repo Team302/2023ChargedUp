@@ -22,31 +22,25 @@
 // Team 302 includes
 #include <hw/builtinaccel/RoboRioOrientation.h>
 
-
 // Forward declares
 class DragonRoboRioAccelerometerFactory
 {
-	public:
+public:
+	static DragonRoboRioAccelerometerFactory *GetInstance();
 
-		static DragonRoboRioAccelerometerFactory* GetInstance();
+	/// @brief      Create the Builtin Accelerometer
+	/// @returns 	frc::BuiltInAccelerometer*
+	frc::BuiltInAccelerometer *CreateAccelerometer(
+		RoboRioOrientation::ROBORIO_ORIENTATION orientation);
 
+	/// @brief      Get the Builtin Accelerometer
+	/// @returns 	frc::BuiltInAccelerometer*
+	inline frc::BuiltInAccelerometer *GetAccelerometer() { return m_accel; }
 
-		/// @brief      Create the Builtin Accelerometer
-		/// @returns 	frc::BuiltInAccelerometer* 
-        frc::BuiltInAccelerometer* CreateAccelerometer
-		(
-			RoboRioOrientation::ROBORIO_ORIENTATION		orientation
-		);
+private:
+	DragonRoboRioAccelerometerFactory();
+	~DragonRoboRioAccelerometerFactory();
 
-		/// @brief      Get the Builtin Accelerometer
-		/// @returns 	frc::BuiltInAccelerometer* 
-        inline frc::BuiltInAccelerometer* GetAccelerometer() {return m_accel;}
-
-	private:
-		DragonRoboRioAccelerometerFactory();
-		~DragonRoboRioAccelerometerFactory();
-
-		static DragonRoboRioAccelerometerFactory*	m_factory;
-        frc::BuiltInAccelerometer*          		m_accel;
-			
+	static DragonRoboRioAccelerometerFactory *m_factory;
+	frc::BuiltInAccelerometer *m_accel;
 };

@@ -42,30 +42,29 @@ class LiftStateMgr;
 
 class CyclePrimitives : public State
 {
-	public:
-		CyclePrimitives();
-		virtual ~CyclePrimitives() = default;
+public:
+	CyclePrimitives();
+	virtual ~CyclePrimitives() = default;
 
-		void Init() override;
-		void Run() override;
-		void Exit() override;
-	 	bool AtTarget() const override;
+	void Init() override;
+	void Run() override;
+	void Exit() override;
+	bool AtTarget() const override;
 
-		AutonSelector* GetAutonSelector() const {return m_autonSelector;};
+	AutonSelector *GetAutonSelector() const { return m_autonSelector; };
 
-	protected:
-		void GetNextPrim();
-		void RunDriveStop();
+protected:
+	void GetNextPrim();
+	void RunDriveStop();
 
-	private:
-		std::vector<PrimitiveParams*> 	m_primParams;
-		int 							m_currentPrimSlot;
-		IPrimitive*						m_currentPrim;
-		PrimitiveFactory* 				m_primFactory;
-		IPrimitive* 					m_DriveStop;
-		AutonSelector* 					m_autonSelector;
-		std::unique_ptr<frc::Timer>     m_timer;
-		double                          m_maxTime;
-		bool							m_isDone;
+private:
+	std::vector<PrimitiveParams *> m_primParams;
+	int m_currentPrimSlot;
+	IPrimitive *m_currentPrim;
+	PrimitiveFactory *m_primFactory;
+	IPrimitive *m_DriveStop;
+	AutonSelector *m_autonSelector;
+	std::unique_ptr<frc::Timer> m_timer;
+	double m_maxTime;
+	bool m_isDone;
 };
-

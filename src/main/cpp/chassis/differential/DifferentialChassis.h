@@ -14,7 +14,6 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-
 #pragma once
 #include <string>
 
@@ -28,59 +27,50 @@
 #include <frc/kinematics/DifferentialDriveOdometry.h>
 #include <frc/drive/DifferentialDrive.h>
 
-class DifferentialChassis : public IChassis {
+class DifferentialChassis : public IChassis
+{
 
-    public:
-        DifferentialChassis(std::shared_ptr<IDragonMotorController>         leftMotor, 
-                            std::shared_ptr<IDragonMotorController>         rightMotor,
-                            units::meter_t                                  trackWidth,
-                            units::velocity::meters_per_second_t            maxSpeed,
-                            units::angular_velocity::degrees_per_second_t   maxAngSpeed,
-                            units::length::inch_t                           wheelDiameter,
-                            std::string                                     networktablename,
-                            std::string                                     controlfilename);
-        DifferentialChassis() = delete;
-        virtual ~DifferentialChassis() = default;
+public:
+    DifferentialChassis(std::shared_ptr<IDragonMotorController> leftMotor,
+                        std::shared_ptr<IDragonMotorController> rightMotor,
+                        units::meter_t trackWidth,
+                        units::velocity::meters_per_second_t maxSpeed,
+                        units::angular_velocity::degrees_per_second_t maxAngSpeed,
+                        units::length::inch_t wheelDiameter,
+                        std::string networktablename,
+                        std::string controlfilename);
+    DifferentialChassis() = delete;
+    virtual ~DifferentialChassis() = default;
 
+    IChassis::CHASSIS_TYPE GetType() const override;
+    void Drive(
+        ChassisMovement chassisSpeeds) override;
+    void Drive() override;
+    void SetTargetHeading(units::angle::degree_t targetYaw) override;
 
-        IChassis::CHASSIS_TYPE GetType() const override;
-        void Drive
-        (
-            ChassisMovement            chassisSpeeds
-        ) override;
-        void Drive() override;
-        void SetTargetHeading(units::angle::degree_t targetYaw) override;
+    inline void Initialize() override{};
+    frc::Pose2d GetPose() const override;
+    void ResetPose(
+        const frc::Pose2d &pose) override;
+    void UpdateOdometry() override;
+    units::velocity::meters_per_second_t GetMaxSpeed() const override;
+    units::angular_velocity::radians_per_second_t GetMaxAngularSpeed() const override;
+    units::length::inch_t GetWheelDiameter() const override;
+    units::length::inch_t GetTrack() const override;
+    units::angle::degree_t GetYaw() const override;
+    void SetEncodersToZero() override;
 
-        inline void Initialize() override {};
-        frc::Pose2d GetPose() const override;
-        void ResetPose
-        (
-            const frc::Pose2d&      pose
-        ) override;
-        void UpdateOdometry() override;
-        units::velocity::meters_per_second_t GetMaxSpeed() const override;
-        units::angular_velocity::radians_per_second_t GetMaxAngularSpeed() const override;
-        units::length::inch_t GetWheelDiameter() const override ;
-        units::length::inch_t GetTrack() const override;
-        units::angle::degree_t GetYaw() const override;
-        void SetEncodersToZero() override;
+private:
+    std::shared_ptr<IDragonMotorController> m_leftMotor;
+    std::shared_ptr<IDragonMotorController> m_rightMotor;
 
+    units::velocity::meters_per_second_t m_maxSpeed;
+    units::angular_velocity::degrees_per_second_t m_maxAngSpeed;
+    units::length::inch_t m_wheelDiameter;
+    units::length::inch_t m_track;
 
-
-
-
-    private:
-        std::shared_ptr<IDragonMotorController>         m_leftMotor;
-        std::shared_ptr<IDragonMotorController>         m_rightMotor;
-        
-        units::velocity::meters_per_second_t            m_maxSpeed;
-        units::angular_velocity::degrees_per_second_t   m_maxAngSpeed;
-        units::length::inch_t                           m_wheelDiameter;
-        units::length::inch_t                           m_track;
-
-        frc::DifferentialDriveKinematics*               m_kinematics;
-        //frc::DifferentialDriveOdometry*                 m_differentialOdometry;
-        std::string                                     m_controlFile;
-        std::string                                     m_ntName;
-
+    frc::DifferentialDriveKinematics *m_kinematics;
+    // frc::DifferentialDriveOdometry*                 m_differentialOdometry;
+    std::string m_controlFile;
+    std::string m_ntName;
 };

@@ -26,7 +26,6 @@
 // Third Party Includes
 #include <units/velocity.h>
 
-
 namespace frc
 {
     struct ChassisSpeeds;
@@ -34,20 +33,12 @@ namespace frc
 }
 class DragonPigeon;
 
-
 class ISwerveChassisModuleStates
 {
-	public:
+public:
+    virtual wpi::array<frc::SwerveModuleState, 4> CalcModuleStates(
+        frc::ChassisSpeeds speeds) = 0;
 
-    virtual wpi::array<frc::SwerveModuleState, 4> CalcModuleStates
-    (
-        frc::ChassisSpeeds                      speeds
-    ) = 0;
-
-
-	ISwerveChassisModuleStates() = default;
-	virtual ~ISwerveChassisModuleStates() = default;
+    ISwerveChassisModuleStates() = default;
+    virtual ~ISwerveChassisModuleStates() = default;
 };
-
-
-

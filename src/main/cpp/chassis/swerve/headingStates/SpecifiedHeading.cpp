@@ -13,14 +13,13 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-//Team302 Includes
+// Team302 Includes
 #include <chassis/ChassisOptionEnums.h>
 #include <chassis/swerve/headingStates/SpecifiedHeading.h>
 
 SpecifiedHeading::SpecifiedHeading() : ISwerveDriveOrientation(ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE),
-    m_targetAngle(units::angle::degree_t(0.0))
+                                       m_targetAngle(units::angle::degree_t(0.0))
 {
-
 }
 
 void SpecifiedHeading::SetTargetHeading(units::angle::degree_t targetAngle)
@@ -28,7 +27,7 @@ void SpecifiedHeading::SetTargetHeading(units::angle::degree_t targetAngle)
     m_targetAngle = targetAngle;
 }
 
-void SpecifiedHeading::UpdateChassisSpeeds(ChassisMovement& chassisMovement)
+void SpecifiedHeading::UpdateChassisSpeeds(ChassisMovement &chassisMovement)
 {
     chassisMovement.chassisSpeeds.omega -= CalcHeadingCorrection(m_targetAngle, m_kPMaintainHeadingControl);
 }

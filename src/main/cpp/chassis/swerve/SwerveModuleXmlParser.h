@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+// Copyright 2022 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -28,26 +28,23 @@
 // Third Party includes
 #include <pugixml/pugixml.hpp>
 
-
 /// @class SwerveModuleXmlParser
-/// @brief Create a chassis from an XML definition that includes the chassis type, wheel diameter, 
+/// @brief Create a chassis from an XML definition that includes the chassis type, wheel diameter,
 ///        wheel based (front to back distance) and track (side to side distance on axle).
 class SwerveModuleXmlParser
 {
-	public:
-		/// @brief construct a SwerveModuleXmlParser object
-		SwerveModuleXmlParser() = default;
+public:
+	/// @brief construct a SwerveModuleXmlParser object
+	SwerveModuleXmlParser() = default;
 
-		/// @brief destroy a SwerveModuleXmlParser object and free the memory
-		virtual ~SwerveModuleXmlParser() = default;
+	/// @brief destroy a SwerveModuleXmlParser object and free the memory
+	virtual ~SwerveModuleXmlParser() = default;
 
-    	/// @brief  Parse the chassie element (and it children).  When this is done a SwerveModule object exists.
-		///		   It can be retrieved from the factory.
-		/// @param [in]  pugi::xml_node the chassis element in the XML document
-    	/// @return std::shared_ptr<SwerveModule> 
-		std::shared_ptr<SwerveModule>  ParseXML
-		(
-			std::string			networkTableName,
-			pugi::xml_node      SwerveModuleNode
-		);
+	/// @brief  Parse the chassie element (and it children).  When this is done a SwerveModule object exists.
+	///		   It can be retrieved from the factory.
+	/// @param [in]  pugi::xml_node the chassis element in the XML document
+	/// @return std::shared_ptr<SwerveModule>
+	std::shared_ptr<SwerveModule> ParseXML(
+		std::string networkTableName,
+		pugi::xml_node SwerveModuleNode);
 };

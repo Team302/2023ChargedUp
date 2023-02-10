@@ -13,12 +13,12 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-//C++ Includes
+// C++ Includes
 
-//FRC Includes
+// FRC Includes
 #include <frc/trajectory/TrajectoryGenerator.h>
 
-//Team 302 Includes
+// Team 302 Includes
 #include <chassis/swerve/driveStates/DragonTrajectoryGenerator.h>
 #include <chassis/ChassisFactory.h>
 #include <utils/WaypointXmlParser.h>
@@ -28,20 +28,19 @@
 #include <utils/DistanceBetweenPoses.h>
 
 DragonTrajectoryGenerator::DragonTrajectoryGenerator(units::meters_per_second_t maxVelocity,
-                                        units::meters_per_second_squared_t maxAcceleration) : 
-                                        m_config(maxVelocity, maxAcceleration),
-                                        m_fmsData(FMSData::GetInstance())
+                                                     units::meters_per_second_squared_t maxAcceleration) : m_config(maxVelocity, maxAcceleration),
+                                                                                                           m_fmsData(FMSData::GetInstance())
 {
-    //create map with enum and points parsed from xml
+    // create map with enum and points parsed from xml
     WaypointXmlParser::GetInstance()->ParseWaypoints();
     std::vector<Waypoint2d> parsedWaypoints = WaypointXmlParser::GetInstance()->GetWaypoints();
-    
-    for(Waypoint2d waypoint: parsedWaypoints)
+
+    for (Waypoint2d waypoint : parsedWaypoints)
     {
         m_blueWaypoints.emplace(waypoint.waypointIdentifier, waypoint.bluePose);
         m_redWaypoints.emplace(waypoint.waypointIdentifier, waypoint.redPose);
     }
-}                                        
+}
 
 frc::Trajectory DragonTrajectoryGenerator::GenerateTrajectory(frc::Pose2d currentPose, TARGET_POSITION endPoint)
 {
@@ -49,22 +48,22 @@ frc::Trajectory DragonTrajectoryGenerator::GenerateTrajectory(frc::Pose2d curren
 
     WAYPOINTS endWaypoint;
 
-    //check if we are going to grids
-    if(endPoint != TARGET_POSITION::HUMAN_PLAYER_SUBSTATION)
+    // check if we are going to grids
+    if (endPoint != TARGET_POSITION::HUMAN_PLAYER_SUBSTATION)
     {
         double distToWallGrid = 0.0;
         double distToCoopGrid = 0.0;
         double distToHPGrid = 0.0;
         bool behindChargingPad = false;
 
-        if(m_fmsData->GetAllianceColor() == frc::DriverStation::Alliance::kBlue)
+        if (m_fmsData->GetAllianceColor() == frc::DriverStation::Alliance::kBlue)
         {
             distToWallGrid = DistanceBetweenPoses::GetDeltaBetweenPoses(currentPose, m_blueWaypoints[WAYPOINTS::GRID_WALL_COL_TWO]);
             distToCoopGrid = DistanceBetweenPoses::GetDeltaBetweenPoses(currentPose, m_blueWaypoints[WAYPOINTS::GRID_COOP_COL_TWO]);
             distToHPGrid = DistanceBetweenPoses::GetDeltaBetweenPoses(currentPose, m_blueWaypoints[WAYPOINTS::GRID_HP_COL_TWO]);
             behindChargingPad = currentPose.X() > m_blueWaypoints[WAYPOINTS::GRID_WALL_INTERMEDIATE].X() ? true : false;
         }
-        else if(m_fmsData->GetAllianceColor() == frc::DriverStation::Alliance::kRed)
+        else if (m_fmsData->GetAllianceColor() == frc::DriverStation::Alliance::kRed)
         {
             distToWallGrid = DistanceBetweenPoses::GetDeltaBetweenPoses(currentPose, m_redWaypoints[WAYPOINTS::GRID_WALL_COL_TWO]);
             distToCoopGrid = DistanceBetweenPoses::GetDeltaBetweenPoses(currentPose, m_redWaypoints[WAYPOINTS::GRID_COOP_COL_TWO]);
@@ -72,95 +71,94 @@ frc::Trajectory DragonTrajectoryGenerator::GenerateTrajectory(frc::Pose2d curren
             behindChargingPad = currentPose.X() < m_redWaypoints[WAYPOINTS::GRID_WALL_INTERMEDIATE].X() ? true : false;
         }
 
-        if(distToWallGrid < distToCoopGrid && distToWallGrid < distToHPGrid) //going to wall grid
+        if (distToWallGrid < distToCoopGrid && distToWallGrid < distToHPGrid) // going to wall grid
         {
             switch (endPoint)
             {
-                case TARGET_POSITION::COLUMN_ONE:
-                    endWaypoint = WAYPOINTS::GRID_WALL_COL_ONE;
-                    break;
-                case TARGET_POSITION::COLUMN_TWO:
-                    endWaypoint = WAYPOINTS::GRID_WALL_COL_TWO;
-                    break;
-                case TARGET_POSITION::COLUMN_THREE:
-                    endWaypoint = WAYPOINTS::GRID_WALL_COL_THREE;
-                    break;
-                default:
-                    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("TrajectoryGenerator"), std::string("Grid Wall"), std::string("Could not find target position"));
-                    break;
+            case TARGET_POSITION::COLUMN_ONE:
+                endWaypoint = WAYPOINTS::GRID_WALL_COL_ONE;
+                break;
+            case TARGET_POSITION::COLUMN_TWO:
+                endWaypoint = WAYPOINTS::GRID_WALL_COL_TWO;
+                break;
+            case TARGET_POSITION::COLUMN_THREE:
+                endWaypoint = WAYPOINTS::GRID_WALL_COL_THREE;
+                break;
+            default:
+                Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("TrajectoryGenerator"), std::string("Grid Wall"), std::string("Could not find target position"));
+                break;
             }
 
-            if(behindChargingPad)
+            if (behindChargingPad)
             {
-                intermediatePoints.emplace_back(frc::Translation2d{m_blueWaypoints[WAYPOINTS::GRID_WALL_INTERMEDIATE].X(), 
-                                                m_blueWaypoints[WAYPOINTS::GRID_WALL_INTERMEDIATE].Y()});
+                intermediatePoints.emplace_back(frc::Translation2d{m_blueWaypoints[WAYPOINTS::GRID_WALL_INTERMEDIATE].X(),
+                                                                   m_blueWaypoints[WAYPOINTS::GRID_WALL_INTERMEDIATE].Y()});
             }
         }
-        else if(distToCoopGrid < distToWallGrid && distToCoopGrid < distToHPGrid)
+        else if (distToCoopGrid < distToWallGrid && distToCoopGrid < distToHPGrid)
         {
             switch (endPoint)
             {
-                case TARGET_POSITION::COLUMN_ONE:
-                    endWaypoint = WAYPOINTS::GRID_COOP_COL_ONE;
-                    break;
-                case TARGET_POSITION::COLUMN_TWO:
-                    endWaypoint = WAYPOINTS::GRID_COOP_COL_TWO;
-                    break;
-                case TARGET_POSITION::COLUMN_THREE:
-                    endWaypoint = WAYPOINTS::GRID_COOP_COL_THREE;
-                    break;
-                default:
-                    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("TrajectoryGenerator"), std::string("Grid Coop"), std::string("Could not find target position"));
-                    break;
+            case TARGET_POSITION::COLUMN_ONE:
+                endWaypoint = WAYPOINTS::GRID_COOP_COL_ONE;
+                break;
+            case TARGET_POSITION::COLUMN_TWO:
+                endWaypoint = WAYPOINTS::GRID_COOP_COL_TWO;
+                break;
+            case TARGET_POSITION::COLUMN_THREE:
+                endWaypoint = WAYPOINTS::GRID_COOP_COL_THREE;
+                break;
+            default:
+                Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("TrajectoryGenerator"), std::string("Grid Coop"), std::string("Could not find target position"));
+                break;
             }
 
-            if(behindChargingPad)
+            if (behindChargingPad)
             {
-                intermediatePoints.emplace_back(frc::Translation2d{m_blueWaypoints[WAYPOINTS::GRID_COOP_INTERMEDIATE].X(), 
-                                                m_blueWaypoints[WAYPOINTS::GRID_COOP_INTERMEDIATE].Y()});
+                intermediatePoints.emplace_back(frc::Translation2d{m_blueWaypoints[WAYPOINTS::GRID_COOP_INTERMEDIATE].X(),
+                                                                   m_blueWaypoints[WAYPOINTS::GRID_COOP_INTERMEDIATE].Y()});
             }
         }
         else
         {
             switch (endPoint)
             {
-                case TARGET_POSITION::COLUMN_ONE:
-                    endWaypoint = WAYPOINTS::GRID_HP_COL_ONE;
-                    break;
-                case TARGET_POSITION::COLUMN_TWO:
-                    endWaypoint = WAYPOINTS::GRID_HP_COL_TWO;
-                    break;
-                case TARGET_POSITION::COLUMN_THREE:
-                    endWaypoint = WAYPOINTS::GRID_HP_COL_THREE;
-                    break;
-                default:
-                    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("TrajectoryGenerator"), std::string("Grid HP"), std::string("Could not find target position"));
-                    break;
+            case TARGET_POSITION::COLUMN_ONE:
+                endWaypoint = WAYPOINTS::GRID_HP_COL_ONE;
+                break;
+            case TARGET_POSITION::COLUMN_TWO:
+                endWaypoint = WAYPOINTS::GRID_HP_COL_TWO;
+                break;
+            case TARGET_POSITION::COLUMN_THREE:
+                endWaypoint = WAYPOINTS::GRID_HP_COL_THREE;
+                break;
+            default:
+                Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("TrajectoryGenerator"), std::string("Grid HP"), std::string("Could not find target position"));
+                break;
             }
 
-            if(behindChargingPad)
+            if (behindChargingPad)
             {
-                intermediatePoints.emplace_back(frc::Translation2d{m_blueWaypoints[WAYPOINTS::GRID_HP_INTERMEDIATE].X(), 
-                                                m_blueWaypoints[WAYPOINTS::GRID_HP_INTERMEDIATE].Y()});
+                intermediatePoints.emplace_back(frc::Translation2d{m_blueWaypoints[WAYPOINTS::GRID_HP_INTERMEDIATE].X(),
+                                                                   m_blueWaypoints[WAYPOINTS::GRID_HP_INTERMEDIATE].Y()});
             }
         }
     }
-    else //we are going to human player substation
+    else // we are going to human player substation
     {
-        
     }
 
     double distanceToFinalPoint = 0.0;
 
     frc::Trajectory resultingTrajectory;
 
-    //if distance of the points is less that .1m away then return an empty trajectory
-    if(m_fmsData->GetAllianceColor() == frc::DriverStation::Alliance::kBlue)
+    // if distance of the points is less that .1m away then return an empty trajectory
+    if (m_fmsData->GetAllianceColor() == frc::DriverStation::Alliance::kBlue)
     {
         resultingTrajectory = frc::TrajectoryGenerator::GenerateTrajectory(currentPose, intermediatePoints, m_blueWaypoints[endWaypoint], m_config);
         distanceToFinalPoint = DistanceBetweenPoses::GetDeltaBetweenPoses(currentPose, m_blueWaypoints[endWaypoint]);
     }
-    else if(m_fmsData->GetAllianceColor() == frc::DriverStation::Alliance::kRed)
+    else if (m_fmsData->GetAllianceColor() == frc::DriverStation::Alliance::kRed)
     {
         resultingTrajectory = frc::TrajectoryGenerator::GenerateTrajectory(currentPose, intermediatePoints, m_redWaypoints[endWaypoint], m_config);
         distanceToFinalPoint = DistanceBetweenPoses::GetDeltaBetweenPoses(currentPose, m_redWaypoints[endWaypoint]);
@@ -168,7 +166,7 @@ frc::Trajectory DragonTrajectoryGenerator::GenerateTrajectory(frc::Pose2d curren
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("TrajectoryGenerator"), std::string("DistToFinalPoint"), std::to_string(distanceToFinalPoint));
 
-    if(distanceToFinalPoint > 0.2)
+    if (distanceToFinalPoint > 0.2)
     {
         return resultingTrajectory;
     }
@@ -176,5 +174,4 @@ frc::Trajectory DragonTrajectoryGenerator::GenerateTrajectory(frc::Pose2d curren
     {
         return frc::Trajectory();
     }
-
 }

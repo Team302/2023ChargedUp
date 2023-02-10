@@ -36,15 +36,13 @@
 //========================================================================================================
 class StateDataXmlParser
 {
-    public:
-        StateDataXmlParser() = default;
-        virtual ~StateDataXmlParser() = default;
+public:
+    StateDataXmlParser() = default;
+    virtual ~StateDataXmlParser() = default;
 
-        /// @brief      Parse a mechanismState.xml file
-        /// @param [in] MechanismTypes::MECHANISM_TYPE  - mechanism that the states are for
-        /// @return     state data
-        std::vector<MechanismTargetData*> ParseXML
-        (
-            MechanismTypes::MECHANISM_TYPE mechanism
-        );
+    /// @brief      Parse a mechanismState.xml file
+    /// @param [in] MechanismTypes::MECHANISM_TYPE  - mechanism that the states are for
+    /// @return     state data
+    std::vector<MechanismTargetData *> ParseXML(
+        MechanismTypes::MECHANISM_TYPE mechanism);
 };

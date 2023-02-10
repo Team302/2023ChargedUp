@@ -21,17 +21,17 @@ Point2d::Point2d()
     Y = units::meter_t(0.0);
 }
 
-Point2d Point2d::operator+(const Point2d& other)
+Point2d Point2d::operator+(const Point2d &other)
 {
-    return Point2d( X + other.X, Y + other.Y);
+    return Point2d(X + other.X, Y + other.Y);
 }
 
-Point2d Point2d::operator-(const Point2d& other)
+Point2d Point2d::operator-(const Point2d &other)
 {
-    return Point2d( X - other.X, Y - other.Y);
+    return Point2d(X - other.X, Y - other.Y);
 }
 
-bool Point2d::operator==(const Point2d& other)
+bool Point2d::operator==(const Point2d &other)
 {
     return X == other.X && Y == other.Y;
 }

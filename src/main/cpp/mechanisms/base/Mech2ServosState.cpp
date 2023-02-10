@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-/// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+/// Copyright 2022 Lake Orion Robotics FIRST Team 302
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 /// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -32,30 +32,27 @@ using namespace std;
 
 /// @class Mech2ServosState
 /// @brief information about the control (open loop, closed loop position, closed loop velocity, etc.) for a mechanism state
-Mech2ServosState::Mech2ServosState
-(
-    Mech2Servos*                    mechanism,
-    string                          stateName,
-    int                             stateId,
-    double                          target,
-    double                          target2
-) : State(stateName, stateId),
-    m_mechanism(mechanism),
-    m_target(target),
-    m_target2(target2)
+Mech2ServosState::Mech2ServosState(
+    Mech2Servos *mechanism,
+    string stateName,
+    int stateId,
+    double target,
+    double target2) : State(stateName, stateId),
+                      m_mechanism(mechanism),
+                      m_target(target),
+                      m_target2(target2)
 {
-    if ( mechanism == nullptr )
+    if (mechanism == nullptr)
     {
         Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("Mech2Servos"), ("Mech2ServosState::Mech2ServosState"), string("no mechanism"));
-    }    
+    }
 }
 
 void Mech2ServosState::Init()
 {
 }
 
-
-void Mech2ServosState::Run()           
+void Mech2ServosState::Run()
 {
     if (m_mechanism != nullptr)
     {
@@ -64,7 +61,7 @@ void Mech2ServosState::Run()
     }
 }
 
-void Mech2ServosState::Exit() 
+void Mech2ServosState::Exit()
 {
 }
 

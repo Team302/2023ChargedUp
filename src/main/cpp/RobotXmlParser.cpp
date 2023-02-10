@@ -56,7 +56,6 @@ using namespace frc;
 using namespace pugi;
 using namespace std;
 
-
 //-----------------------------------------------------------------------
 // Method:      ParseXML
 // Description: Parse a robot.xml file
@@ -65,12 +64,12 @@ using namespace std;
 void RobotXmlParser::ParseXML()
 {
     // set the file to parse
-	auto deployDir = frc::filesystem::GetDeployDirectory();
+    auto deployDir = frc::filesystem::GetDeployDirectory();
     string filename = deployDir + string("/robot.xml");
 
     try
     {
-       // load the xml file into memory (parse it)
+        // load the xml file into memory (parse it)
         xml_document doc;
         xml_parse_result result = doc.load_file(filename.c_str());
 
@@ -113,15 +112,15 @@ void RobotXmlParser::ParseXML()
                     {
                         pdpXML.get()->ParseXML(child);
                     }
-                    else if ( strcmp(child.name(), "pigeon") == 0 )
+                    else if (strcmp(child.name(), "pigeon") == 0)
                     {
-                        pigeonXML.get()->ParseXML( child);
+                        pigeonXML.get()->ParseXML(child);
                     }
-                    else if ( strcmp(child.name(), "limelight") == 0 )
+                    else if (strcmp(child.name(), "limelight") == 0)
                     {
-                        limelightXML.get()->ParseXML( child);
+                        limelightXML.get()->ParseXML(child);
                     }
-                    else if ( strcmp(child.name(), "led") == 0 )
+                    else if (strcmp(child.name(), "led") == 0)
                     {
                         ledXML.get()->ParseXML(child);
                     }
@@ -129,7 +128,7 @@ void RobotXmlParser::ParseXML()
                     {
                         string msg = "unknown child ";
                         msg += child.name();
-                        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("RobotXmlParser"), string("ParseXML"), msg );
+                        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("RobotXmlParser"), string("ParseXML"), msg);
                     }
                 }
             }
@@ -139,24 +138,24 @@ void RobotXmlParser::ParseXML()
             string msg = "XML [";
             msg += filename;
             msg += "] parsed with errors, attr value: [";
-            msg += doc.child( "prototype" ).attribute( "attr" ).value();
+            msg += doc.child("prototype").attribute("attr").value();
             msg += "]";
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("RobotXmlParser"), string("ParseXML (1) "), msg );
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("RobotXmlParser"), string("ParseXML (1) "), msg);
 
             msg = "Error description: ";
             msg += result.description();
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("RobotXmlParser"), string("ParseXML (2) "), msg );
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("RobotXmlParser"), string("ParseXML (2) "), msg);
 
             msg = "Error offset: ";
             msg += result.offset;
             msg += " error at ...";
             msg += filename;
             msg += result.offset;
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("RobotXmlParser"), string("ParseXML (3) "), msg );
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("RobotXmlParser"), string("ParseXML (3) "), msg);
         }
     }
-    catch(const std::exception& e)
+    catch (const std::exception &e)
     {
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("RobotXmlParser"), string("ParseXML"), string("Error thrown while parsing robot.xml") );
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("RobotXmlParser"), string("ParseXML"), string("Error thrown while parsing robot.xml"));
     }
 }
