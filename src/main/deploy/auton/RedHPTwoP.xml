@@ -9,39 +9,46 @@
                heading="0"
                time="2.0"
                />
-    <!--drive to cube-->
+    <!--drive to gamepiece-->
     <primitive id="DRIVE_PATH"
                pathname="RedHP1.wpilib.json"
                headingOption="SPECIFIED_ANGLE"
                heading="0"
                time="1.0"
                />
-        <!--drive to cube and turn-->
+    <!--drive to gamepiece and turn-->
     <primitive id="DRIVE_PATH"
                pathname="RedHP1-0.wpilib.json"
                headingOption="SPECIFIED_ANGLE"
                heading="179.5"
                time="3.0"
                />
-    <!--pick up cube-->
+    <!--pick up gamepiece-->
     <primitive id="DO_NOTHING"
                headingOption="SPECIFIED_ANGLE"
                heading="0"
                time="2.0"
                />
-    <!--drive to GRID_WALL_COL_TWO-->
+    <!--drive to scoring station-->
     <primitive id="DRIVE_PATH"
                pathname="RedHP2.wpilib.json"
                headingOption="SPECIFIED_ANGLE"
                heading="0"
                time="3.0"
                />
-            <!--vison takes robot to correct scoring station-->
+    <!--vison takes robot to correct scoring station-->
+    <!--score gamepiece-->
     <primitive id="DO_NOTHING"
                headingOption="SPECIFIED_ANGLE"
                heading="0"
                time="2.0"
                />
     <!--drive to charing station-->
+    <!--<primitive id="DRIVE_PATH"
+               pathname="RedHP5.wpilib.json"
+               headingOption="SPECIFIED_ANGLE"
+               heading="0"
+               time="3.0"
+               />-->
     <!--park on driving station-->
 </auton>

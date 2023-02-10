@@ -36,33 +36,6 @@
                heading="0"
                time="2.0"
                />
-    <!--drive to gamepiece-->
-    <primitive id="DRIVE_PATH"
-               pathname="RedCOOP3.wpilib.json"
-               headingOption="SPECIFIED_ANGLE"
-               heading="179.5"
-               time="4.0"
-               />
-    <!--pick up gamepiece-->
-    <primitive id="DO_NOTHING"
-               headingOption="SPECIFIED_ANGLE"
-               heading="179.5"
-               time="2.0"
-               />
-    <!--drive to scoring station-->
-    <primitive id="DRIVE_PATH"
-               pathname="RedCOOP4.wpilib.json"
-               headingOption="SPECIFIED_ANGLE"
-               heading="0"
-               time="4.0"
-               />
-    <!--vison takes robot to correct scoring station-->
-    <!--score gamepiece-->
-    <primitive id="DO_NOTHING"
-               headingOption="SPECIFIED_ANGLE"
-               heading="0"
-               time="2.0"
-               />
     <!--drive to charing station-->
     <primitive id="DRIVE_PATH"
                pathname="RedCOOP5.wpilib.json"

@@ -2,7 +2,7 @@
 <!DOCTYPE auton SYSTEM "auton.dtd">
 <auton>
 <primitive id="RESET_POSITION"
-			   pathname="RedCOOP1.wpilib.json"/>
+			   pathname="BlueWall1.wpilib.json"/>
     <!--score preloaded cone-->
     <primitive id="DO_NOTHING"
                headingOption="SPECIFIED_ANGLE"
@@ -11,10 +11,17 @@
                />
     <!--drive to gamepiece-->
     <primitive id="DRIVE_PATH"
-               pathname="RedCOOP1.wpilib.json"
+               pathname="BlueWall1.wpilib.json"
+               headingOption="SPECIFIED_ANGLE"
+               heading="0"
+               time="3.0"
+               />
+    <!--drive to gamepiece and turn-->
+    <primitive id="DRIVE_PATH"
+               pathname="BlueWall1_0.wpilib.json"
                headingOption="SPECIFIED_ANGLE"
                heading="179.5"
-               time="4.0"
+               time="3.0"
                />
     <!--pick up gamepiece-->
     <primitive id="DO_NOTHING"
@@ -24,37 +31,10 @@
                />
     <!--drive to scoring station-->
     <primitive id="DRIVE_PATH"
-               pathname="RedCOOP2.wpilib.json"
+               pathname="BlueWall2.wpilib.json"
                headingOption="SPECIFIED_ANGLE"
                heading="0"
-               time="4.0"
-               />
-    <!--vison takes robot to correct scoring station-->
-    <!--score gamepiece-->
-    <primitive id="DO_NOTHING"
-               headingOption="SPECIFIED_ANGLE"
-               heading="0"
-               time="2.0"
-               />
-    <!--drive to gamepiece-->
-    <primitive id="DRIVE_PATH"
-               pathname="RedCOOP3.wpilib.json"
-               headingOption="SPECIFIED_ANGLE"
-               heading="179.5"
-               time="4.0"
-               />
-    <!--pick up gamepiece-->
-    <primitive id="DO_NOTHING"
-               headingOption="SPECIFIED_ANGLE"
-               heading="179.5"
-               time="2.0"
-               />
-    <!--drive to scoring station-->
-    <primitive id="DRIVE_PATH"
-               pathname="RedCOOP4.wpilib.json"
-               headingOption="SPECIFIED_ANGLE"
-               heading="0"
-               time="4.0"
+               time="3.0"
                />
     <!--vison takes robot to correct scoring station-->
     <!--score gamepiece-->
@@ -65,10 +45,10 @@
                />
     <!--drive to charing station-->
     <primitive id="DRIVE_PATH"
-               pathname="RedCOOP5.wpilib.json"
+               pathname="BlueWall5.wpilib.json"
                headingOption="SPECIFIED_ANGLE"
                heading="0"
-               time="4.0"
+               time="3.0"
                />
     <!--park on driving station-->
 </auton>
