@@ -14,22 +14,21 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-//FRC Includes
+// FRC Includes
 #include <frc/geometry/Pose2d.h>
 
-//Team 302 Includes
+// Team 302 Includes
 #include <DragonVision/LimelightState.h>
 #include <utils/Logger.h>
 
 class DragonVIsion;
 class AprilTag : public LimelightState
 {
-    public:
-        
-    AprilTag(DragonLimelight*    dragonlimelight, int index);
+public:
+    AprilTag(DragonLimelight *dragonlimelight, int index);
     ~AprilTag() = default;
 
     frc::Pose2d GetRobotPose() const;
-    
+
     int GetTagID();
 };

@@ -14,30 +14,29 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-//FRC Includes
+// FRC Includes
 #include <networktables/DoubleArrayTopic.h>
 
-//Team 302 Includes
+// Team 302 Includes
 #include <DragonVision/AprilTag/AprilTag.h>
 
 using namespace std;
-AprilTag::AprilTag(DragonLimelight*    dragonlimelight, int index) : LimelightState(dragonlimelight, index)
+AprilTag::AprilTag(DragonLimelight *dragonlimelight, int index) : LimelightState(dragonlimelight, index)
 {
-
 }
 
 frc::Pose2d AprilTag::GetRobotPose() const
 {
-    if(m_networktable != nullptr)
+    if (m_networktable != nullptr)
     {
         nt::DoubleArrayTopic arrayTopic = m_networktable->GetDoubleArrayTopic("botpose");
         auto subscriber = arrayTopic.Subscribe(std::span<const double>());
         auto value = subscriber.Get(std::span<const double>());
-        if(value.size() > 0)
-        {            
-            double xPos = value[0] + 8.2745; //add 8.2745 to accoutn for limelight origin being in center
-                                    //cut the two offset in half
-            double yPos = value[1] + 4.115; //add 4.115 to accoutn for limelight origin being in center
+        if (value.size() > 0)
+        {
+            double xPos = value[0] + 8.2745; // add 8.2745 to accoutn for limelight origin being in center
+                                             // cut the two offset in half
+            double yPos = value[1] + 4.115; // add 4.115 to accoutn for limelight origin being in center
             double zRotation = value[5];
             frc::Pose2d botPose = frc::Pose2d(units::length::meter_t(xPos), units::length::meter_t(yPos), frc::Rotation2d(units::angle::degree_t(zRotation)));
             return botPose;
@@ -51,7 +50,7 @@ frc::Pose2d AprilTag::GetRobotPose() const
 
 int AprilTag::GetTagID()
 {
-    if(m_networktable != nullptr)
+    if (m_networktable != nullptr)
     {
         return m_networktable->GetNumber("tid", 0);
     }

@@ -56,8 +56,7 @@ void DragonVision::SetCurrentState(DragonVision::LIMELIGHT_STATES limelightstate
 	m_currentstate = m_limelightstates[limelightstate];
 	m_frontDragonLimelight->SetPipeline(m_currentstate->GetPipelineIndex());
 
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Loop Counter"), string("Limelight State"), m_currentstate->GetPipelineIndex());
-
+	Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Loop Counter"), string("Limelight State"), m_currentstate->GetPipelineIndex());
 }
 
 // Aligned-with functions

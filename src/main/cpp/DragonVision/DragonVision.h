@@ -16,31 +16,30 @@
 
 #pragma once
 
-//C++
+// C++
 #include <string>
 #include <map>
 
-//FRC Includes
+// FRC Includes
 #include <frc/geometry/Pose2d.h>
 
-//Team302 Includes
+// Team302 Includes
 #include <hw/DragonLimelight.h>
 #include <DragonVision/LimelightState.h>
-
 
 class DragonLimelight;
 class DragonVision
 {
-    public:
-        static DragonVision* GetDragonVision();
+public:
+    static DragonVision *GetDragonVision();
 
     enum LIMELIGHT_STATES
-        {
-            RETROREFLECTIVE,
-            APRILTAG,
-            CUBE,
-            CONE
-        };
+    {
+        RETROREFLECTIVE,
+        APRILTAG,
+        CUBE,
+        CONE
+    };
 
     bool AlignedWithCubeNode();
     bool AlignedWithConeNode();
@@ -62,25 +61,17 @@ class DragonVision
     units::angle::degree_t AngleFromConeGamePiece();
 
     frc::Pose2d GetRobotPosition();
-void SetCurrentState
-    (
-        DragonVision::LIMELIGHT_STATES limelightstate
-    );
-~DragonVision() = default;
+    void SetCurrentState(
+        DragonVision::LIMELIGHT_STATES limelightstate);
+    ~DragonVision() = default;
+
 private:
-    
-    
-    DragonVision(std::string     stateName,
-                int              stateId
-                );
-    
+    DragonVision(std::string stateName,
+                 int stateId);
 
-    static DragonVision*	m_dragonVision;
-    DragonLimelight*        m_frontDragonLimelight;
-    LimelightState*         m_currentstate;
-    std::map<LIMELIGHT_STATES, LimelightState*> m_limelightstates;
-    double                  m_tolerance = 2.0;  //allows for 2 degrees of error
-    
+    static DragonVision *m_dragonVision;
+    DragonLimelight *m_frontDragonLimelight;
+    LimelightState *m_currentstate;
+    std::map<LIMELIGHT_STATES, LimelightState *> m_limelightstates;
+    double m_tolerance = 2.0; // allows for 2 degrees of error
 };
-
-
