@@ -61,6 +61,7 @@ void Robot::RobotInit()
 
     m_cyclePrims = new CyclePrimitives();
     m_previewer = new AutonPreviewer(m_cyclePrims); // TODO:: Move to DriveTeamFeedback
+    m_field = DragonField::GetInstance();           // TODO: move to drive team feedback
 
     m_dragonLimeLight = LimelightFactory::GetLimelightFactory()->GetLimelight(); // ToDo:: Move to Dragon Vision
 
@@ -77,12 +78,6 @@ void Robot::RobotInit()
  */
 void Robot::RobotPeriodic()
 {
-
-    if (m_chassis != nullptr)
-    {
-        m_chassis->UpdateOdometry();                        // ToDo:: Move to RobotState
-        m_field->UpdateRobotPosition(m_chassis->GetPose()); // ToDo:: Move to DriveTeamFeedback (also don't assume m_field isn't a nullptr)
-    }
     LoggableItemMgr::GetInstance()->LogData();
     Logger::GetLogger()->PeriodicLog();
 
@@ -90,15 +85,19 @@ void Robot::RobotPeriodic()
     {
         m_tuner->ListenForUpdates();
     }
+    if (m_robotState != nullptr)
+    {
+        m_robotState->Run();
+    }
 
     // ToDo:: Move to DriveTeamFeedback
     if (m_previewer != nullptr)
     {
         m_previewer->CheckCurrentAuton();
     }
-    if (m_robotState != nullptr)
+    if (m_field != nullptr)
     {
-        m_robotState->Run();
+        m_field->UpdateRobotPosition(m_chassis->GetPose()); // ToDo:: Move to DriveTeamFeedback (also don't assume m_field isn't a nullptr)
     }
 
     auto feedback = DriverFeedback::GetInstance();
