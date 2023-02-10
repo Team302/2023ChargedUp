@@ -19,19 +19,14 @@
 #include <robotstate/RobotStateChangeBroker.h>
 #include <robotstate/IRobotStateChangeSubscriber.h>
 
-RobotStateChangeBroker::RobotStateChangeBroker
-(
-    RobotStateChanges::StateChange change
-) : m_change(change),
-    m_subscribers()
+RobotStateChangeBroker::RobotStateChangeBroker(
+    RobotStateChanges::StateChange change) : m_change(change),
+                                             m_subscribers()
 {
-
 }
 
-void RobotStateChangeBroker::AddSubscriber
-(
-    IRobotStateChangeSubscriber* item
-)
+void RobotStateChangeBroker::AddSubscriber(
+    IRobotStateChangeSubscriber *item)
 {
     for (auto subscriber : m_subscribers)
     {
@@ -50,4 +45,3 @@ void RobotStateChangeBroker::Notify(int value)
         subscriber->Update(m_change, value);
     }
 }
-

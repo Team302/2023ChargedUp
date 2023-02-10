@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -37,18 +37,15 @@ using namespace frc;
 using namespace pugi;
 using namespace std;
 
-
-
 /// @brief      Parse a PDP XML element and create a PowerDistributionPanel* from its definition.
 /// @param [in] xml_node PDPNode the <PDP element in the xml document
 /// @return     PowerDistribution*   PDP object
-PowerDistribution* PDPXmlParser::ParseXML
-(
-    xml_node      PDPNode           /// <I> - PDP node in the XML file
+PowerDistribution *PDPXmlParser::ParseXML(
+    xml_node PDPNode /// <I> - PDP node in the XML file
 )
 {
     // initialize output
-    PowerDistribution* pdp = nullptr;
+    PowerDistribution *pdp = nullptr;
 
     // initialize attributes to default values
     int canID = -1;
@@ -59,15 +56,15 @@ PowerDistribution* PDPXmlParser::ParseXML
     // parse/validate the PDP XML node
     for (xml_attribute attr = PDPNode.first_attribute(); attr && !hasError; attr = attr.next_attribute())
     {
-        if ( strcmp( attr.name(), "canId" ) == 0 )
+        if (strcmp(attr.name(), "canId") == 0)
         {
             canID = attr.as_int();
-            hasError = HardwareIDValidation::ValidateCANID( canID, string( "PDPXmlParser::ParseXML" ) );
+            hasError = HardwareIDValidation::ValidateCANID(canID, string("PDPXmlParser::ParseXML"));
         }
-        else if ( strcmp( attr.name(), "type" ) == 0 )
+        else if (strcmp(attr.name(), "type") == 0)
         {
-            auto val = string( attr.value() );
-            if ( val.compare( "CTRE") == 0 )
+            auto val = string(attr.value());
+            if (val.compare("CTRE") == 0)
             {
                 type = PowerDistribution::ModuleType::kCTRE;
                 if (canID == -1)
@@ -88,18 +85,16 @@ PowerDistribution* PDPXmlParser::ParseXML
         {
             string msg = "unknown attribute ";
             msg += attr.name();
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("PDPXmlParser"), string("ParseXML"), msg );
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("PDPXmlParser"), string("ParseXML"), msg);
             hasError = true;
         }
     }
 
     // If no errors, create the object
-    if ( !hasError )
+    if (!hasError)
     {
         auto factory = PDPFactory::GetFactory();
         pdp = factory->CreatePDP(canID, type);
     }
     return pdp;
 }
-
-

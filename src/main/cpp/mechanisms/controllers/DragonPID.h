@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -19,36 +19,31 @@
 
 #include <mechanisms/controllers/ControlData.h>
 
-
 class DragonPID
 {
-    public:
-        DragonPID
-        (
-            ControlData*                    controlData
-        );
+public:
+    DragonPID(
+        ControlData *controlData);
 
-        DragonPID() = delete;
-        ~DragonPID() = default;
+    DragonPID() = delete;
+    ~DragonPID() = default;
 
-        void UpdateKP(double kP);
-        void UpdateKI(double kI);
-        void UpdateKD(double kD);
-        void UpdateKF(double kF);
+    void UpdateKP(double kP);
+    void UpdateKI(double kI);
+    void UpdateKD(double kD);
+    void UpdateKF(double kF);
 
-        double Calculate
-        (
-            double motorOutput,
-            double currentVal,
-            double targetVal
-        );
+    double Calculate(
+        double motorOutput,
+        double currentVal,
+        double targetVal);
 
-    private:
-        double                              m_kP;
-        double                              m_kI;
-        double                              m_kD;
-        double                              m_kF;
-        double                              m_accumError;
-        double                              m_prevError;
-        frc::Timer*                         m_timer;
+private:
+    double m_kP;
+    double m_kI;
+    double m_kD;
+    double m_kF;
+    double m_accumError;
+    double m_prevError;
+    frc::Timer *m_timer;
 };

@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -36,97 +36,92 @@
 
 // Third Party Includes
 
-
 using namespace std;
 using namespace frc;
 
-
-
-DriveDistance::DriveDistance() :
-	SuperDrive(),
-	m_params(nullptr),
-	m_targetDistance(0),
-	m_initialDistance(0),
-	m_timeRemaining(0),
-	m_minSpeedCountTime(0), //will be changed in init
-	m_underSpeedCounts(0),
-	m_startHeading(0),
-	m_endHeading(0),
-	m_minSpeed(0),
-	m_arcing(false)
+DriveDistance::DriveDistance() : SuperDrive(),
+								 m_params(nullptr),
+								 m_targetDistance(0),
+								 m_initialDistance(0),
+								 m_timeRemaining(0),
+								 m_minSpeedCountTime(0), // will be changed in init
+								 m_underSpeedCounts(0),
+								 m_startHeading(0),
+								 m_endHeading(0),
+								 m_minSpeed(0),
+								 m_arcing(false)
 {
 }
 
-void DriveDistance::Init(PrimitiveParams* params) 
+void DriveDistance::Init(PrimitiveParams *params)
 {
 	SuperDrive::Init(params);
-	
+
 	m_arcing = abs(params->GetHeading()) > 0.1;
-	//m_startHeading =  ChassisFactory::GetChassisFactory()->GetIChassis()->GetTargetHeading();
+	// m_startHeading =  ChassisFactory::GetChassisFactory()->GetIChassis()->GetTargetHeading();
 	m_endHeading = m_startHeading + params->GetHeading();
 
 	m_minSpeedCountTime = MIN_SPEED_COUNT_TIME;
 	m_underSpeedCounts = 0;
 	m_params = params;
-	//Get parameters from params
+	// Get parameters from params
 	m_targetDistance = params->GetDistance();
-	//m_initialDistance =  ChassisFactory::GetChassisFactory()->GetIChassis()->GetCurrentPosition();
+	// m_initialDistance =  ChassisFactory::GetChassisFactory()->GetIChassis()->GetCurrentPosition();
 }
 
-void DriveDistance::Run() 
+void DriveDistance::Run()
 {
 	SuperDrive::Run();
 
-	if (m_arcing) 
+	if (m_arcing)
 	{
-		//Calculate progress from 0 to 1
-		//float progress = abs( ChassisFactory::GetChassisFactory()->GetIChassis()->GetCurrentPosition() - m_initialDistance);
-		//progress /= abs(m_targetDistance); //progress = progress / targetDistance
+		// Calculate progress from 0 to 1
+		// float progress = abs( ChassisFactory::GetChassisFactory()->GetIChassis()->GetCurrentPosition() - m_initialDistance);
+		// progress /= abs(m_targetDistance); //progress = progress / targetDistance
 
-		//float newTargetHeading = 0;
-		//Linear interpolation between start heading and end heading based on progress
-		//newTargetHeading += (1.0 - progress) * m_startHeading;// newTargetheading = newTargetHeading + (1.0 - progress) * m_startHeading
-		//newTargetHeading += (progress) * m_endHeading;
-		//ChassisFactory::GetChassisFactory()->GetIChassis()->SetTargetHeading(newTargetHeading);
+		// float newTargetHeading = 0;
+		// Linear interpolation between start heading and end heading based on progress
+		// newTargetHeading += (1.0 - progress) * m_startHeading;// newTargetheading = newTargetHeading + (1.0 - progress) * m_startHeading
+		// newTargetHeading += (progress) * m_endHeading;
+		// ChassisFactory::GetChassisFactory()->GetIChassis()->SetTargetHeading(newTargetHeading);
 	}
-
 
 	CalculateSlowDownDistance();
 
-	if (m_minSpeedCountTime <= 0) 
+	if (m_minSpeedCountTime <= 0)
 	{
-		//if (abs( ChassisFactory::GetChassisFactory()->GetIChassis()->GetCurrentSpeed()) < SPEED_THRESHOLD) 
+		// if (abs( ChassisFactory::GetChassisFactory()->GetIChassis()->GetCurrentSpeed()) < SPEED_THRESHOLD)
 		//{
 		//	m_underSpeedCounts++;
-		//}
+		// }
 	}
 	m_minSpeedCountTime -= IPrimitive::LOOP_LENGTH;
 }
 
-bool DriveDistance::IsDone() 
+bool DriveDistance::IsDone()
 {
-	//float progress =  ChassisFactory::GetChassisFactory()->GetIChassis()->GetCurrentPosition() - m_initialDistance;
-	//bool reachedTarget = abs(progress) > abs(m_targetDistance);
+	// float progress =  ChassisFactory::GetChassisFactory()->GetIChassis()->GetCurrentPosition() - m_initialDistance;
+	// bool reachedTarget = abs(progress) > abs(m_targetDistance);
 	m_timeRemaining -= IPrimitive::LOOP_LENGTH;
 
-	//bool notMoving = m_underSpeedCounts >= UNDER_SPEED_COUNT_THRESHOLD;
-	//bool done = reachedTarget;
+	// bool notMoving = m_underSpeedCounts >= UNDER_SPEED_COUNT_THRESHOLD;
+	// bool done = reachedTarget;
 	bool done = false;
-	if (done) 
+	if (done)
 	{
-		 //ChassisFactory::GetChassisFactory()->GetIChassis()->SetTargetHeading(m_endHeading);
+		// ChassisFactory::GetChassisFactory()->GetIChassis()->SetTargetHeading(m_endHeading);
 	}
 	return done;
 }
 
-void DriveDistance::CalculateSlowDownDistance() 
+void DriveDistance::CalculateSlowDownDistance()
 {
 
-	//float currentVel =  ChassisFactory::GetChassisFactory()->GetIChassis()->GetCurrentSpeed();
-	//float decelTime = currentVel / SuperDrive::INCHES_PER_SECOND_SECOND;
-	//float decelDist = abs(((currentVel - m_minSpeed)) * decelTime * DECEL_TIME_MULTIPLIER);
-	//float currentDistance = abs( ChassisFactory::GetChassisFactory()->GetIChassis()->GetCurrentPosition() - m_initialDistance);
-	//float distanceRemaining = abs(m_targetDistance - currentDistance);
+	// float currentVel =  ChassisFactory::GetChassisFactory()->GetIChassis()->GetCurrentSpeed();
+	// float decelTime = currentVel / SuperDrive::INCHES_PER_SECOND_SECOND;
+	// float decelDist = abs(((currentVel - m_minSpeed)) * decelTime * DECEL_TIME_MULTIPLIER);
+	// float currentDistance = abs( ChassisFactory::GetChassisFactory()->GetIChassis()->GetCurrentPosition() - m_initialDistance);
+	// float distanceRemaining = abs(m_targetDistance - currentDistance);
 
 	/**
 	if (distanceRemaining <= decelDist)
@@ -136,11 +131,8 @@ void DriveDistance::CalculateSlowDownDistance()
 	**/
 }
 
-void DriveDistance::SetDistance
-(
-    double distance
-)
+void DriveDistance::SetDistance(
+	double distance)
 {
-    m_targetDistance = distance;
+	m_targetDistance = distance;
 }
-

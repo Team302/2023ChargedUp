@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -33,24 +33,22 @@
 
 // Third Party Includes
 
-
 namespace frc
 {
     struct ChassisSpeeds;
 }
 
-
 ///	 @interface IChassis
 ///  @brief	    Interface for differential drives
 class IChassis
 {
-	public:
-        enum CHASSIS_TYPE
-        {
-            DIFFERENTIAL, 
-            MECANUM,
-            SWERVE
-        };
+public:
+    enum CHASSIS_TYPE
+    {
+        DIFFERENTIAL,
+        MECANUM,
+        SWERVE
+    };
     /**
         enum CHASSIS_DRIVE_MODE
         {
@@ -72,40 +70,32 @@ class IChassis
             RIGHT_INTAKE_TOWARD_BALL
         };
 **/
-        /// @brief      return the chassis type
-        /// @returns    CHASSIS_TYPE
-        virtual CHASSIS_TYPE GetType() const = 0;
+    /// @brief      return the chassis type
+    /// @returns    CHASSIS_TYPE
+    virtual CHASSIS_TYPE GetType() const = 0;
 
-        /// @brief      Run chassis 
-        /// @returns    void
-        virtual void Drive
-        (
-            ChassisMovement     moveInfo
-        ) = 0;
-        virtual void Drive() = 0;
-        
+    /// @brief      Run chassis
+    /// @returns    void
+    virtual void Drive(
+        ChassisMovement moveInfo) = 0;
+    virtual void Drive() = 0;
 
-        virtual void SetTargetHeading(units::angle::degree_t targetYaw) = 0;
-        
-        virtual void Initialize() = 0;
+    virtual void SetTargetHeading(units::angle::degree_t targetYaw) = 0;
 
-        virtual frc::Pose2d GetPose() const = 0;
-        virtual void ResetPose
-        (
-            const frc::Pose2d&      pose
-        ) = 0;
+    virtual void Initialize() = 0;
 
-        virtual void UpdateOdometry() = 0;
-        virtual units::length::inch_t GetWheelDiameter() const = 0;
-        virtual units::length::inch_t GetTrack() const = 0;
-        virtual units::velocity::meters_per_second_t GetMaxSpeed() const = 0;
-        virtual units::angular_velocity::radians_per_second_t GetMaxAngularSpeed() const = 0;
-        virtual units::angle::degree_t GetYaw() const = 0;
-        virtual void SetEncodersToZero() = 0;
+    virtual frc::Pose2d GetPose() const = 0;
+    virtual void ResetPose(
+        const frc::Pose2d &pose) = 0;
 
-	    IChassis() = default;
-	    virtual ~IChassis() = default;
+    virtual void UpdateOdometry() = 0;
+    virtual units::length::inch_t GetWheelDiameter() const = 0;
+    virtual units::length::inch_t GetTrack() const = 0;
+    virtual units::velocity::meters_per_second_t GetMaxSpeed() const = 0;
+    virtual units::angular_velocity::radians_per_second_t GetMaxAngularSpeed() const = 0;
+    virtual units::angle::degree_t GetYaw() const = 0;
+    virtual void SetEncodersToZero() = 0;
+
+    IChassis() = default;
+    virtual ~IChassis() = default;
 };
-
-
-

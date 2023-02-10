@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -17,36 +17,36 @@
 
 class ChassisOptionEnums
 {
-    public:
-        enum HeadingOption
-        {
-            MAINTAIN,
-            TOWARD_GOAL,
-            SPECIFIED_ANGLE
-        };
+public:
+    enum HeadingOption
+    {
+        MAINTAIN,
+        TOWARD_GOAL,
+        SPECIFIED_ANGLE
+    };
 
-        enum DriveStateType
-        {
-            ROBOT_DRIVE,
-            FIELD_DRIVE,
-            TRAJECTORY_DRIVE,
-            POLAR_DRIVE,
-            HOLD_DRIVE,
-            STOP_DRIVE
-        };
-    
-        enum NoMovementOption
-        {
-            STOP,
-            HOLD_POSITION
-        };
-    
-        enum AutonControllerType
-        {
-            RAMSETE,
-            HOLONOMIC
-        };
+    enum DriveStateType
+    {
+        ROBOT_DRIVE,
+        FIELD_DRIVE,
+        TRAJECTORY_DRIVE,
+        POLAR_DRIVE,
+        HOLD_DRIVE,
+        STOP_DRIVE
+    };
 
-    ChassisOptionEnums() = delete;   
+    enum NoMovementOption
+    {
+        STOP,
+        HOLD_POSITION
+    };
+
+    enum AutonControllerType
+    {
+        RAMSETE,
+        HOLONOMIC
+    };
+
+    ChassisOptionEnums() = delete;
     ~ChassisOptionEnums() = delete;
 };

@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -35,18 +35,15 @@ using namespace frc;
 using namespace pugi;
 using namespace std;
 
-
-
 /// @brief      Parse a pcm XML element and create a PowerDistributionPanel* from its definition.
 /// @param [in] xml_node PCMNode the <PCM element in the xml document
 /// @return     Compressor*   PCM object
-Compressor* PCMXmlParser::ParseXML
-(
-    xml_node      PCMNode           /// <I> - PCM node in the XML file
+Compressor *PCMXmlParser::ParseXML(
+    xml_node PCMNode /// <I> - PCM node in the XML file
 )
 {
     // initialize output
-    Compressor* pcm = nullptr;
+    Compressor *pcm = nullptr;
 
     // initialize attributes to default values
     int canID = 0;
@@ -56,16 +53,16 @@ Compressor* PCMXmlParser::ParseXML
     // parse/validate the PCM XML node
     for (xml_attribute attr = PCMNode.first_attribute(); attr && !hasError; attr = attr.next_attribute())
     {
-        if ( strcmp( attr.name(), "canId" ) == 0 )
+        if (strcmp(attr.name(), "canId") == 0)
         {
             canID = attr.as_int();
-            hasError = HardwareIDValidation::ValidateCANID( canID, string( "PCMXmlParser::ParseXML" ) );
+            hasError = HardwareIDValidation::ValidateCANID(canID, string("PCMXmlParser::ParseXML"));
         }
         else
         {
             string msg = "unknown attribute ";
             msg += attr.name();
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("PCMXmlParser"), string("ParseXML"), msg );
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("PCMXmlParser"), string("ParseXML"), msg);
             hasError = true;
         }
     }
@@ -73,11 +70,9 @@ Compressor* PCMXmlParser::ParseXML
     // todo process children
 
     // If no errors, create the object
-    if ( !hasError )
+    if (!hasError)
     {
         // todo create objects
     }
     return pcm;
 }
-
-

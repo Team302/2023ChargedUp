@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-/// Copyright 2022 Lake Orion Robotics FIRST Team 302
+/// Copyright 2023 Lake Orion Robotics FIRST Team 302
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 /// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -14,8 +14,7 @@
 /// OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-
-#pragma once 
+#pragma once
 
 // C++ Includes
 
@@ -24,13 +23,11 @@
 
 class RoboRioXmlParser
 {
-    public:
-        RoboRioXmlParser() = default;
-        virtual ~RoboRioXmlParser() = default;
+public:
+    RoboRioXmlParser() = default;
+    virtual ~RoboRioXmlParser() = default;
 
-        /// @brief Parse a roborio XML element and create a DragonRoboRioAccelerometer from its definition.
-        void ParseXML
-        (
-            pugi::xml_node      roboRioNode
-        );
+    /// @brief Parse a roborio XML element and create a DragonRoboRioAccelerometer from its definition.
+    void ParseXML(
+        pugi::xml_node roboRioNode);
 };

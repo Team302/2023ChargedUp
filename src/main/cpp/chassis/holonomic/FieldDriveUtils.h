@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -31,20 +31,15 @@ class DragonPigeon;
 
 class FieldDriveUtils
 {
-    public:
-        FieldDriveUtils() = delete;
-        ~FieldDriveUtils() = delete;
+public:
+    FieldDriveUtils() = delete;
+    ~FieldDriveUtils() = delete;
 
-        /// @brief convert chassis speeds specified in Field Oriented values to Robot Values
-        /// @param [in] ChassisSpeeds the desired kinemetics of the chassis in a field oriented frame
-        /// @param [in] DragonPigeon gyro which has the angle the robot is facing
-        /// @returns ChassisSpeeds the converted speeds in the robot frame
-        static frc::ChassisSpeeds ConvertFieldOrientedToRobot
-        (
-            frc::ChassisSpeeds  input,
-            DragonPigeon*       pigeon
-        );
-
+    /// @brief convert chassis speeds specified in Field Oriented values to Robot Values
+    /// @param [in] ChassisSpeeds the desired kinemetics of the chassis in a field oriented frame
+    /// @param [in] DragonPigeon gyro which has the angle the robot is facing
+    /// @returns ChassisSpeeds the converted speeds in the robot frame
+    static frc::ChassisSpeeds ConvertFieldOrientedToRobot(
+        frc::ChassisSpeeds input,
+        DragonPigeon *pigeon);
 };
-
-

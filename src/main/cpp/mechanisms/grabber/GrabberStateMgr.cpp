@@ -65,7 +65,6 @@ GrabberStateMgr::GrabberStateMgr() : StateMgr(),
     stateMap["OPEN"] = m_openState;
     stateMap["GRAB"] = m_grabState;
 
-
     Init(m_grabber, stateMap);
     if (m_grabber != nullptr)
     {

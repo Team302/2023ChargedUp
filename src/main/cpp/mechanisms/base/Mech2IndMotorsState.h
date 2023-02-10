@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-/// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+/// Copyright 2023 Lake Orion Robotics FIRST Team 302
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 /// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -25,42 +25,38 @@ class Mech2IndMotors;
 
 class Mech2IndMotorsState : public State
 {
-    public:
+public:
+    Mech2IndMotorsState(
+        Mech2IndMotors *mechanism,
+        std::string stateName,
+        int stateId,
+        ControlData *control,
+        ControlData *control2,
+        double primaryTarget,
+        double secondaryTarget);
+    Mech2IndMotorsState() = delete;
+    ~Mech2IndMotorsState() = default;
 
-        Mech2IndMotorsState
-        (
-            Mech2IndMotors*                 mechanism,
-            std::string                     stateName,
-            int                             stateId,
-            ControlData*                    control,
-            ControlData*                    control2,
-            double                          primaryTarget,
-            double                          secondaryTarget
-        );
-        Mech2IndMotorsState() = delete;
-        ~Mech2IndMotorsState() = default;
+    void Init() override;
+    void Run() override;
+    void Exit() override;
+    bool AtTarget() const override;
 
-        void Init() override;
-        void Run() override;
-        void Exit() override;
-        bool AtTarget() const override;
+    void LogInformation() const override;
 
-        void LogInformation() const override;
+    double GetPrimaryTarget() const { return m_primaryTarget; }
+    double GetSecondaryTarget() const { return m_secondaryTarget; }
+    double GetPrimaryRPS() const;
+    double GetSecondaryRPS() const;
+    ControlData *GetPrimaryControlData() const { return m_control; }
+    ControlData *GetSecondaryControlData() const { return m_control2; }
 
-        double GetPrimaryTarget() const {return m_primaryTarget;}
-        double GetSecondaryTarget() const {return m_secondaryTarget;}
-        double GetPrimaryRPS() const;
-        double GetSecondaryRPS() const;
-        ControlData* GetPrimaryControlData() const {return m_control;}
-        ControlData* GetSecondaryControlData() const {return m_control2;}
-
-    private:
-
-        Mech2IndMotors*                 m_mechanism;
-        ControlData*                    m_control;
-        ControlData*                    m_control2;
-        double                          m_primaryTarget;
-        double                          m_secondaryTarget;
-        bool                            m_positionBased;
-        bool                            m_speedBased;
+private:
+    Mech2IndMotors *m_mechanism;
+    ControlData *m_control;
+    ControlData *m_control2;
+    double m_primaryTarget;
+    double m_secondaryTarget;
+    bool m_positionBased;
+    bool m_speedBased;
 };

@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -13,17 +13,16 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-//Team302 Includes
+// Team302 Includes
 #include <chassis/swerve/headingStates/MaintainHeading.h>
 #include <chassis/ChassisOptionEnums.h>
 #include <chassis/ChassisFactory.h>
 
 MaintainHeading::MaintainHeading() : ISwerveDriveOrientation(ChassisOptionEnums::HeadingOption::MAINTAIN)
 {
-    
 }
 
-void MaintainHeading::UpdateChassisSpeeds(ChassisMovement& chassisMovement)
+void MaintainHeading::UpdateChassisSpeeds(ChassisMovement &chassisMovement)
 {
     units::angular_velocity::degrees_per_second_t correction = units::angular_velocity::degrees_per_second_t(0.0);
 
@@ -31,7 +30,7 @@ void MaintainHeading::UpdateChassisSpeeds(ChassisMovement& chassisMovement)
     units::meters_per_second_t yspeed = chassisMovement.chassisSpeeds.vy;
     units::radians_per_second_t rot = chassisMovement.chassisSpeeds.omega;
 
-    if(abs(rot.to<double>()) == 0.0)
+    if (abs(rot.to<double>()) == 0.0)
     {
         rot = units::radians_per_second_t(0.0);
         if (abs(xspeed.to<double>()) > 0.0 || abs(yspeed.to<double>() > 0.0))
@@ -41,7 +40,7 @@ void MaintainHeading::UpdateChassisSpeeds(ChassisMovement& chassisMovement)
     }
     else
     {
-       SetStoredHeading(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose().Rotation().Degrees());
+        SetStoredHeading(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose().Rotation().Degrees());
     }
 
     rot -= correction;
