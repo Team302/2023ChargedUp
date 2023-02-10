@@ -32,6 +32,7 @@
 #include <gamepad/DragonGamePad.h>
 #include <teleopcontrol/TeleopControl.h>
 #include <teleopcontrol/TeleopControlFunctions.h>
+#include <teleopcontrol/TeleopControlMap.h>
 #include <frc/DriverStation.h>
 #include <utils/logging/Logger.h>
 
@@ -130,8 +131,8 @@ void TeleopControl::InitializeAxes(int port)
 		auto functions = GetAxisFunctionsOnController(port);
 		for (auto function : functions)
 		{
-			auto itr = m_axisMap.find(function);
-			if (itr != m_axisMap.end())
+			auto itr = teleopControlMapAxisMap.find(function);
+			if (itr != teleopControlMapAxisMap.end())
 			{
 				auto axisInfo = itr->second;
 				m_controller[port]->SetAxisDeadband(axisInfo.axisId, axisInfo.deadbandType);
@@ -150,8 +151,8 @@ void TeleopControl::InitializeButtons(int port)
 		auto functions = GetButtonFunctionsOnController(port);
 		for (auto function : functions)
 		{
-			auto itr = m_buttonMap.find(function);
-			if (itr != m_buttonMap.end())
+			auto itr = teleopControlMapButtonMap.find(function);
+			if (itr != teleopControlMapButtonMap.end())
 			{
 				auto buttonInfo = itr->second;
 				if (buttonInfo.mode != TeleopControlMappingEnums::BUTTON_MODE::STANDARD)
@@ -166,7 +167,7 @@ vector<TeleopControlFunctions::FUNCTION> TeleopControl::GetAxisFunctionsOnContro
 {
 	vector<TeleopControlFunctions::FUNCTION> functions;
 
-	for (auto itr = m_axisMap.begin(); itr != m_axisMap.end(); ++itr)
+	for (auto itr = teleopControlMapAxisMap.begin(); itr != teleopControlMapAxisMap.end(); ++itr)
 	{
 		if (itr->second.controllerNumber == controller)
 		{
@@ -180,7 +181,7 @@ vector<TeleopControlFunctions::FUNCTION> TeleopControl::GetButtonFunctionsOnCont
 {
 	vector<TeleopControlFunctions::FUNCTION> functions;
 
-	for (auto itr = m_buttonMap.begin(); itr != m_buttonMap.end(); ++itr)
+	for (auto itr = teleopControlMapButtonMap.begin(); itr != teleopControlMapButtonMap.end(); ++itr)
 	{
 		if (itr->second.controllerNumber == controller)
 		{
@@ -202,8 +203,8 @@ pair<IDragonGamePad *, TeleopControlMappingEnums::AXIS_IDENTIFIER> TeleopControl
 		Initialize();
 	}
 
-	auto itr = m_axisMap.find(function);
-	if (itr != m_axisMap.end())
+	auto itr = teleopControlMapAxisMap.find(function);
+	if (itr != teleopControlMapAxisMap.end())
 	{
 		auto axisInfo = itr->second;
 		if (m_controller[axisInfo.controllerNumber] != nullptr)
@@ -227,8 +228,8 @@ pair<IDragonGamePad *, TeleopControlMappingEnums::BUTTON_IDENTIFIER> TeleopContr
 		Initialize();
 	}
 
-	auto itr = m_buttonMap.find(function);
-	if (itr != m_buttonMap.end())
+	auto itr = teleopControlMapButtonMap.find(function);
+	if (itr != teleopControlMapButtonMap.end())
 	{
 		auto buttonInfo = itr->second;
 		if (m_controller[buttonInfo.controllerNumber] != nullptr)
