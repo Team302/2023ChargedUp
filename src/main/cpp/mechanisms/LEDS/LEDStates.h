@@ -16,6 +16,7 @@
 
 #pragma once
 #include <mechanisms/LEDS/LED.h>
+#include <span>
 
 
 class LEDStates
@@ -32,6 +33,7 @@ class LEDStates
     void ClosingInChaserPattern(LED::Colors c);
     LED* m_LED = LED::GetInstance();
     static LEDStates* GetInstance();
+    
 
     private:
     

@@ -39,7 +39,7 @@ using namespace std;
     //
     // Returns:     void        
     //-----------------------------------------------------------------------
-    DragonLeds* LedXmlParser::ParseXML
+    LED* LedXmlParser::ParseXML
     (
         pugi::xml_node      ledNode
     )
@@ -75,7 +75,7 @@ using namespace std;
         // create the object
         if ( !hasError )
         {
-            auto leds = DragonLeds::GetInstance();
+            auto leds = LED::GetInstance();
             if (leds != nullptr && !leds->IsInitialized())
             {
                 leds->Initialize(pwmID, numLeds);

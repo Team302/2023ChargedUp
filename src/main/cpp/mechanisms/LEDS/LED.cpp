@@ -31,10 +31,10 @@
 	return LED::m_instance;
 }
 
-    bool LED::isInitialized(){
+    bool LED::IsInitialized(){
         return m_led != nullptr;
     }
-    void LED::initialize(int PWMport,  int ledSize){
+    void LED::Initialize(int PWMport,  int ledSize){
         kLength = ledSize;
         m_PWMport = PWMport;
         m_ledBuffer.resize(ledSize);

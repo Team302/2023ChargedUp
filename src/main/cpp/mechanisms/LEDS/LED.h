@@ -31,11 +31,11 @@ class LED
 
         frc::AddressableLED* m_led;
 
-        std::vector<const frc::AddressableLED::LEDData> m_ledBuffer;
+        std::vector<frc::AddressableLED::LEDData> m_ledBuffer;
       
         std::array<int,3> getColorValues(Colors c);
-        bool isInitialized();
-        void initialize(int PWMport,  int ledSize);
+        bool IsInitialized();
+        void Initialize(int PWMport,  int ledSize);
         
         ~LED();
         LED() = delete;
