@@ -30,7 +30,8 @@ DragonField *DragonField::GetInstance()
     return DragonField::m_instance;
 }
 
-DragonField::DragonField()
+DragonField::DragonField() : m_field(),
+                             m_objects()
 {
     frc::SmartDashboard::PutData(&m_field);
 }
