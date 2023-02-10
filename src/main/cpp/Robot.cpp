@@ -64,6 +64,9 @@ void Robot::RobotInit()
 
     m_dragonLimeLight = LimelightFactory::GetLimelightFactory()->GetLimelight(); // ToDo:: Move to Dragon Vision
 
+    /// TODO: Move to DriveteamFeedback
+    m_field = DragonField::GetInstance();
+
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("RobotInit"), string("end"));
 }
 
@@ -80,8 +83,10 @@ void Robot::RobotPeriodic()
 
     if (m_chassis != nullptr)
     {
-        m_chassis->UpdateOdometry();                        // ToDo:: Move to RobotState
-        m_field->UpdateRobotPosition(m_chassis->GetPose()); // ToDo:: Move to DriveTeamFeedback (also don't assume m_field isn't a nullptr)
+        if (m_field != nullptr)
+        {
+            m_field->UpdateRobotPosition(m_chassis->GetPose()); // ToDo:: Move to DriveTeamFeedback (also don't assume m_field isn't a nullptr)
+        }
     }
     LoggableItemMgr::GetInstance()->LogData();
     Logger::GetLogger()->PeriodicLog();

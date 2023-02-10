@@ -37,6 +37,9 @@
 #include <robotstate/RobotState.h>
 #include <robotstate/RobotStateChanges.h>
 
+/// DEBUGGING
+#include <utils/logging/Logger.h>
+
 // Third Party Includes
 
 using namespace std;
@@ -64,7 +67,6 @@ GrabberStateMgr::GrabberStateMgr() : StateMgr(),
     map<string, StateStruc> stateMap;
     stateMap["OPEN"] = m_openState;
     stateMap["GRAB"] = m_grabState;
-
 
     Init(m_grabber, stateMap);
     if (m_grabber != nullptr)
@@ -122,12 +124,14 @@ void GrabberStateMgr::CheckForGamepadTransitions()
 /// @brief Check if driver inputs or sensors trigger a state transition
 void GrabberStateMgr::CheckForStateTransition()
 {
-
+    CheckForSensorTransitions();
     if (m_grabber != nullptr)
     {
+        CheckForGamepadTransitions();
         if (m_targetState != m_currentState)
         {
             SetCurrentState(m_targetState, true);
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, "GrabberStateMgr", string("CurrentState"), to_string(m_targetState));
             RobotState::GetInstance()->PublishStateChange(RobotStateChanges::GrabberState, m_targetState);
         }
     }
