@@ -24,7 +24,7 @@
 #include <hw/DragonCanCoder.h>
 #include <hw/xml/CancoderXmlParser.h>
 #include <utils/HardwareIDValidation.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
 // third party includes
 #include <pugixml/pugixml.hpp>
@@ -64,7 +64,7 @@ DragonCanCoder* CancoderXmlParser::ParseXML
             canID = attr.as_int();
             hasError = HardwareIDValidation::ValidateCANID( canID, string( "CancoderXmlParser::ParseXML" ) );
         }        
-        else if (strcmp(attr.name(), "canbus") == 0)
+        else if (strcmp(attr.name(), "canBusName") == 0)
         {
             canBusName = attr.as_string();
         }

@@ -23,7 +23,7 @@
 // Team 302 includes
 #include <State.h>
 #include <mechanisms/StateStruc.h>
-#include <LoggableItem.h>
+#include <utils/logging/LoggableItem.h>
 
 // forward declare 
 class Mech;
@@ -80,6 +80,8 @@ class StateMgr : public LoggableItem
         virtual void CheckForSensorTransitions();
         virtual void CheckForGamepadTransitions();
 
+        bool                    m_checkGamePadTransitions;
+
         std::vector<State*> GetStateVector() {return m_stateVector;};
 
     private:
@@ -88,8 +90,6 @@ class StateMgr : public LoggableItem
         State*                  m_currentState;
         std::vector<State*>     m_stateVector;
         int                     m_currentStateID;
-        bool                    m_checkGamePadTransitions;
-
 };
 
 

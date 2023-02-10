@@ -7,7 +7,7 @@
 #include <hw/DistanceAngleCalcStruc.h>
 #include <hw/DragonTalonSRX.h>
 #include <hw/DragonFalcon.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
 #include <ctre/phoenix/motorcontrol/can/TalonSRX.h>
 #include <ctre/phoenix/motorcontrol/can/TalonFX.h>

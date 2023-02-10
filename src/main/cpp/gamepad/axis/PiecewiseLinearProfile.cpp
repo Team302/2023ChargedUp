@@ -47,26 +47,25 @@ PiecewiseLinearProfile::PiecewiseLinearProfile() :  IProfile(),
 /// @param [in] value that needs the profile (scaling) applied
 /// @return double profiled (scaled) value
 //==================================================================================
-double PiecewiseLinearProfile::ApplyProfile
+void PiecewiseLinearProfile::ApplyProfile
 (
-    double      inputVal            // <I> - value to apply profile to
+    double&     inputVal            // <I> - value to apply profile to
 ) const 
 {
     if (inputVal > m_intercept)
     {
-        return m_inflectionY + (inputVal-m_intercept)*((1.0-m_inflectionY)/(1-m_intercept));
+        inputVal = m_inflectionY + (inputVal-m_intercept)*((1.0-m_inflectionY)/(1-m_intercept));
     }
     else if (inputVal >= 0.0)
     {
-        return m_intercept + ((m_inflectionY-m_intercept) / m_inflectionX) * inputVal ;
+        inputVal =  m_intercept + ((m_inflectionY-m_intercept) / m_inflectionX) * inputVal ;
     }
     else if (inputVal >= -m_intercept)
     {
-        return (-m_intercept + ((m_inflectionY-m_intercept)/m_inflectionX) * inputVal);
+        inputVal =  (-m_intercept + ((m_inflectionY-m_intercept)/m_inflectionX) * inputVal);
     }
     else
     {
-        return (-m_inflectionY + (inputVal+m_intercept)*((1-m_inflectionY)/(1-m_intercept)));
+        inputVal =  (-m_inflectionY + (inputVal+m_intercept)*((1-m_inflectionY)/(1-m_intercept)));
     }
-    return inputVal;
 }

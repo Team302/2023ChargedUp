@@ -17,7 +17,7 @@
 #include <string>
 
 #include <hw/DragonCanCoder.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
 #include <ctre/phoenix/sensors/WPI_CANCoder.h>
 

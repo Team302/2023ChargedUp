@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2023 Lake Orion Robotics FIRST Team 302 
+// Copyright 2022 Lake Orion Robotics FIRST Team 302 
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -15,31 +15,26 @@
 //====================================================================================================================================================
 
 #pragma once
-#include <mechanisms/LEDS/LED.h>
 
-
-class LEDStates
+/// @enum LOGGER_OPTION
+/// @brief Define where the items being logged should be sent
+enum LOGGER_OPTION
 {
-	public:
-    
-    void LEDsOff();
-    void ResetVariables();
-    void ChaserPattern(LED::Colors c);
-    void BlinkingPattern(LED::Colors c);
-    void SolidColorPattern(LED::Colors c);
-    void AlternatingBlinkingPattern(LED::Colors c);
-    void AlternatingBlinkingPattern(LED::Colors c1, LED::Colors c2);
-    void ClosingInChaserPattern(LED::Colors c);
-    LED* m_LED = LED::GetInstance();
-    static LEDStates* GetInstance();
-
-    private:
-    
-    int loopThroughIndividualLEDs = -1;
-    int colorLoop = 0;
-    int timer;
-    static LEDStates* m_instance;
+    CONSOLE,        ///< write to the RoboRio Console
+    DASHBOARD,      ///< write to the SmartDashboard
+    EAT_IT          ///< don't write anything (useful at comps where we want to minimize network traffic)
 };
 
-
-
+/// @enum LOGGER_LEVEL
+/// @brief Define what level the message is as well as this can be used to write only the messages
+/// @brief of a certain level or worse.
+/// @brief The enum is ordered from worse to better and corresponds to the driver's station levels.        
+enum LOGGER_LEVEL
+{
+    ERROR_ONCE,     ///< this is catastrophic that we only want to see once
+    ERROR,          ///< this is catastrophic
+    WARNING_ONCE,   ///< this is a medium level error we only want to see once
+    WARNING,        ///< this is a medium level error
+    PRINT_ONCE,     ///< this is an information/debug message we only want to see once
+    PRINT           ///< this is an information/debug message
+};

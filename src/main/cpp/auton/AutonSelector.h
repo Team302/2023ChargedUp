@@ -14,6 +14,8 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
+// co-Author: notcharlie, creator of dumb code / copy paster of better code
+
 #pragma once
 
 #include <string>
@@ -22,6 +24,7 @@
 
 class AutonSelector
 {
+
 	public:
 		//---------------------------------------------------------------------
 		// Method: 		<<constructor>>
@@ -45,15 +48,12 @@ class AutonSelector
 		//---------------------------------------------------------------------
 		std::string GetSelectedAutoFile();
 
-	private:
+		std::string GetParkOnChargeStation();
+		std::string GetAlianceColor();
+		std::string GetStartPos();
+		std::string GetNumofPiecesinauton();
 
-		//---------------------------------------------------------------------
-		// Method: 		FindXMLFileNames
-		// Description: This builds up a list of CSV files in the directory and
-		//				stores them in the m_csvFiles attribute.
-		// Returns:		void
-		//---------------------------------------------------------------------
-		void FindXMLFileNames();
+	private:
 
 		//---------------------------------------------------------------------
 		// Method: 		PutChoicesOnDashboard
@@ -62,9 +62,10 @@ class AutonSelector
 		// Returns:		void
 		//---------------------------------------------------------------------
 		void PutChoicesOnDashboard();
-
+		bool FileExists(const std::string& name);
 		// Attributues
-		std::vector<std::string> m_xmlFiles;
-		frc::SendableChooser<std::string> m_chooser;
+		frc::SendableChooser<std::string> m_chrgstatchooser;
+		frc::SendableChooser<std::string> m_startposchooser;
+		frc::SendableChooser<std::string> m_numofgamepiecechooser;
 };
 

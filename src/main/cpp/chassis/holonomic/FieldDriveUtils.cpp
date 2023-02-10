@@ -14,16 +14,7 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-//========================================================================================================
-/// UsageValidation.cpp
-//========================================================================================================
-///
-/// File Description:
-///     This will validate the various usages against the valid values.
-//========================================================================================================
-
 // C++ Includes
-
 
 // FRC Includes
 
@@ -43,24 +34,17 @@ using namespace frc;
 /// @param [in] ChassisSpeeds the desired kinemetics of the chassis in a field oriented frame
 /// @param [in] DragonPigeon gyro which has the angle the robot is facing
 /// @returns ChassisSpeeds the converted speeds in the robot frame
-ChassisSpeeds FieldDriveUtils::ConvertFieldOrientedToRobot
-(
-    ChassisSpeeds   input,
-    DragonPigeon*   pigeon
-)
+ChassisSpeeds FieldDriveUtils::ConvertFieldOrientedToRobot(
+    ChassisSpeeds input,
+    DragonPigeon *pigeon)
 {
     auto heading = pigeon != nullptr ? pigeon->GetYaw() : 0.0;
     heading = ConversionUtils::DegreesToRadians(heading);
 
     ChassisSpeeds output;
-    output.vx = input.vx * cos(heading) - input.vy*sin(heading);
-    output.vy = input.vx * sin(heading) + input.vy*cos(heading);
+    output.vx = input.vx * cos(heading) - input.vy * sin(heading);
+    output.vy = input.vx * sin(heading) + input.vy * cos(heading);
     output.omega = input.omega;
 
     return output;
 }
-
-
-
-
-

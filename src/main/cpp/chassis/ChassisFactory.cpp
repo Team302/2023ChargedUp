@@ -47,7 +47,7 @@
 #include <hw/DragonCanCoder.h>
 #include <hw/interfaces/IDragonMotorController.h>
 #include <hw/usages/IDragonMotorControllerMap.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 #include <robotConfig.h>
 
 using namespace std;

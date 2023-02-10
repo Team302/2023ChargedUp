@@ -16,75 +16,91 @@
 
 #include <map>
 
-#include "hw/factories/LimelightFactory.h"
-#include <hw/DragonLimelight.h>
+#include <hw/usages/LimelightUsages.h>
 
+#include <hw/factories/LimelightFactory.h>
+#include <hw/DragonLimelight.h>
 
 using namespace std;
 
-LimelightFactory* LimelightFactory::m_limelightFactory = nullptr;
+LimelightFactory *LimelightFactory::m_limelightFactory = nullptr;
 
-LimelightFactory* LimelightFactory::GetLimelightFactory()
+LimelightFactory *LimelightFactory::GetLimelightFactory()
 {
-    if(m_limelightFactory == nullptr)
+    if (m_limelightFactory == nullptr)
     {
         m_limelightFactory = new LimelightFactory();
     }
     return m_limelightFactory;
 }
 
-LimelightFactory::LimelightFactory() : m_limelight( nullptr )
+LimelightFactory::LimelightFactory() : m_limelight(nullptr), m_limelight2(nullptr)
 {
 }
 
-DragonLimelight* LimelightFactory::CreateLimelight
-(
-    string                      tableName, 
-    units::length::inch_t       mountingHeight,             /// <I> - mounting height of the limelight
-    units::length::inch_t       mountingHorizontalOffset,   /// <I> - mounting horizontal offset from the middle of the robot
-    units::angle::degree_t      rotation,                   /// <I> - clockwise rotation of limelight
-    units::angle::degree_t      mountingAngle,              /// <I> - mounting angle of the camera
-    units::length::inch_t       targetHeight,               /// <I> - height the target
-    units::length::inch_t       targetHeight2,               /// <I> - height of second target
-    DragonLimelight::LED_MODE       ledMode,
-    DragonLimelight::CAM_MODE       camMode,
-    DragonLimelight::STREAM_MODE    streamMode,
-    DragonLimelight::SNAPSHOT_MODE  snapMode,
-    double                          defaultXHairX,
-    double                          defaultXHairY,
-    double                          secXHairX,
-    double                          secXHairY
-)
+DragonLimelight *LimelightFactory::CreateLimelight(
+    LimelightUsages::LIMELIGHT_USAGE usage,
+    string tableName,
+    units::length::inch_t mountingHeight,           /// <I> - mounting height of the limelight
+    units::length::inch_t mountingHorizontalOffset, /// <I> - mounting horizontal offset from the middle of the robot
+    units::angle::degree_t rotation,                /// <I> - clockwise rotation of limelight
+    units::angle::degree_t mountingAngle,           /// <I> - mounting angle of the camera
+    units::length::inch_t targetHeight,             /// <I> - height the target
+    units::length::inch_t targetHeight2,            /// <I> - height of second target
+    DragonLimelight::LED_MODE ledMode,
+    DragonLimelight::CAM_MODE camMode,
+    DragonLimelight::STREAM_MODE streamMode,
+    DragonLimelight::SNAPSHOT_MODE snapMode,
+    double defaultXHairX,
+    double defaultXHairY,
+    double secXHairX,
+    double secXHairY)
 {
-    if ( m_limelight == nullptr )
+    if (usage == LimelightUsages::PRIMARY)
     {
-        m_limelight = new DragonLimelight(tableName, 
-                                          mountingHeight, 
-                                          mountingHorizontalOffset, 
-                                          rotation, 
-                                          mountingAngle, 
-                                          targetHeight, 
-                                          targetHeight2);
-        /**
-        m_limelight->SetLEDMode( ledMode );
-        m_limelight->SetCamMode( camMode );
-        m_limelight->SetStreamMode( streamMode );
-        m_limelight->ToggleSnapshot( snapMode );
-        if ( defaultXHairX > -1.5 && defaultXHairY > -1.5 )
+        if (m_limelight == nullptr)
         {
-            // m_limelight->  todo add method
-        }        
-        if ( secXHairX > -1.5 && secXHairY > -1.5 )
-        {
-            // m_limelight->  todo add method
+            m_limelight = new DragonLimelight(tableName,
+                                              mountingHeight,
+                                              mountingHorizontalOffset,
+                                              rotation,
+                                              mountingAngle,
+                                              targetHeight,
+                                              targetHeight2);
         }
-        **/
+        return m_limelight;
     }
-    return m_limelight;
+    else
+    {
+        if (m_limelight2 == nullptr)
+        {
+            m_limelight2 = new DragonLimelight(tableName,
+                                               mountingHeight,
+                                               mountingHorizontalOffset,
+                                               rotation,
+                                               mountingAngle,
+                                               targetHeight,
+                                               targetHeight2);
+        }
+        return m_limelight2;
+    }
+    return nullptr;
 }
 
-DragonLimelight* LimelightFactory::GetLimelight()
+DragonLimelight *LimelightFactory::GetLimelight()
 {
     return m_limelight;
 }
 
+DragonLimelight *LimelightFactory::GetLimelight(LimelightUsages::LIMELIGHT_USAGE usage)
+{
+    if (usage == LimelightUsages::PRIMARY)
+    {
+        return m_limelight;
+    }
+    else if (usage == LimelightUsages::SECONDARY)
+    {
+        return m_limelight2;
+    }
+    return nullptr;
+}

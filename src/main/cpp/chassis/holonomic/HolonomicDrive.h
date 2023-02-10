@@ -18,7 +18,7 @@
 //C++ Libraries
 
 //Team 302 includes
-#include <TeleopControl.h>
+#include <teleopcontrol/TeleopControl.h>
 #include <State.h>
 #include <chassis/swerve/driveStates/DragonTrajectoryGenerator.h>
 #include <utils/DragonField.h>
@@ -41,12 +41,10 @@ class HolonomicDrive : public State
         bool AtTarget() const override;
 
     private:
-        inline TeleopControl* GetController() const { return m_controller; }
         IChassis*                           m_chassis;
-        TeleopControl*                      m_controller;
         SwerveChassis*                      m_swerve;
         MecanumChassis*                     m_mecanum;
-        DragonTrajectoryGenerator*                m_trajectoryGenerator;
+        DragonTrajectoryGenerator*          m_trajectoryGenerator;
         ChassisOptionEnums::DriveStateType  m_previousDriveState;
         frc::Trajectory                     m_generatedTrajectory;
         DragonField*                        m_field;

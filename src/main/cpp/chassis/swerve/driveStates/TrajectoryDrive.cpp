@@ -19,7 +19,7 @@
 #include <chassis/swerve/driveStates/TrajectoryDrive.h>
 #include <chassis/ChassisMovement.h>
 #include <chassis/ChassisFactory.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 #include <chassis/swerve/headingStates/SpecifiedHeading.h>
 
 using frc::Pose2d;

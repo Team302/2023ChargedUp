@@ -31,6 +31,9 @@
 				#include <mechanisms/base/Mech1IndMotor.h>
 				#include <mechanisms/extender/extender.h>
 
+				//Third Party Includes
+				#include <ctre/phoenix/motorcontrol/can/WPI_TalonFX.h>
+
 		using namespace std;
 
 		/// @brief Create an Extender mechanism wiht 1 independent motor
@@ -48,3 +51,24 @@ std::shared_ptr<IDragonMotorController>     motorController0
 		{
 		}
 	
+void Extender::ResetIfFullyExtended(double counts)
+{
+	if(GetMotor().get()->IsForwardLimitSwitchClosed())
+	{
+		auto motor = GetMotor().get()->GetSpeedController();
+		auto fx = dynamic_cast<ctre::phoenix::motorcontrol::can::WPI_TalonFX*>(motor.get());
+		auto sensors = fx->GetSensorCollection();
+		sensors.SetIntegratedSensorPosition(counts, 0);
+	}
+}
+
+void Extender::ResetIfFullyRetracted()
+{
+	if(GetMotor().get()->IsReverseLimitSwitchClosed())
+	{
+		auto motor = GetMotor().get()->GetSpeedController();
+		auto fx = dynamic_cast<ctre::phoenix::motorcontrol::can::WPI_TalonFX*>(motor.get());
+		auto sensors = fx->GetSensorCollection();
+		sensors.SetIntegratedSensorPosition(0, 0);
+	}
+}

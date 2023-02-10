@@ -1,6 +1,5 @@
-
 //====================================================================================================================================================
-// Copyright 2023 Lake Orion Robotics FIRST Team 302 
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -14,47 +13,28 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#include <mechanisms/LEDS/LED.h>
+#include <mechanisms/extender/ExtenderState.h>
 
-    LED::LED(int PWMport){
-        m_led = new frc::AddressableLED(PWMport);
-        m_led->SetLength(kLength);
-        m_led->SetData(m_ledBuffer);
-        m_led->Start();
-    }
-    LED* LED::m_instance = nullptr;
+class ControlData;
+class Extender;
+class TeleopControl;
 
-    LED* LED::GetInstance()
+class ExtenderManualState : public ExtenderState
 {
-	if ( LED::m_instance == nullptr )
-	{
-		LED::m_instance = new LED(0);
-	}
-	return LED::m_instance;
-}
+public:
+    ExtenderManualState() = delete;
+    ExtenderManualState(std::string stateName,
+                        int stateId,
+                        ControlData *control0,
+                        double target0);
 
+    ~ExtenderManualState() = default;
 
-    std::array<int, 3> LED::getColorValues(Colors c){
-        switch (c)
-        {
-        case RED:
-            return {255,0,0};
-        case GREEN:
-            return {0,255,0};
-        case BLUE:
-            return {0,0,255};
-        case YELLOW:
-            return {255,160,0};   
-        case PURPLE:
-            return {75,0,130};
-        case AZUL:
-            return {0,255,255};  
-        case WHITE:
-            return{255,255,180};
-        case BLACK:
-            return {0,0,0};
-        default:
-            return{0,0,0};    
-        }
-    }
+    void Init() override;
+    void Run() override;
+    bool AtTarget() const override;
 
+private:
+    Extender *m_extender;
+    TeleopControl *m_controller;
+};

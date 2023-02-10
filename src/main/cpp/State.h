@@ -17,7 +17,7 @@
 #pragma once
 #include <string>
 
-#include <LoggableItem.h>
+#include <utils/logging/LoggableItem.h>
 
 ///	 @interface     State
 ///  @brief      	Interface for state classes
