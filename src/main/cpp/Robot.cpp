@@ -159,7 +159,7 @@ void Robot::TeleopInit()
     StateMgrHelper::RunCurrentMechanismStates();
 
     // now in teleop, clear field of trajectories
-    m_field->ResetField(); // ToDo:  Move to DriveTeamFeedback
+    // m_field->ResetField(); // ToDo:  Move to DriveTeamFeedback
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopInit"), string("end"));
 }

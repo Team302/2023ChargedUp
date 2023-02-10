@@ -58,6 +58,7 @@ ExtenderStateMgr *ExtenderStateMgr::GetInstance()
 
 /// @brief    initialize the state manager, parse the configuration file and create the states.
 ExtenderStateMgr::ExtenderStateMgr() : StateMgr(),
+                                       IRobotStateChangeSubscriber(),
                                        m_extender(MechanismFactory::GetMechanismFactory()->GetExtender()),
                                        m_prevState(EXTENDER_STATE::STARTING_POSITION_EXTEND),
                                        m_currentState(EXTENDER_STATE::STARTING_POSITION_EXTEND),
@@ -80,6 +81,8 @@ ExtenderStateMgr::ExtenderStateMgr() : StateMgr(),
     {
         m_extender->AddStateMgr(this);
     }
+
+    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::ArmRotateState);
 }
 
 /// @brief  Get the current Parameter parm value for the state of this mechanism
@@ -175,7 +178,7 @@ void ExtenderStateMgr::CheckForStateTransition()
 
     if (m_extender != nullptr)
     {
-        if (m_targetState != m_currentState)
+        if (m_targetState != m_currentState && m_canAutomaticallyMove)
         {
             SetCurrentState(m_targetState, true);
             RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmExtenderState, m_targetState);
@@ -184,6 +187,22 @@ void ExtenderStateMgr::CheckForStateTransition()
             {
                 m_extender->UpdateTarget(dynamic_cast<Mech1IndMotorState *>(GetStateVector()[m_prevState])->GetCurrentTarget()); // Get the target of the previous state by referencing the state vector
             }
+        }
+    }
+}
+
+void ExtenderStateMgr::Update(RobotStateChanges::StateChange change, int value)
+{
+    if (change == RobotStateChanges::StateChange::ArmRotateState)
+    {
+        ArmStateMgr::ARM_STATE armState = static_cast<ArmStateMgr::ARM_STATE>(value);
+        if (armState == ArmStateMgr::ARM_STATE::HOLD_POSITION_ROTATE)
+        {
+            m_canAutomaticallyMove = true;
+        }
+        else
+        {
+            m_canAutomaticallyMove = false;
         }
     }
 }

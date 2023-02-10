@@ -50,7 +50,7 @@ public:
         BALANCE_MODE,
         AUTO_BALANCE,
         // Scoring states
-        HOLD_POSITION, // may not need this state
+        // HOLD_POSITION, // may not need this state
         BACKROW,
         MIDROW,
         HUMAN_PLAYER_STATION,
