@@ -18,7 +18,7 @@
 #pragma once 
 
 // Team 302 includes
-#include <hw/DragonLeds.h>
+#include <mechanisms/LEDS/LED.h>
 
 // Third Party Includes
 #include <pugixml/pugixml.hpp>
@@ -32,7 +32,7 @@ class LedXmlParser
 
         /// @brief Parse a servo XML element and create a DragonServo from its definition.
         /// @return std::shared_ptr<DragonServo> servo
-        DragonLeds* ParseXML
+        LED* ParseXML
         (
             pugi::xml_node      ledNode
         );

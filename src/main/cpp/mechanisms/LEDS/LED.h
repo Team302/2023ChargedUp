@@ -16,29 +16,37 @@
 
 #pragma once
 #include <frc/AddressableLED.h>
+#include <vector>
 
 
 class LED
 {
 	public:
-        LED(int PWMport);
+        LED(int PWMport, int ledSize);
 
 
         enum Colors{RED, GREEN, BLUE, PURPLE, YELLOW, AZUL, BLACK, WHITE, MAX_STATE};
 
-        static constexpr int kLength = 15;
+        static int kLength;
 
         frc::AddressableLED* m_led;
-        std::array<frc::AddressableLED::LEDData, kLength> m_ledBuffer;
+
+        std::vector<const frc::AddressableLED::LEDData> m_ledBuffer;
       
         std::array<int,3> getColorValues(Colors c);
+        bool isInitialized();
+        void initialize(int PWMport,  int ledSize);
+        
         ~LED();
         LED() = delete;
 
         static LED* GetInstance();
 
+        
+
         private:
         static LED* m_instance;
+        int m_PWMport;
    
         
         

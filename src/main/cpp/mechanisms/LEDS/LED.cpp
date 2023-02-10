@@ -16,11 +16,9 @@
 
 #include <mechanisms/LEDS/LED.h>
 
-    LED::LED(int PWMport){
-        m_led = new frc::AddressableLED(PWMport);
-        m_led->SetLength(kLength);
-        m_led->SetData(m_ledBuffer);
-        m_led->Start();
+    LED::LED(int PWMport, int ledSize){
+        kLength = ledSize;
+        m_PWMport = PWMport;        
     }
     LED* LED::m_instance = nullptr;
 
@@ -28,11 +26,25 @@
 {
 	if ( LED::m_instance == nullptr )
 	{
-		LED::m_instance = new LED(0);
+		LED::m_instance = new LED(0,0);
 	}
 	return LED::m_instance;
 }
 
+    bool LED::isInitialized(){
+        return m_led != nullptr;
+    }
+    void LED::initialize(int PWMport,  int ledSize){
+        kLength = ledSize;
+        m_PWMport = PWMport;
+        m_ledBuffer.resize(ledSize);
+
+        m_led = new frc::AddressableLED(PWMport);
+        m_led->SetLength(kLength);
+        m_led->SetData(m_ledBuffer);
+        m_led->Start();
+        
+    }
 
     std::array<int, 3> LED::getColorValues(Colors c){
         switch (c)
