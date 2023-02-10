@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -28,21 +28,16 @@
 
 class SolenoidXmlParser
 {
-    public:
+public:
+    SolenoidXmlParser() = default;
+    virtual ~SolenoidXmlParser() = default;
 
-        SolenoidXmlParser() = default;
-        virtual ~SolenoidXmlParser() = default;
+    /// @brief  Parse a solenoid XML element and create a DragonSolenoid from its definition.
+    /// @return std::shared_ptr<DragonSolenoid> solenoid pointer (or nullptr if XML is ill-formed)
+    std::shared_ptr<DragonSolenoid> ParseXML(
+        std::string networkTableName,
+        pugi::xml_node solenoidNode /// <I> - xml Solenoid node
+    );
 
-
-        /// @brief  Parse a solenoid XML element and create a DragonSolenoid from its definition.
-        /// @return std::shared_ptr<DragonSolenoid> solenoid pointer (or nullptr if XML is ill-formed)
-        std::shared_ptr<DragonSolenoid> ParseXML
-        (
-            std::string         networkTableName,
-            pugi::xml_node      solenoidNode   /// <I> - xml Solenoid node
-        );
-
-    private:
+private:
 };
-
-

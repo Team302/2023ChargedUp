@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -16,7 +16,6 @@
 
 #pragma once
 
-
 // C++ Includes
 #include <memory>
 #include <string>
@@ -27,30 +26,23 @@
 // Third Party Includes
 #include <pugixml/pugixml.hpp>
 
-
-
 class MotorXmlParser
 {
-    public:
+public:
+    MotorXmlParser() = default;
+    virtual ~MotorXmlParser() = default;
 
-        MotorXmlParser() = default;
-        virtual ~MotorXmlParser() = default;
+    ///-----------------------------------------------------------------------
+    /// Method:      ParseXML
+    /// Description: Parse a motor XML element and create a DragonTalonSRX from
+    ///              its definition.
+    /// Returns:     DragonTalonSRX*        motor controller (or nullptr if XML
+    ///                                  is ill-formed)
+    ///-----------------------------------------------------------------------
+    std::shared_ptr<IDragonMotorController> ParseXML(
+        std::string networkTableName,
+        pugi::xml_node motorNode /// <I> - xml motor node
+    );
 
-
-        ///-----------------------------------------------------------------------
-        /// Method:      ParseXML
-        /// Description: Parse a motor XML element and create a DragonTalonSRX from
-        ///              its definition.
-        /// Returns:     DragonTalonSRX*        motor controller (or nullptr if XML
-        ///                                  is ill-formed)
-        ///-----------------------------------------------------------------------
-        std::shared_ptr<IDragonMotorController> ParseXML
-        (
-            std::string         networkTableName,
-            pugi::xml_node      motorNode   /// <I> - xml motor node
-        );
-
-    private:
+private:
 };
-
-

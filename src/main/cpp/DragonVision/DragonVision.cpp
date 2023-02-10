@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-/// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+/// Copyright 2022 Lake Orion Robotics FIRST Team 302
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 /// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -13,14 +13,11 @@
 /// OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-
 // C++ Includes
-
 
 // FRC includes
 
 // Team 302 includes
-
 
 #include <DragonVision/DragonVision.h>
 #include <hw\factories\LimelightFactory.h>
@@ -29,46 +26,43 @@
 // Third Party Includes
 
 using namespace std;
-DragonVision* DragonVision::m_dragonVision = nullptr;
-DragonVision* DragonVision::GetDragonVision
-(
-	
-)
+DragonVision *DragonVision::m_dragonVision = nullptr;
+DragonVision *DragonVision::GetDragonVision()
 {
-	if ( DragonVision::m_dragonVision == nullptr )
+	if (DragonVision::m_dragonVision == nullptr)
 	{
-		DragonVision::m_dragonVision = new DragonVision(std::string("DragonVision"), int(-1));
+		DragonVision::m_dragonVision = new DragonVision();
 	}
 	return DragonVision::m_dragonVision;
 }
 
-//state functions
+// state functions
 
-
-DragonVision::DragonVision(std::string stateName, int stateId): State(stateName, stateId),
-						   m_frontDragonLimelight(LimelightFactory::GetLimelightFactory()->GetLimelight())				
+DragonVision::DragonVision() : m_frontDragonLimelight(LimelightFactory::GetLimelightFactory()->GetLimelight(LimelightUsages::PRIMARY)),
+							   m_backDragonLimelight(LimelightFactory::GetLimelightFactory()->GetLimelight(LimelightUsages::SECONDARY))
 {
-	
-}
-void DragonVision::Init() 
-{
-
-}
-void DragonVision::Exit() 
-{
-
-}
-bool DragonVision::AtTarget() const
-{
-	return false;
-}
-void DragonVision::Run() 
-{
-
 }
 
-int DragonVision::GetRobotPosition()  const
+void DragonVision::setPipeline(PIPELINE_MODE mode, LIMELIGHT_POSITION position)
+{
+}
+
+units::length::inch_t DragonVision::GetDistanceToTarget(LIMELIGHT_POSITION position) const
+{
+	return units::length::inch_t(0);
+}
+
+units::angle::degree_t DragonVision::GetHorizontalAngleToTarget(LIMELIGHT_POSITION position) const
+{
+	return units::angle::degree_t(0);
+}
+
+units::angle::degree_t DragonVision::GetVerticalAngleToTarget(LIMELIGHT_POSITION position) const
+{
+	return units::angle::degree_t(0);
+}
+
+int DragonVision::GetRobotPosition() const
 {
 	return 0;
 }
-

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE auton SYSTEM "auton.dtd">
+<auton>
+    <primitive id="RESET_POSITION" 
+			   pathname="BlueHP1.wpilib.jason"/> 
+    <primitive id="DRIVE_PATH" 
+               pathname="BlueHP1.wpilib.jason" 
+               time="3.0"/> <!--driving to gamepiece-->
+    <primitive id="DO_NOTHING"
+               time="2.0"/> <!--pick up gamepiece-->
+    <!--driving to closest scoring station (need primitive)-->
+    <!--determine grabbed gamepiece (need primitive)-->
+    <!--drive to gamepiece specific scoring station (need primitive)-->
+    <primitive id="DO_NOTHING"
+                time="2.0"/> <!--score gamepiece-->
+
+<!--need to create conditions to determine next action-->
+    <!--picking up another gamepiece-->
+    <primitive id="DRIVE_PATH"
+               pathname="BlueHP3A.wpilib.jason" 
+               time="3.0"/> <!--driving to gamepiece-->
+    <primitive id="DO_NOTHING"
+               time="2.0"/> <!--pick up gamepiece-->
+    <!--driving to closest scoring statin (need primitive)-->
+    <!--determine grabbed gamepiece-->
+    <!--drive to gamepiece specific scoring station (need primitive)-->
+    <primitive id="DO_NOTHING"
+               time="2.0"/> <!--score gamepiece-->
+                                                        <!--going to charging station-->
+                                                        <primitive id="DRIVE_PATH"
+                                                                   pathname="BlueHP3B"
+                                                                   time="2.0"/> <!--drive to charging station-->
+                                                                                                                    <!--doing nothing-->
+                                                                                                                    <primitive id="DO_NOTHING"
+                                                                                                                               time="15.0"/>
+<!--
+<!--need to create condition to determine next action-->
+    <!--going to charging station-->
+    <primitive id="DRIVE_PATH"
+               pathname="BlueHP5A.wpilib.jason"
+               time="2.0"/> <!--driving to charing station-->
+                                                                <!--doing nothing-->
+                                                                <primitive id="DO_NOTHING"
+                                                                           time="15.0"/>     -->
+</auton>

@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-/// Copyright 2022 Lake Orion Robotics FIRST Team 302
+/// Copyright 2023 Lake Orion Robotics FIRST Team 302
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 /// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -24,60 +24,53 @@
 #include <hw/factories/DigitalInputFactory.h>
 #include <hw/usages/DigitalInputUsage.h>
 
-
 // Third Party Includes
 #include <units/time.h>
 
 using namespace std;
 
-
 /// @brief    Find or create the Digital input factory
 /// @returns  DigitalInputFactory* pointer to the factory
-DigitalInputFactory* DigitalInputFactory::m_factory = nullptr;
-DigitalInputFactory* DigitalInputFactory::GetFactory()
+DigitalInputFactory *DigitalInputFactory::m_factory = nullptr;
+DigitalInputFactory *DigitalInputFactory::GetFactory()
 {
-	if ( DigitalInputFactory::m_factory == nullptr )
-	{
-		DigitalInputFactory::m_factory = new DigitalInputFactory();
-	}
-	return DigitalInputFactory::m_factory;
+    if (DigitalInputFactory::m_factory == nullptr)
+    {
+        DigitalInputFactory::m_factory = new DigitalInputFactory();
+    }
+    return DigitalInputFactory::m_factory;
 }
-
 
 /// @brief   Create the requested Digital input
 /// @returns DragonDigitalInput*     pointer to the digital input or nullptr if it fails
-DragonDigitalInput* DigitalInputFactory::CreateInput
-(
-    string										    networkTableName,
-    DigitalInputUsage::DIGITAL_SENSOR_USAGE			type,
-    int 						                    digitalID,
-    bool						                    reversed,
-    units::time::second_t                           debounceTime
-)
+DragonDigitalInput *DigitalInputFactory::CreateInput(
+    string networkTableName,
+    DigitalInputUsage::DIGITAL_INPUT_USAGE type,
+    int digitalID,
+    bool reversed,
+    units::time::second_t debounceTime)
 {
-    DragonDigitalInput* sensor = nullptr;
-    switch ( type )
+    DragonDigitalInput *sensor = nullptr;
+    switch (type)
     {
 
-        default:
-            break;
+    default:
+        break;
     }
     return sensor;
 }
 
 /// @brief   Get the requested Digital input
 /// @returns DragonDigitalInput*     pointer to the digital input or nullptr if it doesn't exist
-DragonDigitalInput* DigitalInputFactory::GetInput
-(
-    DigitalInputUsage::DIGITAL_SENSOR_USAGE			type
-)
+DragonDigitalInput *DigitalInputFactory::GetInput(
+    DigitalInputUsage::DIGITAL_INPUT_USAGE type)
 {
-    DragonDigitalInput* sensor = nullptr;
-    switch ( type )
+    DragonDigitalInput *sensor = nullptr;
+    switch (type)
     {
 
-        default:
-            break;
+    default:
+        break;
     }
     return sensor;
 }

@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-/// Copyright 2023 Lake Orion Robotics FIRST Team 302 
+/// Copyright 2023 Lake Orion Robotics FIRST Team 302
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 /// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -13,20 +13,20 @@
 /// OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-//C++ Includes
+// C++ Includes
 #include <vector>
 
-//FRC Includes
+// FRC Includes
 #include <frc/shuffleboard/Shuffleboard.h>
 
-//Team 302 Includes
+// Team 302 Includes
 #include <AdjustableItem.h>
 #include <AdjustableItemMgr.h>
 
-AdjustableItemMgr* AdjustableItemMgr::m_instance = nullptr;
-AdjustableItemMgr* AdjustableItemMgr::GetInstance()
+AdjustableItemMgr *AdjustableItemMgr::m_instance = nullptr;
+AdjustableItemMgr *AdjustableItemMgr::GetInstance()
 {
-    if(AdjustableItemMgr::m_instance == nullptr)
+    if (AdjustableItemMgr::m_instance == nullptr)
     {
         AdjustableItemMgr::m_instance = new AdjustableItemMgr();
     }
@@ -39,23 +39,21 @@ AdjustableItemMgr::AdjustableItemMgr() : m_adjustableItems()
     m_enableButton = frc::Shuffleboard::GetTab("Tuning").Add("Enable Live Tuning", false).WithWidget(frc::BuiltInWidgets::kToggleButton).GetEntry();
 }
 
-void AdjustableItemMgr::RegisterAdjustableItem
-(
-    AdjustableItem* item
-)
+void AdjustableItemMgr::RegisterAdjustableItem(
+    AdjustableItem *item)
 {
     m_adjustableItems.emplace_back(item);
 }
 
 void AdjustableItemMgr::ListenForUpdates()
 {
-    //check for button state changes
-    if(m_enableButton->GetBoolean(false))
+    // check for button state changes
+    if (m_enableButton->GetBoolean(false))
     {
-        //Populate wiht all adjustable items
+        // Populate wiht all adjustable items
         PopulateNetworkTables();
 
-        //Add other buttons onto dashboard
+        // Add other buttons onto dashboard
         m_submitButton = frc::Shuffleboard::GetTab("Tuning").Add("Submit Changes", false).WithWidget(frc::BuiltInWidgets::kToggleButton).GetEntry();
         m_resetButton = frc::Shuffleboard::GetTab("Tuning").Add("Reset Changes", false).WithWidget(frc::BuiltInWidgets::kToggleButton).GetEntry();
         m_getDiffsButton = frc::Shuffleboard::GetTab("Tuning").Add("Show Differences", false).WithWidget(frc::BuiltInWidgets::kToggleButton).GetEntry();
@@ -63,30 +61,30 @@ void AdjustableItemMgr::ListenForUpdates()
         m_enabled = true;
     }
 
-    if(m_enabled)
+    if (m_enabled)
     {
-        if(m_submitButton->GetBoolean(false))
+        if (m_submitButton->GetBoolean(false))
         {
-            for(auto item : m_adjustableItems)
+            for (auto item : m_adjustableItems)
             {
                 item->SetValues();
             }
             m_submitButton->SetBoolean(false);
         }
 
-        if(m_resetButton->GetBoolean(false))
+        if (m_resetButton->GetBoolean(false))
         {
-            for(auto item: m_adjustableItems)
+            for (auto item : m_adjustableItems)
             {
                 item->ResetValues();
             }
             m_resetButton->SetBoolean(false);
         }
 
-        if(m_getDiffsButton->GetBoolean(false))
+        if (m_getDiffsButton->GetBoolean(false))
         {
-            std::vector<AdjustableItem*> itemsWithDiffs = CheckForDifferences();
-            for(auto item : itemsWithDiffs)
+            std::vector<AdjustableItem *> itemsWithDiffs = CheckForDifferences();
+            for (auto item : itemsWithDiffs)
             {
                 item->ShowDifferences();
             }
@@ -95,12 +93,12 @@ void AdjustableItemMgr::ListenForUpdates()
     }
 }
 
-std::vector<AdjustableItem*> AdjustableItemMgr::CheckForDifferences()
+std::vector<AdjustableItem *> AdjustableItemMgr::CheckForDifferences()
 {
-    std::vector<AdjustableItem*> itemsWithDiffs;
-    for(auto item : m_adjustableItems)
+    std::vector<AdjustableItem *> itemsWithDiffs;
+    for (auto item : m_adjustableItems)
     {
-        if(item->HasDifferences())
+        if (item->HasDifferences())
         {
             itemsWithDiffs.emplace_back(item);
         }
@@ -111,7 +109,7 @@ std::vector<AdjustableItem*> AdjustableItemMgr::CheckForDifferences()
 
 void AdjustableItemMgr::PopulateNetworkTables()
 {
-    for(auto item: m_adjustableItems)
+    for (auto item : m_adjustableItems)
     {
         item->PopulateNetworkTable();
     }

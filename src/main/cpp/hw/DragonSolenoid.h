@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -23,79 +23,66 @@
 
 #include <hw/usages/SolenoidUsage.h>
 
-
 class DragonSolenoid
 {
-    public:
-        DragonSolenoid() = delete;
-        DragonSolenoid
-        (
-            std::string     networkTableName,
-            SolenoidUsage::SOLENOID_USAGE usage,
-            int  pcmID,
-			int  channel,
-            bool reversed
-        );
-        DragonSolenoid
-        (
-            std::string     networkTableName,
-            SolenoidUsage::SOLENOID_USAGE usage,
-            int  pcmID,
-            frc::PneumaticsModuleType pcmType,
-			int  channel,
-            bool reversed
-        );
-        DragonSolenoid
-        (
-            std::string     networkTableName,
-            SolenoidUsage::SOLENOID_USAGE usage,
-            int  pcmID,
-            frc::PneumaticsModuleType pcmType,
-			int  forwardChannel,
-            int  reverseChannel,
-            bool reversed
-        );
-        virtual ~DragonSolenoid() = default;
+public:
+    DragonSolenoid() = delete;
+    DragonSolenoid(
+        std::string networkTableName,
+        SolenoidUsage::SOLENOID_USAGE usage,
+        int pcmID,
+        int channel,
+        bool reversed);
+    DragonSolenoid(
+        std::string networkTableName,
+        SolenoidUsage::SOLENOID_USAGE usage,
+        int pcmID,
+        frc::PneumaticsModuleType pcmType,
+        int channel,
+        bool reversed);
+    DragonSolenoid(
+        std::string networkTableName,
+        SolenoidUsage::SOLENOID_USAGE usage,
+        int pcmID,
+        frc::PneumaticsModuleType pcmType,
+        int forwardChannel,
+        int reverseChannel,
+        bool reversed);
+    virtual ~DragonSolenoid() = default;
 
-        void Set
-        (
-            bool on
-        );
-        void Set
-        (
-            frc::DoubleSolenoid::Value setting
-        );
-        bool Get() const;
-        frc::DoubleSolenoid::Value GetDouble() const;
-        bool IsDisabled() const;
+    void Set(
+        bool on);
+    void Set(
+        frc::DoubleSolenoid::Value setting);
+    bool Get() const;
+    frc::DoubleSolenoid::Value GetDouble() const;
+    bool IsDisabled() const;
 
-        SolenoidUsage::SOLENOID_USAGE GetType() const;
+    SolenoidUsage::SOLENOID_USAGE GetType() const;
 
+private:
+    void InitSingle(
+        std::string networkTableName,
+        SolenoidUsage::SOLENOID_USAGE usage,
+        int pcmID,
+        frc::PneumaticsModuleType pcmType,
+        int channel,
+        bool reversed);
+    void InitDouble(
+        std::string networkTableName,
+        SolenoidUsage::SOLENOID_USAGE usage,
+        int pcmID,
+        frc::PneumaticsModuleType pcmType,
+        int forwardChannel,
+        int reverseChannel,
+        bool reversed);
 
-    private:
-        void InitSingle
-        (
-            std::string     networkTableName,
-            SolenoidUsage::SOLENOID_USAGE usage,
-            int  pcmID,
-            frc::PneumaticsModuleType pcmType,
-			int  channel,
-            bool reversed
-        );
-        void InitDouble
-        (
-            std::string     networkTableName,
-            SolenoidUsage::SOLENOID_USAGE usage,
-            int  pcmID,
-            frc::PneumaticsModuleType pcmType,
-			int  forwardChannel,
-            int  reverseChannel,
-            bool reversed
-        );
+    double m_minPressure = 105.0; // PSI
+    double m_maxPressure = 115.0; // PSI
 
-        std::string                             m_networkTableName;
-        SolenoidUsage::SOLENOID_USAGE           m_usage;
-        frc::Solenoid*                          m_solenoid;
-        frc::DoubleSolenoid*                    m_doubleSolenoid;
-        bool                                    m_reversed;
+    std::string m_networkTableName;
+    SolenoidUsage::SOLENOID_USAGE m_usage;
+    frc::Solenoid *m_solenoid;
+    frc::DoubleSolenoid *m_doubleSolenoid;
+    bool m_reversed;
 };

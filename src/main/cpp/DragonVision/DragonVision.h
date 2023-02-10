@@ -21,30 +21,38 @@
 #include <DragonVision/DragonVisionTarget.h>
 
 class DragonLimelight;
-class DragonVision : public State
+class DragonVision
 {
-    public:
-        static DragonVision* GetDragonVision();
+public:
+    static DragonVision *GetDragonVision();
 
-    void Init() override;
-    void Run() override;
-    void Exit() override;
-    bool AtTarget() const override;
+    enum PIPELINE_MODE
+    {
+        RETRO_REFLECTIVE,
+        APRIL_TAG,
+        CONE,
+        CUBE
+    };
 
-    units::length::inch_t GetDistanceFromTarget() const;
-    units::angle::degree_t GetAngleFromTarget() const;
+    enum LIMELIGHT_POSITION
+    {
+        FRONT,
+        BACK
+    };
+
+    void setPipeline(PIPELINE_MODE mode, LIMELIGHT_POSITION position);
+    units::length::inch_t GetDistanceToTarget(LIMELIGHT_POSITION position) const;
+    units::angle::degree_t GetHorizontalAngleToTarget(LIMELIGHT_POSITION position) const;
+    units::angle::degree_t GetVerticalAngleToTarget(LIMELIGHT_POSITION position) const;
 
     int GetRobotPosition() const;
-   
+
 private:
-    
-    DragonVision(std::string     stateName,
-                int              stateId);
+    DragonVision();
     ~DragonVision() = default;
 
-    static DragonVision*	m_dragonVision;
-    DragonLimelight*           m_frontDragonLimelight;
-    
+    static DragonVision *m_dragonVision;
+
+    DragonLimelight *m_frontDragonLimelight;
+    DragonLimelight *m_backDragonLimelight;
 };
-
-

@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -40,9 +40,11 @@
 #include <hw/usages/ServoMap.h>
 #include <mechanisms/MechanismTypes.h>
 #include <mechanisms/base/Mech.h>
-#include <mechanisms/example/Example.h>
 
-// @ADDMECH include for your mechanism 
+// @ADDMECH include for your mechanism
+#include <mechanisms/arm/Arm.h>
+#include <mechanisms/extender/Extender.h>
+#include <mechanisms/grabber/Grabber.h>
 
 // Third Party Includes
 
@@ -55,76 +57,56 @@ class DragonSolenoid;
 class IDragonMotorController;
 class Mech;
 
-
 class MechanismFactory
 {
-	public:
+public:
+	static MechanismFactory *GetMechanismFactory();
 
-		static MechanismFactory* GetMechanismFactory();
+	/// @brief    Find or create the requested mechanism
+	void CreateMechanism(
+		MechanismTypes::MECHANISM_TYPE type,
+		std::string networkTableName,
+		std::string controlFileName,
+		const IDragonMotorControllerMap &motorControllers,
+		const DragonSolenoidMap &solenoids,
+		const ServoMap &servos,
+		const DigitalInputMap &digitalInputs,
+		const AnalogInputMap &analogInputs,
+		DragonCanCoder *canCoder);
 
+	// @ADDMECH  Add inline Get method for your mechanism
+	inline Arm *GetArm() const { return m_arm; }
+	inline Extender *GetExtender() const { return m_extender; }
+	inline Grabber *GetGrabber() const { return m_grabber; }
 
-		/// @brief    Find or create the requested mechanism
-		void  CreateMechanism
-		(
-			MechanismTypes::MECHANISM_TYPE							type,
-			std::string												networkTableName,
-			std::string												controlFileName,
-			const IDragonMotorControllerMap&        				motorControllers,   
-			const DragonSolenoidMap&                				solenoids,
-			const ServoMap&						    				servos,
-			const DigitalInputMap&									digitalInputs,
-			const AnalogInputMap& 								    analogInputs,
-			DragonCanCoder* 										canCoder
-		);
-		
-		inline Example* GetExample() const {return m_example;}
-		
-		// @ADDMECH  Add inline Get method for your mechanism
+	Mech *GetMechanism(
+		MechanismTypes::MECHANISM_TYPE type) const;
 
-		Mech* GetMechanism
-		(
-			MechanismTypes::MECHANISM_TYPE	type
-		) const;
+private:
+	std::shared_ptr<IDragonMotorController> GetMotorController(
+		const IDragonMotorControllerMap &motorcontrollers,
+		MotorControllerUsage::MOTOR_CONTROLLER_USAGE usage);
+	std::shared_ptr<DragonSolenoid> GetSolenoid(
+		const DragonSolenoidMap &solenoids,
+		SolenoidUsage::SOLENOID_USAGE usage);
+	DragonServo *GetServo(
+		const ServoMap &servos,
+		ServoUsage::SERVO_USAGE usage);
+	std::shared_ptr<DragonDigitalInput> GetDigitalInput(
+		const DigitalInputMap &digitaInputs,
+		DigitalInputUsage::DIGITAL_INPUT_USAGE usage);
 
+	DragonAnalogInput *GetAnalogInput(
+		const AnalogInputMap &analogInputs,
+		DragonAnalogInput::ANALOG_SENSOR_TYPE usage);
 
-	private:
-		std::shared_ptr<IDragonMotorController> GetMotorController
-		(
-			const IDragonMotorControllerMap&				motorcontrollers,
-			MotorControllerUsage::MOTOR_CONTROLLER_USAGE	usage
-		);
-		std::shared_ptr<DragonSolenoid> GetSolenoid
-		(
-			const DragonSolenoidMap&						solenoids,
-			SolenoidUsage::SOLENOID_USAGE					usage
-		);
-		DragonServo* GetServo
-		(
-			const ServoMap&									servos,
-			ServoUsage::SERVO_USAGE							usage
-		);
-		std::shared_ptr<DragonDigitalInput> GetDigitalInput
-		(
-			const DigitalInputMap&							digitaInputs,
-			DigitalInputUsage::DIGITAL_SENSOR_USAGE			usage
-		);
+	MechanismFactory();
+	virtual ~MechanismFactory() = default;
 
-		DragonAnalogInput* GetAnalogInput
-		(
-			const AnalogInputMap&							analogInputs,
-			DragonAnalogInput::ANALOG_SENSOR_TYPE			usage
-		);
+	static MechanismFactory *m_mechanismFactory;
 
-		MechanismFactory();
-		virtual ~MechanismFactory() = default;
-
-		static MechanismFactory*	m_mechanismFactory;
-
-		Example*                        m_example;
-		
-		// @ADDMECH  Add your mechanism here		
-         
-
-		
-
+	// @ADDMECH  Add your mechanism here
+	Arm *m_arm;
+	Extender *m_extender;
+	Grabber *m_grabber;
 };

@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -14,7 +14,6 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-
 // C++ Includes
 #include <memory>
 
@@ -25,7 +24,7 @@
 #include <hw/factories/DragonServoFactory.h>
 #include <hw/usages/ServoUsage.h>
 #include <utils/HardwareIDValidation.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 #include <hw/xml/ServoXmlParser.h>
 
 // Third Party Includes
@@ -33,64 +32,62 @@
 
 using namespace std;
 
-    //-----------------------------------------------------------------------
-    // Method:      ParseXML
-    // Description: Parse a servo XML element and create a DragonServo from
-    //              its definition.
-    //
-    //
-    // Returns:     void        
-    //-----------------------------------------------------------------------
-    DragonServo* ServoXmlParser::ParseXML
-    (
-        string              networkTableName,
-        pugi::xml_node      ServoNode
-    )
+//-----------------------------------------------------------------------
+// Method:      ParseXML
+// Description: Parse a servo XML element and create a DragonServo from
+//              its definition.
+//
+//
+// Returns:     void
+//-----------------------------------------------------------------------
+DragonServo *ServoXmlParser::ParseXML(
+    string networkTableName,
+    pugi::xml_node ServoNode)
+{
+    DragonServo *servo = nullptr;
+
+    // initialize attributes to default values
+    int pwmID = 0;
+    ServoUsage::SERVO_USAGE usage = ServoUsage::UNKNOWN_SERVO_USAGE;
+    double minAngle = 0.0;
+    double maxAngle = 360.0;
+
+    bool hasError = false;
+
+    // parse/validate the xml
+    for (pugi::xml_attribute attr = ServoNode.first_attribute(); attr && !hasError; attr = attr.next_attribute())
     {
-        DragonServo* servo = nullptr; 
-
-        // initialize attributes to default values
-        int pwmID = 0;
-        ServoUsage::SERVO_USAGE usage = ServoUsage::UNKNOWN_SERVO_USAGE;
-        double minAngle = 0.0;
-        double maxAngle = 360.0;
-
-        bool hasError = false;
-
-        // parse/validate the xml
-        for (pugi::xml_attribute attr = ServoNode.first_attribute(); attr && !hasError; attr = attr.next_attribute())
+        string attrName(attr.name());
+        if (attrName.compare("usage") == 0)
         {
-            string attrName (attr.name());
-            if (attrName.compare("usage") == 0)
-            {
-                usage = ServoUsage::GetInstance()->GetUsage( string( attr.value()));
-            }
-            else if (attrName.compare("pwmId" ) == 0)
-            {
-                pwmID = attr.as_int();
-                hasError = HardwareIDValidation::ValidateDIOID( pwmID, string( "ServoXmlParser::ParseXML(PWM ID)" ) );
-            }
-            else if (attrName.compare("minAngle" ) == 0)
-            {
-                minAngle = attr.as_int();
-            }
-            else if (attrName.compare("maxAngle" ) == 0)
-            {
-                maxAngle = attr.as_int();
-            }
-            else
-            {
-                string msg = "unknown attribute ";
-                msg += attr.name();
-                Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("ServoXmlParser"), string("ParseXML"), msg );
-                hasError = true;
-            }
+            usage = ServoUsage::GetInstance()->GetUsage(string(attr.value()));
         }
-
-        // create the object
-        if ( !hasError )
+        else if (attrName.compare("pwmId") == 0)
         {
-            servo = DragonServoFactory::GetInstance()->CreateDragonServo( networkTableName, usage, pwmID, minAngle, maxAngle);
+            pwmID = attr.as_int();
+            hasError = HardwareIDValidation::ValidateDIOID(pwmID, string("ServoXmlParser::ParseXML(PWM ID)"));
         }
-        return servo;
+        else if (attrName.compare("minAngle") == 0)
+        {
+            minAngle = attr.as_int();
+        }
+        else if (attrName.compare("maxAngle") == 0)
+        {
+            maxAngle = attr.as_int();
+        }
+        else
+        {
+            string msg = "unknown attribute ";
+            msg += attr.name();
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("ServoXmlParser"), string("ParseXML"), msg);
+            hasError = true;
+        }
     }
+
+    // create the object
+    if (!hasError)
+    {
+        servo = DragonServoFactory::GetInstance()->CreateDragonServo(networkTableName, usage, pwmID, minAngle, maxAngle);
+    }
+    return servo;
+}

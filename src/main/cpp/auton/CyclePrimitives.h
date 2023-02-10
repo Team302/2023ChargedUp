@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -42,29 +42,29 @@ class LiftStateMgr;
 
 class CyclePrimitives : public State
 {
-	public:
-		CyclePrimitives();
-		virtual ~CyclePrimitives() = default;
+public:
+	CyclePrimitives();
+	virtual ~CyclePrimitives() = default;
 
-		void Init() override;
-		void Run() override;
-		void Exit() override;
-	 	bool AtTarget() const override;
+	void Init() override;
+	void Run() override;
+	void Exit() override;
+	bool AtTarget() const override;
 
+	AutonSelector *GetAutonSelector() const { return m_autonSelector; };
 
-	protected:
-		void GetNextPrim();
-		void RunDriveStop();
+protected:
+	void GetNextPrim();
+	void RunDriveStop();
 
-	private:
-		std::vector<PrimitiveParams*> 	m_primParams;
-		int 							m_currentPrimSlot;
-		IPrimitive*						m_currentPrim;
-		PrimitiveFactory* 				m_primFactory;
-		IPrimitive* 					m_DriveStop;
-		AutonSelector* 					m_autonSelector;
-		std::unique_ptr<frc::Timer>     m_timer;
-		double                          m_maxTime;
-		bool							m_isDone;
+private:
+	std::vector<PrimitiveParams *> m_primParams;
+	int m_currentPrimSlot;
+	IPrimitive *m_currentPrim;
+	PrimitiveFactory *m_primFactory;
+	IPrimitive *m_DriveStop;
+	AutonSelector *m_autonSelector;
+	std::unique_ptr<frc::Timer> m_timer;
+	double m_maxTime;
+	bool m_isDone;
 };
-

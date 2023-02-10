@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-/// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+/// Copyright 2023 Lake Orion Robotics FIRST Team 302
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 /// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -30,32 +30,29 @@ class Mech1IndMotor1Solenoid;
 
 class Mech1IndMotor1SolenoidState : public State
 {
-    public:
+public:
+    Mech1IndMotor1SolenoidState(
+        Mech1IndMotor1Solenoid *mechanism,
+        std::string identifer,
+        int stateId,
+        ControlData *control,
+        double target,
+        MechanismTargetData::SOLENOID solState);
+    Mech1IndMotor1SolenoidState() = delete;
+    ~Mech1IndMotor1SolenoidState() = default;
 
-        Mech1IndMotor1SolenoidState
-        (
-            Mech1IndMotor1Solenoid*          mechanism,
-            std::string                     identifer,
-            int                             stateId,
-            ControlData*                    control,
-            double                          target,
-            MechanismTargetData::SOLENOID   solState
-        );
-        Mech1IndMotor1SolenoidState() = delete;
-        ~Mech1IndMotor1SolenoidState() = default;
+    void Init() override;
+    void Run() override;
+    void Exit() override;
+    bool AtTarget() const override;
 
-        void Init() override;
-        void Run() override;
-        void Exit() override;
-        bool AtTarget() const override;
+    double GetTarget() const;
+    double GetRPS() const;
 
-        double GetTarget() const;
-        double GetRPS() const;
+    void LogInformation() const override;
 
-        void LogInformation() const override;
-
-    private:
-        Mech1IndMotor1Solenoid*                  m_mechanism;
-        std::shared_ptr<Mech1IndMotorState>        m_motorState;
-        std::shared_ptr<Mech1SolenoidState>      m_solenoidState;
+private:
+    Mech1IndMotor1Solenoid *m_mechanism;
+    std::shared_ptr<Mech1IndMotorState> m_motorState;
+    std::shared_ptr<Mech1SolenoidState> m_solenoidState;
 };

@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -15,11 +15,13 @@
 
 #pragma once
 
-//C++ Libraries
+// C++ Libraries
 
-//Team 302 includes
-#include <TeleopControl.h>
+// Team 302 includes
+#include <teleopcontrol/TeleopControl.h>
 #include <State.h>
+#include <chassis/swerve/driveStates/DragonTrajectoryGenerator.h>
+#include <utils/DragonField.h>
 
 class IChassis;
 class MecanumChassis;
@@ -27,20 +29,21 @@ class SwerveChassis;
 
 class HolonomicDrive : public State
 {
-    public:
+public:
+    HolonomicDrive();
+    ~HolonomicDrive() = default;
 
-        HolonomicDrive();
-        ~HolonomicDrive() = default;
+    void Init() override;
+    void Run() override;
+    void Exit() override;
+    bool AtTarget() const override;
 
-        void Init() override;
-        void Run() override;
-        void Exit() override;
-        bool AtTarget() const override;
-
-    private:
-        inline TeleopControl* GetController() const { return m_controller; }
-        IChassis*                           m_chassis;
-        TeleopControl*                      m_controller;
-        SwerveChassis*                      m_swerve;
-        MecanumChassis*                     m_mecanum;
+private:
+    IChassis *m_chassis;
+    SwerveChassis *m_swerve;
+    MecanumChassis *m_mecanum;
+    DragonTrajectoryGenerator *m_trajectoryGenerator;
+    ChassisOptionEnums::DriveStateType m_previousDriveState;
+    frc::Trajectory m_generatedTrajectory;
+    DragonField *m_field;
 };

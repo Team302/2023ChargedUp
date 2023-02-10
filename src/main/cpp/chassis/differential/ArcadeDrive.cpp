@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -26,11 +26,12 @@
 #include <chassis/ChassisMovement.h>
 #include <hw/DragonPigeon.h>
 #include <gamepad/IDragonGamePad.h>
-#include <TeleopControl.h>
+#include <teleopcontrol/TeleopControl.h>
+#include <teleopcontrol/TeleopControlFunctions.h>
 #include <State.h>
 #include <chassis/ChassisFactory.h>
 #include <hw/factories/PigeonFactory.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
 using namespace std;
 using namespace frc;
@@ -55,14 +56,6 @@ ArcadeDrive::ArcadeDrive() : State(string("ArcadeDrive"), -1),
 /// @return void
 void ArcadeDrive::Init()
 {
-    auto controller = GetController();
-    if (controller != nullptr)
-    {
-        controller->SetAxisProfile(TeleopControl::FUNCTION_IDENTIFIER::ARCADE_STEER, IDragonGamePad::AXIS_PROFILE::CUBED);
-        controller->SetDeadBand(TeleopControl::FUNCTION_IDENTIFIER::ARCADE_STEER, IDragonGamePad::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND);
-        controller->SetAxisProfile(TeleopControl::FUNCTION_IDENTIFIER::ARCADE_THROTTLE, IDragonGamePad::AXIS_PROFILE::CUBED);
-        controller->SetDeadBand(TeleopControl::FUNCTION_IDENTIFIER::ARCADE_THROTTLE, IDragonGamePad::AXIS_DEADBAND::APPLY_STANDARD_DEADBAND);
-    }
 }
 
 /// @brief calculate the output for the wheels on the chassis from the throttle and steer components
@@ -71,13 +64,13 @@ void ArcadeDrive::Run()
 {
     if (m_chassis != nullptr && m_controller != nullptr)
     {
-        auto throttle = m_controller->GetAxisValue(TeleopControl::FUNCTION_IDENTIFIER::ARCADE_THROTTLE);
-        auto steer = m_controller->GetAxisValue(TeleopControl::FUNCTION_IDENTIFIER::ARCADE_STEER);
+        auto throttle = m_controller->GetAxisValue(TeleopControlFunctions::FUNCTION::ARCADE_THROTTLE);
+        auto steer = m_controller->GetAxisValue(TeleopControlFunctions::FUNCTION::ARCADE_STEER);
 
         ChassisMovement moveInfo;
-         
+
         moveInfo.chassisSpeeds.vx = throttle * m_chassis->GetMaxSpeed();
-        moveInfo.chassisSpeeds.vy = 0_mps; //units::velocity::meters_per_second_t(0)
+        moveInfo.chassisSpeeds.vy = 0_mps; // units::velocity::meters_per_second_t(0)
         moveInfo.chassisSpeeds.omega = steer * m_chassis->GetMaxAngularSpeed();
         m_chassis->Drive(moveInfo);
     }

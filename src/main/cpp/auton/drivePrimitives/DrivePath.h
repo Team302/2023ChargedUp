@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -14,17 +14,17 @@
 //====================================================================================================================================================
 #pragma once
 
-//C++ Includes
+// C++ Includes
 #include <memory>
 
-//Team302 Includes
+// Team302 Includes
 #include <auton/PrimitiveParams.h>
 #include <auton/drivePrimitives/IPrimitive.h>
 #include <chassis/ChassisFactory.h>
 #include <chassis/IChassis.h>
 #include <chassis/ChassisOptionEnums.h>
 
-//FRC,WPI Includes
+// FRC,WPI Includes
 #include <frc/controller/HolonomicDriveController.h>
 #include <frc/controller/RamseteController.h>
 #include <frc/Filesystem.h>
@@ -33,7 +33,6 @@
 #include <frc/trajectory/TrajectoryConfig.h>
 #include <frc/trajectory/TrajectoryUtil.h>
 #include <wpi/SmallString.h>
-
 
 namespace frc
 {
@@ -52,34 +51,20 @@ public:
     bool IsDone() override;
 
 private:
-    bool IsSamePose(frc::Pose2d, frc::Pose2d, double tolerance); // routine to check for motion
-    void GetTrajectory(std::string  path);
+    void GetTrajectory(std::string path);
     void CalcCurrentAndDesiredStates();
 
+    std::shared_ptr<IChassis> m_chassis;
+    std::unique_ptr<frc::Timer> m_timer;
+    frc::Trajectory m_trajectory;
+    bool m_runHoloController;
 
+    frc::RamseteController m_ramseteController;
 
-    std::shared_ptr<IChassis>               m_chassis;
-    std::unique_ptr<frc::Timer>             m_timer;
+    std::string m_pathname;
 
-    frc::Pose2d                             m_currentChassisPosition;
-    frc::Trajectory                         m_trajectory;
-    bool                                    m_runHoloController;
-    bool                                    m_wasMoving;
-    frc::RamseteController                  m_ramseteController;
-    frc::HolonomicDriveController           m_holoController;
-    frc::Pose2d                             m_PrevPos;          // previous position of robot for compare to current position.
-    std::unique_ptr<frc::Timer>             m_PosChgTimer;      // scan time for position change
-    int                                     m_timesRun;
-    frc::Pose2d                             m_targetPose;
-    std::string                             m_pathname;
-    double                                  m_deltaX;
-    double                                  m_deltaY;
-    std::vector<frc::Trajectory::State>     m_trajectoryStates;
-    frc::Trajectory::State                  m_desiredState;
-    ChassisOptionEnums::HeadingOption       m_headingOption;
-    double                                  m_heading;
-    double                                  m_maxTime;
-    std::string                             m_ntName;
-
- 
+    ChassisOptionEnums::HeadingOption m_headingOption;
+    double m_heading;
+    double m_maxTime;
+    std::string m_ntName;
 };

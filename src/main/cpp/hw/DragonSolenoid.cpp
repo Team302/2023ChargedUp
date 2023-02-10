@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -14,72 +14,65 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-
 #include <memory>
 #include <string>
 
 #include <frc/Solenoid.h>
 #include <hw/DragonSolenoid.h>
 #include <hw/usages/SolenoidUsage.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
+#include <frc/Compressor.h>
 
 using namespace frc;
 using namespace std;
 
-DragonSolenoid::DragonSolenoid
-(
-    string                          networkTableName,
-    SolenoidUsage::SOLENOID_USAGE   usage,
-    int                             pcmID,
-	int                             channel,
-    bool                            reversed
-)
+DragonSolenoid::DragonSolenoid(
+    string networkTableName,
+    SolenoidUsage::SOLENOID_USAGE usage,
+    int pcmID,
+    int channel,
+    bool reversed)
 {
-    InitSingle(networkTableName, usage, pcmID, PneumaticsModuleType::CTREPCM, channel, reversed);
+    InitSingle(networkTableName, usage, pcmID, PneumaticsModuleType::REVPH, channel, reversed);
+    frc::Compressor compressor{1, frc::PneumaticsModuleType::REVPH};
+    compressor.EnableAnalog(units::pressure::pounds_per_square_inch_t(m_minPressure), units::pressure::pounds_per_square_inch_t(m_maxPressure));
 }
 
-DragonSolenoid::DragonSolenoid
-(
-    string                          networkTableName,
-    SolenoidUsage::SOLENOID_USAGE   usage,
-    int                             pcmID,
-    PneumaticsModuleType            pcmType,
-	int                             channel,
-    bool                            reversed
-) 
+DragonSolenoid::DragonSolenoid(
+    string networkTableName,
+    SolenoidUsage::SOLENOID_USAGE usage,
+    int pcmID,
+    PneumaticsModuleType pcmType,
+    int channel,
+    bool reversed)
 {
     InitSingle(networkTableName, usage, pcmID, pcmType, channel, reversed);
 }
 
-DragonSolenoid::DragonSolenoid
-(
-    string                          networkTableName,
-    SolenoidUsage::SOLENOID_USAGE   usage,
-    int                             pcmID,
-    PneumaticsModuleType            pcmType,
-    int                             forwardChannel,
-    int                             reverseChannel,
-    bool                            reversed
-) 
+DragonSolenoid::DragonSolenoid(
+    string networkTableName,
+    SolenoidUsage::SOLENOID_USAGE usage,
+    int pcmID,
+    PneumaticsModuleType pcmType,
+    int forwardChannel,
+    int reverseChannel,
+    bool reversed)
 {
     InitDouble(networkTableName, usage, pcmID, pcmType, forwardChannel, reverseChannel, reversed);
 }
 
-
-void DragonSolenoid::Set
-(
-    bool on
-)
+void DragonSolenoid::Set(
+    bool on)
 {
-    if ( m_solenoid != nullptr )
+    if (m_solenoid != nullptr)
     {
-        bool val = ( m_reversed ) ? !on : on;
-        m_solenoid->Set( val );
+        bool val = (m_reversed) ? !on : on;
+        m_solenoid->Set(val);
     }
     else if (m_doubleSolenoid != nullptr)
     {
         DoubleSolenoid::Value val = on ? DoubleSolenoid::Value::kForward : DoubleSolenoid::Value::kReverse;
-        if (m_reversed) 
+        if (m_reversed)
         {
             if (val == DoubleSolenoid::Value::kForward)
             {
@@ -98,15 +91,13 @@ void DragonSolenoid::Set
     }
 }
 
-void DragonSolenoid::Set
-(
-    DoubleSolenoid::Value   in
-)
+void DragonSolenoid::Set(
+    DoubleSolenoid::Value in)
 {
     if (m_doubleSolenoid != nullptr)
     {
         DoubleSolenoid::Value val = in;
-        if (m_reversed) 
+        if (m_reversed)
         {
             if (val == DoubleSolenoid::Value::kForward)
             {
@@ -122,7 +113,7 @@ void DragonSolenoid::Set
     else if (m_solenoid != nullptr)
     {
         auto on = in == DoubleSolenoid::Value::kForward;
-        auto val = ( m_reversed ) ? !on : on;
+        auto val = (m_reversed) ? !on : on;
         m_solenoid->Set(val);
     }
     else
@@ -131,15 +122,13 @@ void DragonSolenoid::Set
     }
 }
 
-void DragonSolenoid::InitSingle
-(
-    string                          networkTableName,
-    SolenoidUsage::SOLENOID_USAGE   usage,
-    int                             pcmID,
-    frc::PneumaticsModuleType       pcmType,
-    int                             channel,
-    bool                            reversed
-)
+void DragonSolenoid::InitSingle(
+    string networkTableName,
+    SolenoidUsage::SOLENOID_USAGE usage,
+    int pcmID,
+    frc::PneumaticsModuleType pcmType,
+    int channel,
+    bool reversed)
 {
     m_networkTableName = networkTableName;
     m_usage = usage;
@@ -148,17 +137,14 @@ void DragonSolenoid::InitSingle
     m_reversed = reversed;
 }
 
-
-void DragonSolenoid::InitDouble
-(
-    string                          networkTableName,
-    SolenoidUsage::SOLENOID_USAGE   usage,
-    int                             pcmID,
-    frc::PneumaticsModuleType       pcmType,
-    int                             forwardChannel,
-    int                             reverseChannel,
-    bool                            reversed
-)
+void DragonSolenoid::InitDouble(
+    string networkTableName,
+    SolenoidUsage::SOLENOID_USAGE usage,
+    int pcmID,
+    frc::PneumaticsModuleType pcmType,
+    int forwardChannel,
+    int reverseChannel,
+    bool reversed)
 {
     m_networkTableName = networkTableName;
     m_usage = usage;
@@ -170,9 +156,9 @@ void DragonSolenoid::InitDouble
 bool DragonSolenoid::Get() const
 {
     bool val = false;
-    if ( m_solenoid != nullptr )
+    if (m_solenoid != nullptr)
     {
-        val = ( m_reversed ) ? !m_solenoid->Get() : m_solenoid->Get();
+        val = (m_reversed) ? !m_solenoid->Get() : m_solenoid->Get();
     }
     else if (m_doubleSolenoid != nullptr)
     {
@@ -188,11 +174,11 @@ bool DragonSolenoid::Get() const
 bool DragonSolenoid::IsDisabled() const
 {
     bool val = false;
-    if ( m_solenoid != nullptr )
+    if (m_solenoid != nullptr)
     {
         val = m_solenoid->IsDisabled();
     }
-    else if ( m_doubleSolenoid != nullptr )
+    else if (m_doubleSolenoid != nullptr)
     {
         val = m_doubleSolenoid->IsFwdSolenoidDisabled();
     }
@@ -207,4 +193,3 @@ SolenoidUsage::SOLENOID_USAGE DragonSolenoid::GetType() const
 {
     return m_usage;
 }
-

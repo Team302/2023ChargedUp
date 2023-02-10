@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -20,25 +20,19 @@ InvertAxis::InvertAxis() : m_isInverted(false)
 {
 }
 
- 
-void InvertAxis::SetInverted
-(
-    bool      isInverted            // <I> - scale factor must be > 0.0 and <= 1.0
+void InvertAxis::SetInverted(
+    bool isInverted // <I> - scale factor must be > 0.0 and <= 1.0
 )
 {
     m_isInverted = isInverted;
 }
 
-double InvertAxis::ApplyInversion
-(
-    double      inputVal            // <I> - value to scale     
+void InvertAxis::ApplyInversion(
+    double &inputVal // <I> - value to scale
 ) const
 {
     if (m_isInverted)
     {
-        return inputVal * -1.0;
+        inputVal *= -1.0;
     }
-    return inputVal;
 }
-
-

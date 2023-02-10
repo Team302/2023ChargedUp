@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -30,22 +30,21 @@
 class IChassis;
 class PrimitiveParams;
 
-class DriveHoldPosition : public IPrimitive 
+class DriveHoldPosition : public IPrimitive
 {
 public:
-	void Init(PrimitiveParams*	params) override;
+	void Init(PrimitiveParams *params) override;
 	void Run() override;
 	bool IsDone() override;
 	DriveHoldPosition();
 	virtual ~DriveHoldPosition() = default;
 
 private:
-	const float kP = 10; //50, /75
+	const float kP = 10; // 50, /75
 	const float kI = 0.0;
 	const float kD = 0.0;
 	const float kF = 0.0;
-	//Objects
+	// Objects
 	std::shared_ptr<IChassis> m_chassis;
-	double m_timeRemaining; //In seconds
+	double m_timeRemaining; // In seconds
 };
-

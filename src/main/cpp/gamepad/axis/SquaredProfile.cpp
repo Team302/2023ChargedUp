@@ -1,14 +1,7 @@
 
-/*========================================================================================================
- * SquaredProfile.cpp
- *========================================================================================================
- *
- * File Description:  This applies a squared value profile to the input values.
- *
- *========================================================================================================*/
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -25,7 +18,6 @@
 #include <gamepad/axis/IProfile.h>
 #include <gamepad/axis/SquaredProfile.h>
 
-    
 //==================================================================================
 /// <summary>
 /// Method:         GetInstance
@@ -33,8 +25,8 @@
 /// Returns:        SquaredProfile*  Singleton squared value profile object
 /// </summary>
 //==================================================================================
-SquaredProfile* SquaredProfile::m_instance = nullptr;
-SquaredProfile* SquaredProfile::GetInstance()
+SquaredProfile *SquaredProfile::m_instance = nullptr;
+SquaredProfile *SquaredProfile::GetInstance()
 {
     if (m_instance == nullptr)
     {
@@ -43,19 +35,15 @@ SquaredProfile* SquaredProfile::GetInstance()
     return m_instance;
 }
 
-
-
 //==================================================================================
 /// <summary>
 /// Method:         ApplyProfile
 /// Description:    Apply the profile
 /// </summary>
 //==================================================================================
-double SquaredProfile::ApplyProfile
-(
-    double      inputVal            // <I> - value to apply profile to
-) const 
+void SquaredProfile::ApplyProfile(
+    double &inputVal // <I> - value to apply profile to
+) const
 {
-    return ( inputVal * inputVal );  // chose to be explicit instead of using the general pow function as this should be faster
+    inputVal *= inputVal; // chose to be explicit instead of using the general pow function as this should be faster
 }
-

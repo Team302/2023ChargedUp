@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -14,7 +14,6 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-
 // C++ Includes
 #include <memory>
 
@@ -27,7 +26,7 @@
 #include <hw/usages/ServoUsage.h>
 #include <hw/xml/RoboRioXmlParser.h>
 #include <utils/HardwareIDValidation.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
 // Third Party Includes
 #include <pugixml/pugixml.hpp>
@@ -35,19 +34,17 @@
 using namespace std;
 
 /// @brief Parse a roborio XML element and create a DragonRoboRioAccelerometer from its definition.
-void RoboRioXmlParser::ParseXML
-(
-    pugi::xml_node      roboRioNode
-)
+void RoboRioXmlParser::ParseXML(
+    pugi::xml_node roboRioNode)
 {
     // initialize attributes to default values
-    auto orient = RoboRioOrientation::ROBORIO_ORIENTATION:: X_FORWARD_Y_LEFT;
+    auto orient = RoboRioOrientation::ROBORIO_ORIENTATION::X_FORWARD_Y_LEFT;
     auto hasError = false;
 
     // parse/validate the xml
     for (pugi::xml_attribute attr = roboRioNode.first_attribute(); attr && !hasError; attr = attr.next_attribute())
     {
-        string attrName (attr.name());
+        string attrName(attr.name());
         if (attrName.compare("orientation") == 0)
         {
             auto it = RoboRioOrientation::GetInstance()->ROBORIO_ORIENTATION_MAP.find(attr.value());
@@ -59,7 +56,7 @@ void RoboRioXmlParser::ParseXML
             {
                 string msg = "Invalid Orientation Option ";
                 msg += attr.value();
-                Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("RoboRioXmlParser"), string("ParseXML"), msg );
+                Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("RoboRioXmlParser"), string("ParseXML"), msg);
                 hasError = true;
             }
         }
@@ -67,13 +64,13 @@ void RoboRioXmlParser::ParseXML
         {
             string msg = "unknown attribute ";
             msg += attr.name();
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("RoboRioXmlParser"), string("ParseXML"), msg );
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("RoboRioXmlParser"), string("ParseXML"), msg);
             hasError = true;
         }
     }
 
     // create the object
-    if ( !hasError )
+    if (!hasError)
     {
         DragonRoboRioAccelerometerFactory::GetInstance()->CreateAccelerometer(orient);
     }

@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -14,7 +14,7 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#include  <frc/GenericHID.h>
+#include <frc/GenericHID.h>
 
 #include <gamepad/button/POVButton.h>
 #include <gamepad/IDragonGamePad.h>
@@ -25,42 +25,37 @@
 /// Description:    This is the POV/DPAD button on a gamepad.
 /// </summary>
 //==================================================================================
-POVButton::POVButton
-(
-    frc::GenericHID*                    gamepad,        // <I> - gamepad to query
-    int                                 buttonID        // <I> - button ID this maps to           
-) : m_gamepad( gamepad ),                               //       false axis in the expected direction
-    m_button( buttonID )
+POVButton::POVButton(
+    frc::GenericHID *gamepad, // <I> - gamepad to query
+    int buttonID              // <I> - button ID this maps to
+    ) : m_gamepad(gamepad),   //       false axis in the expected direction
+        m_button(buttonID)
 {
 }
 
 //==================================================================================
 /// <summary>
 /// Method:         IsButtonPressed
-/// Description:    Read the button and return true if it is pressed and false if 
+/// Description:    Read the button and return true if it is pressed and false if
 ///                 it isn't.
 /// </summary>
 //==================================================================================
-bool POVButton::IsButtonPressed() const 
+bool POVButton::IsButtonPressed() const
 {
     bool pressed = false;
-    if ( m_gamepad != nullptr )
+    if (m_gamepad != nullptr)
     {
-        pressed = ( m_button == m_gamepad->GetPOV() );
+        pressed = (m_button == m_gamepad->GetPOV());
     }
     return pressed;
 }
 
-bool POVButton::WasButtonReleased() const 
+bool POVButton::WasButtonReleased() const
 {
     return !IsButtonPressed();
 }
 
-bool POVButton::WasButtonPressed() const 
+bool POVButton::WasButtonPressed() const
 {
     return IsButtonPressed();
 }
-
-
-
-

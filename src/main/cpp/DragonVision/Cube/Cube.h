@@ -17,12 +17,12 @@
 #pragma once
 
 #include <hw/DragonLimelight.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
+
 class DragonVIsion;
 class Cube : public DragonLimelight
 {
-    public:
-        
+public:
     Cube() = default;
     ~Cube() = default;
 

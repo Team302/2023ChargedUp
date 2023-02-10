@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -27,63 +27,80 @@
 #include <mechanisms/base/Mech1IndMotor.h>
 #include <mechanisms/base/Mech1IndMotor.h>
 #include <hw/interfaces/IDragonMotorController.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
 // Third Party Includes
 #include <units/time.h>
 
 using namespace std;
 
-/// @brief Create a generic mechanism wiht 1 independent motor 
+/// @brief Create a generic mechanism wiht 1 independent motor
 /// @param [in] MechanismTypes::MECHANISM_TYPE the type of mechansim
 /// @param [in] std::string the name of the file that will set control parameters for this mechanism
 /// @param [in] std::string the name of the network table for logging information
 /// @param [in] std::shared_ptr<IDragonMotorController> motor controller used by this mechanism
 Mech1IndMotor::Mech1IndMotor
 
-(
-    MechanismTypes::MECHANISM_TYPE              type,
-    std::string                                 controlFileName,
-    std::string                                 networkTableName,
-    std::shared_ptr<IDragonMotorController>     motorController
-) : Mech(type, controlFileName, networkTableName),
-    m_motor( motorController ),
-    m_target( 0.0 )
+    (
+        MechanismTypes::MECHANISM_TYPE type,
+        std::string controlFileName,
+        std::string networkTableName,
+        std::shared_ptr<IDragonMotorController> motorController) : Mech(type, controlFileName, networkTableName),
+                                                                   m_motor(motorController),
+                                                                   m_target(0.0)
 {
-    if (m_motor.get() == nullptr )
+    if (m_motor.get() == nullptr)
     {
-        Logger::GetLogger()->LogData( LOGGER_LEVEL::ERROR_ONCE, networkTableName, string( "Mech1IndMotor constructor" ), string( "motorController is nullptr" ) );
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, networkTableName, string("Mech1IndMotor constructor"), string("motorController is nullptr"));
     }
 }
 
-
-
 void Mech1IndMotor::Update()
 {
-    if ( m_motor.get() != nullptr )
+    if (m_motor.get() != nullptr)
     {
-        m_motor.get()->Set(m_target );
+        m_motor.get()->Set(m_target);
     }
     LogInformation();
 }
 
-void Mech1IndMotor::UpdateTarget
-(
-    double  target
-)
+void Mech1IndMotor::UpdateTarget(
+    double target)
 {
     m_target = target;
     Update();
 }
 
-
 double Mech1IndMotor::GetPosition() const
-
 {
     return m_motor.get()->GetRotations() * 360.0;
 }
 
+units::length::inch_t Mech1IndMotor::GetPositionInches() const
+{
+    double counts = m_motor.get()->GetCounts();
 
+    /* If sensor invted works we can get rid fo this logic
+    if(m_motor.get()->IsMotorInverted())
+    {
+        counts *= -1.0;
+    }*/
+
+    return units::length::inch_t(counts / m_motor.get()->GetCountsPerInch());
+}
+
+units::angle::degree_t Mech1IndMotor::GetPositionDegrees() const
+{
+    double counts = m_motor.get()->GetCounts();
+
+    /* If sensor invted works we can get rid fo this logic
+    if(m_motor.get()->IsMotorInverted())
+    {
+        counts *= -1.0;
+    }*/
+
+    return units::angle::degree_t(counts / m_motor.get()->GetCountsPerDegree());
+}
 
 double Mech1IndMotor::GetSpeed() const
 
@@ -91,30 +108,24 @@ double Mech1IndMotor::GetSpeed() const
     return m_motor.get()->GetRPS();
 }
 
-
 /// @brief  Set the control constants (e.g. PIDF values).
 /// @param [in] ControlData* pid:  the control constants
 /// @return void
-void Mech1IndMotor::SetControlConstants
-(
-    int                                         slot,
-    ControlData*                                pid                 
-)
+void Mech1IndMotor::SetControlConstants(
+    int slot,
+    ControlData *pid)
 {
-    if ( m_motor.get() != nullptr )
+    if (m_motor.get() != nullptr)
     {
-        m_motor.get()->SetControlConstants( slot, pid );
+        m_motor.get()->SetControlConstants(slot, pid);
     }
 }
-
-
 
 /// @brief log data to the network table if it is activated and time period has past
 void Mech1IndMotor::LogInformation() const
 {
     auto ntName = GetNetworkTableName();
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, ntName, "Speed", GetSpeed() );
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, ntName, "Position", GetPosition() );
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, ntName, "Target", GetTarget() );
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, ntName, "Speed", GetSpeed());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, ntName, "Position", GetPosition());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, ntName, "Target", GetTarget());
 }
-

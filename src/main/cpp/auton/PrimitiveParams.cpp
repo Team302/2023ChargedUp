@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -21,36 +21,34 @@
 
 // @ADDMECH include for your mechanism state mgr
 
-
-
-PrimitiveParams::PrimitiveParams
-(
-    PRIMITIVE_IDENTIFIER								id,
-    float                       						time,
-    float                       						distance,
-    float                       						xLoc,
-    float                       						yLoc,
-	ChassisOptionEnums::HeadingOption    				headingOpt,
-    float                       						heading,
-    float                       						startDriveSpeed,
-    float                       						endDriveSpeed,
-	std::string											pathName
+PrimitiveParams::PrimitiveParams(
+	PRIMITIVE_IDENTIFIER id,
+	float time,
+	float distance,
+	float xLoc,
+	float yLoc,
+	ChassisOptionEnums::HeadingOption headingOpt,
+	float heading,
+	float startDriveSpeed,
+	float endDriveSpeed,
+	std::string pathName,
 	// @ADDMECH mechanism state for mech as parameter
-):	//Pass over parameters to class variables
-		m_id(id), //Primitive ID
-		m_time(time),
-		m_distance(distance),
-		m_xLoc(xLoc),
-		m_yLoc(yLoc),
-		m_headingOption(headingOpt),
-		m_heading(heading),
-		m_startDriveSpeed(startDriveSpeed),
-		m_endDriveSpeed(endDriveSpeed),
-		m_pathName (pathName)
-		// @ADDMECH initilize state mgr attribute
+	ArmStateMgr::ARM_STATE armState,
+	ExtenderStateMgr::EXTENDER_STATE extenderState,
+	GrabberStateMgr::GRABBER_STATE grabberState) :			 // Pass over parameters to class variables
+												   m_id(id), // Primitive ID
+												   m_time(time),
+												   m_distance(distance),
+												   m_xLoc(xLoc),
+												   m_yLoc(yLoc),
+												   m_headingOption(headingOpt),
+												   m_heading(heading),
+												   m_startDriveSpeed(startDriveSpeed),
+												   m_endDriveSpeed(endDriveSpeed),
+												   m_pathName(pathName),
+												   // @ADDMECH initilize state mgr attribute
+												   m_armState(armState),
+												   m_extenderState(extenderState),
+												   m_grabberState(grabberState)
 {
 }
-
-
-
-

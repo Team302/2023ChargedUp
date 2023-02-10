@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -34,13 +34,11 @@
 
 // Third Party Includes
 
-
 using namespace std;
 using namespace frc;
 
-
-SuperDrive::SuperDrive() : m_chassis( ChassisFactory::GetChassisFactory()->GetIChassis()),
-						   m_timer( make_unique<Timer>() ),
+SuperDrive::SuperDrive() : m_chassis(ChassisFactory::GetChassisFactory()->GetIChassis()),
+						   m_timer(make_unique<Timer>()),
 						   m_targetSpeed(0),
 						   m_currentSpeed(0),
 						   m_speedOffset(0),
@@ -57,22 +55,22 @@ SuperDrive::SuperDrive() : m_chassis( ChassisFactory::GetChassisFactory()->GetIC
 {
 }
 
-void SuperDrive::Init(PrimitiveParams* params) 
+void SuperDrive::Init(PrimitiveParams *params)
 {
 	m_targetSpeed = params->GetDriveSpeed();
 	m_leftSpeed = params->GetDriveSpeed() * 0.99;
 	m_rightSpeed = params->GetDriveSpeed();
 
-	if (params->GetEndDriveSpeed() > MIN_SPEED_SLOWDOWN) 
+	if (params->GetEndDriveSpeed() > MIN_SPEED_SLOWDOWN)
 	{
 		m_minSpeedSlowdown = params->GetEndDriveSpeed();
 	}
-	else 
+	else
 	{
 		m_minSpeedSlowdown = MIN_SPEED_SLOWDOWN;
 	}
 
-	//Reset some variables
+	// Reset some variables
 	m_currentTime = 0;
 	m_slowingDown = false;
 	m_reachedTargetSpeed = false;
@@ -82,14 +80,14 @@ void SuperDrive::Init(PrimitiveParams* params)
 	m_currentSpeed = m_chassis->GetCurrentSpeed();
 
 	//Double check that the current speed matches the sign of the target speed (if not, thats bad. make it 0)
-	if (m_targetSpeed > 0) 
+	if (m_targetSpeed > 0)
 	{
-		if (m_currentSpeed < 0) 
+		if (m_currentSpeed < 0)
 		{
 			m_currentSpeed = 0;
 		}
-	} 
-	else 
+	}
+	else
 	{ //target speed negative
 		if (m_currentSpeed > 0)
 		{
@@ -98,66 +96,66 @@ void SuperDrive::Init(PrimitiveParams* params)
 	}
 	**/
 
-	//m_startHeading = m_chassis->GetHeading();
+	// m_startHeading = m_chassis->GetHeading();
 	m_startHeading = 0.0;
 	auto pigeon = PigeonFactory::GetFactory()->GetPigeon(DragonPigeon::PIGEON_USAGE::CENTER_OF_ROBOT);
-	if ( pigeon != nullptr )
+	if (pigeon != nullptr)
 	{
 		m_startHeading = pigeon->GetYaw();
 	}
-	auto cd = make_shared<ControlData>( ControlModes::CONTROL_TYPE::PERCENT_OUTPUT, 
-							   			ControlModes::CONTROL_RUN_LOCS::MOTOR_CONTROLLER,
-							   			string("SuperDrive"),
-							   			12.0,
-							   			0.0,
-							   			0.0,
-							   			0.0,
-							   			0.0,
-							   			0.0,
-							   			0.0,
-							   			1.0,
-							  			0.0   );
-	//m_chassis->SetControlConstants( cd.get() );
-	//m_leftSpeed = m_targetSpeed > 0.0 ? 0.2 : -0.2;
-	//m_rightSpeed = m_targetSpeed > 0.0 ? 0.2 : -0.2;
-	//m_chassis->SetOutput( ControlModes::CONTROL_TYPE::PERCENT_OUTPUT, m_leftSpeed, m_rightSpeed );
+	auto cd = make_shared<ControlData>(ControlModes::CONTROL_TYPE::PERCENT_OUTPUT,
+									   ControlModes::CONTROL_RUN_LOCS::MOTOR_CONTROLLER,
+									   string("SuperDrive"),
+									   12.0,
+									   0.0,
+									   0.0,
+									   0.0,
+									   0.0,
+									   0.0,
+									   0.0,
+									   1.0,
+									   0.0);
+	// m_chassis->SetControlConstants( cd.get() );
+	// m_leftSpeed = m_targetSpeed > 0.0 ? 0.2 : -0.2;
+	// m_rightSpeed = m_targetSpeed > 0.0 ? 0.2 : -0.2;
+	// m_chassis->SetOutput( ControlModes::CONTROL_TYPE::PERCENT_OUTPUT, m_leftSpeed, m_rightSpeed );
 
-	//DifferentialDriveWheelSpeeds wheelSpeeds;
-	//wheelSpeeds.left = m_leftSpeed * m_chassis->GetMaxSpeed();;
-	//wheelSpeeds.right = m_rightSpeed * m_chassis->GetMaxSpeed();;
-    //frc::ChassisSpeeds chassisSpeeds = m_kinematics->ToChassisSpeeds(wheelSpeeds);
-    //m_chassis->Drive(chassisSpeeds,IChassis::CHASSIS_DRIVE_MODE::ROBOT_ORIENTED,IChassis::HEADING_OPTION::DEFAULT);
+	// DifferentialDriveWheelSpeeds wheelSpeeds;
+	// wheelSpeeds.left = m_leftSpeed * m_chassis->GetMaxSpeed();;
+	// wheelSpeeds.right = m_rightSpeed * m_chassis->GetMaxSpeed();;
+	// frc::ChassisSpeeds chassisSpeeds = m_kinematics->ToChassisSpeeds(wheelSpeeds);
+	// m_chassis->Drive(chassisSpeeds,IChassis::CHASSIS_DRIVE_MODE::ROBOT_ORIENTED,IChassis::HEADING_OPTION::DEFAULT);
 
-    //m_chassis->SetVelocityParams(PROPORTIONAL_COEFF, INTREGRAL_COEFF, DERIVATIVE_COEFF, FEET_FORWARD_COEFF,
-    //		m_leftSpeed, m_rightSpeed);
+	// m_chassis->SetVelocityParams(PROPORTIONAL_COEFF, INTREGRAL_COEFF, DERIVATIVE_COEFF, FEET_FORWARD_COEFF,
+	//		m_leftSpeed, m_rightSpeed);
 
-    m_speedOffset = m_targetSpeed > 0.0 ? GYRO_CORRECTION_CONSTANT : -GYRO_CORRECTION_CONSTANT;
+	m_speedOffset = m_targetSpeed > 0.0 ? GYRO_CORRECTION_CONSTANT : -GYRO_CORRECTION_CONSTANT;
 }
 
-void SuperDrive::Run() 
+void SuperDrive::Run()
 {
 	auto pigeon = PigeonFactory::GetFactory()->GetPigeon(DragonPigeon::PIGEON_USAGE::CENTER_OF_ROBOT);
-	if ( pigeon != nullptr )
+	if (pigeon != nullptr)
 	{
 		m_currentHeading = pigeon->GetYaw() - m_startHeading;
 	}
-	//m_currentHeading = m_chassis->GetHeading() - m_chassis->GetTargetHeading(); //Calculate target heading
+	// m_currentHeading = m_chassis->GetHeading() - m_chassis->GetTargetHeading(); //Calculate target heading
 
-	//Calculate ramp up speed if we are not already slowing down
+	// Calculate ramp up speed if we are not already slowing down
 	/*
-	if (!m_slowingDown) 
+	if (!m_slowingDown)
 	{
-		if (std::abs(m_currentSpeed) < std::abs(m_targetSpeed)) 
+		if (std::abs(m_currentSpeed) < std::abs(m_targetSpeed))
 		{
-			if (m_targetSpeed > 0) 
+			if (m_targetSpeed > 0)
 			{
 				m_currentSpeed += INCHES_PER_SECOND_SECOND * IPrimitive::LOOP_LENGTH;
-			} else 
+			} else
 			{
 				m_currentSpeed -= INCHES_PER_SECOND_SECOND * IPrimitive::LOOP_LENGTH;
 			}
-		} 
-		else 
+		}
+		else
 		{
 			m_currentSpeed = m_targetSpeed;
 			if (!m_reachedTargetSpeed)
@@ -166,8 +164,8 @@ void SuperDrive::Run()
 			}
 			m_reachedTargetSpeed = true;
 		}
-	} 
-	else 
+	}
+	else
 	{
 		if (!m_reachedTargetSpeed)
 		{
@@ -175,25 +173,25 @@ void SuperDrive::Run()
 		}
 		m_reachedTargetSpeed = true;
 
-		if (m_currentSpeed > 0) 
+		if (m_currentSpeed > 0)
 		{
-			if (m_currentSpeed > m_minSpeedSlowdown) 
+			if (m_currentSpeed > m_minSpeedSlowdown)
 			{
 				m_currentSpeed -= INCHES_PER_SECOND_SECOND * IPrimitive::LOOP_LENGTH;
-			} 
-			else 
+			}
+			else
 			{
 				m_currentSpeed = m_minSpeedSlowdown;
 			}
-		} 
-		else 
+		}
+		else
 		{
 			//current speed is negative
-			if (m_currentSpeed < -m_minSpeedSlowdown) 
+			if (m_currentSpeed < -m_minSpeedSlowdown)
 			{
 				m_currentSpeed += INCHES_PER_SECOND_SECOND * IPrimitive::LOOP_LENGTH;
-			} 
-			else 
+			}
+			else
 			{
 				m_currentSpeed = -m_minSpeedSlowdown;
 			}
@@ -201,36 +199,35 @@ void SuperDrive::Run()
 	}
 	*/
 
-	//m_rightSpeed = m_currentSpeed;
-	//m_leftSpeed = m_currentSpeed;
+	// m_rightSpeed = m_currentSpeed;
+	// m_leftSpeed = m_currentSpeed;
 
-	//m_leftSpeed -= m_currentHeading * GYRO_CORRECTION_CONSTANT;
-	//m_rightSpeed += m_currentHeading * GYRO_CORRECTION_CONSTANT;
+	// m_leftSpeed -= m_currentHeading * GYRO_CORRECTION_CONSTANT;
+	// m_rightSpeed += m_currentHeading * GYRO_CORRECTION_CONSTANT;
 
-	//m_chassis->SetOutput( ControlModes::CONTROL_TYPE::PERCENT_OUTPUT, m_leftSpeed, m_rightSpeed );
-	//DifferentialDriveWheelSpeeds wheelSpeeds;
-	//wheelSpeeds.left = m_leftSpeed * m_chassis->GetMaxSpeed();;
-	//wheelSpeeds.right = m_rightSpeed * m_chassis->GetMaxSpeed();;
-    //frc::ChassisSpeeds chassisSpeeds = m_kinematics->ToChassisSpeeds(wheelSpeeds);
-    //m_chassis->Drive(chassisSpeeds, IChassis::CHASSIS_DRIVE_MODE::ROBOT_ORIENTED, IChassis::HEADING_OPTION::DEFAULT);
+	// m_chassis->SetOutput( ControlModes::CONTROL_TYPE::PERCENT_OUTPUT, m_leftSpeed, m_rightSpeed );
+	// DifferentialDriveWheelSpeeds wheelSpeeds;
+	// wheelSpeeds.left = m_leftSpeed * m_chassis->GetMaxSpeed();;
+	// wheelSpeeds.right = m_rightSpeed * m_chassis->GetMaxSpeed();;
+	// frc::ChassisSpeeds chassisSpeeds = m_kinematics->ToChassisSpeeds(wheelSpeeds);
+	// m_chassis->Drive(chassisSpeeds, IChassis::CHASSIS_DRIVE_MODE::ROBOT_ORIENTED, IChassis::HEADING_OPTION::DEFAULT);
 
-	//m_chassis->SetVelocityParams(PROPORTIONAL_COEFF, INTREGRAL_COEFF, DERIVATIVE_COEFF, FEET_FORWARD_COEFF, m_leftSpeed, m_rightSpeed);
+	// m_chassis->SetVelocityParams(PROPORTIONAL_COEFF, INTREGRAL_COEFF, DERIVATIVE_COEFF, FEET_FORWARD_COEFF, m_leftSpeed, m_rightSpeed);
 
 	m_currentTime += IPrimitive::LOOP_LENGTH;
 }
 
-bool SuperDrive::IsDone() 
+bool SuperDrive::IsDone()
 {
 	return false;
 }
 
-void SuperDrive::SlowDown() 
+void SuperDrive::SlowDown()
 {
 	m_slowingDown = true;
 }
 
-bool SuperDrive::ReachedTargetSpeed() 
+bool SuperDrive::ReachedTargetSpeed()
 {
 	return m_reachedTargetSpeed;
 }
-

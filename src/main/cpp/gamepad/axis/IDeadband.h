@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -25,21 +25,18 @@
 class IDeadband
 {
 
-    public:
+public:
+    //==================================================================================
+    /// <summary>
+    /// Method:         ApplyDeadband
+    /// Description:    Apply the standard deadband
+    /// </summary>
+    //==================================================================================
+    virtual void ApplyDeadband(
+        double &inputVal // <I> - value to apply profile to
+    ) const = 0;
 
-        //==================================================================================
-        /// <summary>
-        /// Method:         ApplyDeadband
-        /// Description:    Apply the standard deadband
-        /// </summary>
-        //==================================================================================
-        virtual double ApplyDeadband
-        (
-            double inputVal            // <I> - value to apply profile to
-        ) const = 0;
-
-    protected:
-        const double M_LOWER_DEADBAND_VALUE = 0.05;
-        const double M_UPPER_DEADBAND_VALUE = 0.95;
+protected:
+    const double M_LOWER_DEADBAND_VALUE = 0.05;
+    const double M_UPPER_DEADBAND_VALUE = 0.95;
 };
-

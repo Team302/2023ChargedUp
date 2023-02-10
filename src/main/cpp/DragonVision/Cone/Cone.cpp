@@ -14,37 +14,35 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#pragma once
-
 #include <DragonVision/Cone/Cone.h>
 
 using namespace std;
 
 bool Cone::HasTarget() const
 {
-   auto nt = m_networktable.get();
+    auto nt = m_networktable.get();
     if (nt != nullptr)
     {
-        return ( nt->GetNumber("tv", 0.0) > 0.1 );
+        return (nt->GetNumber("tv", 0.0) > 0.1);
     }
     return false;
 }
 
 units::angle::degree_t Cone::GetTargetHorizontalOffset() const
 {
-    if ( abs(m_rotation.to<double>()) < 1.0 )
+    if (abs(m_rotation.to<double>()) < 1.0)
     {
         return GetTx();
     }
-    else if ( abs(m_rotation.to<double>()-90.0) < 1.0 )
+    else if (abs(m_rotation.to<double>() - 90.0) < 1.0)
     {
         return -1.0 * GetTy();
     }
-    else if ( abs(m_rotation.to<double>()-180.0) < 1.0 )
+    else if (abs(m_rotation.to<double>() - 180.0) < 1.0)
     {
         return -1.0 * GetTx();
     }
-    else if ( abs(m_rotation.to<double>()-270.0) < 1.0 )
+    else if (abs(m_rotation.to<double>() - 270.0) < 1.0)
     {
         return GetTy();
     }
@@ -54,24 +52,24 @@ units::angle::degree_t Cone::GetTargetHorizontalOffset() const
 
 units::angle::degree_t Cone::GetTargetVerticalOffset() const
 {
-    if ( abs(m_rotation.to<double>()) < 1.0 )
+    if (abs(m_rotation.to<double>()) < 1.0)
     {
         return GetTy();
     }
-    else if ( abs(m_rotation.to<double>()-90.0) < 1.0 )
+    else if (abs(m_rotation.to<double>() - 90.0) < 1.0)
     {
         return GetTx();
     }
-    else if ( abs(m_rotation.to<double>()-180.0) < 1.0 )
+    else if (abs(m_rotation.to<double>() - 180.0) < 1.0)
     {
         return -1.0 * GetTy();
     }
-    else if ( abs(m_rotation.to<double>()-270.0) < 1.0 )
+    else if (abs(m_rotation.to<double>() - 270.0) < 1.0)
     {
         return -1.0 * GetTx();
     }
     Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("DragonLimelight"), string("GetTargetVerticalOffset"), string("Invalid limelight rotation"));
-    return GetTy();   
+    return GetTy();
 }
 
 double Cone::GetTargetArea() const
@@ -86,7 +84,7 @@ double Cone::GetTargetArea() const
 
 units::angle::degree_t Cone::GetTargetSkew() const
 {
- //   auto nt = m_networktable.get();
+    //   auto nt = m_networktable.get();
     if (m_networktable != nullptr)
     {
         return units::angle::degree_t(m_networktable->GetNumber("ts", 0.0));
@@ -116,15 +114,14 @@ units::length::inch_t Cone::EstimateTargetDistance() const
     units::angle::radian_t angleRad = angleFromHorizon;
     double tanAngle = tan(angleRad.to<double>());
 
-    auto deltaHgt = GetTargetHeight()-GetMountingHeight();
+    auto deltaHgt = GetTargetHeight() - GetMountingHeight();
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("mounting angle "), GetMountingAngle().to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("target vertical angle "), GetTargetVerticalOffset().to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("angle radians "), angleRad.to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("deltaH "), deltaHgt.to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("tan angle "), tanAngle);
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("distance "), ((GetTargetHeight()-GetMountingHeight()) / tanAngle).to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("distance "), ((GetTargetHeight() - GetMountingHeight()) / tanAngle).to<double>());
 
-    return (GetTargetHeight()-GetMountingHeight()) / tanAngle;
+    return (GetTargetHeight() - GetMountingHeight()) / tanAngle;
 }
-

@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -15,20 +15,24 @@
 
 #pragma once
 
-//FRC Includes
+// FRC Includes
 #include <units/length.h>
 
 class Point2d
 {
-    public:
-        Point2d();
+public:
+    Point2d();
 
-        Point2d(units::meter_t x, units::meter_t y) {X= x; Y= y;};
+    Point2d(units::meter_t x, units::meter_t y)
+    {
+        X = x;
+        Y = y;
+    };
 
-        Point2d operator+(const Point2d& other);
-        Point2d operator-(const Point2d& other);
-        bool operator==(const Point2d& other);
+    Point2d operator+(const Point2d &other);
+    Point2d operator-(const Point2d &other);
+    bool operator==(const Point2d &other);
 
-        units::meter_t X;
-        units::meter_t Y;
+    units::meter_t X;
+    units::meter_t Y;
 };
