@@ -47,8 +47,11 @@ ArmState::ArmState(
 
 bool ArmState::AtTarget() const
 {
-	if (abs(m_arm->GetPositionDegrees().to<double>() - m_arm->GetTarget()) < 0.5 && m_arm->GetPositionDegrees().to<double>() > 0.5)
+	if (m_arm != nullptr)
 	{
-		return true;
+		if (abs(m_arm->GetPositionDegrees().to<double>() - m_arm->GetTarget()) < 0.5 && m_arm->GetPositionDegrees().to<double>() > 0.5)
+		{
+			return true;
+		}
 	}
 }

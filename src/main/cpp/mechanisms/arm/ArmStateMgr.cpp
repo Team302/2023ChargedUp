@@ -154,10 +154,14 @@ void ArmStateMgr::CheckForGamepadTransitions()
             {
                 m_targetState = ARM_STATE::HOLD_POSITION_ROTATE;
             }
+
             // If arm is at target and the prev state hasn't changed then stay in hold
-            if (GetCurrentStatePtr()->AtTarget() && m_prevState == m_targetState)
+            if (dynamic_cast<ArmState *>(GetCurrentStatePtr()) != nullptr)
             {
-                m_targetState = ARM_STATE::HOLD_POSITION_ROTATE;
+                if (dynamic_cast<ArmState *>(GetCurrentStatePtr())->AtTarget() && m_prevState == m_targetState)
+                {
+                    m_targetState = ARM_STATE::HOLD_POSITION_ROTATE;
+                }
             }
         }
     }
