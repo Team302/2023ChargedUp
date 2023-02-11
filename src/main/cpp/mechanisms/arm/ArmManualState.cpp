@@ -37,7 +37,7 @@ void ArmManualState::Run()
 {
     if (m_controller != nullptr && m_arm != nullptr)
     {
-        auto percent = m_controller->GetAxisValue(TeleopControlFunctions::MANUAL_ROTATE);
+        auto percent = 0.3 * m_controller->GetAxisValue(TeleopControlFunctions::MANUAL_ROTATE);
         m_arm->GetMotor().get()->Set(percent);
     }
 }

@@ -103,7 +103,12 @@ void ArmStateMgr::CheckForGamepadTransitions()
 
         if (controller != nullptr)
         {
-            if (controller->IsButtonPressed(TeleopControlFunctions::CONE_BACKROW_ROTATE))
+            if (abs(controller->GetAxisValue(TeleopControlFunctions::MANUAL_ROTATE)) > 0.05)
+            {
+                m_targetState = ARM_STATE::MANUAL_ROTATE;
+                m_prevState = m_targetState;
+            }
+            else if (controller->IsButtonPressed(TeleopControlFunctions::CONE_BACKROW_ROTATE))
             {
                 m_targetState = ARM_STATE::CONE_BACKROW_ROTATE;
                 m_prevState = m_targetState;

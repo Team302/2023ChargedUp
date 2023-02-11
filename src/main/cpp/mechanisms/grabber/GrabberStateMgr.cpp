@@ -37,6 +37,9 @@
 #include <robotstate/RobotState.h>
 #include <robotstate/RobotStateChanges.h>
 
+/// DEBUGGING
+#include <utils/logging/Logger.h>
+
 // Third Party Includes
 
 using namespace std;
@@ -67,8 +70,10 @@ GrabberStateMgr::GrabberStateMgr() : StateMgr(),
     stateMap["GRAB"] = m_grabState;
 
     Init(m_grabber, stateMap);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("GrabberStateMgr"), std::string("Hit constructor?"), "true");
     if (m_grabber != nullptr)
     {
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("GrabberStateMgr"), std::string("Is m_grabber nullptr?"), "false");
         m_grabber->AddStateMgr(this);
     }
 
@@ -132,12 +137,16 @@ void GrabberStateMgr::CheckForStateTransition()
         if (!m_followOtherMechs)
         {
             CheckForGamepadTransitions();
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("GrabberStateMgr"), std::string("Check Gamepads "), "true");
         }
+
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("GrabberStateMgr"), std::string("m_targetState"), m_targetState);
 
         if (m_targetState != m_currentState)
         {
             SetCurrentState(m_targetState, true);
             RobotState::GetInstance()->PublishStateChange(RobotStateChanges::GrabberState, m_targetState);
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("GrabberStateMgr"), std::string("Changing state to: "), m_targetState);
         }
     }
 }
