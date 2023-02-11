@@ -61,8 +61,7 @@ void Robot::RobotInit()
 
     m_cyclePrims = new CyclePrimitives();
     m_previewer = new AutonPreviewer(m_cyclePrims); // TODO:: Move to DriveTeamFeedback
-    m_field = nullptr;
-    // DragonField::GetInstance(); // TODO: move to drive team feedback
+    m_field = DragonField::GetInstance();           // TODO: move to drive team feedback
 
     m_dragonLimeLight = LimelightFactory::GetLimelightFactory()->GetLimelight(); // ToDo:: Move to Dragon Vision
 
@@ -84,7 +83,7 @@ void Robot::RobotPeriodic()
     mycounter++;
     LoggableItemMgr::GetInstance()->LogData();
     Logger::GetLogger()->PeriodicLog();
-#ifdef bye
+
     if (m_tuner != nullptr)
     {
         m_tuner->ListenForUpdates();
@@ -93,7 +92,8 @@ void Robot::RobotPeriodic()
     {
         m_robotState->Run();
     }
-#endif
+
+#ifdef ENABLE_VISION
     auto vision = DragonVision::GetDragonVision();
 
     LoggerIntValue count = {string("counter"), mycounter};
@@ -148,8 +148,7 @@ void Robot::RobotPeriodic()
         LoggerData data = {LOGGER_LEVEL::PRINT, string("DragonLimelight"), {}, {}, {count}, {status}};
         Logger::GetLogger()->LogData(data);
     }
-
-#ifdef bye
+#endif
 
     // ToDo:: Move to DriveTeamFeedback
     if (m_previewer != nullptr)
@@ -168,7 +167,6 @@ void Robot::RobotPeriodic()
     {
         feedback->UpdateFeedback();
     }
-#endif
 }
 
 /**
