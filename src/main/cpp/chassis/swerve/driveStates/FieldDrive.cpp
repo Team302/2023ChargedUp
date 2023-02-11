@@ -20,7 +20,8 @@
 #include <chassis/swerve/driveStates/FieldDrive.h>
 #include <chassis/ChassisFactory.h>
 
-using frc::Rotation2d;
+/// DEBUGGING
+#include <utils/logging/Logger.h>
 
 FieldDrive::FieldDrive(RobotDrive *robotDrive) : RobotDrive(),
                                                  m_robotDrive(robotDrive)
@@ -30,12 +31,20 @@ FieldDrive::FieldDrive(RobotDrive *robotDrive) : RobotDrive(),
 std::array<frc::SwerveModuleState, 4> FieldDrive::UpdateSwerveModuleStates(
     ChassisMovement &chassisMovement)
 {
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "FieldDrive", "VxBEFORE", chassisMovement.chassisSpeeds.vx.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "FieldDrive", "VyBEFORE", chassisMovement.chassisSpeeds.vy.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "FieldDrive", "OmegaBEFORE", chassisMovement.chassisSpeeds.omega.to<double>());
+
     frc::ChassisSpeeds fieldRelativeSpeeds = frc::ChassisSpeeds::FromFieldRelativeSpeeds(chassisMovement.chassisSpeeds.vx,
                                                                                          chassisMovement.chassisSpeeds.vy,
                                                                                          chassisMovement.chassisSpeeds.omega,
                                                                                          ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose().Rotation());
 
     chassisMovement.chassisSpeeds = fieldRelativeSpeeds;
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "FieldDrive", "Chassis Rotation", ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose().Rotation().Degrees().to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "FieldDrive", "VxAFTER", chassisMovement.chassisSpeeds.vx.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "FieldDrive", "VyAFTER", chassisMovement.chassisSpeeds.vy.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "FieldDrive", "OmegaAFTER", chassisMovement.chassisSpeeds.omega.to<double>());
     return m_robotDrive->UpdateSwerveModuleStates(chassisMovement);
 }
 

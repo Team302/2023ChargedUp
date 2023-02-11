@@ -20,9 +20,6 @@
 #include <teleopcontrol/TeleopControl.h>
 #include <mechanisms/MechanismFactory.h>
 
-/// DEBUGGING
-#include <utils/logging/Logger.h>
-
 ArmManualState::ArmManualState(std::string stateName,
                                int stateId,
                                ControlData *control0,
