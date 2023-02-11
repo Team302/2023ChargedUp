@@ -17,7 +17,7 @@
     controlDataIdentifier2=""
     value=""
     secondValue=""
-    solenoid="REVERSE"
+    solenoid="ON"
     solenoid2="NONE" />
   <mechanismTarget
     stateIdentifier="GRAB"
@@ -25,6 +25,6 @@
     controlDataIdentifier2=""
     value=""
     secondValue=""
-    solenoid="ON"
+    solenoid="REVERSE"
     solenoid2="NONE" />
 </statedata>

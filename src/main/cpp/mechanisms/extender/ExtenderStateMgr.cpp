@@ -180,6 +180,9 @@ void ExtenderStateMgr::CheckForStateTransition()
         CheckForGamepadTransitions();
     }
 
+    /// DEBUGGING
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ExtenderMgr"), string("Current State"), m_targetState);
+
     if (m_extender != nullptr)
     {
         if (m_targetState != m_currentState && m_canAutomaticallyMove)
