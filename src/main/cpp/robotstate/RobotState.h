@@ -45,5 +45,7 @@ private:
     RobotStateChanges::GamePiece m_gamePiece;
     RobotStateChanges::GamePeriod m_gamePhase;
 
+    bool m_wasReleased;
+
     static RobotState *m_instance;
 };
