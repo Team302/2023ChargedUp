@@ -52,16 +52,16 @@ void Robot::RobotInit()
 
     m_robotState = RobotState::GetInstance();
     m_robotState->Init();
-
+    m_chassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
     m_holonomic = nullptr;
     if (m_chassis != nullptr)
     {
         m_holonomic = new HolonomicDrive();
     }
-
     m_cyclePrims = new CyclePrimitives();
     m_previewer = new AutonPreviewer(m_cyclePrims); // TODO:: Move to DriveTeamFeedback
-    m_field = DragonField::GetInstance();           // TODO: move to drive team feedback
+    // m_field = DragonField::GetInstance();           // TODO: move to drive team feedback
+    m_field = nullptr;
 
     m_dragonLimeLight = LimelightFactory::GetLimelightFactory()->GetLimelight(); // ToDo:: Move to Dragon Vision
 
