@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -18,16 +18,14 @@
 #include <mechanisms/controllers/ControlData.h>
 #include <mechanisms/controllers/DragonPID.h>
 
-DragonPID::DragonPID
-(
-    ControlData*        controlData
-) : m_kP(controlData->GetP()),
-    m_kI(controlData->GetI()),
-    m_kD(controlData->GetD()),
-    m_kF(controlData->GetF()),
-    m_accumError(0.0),
-    m_prevError(0.0),
-    m_timer(new frc::Timer())
+DragonPID::DragonPID(
+    ControlData *controlData) : m_kP(controlData->GetP()),
+                                m_kI(controlData->GetI()),
+                                m_kD(controlData->GetD()),
+                                m_kF(controlData->GetF()),
+                                m_accumError(0.0),
+                                m_prevError(0.0),
+                                m_timer(new frc::Timer())
 {
     m_timer->Start();
 }
@@ -49,12 +47,10 @@ void DragonPID::UpdateKF(double kF)
     m_kF = kF;
 }
 
-double DragonPID::Calculate
-(
+double DragonPID::Calculate(
     double motorOutput,
     double currentVal,
-    double targetVal
-)
+    double targetVal)
 {
     auto error = targetVal - currentVal;
     m_accumError += error;
@@ -63,5 +59,5 @@ double DragonPID::Calculate
     auto deltaErr = error - m_prevError;
     m_prevError = error;
 
-    return motorOutput + m_kP*error + m_kI*m_accumError + m_kD*deltaErr/deltaT + m_kF;
+    return motorOutput + m_kP * error + m_kI * m_accumError + m_kD * deltaErr / deltaT + m_kF;
 }

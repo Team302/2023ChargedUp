@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-/// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+/// Copyright 2023 Lake Orion Robotics FIRST Team 302
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 /// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -23,32 +23,28 @@ class Mech2Servos;
 
 class Mech2ServosState : public State
 {
-    public:
+public:
+    Mech2ServosState(
+        Mech2Servos *mechanism,
+        std::string stateName,
+        int stateId,
+        double target,
+        double target2);
+    Mech2ServosState() = delete;
+    ~Mech2ServosState() = default;
 
-        Mech2ServosState
-        (
-            Mech2Servos*                    mechanism,
-            std::string                     stateName,
-            int                             stateId,
-            double                          target,
-            double                          target2
-        );
-        Mech2ServosState() = delete;
-        ~Mech2ServosState() = default;
+    void Init() override;
+    void Run() override;
+    void Exit() override;
+    bool AtTarget() const override;
 
-        void Init() override;
-        void Run() override;
-        void Exit() override;
-        bool AtTarget() const override;
+    void LogInformation() const override;
 
-        void LogInformation() const override;
-        
-        double GetTarget() const {return m_target;}
-        double GetTarget2() const {return m_target2;}
+    double GetTarget() const { return m_target; }
+    double GetTarget2() const { return m_target2; }
 
-    private:
-
-        Mech2Servos*                    m_mechanism;
-        double                          m_target;
-        double                          m_target2;
+private:
+    Mech2Servos *m_mechanism;
+    double m_target;
+    double m_target2;
 };

@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-/// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+/// Copyright 2023 Lake Orion Robotics FIRST Team 302
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 /// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -26,9 +26,9 @@
 #include <mechanisms/controllers/ControlData.h>
 #include <mechanisms/controllers/MechanismTargetData.h>
 #include <mechanisms/base/Mech1IndMotor1Solenoid.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
-#include <TeleopControl.h>
+#include <teleopcontrol/TeleopControl.h>
 
 // Third Party Includes
 
@@ -36,29 +36,28 @@ using namespace std;
 
 /// @class Mech1IndMotor1SolenoidState
 /// @brief information about the control (open loop, closed loop position, closed loop velocity, etc.) for a mechanism state
-Mech1IndMotor1SolenoidState::Mech1IndMotor1SolenoidState
-(
-    Mech1IndMotor1Solenoid*          mechanism,
-    string                          stateName,
-    int                             stateId,
-    ControlData*                    control,
-    double                          target,
-    MechanismTargetData::SOLENOID   solState
+Mech1IndMotor1SolenoidState::Mech1IndMotor1SolenoidState(
+    Mech1IndMotor1Solenoid *mechanism,
+    string stateName,
+    int stateId,
+    ControlData *control,
+    double target,
+    MechanismTargetData::SOLENOID solState
 
-) : State(stateName, stateId),
-    m_mechanism( mechanism ),
-    m_motorState(make_shared<Mech1IndMotorState>(mechanism->Get1IndMotorMech(), stateName, stateId, control, target)),
-    m_solenoidState(make_shared<Mech1SolenoidState>(mechanism->GetSolenoidMech(), stateName, stateId, solState))
+    ) : State(stateName, stateId),
+        m_mechanism(mechanism),
+        m_motorState(make_shared<Mech1IndMotorState>(mechanism->Get1IndMotorMech(), stateName, stateId, control, target)),
+        m_solenoidState(make_shared<Mech1SolenoidState>(mechanism->GetSolenoidMech(), stateName, stateId, solState))
 {
-    if ( control == nullptr )
+    if (control == nullptr)
     {
         Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, mechanism->GetNetworkTableName(), ("Mech1IndMotor1SolenoidState::Mech1IndMotor1SolenoidState"), string("no control data"));
     }
 
-    if ( mechanism == nullptr )
+    if (mechanism == nullptr)
     {
         Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("Bad Pointer"), string("Mech1IndMotor1SolenoidState::Mech1IndMotor1SolenoidState"), string("no mechanism"));
-    }    
+    }
 }
 
 void Mech1IndMotor1SolenoidState::Init()
@@ -67,15 +66,13 @@ void Mech1IndMotor1SolenoidState::Init()
     m_solenoidState.get()->Init();
 }
 
-
-void Mech1IndMotor1SolenoidState::Run()           
+void Mech1IndMotor1SolenoidState::Run()
 {
     m_motorState.get()->Run();
     m_solenoidState.get()->Run();
-
 }
 
-void Mech1IndMotor1SolenoidState::Exit() 
+void Mech1IndMotor1SolenoidState::Exit()
 {
 }
 

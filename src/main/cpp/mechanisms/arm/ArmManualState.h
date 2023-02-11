@@ -1,6 +1,5 @@
-
 //====================================================================================================================================================
-// Copyright 2023 Lake Orion Robotics FIRST Team 302 
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -14,32 +13,28 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#pragma once
-#include <mechanisms/LEDS/LED.h>
+#include <mechanisms/arm/ArmState.h>
 
+class ControlData;
+class Arm;
+class TeleopControl;
 
-class LEDStates
+class ArmManualState : public ArmState
 {
-	public:
-    
-    void LEDsOff();
-    void ResetVariables();
-    void ChaserPattern(LED::Colors c);
-    void BlinkingPattern(LED::Colors c);
-    void SolidColorPattern(LED::Colors c);
-    void AlternatingBlinkingPattern(LED::Colors c);
-    void AlternatingBlinkingPattern(LED::Colors c1, LED::Colors c2);
-    void ClosingInChaserPattern(LED::Colors c);
-    LED* m_LED = LED::GetInstance();
-    static LEDStates* GetInstance();
+public:
+    ArmManualState() = delete;
+    ArmManualState(std::string stateName,
+                   int stateId,
+                   ControlData *control0,
+                   double target0);
 
-    private:
-    
-    int loopThroughIndividualLEDs = -1;
-    int colorLoop = 0;
-    int timer;
-    static LEDStates* m_instance;
+    ~ArmManualState() = default;
+
+    void Init() override;
+    void Run() override;
+    bool AtTarget() const override;
+
+private:
+    Arm *m_arm;
+    TeleopControl *m_controller;
 };
-
-
-

@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -23,65 +23,55 @@
 #include <mechanisms/base/Mech.h>
 #include <mechanisms/base/Mech2Solenoids.h>
 #include <hw/DragonSolenoid.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 #include <mechanisms/base/StateMgr.h>
 
 // Third Party Includes
 
 using namespace std;
 
-/// @brief Create a generic mechanism wiht 1 solenoid 
+/// @brief Create a generic mechanism wiht 1 solenoid
 /// @param [in] MechanismTypes::MECHANISM_TYPE the type of mechansim
 /// @param [in] std::string the name of the file that will set control parameters for this mechanism
 /// @param [in] std::string the name of the network table for logging information
 /// @param [in] std::shared_ptr<DragonSolenoid> solenoid used by this mechanism
-Mech2Solenoids::Mech2Solenoids
-(
-    MechanismTypes::MECHANISM_TYPE          type,
-    string                                  controlFileName,
-    string                                  networkTableName,
-    shared_ptr<DragonSolenoid>              solenoid,
-    shared_ptr<DragonSolenoid>              solenoid2
-) : Mech1Solenoid(type, controlFileName, networkTableName, solenoid),
-    m_solenoid2(solenoid2)
+Mech2Solenoids::Mech2Solenoids(
+    MechanismTypes::MECHANISM_TYPE type,
+    string controlFileName,
+    string networkTableName,
+    shared_ptr<DragonSolenoid> solenoid,
+    shared_ptr<DragonSolenoid> solenoid2) : Mech1Solenoid(type, controlFileName, networkTableName, solenoid),
+                                            m_solenoid2(solenoid2)
 {
-    if (m_solenoid2.get() == nullptr )
+    if (m_solenoid2.get() == nullptr)
     {
-        Logger::GetLogger()->LogData( LOGGER_LEVEL::ERROR_ONCE, string( "Mech2Solenoid" ),  string( "constructor" ), string( "solenoid2 is nullptr" ) );
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("Mech2Solenoid"), string("constructor"), string("solenoid2 is nullptr"));
     }
-
 }
-
 
 /// @brief      Activate/deactivate pneumatic solenoid
 /// @param [in] bool - true == extend, false == retract
-/// @return     void 
-void Mech2Solenoids::ActivateSolenoid2
-(
-    bool activate
-)
+/// @return     void
+void Mech2Solenoids::ActivateSolenoid2(
+    bool activate)
 {
-    if ( m_solenoid2.get() != nullptr )
+    if (m_solenoid2.get() != nullptr)
     {
-        m_solenoid2.get()->Set( activate );
+        m_solenoid2.get()->Set(activate);
     }
 }
-
 
 /// @brief      Check if the pneumatic solenoid is activated
 /// @return     bool - true == extended, false == retracted
 bool Mech2Solenoids::IsSolenoid2Activated() const
 {
-    return  ( m_solenoid2.get() != nullptr ) ? m_solenoid2.get()->Get() : false;
+    return (m_solenoid2.get() != nullptr) ? m_solenoid2.get()->Get() : false;
 }
-
-
 
 /// @brief log data to the network table if it is activated and time period has past
 void Mech2Solenoids::LogInformation() const
 {
     Mech1Solenoid::LogInformation();
     auto ntName = GetNetworkTableName();
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, ntName, "Solenoid2", IsSolenoid2Activated() );
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, ntName, "Solenoid2", IsSolenoid2Activated());
 }
-

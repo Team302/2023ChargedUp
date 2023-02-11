@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -22,36 +22,30 @@
 /// @brief This controls the creation of analog inputs
 class PigeonFactory
 {
-	public:
+public:
+	/// @brief  Find or create the analog input factory
+	/// @return PigeonFactory* pointer to the factory
+	static PigeonFactory *GetFactory();
 
+	DragonPigeon *GetPigeon(
+		DragonPigeon::PIGEON_USAGE usage) const;
 
-		/// @brief  Find or create the analog input factory
-		/// @return PigeonFactory* pointer to the factory
-		static PigeonFactory* GetFactory();
+	DragonPigeon *GetCenterPigeon() const { return m_centerPigeon; };
+	DragonPigeon *GetShooterPigeon() const { return m_shooterPigeon; };
 
-        DragonPigeon* GetPigeon
-		(
-			DragonPigeon::PIGEON_USAGE usage 
-		) const;
+	DragonPigeon *CreatePigeon(
+		int canID,
+		std::string canBusName,
+		DragonPigeon::PIGEON_TYPE type,
+		DragonPigeon::PIGEON_USAGE usage,
+		double rotation);
 
-		DragonPigeon* GetCenterPigeon() const { return m_centerPigeon; };
-		DragonPigeon* GetShooterPigeon() const { return m_shooterPigeon; };
+private:
+	PigeonFactory();
+	virtual ~PigeonFactory() = default;
 
-        DragonPigeon* CreatePigeon
-		( 
-			int canID, 
-			std::string canBusName,
-			DragonPigeon::PIGEON_TYPE type, 
-			DragonPigeon::PIGEON_USAGE usage, 
-			double rotation 
-		);
+	DragonPigeon *m_centerPigeon;
+	DragonPigeon *m_shooterPigeon;
 
-	private:
-		PigeonFactory();
-		virtual ~PigeonFactory() = default;
-
-        DragonPigeon* m_centerPigeon;
-		DragonPigeon* m_shooterPigeon;
-
-		static PigeonFactory*	m_factory;
+	static PigeonFactory *m_factory;
 };

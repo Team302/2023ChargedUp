@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-/// Copyright 2022 Lake Orion Robotics FIRST Team 302
+/// Copyright 2023 Lake Orion Robotics FIRST Team 302
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 /// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -14,8 +14,7 @@
 /// OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-
-#pragma once 
+#pragma once
 
 // C++ Includes
 #include <string>
@@ -27,16 +26,13 @@ class DragonServo;
 
 class ServoXmlParser
 {
-    public:
-        ServoXmlParser() = default;
-        virtual ~ServoXmlParser() = default;
+public:
+    ServoXmlParser() = default;
+    virtual ~ServoXmlParser() = default;
 
-
-        /// @brief Parse a servo XML element and create a DragonServo from its definition.
-        /// @return std::shared_ptr<DragonServo> servo
-        DragonServo* ParseXML
-        (
-            std::string         networkTableName,
-            pugi::xml_node      ServoNode
-        );
+    /// @brief Parse a servo XML element and create a DragonServo from its definition.
+    /// @return std::shared_ptr<DragonServo> servo
+    DragonServo *ParseXML(
+        std::string networkTableName,
+        pugi::xml_node ServoNode);
 };

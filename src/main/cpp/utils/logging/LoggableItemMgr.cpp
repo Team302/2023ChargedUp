@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-/// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+/// Copyright 2023 Lake Orion Robotics FIRST Team 302
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 /// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -12,18 +12,41 @@
 /// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 /// OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
+#include <vector>
 
 // FRC includes
 
 // Team 302 includes
-#include <LoggableItem.h>
-#include <LoggableItemMgr.h>
+#include <utils/logging/LoggableItemMgr.h>
+#include <utils/logging/LoggableItem.h>
 
 // Third Party Includes
 
+using namespace std;
+
+LoggableItemMgr *LoggableItemMgr::m_instance = nullptr;
+LoggableItemMgr *LoggableItemMgr::GetInstance()
+{
+    if (LoggableItemMgr::m_instance == nullptr)
+    {
+        LoggableItemMgr::m_instance = new LoggableItemMgr();
+    }
+    return LoggableItemMgr::m_instance;
+}
 
 /// @brief    initialize the state manager, parse the configuration file and create the states.
-LoggableItem::LoggableItem()
+LoggableItemMgr::LoggableItemMgr() : m_loggableItems()
 {
-    LoggableItemMgr::GetInstance()->RegisterLoggableItem(this);
-}   
+}
+void LoggableItemMgr::RegisterLoggableItem(
+    LoggableItem *item)
+{
+    m_loggableItems.emplace_back(item);
+}
+void LoggableItemMgr::LogData() const
+{
+    for (auto item : m_loggableItems)
+    {
+        item->LogInformation();
+    }
+}

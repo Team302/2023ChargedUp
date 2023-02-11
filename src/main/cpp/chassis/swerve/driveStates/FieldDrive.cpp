@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -15,21 +15,19 @@
 
 #include <frc/geometry/Rotation2d.h>
 
-//Team302 Includes
+// Team302 Includes
 #include <chassis/swerve/driveStates/FieldDrive.h>
 #include <chassis/ChassisFactory.h>
 
 using frc::Rotation2d;
 
-FieldDrive::FieldDrive(RobotDrive* robotDrive) : RobotDrive(),
+FieldDrive::FieldDrive(RobotDrive *robotDrive) : RobotDrive(),
                                                  m_robotDrive(robotDrive)
 {
 }
 
-std::array<frc::SwerveModuleState, 4> FieldDrive::UpdateSwerveModuleStates
-(
-    ChassisMovement& chassisMovement
-)
+std::array<frc::SwerveModuleState, 4> FieldDrive::UpdateSwerveModuleStates(
+    ChassisMovement &chassisMovement)
 {
     frc::ChassisSpeeds fieldRelativeSpeeds = frc::ChassisSpeeds::FromFieldRelativeSpeeds(chassisMovement.chassisSpeeds.vx,
                                                                                          chassisMovement.chassisSpeeds.vy,
@@ -40,11 +38,7 @@ std::array<frc::SwerveModuleState, 4> FieldDrive::UpdateSwerveModuleStates
     return m_robotDrive->UpdateSwerveModuleStates(chassisMovement);
 }
 
-void FieldDrive::Init
-(
-    ChassisMovement& chassisMovement
-)
+void FieldDrive::Init(
+    ChassisMovement &chassisMovement)
 {
-    
 }
-

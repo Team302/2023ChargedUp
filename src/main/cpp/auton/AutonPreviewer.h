@@ -14,29 +14,30 @@
 //====================================================================================================================================================
 #pragma once
 
-//C++ Includes
+// C++ Includes
 #include <string>
 
-//FRC Includes
+// FRC Includes
 #include <frc/trajectory/Trajectory.h>
 
-//Team 302 Includes
+// Team 302 Includes
 #include <utils/DragonField.h>
 #include <auton/CyclePrimitives.h>
 
 class AutonPreviewer
 {
-    public:
-        AutonPreviewer(CyclePrimitives* cyclePrims);
-        ~AutonPreviewer() = default;
+public:
+    AutonPreviewer(CyclePrimitives *cyclePrims);
+    ~AutonPreviewer() = default;
 
-        void CheckCurrentAuton();
+    void CheckCurrentAuton();
 
-        void PopulateField();
+    void PopulateField();
 
-        std::vector<frc::Trajectory> GetTrajectories();
-    private:
-        AutonSelector*  m_selector;
-        std::string     m_prevChoice;
-        DragonField*    m_field;
+    std::vector<frc::Trajectory> GetTrajectories();
+
+private:
+    AutonSelector *m_selector;
+    std::string m_prevChoice;
+    DragonField *m_field;
 };

@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -29,12 +29,11 @@
 
 // Team 302 Includes
 #include <utils/HardwareIDValidation.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
 // Third Party Includes
 
 using namespace std;
-
 
 //======================================================================================
 /// Method:       ValidateCANID
@@ -43,16 +42,14 @@ using namespace std;
 /// Returns:      bool          true  - valid
 ///                             false - invalid
 //=====================================================================================
-bool HardwareIDValidation::ValidateCANID
-(
-    int     canID,          // <I> - CAN ID to validate
-    string  methodID        // <I> - class::method identifier for message
+bool HardwareIDValidation::ValidateCANID(
+    int canID,      // <I> - CAN ID to validate
+    string methodID // <I> - class::method identifier for message
 )
 {
-    string errorMsg = "Invalid CAN ID " + to_string( canID );
-    return HardwareIDValidation::ValidateID( canID, 0, 63, methodID, errorMsg );
+    string errorMsg = "Invalid CAN ID " + to_string(canID);
+    return HardwareIDValidation::ValidateID(canID, 0, 63, methodID, errorMsg);
 }
-
 
 //======================================================================================
 /// Method:       ValidatePDPID
@@ -61,17 +58,14 @@ bool HardwareIDValidation::ValidateCANID
 /// Returns:      bool          true  - valid
 ///                             false - invalid
 //=====================================================================================
-bool HardwareIDValidation::ValidatePDPID
-(
-    int     pdpID,          // <I> - PDP ID to validate
-    string  methodID        // <I> - class::method identifier for message
+bool HardwareIDValidation::ValidatePDPID(
+    int pdpID,      // <I> - PDP ID to validate
+    string methodID // <I> - class::method identifier for message
 )
 {
-    string errorMsg = "Invalid PDP ID " + to_string( pdpID );
-    return HardwareIDValidation::ValidateID( pdpID, 0, 19, methodID, errorMsg );
+    string errorMsg = "Invalid PDP ID " + to_string(pdpID);
+    return HardwareIDValidation::ValidateID(pdpID, 0, 19, methodID, errorMsg);
 }
-
-
 
 //======================================================================================
 /// Method:       ValidateDIOID
@@ -80,26 +74,23 @@ bool HardwareIDValidation::ValidatePDPID
 /// Returns:      bool          true  - valid
 ///                             false - invalid
 //=====================================================================================
-bool HardwareIDValidation::ValidateDIOID
-(
-    int     dioID,          // <I> - DIO ID to validate
-    string  methodID        // <I> - class::method identifier for message
+bool HardwareIDValidation::ValidateDIOID(
+    int dioID,      // <I> - DIO ID to validate
+    string methodID // <I> - class::method identifier for message
 )
 {
-    string errorMsg = "Invalid Digital IO ID " + to_string( dioID );
-    return HardwareIDValidation::ValidateID( dioID, 0, 9, methodID, errorMsg );
+    string errorMsg = "Invalid Digital IO ID " + to_string(dioID);
+    return HardwareIDValidation::ValidateID(dioID, 0, 9, methodID, errorMsg);
 }
 
-bool HardwareIDValidation::ValidateSolenoidChannel
-(
-    int          channel,       // <I> - Solenoid Channel to validate
-    std::string  methodID       // <I> - class::method identifier for message
+bool HardwareIDValidation::ValidateSolenoidChannel(
+    int channel,         // <I> - Solenoid Channel to validate
+    std::string methodID // <I> - class::method identifier for message
 )
 {
-    string errorMsg = "Invalid Channel ID " + to_string( channel );
-    return HardwareIDValidation::ValidateID( channel, 0, 7, methodID, errorMsg );
+    string errorMsg = "Invalid Channel ID " + to_string(channel);
+    return HardwareIDValidation::ValidateID(channel, 0, 7, methodID, errorMsg);
 }
-
 
 //======================================================================================
 /// Method:       ValidateID
@@ -108,20 +99,19 @@ bool HardwareIDValidation::ValidateSolenoidChannel
 /// Returns:      bool          true  - valid
 ///                             false - invalid
 //=====================================================================================
-bool HardwareIDValidation::ValidateID
-(
-    int          id,            // <I> - ID to validate
-    int          minID,         // <I> - minimum ID
-    int          maxID,         // <I> - maximum ID
-    string       methodID,      // <I> - class::method identifier for message
-    string       errorMsg       // <I> - error message
+bool HardwareIDValidation::ValidateID(
+    int id,          // <I> - ID to validate
+    int minID,       // <I> - minimum ID
+    int maxID,       // <I> - maximum ID
+    string methodID, // <I> - class::method identifier for message
+    string errorMsg  // <I> - error message
 )
 {
     bool hasError = false;
-    if ( id < minID || id > maxID )
+    if (id < minID || id > maxID)
     {
         hasError = true;
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, methodID, methodID, errorMsg );
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, methodID, methodID, errorMsg);
     }
     return hasError;
 }

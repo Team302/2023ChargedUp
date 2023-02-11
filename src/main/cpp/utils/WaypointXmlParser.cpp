@@ -13,37 +13,36 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-//C++ Includes
+// C++ Includes
 
-
-//FRC Includes
+// FRC Includes
 #include <frc/Filesystem.h>
 
-//Team 302 Includes
+// Team 302 Includes
 #include <utils/WaypointXmlParser.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 #include <utils/Waypoint2d.h>
 #include <chassis/swerve/driveStates/DragonTrajectoryGenerator.h>
-//Third party includes
+// Third party includes
 #include <pugixml/pugixml.hpp>
 
 using namespace pugi;
 using namespace std;
 
-WaypointXmlParser* WaypointXmlParser::m_instance = nullptr;
-WaypointXmlParser* WaypointXmlParser::GetInstance()
+WaypointXmlParser *WaypointXmlParser::m_instance = nullptr;
+WaypointXmlParser *WaypointXmlParser::GetInstance()
 {
-	if ( WaypointXmlParser::m_instance == nullptr )
-	{
+    if (WaypointXmlParser::m_instance == nullptr)
+    {
         WaypointXmlParser::m_instance = new WaypointXmlParser();
-	}
-	return WaypointXmlParser::m_instance;
+    }
+    return WaypointXmlParser::m_instance;
 }
 
 void WaypointXmlParser::ParseWaypoints()
 {
     // set the file to parse
-	auto deployDir = frc::filesystem::GetDeployDirectory();
+    auto deployDir = frc::filesystem::GetDeployDirectory();
     std::string filename = deployDir + std::string("/waypoints.xml");
 
     map<string, DragonTrajectoryGenerator::WAYPOINTS> waypointMap;
@@ -66,7 +65,7 @@ void WaypointXmlParser::ParseWaypoints()
 
     try
     {
-       // load the xml file into memory (parse it)
+        // load the xml file into memory (parse it)
         xml_document doc;
         xml_parse_result result = doc.load_file(filename.c_str());
 
@@ -88,9 +87,9 @@ void WaypointXmlParser::ParseWaypoints()
                 // loop through the direct children of <waypoints> and call the appropriate parser
                 for (xml_node child = node.first_child(); child; child = child.next_sibling())
                 {
-                    for(xml_attribute attr = child.first_attribute(); attr && !hasError; attr = attr.next_attribute())
+                    for (xml_attribute attr = child.first_attribute(); attr && !hasError; attr = attr.next_attribute())
                     {
-                        if(strcmp(attr.name(), "identifier") == 0)
+                        if (strcmp(attr.name(), "identifier") == 0)
                         {
                             currentWaypoint.waypointIdentifier = waypointMap[attr.as_string()];
                         }
@@ -122,7 +121,7 @@ void WaypointXmlParser::ParseWaypoints()
                         {
                             string msg = "unknown attribute ";
                             msg += attr.name();
-                            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("WaypointXmlParser"), string("ParseXML"), msg );
+                            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("WaypointXmlParser"), string("ParseXML"), msg);
                             hasError = true;
                         }
                     }
@@ -139,28 +138,28 @@ void WaypointXmlParser::ParseWaypoints()
             std::string msg = "XML [";
             msg += filename;
             msg += "] parsed with errors, attr value: [";
-            msg += doc.child( "prototype" ).attribute( "attr" ).value();
+            msg += doc.child("prototype").attribute("attr").value();
             msg += "]";
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("WaypointXmlParser"), string("ParseXML (1) "), msg );
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("WaypointXmlParser"), string("ParseXML (1) "), msg);
 
             msg = "Error description: ";
             msg += result.description();
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("WaypointXmlParser"), string("ParseXML (2) "), msg );
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("WaypointXmlParser"), string("ParseXML (2) "), msg);
 
             msg = "Error offset: ";
             msg += result.offset;
             msg += " error at ...";
             msg += filename;
             msg += result.offset;
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("WaypointXmlParser"), string("ParseXML (3) "), msg );
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("WaypointXmlParser"), string("ParseXML (3) "), msg);
         }
     }
-    catch(const std::exception& e)
+    catch (const std::exception &e)
     {
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("WaypointXmlParser"), string("ParseXML"), string("Error thrown while parsing Waypoints.xml") );
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("WaypointXmlParser"), string("ParseXML"), string("Error thrown while parsing Waypoints.xml"));
     }
 
-    if(!hasError)
+    if (!hasError)
     {
         m_waypoints = waypoints;
     }

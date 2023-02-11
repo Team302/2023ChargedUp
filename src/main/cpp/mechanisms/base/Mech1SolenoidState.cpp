@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-/// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+/// Copyright 2023 Lake Orion Robotics FIRST Team 302
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 /// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -24,9 +24,9 @@
 #include <State.h>
 #include <mechanisms/base/Mech1SolenoidState.h>
 #include <mechanisms/base/Mech1Solenoid.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
-#include <TeleopControl.h>
+#include <teleopcontrol/TeleopControl.h>
 
 // Third Party Includes
 
@@ -34,48 +34,45 @@ using namespace std;
 
 /// @class Mech1SolenoidState
 /// @brief information about the control (open loop, closed loop position, closed loop velocity, etc.) for a mechanism state
-Mech1SolenoidState::Mech1SolenoidState
-(
-    Mech1Solenoid*                  mechanism,
-    string                          stateName,
-    int                             stateId,
-    MechanismTargetData::SOLENOID   solState
-) : State(stateName, stateId),
-    m_mechanism( mechanism ),
-    m_solenoidState( solState )
+Mech1SolenoidState::Mech1SolenoidState(
+    Mech1Solenoid *mechanism,
+    string stateName,
+    int stateId,
+    MechanismTargetData::SOLENOID solState) : State(stateName, stateId),
+                                              m_mechanism(mechanism),
+                                              m_solenoidState(solState)
 {
-    if ( mechanism == nullptr )
+    if (mechanism == nullptr)
     {
         Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("Mech1SolenoidState"), string("Mech1SolenoidState"), string("no mechanism"));
-    }    
+    }
 }
 
 void Mech1SolenoidState::Init()
 {
 }
 
-
-void Mech1SolenoidState::Run()           
+void Mech1SolenoidState::Run()
 {
-    if ( m_mechanism != nullptr )
+    if (m_mechanism != nullptr)
     {
-        switch ( m_solenoidState )
+        switch (m_solenoidState)
         {
-            case MechanismTargetData::SOLENOID::REVERSE:
-                m_mechanism->ActivateSolenoid( false );
-                break;
-            
-            case MechanismTargetData::SOLENOID::ON:
-                m_mechanism->ActivateSolenoid( true );
-                break;
+        case MechanismTargetData::SOLENOID::REVERSE:
+            m_mechanism->ActivateSolenoid(false);
+            break;
 
-            default:
-                break;
-        }   
+        case MechanismTargetData::SOLENOID::ON:
+            m_mechanism->ActivateSolenoid(true);
+            break;
+
+        default:
+            break;
+        }
     }
 }
 
-void Mech1SolenoidState::Exit() 
+void Mech1SolenoidState::Exit()
 {
 }
 

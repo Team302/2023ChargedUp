@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -16,20 +16,16 @@
 
 #pragma once
 
-///  @brief	    Interface for loggable items that can be mixed in with other interfaces
-class LoggableItem
+// C++ Includes
+
+// FRC includes
+
+// Team 302 includes
+#include <gamepad/IDragonGamePad.h>
+
+struct TeleopControlButton
 {
-	public:
-        
-	    LoggableItem();
-	    virtual ~LoggableItem() = default;
-
-        /// @brief log data to the network table if it is activated and time period has past
-        virtual void LogInformation() const = 0;
-
-
-
+    TeleopControlMappingEnums::CONTROLLER controllerNumber = TeleopControlMappingEnums::CONTROLLER::UNKNOWN_CONTROLLER;
+    TeleopControlMappingEnums::BUTTON_IDENTIFIER buttonId = TeleopControlMappingEnums::BUTTON_IDENTIFIER::UNDEFINED_BUTTON;
+    TeleopControlMappingEnums::BUTTON_MODE mode = TeleopControlMappingEnums::BUTTON_MODE::STANDARD;
 };
-
-
-

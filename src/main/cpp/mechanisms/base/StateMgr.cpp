@@ -1,15 +1,15 @@
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
 // and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
 // The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, 
-// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
@@ -33,32 +33,30 @@
 #include <mechanisms/MechanismFactory.h>
 #include <mechanisms/StateMgrHelper.h>
 #include <mechanisms/StateStruc.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
 // Third Party Includes
 
 using namespace std;
 
 /// @brief    initialize the state manager, parse the configuration file and create the states.
-StateMgr::StateMgr() : m_mech(nullptr),
+StateMgr::StateMgr() : m_checkGamePadTransitions(true),
+                       m_mech(nullptr),
                        m_currentState(),
                        m_stateVector(),
-                       m_currentStateID(0),
-                       m_checkGamePadTransitions(true)
+                       m_currentStateID(0)
 {
 }
-void StateMgr::Init
-(
-    Mech*                                   mech,
-    const map<string,StateStruc>&           stateMap
-) 
+void StateMgr::Init(
+    Mech *mech,
+    const map<string, StateStruc> &stateMap)
 {
     m_mech = mech;
     if (mech != nullptr)
     {
-        // Parse the configuration file 
+        // Parse the configuration file
         auto stateXML = make_unique<StateDataXmlParser>();
-        vector<MechanismTargetData*> targetData = stateXML.get()->ParseXML(mech->GetType());
+        vector<MechanismTargetData *> targetData = stateXML.get()->ParseXML(mech->GetType());
 
         if (targetData.empty())
         {
@@ -69,39 +67,39 @@ void StateMgr::Init
             // initialize the xml string to state map
             m_stateVector.resize(stateMap.size(), nullptr);
             // create the states passing the configuration data
-            auto stateId=0;
-            for ( auto td: targetData )
+            auto stateId = 0;
+            for (auto td : targetData)
             {
                 auto stateString = td->GetStateString();
-                Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, mech->GetNetworkTableName(), string("State")+to_string(stateId), stateString);
-                auto stateStringToStrucItr = stateMap.find( stateString );
-                if ( stateStringToStrucItr != stateMap.end() )
+                Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, mech->GetNetworkTableName(), string("State") + to_string(stateId), stateString);
+                auto stateStringToStrucItr = stateMap.find(stateString);
+                if (stateStringToStrucItr != stateMap.end())
                 {
                     auto struc = stateStringToStrucItr->second;
                     auto slot = struc.id;
-                    if ( m_stateVector[slot] == nullptr )
+                    if (m_stateVector[slot] == nullptr)
                     {
                         auto thisState = StateMgrHelper::CreateState(mech, struc, td);
-                	    if (thisState != nullptr)
-                	    {
-                    	    m_stateVector[slot] = thisState;
+                        if (thisState != nullptr)
+                        {
+                            m_stateVector[slot] = thisState;
                             if (struc.isDefault)
                             {
-                        	    m_currentState = thisState;
-                        	    m_currentStateID = slot;
-                        	    m_currentState->Init();
-                    	    }
-                	    }
-            	    }
-            	    else
-            	    {
+                                m_currentState = thisState;
+                                m_currentStateID = slot;
+                                m_currentState->Init();
+                            }
+                        }
+                    }
+                    else
+                    {
                         auto msg = string("multiple mechanism state info for state");
-                	    Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, mech->GetNetworkTableName(), string("StateMgr::StateMgr"), msg);
-            	    }
-        	    }
-        	    else
-        	    {
-            	    Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, mech->GetNetworkTableName(), string("StateMgr::StateMgr"), string("state not found"));
+                        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, mech->GetNetworkTableName(), string("StateMgr::StateMgr"), msg);
+                    }
+                }
+                else
+                {
+                    Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, mech->GetNetworkTableName(), string("StateMgr::StateMgr"), string("state not found"));
                 }
             }
         }
@@ -112,17 +110,16 @@ void StateMgr::Init
 /// @return void
 void StateMgr::RunCurrentState()
 {
-    if ( m_mech != nullptr )
+    if (m_mech != nullptr)
     {
         CheckForStateTransition();
 
         // run the current state
-        if ( m_currentState != nullptr )
+        if (m_currentState != nullptr)
         {
             m_currentState->Run();
         }
     }
-
 }
 
 void StateMgr::CheckForStateTransition()
@@ -136,12 +133,12 @@ void StateMgr::CheckForStateTransition()
 
 void StateMgr::CheckForSensorTransitions()
 {
-    // override this method if sensors could change states 
+    // override this method if sensors could change states
 }
 
 void StateMgr::CheckForGamepadTransitions()
 {
-    // override this method if joystick inputs could change states;  Format 
+    // override this method if joystick inputs could change states;  Format
     // would look something like:
     //    auto controller = TeleopControl::GetInstance();
     //    if ( controller != nullptr )
@@ -152,34 +149,31 @@ void StateMgr::CheckForGamepadTransitions()
 
 /// @brief  set the current state, initialize it and run it
 /// @return void
-void StateMgr::SetCurrentState
-(
-    int             stateID,
-    bool            run
-)
+void StateMgr::SetCurrentState(
+    int stateID,
+    bool run)
 {
-    if (m_mech != nullptr  && stateID < static_cast<int>(m_stateVector.size()))
+    if (m_mech != nullptr && stateID < static_cast<int>(m_stateVector.size()))
     {
         auto state = m_stateVector[stateID];
-        if ( state != nullptr && state != m_currentState)
-        {   
+        if (state != nullptr && state != m_currentState)
+        {
             // if there are any exits that need to happen from the current state do them
-            if (m_currentState != nullptr) 
+            if (m_currentState != nullptr)
             {
                 m_currentState->Exit();
             }
 
             // Transition to the new state
             m_currentState = state;
-            m_currentStateID = stateID;       
+            m_currentStateID = stateID;
             m_currentState->Init();
-            
+
             // Run current new state if requested
-            if ( run )
+            if (run)
             {
                 m_currentState->Run();
             }
-            
         }
     }
 }
@@ -187,10 +181,8 @@ void StateMgr::SetCurrentState
 /// @brief  Get the current Parameter parm value for the state of this mechanism
 /// @param PrimitiveParams* currentParams current set of primitive parameters
 /// @returns int state id - -1 indicates that there is not a state to set
-int StateMgr::GetCurrentStateParam
-(
-    PrimitiveParams*    currentParams
-)
+int StateMgr::GetCurrentStateParam(
+    PrimitiveParams *currentParams)
 {
     return -1;
 }
@@ -214,4 +206,3 @@ void StateMgr::LogInformation() const
         }
     }
 }
-

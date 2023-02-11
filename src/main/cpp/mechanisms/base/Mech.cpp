@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -23,7 +23,7 @@
 #include <mechanisms/base/Mech.h>
 #include <mechanisms/MechanismTypes.h>
 #include <utils/DragonAssert.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
 // Third Party Includes
 #include <units/time.h>
@@ -34,52 +34,46 @@ using namespace std;
 /// @param [in] MechanismTypes::MECHANISM_TYPE the type of mechansim
 /// @param [in] std::string the name of the file that will set control parameters for this mechanism
 /// @param [in] std::string the name of the network table for logging information
-Mech::Mech
-(
-    MechanismTypes::MECHANISM_TYPE  type,
-    string                          controlFileName,
-    string                          networkTableName
-) : LoggableItem(),
-    m_type( type ),
-    m_controlFile( controlFileName ),
-    m_ntName( networkTableName ),
-    m_stateMgr(nullptr)
+Mech::Mech(
+    MechanismTypes::MECHANISM_TYPE type,
+    string controlFileName,
+    string networkTableName) : LoggableItem(),
+                               m_type(type),
+                               m_controlFile(controlFileName),
+                               m_ntName(networkTableName),
+                               m_stateMgr(nullptr)
 {
-    if ( controlFileName.empty() )
+    if (controlFileName.empty())
     {
-        Logger::GetLogger()->LogData( LOGGER_LEVEL::ERROR_ONCE, networkTableName, string("Mech" ), string( "control file name is not specified" ) );
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, networkTableName, string("Mech"), string("control file name is not specified"));
     }
 
-    if ( networkTableName.empty() )
+    if (networkTableName.empty())
     {
-        Logger::GetLogger()->LogData( LOGGER_LEVEL::ERROR_ONCE, string("Mech"), string( "Mech" ), string( "network table name is not specified" ) );
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("Mech"), string("Mech"), string("network table name is not specified"));
     }
-
 }
-
 
 /// @brief          Indicates the type of mechanism this is
 /// @return         MechanismTypes::MECHANISM_TYPE
-MechanismTypes::MECHANISM_TYPE Mech::GetType() const 
+MechanismTypes::MECHANISM_TYPE Mech::GetType() const
 {
     return m_type;
 }
 
 /// @brief indicate the file used to get the control parameters from
-/// @return std::string the name of the file 
-string Mech::GetControlFileName() const 
+/// @return std::string the name of the file
+string Mech::GetControlFileName() const
 {
     return m_controlFile;
 }
 
-
 /// @brief indicate the network table name used to for logging parameters
-/// @return std::string the name of the network table 
-string Mech::GetNetworkTableName() const 
+/// @return std::string the name of the network table
+string Mech::GetNetworkTableName() const
 {
     return m_ntName;
 }
-
 
 /// @brief log data to the network table if it is activated and time period has past
 void Mech::LogInformation() const
@@ -87,16 +81,14 @@ void Mech::LogInformation() const
     // NO-OP - subclasses override when necessary
 }
 
-void Mech::AddStateMgr
-(
-    StateMgr*       mgr
-)
+void Mech::AddStateMgr(
+    StateMgr *mgr)
 {
     m_stateMgr = mgr;
 }
 
-StateMgr* Mech::GetStateMgr() const
+StateMgr *Mech::GetStateMgr() const
 {
-    DragonAssert::GetDragonAssert()->Assert (m_stateMgr != nullptr, string("No StateManager in Mech::GetStateMgr()"));
+    DragonAssert::GetDragonAssert()->Assert(m_stateMgr != nullptr, string("No StateManager in Mech::GetStateMgr()"));
     return m_stateMgr;
 }

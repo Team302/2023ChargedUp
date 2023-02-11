@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-/// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+/// Copyright 2023 Lake Orion Robotics FIRST Team 302
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 /// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -24,7 +24,7 @@
 #include <hw/DragonCanCoder.h>
 #include <hw/xml/CancoderXmlParser.h>
 #include <utils/HardwareIDValidation.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
 // third party includes
 #include <pugixml/pugixml.hpp>
@@ -37,56 +37,52 @@ using namespace pugi;
 /// @brief parses the cancoder node in the robot.xml file and creates a cancoder
 /// @param [in] xml_node - the cancoder element in the xml file
 /// @return shared_ptr<CANCoder
-DragonCanCoder* CancoderXmlParser::ParseXML
-(
-    string              networkTableName,
-    xml_node            CanCoderNode
-)
+DragonCanCoder *CancoderXmlParser::ParseXML(
+    string networkTableName,
+    xml_node CanCoderNode)
 {
-    DragonCanCoder* cancoder = nullptr;
+    DragonCanCoder *cancoder = nullptr;
 
     string usage;
     string canBusName("rio");
     int canID = 0;
     double offset = 0.0;
     bool reverse = false;
-    
+
     bool hasError = false;
 
-    for(xml_attribute attr = CanCoderNode.first_attribute(); attr &&!hasError; attr = attr.next_attribute() )
+    for (xml_attribute attr = CanCoderNode.first_attribute(); attr && !hasError; attr = attr.next_attribute())
     {
-        if ( strcmp( attr.name(), "usage") == 0)
+        if (strcmp(attr.name(), "usage") == 0)
         {
             usage = attr.value();
         }
-        else if ( strcmp( attr.name(), "canId" ) == 0 )
+        else if (strcmp(attr.name(), "canId") == 0)
         {
             canID = attr.as_int();
-            hasError = HardwareIDValidation::ValidateCANID( canID, string( "CancoderXmlParser::ParseXML" ) );
-        }        
-        else if (strcmp(attr.name(), "canbus") == 0)
+            hasError = HardwareIDValidation::ValidateCANID(canID, string("CancoderXmlParser::ParseXML"));
+        }
+        else if (strcmp(attr.name(), "canBusName") == 0)
         {
             canBusName = attr.as_string();
         }
-        else if ( strcmp( attr.name(), "offset" ) == 0 )
+        else if (strcmp(attr.name(), "offset") == 0)
         {
             offset = attr.as_double();
-        }        
-        else if ( strcmp( attr.name(), "reverse" ) == 0 )
+        }
+        else if (strcmp(attr.name(), "reverse") == 0)
         {
             reverse = attr.as_bool();
-        }        
+        }
         else
         {
-            Logger::GetLogger()->LogData (LOGGER_LEVEL::ERROR_ONCE, string("CancoderXmlParser"), string("invalid attribute"), string(attr.value()));
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("CancoderXmlParser"), string("invalid attribute"), string(attr.value()));
             hasError = true;
         }
-
-    }   
-    if(!hasError)
+    }
+    if (!hasError)
     {
         cancoder = new DragonCanCoder(networkTableName, usage, canID, canBusName, offset, reverse);
-
     }
     return cancoder;
 }

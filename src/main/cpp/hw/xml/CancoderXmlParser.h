@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-/// Copyright 2022 Lake Orion Robotics FIRST Team 302
+/// Copyright 2023 Lake Orion Robotics FIRST Team 302
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 /// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -27,16 +27,14 @@
 
 class CancoderXmlParser
 {
-    public:
-        CancoderXmlParser() = default;
-        virtual ~CancoderXmlParser() = default;
+public:
+    CancoderXmlParser() = default;
+    virtual ~CancoderXmlParser() = default;
 
-        /// @brief parses the cancoder node in the robot.xml file and creates a cancoder
-        /// @param [in] xml_node - the cancoder element in the xml file
-        /// @return shared_ptr<CANCoder
-        DragonCanCoder* ParseXML 
-        (
-            std::string         networkTableName,
-            pugi::xml_node      CanCoderNode
-        );
+    /// @brief parses the cancoder node in the robot.xml file and creates a cancoder
+    /// @param [in] xml_node - the cancoder element in the xml file
+    /// @return shared_ptr<CANCoder
+    DragonCanCoder *ParseXML(
+        std::string networkTableName,
+        pugi::xml_node CanCoderNode);
 };

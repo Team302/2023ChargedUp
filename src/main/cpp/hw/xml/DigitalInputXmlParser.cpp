@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -24,12 +24,11 @@
 #include <hw/DragonDigitalInput.h>
 #include <hw/usages/DigitalInputUsage.h>
 #include <utils/HardwareIDValidation.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 #include <hw/xml/DigitalInputXmlParser.h>
 
 // Third Party includes
 #include <pugixml/pugixml.hpp>
-
 
 using namespace frc;
 using namespace std;
@@ -42,18 +41,16 @@ using namespace pugi;
 //
 // Returns:     DragonDigitalInput*
 //-----------------------------------------------------------------------
-shared_ptr<DragonDigitalInput> DigitalInputXmlParser::ParseXML
-(
-    string              networkTableName,
-    xml_node            DigitalNode
-)
+shared_ptr<DragonDigitalInput> DigitalInputXmlParser::ParseXML(
+    string networkTableName,
+    xml_node DigitalNode)
 {
     // initialize the output
     shared_ptr<DragonDigitalInput> input;
 
     // initialize the attributes to default values
     auto usage = DigitalInputUsage::DIGITAL_INPUT_USAGE::UNKNOWN_DIGITAL_INPUT_USAGE;
-    int  digitalID = 0;
+    int digitalID = 0;
     bool reversed = false;
     units::time::second_t debounceTime = 0_s;
     bool hasError = false;
@@ -61,21 +58,20 @@ shared_ptr<DragonDigitalInput> DigitalInputXmlParser::ParseXML
     // Parse/validate the XML
     for (pugi::xml_attribute attr = DigitalNode.first_attribute(); attr; attr = attr.next_attribute())
     {
-        string attrName (attr.name());
+        string attrName(attr.name());
         if (attrName.compare("usage") == 0)
         {
             auto usageString = string(attr.value());
-            usage = DigitalInputUsage::GetInstance()->GetUsage(usageString );
+            usage = DigitalInputUsage::GetInstance()->GetUsage(usageString);
         }
         else if (attrName.compare("digitalId") == 0)
         {
             digitalID = attr.as_int();
-            hasError = HardwareIDValidation::ValidateDIOID( digitalID, string( "DigitalInputXmlParser::ParseXML(digital Input pin)" ) );
+            hasError = HardwareIDValidation::ValidateDIOID(digitalID, string("DigitalInputXmlParser::ParseXML(digital Input pin)"));
         }
-        else if (attrName.compare("reversed" ) == 0)
+        else if (attrName.compare("reversed") == 0)
         {
             reversed = attr.as_bool();
-
         }
         else if (attrName.compare("debouncetime") == 0)
         {
@@ -85,15 +81,14 @@ shared_ptr<DragonDigitalInput> DigitalInputXmlParser::ParseXML
         {
             string msg = "unknown attribute ";
             msg += attr.name();
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("DigitalInputXmlParser "), string("ParseXML "), msg );
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("DigitalInputXmlParser "), string("ParseXML "), msg);
         }
     }
 
     // Create the DragonDigitalInput
-    if ( !hasError )
+    if (!hasError)
     {
         input = make_shared<DragonDigitalInput>(networkTableName, usage, digitalID, reversed, debounceTime);
     }
     return input;
 }
-

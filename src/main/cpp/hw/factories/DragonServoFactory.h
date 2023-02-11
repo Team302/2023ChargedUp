@@ -22,48 +22,41 @@
 // Team 302 includes
 #include <hw/usages/ServoUsage.h>
 
-
 class DragonServo;
-
 
 /// @class DragonServoFactory
 /// @brief Create DragonServos and allow external clients to retrieve created DragonServos
 class DragonServoFactory
 {
-    public:
+public:
+    /// @brief  Get the factory singleton
+    /// @return DragonServoFactory*    pointer to the factory
+    static DragonServoFactory *GetInstance();
 
-        /// @brief  Get the factory singleton
-        /// @return DragonServoFactory*    pointer to the factory
-        static DragonServoFactory* GetInstance();
+    /// @brief  Create a DragonServo from the inputs
+    /// @param [in] DragonServo::SERVO_USAGE   deviceUsage  Usage of the servo
+    /// @param [in] int                        deviceID     PWM ID of the  servo
+    /// @param [in] double                     minAngle     Minimum Angle for the servo
+    /// @param [in] double                     maxAngle     Maximum Angle for the servo
+    /// @return DragonServo*    - could be nullptr if invalid inputs are supplied
+    DragonServo *CreateDragonServo(
+        std::string networkTableName,
+        ServoUsage::SERVO_USAGE deviceUsage,
+        int deviceID,
+        double minAngle,
+        double maxAngle);
 
-        /// @brief  Create a DragonServo from the inputs
-        /// @param [in] DragonServo::SERVO_USAGE   deviceUsage  Usage of the servo
-        /// @param [in] int                        deviceID     PWM ID of the  servo
-        /// @param [in] double                     minAngle     Minimum Angle for the servo
-        /// @param [in] double                     maxAngle     Maximum Angle for the servo
-        /// @return DragonServo*    - could be nullptr if invalid inputs are supplied
-        DragonServo* CreateDragonServo
-        (
-			std::string                 networkTableName,
-            ServoUsage::SERVO_USAGE     deviceUsage,        
-            int                         deviceID,           
-            double                      minAngle,           
-            double                      maxAngle            
-        );
+    /// @brief  Get a DragonServo from its usage
+    /// @param [in] DragonServo::SERVO_USAGE   deviceUsage  Usage of the servo
+    /// @return DragonServo*    - could be nullptr if invalid inputs are supplied
+    DragonServo *GetDragonServo(
+        ServoUsage::SERVO_USAGE deviceUsage);
 
-        /// @brief  Get a DragonServo from its usage
-        /// @param [in] DragonServo::SERVO_USAGE   deviceUsage  Usage of the servo
-        /// @return DragonServo*    - could be nullptr if invalid inputs are supplied
-        DragonServo* GetDragonServo
-        (
-            ServoUsage::SERVO_USAGE    deviceUsage        
-        );
+private:
+    DragonServoFactory() = default;
+    ~DragonServoFactory() = default;
 
-    private:
-        DragonServoFactory() = default;
-        ~DragonServoFactory() = default;
+    static DragonServoFactory *m_instance;
 
-        static DragonServoFactory*        m_instance;
-
-        std::map <ServoUsage::SERVO_USAGE, DragonServo*> m_servos;
+    std::map<ServoUsage::SERVO_USAGE, DragonServo *> m_servos;
 };

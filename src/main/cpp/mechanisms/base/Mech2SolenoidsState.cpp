@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-/// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+/// Copyright 2023 Lake Orion Robotics FIRST Team 302
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 /// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -24,9 +24,9 @@
 #include <State.h>
 #include <mechanisms/base/Mech2SolenoidsState.h>
 #include <mechanisms/base/Mech2Solenoids.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
-#include <TeleopControl.h>
+#include <teleopcontrol/TeleopControl.h>
 
 // Third Party Includes
 
@@ -34,36 +34,33 @@ using namespace std;
 
 /// @class Mech2SolenoidsState
 /// @brief information about the control (open loop, closed loop position, closed loop velocity, etc.) for a mechanism state
-Mech2SolenoidsState::Mech2SolenoidsState
-(
-    Mech2Solenoids*                 mechanism,
-    string                          stateName,
-    int                             stateId,
-    MechanismTargetData::SOLENOID   solState,
-    MechanismTargetData::SOLENOID   solState2
-) : Mech1SolenoidState(mechanism, stateName, stateId, solState),
-    m_mechanism(mechanism)
+Mech2SolenoidsState::Mech2SolenoidsState(
+    Mech2Solenoids *mechanism,
+    string stateName,
+    int stateId,
+    MechanismTargetData::SOLENOID solState,
+    MechanismTargetData::SOLENOID solState2) : Mech1SolenoidState(mechanism, stateName, stateId, solState),
+                                               m_mechanism(mechanism)
 {
 }
 
-
-void Mech2SolenoidsState::Run()           
+void Mech2SolenoidsState::Run()
 {
-    if ( m_mechanism != nullptr )
+    if (m_mechanism != nullptr)
     {
-        switch ( m_solenoidState2 )
+        switch (m_solenoidState2)
         {
-            case MechanismTargetData::SOLENOID::REVERSE:
-                m_mechanism->ActivateSolenoid2( false );
-                break;
-            
-            case MechanismTargetData::SOLENOID::ON:
-                m_mechanism->ActivateSolenoid2( true );
-                break;
+        case MechanismTargetData::SOLENOID::REVERSE:
+            m_mechanism->ActivateSolenoid2(false);
+            break;
 
-            default:
-                break;
-        }   
+        case MechanismTargetData::SOLENOID::ON:
+            m_mechanism->ActivateSolenoid2(true);
+            break;
+
+        default:
+            break;
+        }
     }
 }
 

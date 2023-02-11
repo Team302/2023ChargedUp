@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -16,7 +16,7 @@
 
 #include <gamepad/axis/IProfile.h>
 #include <gamepad/axis/LinearProfile.h>
-    
+
 //==================================================================================
 /// <summary>
 /// Method:         GetInstance
@@ -24,8 +24,8 @@
 /// Returns:        LinearProfile*  Singleton linear profile object
 /// </summary>
 //==================================================================================
-LinearProfile* LinearProfile::m_instance = nullptr;
-LinearProfile* LinearProfile::GetInstance()
+LinearProfile *LinearProfile::m_instance = nullptr;
+LinearProfile *LinearProfile::GetInstance()
 {
     if (m_instance == nullptr)
     {
@@ -34,18 +34,14 @@ LinearProfile* LinearProfile::GetInstance()
     return m_instance;
 }
 
-
 //==================================================================================
 /// <summary>
 /// Method:         ApplyProfile
 /// Description:    Apply the profile
 /// </summary>
 //==================================================================================
-double LinearProfile::ApplyProfile
-(
-    double      inputVal            // <I> - value to apply profile to
-) const 
+void LinearProfile::ApplyProfile(
+    double &inputVal // <I> - value to apply profile to
+) const
 {
-    return inputVal;
 }
-

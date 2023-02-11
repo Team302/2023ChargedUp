@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-/// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+/// Copyright 2023 Lake Orion Robotics FIRST Team 302
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 /// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -26,9 +26,9 @@
 #include <mechanisms/controllers/ControlData.h>
 #include <mechanisms/controllers/MechanismTargetData.h>
 #include <mechanisms/base/Mech1IndMotor.h>
-#include <utils/Logger.h>
+#include <utils/logging/Logger.h>
 
-#include <TeleopControl.h>
+#include <teleopcontrol/TeleopControl.h>
 
 // Third Party Includes
 
@@ -36,32 +36,30 @@ using namespace std;
 
 /// @class Mech1IndMotorState
 /// @brief information about the control (open loop, closed loop position, closed loop velocity, etc.) for a mechanism state
-Mech1IndMotorState::Mech1IndMotorState
-(
-    Mech1IndMotor*                  mechanism,
-    string                          stateName,
-    int                             stateId,
-    ControlData*                    control,
-    double                          target
-) : State(stateName, stateId),
-    m_mechanism( mechanism ),
-    m_control( control ),
-    m_target( target ),
-    m_originalTarget( target ),
-    m_positionBased( false ),
-    m_speedBased( false )
+Mech1IndMotorState::Mech1IndMotorState(
+    Mech1IndMotor *mechanism,
+    string stateName,
+    int stateId,
+    ControlData *control,
+    double target) : State(stateName, stateId),
+                     m_mechanism(mechanism),
+                     m_control(control),
+                     m_target(target),
+                     m_originalTarget(target),
+                     m_positionBased(false),
+                     m_speedBased(false)
 {
     auto ntName = string("Mech1IndMotorState");
-    if ( mechanism == nullptr )
+    if (mechanism == nullptr)
     {
         Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, ntName, ("Mech1IndMotorState::Mech1IndMotorState"), string("no mechanism"));
-    }    
-    else 
+    }
+    else
     {
         ntName = mechanism->GetNetworkTableName();
     }
-    
-    if ( control == nullptr )
+
+    if (control == nullptr)
     {
         Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, ntName, string("Mech1IndMotorState::Mech1IndMotorState"), string("no control data"));
     }
@@ -70,97 +68,112 @@ Mech1IndMotorState::Mech1IndMotorState
         auto mode = control->GetMode();
         switch (mode)
         {
-            case ControlModes::CONTROL_TYPE::PERCENT_OUTPUT:
-                m_positionBased = false;
-                m_speedBased = false;
-                break;
+        case ControlModes::CONTROL_TYPE::PERCENT_OUTPUT:
+            m_positionBased = false;
+            m_speedBased = false;
+            break;
 
-            case ControlModes::CONTROL_TYPE::VOLTAGE:
-                m_positionBased = false;
-                m_speedBased = false;
-                break;
+        case ControlModes::CONTROL_TYPE::VOLTAGE:
+            m_positionBased = false;
+            m_speedBased = false;
+            break;
 
-            case ControlModes::CONTROL_TYPE::POSITION_DEGREES:
-            case ControlModes::CONTROL_TYPE::POSITION_INCH:
-                m_positionBased = true;
-                m_speedBased = false;
-                break;
-            
-            case ControlModes::CONTROL_TYPE::VELOCITY_DEGREES:
-            case ControlModes::CONTROL_TYPE::VELOCITY_INCH:
-            case ControlModes::CONTROL_TYPE::VELOCITY_RPS:
-                m_positionBased = false;
-                m_speedBased = true;
-                break;
+        case ControlModes::CONTROL_TYPE::POSITION_DEGREES:
+        case ControlModes::CONTROL_TYPE::POSITION_INCH:
+            m_positionBased = true;
+            m_speedBased = false;
+            break;
 
-            case ControlModes::CONTROL_TYPE::CURRENT:
-                m_positionBased = false;
-                m_speedBased = false;
-                break;
+        case ControlModes::CONTROL_TYPE::VELOCITY_DEGREES:
+        case ControlModes::CONTROL_TYPE::VELOCITY_INCH:
+        case ControlModes::CONTROL_TYPE::VELOCITY_RPS:
+            m_positionBased = false;
+            m_speedBased = true;
+            break;
 
-            case ControlModes::CONTROL_TYPE::MOTION_PROFILE:
-                m_positionBased = false;
-                m_speedBased = false;
-                break;
+        case ControlModes::CONTROL_TYPE::CURRENT:
+            m_positionBased = false;
+            m_speedBased = false;
+            break;
 
-            case ControlModes::CONTROL_TYPE::MOTION_PROFILE_ARC:
-                m_positionBased = false;
-                m_speedBased = false;
-                break;
+        case ControlModes::CONTROL_TYPE::MOTION_PROFILE:
+            m_positionBased = false;
+            m_speedBased = false;
+            break;
 
-            case ControlModes::CONTROL_TYPE::TRAPEZOID:
-                m_positionBased = false;
-                m_speedBased = false;
-                break;
+        case ControlModes::CONTROL_TYPE::MOTION_PROFILE_ARC:
+            m_positionBased = false;
+            m_speedBased = false;
+            break;
 
-            default:
-                m_positionBased = false;
-                m_speedBased = false;
-                break;
+        case ControlModes::CONTROL_TYPE::TRAPEZOID:
+            m_positionBased = false;
+            m_speedBased = false;
+            break;
+
+        default:
+            m_positionBased = false;
+            m_speedBased = false;
+            break;
         }
     }
-    
 }
 
 void Mech1IndMotorState::Init()
 {
-    if ( m_mechanism != nullptr && m_control != nullptr )
+    if (m_mechanism != nullptr && m_control != nullptr)
     {
-        m_mechanism->SetControlConstants( 0, m_control );
-        m_mechanism->UpdateTarget( m_target );
+        m_mechanism->SetControlConstants(0, m_control);
+        m_mechanism->UpdateTarget(m_target);
     }
 }
 
-
-void Mech1IndMotorState::Run()           
+void Mech1IndMotorState::Run()
 {
-    if ( m_mechanism != nullptr)
+    if (m_mechanism != nullptr)
     {
         m_mechanism->Update();
     }
 }
 
-void Mech1IndMotorState::Exit() 
+void Mech1IndMotorState::Exit()
 {
 }
 
 bool Mech1IndMotorState::AtTarget() const
 {
     auto same = true;
-    if ( m_mechanism != nullptr )
+    if (m_mechanism != nullptr)
     {
-        if ( m_positionBased && !m_speedBased )
+        double motorPosition = 0.0;
+        if (m_control->GetMode() == ControlModes::CONTROL_TYPE::POSITION_INCH)
         {
-            same = ( abs( m_target - m_mechanism->GetPosition())  < 1.0 );
+            motorPosition = m_mechanism->GetPositionInches().to<double>();
         }
-        else if ( !m_positionBased && m_speedBased )
+        else if (m_control->GetMode() == ControlModes::CONTROL_TYPE::POSITION_DEGREES)
         {
-            same = ( abs( m_target - m_mechanism->GetSpeed()) < 1.0 );
+            motorPosition = m_mechanism->GetPositionDegrees().to<double>();
         }
-        else if ( m_positionBased && m_speedBased )
+
+        if (m_positionBased && !m_speedBased)
         {
-            same = ( ( abs( m_target - m_mechanism->GetPosition())  < 1.0 ) ||
-                     ( abs( m_target - m_mechanism->GetSpeed())     < 1.0 ) );
+            if (m_control->GetMode() == ControlModes::CONTROL_TYPE::POSITION_INCH)
+            {
+                same = (abs(m_target - motorPosition) < 0.1);
+            }
+            else if (m_control->GetMode() == ControlModes::CONTROL_TYPE::POSITION_DEGREES)
+            {
+                same = (abs(m_target - motorPosition) < 0.5);
+            }
+        }
+        else if (!m_positionBased && m_speedBased)
+        {
+            same = (abs(m_target - m_mechanism->GetSpeed()) < 1.0);
+        }
+        else if (m_positionBased && m_speedBased)
+        {
+            same = ((abs(m_target - motorPosition) < 0.1) ||
+                    (abs(m_target - m_mechanism->GetSpeed()) < 1.0));
         }
     }
     return same;
@@ -168,7 +181,7 @@ bool Mech1IndMotorState::AtTarget() const
 
 void Mech1IndMotorState::LogInformation() const
 {
-    if ( m_mechanism != nullptr)
+    if (m_mechanism != nullptr)
     {
         auto ntName = m_mechanism->GetNetworkTableName();
         auto statename = GetStateName();
