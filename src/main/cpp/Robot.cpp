@@ -54,6 +54,7 @@ void Robot::RobotInit()
     m_robotState->Init();
 
     m_chassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
+
     m_holonomic = nullptr;
     if (m_chassis != nullptr)
     {
@@ -65,6 +66,8 @@ void Robot::RobotInit()
     m_field = DragonField::GetInstance();           // TODO: move to drive team feedback
 
     m_dragonLimeLight = LimelightFactory::GetLimelightFactory()->GetLimelight(); // ToDo:: Move to Dragon Vision
+
+    StateMgrHelper::InitStateMgrs();
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("RobotInit"), string("end"));
 }
@@ -98,7 +101,7 @@ void Robot::RobotPeriodic()
     }
     if (m_field != nullptr)
     {
-        m_field->UpdateRobotPosition(m_chassis->GetPose()); // ToDo:: Move to DriveTeamFeedback (also don't assume m_field isn't a nullptr)
+        // m_field->UpdateRobotPosition(m_chassis->GetPose()); // ToDo:: Move to DriveTeamFeedback (also don't assume m_field isn't a nullptr)
     }
 
     auto feedback = DriverFeedback::GetInstance();
@@ -161,7 +164,7 @@ void Robot::TeleopInit()
     // now in teleop, clear field of trajectories
     if (m_field != nullptr)
     {
-        m_field->ResetField(); // ToDo:  Move to DriveTeamFeedback
+        // m_field->ResetField(); // ToDo:  Move to DriveTeamFeedback
     }
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopInit"), string("end"));
@@ -173,6 +176,7 @@ void Robot::TeleopPeriodic()
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopPeriodic"), string("arrived"));
     if (m_chassis != nullptr && m_controller != nullptr)
     {
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("HolonomicRun"), string("arrived"));
         if (m_holonomic != nullptr)
         {
             m_holonomic->Run();

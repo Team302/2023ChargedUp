@@ -59,6 +59,7 @@ HolonomicDrive::HolonomicDrive() : State(string("HolonomicDrive"), -1),
 /// @return void
 void HolonomicDrive::Init()
 {
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("Initialized?"), "true");
 }
 
 /// @brief calculate the output for the wheels on the chassis from the throttle and steer components
@@ -129,7 +130,7 @@ void HolonomicDrive::Run()
         // Automated driving
         if (m_previousDriveState != ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE)
         {
-            if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_WALL_GRID))
+            if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_LEFT_COLUMN))
             {
                 moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
                 m_previousDriveState = moveInfo.driveOption;
@@ -137,7 +138,7 @@ void HolonomicDrive::Run()
                 m_generatedTrajectory = moveInfo.trajectory;
                 m_field->AddTrajectory("DriverAssist", m_generatedTrajectory);
             }
-            else if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_COOP_GRID))
+            else if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_MIDDLE_COLUMN))
             {
                 moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
                 m_previousDriveState = moveInfo.driveOption;
@@ -145,7 +146,7 @@ void HolonomicDrive::Run()
                 m_generatedTrajectory = moveInfo.trajectory;
                 m_field->AddTrajectory("DriverAssist", m_generatedTrajectory);
             }
-            else if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_HP_GRID))
+            else if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_RIGHT_COLUMN))
             {
                 moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
                 m_previousDriveState = moveInfo.driveOption;

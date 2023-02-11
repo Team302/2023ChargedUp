@@ -32,10 +32,11 @@
 #include <mechanisms/base/StateMgr.h>
 #include <mechanisms/Extender/extender.h>
 #include <mechanisms/StateStruc.h>
+#include <robotstate/IRobotStateChangeSubscriber.h>
 
 // Third Party Includes
 
-class ExtenderStateMgr : public StateMgr
+class ExtenderStateMgr : public StateMgr, public IRobotStateChangeSubscriber
 {
 public:
     /// @enum the various states of the Intake
@@ -76,7 +77,13 @@ public:
     void CheckForSensorTransitions() override;
     void CheckForGamepadTransitions() override;
 
+    // RobotState override
+    void Update(RobotStateChanges::StateChange change, int value) override;
+
 private:
+    void CheckForConeGamepadTransitions(TeleopControl *controller);
+    void CheckForCubeGamepadTransitions(TeleopControl *controller);
+
     ExtenderStateMgr();
     ~ExtenderStateMgr() = default;
 
@@ -86,7 +93,11 @@ private:
     EXTENDER_STATE m_currentState;
     EXTENDER_STATE m_targetState;
 
+    RobotStateChanges::GamePiece m_gamepieceMode;
+
     static ExtenderStateMgr *m_instance;
+
+    bool m_canAutomaticallyMove = false;
 
     const StateStruc m_hold_position_extendState = {EXTENDER_STATE::HOLD_POSITION_EXTEND, "HOLD_POSITION_EXTEND", StateType::EXTENDER_STATE, false};
     const StateStruc m_manual_extend_retractState = {EXTENDER_STATE::MANUAL_EXTEND_RETRACT, "MANUAL_EXTEND_RETRACT", StateType::MANUAL_EXTENDER_STATE, false};
