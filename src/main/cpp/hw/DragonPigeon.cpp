@@ -121,7 +121,7 @@ double DragonPigeon::GetRawYaw()
     }
     else if (m_pigeon2 != nullptr)
     {
-        m_pigeon2->GetYaw();
+        yaw = m_pigeon2->GetYaw();
     }
     yaw = remainder(yaw, 360.0);
 
