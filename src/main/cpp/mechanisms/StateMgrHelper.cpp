@@ -43,7 +43,12 @@ void StateMgrHelper::InitStateMgrs()
     //@ADDMech Add MechanismStateMgr::GetInstanceI() here
     ArmStateMgr::GetInstance();
     ExtenderStateMgr::GetInstance();
-    GrabberStateMgr::GetInstance();
+    /// DEBUGGING
+    auto test = GrabberStateMgr::GetInstance();
+    if (test != nullptr)
+    {
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "StateMgrHelper", string("is grabber state mgr nullptr"), string("false"));
+    }
 }
 
 void StateMgrHelper::RunCurrentMechanismStates()
