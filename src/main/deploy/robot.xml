@@ -12,7 +12,7 @@
     usage="CENTER_OF_ROTATION" />
   <limelight
     usage="MAINLIMELIGHT"
-    tablename="limelight"
+    tablename="limelight-front"
     mountingheight="37.325"
     horizontaloffset="7.689"
     mountingangle="-18.0"
@@ -29,7 +29,7 @@
     secondcrosshairy="" />
   <limelight
     usage="SECONDARYLIMELIGHT"
-    tablename="limelight2"
+    tablename="limelight-back"
     mountingheight="34.472"
     horizontaloffset="0.0"
     mountingangle="0.0"
