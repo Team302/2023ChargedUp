@@ -242,9 +242,9 @@ robin_hood::unordered_map<TeleopControlFunctions::FUNCTION, const TeleopControlA
     {TeleopControlFunctions::HOLONOMIC_DRIVE_ROTATE, driverRJoystickX},
 
     {TeleopControlFunctions::MANUAL_ROTATE, copilotLJoystickY},
-    {TeleopControlFunctions::MANUAL_EXTEND_RETRACT, copilotRJoystickY},
+    {TeleopControlFunctions::MANUAL_EXTEND_RETRACT, copilotRJoystickY}
 
-    {TeleopControlFunctions::MANUAL_ROTATE, extra1LJoystickY},
-    {TeleopControlFunctions::MANUAL_EXTEND_RETRACT, extra1RJoystickY}
+    //{TeleopControlFunctions::MANUAL_ROTATE, extra1LJoystickY},
+    //{TeleopControlFunctions::MANUAL_EXTEND_RETRACT, extra1RJoystickY}
 
 };
