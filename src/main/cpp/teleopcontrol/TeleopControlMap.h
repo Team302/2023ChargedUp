@@ -160,18 +160,18 @@ robin_hood::unordered_map<TeleopControlFunctions::FUNCTION, const TeleopControlB
     {TeleopControlFunctions::HOLONOMIC_ROTATE_BACK, driverDPad180},
     {TeleopControlFunctions::HOLONOMIC_ROTATE_LEFT, driverDPad270},
     {TeleopControlFunctions::HOLONOMIC_ROTATE_RIGHT, driverDPad90},
-    {TeleopControlFunctions::DRIVE_TO_WALL_GRID, driverXButton},
-    {TeleopControlFunctions::DRIVE_TO_COOP_GRID, driverYButton},
-    {TeleopControlFunctions::DRIVE_TO_HP_GRID, driverBButton},
+    {TeleopControlFunctions::DRIVE_TO_LEFT_COLUMN, driverXButton},
+    {TeleopControlFunctions::DRIVE_TO_MIDDLE_COLUMN, driverYButton},
+    {TeleopControlFunctions::DRIVE_TO_RIGHT_COLUMN, driverBButton},
     {TeleopControlFunctions::REZERO_PIGEON, driverAButton},
     {TeleopControlFunctions::HOLD_POSITION, driverRBumper},
 
     {TeleopControlFunctions::STARTING_POSITION_EXTEND, copilotStartButton},
     {TeleopControlFunctions::CYCLE_GRABBER, copilotSelectButton},
-    {TeleopControlFunctions::HUMAN_PLAYER_LEVEL, copilotBButton},
-    {TeleopControlFunctions::LOW, copilotAButton},
-    {TeleopControlFunctions::MED, copilotXButton},
-    {TeleopControlFunctions::HIGH, copilotYButton},
+    {TeleopControlFunctions::HUMAN_PLAYER_STATION, copilotBButton},
+    {TeleopControlFunctions::FLOOR_POSITION, copilotAButton},
+    {TeleopControlFunctions::MIDROW, copilotXButton},
+    {TeleopControlFunctions::BACKROW, copilotYButton},
     {TeleopControlFunctions::OPEN, copilotLBumper},
     {TeleopControlFunctions::GRAB, copilotRBumper},
 
@@ -242,6 +242,9 @@ robin_hood::unordered_map<TeleopControlFunctions::FUNCTION, const TeleopControlA
     {TeleopControlFunctions::HOLONOMIC_DRIVE_ROTATE, driverRJoystickX},
 
     {TeleopControlFunctions::MANUAL_ROTATE, copilotLJoystickY},
-    {TeleopControlFunctions::MANUAL_EXTEND_RETRACT, copilotRJoystickY}
+    {TeleopControlFunctions::MANUAL_EXTEND_RETRACT, copilotRJoystickY},
+
+    {TeleopControlFunctions::MANUAL_ROTATE, extra1LJoystickY},
+    {TeleopControlFunctions::MANUAL_EXTEND_RETRACT, extra1RJoystickY}
 
 };
