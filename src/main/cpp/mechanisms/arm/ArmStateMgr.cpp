@@ -111,7 +111,12 @@ void ArmStateMgr::CheckForGamepadTransitions()
             m_currentState = static_cast<ARM_STATE>(GetCurrentState());
             m_targetState = m_currentState;
 
-            if (m_gamepieceMode == RobotStateChanges::Cone)
+            if (abs(controller->GetAxisValue(TeleopControlFunctions::MANUAL_ROTATE)) > 0.05)
+            {
+                m_targetState = ARM_STATE::MANUAL_ROTATE;
+                m_prevState = m_targetState;
+            }
+            else if (m_gamepieceMode == RobotStateChanges::Cone)
             {
                 CheckForConeGamepadTransitions(controller);
             }
