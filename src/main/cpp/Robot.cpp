@@ -31,6 +31,9 @@
 
 #include <AdjustableItemMgr.h>
 
+/// DEBUGGING
+#include <hw/factories/PigeonFactory.h>
+
 using namespace std;
 
 void Robot::RobotInit()
@@ -234,7 +237,6 @@ void Robot::TeleopInit()
 
 void Robot::TeleopPeriodic()
 {
-
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopPeriodic"), string("arrived"));
     if (m_chassis != nullptr && m_controller != nullptr)
     {
