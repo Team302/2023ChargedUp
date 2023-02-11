@@ -53,6 +53,7 @@ void Robot::RobotInit()
     m_robotState = RobotState::GetInstance();
     m_robotState->Init();
 
+    m_chassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
     m_holonomic = nullptr;
     if (m_chassis != nullptr)
     {
