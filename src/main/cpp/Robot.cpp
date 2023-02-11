@@ -28,7 +28,7 @@
 #include <utils/logging/LoggerData.h>
 #include <utils/logging/LoggerEnums.h>
 #include <utils/WaypointXmlParser.h>
-
+#include <AutomatedSystemTest/AutomatedSystemTest.h>
 #include <AdjustableItemMgr.h>
 
 using namespace std;
@@ -196,6 +196,11 @@ void Robot::DisabledPeriodic()
 void Robot::TestInit()
 {
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TestInit"), string("arrived"));
+    m_autotest = new AutomatedSystemTest();
+    if (m_autotest == nullptr)
+    {
+        m_autotest->Init();
+    }
 }
 
 void Robot::TestPeriodic()

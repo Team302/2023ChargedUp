@@ -29,7 +29,7 @@ class FMSData;
 class DragonField;
 class AutonPreviewer;
 class RobotState;
-
+class AutomatedSystemTest;
 class Robot : public frc::TimedRobot
 {
 public:
@@ -58,4 +58,5 @@ private:
     DragonField *m_field;
     AutonPreviewer *m_previewer;
     RobotState *m_robotState;
+    AutomatedSystemTest *m_autotest;
 };

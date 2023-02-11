@@ -12,15 +12,25 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
-#include <hw/factories/PDPFactory.h>
+#pragma once
 #include <frc/PowerDistribution.h>
-
+#include <hw/factories/PDPFactory.h>
+using namespace std;
+class PowerDistribution;
 class AutomatedSystemTest
 {
-    double GetBasePDHValue() double GetPDHValue()
-}
+public:
+    AutomatedSystemTest() = default;
+    ~AutomatedSystemTest() = default;
+    void AutoTest();
+    void Init()
+    {
+    }
 
-private :
-
-    frc::PowerDistribution *m_pdp;
-frc::PowerDistribution *GetPDP() const { return m_pdp; };
+private:
+    PowerDistribution *m_pdp;
+    double GetBasePDHValue();
+    double GetCurrentPDHValue();
+    string GetCurrentTest();
+    static PDPFactory GetFactory();
+};
