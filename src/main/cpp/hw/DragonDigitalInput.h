@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -27,32 +27,29 @@ namespace frc
 
 class DragonDigitalInput
 {
-	public:
+public:
+	//------------------------------------------------------------------------------
+	// Method:		<<constructor>>
+	// Description:
+	//------------------------------------------------------------------------------
+	DragonDigitalInput(
+		std::string networkTableName,
+		DigitalInputUsage::DIGITAL_INPUT_USAGE type,
+		int deviceID,  // <I> - digial io ID
+		bool reversed, // <I>
+		units::time::second_t debounceTime);
 
-		//------------------------------------------------------------------------------
-		// Method:		<<constructor>>
-		// Description:
-		//------------------------------------------------------------------------------
-		DragonDigitalInput
-		(
-			std::string										networkTableName,
-    		DigitalInputUsage::DIGITAL_INPUT_USAGE			type,
-			int 											deviceID,		// <I> - digial io ID
-			bool											reversed,		// <I>
-			units::time::second_t							debounceTime
-		);
+	DragonDigitalInput() = delete;
+	virtual ~DragonDigitalInput();
 
-		DragonDigitalInput() = delete;
-		virtual ~DragonDigitalInput();
+	bool Get() const;
+	int GetChannel() const;
+	DigitalInputUsage::DIGITAL_INPUT_USAGE GetType() const;
 
-		bool Get() const;
-		int  GetChannel() const;
-		DigitalInputUsage::DIGITAL_INPUT_USAGE GetType() const;
-
-	private:
-		std::string									m_networkTableName;
-		frc::DigitalInput*							m_digital;
-		frc::Debouncer*								m_debouncer;
-		bool										m_reversed;
-		DigitalInputUsage::DIGITAL_INPUT_USAGE  	m_type;
+private:
+	std::string m_networkTableName;
+	frc::DigitalInput *m_digital;
+	frc::Debouncer *m_debouncer;
+	bool m_reversed;
+	DigitalInputUsage::DIGITAL_INPUT_USAGE m_type;
 };

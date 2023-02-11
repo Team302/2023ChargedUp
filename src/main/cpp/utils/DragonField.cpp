@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -13,24 +13,25 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-//FRC Includes
+// FRC Includes
 #include <frc/smartdashboard/SmartDashboard.h>
 
-//Team 302 Includes
+// Team 302 Includes
 #include <utils/DragonField.h>
 
-DragonField* DragonField::m_instance = nullptr;
+DragonField *DragonField::m_instance = nullptr;
 
-DragonField* DragonField::GetInstance()
+DragonField *DragonField::GetInstance()
 {
-	if ( DragonField::m_instance == nullptr )
-	{
-            DragonField::m_instance = new DragonField();
-	}
-	return DragonField::m_instance;
+    if (DragonField::m_instance == nullptr)
+    {
+        DragonField::m_instance = new DragonField();
+    }
+    return DragonField::m_instance;
 }
 
-DragonField::DragonField()
+DragonField::DragonField() : m_field(),
+                             m_objects()
 {
     frc::SmartDashboard::PutData(&m_field);
 }
@@ -54,8 +55,8 @@ void DragonField::AddTrajectory(std::string name, frc::Trajectory trajectory)
 
 void DragonField::ResetField()
 {
-    for(int i = 0; i < m_objects.size(); i++)
+    for (auto object : m_objects)
     {
-        m_objects[i]->SetPoses(std::span<frc::Pose2d>());
+        object->SetPoses(std::span<frc::Pose2d>());
     }
 }

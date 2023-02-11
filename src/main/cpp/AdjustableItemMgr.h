@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-/// Copyright 2023 Lake Orion Robotics FIRST Team 302 
+/// Copyright 2023 Lake Orion Robotics FIRST Team 302
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 /// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -15,49 +15,46 @@
 
 #pragma once
 
-//C++ Includes
+// C++ Includes
 #include <vector>
 
-//FRC Includes
+// FRC Includes
 #include <networktables/GenericEntry.h>
 
 #include <AdjustableItem.h>
 
 class AdjustableItemMgr
 {
-    public:
-        static AdjustableItemMgr* GetInstance();
+public:
+    static AdjustableItemMgr *GetInstance();
 
-        /// @brief  add item to vector in state mgr
-        /// @param item - each constructed AdjustableItem
-        void RegisterAdjustableItem
-        (
-            AdjustableItem*     item
-        );
+    /// @brief  add item to vector in state mgr
+    /// @param item - each constructed AdjustableItem
+    void RegisterAdjustableItem(
+        AdjustableItem *item);
 
-        /// @brief Listens for button presses on network table
-        void ListenForUpdates();
+    /// @brief Listens for button presses on network table
+    void ListenForUpdates();
 
-        /// @brief Check for differences in all adjustable items from parsed value and network table value
-        /// @return all adjustable items with changes
-        std::vector<AdjustableItem*> CheckForDifferences();
+    /// @brief Check for differences in all adjustable items from parsed value and network table value
+    /// @return all adjustable items with changes
+    std::vector<AdjustableItem *> CheckForDifferences();
 
-    private:
-        AdjustableItemMgr();
-        ~AdjustableItemMgr() = default;
+private:
+    AdjustableItemMgr();
+    ~AdjustableItemMgr() = default;
 
-        /// @brief Will populate the network tables with keys for every adjustable value in an item
-        void PopulateNetworkTables();
+    /// @brief Will populate the network tables with keys for every adjustable value in an item
+    void PopulateNetworkTables();
 
-        std::vector<AdjustableItem*>    m_adjustableItems;
+    std::vector<AdjustableItem *> m_adjustableItems;
 
-        static AdjustableItemMgr*   m_instance;
+    static AdjustableItemMgr *m_instance;
 
-        bool                        m_enabled = false;
+    bool m_enabled = false;
 
-        nt::GenericEntry*            m_enableButton;
-        nt::GenericEntry*            m_submitButton;
-        nt::GenericEntry*            m_resetButton;
-        nt::GenericEntry*            m_getDiffsButton;
-        
+    nt::GenericEntry *m_enableButton;
+    nt::GenericEntry *m_submitButton;
+    nt::GenericEntry *m_resetButton;
+    nt::GenericEntry *m_getDiffsButton;
 };

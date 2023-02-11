@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -24,22 +24,18 @@
 
 class AnalogInputXmlParser
 {
-    public:
+public:
+    AnalogInputXmlParser() = default;
+    virtual ~AnalogInputXmlParser() = default;
 
-		AnalogInputXmlParser() = default;
-        virtual ~AnalogInputXmlParser() = default;
-
-
-        //-----------------------------------------------------------------------
-        // Method:      ParseXML
-        // Description: Parse a analogSensor XML element and create a DragonAnalogInput from
-        //              its definition.
-        // Returns:     DragonAnalogInput*      AnalogInput (or nullptr if XML
-        //                                  	is ill-formed
-        //-----------------------------------------------------------------------
-        static DragonAnalogInput* ParseXML
-        (
-            std::string         networkTableName,
-            pugi::xml_node      sensorNode
-        );
+    //-----------------------------------------------------------------------
+    // Method:      ParseXML
+    // Description: Parse a analogSensor XML element and create a DragonAnalogInput from
+    //              its definition.
+    // Returns:     DragonAnalogInput*      AnalogInput (or nullptr if XML
+    //                                  	is ill-formed
+    //-----------------------------------------------------------------------
+    static DragonAnalogInput *ParseXML(
+        std::string networkTableName,
+        pugi::xml_node sensorNode);
 };

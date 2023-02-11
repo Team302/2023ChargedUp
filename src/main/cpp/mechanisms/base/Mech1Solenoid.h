@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -13,7 +13,7 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#pragma once 
+#pragma once
 
 // C++ Includes
 #include <memory>
@@ -26,36 +26,31 @@
 
 class Mech1Solenoid : public Mech
 {
-    public:
-        /// @brief Create a generic mechanism wiht 1 solenoid 
-        /// @param [in] std::shared_ptr<DragonSolenoid> solenoid used by this mechanism
-         Mech1Solenoid
-        (
-            MechanismTypes::MECHANISM_TYPE              type,
-            std::string                                 controlFileName,
-            std::string                                 networkTableName,
-            std::shared_ptr<DragonSolenoid>             solenoid
-        );
+public:
+    /// @brief Create a generic mechanism wiht 1 solenoid
+    /// @param [in] std::shared_ptr<DragonSolenoid> solenoid used by this mechanism
+    Mech1Solenoid(
+        MechanismTypes::MECHANISM_TYPE type,
+        std::string controlFileName,
+        std::string networkTableName,
+        std::shared_ptr<DragonSolenoid> solenoid);
 
-        Mech1Solenoid() = delete;
-        virtual ~Mech1Solenoid() = default;
+    Mech1Solenoid() = delete;
+    virtual ~Mech1Solenoid() = default;
 
-        /// @brief      Activate/deactivate pneumatic solenoid
-        /// @param [in] bool - true == extend, false == retract
-        /// @return     void 
-        void ActivateSolenoid
-        (
-            bool     activate
-        );
+    /// @brief      Activate/deactivate pneumatic solenoid
+    /// @param [in] bool - true == extend, false == retract
+    /// @return     void
+    void ActivateSolenoid(
+        bool activate);
 
-        /// @brief      Check if the pneumatic solenoid is activated
-        /// @return     bool - true == extended, false == retracted
-        bool IsSolenoidActivated() const;
+    /// @brief      Check if the pneumatic solenoid is activated
+    /// @return     bool - true == extended, false == retracted
+    bool IsSolenoidActivated() const;
 
-        /// @brief log data to the network table if it is activated and time period has past
-        void LogInformation() const override;
+    /// @brief log data to the network table if it is activated and time period has past
+    void LogInformation() const override;
 
-    private:
-        std::shared_ptr<DragonSolenoid>             m_solenoid;
-
+private:
+    std::shared_ptr<DragonSolenoid> m_solenoid;
 };

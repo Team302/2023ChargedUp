@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -13,7 +13,6 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
-
 
 // C++ Includes
 #include <memory>
@@ -39,13 +38,11 @@ using namespace pugi;
 //              its definition.
 // Returns:     DragonPigeon*       pigeon IMU (or nullptr if XML is ill-formed)
 //-----------------------------------------------------------------------
-DragonPigeon* PigeonXmlParser::ParseXML
-(
-    xml_node      pigeonNode
-)
+DragonPigeon *PigeonXmlParser::ParseXML(
+    xml_node pigeonNode)
 {
     // initialize output
-    DragonPigeon* pigeon = nullptr;
+    DragonPigeon *pigeon = nullptr;
 
     // initialize attributes to default values
     int canID = 0;
@@ -59,16 +56,16 @@ DragonPigeon* PigeonXmlParser::ParseXML
     // parse/validate xml
     for (xml_attribute attr = pigeonNode.first_attribute(); attr; attr = attr.next_attribute())
     {
-        if ( strcmp( attr.name(), "canId" ) == 0 )
+        if (strcmp(attr.name(), "canId") == 0)
         {
             canID = attr.as_int();
-            hasError = HardwareIDValidation::ValidateCANID( canID, string( "Pigeon::ParseXML" ) );
+            hasError = HardwareIDValidation::ValidateCANID(canID, string("Pigeon::ParseXML"));
         }
         else if (strcmp(attr.name(), "canBusName") == 0)
         {
             canBusName = attr.as_string();
         }
-        else if ( strcmp( attr.name(), "rotation") == 0 )
+        else if (strcmp(attr.name(), "rotation") == 0)
         {
             rotation = attr.as_double();
         }
@@ -78,7 +75,7 @@ DragonPigeon* PigeonXmlParser::ParseXML
             {
                 type = DragonPigeon::PIGEON_TYPE::PIGEON2;
             }
-            else 
+            else
             {
                 type = DragonPigeon::PIGEON_TYPE::PIGEON1;
             }
@@ -89,7 +86,7 @@ DragonPigeon* PigeonXmlParser::ParseXML
             {
                 usage = DragonPigeon::PIGEON_USAGE::CENTER_OF_SHOOTER;
             }
-            else 
+            else
             {
                 usage = DragonPigeon::PIGEON_USAGE::CENTER_OF_ROBOT;
             }
@@ -98,19 +95,18 @@ DragonPigeon* PigeonXmlParser::ParseXML
         {
             string msg("Invalid attribute ");
             msg += attr.name();
-            Logger::GetLogger()->LogData( LOGGER_LEVEL::ERROR, string("PigeonXmlParser"), string("ParseXML"), msg );
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("PigeonXmlParser"), string("ParseXML"), msg);
             hasError = true;
         }
-
     }
 
-    if ( !hasError )
+    if (!hasError)
     {
-        pigeon = PigeonFactory::GetFactory()->CreatePigeon( canID,
-                                                            canBusName, 
-                                                            type,
-                                                            usage,
-                                                            rotation );
+        pigeon = PigeonFactory::GetFactory()->CreatePigeon(canID,
+                                                           canBusName,
+                                                           type,
+                                                           usage,
+                                                           rotation);
     }
     return pigeon;
 }

@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -15,32 +15,29 @@
 
 #pragma once
 
-//C++ Includes
+// C++ Includes
 #include <array>
 
 #include <frc/kinematics/SwerveModulestate.h>
 
-//Team302 Includes
+// Team302 Includes
 #include <chassis/swerve/driveStates/ISwerveDriveState.h>
 #include <chassis/ChassisMovement.h>
 
 class StopDrive : public ISwerveDriveState
 {
-    public:
-        using ISwerveDriveState::ISwerveDriveState;
+public:
+    using ISwerveDriveState::ISwerveDriveState;
 
-        std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates
-        (
-            ChassisMovement& chassisMovement
-        ) override;
+    std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates(
+        ChassisMovement &chassisMovement) override;
 
-        void Init
-        (
-            ChassisMovement& chassisMovement
-        ) override;
-    private:
-        frc::SwerveModuleState* m_flState = new frc::SwerveModuleState();
-        frc::SwerveModuleState* m_frState = new frc::SwerveModuleState();
-        frc::SwerveModuleState* m_blState = new frc::SwerveModuleState();
-        frc::SwerveModuleState* m_brState = new frc::SwerveModuleState();
+    void Init(
+        ChassisMovement &chassisMovement) override;
+
+private:
+    frc::SwerveModuleState *m_flState = new frc::SwerveModuleState();
+    frc::SwerveModuleState *m_frState = new frc::SwerveModuleState();
+    frc::SwerveModuleState *m_blState = new frc::SwerveModuleState();
+    frc::SwerveModuleState *m_brState = new frc::SwerveModuleState();
 };

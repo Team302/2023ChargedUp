@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -20,14 +20,12 @@
 
 #include <pugixml/pugixml.hpp>
 
-class LimelightXmlParser 
+class LimelightXmlParser
 {
-  public:
-      LimelightXmlParser() = default;
-      virtual ~LimelightXmlParser() = default;
+public:
+  LimelightXmlParser() = default;
+  virtual ~LimelightXmlParser() = default;
 
-      DragonLimelight* ParseXML
-      (
-        pugi::xml_node    limelightNode
-      );
+  DragonLimelight *ParseXML(
+      pugi::xml_node limelightNode);
 };

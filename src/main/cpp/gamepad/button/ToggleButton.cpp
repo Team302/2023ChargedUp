@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -18,15 +18,14 @@
 #include <gamepad/button/ButtonDecorator.h>
 #include <gamepad/button/IButton.h>
 
-ToggleButton::ToggleButton 
-(
-    IButton*        button          // <I> - button to decorate
-) : ButtonDecorator( button ),
-    m_isPressed( false ),
-    m_isToggledOn( false )
+ToggleButton::ToggleButton(
+    IButton *button // <I> - button to decorate
+    ) : ButtonDecorator(button),
+        m_isPressed(false),
+        m_isToggledOn(false)
 {
 }
-bool ToggleButton::IsButtonPressed() const 
+bool ToggleButton::IsButtonPressed() const
 {
     auto isPressed = ButtonDecorator::IsButtonPressed(); // read current button pressed state
 
@@ -34,13 +33,13 @@ bool ToggleButton::IsButtonPressed() const
     // Cases:
     //   (1) - button was previously pressed and is still pressed ==>> toggle state unchanged
     //   (2) - button was prevuiosly pressed and now it isn't ==>> toggle state unchanged
-    //   (3) - button was previously not pressed and it still isn't pressed ==>> toggle state 
+    //   (3) - button was previously not pressed and it still isn't pressed ==>> toggle state
     //         unchanged
     //   (4) - button was previously not pressed and now it is pressed ==>> toggle state changed
     //
     //  So, only case 4 changes the toggle state.  In all cases we need to save the pressed state
     //------------------------------------------------------------------------------------------
-    if ( !m_isPressed && isPressed ) // button previously wasn't pressed and now it is
+    if (!m_isPressed && isPressed) // button previously wasn't pressed and now it is
     {
         m_isToggledOn = !m_isToggledOn; // reverse the toggle
     }
@@ -49,13 +48,12 @@ bool ToggleButton::IsButtonPressed() const
     return m_isToggledOn;
 }
 
-
-bool ToggleButton::WasButtonReleased() const 
+bool ToggleButton::WasButtonReleased() const
 {
     return !IsButtonPressed();
 }
 
-bool ToggleButton::WasButtonPressed() const 
+bool ToggleButton::WasButtonPressed() const
 {
     return IsButtonPressed();
 }

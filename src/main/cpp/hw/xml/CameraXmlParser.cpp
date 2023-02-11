@@ -1,7 +1,7 @@
 
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -17,7 +17,7 @@
 
 /// --------------------------------------------------------------------------------------------
 /// @class CameraXmlParser
-/// @brief 
+/// @brief
 ///        Create a camera for streaming from an XML definition
 /// --------------------------------------------------------------------------------------------
 
@@ -36,8 +36,6 @@
 // Third Party includes
 #include <pugixml/pugixml.hpp>
 
-
-
 using namespace frc;
 using namespace std;
 
@@ -45,67 +43,65 @@ using namespace std;
 /// Method:      ParseXML
 /// @brief       Parse a Camera XML element....
 /// @param		 pugi::xml_node cameraNode   XML <camera node
-/// @return     
+/// @return
 ///				 cs::UsbCamera USB camera reference
 ///-----------------------------------------------------------------------
-cs::UsbCamera CameraXmlParser::ParseXML
-(
-    pugi::xml_node      cameraNode
-)
+cs::UsbCamera CameraXmlParser::ParseXML(
+	pugi::xml_node cameraNode)
 {
-	cs::UsbCamera camera;  // todo: create a pointer that can be initialized
+	cs::UsbCamera camera; // todo: create a pointer that can be initialized
 
 	bool hasError = false;
 
 	// initialize attributes to default values
 	cs::VideoMode::PixelFormat type = cs::VideoMode::kUnknown;
-	int 					     id = 0;
-	int 					  width = 640;
-	int 				     height = 480;
-	int 				        fps = 30;
+	int id = 0;
+	int width = 640;
+	int height = 480;
+	int fps = 30;
 
 	// todo: integrate the DragonCamera + separate thread logic from Destination Deep Space
 
-	//Parse/validate xml
-	for(pugi::xml_attribute attr = cameraNode.first_attribute(); attr && !hasError; attr = attr.next_attribute() )
+	// Parse/validate xml
+	for (pugi::xml_attribute attr = cameraNode.first_attribute(); attr && !hasError; attr = attr.next_attribute())
 	{
-		if ( strcmp( attr.name(), "ID") == 0 )
+		if (strcmp(attr.name(), "ID") == 0)
 		{
 			id = attr.as_int();
 		}
-		else if (strcmp(attr.name(), "format" ) == 0)
+		else if (strcmp(attr.name(), "format") == 0)
 		{
 			// todo: parse strings and map to the cs::VideoMode enum
 			int iVal = attr.as_int();
-			switch(iVal)
+			switch (iVal)
 			{
-				case CameraXmlParser::KMJPEG:
-					type = cs::VideoMode::kMJPEG;
-					break;
+			case CameraXmlParser::KMJPEG:
+				type = cs::VideoMode::kMJPEG;
+				break;
 
-				case CameraXmlParser::KYUYV:
-					type = cs::VideoMode::kYUYV;
-					break;
+			case CameraXmlParser::KYUYV:
+				type = cs::VideoMode::kYUYV;
+				break;
 
-				case CameraXmlParser::KRGB565:
-					type = cs::VideoMode::kRGB565;
-					break;
+			case CameraXmlParser::KRGB565:
+				type = cs::VideoMode::kRGB565;
+				break;
 
-				case CameraXmlParser::KBGR:
-					type = cs::VideoMode::kBGR;
-					break;
+			case CameraXmlParser::KBGR:
+				type = cs::VideoMode::kBGR;
+				break;
 
-				case CameraXmlParser::KGRAY:
-					type = cs::VideoMode::kGray;
-					break;
+			case CameraXmlParser::KGRAY:
+				type = cs::VideoMode::kGray;
+				break;
 
-				default:
-					type = cs::VideoMode::kUnknown;
-					string msg = "unknown camera format ";
-					msg += to_string( iVal );
-					Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("CameraXmlParser"), string("ParseXML"), msg );
-					hasError = true;
-					break;
+			default:
+				type = cs::VideoMode::kUnknown;
+				string msg = "unknown camera format ";
+				msg += to_string(iVal);
+				Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("CameraXmlParser"), string("ParseXML"), msg);
+				hasError = true;
+				break;
 			}
 		}
 		else if (strcmp(attr.name(), "width") == 0)
@@ -123,19 +119,17 @@ cs::UsbCamera CameraXmlParser::ParseXML
 		}
 		else
 		{
-            string msg = "unknown attribute ";
-            msg += attr.name();
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("CameraXmlParser"), string("ParseXML"), msg );
-            hasError = true;
+			string msg = "unknown attribute ";
+			msg += attr.name();
+			Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("CameraXmlParser"), string("ParseXML"), msg);
+			hasError = true;
 		}
-
 	}
 
 	if (!hasError)
 	{
-		camera = CameraServer::StartAutomaticCapture( id );
-		camera.SetVideoMode(type, width, height, fps );
+		camera = CameraServer::StartAutomaticCapture(id);
+		camera.SetVideoMode(type, width, height, fps);
 	}
 	return camera;
 }
-

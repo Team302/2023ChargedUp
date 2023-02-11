@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -27,23 +27,21 @@
 // Team 302 includes
 #include <hw/factories/PDPFactory.h>
 
-
 // Third Party Includes
-
 
 using namespace std;
 using namespace frc;
 
 /// @brief  Find or create the analog input factory
 /// @return PDPFactory* pointer to the factory
-PDPFactory* PDPFactory::m_factory = nullptr;
-PDPFactory* PDPFactory::GetFactory()
+PDPFactory *PDPFactory::m_factory = nullptr;
+PDPFactory *PDPFactory::GetFactory()
 {
-	if ( PDPFactory::m_factory == nullptr )
-	{
-		PDPFactory::m_factory = new PDPFactory();
-	}
-	return PDPFactory::m_factory;
+    if (PDPFactory::m_factory == nullptr)
+    {
+        PDPFactory::m_factory = new PDPFactory();
+    }
+    return PDPFactory::m_factory;
 }
 
 PDPFactory::PDPFactory()
@@ -51,20 +49,16 @@ PDPFactory::PDPFactory()
     m_pdp = nullptr;
 }
 
-
 /// @brief  Create the requested analog input
-/// @return shared_ptr<DragonPigeon>   the mechanism or nullptr if mechanism doesn't 
+/// @return shared_ptr<DragonPigeon>   the mechanism or nullptr if mechanism doesn't
 ///         exist and cannot be created.
-PowerDistribution* PDPFactory::CreatePDP
-(
-    int 	                        canID,
-    PowerDistribution::ModuleType   type
-)
+PowerDistribution *PDPFactory::CreatePDP(
+    int canID,
+    PowerDistribution::ModuleType type)
 {
-    if ( m_pdp == nullptr )
+    if (m_pdp == nullptr)
     {
         m_pdp = new PowerDistribution(canID, type);
     }
     return m_pdp;
 }
-
