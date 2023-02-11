@@ -27,9 +27,9 @@
 #include <units/time.h>
 
 // Team 302 includes
-
+#include <hw/DragonPigeon.h>
 // Third Party Includes
-
+class DragonPigeon;
 class DragonLimelight
 {
 public:
@@ -143,4 +143,6 @@ private:
     units::length::inch_t m_targetHeight2;
 
     double PI = 3.14159265;
+
+    DragonPigeon *m_pointingPigeon;
 };

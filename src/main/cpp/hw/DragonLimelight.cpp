@@ -30,6 +30,8 @@
 // Team 302 includes
 #include <hw/DragonLimelight.h>
 #include <utils/logging/Logger.h>
+#include <hw/DragonPigeon.h>
+#include <hw/factories/PigeonFactory.h>
 
 // Third Party Includes
 
@@ -256,7 +258,7 @@ units::length::inch_t DragonLimelight::EstimateTargetDistance() const
     units::angle::degree_t angleFromHorizon = (GetMountingAngle() + GetTargetVerticalOffset());
     units::angle::radian_t angleRad = angleFromHorizon;
     double tanAngle = tan(angleRad.to<double>());
-
+    double tanrollpitchAngle = tanAngle + m_pointingPigeon->GetRoll() + m_pointingPigeon->GetPitch();
     auto deltaHgt = GetTargetHeight() - GetMountingHeight();
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("mounting angle "), GetMountingAngle().to<double>());
@@ -264,7 +266,8 @@ units::length::inch_t DragonLimelight::EstimateTargetDistance() const
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("angle radians "), angleRad.to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("deltaH "), deltaHgt.to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("tan angle "), tanAngle);
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("distance "), ((GetTargetHeight() - GetMountingHeight()) / tanAngle).to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("real angle "), tanrollpitchAngle);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("distance "), ((GetTargetHeight() - GetMountingHeight()) / tanrollpitchAngle).to<double>());
 
-    return (GetTargetHeight() - GetMountingHeight()) / tanAngle;
+    return (GetTargetHeight() - GetMountingHeight()) / tanrollpitchAngle;
 }
