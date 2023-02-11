@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2023 Lake Orion Robotics FIRST Team 302
+// Copyright 2022 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -16,46 +16,34 @@
 
 #pragma once
 
-#include <frc/TimedRobot.h>
-#include <DragonVision/DragonVision.h>
-class ArcadeDrive;
-class CyclePrimitives;
-class DragonLimelight;
-class HolonomicDrive;
-class IChassis;
-class TeleopControl;
-class AdjustableItemMgr;
-class FMSData;
-class DragonField;
-class AutonPreviewer;
-class RobotState;
+#include <units/angle.h>
+#include <units/length.h>
+#include <units/time.h>
 
-class Robot : public frc::TimedRobot
+#include <hw/DragonLimelight.h>
+class DragonVisionTarget
 {
 public:
-    void RobotInit() override;
-    void RobotPeriodic() override;
-    void AutonomousInit() override;
-    void AutonomousPeriodic() override;
-    void TeleopInit() override;
-    void TeleopPeriodic() override;
-    void DisabledInit() override;
-    void DisabledPeriodic() override;
-    void TestInit() override;
-    void TestPeriodic() override;
+    DragonVisionTarget() = default;
+
+    DragonVisionTarget(DragonLimelight::PIPELINE_MODE targetType,
+                       units::length::inch_t distanceFromTarget,
+                       units::angle::degree_t horizontalAngleFromTarget,
+                       units::angle::degree_t verticalAngleFromTarget,
+                       units::time::millisecond_t latency);
+
+    ~DragonVisionTarget() = default;
+
+    units::length::inch_t getDistanceToTarget();
+    units::angle::degree_t getHorizontalAngleToTarget();
+    units::angle::degree_t getVerticalAngleToTarget();
+    DragonLimelight::PIPELINE_MODE getTargetType();
+    units::time::millisecond_t getLatency();
 
 private:
-    TeleopControl *m_controller;
-    IChassis *m_chassis;
-    CyclePrimitives *m_cyclePrims;
-    HolonomicDrive *m_holonomic;
-    ArcadeDrive *m_arcade;
-
-    DragonLimelight *m_dragonLimeLight;
-
-    AdjustableItemMgr *m_tuner;
-    FMSData *m_fmsData;
-    DragonField *m_field;
-    AutonPreviewer *m_previewer;
-    RobotState *m_robotState;
+    units::length::inch_t m_distanceFromTarget;
+    units::angle::degree_t m_horizontalAngleToTarget;
+    units::angle::degree_t m_verticalAngleToTarget;
+    DragonLimelight::PIPELINE_MODE m_targetType;
+    units::time::millisecond_t m_latency;
 };

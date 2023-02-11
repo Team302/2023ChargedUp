@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2023 Lake Orion Robotics FIRST Team 302
+// Copyright 2022 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -15,47 +15,39 @@
 //====================================================================================================================================================
 
 #pragma once
+#include <map>
+#include <string>
 
-#include <frc/TimedRobot.h>
-#include <DragonVision/DragonVision.h>
-class ArcadeDrive;
-class CyclePrimitives;
+#include <State.h>
+#include <hw/DragonLimelight.h>
+#include <DragonVision/DragonVisionTarget.h>
+
+using std::map;
+
 class DragonLimelight;
-class HolonomicDrive;
-class IChassis;
-class TeleopControl;
-class AdjustableItemMgr;
-class FMSData;
-class DragonField;
-class AutonPreviewer;
-class RobotState;
-
-class Robot : public frc::TimedRobot
+class DragonVision
 {
 public:
-    void RobotInit() override;
-    void RobotPeriodic() override;
-    void AutonomousInit() override;
-    void AutonomousPeriodic() override;
-    void TeleopInit() override;
-    void TeleopPeriodic() override;
-    void DisabledInit() override;
-    void DisabledPeriodic() override;
-    void TestInit() override;
-    void TestPeriodic() override;
+    static DragonVision *GetDragonVision();
+
+    enum LIMELIGHT_POSITION
+    {
+        FRONT,
+        BACK
+    };
+
+    void setPipeline(DragonLimelight::PIPELINE_MODE mode, LIMELIGHT_POSITION position);
+    DragonVisionTarget *getTargetInfo(LIMELIGHT_POSITION position) const;
+
+    int GetRobotPosition() const;
 
 private:
-    TeleopControl *m_controller;
-    IChassis *m_chassis;
-    CyclePrimitives *m_cyclePrims;
-    HolonomicDrive *m_holonomic;
-    ArcadeDrive *m_arcade;
+    DragonVision();
+    ~DragonVision() = default;
 
-    DragonLimelight *m_dragonLimeLight;
+    DragonLimelight *getLimelight(LIMELIGHT_POSITION position) const;
 
-    AdjustableItemMgr *m_tuner;
-    FMSData *m_fmsData;
-    DragonField *m_field;
-    AutonPreviewer *m_previewer;
-    RobotState *m_robotState;
+    static DragonVision *m_dragonVision;
+
+    std::map<LIMELIGHT_POSITION, DragonLimelight *> m_DragonLimelightMap;
 };

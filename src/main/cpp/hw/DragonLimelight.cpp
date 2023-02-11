@@ -56,7 +56,18 @@ DragonLimelight::DragonLimelight(
         m_targetHeight(targetHeight),
         m_targetHeight2(targetHeight2)
 {
+    SetPipeline(PIPELINE_MODE::RETRO_REFLECTIVE);
     // SetLEDMode( DragonLimelight::LED_MODE::LED_OFF);
+}
+
+DragonLimelight::PIPELINE_MODE DragonLimelight::getPipeline() const
+{
+    auto nt = m_networktable.get();
+    if (nt != nullptr)
+    {
+        return (PIPELINE_MODE)(nt->GetNumber("getpipe", PIPELINE_MODE::UNKNOWN));
+    }
+    return PIPELINE_MODE::UNKNOWN;
 }
 
 std::vector<double> DragonLimelight::Get3DSolve() const
@@ -151,10 +162,10 @@ double DragonLimelight::GetTargetArea() const
 
 units::angle::degree_t DragonLimelight::GetTargetSkew() const
 {
-    auto nt = m_networktable.get();
-    if (nt != nullptr)
+    //   auto nt = m_networktable.get();
+    if (m_networktable != nullptr)
     {
-        return units::angle::degree_t(nt->GetNumber("ts", 0.0));
+        return units::angle::degree_t(m_networktable->GetNumber("ts", 0.0));
     }
     return units::angle::degree_t(0.0);
 }
