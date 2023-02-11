@@ -53,6 +53,8 @@ void Robot::RobotInit()
     m_robotState = RobotState::GetInstance();
     m_robotState->Init();
 
+    m_chassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
+
     m_holonomic = nullptr;
     if (m_chassis != nullptr)
     {
@@ -174,6 +176,7 @@ void Robot::TeleopPeriodic()
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopPeriodic"), string("arrived"));
     if (m_chassis != nullptr && m_controller != nullptr)
     {
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("HolonomicRun"), string("arrived"));
         if (m_holonomic != nullptr)
         {
             m_holonomic->Run();

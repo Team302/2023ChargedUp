@@ -134,11 +134,11 @@ void GrabberStateMgr::CheckForStateTransition()
     CheckForSensorTransitions();
     if (m_grabber != nullptr)
     {
-        if (!m_followOtherMechs)
-        {
-            CheckForGamepadTransitions();
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("GrabberStateMgr"), std::string("Check Gamepads "), "true");
-        }
+        // if (!m_followOtherMechs)
+        //{
+        CheckForGamepadTransitions();
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("GrabberStateMgr"), std::string("Check Gamepads "), "true");
+        //}
 
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("GrabberStateMgr"), std::string("m_targetState"), m_targetState);
 

@@ -238,7 +238,7 @@ void ExtenderStateMgr::CheckForStateTransition()
 
     if (m_extender != nullptr)
     {
-        if (m_targetState != m_currentState && m_canAutomaticallyMove)
+        if (m_targetState != m_currentState && (m_canAutomaticallyMove || m_targetState == EXTENDER_STATE::MANUAL_EXTEND_RETRACT))
         {
             SetCurrentState(m_targetState, true);
             RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmExtenderState, m_targetState);
