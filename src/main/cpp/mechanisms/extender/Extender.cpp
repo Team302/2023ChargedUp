@@ -46,25 +46,3 @@ Extender::Extender(
 	std::shared_ptr<IDragonMotorController> motorController0) : Mech1IndMotor(MechanismTypes::MECHANISM_TYPE::EXTENDER, controlFileName, networkTableName, motorController0)
 {
 }
-
-void Extender::ResetIfFullyExtended(double counts)
-{
-	if (GetMotor().get()->IsForwardLimitSwitchClosed())
-	{
-		auto motor = GetMotor().get()->GetSpeedController();
-		auto fx = dynamic_cast<ctre::phoenix::motorcontrol::can::WPI_TalonFX *>(motor.get());
-		auto sensors = fx->GetSensorCollection();
-		sensors.SetIntegratedSensorPosition(counts, 0);
-	}
-}
-
-void Extender::ResetIfFullyRetracted()
-{
-	if (GetMotor().get()->IsReverseLimitSwitchClosed())
-	{
-		auto motor = GetMotor().get()->GetSpeedController();
-		auto fx = dynamic_cast<ctre::phoenix::motorcontrol::can::WPI_TalonFX *>(motor.get());
-		auto sensors = fx->GetSensorCollection();
-		sensors.SetIntegratedSensorPosition(0, 0);
-	}
-}

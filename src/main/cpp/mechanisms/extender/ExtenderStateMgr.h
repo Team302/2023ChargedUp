@@ -73,8 +73,6 @@ public:
         PrimitiveParams *currentParams) override;
 
     void CheckForStateTransition() override;
-    void CheckForSensorTransitions() override;
-    void CheckForGamepadTransitions() override;
 
 private:
     ExtenderStateMgr();
@@ -82,21 +80,15 @@ private:
 
     Extender *m_extender;
 
-    EXTENDER_STATE m_prevState;
-    EXTENDER_STATE m_currentState;
-    EXTENDER_STATE m_targetState;
-
     static ExtenderStateMgr *m_instance;
 
-    const StateStruc m_hold_position_extendState = {EXTENDER_STATE::HOLD_POSITION_EXTEND, "HOLD_POSITION_EXTEND", StateType::EXTENDER_STATE, false};
-    const StateStruc m_manual_extend_retractState = {EXTENDER_STATE::MANUAL_EXTEND_RETRACT, "MANUAL_EXTEND_RETRACT", StateType::MANUAL_EXTENDER_STATE, false};
-    const StateStruc m_cube_backrow_extendState = {EXTENDER_STATE::CUBE_BACKROW_EXTEND, "CUBE_BACKROW_EXTEND", StateType::EXTENDER_STATE, false};
-    const StateStruc m_cone_backrow_extendState = {EXTENDER_STATE::CONE_BACKROW_EXTEND, "CONE_BACKROW_EXTEND", StateType::EXTENDER_STATE, false};
-    const StateStruc m_cube_midrow_extendState = {EXTENDER_STATE::CUBE_MIDROW_EXTEND, "CUBE_MIDROW_EXTEND", StateType::EXTENDER_STATE, false};
-    const StateStruc m_cone_midrow_extendState = {EXTENDER_STATE::CONE_MIDROW_EXTEND, "CONE_MIDROW_EXTEND", StateType::EXTENDER_STATE, false};
-    const StateStruc m_human_player_station_extendState = {EXTENDER_STATE::HUMAN_PLAYER_STATION_EXTEND, "HUMAN_PLAYER_STATION_EXTEND", StateType::EXTENDER_STATE, false};
+    const StateStruc m_hold_position_extendState = {EXTENDER_STATE::HOLD_POSITION_EXTEND, "HOLD_POSITION_EXTEND", StateType::EXTENDER_STATE, true};
+    const StateStruc m_manual_extend_retractState = {EXTENDER_STATE::MANUAL_EXTEND_RETRACT, "MANUAL_EXTEND_RETRACT", StateType::EXTENDER_STATE, true};
+    const StateStruc m_cube_backrow_extendState = {EXTENDER_STATE::CUBE_BACKROW_EXTEND, "CUBE_BACKROW_EXTEND", StateType::EXTENDER_STATE, true};
+    const StateStruc m_cone_backrow_extendState = {EXTENDER_STATE::CONE_BACKROW_EXTEND, "CONE_BACKROW_EXTEND", StateType::EXTENDER_STATE, true};
+    const StateStruc m_cube_midrow_extendState = {EXTENDER_STATE::CUBE_MIDROW_EXTEND, "CUBE_MIDROW_EXTEND", StateType::EXTENDER_STATE, true};
+    const StateStruc m_cone_midrow_extendState = {EXTENDER_STATE::CONE_MIDROW_EXTEND, "CONE_MIDROW_EXTEND", StateType::EXTENDER_STATE, true};
+    const StateStruc m_human_player_station_extendState = {EXTENDER_STATE::HUMAN_PLAYER_STATION_EXTEND, "HUMAN_PLAYER_STATION_EXTEND", StateType::EXTENDER_STATE, true};
     const StateStruc m_starting_position_extendState = {EXTENDER_STATE::STARTING_POSITION_EXTEND, "STARTING_POSITION_EXTEND", StateType::EXTENDER_STATE, true};
-    const StateStruc m_floor_extendState = {EXTENDER_STATE::FLOOR_EXTEND, "FLOOR_EXTEND", StateType::EXTENDER_STATE, false};
-
-    double m_extendedPosition;
+    const StateStruc m_floor_extendState = {EXTENDER_STATE::FLOOR_EXTEND, "FLOOR_EXTEND", StateType::EXTENDER_STATE, true};
 };

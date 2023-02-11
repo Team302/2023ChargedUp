@@ -58,11 +58,7 @@ ExtenderStateMgr *ExtenderStateMgr::GetInstance()
 
 /// @brief    initialize the state manager, parse the configuration file and create the states.
 ExtenderStateMgr::ExtenderStateMgr() : StateMgr(),
-                                       m_extender(MechanismFactory::GetMechanismFactory()->GetExtender()),
-                                       m_prevState(EXTENDER_STATE::STARTING_POSITION_EXTEND),
-                                       m_currentState(EXTENDER_STATE::STARTING_POSITION_EXTEND),
-                                       m_targetState(EXTENDER_STATE::STARTING_POSITION_EXTEND),
-                                       m_extendedPosition(84320.3176) // 22.25 inches in counts for extender
+                                       m_extender(MechanismFactory::GetMechanismFactory()->GetExtender())
 {
     map<string, StateStruc> stateMap;
     stateMap["HOLD_POSITION_EXTEND"] = m_hold_position_extendState;
@@ -84,7 +80,7 @@ ExtenderStateMgr::ExtenderStateMgr() : StateMgr(),
 
 /// @brief  Get the current Parameter parm value for the state of this mechanism
 /// @param PrimitiveParams* currentParams current set of primitive parameters
-/// @returns int state id - -1 indicates that there is not a state to settargetState
+/// @returns int state id - -1 indicates that there is not a state to set
 int ExtenderStateMgr::GetCurrentStateParam(
     PrimitiveParams *currentParams)
 {
@@ -92,98 +88,44 @@ int ExtenderStateMgr::GetCurrentStateParam(
     return StateMgr::GetCurrentStateParam(currentParams);
 }
 
-/// @brief Check sensors to determine target state
-void ExtenderStateMgr::CheckForGamepadTransitions()
-{
-    if (m_extender != nullptr)
-    {
-        m_currentState = static_cast<EXTENDER_STATE>(GetCurrentState());
-        m_targetState = m_currentState;
-
-        auto controller = TeleopControl::GetInstance();
-        if (controller != nullptr)
-        {
-
-            if (controller->IsButtonPressed(TeleopControlFunctions::CUBE_BACKROW_EXTEND))
-            {
-                m_targetState = EXTENDER_STATE::CUBE_BACKROW_EXTEND;
-                m_prevState = m_targetState;
-            }
-            else if (controller->IsButtonPressed(TeleopControlFunctions::HOLD_POSITION_EXTEND))
-            {
-                m_targetState = EXTENDER_STATE::HOLD_POSITION_EXTEND;
-                m_prevState = m_targetState;
-            }
-            else if (controller->IsButtonPressed(TeleopControlFunctions::CONE_BACKROW_EXTEND))
-            {
-                m_targetState = EXTENDER_STATE::CONE_BACKROW_EXTEND;
-                m_prevState = m_targetState;
-            }
-            else if (controller->IsButtonPressed(TeleopControlFunctions::CUBE_MIDROW_EXTEND))
-            {
-                m_targetState = EXTENDER_STATE::CUBE_MIDROW_EXTEND;
-                m_prevState = m_targetState;
-            }
-            else if (controller->IsButtonPressed(TeleopControlFunctions::CONE_MIDROW_EXTEND))
-            {
-                m_targetState = EXTENDER_STATE::CONE_MIDROW_EXTEND;
-                m_prevState = m_targetState;
-            }
-            else if (controller->IsButtonPressed(TeleopControlFunctions::HUMAN_PLAYER_STATION_EXTEND))
-            {
-                m_targetState = EXTENDER_STATE::HUMAN_PLAYER_STATION_EXTEND;
-                m_prevState = m_targetState;
-            }
-            else if (controller->IsButtonPressed(TeleopControlFunctions::STARTING_POSITION_EXTEND))
-            {
-                m_targetState = EXTENDER_STATE::STARTING_POSITION_EXTEND;
-                m_prevState = m_targetState;
-            }
-            else if (controller->IsButtonPressed(TeleopControlFunctions::FLOOR_EXTEND))
-            {
-                m_targetState = EXTENDER_STATE::FLOOR_EXTEND;
-                m_prevState = m_targetState;
-            }
-            else
-            {
-                m_targetState = EXTENDER_STATE::HOLD_POSITION_EXTEND;
-            }
-        }
-    }
-}
-
-/// @brief Check driver input to determine target state
-void ExtenderStateMgr::CheckForSensorTransitions()
-{
-    if (m_extender != nullptr)
-    {
-        // If we are hitting limit switches, reset position
-        m_extender->ResetIfFullyExtended(m_extendedPosition);
-        m_extender->ResetIfFullyRetracted();
-    }
-}
-
 /// @brief Check if driver inputs or sensors trigger a state transition
 void ExtenderStateMgr::CheckForStateTransition()
 {
-    CheckForSensorTransitions();
-
-    if (m_checkGamePadTransitions)
-    {
-        CheckForGamepadTransitions();
-    }
 
     if (m_extender != nullptr)
     {
-        if (m_targetState != m_currentState)
-        {
-            SetCurrentState(m_targetState, true);
-            RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmExtenderState, m_targetState);
+        auto currentState = static_cast<EXTENDER_STATE>(GetCurrentState());
+        auto targetState = currentState;
 
-            if (m_targetState == EXTENDER_STATE::HOLD_POSITION_EXTEND)
-            {
-                m_extender->UpdateTarget(dynamic_cast<Mech1IndMotorState *>(GetStateVector()[m_prevState])->GetCurrentTarget()); // Get the target of the previous state by referencing the state vector
-            }
+        //========= Do not erase this line and the one below it. They are used by the code generator ========
+        //========= Hand modified code start section 0 ========
+
+        // Write logic here. See example below
+        /*
+        auto controller = TeleopControl::GetInstance();
+        auto isForwardSelected   = controller != nullptr ? controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::EXAMPLE_FORWARD) : false;
+        auto isReverseSelected   = controller != nullptr ? controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::EXAMPLE_REVERSE) : false;
+
+        if (isForwardSelected)
+        {
+            targetState = EXAMPLE_STATE::FORWARD;
         }
+        else if (isReverseSelected)
+        {
+            targetState = EXAMPLE_STATE::REVERSE;
+        }
+        else
+        {
+            targetState = EXAMPLE_STATE::OFF;
+        }
+
+        if (targetState != currentState)
+        {
+            SetCurrentState(targetState, true);
+        }
+        */
+
+        //========= Hand modified code end section 0 ========
+        //========= Do not erase this line and the one above it. They are used by the code generator =======
     }
 }

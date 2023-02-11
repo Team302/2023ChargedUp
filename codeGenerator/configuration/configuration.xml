@@ -137,7 +137,7 @@ class MechanismTypes
 
 // Team 302 includes
 #include &lt;mechanisms/MechanismTypes.h&gt;
-#include &lt;utils/Logger.h&gt;
+#include &lt;utils/logging/Logger.h&gt;
 
 // @ADDMECH add your mechanism include 
 
@@ -244,7 +244,7 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 
 					// Team 302 includes
 					#include &lt;hw/usages/$ITEM_USAGE_CLASS_NAME$.h&gt;
-					#include &lt;utils/Logger.h&gt;
+					#include &lt;utils/logging/Logger.h&gt;
 
 					// Third Party Includes
 
@@ -355,7 +355,7 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 
 					// Team 302 includes
 					#include &lt;hw/usages/ServoUsage.h&gt;
-					#include &lt;utils/Logger.h&gt;
+					#include &lt;utils/logging/Logger.h&gt;
 
 					// Third Party Includes
 
@@ -461,7 +461,7 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 
 					// Team 302 includes
 					#include &lt;hw/usages/DigitalInputUsage.h&gt;
-					#include &lt;utils/logger.h&gt;
+					#include &lt;utils/logging/Logger.h&gt;
 
 					// Third Party Includes
 
@@ -571,7 +571,7 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 
 					// Team 302 includes
 					#include &lt;hw/usages/MotorControllerUsage.h&gt;
-					#include &lt;utils/Logger.h&gt;
+					#include &lt;utils/logging/Logger.h&gt;
 
 					// Third Party Includes
 
@@ -682,7 +682,7 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 
 					// Team 302 includes
 					#include &lt;hw/usages/SolenoidUsage.h&gt;
-					#include &lt;utils/Logger.h&gt;
+					#include &lt;utils/logging/Logger.h&gt;
 
 					// Third Party Includes
 
@@ -767,6 +767,9 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 				#include &lt;hw/interfaces/IDragonMotorController.h&gt;
 				#include &lt;mechanisms/base/$MECH_BASE_CLASS$.h&gt;
 				#include &lt;mechanisms/$MECHANISM_NAME_LOWERCASE$/$MECHANISM_NAME_LOWERCASE$.h&gt;
+
+				// Third Party Includes
+				#include &lt;ctre/phoenix/motorcontrol/can/WPI_TalonFX.h&gt;
 
 		using namespace std;
 
@@ -914,7 +917,7 @@ class $MECHANISM_NAME$StateMgr : public StateMgr
 // FRC includes
 
 // Team 302 includes
-#include &lt;TeleopControl.h&gt;
+#include &lt;teleopcontrol/TeleopControl.h&gt;
 #include &lt;auton/PrimitiveParams.h&gt;
 #include &lt;mechanisms/MechanismFactory.h&gt;
 #include &lt;mechanisms/base/StateMgr.h&gt;
@@ -922,6 +925,10 @@ class $MECHANISM_NAME$StateMgr : public StateMgr
 #include &lt;mechanisms/$MECHANISM_NAME_LOWERCASE$/$MECHANISM_NAME_LOWERCASE$.h&gt;
 #include &lt;mechanisms/$MECHANISM_NAME_LOWERCASE$/$MECHANISM_NAME_LOWERCASE$State.h&gt;
 #include &lt;mechanisms/$MECHANISM_NAME_LOWERCASE$/$MECHANISM_NAME_LOWERCASE$StateMgr.h&gt;
+#include &lt;robotstate/RobotState.h&gt;
+#include &lt;robotstate/RobotStateChanges.h&gt;
+#include &lt;utils/logging/Logger.h&gt;
+
 
 // Third Party Includes
 

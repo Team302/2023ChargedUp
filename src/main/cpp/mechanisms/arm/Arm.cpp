@@ -46,14 +46,3 @@ Arm::Arm(
 	std::shared_ptr<IDragonMotorController> motorController0) : Mech1IndMotor(MechanismTypes::MECHANISM_TYPE::ARM, controlFileName, networkTableName, motorController0)
 {
 }
-
-void Arm::ResetIfArmDown()
-{
-	if (GetMotor().get()->IsReverseLimitSwitchClosed())
-	{
-		auto motor = GetMotor().get()->GetSpeedController();
-		auto fx = dynamic_cast<ctre::phoenix::motorcontrol::can::WPI_TalonFX *>(motor.get());
-		auto sensors = fx->GetSensorCollection();
-		sensors.SetIntegratedSensorPosition(0, 0);
-	}
-}

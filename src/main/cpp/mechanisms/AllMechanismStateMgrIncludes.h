@@ -23,51 +23,6 @@
 
 #pragma once
 
-// C++ Includes
-#include <string>
-
-// FRC includes
-
-// Team 302 includes
-#include <mechanisms/base/StateMgr.h>
-#include <mechanisms/Grabber/grabber.h>
-#include <mechanisms/StateStruc.h>
-
-// Third Party Includes
-
-class GrabberStateMgr : public StateMgr
-{
-public:
-    /// @enum the various states of the Intake
-    enum GRABBER_STATE
-    {
-        OPEN,
-        GRAB
-    };
-
-    const std::map<const std::string, GRABBER_STATE> m_grabberXmlStringToStateEnumMap{
-        {"OPEN", GRABBER_STATE::OPEN},
-        {"GRAB", GRABBER_STATE::GRAB}};
-
-    /// @brief  Find or create the state manmanager
-    static GrabberStateMgr *GetInstance();
-
-    /// @brief  Get the current Parameter parm value for the state of this mechanism
-    /// @param PrimitiveParams* currentParams current set of primitive parameters
-    /// @returns int state id - -1 indicates that there is not a state to set
-    int GetCurrentStateParam(
-        PrimitiveParams *currentParams) override;
-
-    void CheckForStateTransition() override;
-
-private:
-    GrabberStateMgr();
-    ~GrabberStateMgr() = default;
-
-    Grabber *m_grabber;
-
-    static GrabberStateMgr *m_instance;
-
-    const StateStruc m_openState = {GRABBER_STATE::OPEN, "OPEN", StateType::GRABBER_STATE, true};
-    const StateStruc m_grabState = {GRABBER_STATE::GRAB, "GRAB", StateType::GRABBER_STATE, true};
-};
+#include <mechanisms\arm\ArmStateMgr.h>
+#include <mechanisms\extender\ExtenderStateMgr.h>
+#include <mechanisms\grabber\GrabberStateMgr.h>

@@ -27,8 +27,11 @@
 
 // team 302 includes
 #include <hw/interfaces/IDragonMotorController.h>
-#include <mechanisms/base/Mech1Solenoid.h>
+#include <mechanisms/base/Mech2Solenoids.h>
 #include <mechanisms/grabber/grabber.h>
+
+// Third Party Includes
+#include <ctre/phoenix/motorcontrol/can/WPI_TalonFX.h>
 
 using namespace std;
 
@@ -40,6 +43,7 @@ using namespace std;
 Grabber::Grabber(
 	std::string controlFileName,
 	std::string networkTableName,
-	std::shared_ptr<DragonSolenoid> solenoid) : Mech1Solenoid(MechanismTypes::MECHANISM_TYPE::GRABBER, controlFileName, networkTableName, solenoid)
+	std::shared_ptr<DragonSolenoid> solenoid0,
+	std::shared_ptr<DragonSolenoid> solenoid1) : Mech2Solenoids(MechanismTypes::MECHANISM_TYPE::GRABBER, controlFileName, networkTableName, solenoid0, solenoid1)
 {
 }

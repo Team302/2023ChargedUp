@@ -58,11 +58,7 @@ ArmStateMgr *ArmStateMgr::GetInstance()
 
 /// @brief    initialize the state manager, parse the configuration file and create the states.
 ArmStateMgr::ArmStateMgr() : StateMgr(),
-                             m_arm(MechanismFactory::GetMechanismFactory()->GetArm()),
-                             m_prevState(ARM_STATE::STARTING_POSITION_ROTATE),
-                             m_currentState(ARM_STATE::STARTING_POSITION_ROTATE),
-                             m_targetState(ARM_STATE::STARTING_POSITION_ROTATE)
-
+                             m_arm(MechanismFactory::GetMechanismFactory()->GetArm())
 {
     map<string, StateStruc> stateMap;
     stateMap["HOLD_POSITION_ROTATE"] = m_hold_position_rotateState;
@@ -92,114 +88,44 @@ int ArmStateMgr::GetCurrentStateParam(
     return StateMgr::GetCurrentStateParam(currentParams);
 }
 
-/// @brief Check driver inputs for a state transition
-void ArmStateMgr::CheckForGamepadTransitions()
-{
-    if (m_arm != nullptr)
-    {
-        m_currentState = static_cast<ARM_STATE>(GetCurrentState());
-        m_targetState = m_currentState;
-        auto controller = TeleopControl::GetInstance();
-
-        if (controller != nullptr)
-        {
-            if (controller->IsButtonPressed(TeleopControlFunctions::CONE_BACKROW_ROTATE))
-            {
-                m_targetState = ARM_STATE::CONE_BACKROW_ROTATE;
-                m_prevState = m_targetState;
-            }
-            else if (controller->IsButtonPressed(TeleopControlFunctions::CONE_BACKROW_ROTATE))
-            {
-                m_targetState = ARM_STATE::CONE_BACKROW_ROTATE;
-                m_prevState = m_targetState;
-            }
-            else if (controller->IsButtonPressed(TeleopControlFunctions::CUBE_MIDROW_ROTATE))
-            {
-                m_targetState = ARM_STATE::CUBE_MIDROW_ROTATE;
-                m_prevState = m_targetState;
-            }
-            else if (controller->IsButtonPressed(TeleopControlFunctions::CONE_MIDROW_ROTATE))
-            {
-                m_targetState = ARM_STATE::CONE_MIDROW_ROTATE;
-                m_prevState = m_targetState;
-            }
-            else if (controller->IsButtonPressed(TeleopControlFunctions::HUMAN_PLAYER_STATION_ROTATE))
-            {
-                m_targetState = ARM_STATE::HUMAN_PLAYER_STATION_ROTATE;
-                m_prevState = m_targetState;
-            }
-            else if (controller->IsButtonPressed(TeleopControlFunctions::STARTING_POSITION_ROTATE))
-            {
-                m_targetState = ARM_STATE::STARTING_POSITION_ROTATE;
-                m_prevState = m_targetState;
-            }
-            else if (controller->IsButtonPressed(TeleopControlFunctions::FLOOR_POSITION_ROTATE))
-            {
-                m_targetState = ARM_STATE::FLOOR_POSITION_ROTATE;
-                m_prevState = m_targetState;
-            }
-            else
-            {
-                m_targetState = ARM_STATE::HOLD_POSITION_ROTATE;
-            }
-
-            // If arm is at target and the prev state hasn't changed then stay in hold
-            if (abs(m_arm->GetPositionDegrees().to<double>() - m_arm->GetTarget()) < 1.0 && m_arm->GetPositionDegrees().to<double>() > 1.0 && m_prevState == m_targetState)
-            {
-                m_targetState = ARM_STATE::HOLD_POSITION_ROTATE;
-            }
-        }
-    }
-}
-
-/// @brief Check sensors for a state transition
-void ArmStateMgr::CheckForSensorTransitions()
-{
-    if (m_arm != nullptr)
-    {
-        m_currentState = static_cast<ARM_STATE>(GetCurrentState());
-        m_targetState = m_currentState;
-
-        // If we are hitting limit switch, reset position
-        m_arm->ResetIfArmDown();
-
-        // Check arm angle and run any states dependent on it
-    }
-}
-
 /// @brief Check if driver inputs or sensors trigger a state transition
 void ArmStateMgr::CheckForStateTransition()
 {
 
-    CheckForSensorTransitions();
-    if (m_checkGamePadTransitions)
+    if (m_arm != nullptr)
     {
-        CheckForGamepadTransitions();
-    }
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Current State"), m_targetState);
+        auto currentState = static_cast<ARM_STATE>(GetCurrentState());
+        auto targetState = currentState;
 
-    if (m_targetState != m_currentState)
-    {
-        SetCurrentState(m_targetState, true);
-        RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmRotateState, m_targetState);
+        //========= Do not erase this line and the one below it. They are used by the code generator ========
+        //========= Hand modified code start section 0 ========
 
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Target"), m_arm->GetTarget());
+        // Write logic here. See example below
+        /*
+        auto controller = TeleopControl::GetInstance();
+        auto isForwardSelected   = controller != nullptr ? controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::EXAMPLE_FORWARD) : false;
+        auto isReverseSelected   = controller != nullptr ? controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::EXAMPLE_REVERSE) : false;
 
-        if (m_targetState == ARM_STATE::HOLD_POSITION_ROTATE)
+        if (isForwardSelected)
         {
-            // holding currently based on just "F term" need to update to funciton with extender potentially.
-            if (m_arm->GetPositionDegrees().to<double>() > 50.0)
-            {
-                m_arm->UpdateTarget(0.0495);
-            }
-            else if (m_arm->GetPositionDegrees().to<double>() > 27.5)
-            {
-                m_arm->UpdateTarget(0.0485);
-            }
-            else if (m_arm->GetPositionDegrees().to<double>() > 4.5) // Floor arm angle
-            {
-                m_arm->UpdateTarget(0.0425);
-            }
+            targetState = EXAMPLE_STATE::FORWARD;
         }
+        else if (isReverseSelected)
+        {
+            targetState = EXAMPLE_STATE::REVERSE;
+        }
+        else
+        {
+            targetState = EXAMPLE_STATE::OFF;
+        }
+
+        if (targetState != currentState)
+        {
+            SetCurrentState(targetState, true);
+        }
+        */
+
+        //========= Hand modified code end section 0 ========
+        //========= Do not erase this line and the one above it. They are used by the code generator =======
     }
 }

@@ -43,7 +43,10 @@ public:
 	enum SOLENOID_USAGE
 	{
 		UNKNOWN_SOLENOID_USAGE = -1,
-		GrabberSolenoid,
+
+		GrabberSolenoid1,
+		GrabberSolenoid2,
+
 		MAX_SOLENOID_USAGES
 	};
 

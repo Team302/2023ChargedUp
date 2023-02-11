@@ -36,6 +36,7 @@
 #include <mechanisms/grabber/grabberStateMgr.h>
 #include <robotstate/RobotState.h>
 #include <robotstate/RobotStateChanges.h>
+#include <utils/logging/Logger.h>
 
 // Third Party Includes
 
@@ -57,9 +58,7 @@ GrabberStateMgr *GrabberStateMgr::GetInstance()
 
 /// @brief    initialize the state manager, parse the configuration file and create the states.
 GrabberStateMgr::GrabberStateMgr() : StateMgr(),
-                                     m_grabber(MechanismFactory::GetMechanismFactory()->GetGrabber()),
-                                     m_currentState(GRABBER_STATE::OPEN),
-                                     m_targetState(GRABBER_STATE::OPEN)
+                                     m_grabber(MechanismFactory::GetMechanismFactory()->GetGrabber())
 {
     map<string, StateStruc> stateMap;
     stateMap["OPEN"] = m_openState;
@@ -82,52 +81,44 @@ int GrabberStateMgr::GetCurrentStateParam(
     return StateMgr::GetCurrentStateParam(currentParams);
 }
 
-/// @brief Check for sensor input to transition
-void GrabberStateMgr::CheckForSensorTransitions()
-{
-    if (m_grabber != nullptr)
-    {
-        // look at banner sensor to determine target state
-    }
-}
-
-/// @brief Check for gamepad input to transition
-void GrabberStateMgr::CheckForGamepadTransitions()
-{
-    if (m_grabber != nullptr)
-    {
-        m_currentState = static_cast<GRABBER_STATE>(GetCurrentState());
-        m_targetState = m_currentState;
-
-        auto controller = TeleopControl::GetInstance();
-        if (controller != nullptr)
-        {
-            if (controller->IsButtonPressed(TeleopControlFunctions::OPEN))
-            {
-                m_targetState = GRABBER_STATE::OPEN;
-            }
-            else if (controller->IsButtonPressed(TeleopControlFunctions::GRAB))
-            {
-                m_targetState = GRABBER_STATE::GRAB;
-            }
-            else
-            {
-                m_targetState = GRABBER_STATE::OPEN;
-            }
-        }
-    }
-}
-
 /// @brief Check if driver inputs or sensors trigger a state transition
 void GrabberStateMgr::CheckForStateTransition()
 {
 
     if (m_grabber != nullptr)
     {
-        if (m_targetState != m_currentState)
+        auto currentState = static_cast<GRABBER_STATE>(GetCurrentState());
+        auto targetState = currentState;
+
+        //========= Do not erase this line and the one below it. They are used by the code generator ========
+        //========= Hand modified code start section 0 ========
+
+        // Write logic here. See example below
+        /*
+        auto controller = TeleopControl::GetInstance();
+        auto isForwardSelected   = controller != nullptr ? controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::EXAMPLE_FORWARD) : false;
+        auto isReverseSelected   = controller != nullptr ? controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::EXAMPLE_REVERSE) : false;
+
+        if (isForwardSelected)
         {
-            SetCurrentState(m_targetState, true);
-            RobotState::GetInstance()->PublishStateChange(RobotStateChanges::GrabberState, m_targetState);
+            targetState = EXAMPLE_STATE::FORWARD;
         }
+        else if (isReverseSelected)
+        {
+            targetState = EXAMPLE_STATE::REVERSE;
+        }
+        else
+        {
+            targetState = EXAMPLE_STATE::OFF;
+        }
+
+        if (targetState != currentState)
+        {
+            SetCurrentState(targetState, true);
+        }
+        */
+
+        //========= Hand modified code end section 0 ========
+        //========= Do not erase this line and the one above it. They are used by the code generator =======
     }
 }
