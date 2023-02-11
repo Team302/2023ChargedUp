@@ -32,10 +32,14 @@
 #include <mechanisms/base/StateMgr.h>
 #include <mechanisms/Arm/arm.h>
 #include <mechanisms/StateStruc.h>
+#include <robotstate/IRobotStateChangeSubscriber.h>
+#include <robotstate/RobotStateChanges.h>
 
 // Third Party Includes
 
-class ArmStateMgr : public StateMgr
+class TeleopControl;
+
+class ArmStateMgr : public StateMgr, public IRobotStateChangeSubscriber
 {
 public:
     /// @enum the various states of the Intake
@@ -76,15 +80,22 @@ public:
     void CheckForGamepadTransitions() override;
     void CheckForStateTransition() override;
 
+    void Update(RobotStateChanges::StateChange change, int state) override;
+
 private:
     ArmStateMgr();
     ~ArmStateMgr() = default;
+
+    void CheckForConeGamepadTransitions(TeleopControl *controller);
+    void CheckForCubeGamepadTransitions(TeleopControl *controller);
 
     Arm *m_arm;
 
     ARM_STATE m_prevState;
     ARM_STATE m_currentState;
     ARM_STATE m_targetState;
+
+    RobotStateChanges::GamePiece m_gamepieceMode;
 
     static ArmStateMgr *m_instance;
 
