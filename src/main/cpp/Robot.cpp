@@ -112,6 +112,13 @@ void Robot::RobotPeriodic()
     {
         feedback->UpdateFeedback();
     }
+
+    auto pigeon = PigeonFactory::GetFactory()->GetCenterPigeon();
+    if (pigeon == nullptr)
+    {
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DEUBGGING"), string("Pigeon Nullptr?"), "true");
+    }
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DEUBGGING"), string("Pigeon Yaw"), pigeon->GetYaw());
 }
 
 /**
