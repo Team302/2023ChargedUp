@@ -56,7 +56,18 @@ DragonLimelight::DragonLimelight(
         m_targetHeight(targetHeight),
         m_targetHeight2(targetHeight2)
 {
+    SetPipeline(PIPELINE_MODE::RETRO_REFLECTIVE);
     // SetLEDMode( DragonLimelight::LED_MODE::LED_OFF);
+}
+
+DragonLimelight::PIPELINE_MODE DragonLimelight::getPipeline() const
+{
+    auto nt = m_networktable.get();
+    if (nt != nullptr)
+    {
+        return (PIPELINE_MODE)(nt->GetNumber("getpipe", PIPELINE_MODE::UNKNOWN));
+    }
+    return PIPELINE_MODE::UNKNOWN;
 }
 
 std::vector<double> DragonLimelight::Get3DSolve() const

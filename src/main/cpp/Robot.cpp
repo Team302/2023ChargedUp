@@ -61,7 +61,8 @@ void Robot::RobotInit()
 
     m_cyclePrims = new CyclePrimitives();
     m_previewer = new AutonPreviewer(m_cyclePrims); // TODO:: Move to DriveTeamFeedback
-    m_field = DragonField::GetInstance();           // TODO: move to drive team feedback
+    m_field = nullptr;
+    // DragonField::GetInstance(); // TODO: move to drive team feedback
 
     m_dragonLimeLight = LimelightFactory::GetLimelightFactory()->GetLimelight(); // ToDo:: Move to Dragon Vision
 
@@ -78,9 +79,12 @@ void Robot::RobotInit()
  */
 void Robot::RobotPeriodic()
 {
+    static int mycounter = 0;
+    static int my2ndcounter = 0;
+    mycounter++;
     LoggableItemMgr::GetInstance()->LogData();
     Logger::GetLogger()->PeriodicLog();
-
+#ifdef bye
     if (m_tuner != nullptr)
     {
         m_tuner->ListenForUpdates();
@@ -89,16 +93,64 @@ void Robot::RobotPeriodic()
     {
         m_robotState->Run();
     }
-
+#endif
     auto vision = DragonVision::GetDragonVision();
 
+    LoggerIntValue count = {string("counter"), mycounter};
     if (vision != nullptr)
     {
-        LoggerDoubleValue horAngle = {string("Angle"), vision->GetHorizontalAngleToTarget(DragonVision::LIMELIGHT_POSITION::FRONT).to<double>()};
-        LoggerDoubleValue distance = {string("distance "), vision->GetDistanceToTarget(DragonVision::LIMELIGHT_POSITION::FRONT).to<double>()};
-        LoggerData data = {LOGGER_LEVEL::PRINT, string("DragonLimelight"), {}, {}, {horAngle, distance}, {}};
+        LoggerStringValue status = {string("HW connection Status"), "Dragon vision is not null"};
+
+        if (mycounter % (5000 / 20) == 0)
+        {
+            my2ndcounter++;
+
+            int a = 0;
+            if (my2ndcounter % 2 == 0)
+            {
+                vision->setPipeline(DragonLimelight::APRIL_TAG, DragonVision::FRONT);
+                a = 2;
+            }
+            else
+            {
+                vision->setPipeline(DragonLimelight::RETRO_REFLECTIVE, DragonVision::FRONT);
+                a = 1;
+            }
+
+            LoggerDoubleValue pipelin = {string("Pipeline"), a};
+
+            LoggerData data = {LOGGER_LEVEL::PRINT, string("DragonLimelight"), {}, {pipelin}, {count}, {status}};
+
+            Logger::GetLogger()->LogData(data);
+        }
+
+        DragonVisionTarget *dvt = vision->getTargetInfo(DragonVision::FRONT);
+        if (dvt == nullptr)
+        {
+            LoggerStringValue status = {string("Status"), "No target found or missing limelight"};
+            LoggerData data = {LOGGER_LEVEL::PRINT, string("DragonLimelight"), {}, {}, {}, {status}};
+            Logger::GetLogger()->LogData(data);
+        }
+        else
+        {
+            LoggerStringValue status = {string("Status"), "Target found"};
+            LoggerDoubleValue vertAngle = {string("VertAngle"), dvt->getVerticalAngleToTarget().to<double>()};
+            LoggerDoubleValue horAngle = {string("HorizAngle"), dvt->getHorizontalAngleToTarget().to<double>()};
+            LoggerDoubleValue distance = {string("distance "), dvt->getDistanceToTarget().to<double>()};
+            LoggerData data = {LOGGER_LEVEL::PRINT, string("DragonLimelight"), {}, {vertAngle, horAngle, distance}, {}, {status}};
+            Logger::GetLogger()->LogData(data);
+        }
+    }
+    else
+    {
+        LoggerStringValue status = {string("HW connection Status"), "Dragon vision is  null"};
+
+        LoggerData data = {LOGGER_LEVEL::PRINT, string("DragonLimelight"), {}, {}, {count}, {status}};
         Logger::GetLogger()->LogData(data);
     }
+
+#ifdef bye
+
     // ToDo:: Move to DriveTeamFeedback
     if (m_previewer != nullptr)
     {
@@ -116,6 +168,7 @@ void Robot::RobotPeriodic()
     {
         feedback->UpdateFeedback();
     }
+#endif
 }
 
 /**

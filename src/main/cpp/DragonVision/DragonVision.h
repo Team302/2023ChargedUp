@@ -15,10 +15,14 @@
 //====================================================================================================================================================
 
 #pragma once
+#include <map>
 #include <string>
+
 #include <State.h>
 #include <hw/DragonLimelight.h>
 #include <DragonVision/DragonVisionTarget.h>
+
+using std::map;
 
 class DragonLimelight;
 class DragonVision
@@ -26,24 +30,14 @@ class DragonVision
 public:
     static DragonVision *GetDragonVision();
 
-    enum PIPELINE_MODE
-    {
-        RETRO_REFLECTIVE,
-        APRIL_TAG,
-        CONE,
-        CUBE
-    };
-
     enum LIMELIGHT_POSITION
     {
         FRONT,
         BACK
     };
 
-    void setPipeline(PIPELINE_MODE mode, LIMELIGHT_POSITION position);
-    units::length::inch_t GetDistanceToTarget(LIMELIGHT_POSITION position) const;
-    units::angle::degree_t GetHorizontalAngleToTarget(LIMELIGHT_POSITION position) const;
-    units::angle::degree_t GetVerticalAngleToTarget(LIMELIGHT_POSITION position) const;
+    void setPipeline(DragonLimelight::PIPELINE_MODE mode, LIMELIGHT_POSITION position);
+    DragonVisionTarget *getTargetInfo(LIMELIGHT_POSITION position) const;
 
     int GetRobotPosition() const;
 
@@ -51,8 +45,9 @@ private:
     DragonVision();
     ~DragonVision() = default;
 
+    DragonLimelight *getLimelight(LIMELIGHT_POSITION position) const;
+
     static DragonVision *m_dragonVision;
 
-    DragonLimelight *m_frontDragonLimelight;
-    DragonLimelight *m_backDragonLimelight;
+    std::map<LIMELIGHT_POSITION, DragonLimelight *> m_DragonLimelightMap;
 };

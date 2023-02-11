@@ -24,28 +24,35 @@
 
 using namespace std;
 
-DragonVisionTarget::DragonVisionTarget(TYPE targetType,
+DragonVisionTarget::DragonVisionTarget(DragonLimelight::PIPELINE_MODE targetType,
 									   units::length::inch_t distanceFromTarget,
-									   units::angle::degree_t angleFromTarget,
+									   units::angle::degree_t horizontaAngleFromTarget,
+									   units::angle::degree_t verticalAngleFromTarget,
 									   units::time::millisecond_t latency)
 {
 	m_targetType = targetType;
 	m_distanceFromTarget = distanceFromTarget;
-	m_angleFromTarget = angleFromTarget;
+	m_horizontalAngleToTarget = horizontaAngleFromTarget;
+	m_verticalAngleToTarget = verticalAngleFromTarget;
 	m_latency = latency;
 }
 
-units::length::inch_t DragonVisionTarget::getDistanceFromTarget()
+units::length::inch_t DragonVisionTarget::getDistanceToTarget()
 {
 	return m_distanceFromTarget;
 }
 
-units::angle::degree_t DragonVisionTarget::getAngleFromTarget()
+units::angle::degree_t DragonVisionTarget::getHorizontalAngleToTarget()
 {
-	return m_angleFromTarget;
+	return m_horizontalAngleToTarget;
 }
 
-DragonVisionTarget::TYPE DragonVisionTarget::getTargetType()
+units::angle::degree_t DragonVisionTarget::getVerticalAngleToTarget()
+{
+	return m_verticalAngleToTarget;
+}
+
+DragonLimelight::PIPELINE_MODE DragonVisionTarget::getTargetType()
 {
 	return m_targetType;
 }

@@ -15,37 +15,35 @@
 //====================================================================================================================================================
 
 #pragma once
+
 #include <units/angle.h>
 #include <units/length.h>
 #include <units/time.h>
 
+#include <hw/DragonLimelight.h>
 class DragonVisionTarget
 {
 public:
-    enum TYPE
-    {
-        RETRO_REFLECTIVE,
-        APRIL_TAG,
-        CUBE,
-        CONE,
-        MAX_TYPE
-    };
+    DragonVisionTarget() = default;
 
-    DragonVisionTarget(TYPE targetType,
+    DragonVisionTarget(DragonLimelight::PIPELINE_MODE targetType,
                        units::length::inch_t distanceFromTarget,
-                       units::angle::degree_t angleFromTarget,
+                       units::angle::degree_t horizontalAngleFromTarget,
+                       units::angle::degree_t verticalAngleFromTarget,
                        units::time::millisecond_t latency);
 
     ~DragonVisionTarget() = default;
 
-    units::length::inch_t getDistanceFromTarget();
-    units::angle::degree_t getAngleFromTarget();
-    TYPE getTargetType();
+    units::length::inch_t getDistanceToTarget();
+    units::angle::degree_t getHorizontalAngleToTarget();
+    units::angle::degree_t getVerticalAngleToTarget();
+    DragonLimelight::PIPELINE_MODE getTargetType();
     units::time::millisecond_t getLatency();
 
 private:
     units::length::inch_t m_distanceFromTarget;
-    units::angle::degree_t m_angleFromTarget;
-    TYPE m_targetType;
+    units::angle::degree_t m_horizontalAngleToTarget;
+    units::angle::degree_t m_verticalAngleToTarget;
+    DragonLimelight::PIPELINE_MODE m_targetType;
     units::time::millisecond_t m_latency;
 };
