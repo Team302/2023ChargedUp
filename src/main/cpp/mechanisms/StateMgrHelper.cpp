@@ -132,7 +132,6 @@ State *StateMgrHelper::CreateState(
 
     case StateType::MANUAL_ARM_STATE:
         thisState = new ArmManualState(xmlString, id, controlData, target);
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("StateMgrHelper"), std::string("Created Manual Arm State"), "true");
         break;
 
     case StateType::EXTENDER_STATE:
