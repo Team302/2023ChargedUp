@@ -39,7 +39,7 @@ RobotState *RobotState::GetInstance()
 
 RobotState::RobotState() : m_chassis(nullptr),
                            m_brokers(),
-                           m_gamePiece(RobotStateChanges::GamePiece::Cone),
+                           m_gamePiece(RobotStateChanges::GamePiece::None),
                            m_gamePhase(RobotStateChanges::Disabled)
 {
     m_brokers.reserve(RobotStateChanges::LoopCounter);

@@ -81,6 +81,9 @@ public:
     void Update(RobotStateChanges::StateChange change, int value) override;
 
 private:
+    void CheckForConeGamepadTransitions(TeleopControl *controller);
+    void CheckForCubeGamepadTransitions(TeleopControl *controller);
+
     ExtenderStateMgr();
     ~ExtenderStateMgr() = default;
 
@@ -89,6 +92,8 @@ private:
     EXTENDER_STATE m_prevState;
     EXTENDER_STATE m_currentState;
     EXTENDER_STATE m_targetState;
+
+    RobotStateChanges::GamePiece m_gamepieceMode;
 
     static ExtenderStateMgr *m_instance;
 

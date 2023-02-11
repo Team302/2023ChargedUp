@@ -63,6 +63,7 @@ ExtenderStateMgr::ExtenderStateMgr() : StateMgr(),
                                        m_prevState(EXTENDER_STATE::STARTING_POSITION_EXTEND),
                                        m_currentState(EXTENDER_STATE::STARTING_POSITION_EXTEND),
                                        m_targetState(EXTENDER_STATE::STARTING_POSITION_EXTEND),
+                                       m_gamepieceMode(RobotStateChanges::None),
                                        m_extendedPosition(84320.3176) // 22.25 inches in counts for extender
 {
     map<string, StateStruc> stateMap;
@@ -83,6 +84,7 @@ ExtenderStateMgr::ExtenderStateMgr() : StateMgr(),
     }
 
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::ArmRotateState);
+    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::DesiredGamePiece);
 }
 
 /// @brief  Get the current Parameter parm value for the state of this mechanism
@@ -159,6 +161,57 @@ void ExtenderStateMgr::CheckForGamepadTransitions()
     }
 }
 
+void ExtenderStateMgr::CheckForConeGamepadTransitions(TeleopControl *controller)
+{
+    if (m_gamepieceMode == RobotStateChanges::None)
+    {
+        m_gamepieceMode = RobotStateChanges::Cone;
+        RobotState::GetInstance()->PublishStateChange(RobotStateChanges::DesiredGamePiece, m_gamepieceMode);
+    }
+
+    if (controller != nullptr)
+    {
+        if (m_gamepieceMode == RobotStateChanges::Cone)
+        {
+            CheckForConeGamepadTransitions(controller);
+        }
+        else if (m_gamepieceMode == RobotStateChanges::Cube)
+        {
+            CheckForCubeGamepadTransitions(controller);
+        }
+    }
+}
+
+void ExtenderStateMgr::CheckForCubeGamepadTransitions(TeleopControl *controller)
+{
+    if (controller != nullptr)
+    {
+        if (controller->IsButtonPressed(TeleopControlFunctions::BACKROW))
+        {
+            m_targetState = EXTENDER_STATE::CUBE_BACKROW_EXTEND;
+            m_prevState = m_targetState;
+        }
+        else if (controller->IsButtonPressed(TeleopControlFunctions::MIDROW))
+        {
+            m_targetState = EXTENDER_STATE::CUBE_MIDROW_EXTEND;
+            m_prevState = m_targetState;
+        }
+        else if (controller->IsButtonPressed(TeleopControlFunctions::FLOOR_POSITION))
+        {
+            m_targetState = EXTENDER_STATE::FLOOR_EXTEND;
+            m_prevState = m_targetState;
+        }
+        else if (controller->IsButtonPressed(TeleopControlFunctions::HUMAN_PLAYER_STATION))
+        {
+            m_targetState = EXTENDER_STATE::HUMAN_PLAYER_STATION_EXTEND;
+            m_prevState = m_targetState;
+        }
+        else
+        {
+            m_targetState = EXTENDER_STATE::HOLD_POSITION_EXTEND;
+        }
+    }
+}
 /// @brief Check driver input to determine target state
 void ExtenderStateMgr::CheckForSensorTransitions()
 {
@@ -211,5 +264,9 @@ void ExtenderStateMgr::Update(RobotStateChanges::StateChange change, int value)
         {
             m_canAutomaticallyMove = false;
         }
+    }
+    else if (change == RobotStateChanges::DesiredGamePiece)
+    {
+        m_gamepieceMode = static_cast<RobotStateChanges::GamePiece>(value);
     }
 }
