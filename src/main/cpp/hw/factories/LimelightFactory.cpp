@@ -43,8 +43,10 @@ DragonLimelight *LimelightFactory::CreateLimelight(
     string tableName,
     units::length::inch_t mountingHeight,           /// <I> - mounting height of the limelight
     units::length::inch_t mountingHorizontalOffset, /// <I> - mounting horizontal offset from the middle of the robot
-    units::angle::degree_t rotation,                /// <I> - clockwise rotation of limelight
-    units::angle::degree_t mountingAngle,           /// <I> - mounting angle of the camera
+    units::length::inch_t LLForward,                /// <I> mounting offset forward/back
+    units::angle::degree_t LLPitch,                 /// <I> - Pitch of limelight
+    units::angle::degree_t LLYaw,                   /// <I> - Yaw of limelight
+    units::angle::degree_t LLRoll,                  /// <I> - Roll of limelight
     units::length::inch_t targetHeight,             /// <I> - height the target
     units::length::inch_t targetHeight2,            /// <I> - height of second target
     DragonLimelight::LED_MODE ledMode,
@@ -63,10 +65,16 @@ DragonLimelight *LimelightFactory::CreateLimelight(
             m_limelight = new DragonLimelight(tableName,
                                               mountingHeight,
                                               mountingHorizontalOffset,
-                                              rotation,
-                                              mountingAngle,
+                                              LLForward,
+                                              LLPitch,
+                                              LLYaw,
+                                              LLRoll,
                                               targetHeight,
-                                              targetHeight2);
+                                              targetHeight2,
+                                              ledMode,
+                                              camMode,
+                                              streamMode,
+                                              snapMode);
         }
         return m_limelight;
     }
@@ -77,10 +85,16 @@ DragonLimelight *LimelightFactory::CreateLimelight(
             m_limelight2 = new DragonLimelight(tableName,
                                                mountingHeight,
                                                mountingHorizontalOffset,
-                                               rotation,
-                                               mountingAngle,
+                                               LLForward,
+                                               LLPitch,
+                                               LLYaw,
+                                               LLRoll,
                                                targetHeight,
-                                               targetHeight2);
+                                               targetHeight2,
+                                               ledMode,
+                                               camMode,
+                                               streamMode,
+                                               snapMode);
         }
         return m_limelight2;
     }
