@@ -49,6 +49,7 @@ public:
         DRIVE_TO_HUMAN_PLAYER_LEFT,
         BALANCE_MODE,
         AUTO_BALANCE,
+        SLOW_MODE,
         // Scoring states
         // HOLD_POSITION, // may not need this state
         BACKROW,

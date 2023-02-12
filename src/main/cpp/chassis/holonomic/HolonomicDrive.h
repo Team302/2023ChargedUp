@@ -46,4 +46,5 @@ private:
     ChassisOptionEnums::DriveStateType m_previousDriveState;
     frc::Trajectory m_generatedTrajectory;
     DragonField *m_field;
+    double m_slowModeMultiplier = 0.4;
 };
