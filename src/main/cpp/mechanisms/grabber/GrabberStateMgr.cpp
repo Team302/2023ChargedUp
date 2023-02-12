@@ -70,10 +70,8 @@ GrabberStateMgr::GrabberStateMgr() : StateMgr(),
     stateMap["GRAB"] = m_grabState;
 
     Init(m_grabber, stateMap);
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("GrabberStateMgr"), std::string("Hit constructor?"), "true");
     if (m_grabber != nullptr)
     {
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("GrabberStateMgr"), std::string("Is m_grabber nullptr?"), "false");
         m_grabber->AddStateMgr(this);
     }
 
@@ -137,7 +135,6 @@ void GrabberStateMgr::CheckForStateTransition()
         // if (!m_followOtherMechs)
         //{
         CheckForGamepadTransitions();
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("GrabberStateMgr"), std::string("Check Gamepads "), "true");
         //}
 
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("GrabberStateMgr"), std::string("m_targetState"), m_targetState);

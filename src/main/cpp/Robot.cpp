@@ -31,6 +31,9 @@
 
 #include <AdjustableItemMgr.h>
 
+/// DEBUGGING
+#include <hw/factories/PigeonFactory.h>
+
 using namespace std;
 
 void Robot::RobotInit()
@@ -171,6 +174,13 @@ void Robot::RobotPeriodic()
     {
         feedback->UpdateFeedback();
     }
+
+    auto pigeon = PigeonFactory::GetFactory()->GetCenterPigeon();
+    if (pigeon == nullptr)
+    {
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DEUBGGING"), string("Pigeon Nullptr?"), "true");
+    }
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DEUBGGING"), string("Pigeon Yaw"), pigeon->GetYaw());
 }
 
 /**
@@ -234,7 +244,6 @@ void Robot::TeleopInit()
 
 void Robot::TeleopPeriodic()
 {
-
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopPeriodic"), string("arrived"));
     if (m_chassis != nullptr && m_controller != nullptr)
     {

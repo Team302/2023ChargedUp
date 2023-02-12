@@ -71,7 +71,7 @@ DragonPigeon *PigeonXmlParser::ParseXML(
         }
         else if (strcmp(attr.name(), "type") == 0)
         {
-            if (strcmp(attr.value(), "PIGEON2") == 0)
+            if (strcmp(attr.value(), "pigeon2") == 0)
             {
                 type = DragonPigeon::PIGEON_TYPE::PIGEON2;
             }
