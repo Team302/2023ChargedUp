@@ -47,6 +47,7 @@ Extender::Extender(
 {
 }
 
+//========= Hand modified code start section 0 ========
 void Extender::ResetIfFullyExtended(double counts)
 {
 	if (GetMotor().get()->IsForwardLimitSwitchClosed())
@@ -68,3 +69,4 @@ void Extender::ResetIfFullyRetracted()
 		sensors.SetIntegratedSensorPosition(0, 0);
 	}
 }
+//========= Hand modified code end section 0 ========
