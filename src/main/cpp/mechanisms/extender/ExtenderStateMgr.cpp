@@ -84,17 +84,6 @@ ExtenderStateMgr::ExtenderStateMgr() : StateMgr(),
         m_extender->AddStateMgr(this);
     }
 
-    if (m_extender != nullptr && MechanismFactory::GetMechanismFactory()->GetArm() != nullptr)
-    {
-        m_armToExtenderMap[ArmStateMgr::ARM_STATE::FLOOR_POSITION_ROTATE] = EXTENDER_STATE::FLOOR_EXTEND;
-        m_armToExtenderMap[ArmStateMgr::ARM_STATE::HUMAN_PLAYER_STATION_ROTATE] = EXTENDER_STATE::HUMAN_PLAYER_STATION_EXTEND;
-        m_armToExtenderMap[ArmStateMgr::ARM_STATE::STARTING_POSITION_ROTATE] = EXTENDER_STATE::STARTING_POSITION_EXTEND;
-        m_armToExtenderMap[ArmStateMgr::ARM_STATE::CONE_BACKROW_ROTATE] = EXTENDER_STATE::CONE_BACKROW_EXTEND;
-        m_armToExtenderMap[ArmStateMgr::ARM_STATE::CUBE_BACKROW_ROTATE] = EXTENDER_STATE::CUBE_BACKROW_EXTEND;
-        m_armToExtenderMap[ArmStateMgr::ARM_STATE::CONE_MIDROW_ROTATE] = EXTENDER_STATE::CONE_MIDROW_EXTEND;
-        m_armToExtenderMap[ArmStateMgr::ARM_STATE::CUBE_MIDROW_ROTATE] = EXTENDER_STATE::CUBE_MIDROW_EXTEND;
-    }
-
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::ArmRotateState);
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::DesiredGamePiece);
 }

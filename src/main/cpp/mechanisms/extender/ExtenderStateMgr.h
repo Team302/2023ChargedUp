@@ -111,8 +111,6 @@ private:
     const StateStruc m_starting_position_extendState = {EXTENDER_STATE::STARTING_POSITION_EXTEND, "STARTING_POSITION_EXTEND", StateType::EXTENDER_STATE, true};
     const StateStruc m_floor_extendState = {EXTENDER_STATE::FLOOR_EXTEND, "FLOOR_EXTEND", StateType::EXTENDER_STATE, false};
 
-    std::map<ArmStateMgr::ARM_STATE, EXTENDER_STATE> m_armToExtenderMap;
-
     ArmStateMgr::ARM_STATE m_armState;
 
     double m_extendedPosition;
