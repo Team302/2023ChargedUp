@@ -38,8 +38,10 @@ DragonLimelight *LimelightXmlParser::ParseXML(pugi::xml_node limelightNode)
     std::string tableName = "";
     units::length::inch_t mountingHeight = units::length::inch_t(0.0);
     units::length::inch_t horizontalOffset = units::length::inch_t(0.0);
-    units::angle::degree_t mountingAngle = units::angle::degree_t(0.0);
-    units::angle::degree_t rotation = units::angle::degree_t(0.0);
+    units::length::inch_t LLForward = units::length::inch_t(0.0);
+    units::angle::degree_t LLPitch = units::angle::degree_t(0.0);
+    units::angle::degree_t LLYaw = units::angle::degree_t(0.0);
+    units::angle::degree_t LLRoll = units::angle::degree_t(0.0);
     units::length::inch_t targetHeight = units::length::inch_t(0.0);
     units::length::inch_t targetHeight2 = units::length::inch_t(0.0);
 
@@ -75,13 +77,21 @@ DragonLimelight *LimelightXmlParser::ParseXML(pugi::xml_node limelightNode)
         {
             horizontalOffset = units::length::inch_t(attr.as_double());
         }
-        else if (strcmp(attr.name(), "mountingangle") == 0)
+        else if (strcmp(attr.name(), "LLPitch") == 0)
         {
-            mountingAngle = units::angle::degree_t(attr.as_double());
+            LLPitch = units::angle::degree_t(attr.as_double());
         }
-        else if (strcmp(attr.name(), "rotation") == 0)
+        else if (strcmp(attr.name(), "LLForward") == 0)
         {
-            rotation = units::angle::degree_t(attr.as_double());
+            LLForward = units::angle::degree_t(attr.as_double());
+        }
+        else if (strcmp(attr.name(), "LLYaw") == 0)
+        {
+            LLYaw = units::angle::degree_t(attr.as_double());
+        }
+        else if (strcmp(attr.name(), "LLRoll") == 0)
+        {
+            LLRoll = units::angle::degree_t(attr.as_double());
         }
         else if (strcmp(attr.name(), "targetheight") == 0)
         {
@@ -169,8 +179,10 @@ DragonLimelight *LimelightXmlParser::ParseXML(pugi::xml_node limelightNode)
             tableName,
             mountingHeight,
             horizontalOffset,
-            rotation,
-            mountingAngle,
+            LLForward,
+            LLPitch,
+            LLYaw,
+            LLRoll,
             targetHeight,
             targetHeight2,
             ledMode,
