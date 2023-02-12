@@ -15,9 +15,15 @@
 //====================================================================================================================================================
 
 #pragma once
+
+// C++ Includes
 #include <map>
 #include <string>
 
+// FRC Includes
+#include <frc/geometry/Pose2d.h>
+
+// Team 302 Includes
 #include <State.h>
 #include <hw/DragonLimelight.h>
 #include <DragonVision/DragonVisionTarget.h>
@@ -39,7 +45,7 @@ public:
     void setPipeline(DragonLimelight::PIPELINE_MODE mode, LIMELIGHT_POSITION position);
     DragonVisionTarget *getTargetInfo(LIMELIGHT_POSITION position) const;
 
-    int GetRobotPosition() const;
+    frc::Pose2d GetRobotPosition() const;
 
 private:
     DragonVision();

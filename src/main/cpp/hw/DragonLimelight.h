@@ -126,6 +126,8 @@ public:
     units::length::inch_t GetMountingHeight() const { return m_mountHeight; }
     units::length::inch_t GetTargetHeight() const { return m_targetHeight; }
 
+    std::shared_ptr<nt::NetworkTable> GetNetworkTable() const { return m_networktable; }
+
 protected:
     units::angle::degree_t GetTx() const;
     units::angle::degree_t GetTy() const;

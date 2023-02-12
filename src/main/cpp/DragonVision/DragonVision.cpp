@@ -76,9 +76,14 @@ DragonVisionTarget *DragonVision::getTargetInfo(LIMELIGHT_POSITION position) con
 	return nullptr;
 }
 
-int DragonVision::GetRobotPosition() const
+frc::Pose2d DragonVision::GetRobotPosition() const
 {
-	return 0;
+	DragonLimelight *frontLimelight = getLimelight(LIMELIGHT_POSITION::FRONT);
+	auto nt = frontLimelight->GetNetworkTable();
+	if (nt.get() != nullptr)
+	{
+		auto test =
+	}
 }
 
 /// @brief Gets a pointer to the lilelight at the specified position
