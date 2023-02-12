@@ -49,8 +49,10 @@ public:
         MANUAL_ROTATE,
         CUBE_BACKROW_ROTATE,
         CONE_BACKROW_ROTATE,
-        CUBE_MIDROW_ROTATE,
-        CONE_MIDROW_ROTATE,
+        CUBE_MIDROW_ROTATE_UP,
+        CUBE_MIDROW_ROTATE_DOWN,
+        CONE_MIDROW_ROTATE_UP,
+        CONE_MIDROW_ROTATE_DOWN,
         HUMAN_PLAYER_STATION_ROTATE,
         STARTING_POSITION_ROTATE,
         FLOOR_POSITION_ROTATE
@@ -61,8 +63,10 @@ public:
         {"MANUAL_ROTATE", ARM_STATE::MANUAL_ROTATE},
         {"CUBE_BACKROW_ROTATE", ARM_STATE::CUBE_BACKROW_ROTATE},
         {"CONE_BACKROW_ROTATE", ARM_STATE::CONE_BACKROW_ROTATE},
-        {"CUBE_MIDROW_ROTATE", ARM_STATE::CUBE_MIDROW_ROTATE},
-        {"CONE_MIDROW_ROTATE", ARM_STATE::CONE_MIDROW_ROTATE},
+        {"CUBE_MIDROW_ROTATE_UP", ARM_STATE::CUBE_MIDROW_ROTATE_UP},
+        {"CUBE_MIDROW_ROTATE_DOWN", ARM_STATE::CUBE_MIDROW_ROTATE_DOWN},
+        {"CONE_MIDROW_ROTATE_UP", ARM_STATE::CONE_MIDROW_ROTATE_UP},
+        {"CONE_MIDROW_ROTATE_DOWN", ARM_STATE::CONE_MIDROW_ROTATE_DOWN},
         {"HUMAN_PLAYER_STATION_ROTATE", ARM_STATE::HUMAN_PLAYER_STATION_ROTATE},
         {"STARTING_POSITION_ROTATE", ARM_STATE::STARTING_POSITION_ROTATE},
         {"FLOOR_POSITION_ROTATE", ARM_STATE::FLOOR_POSITION_ROTATE}};
@@ -103,8 +107,10 @@ private:
     const StateStruc m_manual_rotateState = {ARM_STATE::MANUAL_ROTATE, "MANUAL_ROTATE", StateType::MANUAL_ARM_STATE, false};
     const StateStruc m_cube_backrow_rotateState = {ARM_STATE::CUBE_BACKROW_ROTATE, "CUBE_BACKROW_ROTATE", StateType::ARM_STATE, false};
     const StateStruc m_cone_backrow_rotateState = {ARM_STATE::CONE_BACKROW_ROTATE, "CONE_BACKROW_ROTATE", StateType::ARM_STATE, false};
-    const StateStruc m_cube_midrow_rotateState = {ARM_STATE::CUBE_MIDROW_ROTATE, "CUBE_MIDROW_ROTATE", StateType::ARM_STATE, false};
-    const StateStruc m_cone_midrow_rotateState = {ARM_STATE::CONE_MIDROW_ROTATE, "CONE_MIDROW_ROTATE", StateType::ARM_STATE, false};
+    const StateStruc m_cube_midrow_rotate_upState = {ARM_STATE::CUBE_MIDROW_ROTATE_UP, "CUBE_MIDROW_ROTATE", StateType::ARM_STATE, false};
+    const StateStruc m_cube_midrow_rotate_downState = {ARM_STATE::CUBE_MIDROW_ROTATE_DOWN, "CUBE_MIDROW_ROTATE", StateType::ARM_STATE, false};
+    const StateStruc m_cone_midrow_rotate_upState = {ARM_STATE::CONE_MIDROW_ROTATE_UP, "CONE_MIDROW_ROTATE", StateType::ARM_STATE, false};
+    const StateStruc m_cone_midrow_rotate_downState = {ARM_STATE::CONE_MIDROW_ROTATE_DOWN, "CONE_MIDROW_ROTATE", StateType::ARM_STATE, false};
     const StateStruc m_human_player_station_rotateState = {ARM_STATE::HUMAN_PLAYER_STATION_ROTATE, "HUMAN_PLAYER_STATION_ROTATE", StateType::ARM_STATE, false};
     const StateStruc m_starting_position_rotateState = {ARM_STATE::STARTING_POSITION_ROTATE, "STARTING_POSITION_ROTATE", StateType::ARM_STATE, true};
     const StateStruc m_floor_position_rotateState = {ARM_STATE::FLOOR_POSITION_ROTATE, "FLOOR_POSITION_ROTATE", StateType::ARM_STATE, false};
