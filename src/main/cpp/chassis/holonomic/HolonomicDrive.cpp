@@ -177,6 +177,13 @@ void HolonomicDrive::Run()
         auto strafe = controller->GetAxisValue(TeleopControlFunctions::HOLONOMIC_DRIVE_STRAFE);
         auto rotate = controller->GetAxisValue(TeleopControlFunctions::HOLONOMIC_DRIVE_ROTATE);
 
+        if (controller->IsButtonPressed(TeleopControlFunctions::SLOW_MODE))
+        {
+            forward *= m_slowModeMultiplier;
+            strafe *= m_slowModeMultiplier;
+            rotate *= m_slowModeMultiplier;
+        }
+
         if (abs(forward) > 0.05 || abs(strafe) > 0.05 || abs(rotate) > 0.05)
         {
             moveInfo.driveOption = ChassisOptionEnums::DriveStateType::FIELD_DRIVE;
