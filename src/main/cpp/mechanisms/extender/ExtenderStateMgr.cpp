@@ -40,6 +40,10 @@
 
 // Third Party Includes
 
+//========= Hand modified code start section 0 ========
+
+//========= Hand modified code end section 0 ========
+
 using namespace std;
 
 ExtenderStateMgr *ExtenderStateMgr::m_instance = nullptr;
@@ -58,13 +62,17 @@ ExtenderStateMgr *ExtenderStateMgr::GetInstance()
 
 /// @brief    initialize the state manager, parse the configuration file and create the states.
 ExtenderStateMgr::ExtenderStateMgr() : StateMgr(),
+                                       m_extender(MechanismFactory::GetMechanismFactory()->GetExtender())
+                                       //========= Hand modified code start section 1 ========
+                                       ,
                                        IRobotStateChangeSubscriber(),
-                                       m_extender(MechanismFactory::GetMechanismFactory()->GetExtender()),
                                        m_prevState(EXTENDER_STATE::STARTING_POSITION_EXTEND),
                                        m_currentState(EXTENDER_STATE::STARTING_POSITION_EXTEND),
                                        m_targetState(EXTENDER_STATE::STARTING_POSITION_EXTEND),
                                        m_gamepieceMode(RobotStateChanges::None),
                                        m_extendedPosition(84320.3176) // 22.25 inches in counts for extender
+                                                                      //========= Hand modified code end section 1 ========
+
 {
     map<string, StateStruc> stateMap;
     stateMap["HOLD_POSITION_EXTEND"] = m_hold_position_extendState;
@@ -77,19 +85,21 @@ ExtenderStateMgr::ExtenderStateMgr() : StateMgr(),
     stateMap["STARTING_POSITION_EXTEND"] = m_starting_position_extendState;
     stateMap["FLOOR_EXTEND"] = m_floor_extendState;
 
+    //========= Hand modified code start section 2 ========
+    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::ArmRotateState);
+    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::DesiredGamePiece);
+    //========= Hand modified code end section 2 ========
+
     Init(m_extender, stateMap);
     if (m_extender != nullptr)
     {
         m_extender->AddStateMgr(this);
     }
-
-    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::ArmRotateState);
-    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::DesiredGamePiece);
 }
 
 /// @brief  Get the current Parameter parm value for the state of this mechanism
 /// @param PrimitiveParams* currentParams current set of primitive parameters
-/// @returns int state id - -1 indicates that there is not a state to settargetState
+/// @returns int state id - -1 indicates that there is not a state to set
 int ExtenderStateMgr::GetCurrentStateParam(
     PrimitiveParams *currentParams)
 {
@@ -97,6 +107,37 @@ int ExtenderStateMgr::GetCurrentStateParam(
     return StateMgr::GetCurrentStateParam(currentParams);
 }
 
+/// @brief Check if driver inputs or sensors trigger a state transition
+void ExtenderStateMgr::CheckForStateTransition()
+{
+    //========= Hand modified code start section 3 ========
+    CheckForSensorTransitions();
+
+    if (m_checkGamePadTransitions)
+    {
+        CheckForGamepadTransitions();
+    }
+
+    /// DEBUGGING
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ExtenderMgr"), string("Current State"), m_targetState);
+
+    if (m_extender != nullptr)
+    {
+        if (m_targetState != m_currentState && (m_canAutomaticallyMove || m_targetState == EXTENDER_STATE::MANUAL_EXTEND_RETRACT))
+        {
+            SetCurrentState(m_targetState, true);
+            RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmExtenderState, m_targetState);
+
+            if (m_targetState == EXTENDER_STATE::HOLD_POSITION_EXTEND)
+            {
+                m_extender->UpdateTarget(dynamic_cast<Mech1IndMotorState *>(GetStateVector()[m_prevState])->GetCurrentTarget()); // Get the target of the previous state by referencing the state vector
+            }
+        }
+    }
+    //========= Hand modified code end section 3 ========
+}
+
+//========= Hand modified code start section 4 ========
 /// @brief Check sensors to determine target state
 void ExtenderStateMgr::CheckForGamepadTransitions()
 {
@@ -223,34 +264,6 @@ void ExtenderStateMgr::CheckForSensorTransitions()
     }
 }
 
-/// @brief Check if driver inputs or sensors trigger a state transition
-void ExtenderStateMgr::CheckForStateTransition()
-{
-    CheckForSensorTransitions();
-
-    if (m_checkGamePadTransitions)
-    {
-        CheckForGamepadTransitions();
-    }
-
-    /// DEBUGGING
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ExtenderMgr"), string("Current State"), m_targetState);
-
-    if (m_extender != nullptr)
-    {
-        if (m_targetState != m_currentState && (m_canAutomaticallyMove || m_targetState == EXTENDER_STATE::MANUAL_EXTEND_RETRACT))
-        {
-            SetCurrentState(m_targetState, true);
-            RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmExtenderState, m_targetState);
-
-            if (m_targetState == EXTENDER_STATE::HOLD_POSITION_EXTEND)
-            {
-                m_extender->UpdateTarget(dynamic_cast<Mech1IndMotorState *>(GetStateVector()[m_prevState])->GetCurrentTarget()); // Get the target of the previous state by referencing the state vector
-            }
-        }
-    }
-}
-
 void ExtenderStateMgr::Update(RobotStateChanges::StateChange change, int value)
 {
     if (change == RobotStateChanges::StateChange::ArmRotateState)
@@ -270,3 +283,4 @@ void ExtenderStateMgr::Update(RobotStateChanges::StateChange change, int value)
         m_gamepieceMode = static_cast<RobotStateChanges::GamePiece>(value);
     }
 }
+//========= Hand modified code end section 4 ========
