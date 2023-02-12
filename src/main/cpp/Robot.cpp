@@ -44,14 +44,14 @@ void Robot::RobotInit()
     auto XmlParser = new RobotXmlParser();
     XmlParser->ParseXML();
 
-    //    auto waypointParser = WaypointXmlParser::GetInstance();
-    //    waypointParser->ParseWaypoints();
+    auto waypointParser = WaypointXmlParser::GetInstance();
+    waypointParser->ParseWaypoints();
 
     // Get AdjustableItemMgr instance
-    //    m_tuner = AdjustableItemMgr::GetInstance();
+    m_tuner = AdjustableItemMgr::GetInstance();
 
-    // m_robotState = RobotState::GetInstance();
-    // m_robotState->Init();
+    m_robotState = RobotState::GetInstance();
+    m_robotState->Init();
     m_chassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
     m_holonomic = nullptr;
     if (m_chassis != nullptr)
@@ -59,11 +59,11 @@ void Robot::RobotInit()
         m_holonomic = new HolonomicDrive();
     }
     m_cyclePrims = new CyclePrimitives();
-    //     m_previewer = new AutonPreviewer(m_cyclePrims); // TODO:: Move to DriveTeamFeedback
-    //  m_field = DragonField::GetInstance();           // TODO: move to drive team feedback
-    //  m_field = nullptr;
+    m_previewer = new AutonPreviewer(m_cyclePrims); // TODO:: Move to DriveTeamFeedback
+    m_field = DragonField::GetInstance();           // TODO: move to drive team feedback
+    m_field = nullptr;
 
-    //    m_dragonLimeLight = LimelightFactory::GetLimelightFactory()->GetLimelight(); // ToDo:: Move to Dragon Vision
+    m_dragonLimeLight = LimelightFactory::GetLimelightFactory()->GetLimelight(); // ToDo:: Move to Dragon Vision
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("RobotInit"), string("end"));
 }
@@ -81,30 +81,30 @@ void Robot::RobotPeriodic()
     LoggableItemMgr::GetInstance()->LogData();
     Logger::GetLogger()->PeriodicLog();
 
-    //    if (m_tuner != nullptr)
-    //    {
-    //        m_tuner->ListenForUpdates();
-    //    }
-    // if (m_robotState != nullptr)
-    //{
-    //    m_robotState->Run();
-    //}
+    if (m_tuner != nullptr)
+    {
+        m_tuner->ListenForUpdates();
+    }
+    if (m_robotState != nullptr)
+    {
+        m_robotState->Run();
+    }
 
     // ToDo:: Move to DriveTeamFeedback
-    //    if (m_previewer != nullptr)
-    //    {
-    //        m_previewer->CheckCurrentAuton();
-    //    }
-    //    if (m_field != nullptr)
-    //    {
-    //        m_field->UpdateRobotPosition(m_chassis->GetPose()); // ToDo:: Move to DriveTeamFeedback (also don't assume m_field isn't a nullptr)
-    //    }
+    if (m_previewer != nullptr)
+    {
+        m_previewer->CheckCurrentAuton();
+    }
+    if (m_field != nullptr)
+    {
+        //       m_field->UpdateRobotPosition(m_chassis->GetPose()); // ToDo:: Move to DriveTeamFeedback (also don't assume m_field isn't a nullptr)
+    }
 
-    //    auto feedback = DriverFeedback::GetInstance();
-    //    if (feedback != nullptr)
-    //    {
-    //        feedback->UpdateFeedback();
-    //    }
+    auto feedback = DriverFeedback::GetInstance();
+    if (feedback != nullptr)
+    {
+        feedback->UpdateFeedback();
+    }
 }
 
 /**

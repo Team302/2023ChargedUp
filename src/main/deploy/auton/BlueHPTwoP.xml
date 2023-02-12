@@ -10,11 +10,16 @@
     <!--drive to gamepiece-->
     <primitive id="DRIVE_PATH"
                pathname="BlueHP1.wpilib.json"
+               time="0.5"
+               />
+    <!--drive to gamepiece-->
+    <primitive id="DRIVE_PATH"
+               pathname="BlueHP1_0.wpilib.json"
                time="1.0"
                />
     <!--drive to gamepiece and turn-->
     <primitive id="DRIVE_PATH"
-               pathname="BlueHP1_0.wpilib.json"
+               pathname="BlueHP1_1.wpilib.json"
                time="3.0"
                />
     <!--pick up gamepiece-->
