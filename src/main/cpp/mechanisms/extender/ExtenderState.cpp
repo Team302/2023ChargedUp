@@ -47,5 +47,7 @@ ExtenderState::ExtenderState(
 
 bool ExtenderState::AtTarget() const
 {
+	//========= Hand modified code start section 0 ========
+	//========= Hand modified code end section 0 ========
 	return true;
 }
