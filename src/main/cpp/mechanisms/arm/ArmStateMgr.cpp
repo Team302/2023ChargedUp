@@ -40,6 +40,9 @@
 
 // Third Party Includes
 
+//========= Hand modified code start section 0 ========
+//========= Hand modified code end section 0 ========
+
 using namespace std;
 
 ArmStateMgr *ArmStateMgr::m_instance = nullptr;
@@ -58,11 +61,14 @@ ArmStateMgr *ArmStateMgr::GetInstance()
 
 /// @brief    initialize the state manager, parse the configuration file and create the states.
 ArmStateMgr::ArmStateMgr() : StateMgr(),
-                             m_arm(MechanismFactory::GetMechanismFactory()->GetArm()),
+                             m_arm(MechanismFactory::GetMechanismFactory()->GetArm())
+                             //========= Hand modified code start section 1 ========
+                             ,
                              m_prevState(ARM_STATE::STARTING_POSITION_ROTATE),
                              m_currentState(ARM_STATE::STARTING_POSITION_ROTATE),
                              m_targetState(ARM_STATE::STARTING_POSITION_ROTATE),
                              m_gamepieceMode(RobotStateChanges::None)
+//========= Hand modified code end section 1 ========
 
 {
     map<string, StateStruc> stateMap;
@@ -76,7 +82,9 @@ ArmStateMgr::ArmStateMgr() : StateMgr(),
     stateMap["STARTING_POSITION_ROTATE"] = m_starting_position_rotateState;
     stateMap["FLOOR_POSITION_ROTATE"] = m_floor_position_rotateState;
 
+    //========= Hand modified code start section 2 ========
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::DesiredGamePiece);
+    //========= Hand modified code end section 2 ========
 
     Init(m_arm, stateMap);
     if (m_arm != nullptr)
@@ -95,6 +103,46 @@ int ArmStateMgr::GetCurrentStateParam(
     return StateMgr::GetCurrentStateParam(currentParams);
 }
 
+/// @brief Check if driver inputs or sensors trigger a state transition
+void ArmStateMgr::CheckForStateTransition()
+{
+    //========= Hand modified code start section 3 ========
+    CheckForSensorTransitions();
+    if (m_checkGamePadTransitions)
+    {
+        CheckForGamepadTransitions();
+    }
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Current State"), m_targetState);
+
+    if (m_targetState != m_currentState)
+    {
+        SetCurrentState(m_targetState, true);
+        RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmRotateState, m_targetState);
+
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Target"), m_arm->GetTarget());
+
+        if (m_targetState == ARM_STATE::HOLD_POSITION_ROTATE)
+        {
+            // holding currently based on just "F term" need to update to funciton with extender potentially.
+            if (m_arm->GetPositionDegrees().to<double>() > 50.0)
+            {
+                m_arm->UpdateTarget(0.0495);
+            }
+            else if (m_arm->GetPositionDegrees().to<double>() > 27.5)
+            {
+                m_arm->UpdateTarget(0.0485);
+            }
+            else if (m_arm->GetPositionDegrees().to<double>() > 4.5) // Floor arm angle
+            {
+                m_arm->UpdateTarget(0.0425);
+            }
+        }
+    }
+
+    //========= Hand modified code end section 3 ========
+}
+
+//========= Hand modified code start section 4 ========
 /// @brief Check driver inputs for a state transition
 void ArmStateMgr::CheckForGamepadTransitions()
 {
@@ -210,43 +258,6 @@ void ArmStateMgr::CheckForSensorTransitions()
     }
 }
 
-/// @brief Check if driver inputs or sensors trigger a state transition
-void ArmStateMgr::CheckForStateTransition()
-{
-
-    CheckForSensorTransitions();
-    if (m_checkGamePadTransitions)
-    {
-        CheckForGamepadTransitions();
-    }
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Current State"), m_targetState);
-
-    if (m_targetState != m_currentState)
-    {
-        SetCurrentState(m_targetState, true);
-        RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmRotateState, m_targetState);
-
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Target"), m_arm->GetTarget());
-
-        if (m_targetState == ARM_STATE::HOLD_POSITION_ROTATE)
-        {
-            // holding currently based on just "F term" need to update to funciton with extender potentially.
-            if (m_arm->GetPositionDegrees().to<double>() > 50.0)
-            {
-                m_arm->UpdateTarget(0.0495);
-            }
-            else if (m_arm->GetPositionDegrees().to<double>() > 27.5)
-            {
-                m_arm->UpdateTarget(0.0485);
-            }
-            else if (m_arm->GetPositionDegrees().to<double>() > 4.5) // Floor arm angle
-            {
-                m_arm->UpdateTarget(0.0425);
-            }
-        }
-    }
-}
-
 void ArmStateMgr::Update(RobotStateChanges::StateChange change, int state)
 {
     if (change == RobotStateChanges::DesiredGamePiece)
@@ -254,3 +265,4 @@ void ArmStateMgr::Update(RobotStateChanges::StateChange change, int state)
         m_gamepieceMode = static_cast<RobotStateChanges::GamePiece>(state);
     }
 }
+//========= Hand modified code end section 4 ========
