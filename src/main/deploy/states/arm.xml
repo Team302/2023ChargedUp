@@ -15,7 +15,7 @@
     identifier="RotateToDownwardAngle"
     mode="POSITION_DEGREES"
     constrolServer="MOTORCONTROLLER"
-    proportional="0.005"
+    proportional="0.01"
     integral="0.0"
     derivative="0.0"
     feedforward="0.0"
@@ -128,7 +128,7 @@
     stateIdentifier="FLOOR_POSITION_ROTATE"
     controlDataIdentifier="RotateToDownwardAngle"
     controlDataIdentifier2=""
-    value="10"
+    value="16"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />

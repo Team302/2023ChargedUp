@@ -244,8 +244,6 @@ void ArmStateMgr::CheckForStateTransition()
         SetCurrentState(m_targetState, true);
         RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmRotateState, m_targetState);
 
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Target"), m_arm->GetTarget());
-
         if (m_targetState == ARM_STATE::HOLD_POSITION_ROTATE)
         {
             // holding currently based on just "F term" need to update to funciton with extender potentially.
@@ -263,6 +261,9 @@ void ArmStateMgr::CheckForStateTransition()
             }
         }
     }
+
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Target"), m_arm->GetTarget());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Position (Degrees)"), m_arm->GetPositionDegrees().to<double>());
 }
 
 void ArmStateMgr::Update(RobotStateChanges::StateChange change, int state)

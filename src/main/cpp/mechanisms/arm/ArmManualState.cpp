@@ -20,6 +20,9 @@
 #include <teleopcontrol/TeleopControl.h>
 #include <mechanisms/MechanismFactory.h>
 
+/// DEBUGGING
+#include <utils/logging/Logger.h>
+
 ArmManualState::ArmManualState(std::string stateName,
                                int stateId,
                                ControlData *control0,
@@ -42,6 +45,10 @@ void ArmManualState::Run()
         {
             percent *= 0.3;
         }
+
+        /// DEBUGGING
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("ManualArmState"), std::string("Rotate Percent"), percent);
+
         m_arm->UpdateTarget(percent);
         m_arm->Update();
     }
