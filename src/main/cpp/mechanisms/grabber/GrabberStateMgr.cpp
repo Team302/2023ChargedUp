@@ -148,6 +148,12 @@ void GrabberStateMgr::CheckForStateTransition()
             RobotState::GetInstance()->PublishStateChange(RobotStateChanges::GrabberState, m_targetState);
             Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("GrabberStateMgr"), std::string("Changing state to: "), m_targetState);
         }
+
+        // Protect motor on extender
+        if (MechanismFactory::GetMechanismFactory()->GetExtender()->GetPositionInches() < units::length::inch_t(1.5))
+        {
+            SetCurrentState(GRABBER_STATE::GRAB, true);
+        }
     }
 }
 
