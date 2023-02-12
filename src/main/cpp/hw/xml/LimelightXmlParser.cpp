@@ -83,7 +83,7 @@ DragonLimelight *LimelightXmlParser::ParseXML(pugi::xml_node limelightNode)
         }
         else if (strcmp(attr.name(), "LLForward") == 0)
         {
-            LLForward = units::angle::degree_t(attr.as_double());
+            LLForward = units::length::inch_t(attr.as_double());
         }
         else if (strcmp(attr.name(), "LLYaw") == 0)
         {

@@ -117,9 +117,6 @@ public:
     void ToggleSnapshot(DragonLimelight::SNAPSHOT_MODE toggle);
     void SetCrosshairPos(double crosshairPosX, double crosshairPosY);
     void SetSecondaryCrosshairPos(double crosshairPosX, double crosshairPosY);
-    void SetPitch(units::angle::degree_t newPitch);
-    void SetYaw(units::angle::degree_t newYaw);
-    void SetRoll(units::angle::degree_t newRoll);
 
     void PrintValues(); // Prints out all values to ensure everything is working and connected
 

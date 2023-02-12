@@ -83,10 +83,12 @@ void DragonLimelight::SetLimelightPosition(units::length::inch_t mountHeight,
                                            units::angle::degree_t yaw,
                                            units::angle::degree_t roll)
 {
-    if (m_networktable.get() != nullptr)
-    {
-        // nt->PutNumber("ledMode",);
-    }
+    m_mountHeight = mountHeight;
+    m_mountingHorizontalOffset = mountHorizontalOffset;
+    m_mountingForwardOffset = mountForwardOffset;
+    m_pitch = pitch;
+    m_yaw = yaw;
+    m_roll = roll;
 }
 
 DragonLimelight::PIPELINE_MODE DragonLimelight::getPipeline() const
