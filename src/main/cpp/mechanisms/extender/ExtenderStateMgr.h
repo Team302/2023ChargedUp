@@ -33,6 +33,7 @@
 #include <mechanisms/Extender/extender.h>
 #include <mechanisms/StateStruc.h>
 #include <robotstate/IRobotStateChangeSubscriber.h>
+#include <mechanisms/arm/ArmStateMgr.h>
 
 // Third Party Includes
 
@@ -98,6 +99,7 @@ private:
     static ExtenderStateMgr *m_instance;
 
     bool m_canAutomaticallyMove = false;
+    bool m_goToStartingConfig = true;
 
     const StateStruc m_hold_position_extendState = {EXTENDER_STATE::HOLD_POSITION_EXTEND, "HOLD_POSITION_EXTEND", StateType::EXTENDER_STATE, false};
     const StateStruc m_manual_extend_retractState = {EXTENDER_STATE::MANUAL_EXTEND_RETRACT, "MANUAL_EXTEND_RETRACT", StateType::MANUAL_EXTENDER_STATE, false};
@@ -108,6 +110,10 @@ private:
     const StateStruc m_human_player_station_extendState = {EXTENDER_STATE::HUMAN_PLAYER_STATION_EXTEND, "HUMAN_PLAYER_STATION_EXTEND", StateType::EXTENDER_STATE, false};
     const StateStruc m_starting_position_extendState = {EXTENDER_STATE::STARTING_POSITION_EXTEND, "STARTING_POSITION_EXTEND", StateType::EXTENDER_STATE, true};
     const StateStruc m_floor_extendState = {EXTENDER_STATE::FLOOR_EXTEND, "FLOOR_EXTEND", StateType::EXTENDER_STATE, false};
+
+    std::map<ArmStateMgr::ARM_STATE, EXTENDER_STATE> m_armToExtenderMap;
+
+    ArmStateMgr::ARM_STATE m_armState;
 
     double m_extendedPosition;
 };
