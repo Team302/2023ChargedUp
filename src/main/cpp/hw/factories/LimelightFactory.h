@@ -32,10 +32,10 @@ public:
         std::string tableName,                          /// <I> - network table name
         units::length::inch_t mountingHeight,           /// <I> - mounting height of the limelight
         units::length::inch_t mountingHorizontalOffset, /// <I> - mounting horizontal offset from the middle of the robot
-        units::length::inch_t LLForward,                /// <I> mounting offset forward/back
-        units::angle::degree_t LLPitch,                 /// <I> - Pitch of limelight
-        units::angle::degree_t LLYaw,                   /// <I> - Yaw of limelight
-        units::angle::degree_t LLRoll,                  /// <I> - Roll of limelight
+        units::length::inch_t forwardOffset,            /// <I> mounting offset forward/back
+        units::angle::degree_t pitch,                   /// <I> - Pitch of limelight
+        units::angle::degree_t yaw,                     /// <I> - Yaw of limelight
+        units::angle::degree_t roll,                    /// <I> - Roll of limelight
         units::length::inch_t targetHeight,             /// <I> - height the target
         units::length::inch_t targetHeight2,            /// <I> - height of second target
         DragonLimelight::LED_MODE ledMode,

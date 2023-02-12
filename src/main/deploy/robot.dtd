@@ -91,7 +91,10 @@
 		  mountingheight    CDATA #REQUIRED
 		  horizontaloffset  CDATA "0.0"
 		  mountingangle     CDATA #REQUIRED
-		  rotation          ( 0.0 | 90.0 | 180.0 | 270.0 ) "0.0"
+		  forwardOffset         CDATA #REQUIRED
+          pitch           CDATA #REQUIRED
+          yaw             CDATA #REQUIRED
+          roll            CDATA #REQUIRED
 		  targetheight      CDATA #REQUIRED
 		  targetheight2     CDATA #REQUIRED
 		  defaultledmode	( currentpipeline | off | blink | on ) "currentpipeline" 

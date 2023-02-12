@@ -38,10 +38,10 @@ DragonLimelight *LimelightXmlParser::ParseXML(pugi::xml_node limelightNode)
     std::string tableName = "";
     units::length::inch_t mountingHeight = units::length::inch_t(0.0);
     units::length::inch_t horizontalOffset = units::length::inch_t(0.0);
-    units::length::inch_t LLForward = units::length::inch_t(0.0);
-    units::angle::degree_t LLPitch = units::angle::degree_t(0.0);
-    units::angle::degree_t LLYaw = units::angle::degree_t(0.0);
-    units::angle::degree_t LLRoll = units::angle::degree_t(0.0);
+    units::length::inch_t forwardOffset = units::length::inch_t(0.0);
+    units::angle::degree_t pitch = units::angle::degree_t(0.0);
+    units::angle::degree_t yaw = units::angle::degree_t(0.0);
+    units::angle::degree_t roll = units::angle::degree_t(0.0);
     units::length::inch_t targetHeight = units::length::inch_t(0.0);
     units::length::inch_t targetHeight2 = units::length::inch_t(0.0);
 
@@ -77,21 +77,21 @@ DragonLimelight *LimelightXmlParser::ParseXML(pugi::xml_node limelightNode)
         {
             horizontalOffset = units::length::inch_t(attr.as_double());
         }
-        else if (strcmp(attr.name(), "LLPitch") == 0)
+        else if (strcmp(attr.name(), "pitch") == 0)
         {
-            LLPitch = units::angle::degree_t(attr.as_double());
+            pitch = units::angle::degree_t(attr.as_double());
         }
-        else if (strcmp(attr.name(), "LLForward") == 0)
+        else if (strcmp(attr.name(), "forwardOffset") == 0)
         {
-            LLForward = units::length::inch_t(attr.as_double());
+            forwardOffset = units::length::inch_t(attr.as_double());
         }
-        else if (strcmp(attr.name(), "LLYaw") == 0)
+        else if (strcmp(attr.name(), "yaw") == 0)
         {
-            LLYaw = units::angle::degree_t(attr.as_double());
+            yaw = units::angle::degree_t(attr.as_double());
         }
-        else if (strcmp(attr.name(), "LLRoll") == 0)
+        else if (strcmp(attr.name(), "roll") == 0)
         {
-            LLRoll = units::angle::degree_t(attr.as_double());
+            roll = units::angle::degree_t(attr.as_double());
         }
         else if (strcmp(attr.name(), "targetheight") == 0)
         {
@@ -179,10 +179,10 @@ DragonLimelight *LimelightXmlParser::ParseXML(pugi::xml_node limelightNode)
             tableName,
             mountingHeight,
             horizontalOffset,
-            LLForward,
-            LLPitch,
-            LLYaw,
-            LLRoll,
+            forwardOffset,
+            pitch,
+            yaw,
+            roll,
             targetHeight,
             targetHeight2,
             ledMode,
