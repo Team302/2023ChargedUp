@@ -70,8 +70,10 @@ ArmStateMgr::ArmStateMgr() : StateMgr(),
     stateMap["MANUAL_ROTATE"] = m_manual_rotateState;
     stateMap["CUBE_BACKROW_ROTATE"] = m_cube_backrow_rotateState;
     stateMap["CONE_BACKROW_ROTATE"] = m_cone_backrow_rotateState;
-    stateMap["CUBE_MIDROW_ROTATE"] = m_cube_midrow_rotateState;
-    stateMap["CONE_MIDROW_ROTATE"] = m_cone_midrow_rotateState;
+    stateMap["CUBE_MIDROW_ROTATE_UP"] = m_cube_midrow_rotate_upState;
+    stateMap["CUBE_MIDROW_ROTATE_DOWN"] = m_cube_midrow_rotate_downState;
+    stateMap["CONE_MIDROW_ROTATE_UP"] = m_cone_midrow_rotate_upState;
+    stateMap["CONE_MIDROW_ROTATE_DOWN"] = m_cone_midrow_rotate_downState;
     stateMap["HUMAN_PLAYER_STATION_ROTATE"] = m_human_player_station_rotateState;
     stateMap["STARTING_POSITION_ROTATE"] = m_starting_position_rotateState;
     stateMap["FLOOR_POSITION_ROTATE"] = m_floor_position_rotateState;
@@ -144,7 +146,15 @@ void ArmStateMgr::CheckForConeGamepadTransitions(TeleopControl *controller)
         }
         else if (controller->IsButtonPressed(TeleopControlFunctions::MIDROW))
         {
-            m_targetState = ARM_STATE::CONE_MIDROW_ROTATE;
+            if (m_arm->GetPositionDegrees().to<double>() > dynamic_cast<ArmState *>(GetSpecifiedState(ARM_STATE::CONE_MIDROW_ROTATE_DOWN))->GetCurrentTarget())
+            {
+                m_targetState = ARM_STATE::CONE_MIDROW_ROTATE_DOWN;
+            }
+            else
+            {
+                m_targetState = ARM_STATE::CONE_MIDROW_ROTATE_UP;
+            }
+
             m_prevState = m_targetState;
         }
         else if (controller->IsButtonPressed(TeleopControlFunctions::FLOOR_POSITION))
@@ -175,7 +185,15 @@ void ArmStateMgr::CheckForCubeGamepadTransitions(TeleopControl *controller)
         }
         else if (controller->IsButtonPressed(TeleopControlFunctions::MIDROW))
         {
-            m_targetState = ARM_STATE::CUBE_MIDROW_ROTATE;
+            if (m_arm->GetPositionDegrees().to<double>() > dynamic_cast<ArmState *>(GetSpecifiedState(ARM_STATE::CUBE_MIDROW_ROTATE_DOWN))->GetCurrentTarget())
+            {
+                m_targetState = ARM_STATE::CUBE_MIDROW_ROTATE_DOWN;
+            }
+            else
+            {
+                m_targetState = ARM_STATE::CUBE_MIDROW_ROTATE_UP;
+            }
+
             m_prevState = m_targetState;
         }
         else if (controller->IsButtonPressed(TeleopControlFunctions::FLOOR_POSITION))
