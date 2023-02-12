@@ -25,12 +25,18 @@ public:
     void AutoTest();
     void Init()
     {
+        double GetBasePDHValue();
     }
 
 private:
     PowerDistribution *m_pdp;
-    double GetBasePDHValue();
+
     double GetCurrentPDHValue();
     string GetCurrentTest();
     static PDPFactory GetFactory();
+    void GetTestSwerve();
+    void GetTestExtender();
+    void GetTestArm();
+    void GetTestPnumatics();
+    void GetPDHTemp();
 };

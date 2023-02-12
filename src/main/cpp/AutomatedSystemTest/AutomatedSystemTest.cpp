@@ -21,8 +21,15 @@
 
 using namespace std;
 
-double AutomatedSystemTest::GetBasePDHValue()
+double GetBasePDHValue()
 {
+    auto PDP = PDPFactory::GetFactory()->GetPDP();
+    if (PDP != nullptr)
+    {
+        return PDP->GetTotalPower();
+    }
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("automatedsystemtest"), string("pdh energy"), "cannot accses pdh");
+    return 0;
 }
 
 double AutomatedSystemTest::GetCurrentPDHValue()
@@ -30,7 +37,7 @@ double AutomatedSystemTest::GetCurrentPDHValue()
     auto PDP = PDPFactory::GetFactory()->GetPDP();
     if (PDP != nullptr)
     {
-        return PDP->GetTotalEnergy();
+        return PDP->GetTotalPower();
     }
     Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("automatedsystemtest"), string("pdh energy"), "cannot accses pdh");
     return 0;
