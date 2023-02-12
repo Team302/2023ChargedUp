@@ -47,6 +47,8 @@ Arm::Arm(
 {
 }
 
+//========= Hand modified code start section 0 ========
+
 void Arm::ResetIfArmDown()
 {
 	if (GetMotor().get()->IsReverseLimitSwitchClosed())
@@ -57,3 +59,5 @@ void Arm::ResetIfArmDown()
 		sensors.SetIntegratedSensorPosition(0, 0);
 	}
 }
+
+//========= Hand modified code end section 0 ========
