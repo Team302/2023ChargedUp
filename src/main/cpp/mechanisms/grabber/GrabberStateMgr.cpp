@@ -36,11 +36,13 @@
 #include <mechanisms/grabber/grabberStateMgr.h>
 #include <robotstate/RobotState.h>
 #include <robotstate/RobotStateChanges.h>
-
-/// DEBUGGING
 #include <utils/logging/Logger.h>
 
 // Third Party Includes
+
+//========= Hand modified code start section 0 ========
+
+//========= Hand modified code end section 0 ========
 
 using namespace std;
 
@@ -60,22 +62,28 @@ GrabberStateMgr *GrabberStateMgr::GetInstance()
 
 /// @brief    initialize the state manager, parse the configuration file and create the states.
 GrabberStateMgr::GrabberStateMgr() : StateMgr(),
+                                     m_grabber(MechanismFactory::GetMechanismFactory()->GetGrabber())
+                                     //========= Hand modified code start section 1 ========
+                                     ,
                                      IRobotStateChangeSubscriber(),
-                                     m_grabber(MechanismFactory::GetMechanismFactory()->GetGrabber()),
                                      m_currentState(GRABBER_STATE::OPEN),
                                      m_targetState(GRABBER_STATE::OPEN)
+//========= Hand modified code end section 1 ========
+
 {
     map<string, StateStruc> stateMap;
     stateMap["OPEN"] = m_openState;
     stateMap["GRAB"] = m_grabState;
+
+    //========= Hand modified code start section 2 ========
+    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::ArmRotateState);
+    //========= Hand modified code end section 2 ========
 
     Init(m_grabber, stateMap);
     if (m_grabber != nullptr)
     {
         m_grabber->AddStateMgr(this);
     }
-
-    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::ArmRotateState);
 }
 
 /// @brief  Get the current Parameter parm value for the state of this mechanism
@@ -88,6 +96,31 @@ int GrabberStateMgr::GetCurrentStateParam(
     return StateMgr::GetCurrentStateParam(currentParams);
 }
 
+/// @brief Check if driver inputs or sensors trigger a state transition
+void GrabberStateMgr::CheckForStateTransition()
+{
+    //========= Hand modified code start section 3 ========
+    CheckForSensorTransitions();
+    if (m_grabber != nullptr)
+    {
+        // if (!m_followOtherMechs)
+        //{
+        CheckForGamepadTransitions();
+        //}
+
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("GrabberStateMgr"), std::string("m_targetState"), m_targetState);
+
+        if (m_targetState != m_currentState)
+        {
+            SetCurrentState(m_targetState, true);
+            RobotState::GetInstance()->PublishStateChange(RobotStateChanges::GrabberState, m_targetState);
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("GrabberStateMgr"), std::string("Changing state to: "), m_targetState);
+        }
+    }
+    //========= Hand modified code end section 3 ========
+}
+
+//========= Hand modified code start section 4 ========
 /// @brief Check for sensor input to transition
 void GrabberStateMgr::CheckForSensorTransitions()
 {
@@ -126,28 +159,6 @@ void GrabberStateMgr::CheckForGamepadTransitions()
     }
 }
 
-/// @brief Check if driver inputs or sensors trigger a state transition
-void GrabberStateMgr::CheckForStateTransition()
-{
-    CheckForSensorTransitions();
-    if (m_grabber != nullptr)
-    {
-        // if (!m_followOtherMechs)
-        //{
-        CheckForGamepadTransitions();
-        //}
-
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("GrabberStateMgr"), std::string("m_targetState"), m_targetState);
-
-        if (m_targetState != m_currentState)
-        {
-            SetCurrentState(m_targetState, true);
-            RobotState::GetInstance()->PublishStateChange(RobotStateChanges::GrabberState, m_targetState);
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("GrabberStateMgr"), std::string("Changing state to: "), m_targetState);
-        }
-    }
-}
-
 void GrabberStateMgr::Update(RobotStateChanges::StateChange change, int value)
 {
     if (change == RobotStateChanges::StateChange::ArmRotateState)
@@ -166,3 +177,4 @@ void GrabberStateMgr::Update(RobotStateChanges::StateChange change, int value)
         }
     }
 }
+//========= Hand modified code end section 4 ========
