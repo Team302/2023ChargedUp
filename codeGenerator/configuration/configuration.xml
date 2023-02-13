@@ -137,7 +137,7 @@ class MechanismTypes
 
 // Team 302 includes
 #include &lt;mechanisms/MechanismTypes.h&gt;
-#include &lt;utils/Logger.h&gt;
+#include &lt;utils/logging/Logger.h&gt;
 
 // @ADDMECH add your mechanism include 
 
@@ -244,7 +244,7 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 
 					// Team 302 includes
 					#include &lt;hw/usages/$ITEM_USAGE_CLASS_NAME$.h&gt;
-					#include &lt;utils/Logger.h&gt;
+					#include &lt;utils/logging/Logger.h&gt;
 
 					// Third Party Includes
 
@@ -355,7 +355,7 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 
 					// Team 302 includes
 					#include &lt;hw/usages/ServoUsage.h&gt;
-					#include &lt;utils/Logger.h&gt;
+					#include &lt;utils/logging/Logger.h&gt;
 
 					// Third Party Includes
 
@@ -461,7 +461,7 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 
 					// Team 302 includes
 					#include &lt;hw/usages/DigitalInputUsage.h&gt;
-					#include &lt;utils/logger.h&gt;
+					#include &lt;utils/logging/Logger.h&gt;
 
 					// Third Party Includes
 
@@ -571,7 +571,7 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 
 					// Team 302 includes
 					#include &lt;hw/usages/MotorControllerUsage.h&gt;
-					#include &lt;utils/Logger.h&gt;
+					#include &lt;utils/logging/Logger.h&gt;
 
 					// Third Party Includes
 
@@ -682,7 +682,7 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 
 					// Team 302 includes
 					#include &lt;hw/usages/SolenoidUsage.h&gt;
-					#include &lt;utils/Logger.h&gt;
+					#include &lt;utils/logging/Logger.h&gt;
 
 					// Third Party Includes
 
@@ -754,6 +754,10 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 		);
 		$MECHANISM_NAME$() = delete;
 		~$MECHANISM_NAME$() override = default;
+
+			//========= Hand modified code start section 0 ========
+	
+			//========= Hand modified code end section 0 ========
 		};
 	</main_h>
 
@@ -768,6 +772,11 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 				#include &lt;mechanisms/base/$MECH_BASE_CLASS$.h&gt;
 				#include &lt;mechanisms/$MECHANISM_NAME_LOWERCASE$/$MECHANISM_NAME_LOWERCASE$.h&gt;
 
+				// Third Party Includes
+					//========= Hand modified code start section 1 ========
+	
+	//========= Hand modified code end section 1 ========
+				
 		using namespace std;
 
 		/// @brief Create an $MECHANISM_NAME$ mechanism wiht 1 independent motor
@@ -783,6 +792,10 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 		):$MECH_BASE_CLASS$(MechanismTypes::MECHANISM_TYPE::$MECHANISM_NAME_UPPERCASE$,controlFileName,networkTableName $MECHANISM_CONSTRUCTOR_ARGUMENT_LIST$)
 		{
 		}
+
+	//========= Hand modified code start section 0 ========
+	
+	//========= Hand modified code end section 0 ========
 	</main_cpp>
 	
 	<state_cpp>
@@ -815,6 +828,8 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 
 		bool $MECHANISM_NAME$State::AtTarget() const
 		{
+				//========= Hand modified code start section 0 ========
+				//========= Hand modified code end section 0 ========
 		return true;
 		}
 
@@ -865,9 +880,19 @@ MechanismTypes::MECHANISM_TYPE MechanismTypes::GetType
 #include &lt;mechanisms/$MECHANISM_NAME$/$MECHANISM_NAME_LOWERCASE$.h&gt;
 #include &lt;mechanisms/StateStruc.h&gt;
 
+//========= Hand modified code start section 0 ========
+
+//========= Hand modified code end section 0 ========
+
 // Third Party Includes
 
+//========= Hand modified code start section 1 ========
+
+//========= Hand modified code end section 1 ========
+
 class $MECHANISM_NAME$StateMgr : public StateMgr
+//========= Hand modified code start section 2 ========
+//========= Hand modified code end section 2 ========
 {
     public:
 	    /// @enum the various states of the Intake
@@ -893,13 +918,23 @@ class $MECHANISM_NAME$StateMgr : public StateMgr
         ) override;
 
         void CheckForStateTransition() override;
-		
+		    //========= Hand modified code start section 3 ========
+
+    //========= Hand modified code end section 3 ========
+
     private:
 	
         $MECHANISM_NAME$StateMgr();
         ~$MECHANISM_NAME$StateMgr() = default;
-        
+           
+		    //========= Hand modified code start section 4 ========
+
+    //========= Hand modified code end section 4 ========
+
         $MECHANISM_NAME$*                                m_$MECHANISM_NAME_LOWERCASE$;
+
+    //========= Hand modified code start section 5 ========
+    //========= Hand modified code end section 5 ========
 
 		static $MECHANISM_NAME$StateMgr*	m_instance;
 
@@ -914,7 +949,7 @@ class $MECHANISM_NAME$StateMgr : public StateMgr
 // FRC includes
 
 // Team 302 includes
-#include &lt;TeleopControl.h&gt;
+#include &lt;teleopcontrol/TeleopControl.h&gt;
 #include &lt;auton/PrimitiveParams.h&gt;
 #include &lt;mechanisms/MechanismFactory.h&gt;
 #include &lt;mechanisms/base/StateMgr.h&gt;
@@ -922,8 +957,15 @@ class $MECHANISM_NAME$StateMgr : public StateMgr
 #include &lt;mechanisms/$MECHANISM_NAME_LOWERCASE$/$MECHANISM_NAME_LOWERCASE$.h&gt;
 #include &lt;mechanisms/$MECHANISM_NAME_LOWERCASE$/$MECHANISM_NAME_LOWERCASE$State.h&gt;
 #include &lt;mechanisms/$MECHANISM_NAME_LOWERCASE$/$MECHANISM_NAME_LOWERCASE$StateMgr.h&gt;
+#include &lt;robotstate/RobotState.h&gt;
+#include &lt;robotstate/RobotStateChanges.h&gt;
+#include &lt;utils/logging/Logger.h&gt;
+
 
 // Third Party Includes
+
+//========= Hand modified code start section 0 ========
+//========= Hand modified code end section 0 ========
 
 using namespace std;
 
@@ -947,9 +989,15 @@ $MECHANISM_NAME$StateMgr* $MECHANISM_NAME$StateMgr::GetInstance()
 /// @brief    initialize the state manager, parse the configuration file and create the states.
 $MECHANISM_NAME$StateMgr::$MECHANISM_NAME$StateMgr() : StateMgr(),
                                      m_$MECHANISM_NAME_LOWERCASE$(MechanismFactory::GetMechanismFactory()-&gt;Get$MECHANISM_NAME$())
+									 //========= Hand modified code start section 1 ========
+                                     //========= Hand modified code end section 1 ========
+
 {
     map&lt;string, StateStruc&gt; stateMap;
 	$STATE_MAP_INITIALIZATION$
+
+//========= Hand modified code start section 2 ========
+//========= Hand modified code end section 2 ========
 
     Init(m_$MECHANISM_NAME_LOWERCASE$, stateMap);
     if (m_$MECHANISM_NAME_LOWERCASE$ != nullptr)
@@ -973,44 +1021,13 @@ int $MECHANISM_NAME$StateMgr::GetCurrentStateParam
 /// @brief Check if driver inputs or sensors trigger a state transition
 void $MECHANISM_NAME$StateMgr::CheckForStateTransition()
 {
-
-    if ( m_$MECHANISM_NAME_LOWERCASE$ != nullptr )
-    {    
-        auto currentState = static_cast&lt;$MECHANISM_NAME_UPPERCASE$_STATE&gt;(GetCurrentState());
-        auto targetState = currentState;
-
-        //========= Do not erase this line and the one below it. They are used by the code generator ========		
-		//========= Hand modified code start section 0 ========
+		//========= Hand modified code start section 3 ========
 	
-     	// Write logic here. See example below
-		/*
-        auto controller = TeleopControl::GetInstance();
-        auto isForwardSelected   = controller != nullptr ? controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::EXAMPLE_FORWARD) : false;
-        auto isReverseSelected   = controller != nullptr ? controller->IsButtonPressed(TeleopControl::FUNCTION_IDENTIFIER::EXAMPLE_REVERSE) : false;
-
-        if (isForwardSelected)
-        {
-            targetState = EXAMPLE_STATE::FORWARD;
-        }
-        else if (isReverseSelected)
-        {
-            targetState = EXAMPLE_STATE::REVERSE;
-        }
-        else
-        {
-            targetState = EXAMPLE_STATE::OFF;
-        }
-
-        if (targetState != currentState)
-        {
-            SetCurrentState(targetState, true);
-        }
-        */
-
-		//========= Hand modified code end section 0 ========
-        //========= Do not erase this line and the one above it. They are used by the code generator =======
-    }
+    	//========= Hand modified code end section 3 ========
 }
+
+//========= Hand modified code start section 4 ========
+//========= Hand modified code end section 4 ========
 
 </stateManager_cpp>
 
@@ -1022,6 +1039,8 @@ void $MECHANISM_NAME$StateMgr::CheckForStateTransition()
 enum StateType
 {
     $STATE_STRUCT$
+    //========= Hand modified code start section 0 ========
+    //========= Hand modified code end section 0 ========
     MAX_STATE_TYPES
 };
 
