@@ -40,7 +40,8 @@ RobotState *RobotState::GetInstance()
 RobotState::RobotState() : m_chassis(nullptr),
                            m_brokers(),
                            m_gamePiece(RobotStateChanges::GamePiece::Cone),
-                           m_gamePhase(RobotStateChanges::Disabled)
+                           m_gamePhase(RobotStateChanges::Disabled),
+                           m_wasReleased(true)
 {
     m_brokers.reserve(RobotStateChanges::LoopCounter);
     auto start = static_cast<int>(RobotStateChanges::DesiredGamePiece);
@@ -77,10 +78,17 @@ void RobotState::Run()
     if (DriverStation::IsTeleopEnabled())
     {
         auto controller = TeleopControl::GetInstance();
-        if (controller != nullptr && controller->IsButtonPressed(TeleopControlFunctions::CYCLE_GRABBER))
+        if (controller != nullptr)
         {
-            m_gamePiece = (m_gamePiece == RobotStateChanges::Cube) ? RobotStateChanges::Cone : RobotStateChanges::Cube;
-            PublishStateChange(RobotStateChanges::DesiredGamePiece, m_gamePiece);
+            if (controller->IsButtonPressed(TeleopControlFunctions::CYCLE_GRABBER))
+            {
+                if (m_wasReleased)
+                {
+                    m_gamePiece = (m_gamePiece == RobotStateChanges::Cube) ? RobotStateChanges::Cone : RobotStateChanges::Cube;
+                    PublishStateChange(RobotStateChanges::DesiredGamePiece, m_gamePiece);
+                }
+            }
+            m_wasReleased = !controller->IsButtonPressed(TeleopControlFunctions::CYCLE_GRABBER);
         }
     }
 }

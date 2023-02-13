@@ -33,7 +33,18 @@
 class DragonLimelight
 {
 public:
-    // Enums
+    // set the values according to the pipeline indices in the limelights
+    // this assumes that each of the limelights has the same pipelines and they are in the same order
+    enum PIPELINE_MODE
+    {
+        UNKNOWN = -1,
+        RETRO_REFLECTIVE = 0,
+        APRIL_TAG = 1,
+        CONE = 2,
+        CUBE = 3,
+        MAX_PIPELINE_MODE
+    };
+
     enum LED_MODE
     {
         LED_DEFAULT,
@@ -82,7 +93,6 @@ public:
     ///-----------------------------------------------------------------------------------
     ~DragonLimelight() = default;
 
-    // Getters
     bool HasTarget() const;
     units::angle::degree_t GetTargetHorizontalOffset() const;
     units::angle::degree_t GetTargetVerticalOffset() const;
@@ -91,38 +101,17 @@ public:
     units::time::microsecond_t GetPipelineLatency() const;
     units::length::inch_t EstimateTargetDistance() const;
     std::vector<double> Get3DSolve() const;
+    PIPELINE_MODE getPipeline() const;
 
     // Setters
-    void SetTargetHeight(
-        units::length::inch_t targetHeight);
-
-    void SetLEDMode(
-        DragonLimelight::LED_MODE mode // 0-Default, 1-Off, 2-Blink, 3-On
-    );
-
-    void SetCamMode(
-        DragonLimelight::CAM_MODE mode // 0-Vision, 1-Driver
-    );
-
-    void SetPipeline(
-        int pipeline // 0-9
-    );
-
-    void SetStreamMode(
-        DragonLimelight::STREAM_MODE mode // 0-Side By Side, 1-Second cam bottom right of main, 2-Main bottom right second
-    );
-
-    void ToggleSnapshot(
-        DragonLimelight::SNAPSHOT_MODE toggle // 0-No snapshots 1- two snapshots/second: Max of 32 saved
-    );
-
-    void SetCrosshairPos(
-        double crosshairPosX,
-        double crosshairPosY);
-
-    void SetSecondaryCrosshairPos(
-        double crosshairPosX,
-        double crosshairPosY);
+    void SetTargetHeight(units::length::inch_t targetHeight);
+    void SetLEDMode(DragonLimelight::LED_MODE mode);
+    void SetCamMode(DragonLimelight::CAM_MODE mode);
+    void SetPipeline(int pipeline);
+    void SetStreamMode(DragonLimelight::STREAM_MODE mode);
+    void ToggleSnapshot(DragonLimelight::SNAPSHOT_MODE toggle);
+    void SetCrosshairPos(double crosshairPosX, double crosshairPosY);
+    void SetSecondaryCrosshairPos(double crosshairPosX, double crosshairPosY);
 
     void PrintValues(); // Prints out all values to ensure everything is working and connected
 
@@ -130,7 +119,7 @@ public:
     units::length::inch_t GetMountingHeight() const { return m_mountHeight; }
     units::length::inch_t GetTargetHeight() const { return m_targetHeight; }
 
-private:
+protected:
     units::angle::degree_t GetTx() const;
     units::angle::degree_t GetTy() const;
 

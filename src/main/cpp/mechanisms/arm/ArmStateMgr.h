@@ -33,9 +33,22 @@
 #include <mechanisms/Arm/arm.h>
 #include <mechanisms/StateStruc.h>
 
+//========= Hand modified code start section 0 ========
+#include <robotstate/IRobotStateChangeSubscriber.h>
+#include <robotstate/RobotStateChanges.h>
+//========= Hand modified code end section 0 ========
+
 // Third Party Includes
 
+//========= Hand modified code start section 1 ========
+class TeleopControl;
+//========= Hand modified code end section 1 ========
+
 class ArmStateMgr : public StateMgr
+    //========= Hand modified code start section 2 ========
+    ,
+                    public IRobotStateChangeSubscriber
+//========= Hand modified code end section 2 ========
 {
 public:
     /// @enum the various states of the Intake
@@ -72,24 +85,38 @@ public:
     int GetCurrentStateParam(
         PrimitiveParams *currentParams) override;
 
+    void CheckForStateTransition() override;
+    //========= Hand modified code start section 3 ========
     void CheckForSensorTransitions() override;
     void CheckForGamepadTransitions() override;
-    void CheckForStateTransition() override;
+
+    void Update(RobotStateChanges::StateChange change, int state) override;
+
+    //========= Hand modified code end section 3 ========
 
 private:
     ArmStateMgr();
     ~ArmStateMgr() = default;
 
+    //========= Hand modified code start section 4 ========
+    void CheckForConeGamepadTransitions(TeleopControl *controller);
+    void CheckForCubeGamepadTransitions(TeleopControl *controller);
+    //========= Hand modified code end section 4 ========
+
     Arm *m_arm;
 
+    //========= Hand modified code start section 5 ========
     ARM_STATE m_prevState;
     ARM_STATE m_currentState;
     ARM_STATE m_targetState;
 
+    RobotStateChanges::GamePiece m_gamepieceMode;
+    //========= Hand modified code end section 5 ========
+
     static ArmStateMgr *m_instance;
 
     const StateStruc m_hold_position_rotateState = {ARM_STATE::HOLD_POSITION_ROTATE, "HOLD_POSITION_ROTATE", StateType::ARM_STATE, false};
-    const StateStruc m_manual_rotateState = {ARM_STATE::MANUAL_ROTATE, "MANUAL_ROTATE", StateType::ARM_STATE, false};
+    const StateStruc m_manual_rotateState = {ARM_STATE::MANUAL_ROTATE, "MANUAL_ROTATE", StateType::MANUAL_ARM_STATE, false};
     const StateStruc m_cube_backrow_rotateState = {ARM_STATE::CUBE_BACKROW_ROTATE, "CUBE_BACKROW_ROTATE", StateType::ARM_STATE, false};
     const StateStruc m_cone_backrow_rotateState = {ARM_STATE::CONE_BACKROW_ROTATE, "CONE_BACKROW_ROTATE", StateType::ARM_STATE, false};
     const StateStruc m_cube_midrow_rotateState = {ARM_STATE::CUBE_MIDROW_ROTATE, "CUBE_MIDROW_ROTATE", StateType::ARM_STATE, false};
