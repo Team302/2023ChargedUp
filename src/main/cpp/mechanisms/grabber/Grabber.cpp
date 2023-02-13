@@ -27,7 +27,7 @@
 
 // team 302 includes
 #include <hw/interfaces/IDragonMotorController.h>
-#include <mechanisms/base/Mech2Solenoids.h>
+#include <mechanisms/base/Mech1Solenoid.h>
 #include <mechanisms/grabber/grabber.h>
 
 // Third Party Includes
@@ -45,8 +45,7 @@ using namespace std;
 Grabber::Grabber(
 	std::string controlFileName,
 	std::string networkTableName,
-	std::shared_ptr<DragonSolenoid> solenoid0,
-	std::shared_ptr<DragonSolenoid> solenoid1) : Mech2Solenoids(MechanismTypes::MECHANISM_TYPE::GRABBER, controlFileName, networkTableName, solenoid0, solenoid1)
+	std::shared_ptr<DragonSolenoid> solenoid0) : Mech1Solenoid(MechanismTypes::MECHANISM_TYPE::GRABBER, controlFileName, networkTableName, solenoid0)
 {
 }
 

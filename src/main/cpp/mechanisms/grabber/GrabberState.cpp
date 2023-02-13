@@ -27,7 +27,7 @@
 // FRC includes
 
 // Team 302 includes
-#include <mechanisms/base/Mech2SolenoidsState.h>
+#include <mechanisms/base/Mech1SolenoidState.h>
 #include <mechanisms/controllers/ControlData.h>
 #include <mechanisms/grabber/GrabberState.h>
 #include <mechanisms/MechanismFactory.h>
@@ -39,8 +39,7 @@ using namespace std;
 GrabberState::GrabberState(
 	string stateName,
 	int stateId,
-	MechanismTargetData::SOLENOID solState0,
-	MechanismTargetData::SOLENOID solState1) : Mech2SolenoidsState(MechanismFactory::GetMechanismFactory()->GetGrabber(), stateName, stateId, solState0, solState1),
+	MechanismTargetData::SOLENOID solState0) : Mech1SolenoidState(MechanismFactory::GetMechanismFactory()->GetGrabber(), stateName, stateId, solState0),
 											   m_grabber(MechanismFactory::GetMechanismFactory()->GetGrabber())
 {
 }

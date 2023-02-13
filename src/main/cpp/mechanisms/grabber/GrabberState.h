@@ -24,20 +24,19 @@
 #pragma once
 #include <string>
 
-#include <mechanisms/base/Mech2SolenoidsState.h>
+#include <mechanisms/base/Mech1SolenoidState.h>
 
 class ControlData;
 class Grabber;
 
-class GrabberState : public Mech2SolenoidsState
+class GrabberState : public Mech1SolenoidState
 {
 public:
 	GrabberState() = delete;
 	GrabberState(
 		std::string stateName,
 		int stateId,
-		MechanismTargetData::SOLENOID solState0,
-		MechanismTargetData::SOLENOID solState1);
+		MechanismTargetData::SOLENOID solState0);
 	~GrabberState() = default;
 
 	bool AtTarget() const override;

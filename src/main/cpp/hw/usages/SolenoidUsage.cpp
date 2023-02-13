@@ -49,8 +49,7 @@ SolenoidUsage *SolenoidUsage::GetInstance()
 SolenoidUsage::SolenoidUsage()
 {
 
-	m_usageMap["GrabberSolenoid1"] = SOLENOID_USAGE::GrabberSolenoid1;
-	m_usageMap["GrabberSolenoid2"] = SOLENOID_USAGE::GrabberSolenoid2;
+	m_usageMap["GrabberSolenoid"] = SOLENOID_USAGE::GrabberSolenoid;
 }
 
 SolenoidUsage::~SolenoidUsage()

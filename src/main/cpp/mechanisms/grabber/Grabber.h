@@ -28,9 +28,9 @@
 #include <string>
 
 // Team 302 includes
-#include <mechanisms/base/Mech2Solenoids.h>
+#include <mechanisms/base/Mech1Solenoid.h>
 
-class Grabber : public Mech2Solenoids
+class Grabber : public Mech1Solenoid
 {
 public:
 	/// @brief Create an Grabber mechanism wiht 1 independent motor
@@ -41,8 +41,7 @@ public:
 	Grabber(
 		std::string controlFileName,
 		std::string networkTableName,
-		std::shared_ptr<DragonSolenoid> solenoid0,
-		std::shared_ptr<DragonSolenoid> solenoid1);
+		std::shared_ptr<DragonSolenoid> solenoid0);
 	Grabber() = delete;
 	~Grabber() override = default;
 

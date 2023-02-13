@@ -138,7 +138,7 @@ State *StateMgrHelper::CreateState(
         break;
 
     case StateType::GRABBER_STATE:
-        thisState = new GrabberState(xmlString, id, solenoidState, solenoid2State);
+        thisState = new GrabberState(xmlString, id, solenoidState);
         break;
 
     default:
