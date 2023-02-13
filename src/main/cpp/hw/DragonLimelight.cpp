@@ -44,10 +44,10 @@ DragonLimelight::DragonLimelight(
     string tableName,                               /// <I> - network table name
     units::length::inch_t mountingHeight,           /// <I> - mounting height of the limelight
     units::length::inch_t mountingHorizontalOffset, /// <I> - mounting horizontal offset from the middle of the robot,
-    units::length::inch_t LLForward,                /// <I> mounting offset forward/back
-    units::angle::degree_t LLPitch,                 /// <I> - Pitch of limelight
-    units::angle::degree_t LLYaw,                   /// <I> - Yaw of limelight
-    units::angle::degree_t LLRoll,                  /// <I> - Roll of limelight                /// <I> - clockwise rotation of limelight
+    units::length::inch_t forwardOffset,            /// <I> mounting offset forward/back
+    units::angle::degree_t pitch,                   /// <I> - Pitch of limelight
+    units::angle::degree_t yaw,                     /// <I> - Yaw of limelight
+    units::angle::degree_t roll,                    /// <I> - Roll of limelight                /// <I> - clockwise rotation of limelight
     units::length::inch_t targetHeight,             /// <I> - height the target
     units::length::inch_t targetHeight2,            /// <I> - height of second target
     LED_MODE ledMode,
@@ -56,10 +56,10 @@ DragonLimelight::DragonLimelight(
     SNAPSHOT_MODE snapMode) : m_networktable(NetworkTableInstance::GetDefault().GetTable(tableName.c_str())),
                               m_mountHeight(mountingHeight),
                               m_mountingHorizontalOffset(mountingHorizontalOffset),
-                              m_mountingForwardOffset(LLForward),
-                              m_yaw(LLYaw),
-                              m_pitch(LLPitch),
-                              m_roll(LLRoll),
+                              m_mountingForwardOffset(forwardOffset),
+                              m_yaw(yaw),
+                              m_pitch(pitch),
+                              m_roll(roll),
                               m_targetHeight(targetHeight),
                               m_targetHeight2(targetHeight2)
 {
@@ -70,10 +70,10 @@ DragonLimelight::DragonLimelight(
     ToggleSnapshot(snapMode);
     SetLimelightPosition(mountingHeight,
                          mountingHorizontalOffset,
-                         LLForward,
-                         LLPitch,
-                         LLYaw,
-                         LLRoll);
+                         forwardOffset,
+                         pitch,
+                         yaw,
+                         roll);
 }
 
 void DragonLimelight::SetLimelightPosition(units::length::inch_t mountHeight,

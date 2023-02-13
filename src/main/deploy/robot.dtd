@@ -94,7 +94,7 @@
 		  forwardOffset         CDATA #REQUIRED
           pitch           CDATA #REQUIRED
           yaw             CDATA #REQUIRED
-          roll            CDATA #REQUIRED
+          roll            (0 | 90 | 180 | 270) "0"
 		  targetheight      CDATA #REQUIRED
 		  targetheight2     CDATA #REQUIRED
 		  defaultledmode	( currentpipeline | off | blink | on ) "currentpipeline" 
