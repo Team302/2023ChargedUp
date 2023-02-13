@@ -44,20 +44,51 @@ DragonLimelight::DragonLimelight(
     string tableName,                               /// <I> - network table name
     units::length::inch_t mountingHeight,           /// <I> - mounting height of the limelight
     units::length::inch_t mountingHorizontalOffset, /// <I> - mounting horizontal offset from the middle of the robot,
-    units::angle::degree_t rotation,                /// <I> - clockwise rotation of limelight
-    units::angle::degree_t mountingAngle,           /// <I> - mounting angle of the camera
+    units::length::inch_t forwardOffset,            /// <I> mounting offset forward/back
+    units::angle::degree_t pitch,                   /// <I> - Pitch of limelight
+    units::angle::degree_t yaw,                     /// <I> - Yaw of limelight
+    units::angle::degree_t roll,                    /// <I> - Roll of limelight                /// <I> - clockwise rotation of limelight
     units::length::inch_t targetHeight,             /// <I> - height the target
-    units::length::inch_t targetHeight2             /// <I> - height of second target
-    ) : m_networktable(NetworkTableInstance::GetDefault().GetTable(tableName.c_str())),
-        m_mountHeight(mountingHeight),
-        m_mountingHorizontalOffset(mountingHorizontalOffset),
-        m_rotation(rotation),
-        m_mountingAngle(mountingAngle),
-        m_targetHeight(targetHeight),
-        m_targetHeight2(targetHeight2)
+    units::length::inch_t targetHeight2,            /// <I> - height of second target
+    LED_MODE ledMode,
+    CAM_MODE camMode,
+    STREAM_MODE streamMode,
+    SNAPSHOT_MODE snapMode) : m_networktable(NetworkTableInstance::GetDefault().GetTable(tableName.c_str())),
+                              m_mountHeight(mountingHeight),
+                              m_mountingHorizontalOffset(mountingHorizontalOffset),
+                              m_mountingForwardOffset(forwardOffset),
+                              m_yaw(yaw),
+                              m_pitch(pitch),
+                              m_roll(roll),
+                              m_targetHeight(targetHeight),
+                              m_targetHeight2(targetHeight2)
 {
     SetPipeline(PIPELINE_MODE::RETRO_REFLECTIVE);
-    // SetLEDMode( DragonLimelight::LED_MODE::LED_OFF);
+    SetLEDMode(ledMode);
+    SetCamMode(camMode);
+    SetStreamMode(streamMode);
+    ToggleSnapshot(snapMode);
+    SetLimelightPosition(mountingHeight,
+                         mountingHorizontalOffset,
+                         forwardOffset,
+                         pitch,
+                         yaw,
+                         roll);
+}
+
+void DragonLimelight::SetLimelightPosition(units::length::inch_t mountHeight,
+                                           units::length::inch_t mountHorizontalOffset,
+                                           units::length::inch_t mountForwardOffset,
+                                           units::angle::degree_t pitch,
+                                           units::angle::degree_t yaw,
+                                           units::angle::degree_t roll)
+{
+    m_mountHeight = mountHeight;
+    m_mountingHorizontalOffset = mountHorizontalOffset;
+    m_mountingForwardOffset = mountForwardOffset;
+    m_pitch = pitch;
+    m_yaw = yaw;
+    m_roll = roll;
 }
 
 DragonLimelight::PIPELINE_MODE DragonLimelight::getPipeline() const
@@ -108,19 +139,19 @@ units::angle::degree_t DragonLimelight::GetTy() const
 
 units::angle::degree_t DragonLimelight::GetTargetHorizontalOffset() const
 {
-    if (abs(m_rotation.to<double>()) < 1.0)
+    if (abs(m_roll.to<double>()) < 1.0)
     {
         return GetTx();
     }
-    else if (abs(m_rotation.to<double>() - 90.0) < 1.0)
+    else if (abs(m_roll.to<double>() - 90.0) < 1.0)
     {
         return -1.0 * GetTy();
     }
-    else if (abs(m_rotation.to<double>() - 180.0) < 1.0)
+    else if (abs(m_roll.to<double>() - 180.0) < 1.0)
     {
         return -1.0 * GetTx();
     }
-    else if (abs(m_rotation.to<double>() - 270.0) < 1.0)
+    else if (abs(m_roll.to<double>() - 270.0) < 1.0)
     {
         return GetTy();
     }
@@ -130,19 +161,19 @@ units::angle::degree_t DragonLimelight::GetTargetHorizontalOffset() const
 
 units::angle::degree_t DragonLimelight::GetTargetVerticalOffset() const
 {
-    if (abs(m_rotation.to<double>()) < 1.0)
+    if (abs(m_roll.to<double>()) < 1.0)
     {
         return GetTy();
     }
-    else if (abs(m_rotation.to<double>() - 90.0) < 1.0)
+    else if (abs(m_roll.to<double>() - 90.0) < 1.0)
     {
         return GetTx();
     }
-    else if (abs(m_rotation.to<double>() - 180.0) < 1.0)
+    else if (abs(m_roll.to<double>() - 180.0) < 1.0)
     {
         return -1.0 * GetTy();
     }
-    else if (abs(m_rotation.to<double>() - 270.0) < 1.0)
+    else if (abs(m_roll.to<double>() - 270.0) < 1.0)
     {
         return -1.0 * GetTx();
     }
@@ -264,13 +295,13 @@ void DragonLimelight::PrintValues()
 
 units::length::inch_t DragonLimelight::EstimateTargetDistance() const
 {
-    units::angle::degree_t angleFromHorizon = (GetMountingAngle() + GetTargetVerticalOffset());
+    units::angle::degree_t angleFromHorizon = (GetLimelightPitch() + GetTargetVerticalOffset());
     units::angle::radian_t angleRad = angleFromHorizon;
     double tanAngle = tan(angleRad.to<double>());
 
     auto deltaHgt = GetTargetHeight() - GetMountingHeight();
 
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("mounting angle "), GetMountingAngle().to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("mounting angle "), GetLimelightPitch().to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("target vertical angle "), GetTargetVerticalOffset().to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("angle radians "), angleRad.to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("deltaH "), deltaHgt.to<double>());
