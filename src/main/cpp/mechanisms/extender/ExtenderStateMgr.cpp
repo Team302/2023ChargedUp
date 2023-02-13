@@ -85,16 +85,16 @@ ExtenderStateMgr::ExtenderStateMgr() : StateMgr(),
     stateMap["STARTING_POSITION_EXTEND"] = m_starting_position_extendState;
     stateMap["FLOOR_EXTEND"] = m_floor_extendState;
 
-    //========= Hand modified code start section 2 ========
-    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::ArmRotateState);
-    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::DesiredGamePiece);
-    //========= Hand modified code end section 2 ========
-
     Init(m_extender, stateMap);
     if (m_extender != nullptr)
     {
         m_extender->AddStateMgr(this);
     }
+
+    //========= Hand modified code start section 2 ========
+    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::ArmRotateState);
+    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::DesiredGamePiece);
+    //========= Hand modified code end section 2 ========
 }
 
 /// @brief  Get the current Parameter parm value for the state of this mechanism

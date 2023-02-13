@@ -82,15 +82,15 @@ ArmStateMgr::ArmStateMgr() : StateMgr(),
     stateMap["STARTING_POSITION_ROTATE"] = m_starting_position_rotateState;
     stateMap["FLOOR_POSITION_ROTATE"] = m_floor_position_rotateState;
 
-    //========= Hand modified code start section 2 ========
-    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::DesiredGamePiece);
-    //========= Hand modified code end section 2 ========
-
     Init(m_arm, stateMap);
     if (m_arm != nullptr)
     {
         m_arm->AddStateMgr(this);
     }
+
+    //========= Hand modified code start section 2 ========
+    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::DesiredGamePiece);
+    //========= Hand modified code end section 2 ========
 }
 
 /// @brief  Get the current Parameter parm value for the state of this mechanism

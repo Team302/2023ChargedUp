@@ -75,15 +75,15 @@ GrabberStateMgr::GrabberStateMgr() : StateMgr(),
     stateMap["OPEN"] = m_openState;
     stateMap["GRAB"] = m_grabState;
 
-    //========= Hand modified code start section 2 ========
-    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::ArmRotateState);
-    //========= Hand modified code end section 2 ========
-
     Init(m_grabber, stateMap);
     if (m_grabber != nullptr)
     {
         m_grabber->AddStateMgr(this);
     }
+
+    //========= Hand modified code start section 2 ========
+    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::ArmRotateState);
+    //========= Hand modified code end section 2 ========
 }
 
 /// @brief  Get the current Parameter parm value for the state of this mechanism
