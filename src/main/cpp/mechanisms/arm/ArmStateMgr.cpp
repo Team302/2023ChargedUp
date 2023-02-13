@@ -246,18 +246,12 @@ void ArmStateMgr::CheckForStateTransition()
 
         if (m_targetState == ARM_STATE::HOLD_POSITION_ROTATE)
         {
-            // holding currently based on just "F term" need to update to funciton with extender potentially.
-            if (m_arm->GetPositionDegrees().to<double>() > 50.0)
+            double armAngle = m_arm->GetPositionDegrees().to<double>();
+            double extenderPos = MechanismFactory::GetMechanismFactory()->GetExtender()->GetPositionInches().to<double>();
+            // holding currently based on just "F term" Created surface map function based on arm and extender position
+            if (m_arm->GetPositionDegrees().to<double>() > 10.0)
             {
-                m_arm->UpdateTarget(0.0495);
-            }
-            else if (m_arm->GetPositionDegrees().to<double>() > 27.5)
-            {
-                m_arm->UpdateTarget(0.0485);
-            }
-            else if (m_arm->GetPositionDegrees().to<double>() > 4.5) // Floor arm angle
-            {
-                m_arm->UpdateTarget(0.0425);
+                m_arm->UpdateTarget(0.04592 + -0.0001809 * armAngle + 0.0005709 * extenderPos + 0.000005494 * armAngle * armAngle + 0.000001729 * armAngle * extenderPos + 0.00000003838 * extenderPos * extenderPos);
             }
         }
     }
