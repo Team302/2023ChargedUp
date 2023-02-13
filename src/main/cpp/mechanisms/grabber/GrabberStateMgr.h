@@ -32,10 +32,11 @@
 #include <mechanisms/base/StateMgr.h>
 #include <mechanisms/Grabber/grabber.h>
 #include <mechanisms/StateStruc.h>
+#include <robotstate/IRobotStateChangeSubscriber.h>
 
 // Third Party Includes
 
-class GrabberStateMgr : public StateMgr
+class GrabberStateMgr : public StateMgr, public IRobotStateChangeSubscriber
 {
 public:
     /// @enum the various states of the Intake
@@ -62,6 +63,9 @@ public:
     void CheckForSensorTransitions() override;
     void CheckForGamepadTransitions() override;
 
+    // RobotState override
+    void Update(RobotStateChanges::StateChange change, int value) override;
+
 private:
     GrabberStateMgr();
     ~GrabberStateMgr() = default;
@@ -71,8 +75,10 @@ private:
     GRABBER_STATE m_currentState;
     GRABBER_STATE m_targetState;
 
+    bool m_followOtherMechs = false;
+
     static GrabberStateMgr *m_instance;
 
-    const StateStruc m_openState = {GRABBER_STATE::OPEN, "OPEN", StateType::GRABBER_STATE, true};
+    const StateStruc m_openState = {GRABBER_STATE::OPEN, "OPEN", StateType::GRABBER_STATE, false};
     const StateStruc m_grabState = {GRABBER_STATE::GRAB, "GRAB", StateType::GRABBER_STATE, true};
 };

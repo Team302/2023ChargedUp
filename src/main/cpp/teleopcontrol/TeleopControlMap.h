@@ -160,18 +160,19 @@ robin_hood::unordered_map<TeleopControlFunctions::FUNCTION, const TeleopControlB
     {TeleopControlFunctions::HOLONOMIC_ROTATE_BACK, driverDPad180},
     {TeleopControlFunctions::HOLONOMIC_ROTATE_LEFT, driverDPad270},
     {TeleopControlFunctions::HOLONOMIC_ROTATE_RIGHT, driverDPad90},
-    {TeleopControlFunctions::DRIVE_TO_WALL_GRID, driverXButton},
-    {TeleopControlFunctions::DRIVE_TO_COOP_GRID, driverYButton},
-    {TeleopControlFunctions::DRIVE_TO_HP_GRID, driverBButton},
+    {TeleopControlFunctions::DRIVE_TO_LEFT_COLUMN, driverXButton},
+    {TeleopControlFunctions::DRIVE_TO_MIDDLE_COLUMN, driverYButton},
+    {TeleopControlFunctions::DRIVE_TO_RIGHT_COLUMN, driverBButton},
     {TeleopControlFunctions::REZERO_PIGEON, driverAButton},
-    {TeleopControlFunctions::HOLD_POSITION, driverRBumper},
+    {TeleopControlFunctions::HOLD_POSITION, driverLBumper},
+    {TeleopControlFunctions::SLOW_MODE, driverRBumper},
 
     {TeleopControlFunctions::STARTING_POSITION_EXTEND, copilotStartButton},
     {TeleopControlFunctions::CYCLE_GRABBER, copilotSelectButton},
-    {TeleopControlFunctions::HUMAN_PLAYER_LEVEL, copilotBButton},
-    {TeleopControlFunctions::LOW, copilotAButton},
-    {TeleopControlFunctions::MED, copilotXButton},
-    {TeleopControlFunctions::HIGH, copilotYButton},
+    {TeleopControlFunctions::HUMAN_PLAYER_STATION, copilotBButton},
+    {TeleopControlFunctions::FLOOR_POSITION, copilotAButton},
+    {TeleopControlFunctions::MIDROW, copilotXButton},
+    {TeleopControlFunctions::BACKROW, copilotYButton},
     {TeleopControlFunctions::OPEN, copilotLBumper},
     {TeleopControlFunctions::GRAB, copilotRBumper},
 
@@ -194,17 +195,17 @@ robin_hood::unordered_map<TeleopControlFunctions::FUNCTION, const TeleopControlB
 
 };
 
-const TeleopControlAxis driverLJoystickX = {TeleopControlMappingEnums::DRIVER, TeleopControlMappingEnums::LEFT_JOYSTICK_X, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::REVERSED, 0.6};
-const TeleopControlAxis driverLJoystickY = {TeleopControlMappingEnums::DRIVER, TeleopControlMappingEnums::LEFT_JOYSTICK_Y, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::REVERSED, 0.6};
+const TeleopControlAxis driverLJoystickX = {TeleopControlMappingEnums::DRIVER, TeleopControlMappingEnums::LEFT_JOYSTICK_X, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::REVERSED, 1.0};
+const TeleopControlAxis driverLJoystickY = {TeleopControlMappingEnums::DRIVER, TeleopControlMappingEnums::LEFT_JOYSTICK_Y, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::REVERSED, 1.0};
 const TeleopControlAxis driverRJoystickX = {TeleopControlMappingEnums::DRIVER, TeleopControlMappingEnums::RIGHT_JOYSTICK_X, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::SYNCED, 0.5};
 const TeleopControlAxis driverRJoystickY = {TeleopControlMappingEnums::DRIVER, TeleopControlMappingEnums::RIGHT_JOYSTICK_X, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::REVERSED, 1.0};
 const TeleopControlAxis driverLTrigger = {TeleopControlMappingEnums::DRIVER, TeleopControlMappingEnums::LEFT_TRIGGER, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::SYNCED, 1.0};
 const TeleopControlAxis driverRTrigger = {TeleopControlMappingEnums::DRIVER, TeleopControlMappingEnums::RIGHT_TRIGGER, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::SYNCED, 1.0};
 
 const TeleopControlAxis copilotLJoystickX = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::LEFT_JOYSTICK_X, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::SYNCED, 1.0};
-const TeleopControlAxis copilotLJoystickY = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::LEFT_JOYSTICK_Y, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::REVERSED, 1.0};
+const TeleopControlAxis copilotLJoystickY = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::LEFT_JOYSTICK_Y, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::REVERSED, 0.3};
 const TeleopControlAxis copilotRJoystickX = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::RIGHT_JOYSTICK_X, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::SYNCED, 1.0};
-const TeleopControlAxis copilotRJoystickY = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::RIGHT_JOYSTICK_X, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::REVERSED, 1.0};
+const TeleopControlAxis copilotRJoystickY = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::RIGHT_JOYSTICK_Y, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::REVERSED, 1.0};
 const TeleopControlAxis copilotLTrigger = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::LEFT_TRIGGER, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::SYNCED, 1.0};
 const TeleopControlAxis copilotRTrigger = {TeleopControlMappingEnums::CO_PILOT, TeleopControlMappingEnums::RIGHT_TRIGGER, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::SYNCED, 1.0};
 
@@ -242,6 +243,4 @@ robin_hood::unordered_map<TeleopControlFunctions::FUNCTION, const TeleopControlA
     {TeleopControlFunctions::HOLONOMIC_DRIVE_ROTATE, driverRJoystickX},
 
     {TeleopControlFunctions::MANUAL_ROTATE, copilotLJoystickY},
-    {TeleopControlFunctions::MANUAL_EXTEND_RETRACT, copilotRJoystickY}
-
-};
+    {TeleopControlFunctions::MANUAL_EXTEND_RETRACT, copilotRJoystickY}};

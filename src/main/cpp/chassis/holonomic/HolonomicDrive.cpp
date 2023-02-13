@@ -59,6 +59,7 @@ HolonomicDrive::HolonomicDrive() : State(string("HolonomicDrive"), -1),
 /// @return void
 void HolonomicDrive::Init()
 {
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("Initialized?"), "true");
 }
 
 /// @brief calculate the output for the wheels on the chassis from the throttle and steer components
@@ -68,6 +69,8 @@ void HolonomicDrive::Run()
     ChassisMovement moveInfo;
     moveInfo.driveOption = ChassisOptionEnums::DriveStateType::FIELD_DRIVE;
     moveInfo.controllerType = ChassisOptionEnums::AutonControllerType::HOLONOMIC;
+
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("DriveOptionBEGINNING"), moveInfo.driveOption);
 
     auto controller = TeleopControl::GetInstance();
     if (controller != nullptr && m_chassis != nullptr)
@@ -129,7 +132,7 @@ void HolonomicDrive::Run()
         // Automated driving
         if (m_previousDriveState != ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE)
         {
-            if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_WALL_GRID))
+            if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_LEFT_COLUMN))
             {
                 moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
                 m_previousDriveState = moveInfo.driveOption;
@@ -137,7 +140,7 @@ void HolonomicDrive::Run()
                 m_generatedTrajectory = moveInfo.trajectory;
                 m_field->AddTrajectory("DriverAssist", m_generatedTrajectory);
             }
-            else if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_COOP_GRID))
+            else if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_MIDDLE_COLUMN))
             {
                 moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
                 m_previousDriveState = moveInfo.driveOption;
@@ -145,7 +148,7 @@ void HolonomicDrive::Run()
                 m_generatedTrajectory = moveInfo.trajectory;
                 m_field->AddTrajectory("DriverAssist", m_generatedTrajectory);
             }
-            else if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_HP_GRID))
+            else if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_RIGHT_COLUMN))
             {
                 moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
                 m_previousDriveState = moveInfo.driveOption;
@@ -174,6 +177,13 @@ void HolonomicDrive::Run()
         auto strafe = controller->GetAxisValue(TeleopControlFunctions::HOLONOMIC_DRIVE_STRAFE);
         auto rotate = controller->GetAxisValue(TeleopControlFunctions::HOLONOMIC_DRIVE_ROTATE);
 
+        if (controller->IsButtonPressed(TeleopControlFunctions::SLOW_MODE))
+        {
+            forward *= m_slowModeMultiplier;
+            strafe *= m_slowModeMultiplier;
+            rotate *= m_slowModeMultiplier;
+        }
+
         if (abs(forward) > 0.05 || abs(strafe) > 0.05 || abs(rotate) > 0.05)
         {
             moveInfo.driveOption = ChassisOptionEnums::DriveStateType::FIELD_DRIVE;
@@ -188,6 +198,8 @@ void HolonomicDrive::Run()
 
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("Vx"), moveInfo.chassisSpeeds.vx.to<double>());
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("Vy"), moveInfo.chassisSpeeds.vy.to<double>());
+
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("DriveOptionEND"), moveInfo.driveOption);
 
         m_chassis->Drive(moveInfo);
     }

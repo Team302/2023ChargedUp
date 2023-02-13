@@ -1,3 +1,4 @@
+
 <?xml version="1.0" encoding="utf-8"?>
 <robot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <pdp
@@ -11,11 +12,13 @@
     usage="CENTER_OF_ROTATION" />
   <limelight
     usage="MAINLIMELIGHT"
-    tablename="limelight"
+    tablename="limelight-front"
     mountingheight="37.325"
-    horizontaloffset="7.689"
-    mountingangle="-18.0"
-    rotation="90.0"
+    horizontaloffset="-7.689"
+    forwardOffset="-7.24"
+    yaw="18.0"
+    roll="270.0"
+    pitch="0.0"
     targetheight=""
     targetheight2=""
     defaultledmode="currentpipeline"
@@ -28,11 +31,13 @@
     secondcrosshairy="" />
   <limelight
     usage="SECONDARYLIMELIGHT"
-    tablename="limelight2"
+    tablename="limelight-back"
     mountingheight="34.472"
     horizontaloffset="0.0"
-    mountingangle="0.0"
-    rotation="0.0"
+    forwardOffset="-8.405"
+    yaw="0"
+    roll="180.0"
+    pitch="0.0"
     targetheight=""
     targetheight2=""
     defaultledmode="currentpipeline"
@@ -287,6 +292,7 @@
         reverse="false" />
     </swervemodule>
   </chassis>
+
   <mechanism
     type="ARM"
     networkTable="armNT"
