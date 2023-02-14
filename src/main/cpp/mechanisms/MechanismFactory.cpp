@@ -117,10 +117,10 @@ void MechanismFactory::CreateMechanism(
 
 	case MechanismTypes::GRABBER:
 	{
-		auto solenoid = GetSolenoid(solenoids, SolenoidUsage::GrabberSolenoid);
-		if (solenoid.get() != nullptr)
+		auto solenoid1 = GetSolenoid(solenoids, SolenoidUsage::GrabberSolenoid);
+		if (solenoid1.get() != nullptr)
 		{
-			m_grabber = new Grabber(controlFileName, networkTableName, solenoid);
+			m_grabber = new Grabber(controlFileName, networkTableName, solenoid1);
 		}
 	}
 	break;

@@ -27,12 +27,7 @@ class DragonSolenoid
 {
 public:
     DragonSolenoid() = delete;
-    DragonSolenoid(
-        std::string networkTableName,
-        SolenoidUsage::SOLENOID_USAGE usage,
-        int pcmID,
-        int channel,
-        bool reversed);
+
     DragonSolenoid(
         std::string networkTableName,
         SolenoidUsage::SOLENOID_USAGE usage,
