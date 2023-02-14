@@ -3,6 +3,10 @@
   <pdp
     canId="1"
     type="REV" />
+  <led
+    pwmId="0"
+    number="15"
+    />  
   <pigeon
     canId="0"
     canBusName="canivore"
@@ -86,7 +90,7 @@
         reverselimitswitchopen="true"
         voltageCompensationSaturation="10.5"
         voltageCompensationEnable="true"
-       />
+         />
       <motor
         usage="SWERVE_TURN"
         canId="1"

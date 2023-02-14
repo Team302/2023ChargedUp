@@ -110,6 +110,9 @@ void Robot::RobotPeriodic()
     {
         m_previewer->CheckCurrentAuton();
     }
+
+    m_driverfeedback->isWantCone(true);
+    m_driverfeedback->UpdateFeedback();
 }
 
 /**

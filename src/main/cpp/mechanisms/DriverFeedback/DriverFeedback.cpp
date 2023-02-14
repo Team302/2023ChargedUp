@@ -51,7 +51,7 @@ DriverFeedback* DriverFeedback::GetInstance()
             m_LEDStates->ResetVariables();
         }
         m_LEDStates->AlternatingBlinkingPattern(LED::YELLOW, LED::PURPLE);
-        currentState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
+        currentState = DriverFeedbackStates::GAME_PIECE_IN_GRABBER;
 
     }else if(DriverFeedback::m_WantCube){
 
@@ -75,7 +75,7 @@ DriverFeedback* DriverFeedback::GetInstance()
          if(currentState!=DriverFeedbackStates::GAME_PIECE_READY_TO_PICK_UP){
             m_LEDStates->ResetVariables();
         }
-        m_LEDStates->SolidColorPattern(LED::GREEN);
+        m_LEDStates->BlinkingPattern(LED::GREEN);
         currentState = DriverFeedbackStates::GAME_PIECE_READY_TO_PICK_UP;
 
     
@@ -84,7 +84,7 @@ DriverFeedback* DriverFeedback::GetInstance()
          if(currentState!=DriverFeedbackStates::NONE){
             m_LEDStates->ResetVariables();
         }
-        m_LEDStates->SolidColorPattern(LED::BLACK);
+        m_LEDStates->SolidColorPattern(LED::GREEN);
         currentState = DriverFeedbackStates::NONE;
 
     

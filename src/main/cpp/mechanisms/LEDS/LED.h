@@ -27,7 +27,7 @@ class LED
 
         enum Colors{RED, GREEN, BLUE, PURPLE, YELLOW, AZUL, BLACK, WHITE, MAX_STATE};
 
-        static int kLength;
+        int kLength;
 
         frc::AddressableLED* m_led;
 
