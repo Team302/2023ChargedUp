@@ -15,6 +15,7 @@
 #pragma once
 #include <frc/PowerDistribution.h>
 #include <hw/factories/PDPFactory.h>
+#include <mechanisms/arm/ArmStateMgr.h>
 using namespace std;
 class PowerDistribution;
 class AutomatedSystemTest
@@ -29,8 +30,7 @@ public:
     }
 
 private:
-    PowerDistribution *m_pdp;
-
+    bool reachedcurrentstate = false;
     double GetCurrentPDHValue();
     string GetCurrentTest();
     static PDPFactory GetFactory();

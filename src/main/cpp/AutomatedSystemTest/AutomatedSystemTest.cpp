@@ -34,6 +34,13 @@ double GetBasePDHValue()
 
 double AutomatedSystemTest::GetCurrentPDHValue()
 {
+    ArmStateMgr::GetInstance()->SetCurrentState(ArmStateMgr::ARM_STATE::STARTING_POSITION_ROTATE, true);
+    auto armstate = ArmStateMgr::GetInstance()->GetCurrentState();
+    if (armstate = ArmStateMgr::ARM_STATE::STARTING_POSITION_ROTATE)
+    {
+        reachedcurrentstate = true;
+    }
+
     auto PDP = PDPFactory::GetFactory()->GetPDP();
     if (PDP != nullptr)
     {
@@ -41,4 +48,5 @@ double AutomatedSystemTest::GetCurrentPDHValue()
     }
     Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("automatedsystemtest"), string("pdh energy"), "cannot accses pdh");
     return 0;
+    ArmStateMgr::GetInstance()->SetCurrentState(ArmStateMgr::ARM_STATE::CONE_BACKROW_ROTATE, true);
 }
