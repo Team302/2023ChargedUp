@@ -42,8 +42,7 @@ TrajectoryDrive::TrajectoryDrive(RobotDrive *robotDrive) : RobotDrive(),
 {
 }
 
-void TrajectoryDrive::Init(
-    ChassisMovement &chassisMovement)
+void TrajectoryDrive::Init(ChassisMovement &chassisMovement)
 {
     // Clear m_trajectoryStates in case it holds onto a previous trajectory
     m_trajectoryStates.clear();
@@ -65,8 +64,7 @@ void TrajectoryDrive::Init(
     m_delta = m_finalState.pose - ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose();
 }
 
-std::array<frc::SwerveModuleState, 4> TrajectoryDrive::UpdateSwerveModuleStates(
-    ChassisMovement &chassisMovement)
+std::array<frc::SwerveModuleState, 4> TrajectoryDrive::UpdateSwerveModuleStates(ChassisMovement &chassisMovement)
 {
     if (!m_trajectoryStates.empty()) // If we have a path parsed / have states to run
     {

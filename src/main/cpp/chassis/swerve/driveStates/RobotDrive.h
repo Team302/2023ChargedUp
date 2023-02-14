@@ -32,8 +32,7 @@ public:
     std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates(
         ChassisMovement &chassisMovement) override;
 
-    void Init(
-        ChassisMovement &chassisMovement) override;
+    void Init(ChassisMovement &chassisMovement) override;
 
 protected:
     frc::SwerveModuleState m_flState;

@@ -93,7 +93,6 @@ SwerveChassis::SwerveChassis(
     units::length::inch_t wheelDiameter,
     units::length::inch_t wheelBase,
     units::length::inch_t track,
-    double odometryComplianceCoefficient,
     units::velocity::meters_per_second_t maxSpeed,
     units::radians_per_second_t maxAngularSpeed,
     units::acceleration::meters_per_second_squared_t maxAcceleration,
@@ -111,7 +110,6 @@ SwerveChassis::SwerveChassis(
                               m_wheelDiameter(wheelDiameter),
                               m_wheelBase(wheelBase),
                               m_track(track),
-                              m_odometryComplianceCoefficient(odometryComplianceCoefficient),
                               m_maxSpeed(maxSpeed),
                               m_maxAngularSpeed(maxAngularSpeed),
                               m_maxAcceleration(maxAcceleration),               // Not used at the moment
@@ -162,7 +160,6 @@ void SwerveChassis::InitStates()
     m_driveStateMap[ChassisOptionEnums::DriveStateType::ROBOT_DRIVE] = m_robotDrive;
     m_driveStateMap[ChassisOptionEnums::DriveStateType::STOP_DRIVE] = new StopDrive();
     m_driveStateMap[ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE] = new TrajectoryDrive(m_robotDrive);
-    // m_driveStateMap[ChassisOptionEnums::DriveStateType::POLAR_DRIVE] = new
 
     m_headingStateMap[ChassisOptionEnums::HeadingOption::MAINTAIN] = new MaintainHeading();
     m_headingStateMap[ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE] = new SpecifiedHeading();
@@ -177,19 +174,8 @@ void SwerveChassis::ZeroAlignSwerveModules()
     m_backRight.get()->ZeroAlignModule();
 }
 
-units::angular_velocity::degrees_per_second_t SwerveChassis::CalcHeadingCorrection(
-    units::angle::degree_t targetAngle,
-    double kP)
-{
-    auto currentAngle = GetPose().Rotation().Degrees();
-    auto errorAngle = AngleUtils::GetEquivAngle(AngleUtils::GetDeltaAngle(currentAngle, targetAngle));
-    auto correction = units::angular_velocity::degrees_per_second_t(errorAngle.to<double>() * kP);
-    return correction;
-}
-
 /// @brief Drive the chassis
-void SwerveChassis::Drive(
-    ChassisMovement moveInfo)
+void SwerveChassis::Drive(ChassisMovement moveInfo)
 {
     m_currentOrientationState = GetHeadingState(moveInfo);
     if (m_currentOrientationState != nullptr)
@@ -208,15 +194,17 @@ void SwerveChassis::Drive(
     }
 }
 
-ISwerveDriveOrientation *SwerveChassis::GetSpecifiedHeadingState(
-    ChassisOptionEnums::HeadingOption headingOption)
+void SwerveChassis::Drive()
 {
-    auto itr = m_headingStateMap.find(headingOption);
-    if (itr == m_headingStateMap.end())
-    {
-        itr = m_headingStateMap.find(ChassisOptionEnums::HeadingOption::MAINTAIN);
-    }
-    return itr->second;
+    // No-op for now
+}
+
+bool SwerveChassis::IsTipping() const
+{
+    auto pitch = m_pigeon->GetPitch();
+    auto roll = m_pigeon->GetRoll();
+
+    return (std::abs(pitch) > m_tippingTolerance || std::abs(roll) > m_tippingTolerance);
 }
 ISwerveDriveState *SwerveChassis::GetSpecifiedDriveState(
     ChassisOptionEnums::DriveStateType driveOption)
@@ -266,11 +254,6 @@ ISwerveDriveState *SwerveChassis::GetDriveState(
     }
 
     return state;
-}
-
-void SwerveChassis::Drive()
-{
-    // No-op for now
 }
 
 Pose2d SwerveChassis::GetPose() const
@@ -341,21 +324,6 @@ void SwerveChassis::ResetPose(
     Rotation2d angle = pose.Rotation();
 
     ResetPose(pose, angle);
-}
-
-ChassisSpeeds SwerveChassis::GetFieldRelativeSpeeds(
-    units::meters_per_second_t xSpeed,
-    units::meters_per_second_t ySpeed,
-    units::radians_per_second_t rot)
-{
-    units::angle::radian_t yaw(ConversionUtils::DegreesToRadians(m_pigeon->GetYaw()));
-    auto temp = xSpeed * cos(yaw.to<double>()) + ySpeed * sin(yaw.to<double>());
-    auto strafe = -1.0 * xSpeed * sin(yaw.to<double>()) + ySpeed * cos(yaw.to<double>());
-    auto forward = temp;
-
-    ChassisSpeeds output{forward, strafe, rot};
-
-    return output;
 }
 
 void SwerveChassis::SetTargetHeading(units::angle::degree_t targetYaw)

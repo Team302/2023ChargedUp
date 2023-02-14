@@ -72,7 +72,6 @@ public:
         units::length::inch_t wheelDiameter,
         units::length::inch_t wheelBase,
         units::length::inch_t track,
-        double odometryComplianceCoefficient,
         units::velocity::meters_per_second_t maxSpeed,
         units::radians_per_second_t maxAngularSpeed,
         units::acceleration::meters_per_second_squared_t maxAcceleration,
@@ -88,8 +87,7 @@ public:
     void ZeroAlignSwerveModules();
 
     /// @brief Drive the chassis
-    void Drive(
-        ChassisMovement moveInfo) override;
+    void Drive(ChassisMovement moveInfo) override;
 
     void Drive() override;
 
@@ -108,17 +106,11 @@ public:
     /// @brief Reset the current chassis pose based on the provided pose and rotation
     /// @param [in] const Pose2d&       pose        Current XY position
     /// @param [in] const Rotation2d&   angle       Current rotation angle
-    void ResetPose(
-        const frc::Pose2d &pose,
-        const frc::Rotation2d &angle);
+    void ResetPose(const frc::Pose2d &pose, const frc::Rotation2d &angle);
 
     /// @brief Reset the current chassis pose based on the provided pose (the rotation comes from the Pigeon)
     /// @param [in] const Pose2d&       pose        Current XY position
-    void ResetPose(
-        const frc::Pose2d &pose) override;
-
-    // static constexpr auto MaxSpeed = 3.0_mps;
-    // static constexpr units::angular_velocity::radians_per_second_t MaxAngularSpeed{wpi::numbers::pi};
+    void ResetPose(const frc::Pose2d &pose) override;
 
     units::length::inch_t GetWheelDiameter() const { return m_wheelDiameter; }
     units::length::inch_t GetWheelBase() const { return m_wheelBase; }
@@ -131,7 +123,6 @@ public:
     std::shared_ptr<SwerveModule> GetFrontRight() const { return m_frontRight; }
     std::shared_ptr<SwerveModule> GetBackLeft() const { return m_backLeft; }
     std::shared_ptr<SwerveModule> GetBackRight() const { return m_backRight; }
-    // frc::SwerveDrivePoseEstimator<4> GetPoseEst() const { return m_poseEstimator; }
     frc::Pose2d GetPose() const;
     units::angle::degree_t GetYaw() const override;
 
@@ -139,33 +130,18 @@ public:
     inline IChassis::CHASSIS_TYPE GetType() const override { return IChassis::CHASSIS_TYPE::SWERVE; };
     inline void Initialize() override{};
 
-    void RunWPIAlgorithm(bool runWPI) { m_runWPI = runWPI; }
-    void SetPoseEstOption(PoseEstimatorEnum opt) { m_poseOpt = opt; }
-    double GetodometryComplianceCoefficient() const { return m_odometryComplianceCoefficient; }
     void SetTargetHeading(units::angle::degree_t targetYaw) override;
 
     void ReZero();
 
-    ISwerveDriveOrientation *GetSpecifiedHeadingState(
-        ChassisOptionEnums::HeadingOption headingOption);
-    ISwerveDriveState *GetSpecifiedDriveState(
-        ChassisOptionEnums::DriveStateType driveOption);
+    ISwerveDriveState *GetSpecifiedDriveState(ChassisOptionEnums::DriveStateType driveOption);
 
-    ISwerveDriveOrientation *GetHeadingState(
-        ChassisMovement moveInfo);
+    ISwerveDriveOrientation *GetHeadingState(ChassisMovement moveInfo);
+
+    bool IsTipping() const;
 
 private:
-    ISwerveDriveState *GetDriveState(
-        ChassisMovement moveInfo);
-
-    frc::ChassisSpeeds GetFieldRelativeSpeeds(
-        units::meters_per_second_t xSpeed,
-        units::meters_per_second_t ySpeed,
-        units::radians_per_second_t rot);
-
-    units::angular_velocity::degrees_per_second_t CalcHeadingCorrection(
-        units::angle::degree_t targetAngle,
-        double kP);
+    ISwerveDriveState *GetDriveState(ChassisMovement moveInfo);
 
     std::shared_ptr<SwerveModule> m_frontLeft;
     std::shared_ptr<SwerveModule> m_frontRight;
@@ -184,7 +160,6 @@ private:
     units::length::inch_t m_wheelDiameter;
     units::length::inch_t m_wheelBase;
     units::length::inch_t m_track;
-    double m_odometryComplianceCoefficient;
     units::velocity::meters_per_second_t m_maxSpeed;
     units::radians_per_second_t m_maxAngularSpeed;
     units::acceleration::meters_per_second_squared_t m_maxAcceleration;
@@ -212,14 +187,6 @@ private:
 
     frc::SwerveDrivePoseEstimator<4> m_poseEstimator;
 
-    const double kPMaintainHeadingControl = 1.5;  // 4.0, 3.0
-    const double kPAutonSpecifiedHeading = 3.0;   // 4.0
-    const double kPAutonGoalHeadingControl = 5.0; // 2.0
-    const double kPGoalHeadingControl = 6.0;      // 10.0, 7.0
-    const double kPDistance = 10.0;               // 10.0, 7.0
-    const double kIHeadingControl = 0.0;          // not being used
-    const double kDHeadingControl = 0.0;          // not being used
-    const double kFHeadingControl = 0.0;          // not being used
     units::angle::degree_t m_storedYaw;
     units::angular_velocity::degrees_per_second_t m_yawCorrection;
 
@@ -236,4 +203,6 @@ private:
     ISwerveDriveOrientation *m_currentOrientationState;
 
     bool m_initialized = false;
+
+    const double m_tippingTolerance = 5.0;
 };
