@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -15,27 +15,26 @@
 
 #pragma once
 
-//FRC Includes
+// FRC Includes
 #include <frc/kinematics/ChassisSpeeds.h>
 #include <frc/trajectory/TrajectoryUtil.h>
 
 #include <units/angle.h>
 
-//Team302 Includes
+// Team302 Includes
 #include <utils/Point2d.h>
 #include <chassis/ChassisOptionEnums.h>
-
 
 /// @brief This is used to give all neccessary data to ISwerveDriveStates
 
 struct ChassisMovement
 {
-    ChassisOptionEnums::DriveStateType      driveOption = ChassisOptionEnums::DriveStateType::ROBOT_DRIVE;
-    frc::ChassisSpeeds                      chassisSpeeds = frc::ChassisSpeeds();
-    frc::Trajectory                         trajectory = frc::Trajectory();
-    Point2d                                 centerOfRotationOffset = Point2d();
-    ChassisOptionEnums::HeadingOption       headingOption = ChassisOptionEnums::HeadingOption::MAINTAIN;
-    ChassisOptionEnums::NoMovementOption    noMovementOption = ChassisOptionEnums::NoMovementOption::STOP;
+    ChassisOptionEnums::DriveStateType driveOption = ChassisOptionEnums::DriveStateType::ROBOT_DRIVE;
+    frc::ChassisSpeeds chassisSpeeds = frc::ChassisSpeeds();
+    frc::Trajectory trajectory = frc::Trajectory();
+    Point2d centerOfRotationOffset = Point2d();
+    ChassisOptionEnums::HeadingOption headingOption = ChassisOptionEnums::HeadingOption::MAINTAIN;
+    ChassisOptionEnums::NoMovementOption noMovementOption = ChassisOptionEnums::NoMovementOption::STOP;
     ChassisOptionEnums::AutonControllerType controllerType = ChassisOptionEnums::AutonControllerType::RAMSETE;
-    units::angle::degree_t                  yawAngle = units::angle::degree_t(0.0);
+    units::angle::degree_t yawAngle = units::angle::degree_t(0.0);
 };

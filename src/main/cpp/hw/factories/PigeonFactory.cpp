@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -33,22 +33,20 @@
 #include <hw/DragonPigeon.h>
 #include <utils/logging/Logger.h>
 
-
 // Third Party Includes
-
 
 using namespace std;
 
 /// @brief  Find or create the analog input factory
 /// @return PigeonFactory* pointer to the factory
-PigeonFactory* PigeonFactory::m_factory = nullptr;
-PigeonFactory* PigeonFactory::GetFactory()
+PigeonFactory *PigeonFactory::m_factory = nullptr;
+PigeonFactory *PigeonFactory::GetFactory()
 {
-	if ( PigeonFactory::m_factory == nullptr )
-	{
-		PigeonFactory::m_factory = new PigeonFactory();
-	}
-	return PigeonFactory::m_factory;
+    if (PigeonFactory::m_factory == nullptr)
+    {
+        PigeonFactory::m_factory = new PigeonFactory();
+    }
+    return PigeonFactory::m_factory;
 }
 
 PigeonFactory::PigeonFactory()
@@ -57,56 +55,51 @@ PigeonFactory::PigeonFactory()
     m_shooterPigeon = nullptr;
 }
 
-
 /// @brief  Create the requested analog input
-/// @return shared_ptr<DragonPigeon>   the mechanism or nullptr if mechanism doesn't 
+/// @return shared_ptr<DragonPigeon>   the mechanism or nullptr if mechanism doesn't
 ///         exist and cannot be created.
-DragonPigeon* PigeonFactory::CreatePigeon
-(
-    int 	                    canID,
-    string                      canBusName,
-    DragonPigeon::PIGEON_TYPE   type, 
-    DragonPigeon::PIGEON_USAGE  usage, 
-    double                      rotation
-)
+DragonPigeon *PigeonFactory::CreatePigeon(
+    int canID,
+    string canBusName,
+    DragonPigeon::PIGEON_TYPE type,
+    DragonPigeon::PIGEON_USAGE usage,
+    double rotation)
 {
     switch (usage)
     {
-        case DragonPigeon::PIGEON_USAGE::CENTER_OF_ROBOT:
-            if (m_centerPigeon == nullptr)
-            {
-                m_centerPigeon = new DragonPigeon( canID, canBusName, usage, type, rotation );
-            }
-            return m_centerPigeon;
-            break;
-        case DragonPigeon::PIGEON_USAGE::CENTER_OF_SHOOTER:
-            if (m_shooterPigeon == nullptr)
-            {
-                m_shooterPigeon = new DragonPigeon( canID, canBusName, usage, type, rotation );
-            }
-            return m_shooterPigeon;
-            break;
-        default:
-            break;
+    case DragonPigeon::PIGEON_USAGE::CENTER_OF_ROBOT:
+        if (m_centerPigeon == nullptr)
+        {
+            m_centerPigeon = new DragonPigeon(canID, canBusName, usage, type, rotation);
+        }
+        return m_centerPigeon;
+        break;
+    case DragonPigeon::PIGEON_USAGE::CENTER_OF_SHOOTER:
+        if (m_shooterPigeon == nullptr)
+        {
+            m_shooterPigeon = new DragonPigeon(canID, canBusName, usage, type, rotation);
+        }
+        return m_shooterPigeon;
+        break;
+    default:
+        break;
     }
     return nullptr;
 }
 
-DragonPigeon* PigeonFactory::GetPigeon
-(
-    DragonPigeon::PIGEON_USAGE usage 
-) const
+DragonPigeon *PigeonFactory::GetPigeon(
+    DragonPigeon::PIGEON_USAGE usage) const
 {
     switch (usage)
     {
-        case DragonPigeon::PIGEON_USAGE::CENTER_OF_ROBOT:
-            return m_centerPigeon;
-            break;
-        case DragonPigeon::PIGEON_USAGE::CENTER_OF_SHOOTER:
-            return m_shooterPigeon;
-            break;
-        default:
-            break;
+    case DragonPigeon::PIGEON_USAGE::CENTER_OF_ROBOT:
+        return m_centerPigeon;
+        break;
+    case DragonPigeon::PIGEON_USAGE::CENTER_OF_SHOOTER:
+        return m_shooterPigeon;
+        break;
+    default:
+        break;
     }
     return nullptr;
 }

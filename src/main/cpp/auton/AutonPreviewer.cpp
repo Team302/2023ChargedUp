@@ -13,33 +13,29 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-//C++ Includes
-#include <fstream>
-
-//FRC Includes
+// FRC Includes
 #include <frc/Filesystem.h>
 #include <frc/trajectory/TrajectoryUtil.h>
 
-//Team302 Includes
+// Team302 Includes
 #include <auton/AutonPreviewer.h>
 #include <auton/AutonSelector.h>
 
-//Thirdparty includes
+// Thirdparty includes
 #include <pugixml/pugixml.hpp>
 
 using namespace pugi;
 
-AutonPreviewer::AutonPreviewer(CyclePrimitives* cyclePrims) : m_selector(cyclePrims->GetAutonSelector()),
-                                                                m_prevChoice(""),
-                                                                m_field(DragonField::GetInstance())
+AutonPreviewer::AutonPreviewer(CyclePrimitives *cyclePrims) : m_selector(cyclePrims->GetAutonSelector()),
+                                                              m_prevChoice(""),
+                                                              m_field(DragonField::GetInstance())
 {
-
 }
 
 void AutonPreviewer::CheckCurrentAuton()
 {
     std::string currentChoice = m_selector->GetSelectedAutoFile();
-    if(currentChoice != m_prevChoice)
+    if (currentChoice != m_prevChoice)
     {
         PopulateField();
         m_prevChoice = currentChoice;
@@ -50,7 +46,7 @@ void AutonPreviewer::PopulateField()
 {
     std::vector<frc::Trajectory> trajectories = GetTrajectories();
     m_field->ResetField();
-    for(unsigned int i = 0; i < trajectories.size(); i++)
+    for (unsigned int i = 0; i < trajectories.size(); i++)
     {
         m_field->AddTrajectory("traj" + std::to_string(i), trajectories[i]);
     }
@@ -65,41 +61,41 @@ std::vector<frc::Trajectory> AutonPreviewer::GetTrajectories()
 
     auto autonFile = frc::filesystem::GetDeployDirectory() + "/auton/" + filename;
 
-    //Parse the xml file to get all the trajectory paths
+    // Parse the xml file to get all the trajectory paths
     xml_document doc;
-    xml_parse_result result = doc.load_file( autonFile.c_str() );
+    xml_parse_result result = doc.load_file(autonFile.c_str());
 
-    if ( result )
+    if (result)
     {
         xml_node auton = doc.root();
         for (xml_node node = auton.first_child(); node; node = node.next_sibling())
         {
             for (xml_node primitiveNode = node.first_child(); primitiveNode; primitiveNode = primitiveNode.next_sibling())
             {
-                if ( strcmp( primitiveNode.name(), "primitive") == 0 )
+                if (strcmp(primitiveNode.name(), "primitive") == 0)
                 {
                     for (xml_attribute attr = primitiveNode.first_attribute(); attr; attr = attr.next_attribute())
                     {
-                        if ( strcmp( attr.name(), "pathname" ) == 0 )
+                        if (strcmp(attr.name(), "pathname") == 0)
                         {
                             trajectoryPaths.emplace_back(attr.value());
                         }
                     }
                 }
             }
-        }    
+        }
     }
 
-    //Now that we have the paths, convert from JSON to frc::Trajectory and
+    // Now that we have the paths, convert from JSON to frc::Trajectory and
     auto pathDir = frc::filesystem::GetDeployDirectory() + "/paths/output/";
 
-    for(std::string path : trajectoryPaths)
+    for (std::string path : trajectoryPaths)
     {
         std::ifstream f(pathDir + path);
-        if(f.good())
+        if (f.good())
         {
             trajectories.emplace_back(frc::TrajectoryUtil::FromPathweaverJson(pathDir + path));
-        }        
+        }
     }
 
     return trajectories;

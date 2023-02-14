@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -25,34 +25,30 @@
 
 // Third Party Includes
 
-
-
 #include <auton/drivePrimitives/DriveDistance.h>
 
 class IDragonDistanceSensor;
 class PrimitiveParams;
 
-class DriveToTarget: public DriveDistance
+class DriveToTarget : public DriveDistance
 {
-    public:
-        DriveToTarget();
-        virtual ~DriveToTarget() = default;
+public:
+    DriveToTarget();
+    virtual ~DriveToTarget() = default;
 
-        bool IsDone() override;
-        void Run() override;
-        void Init(PrimitiveParams* params) override;
+    bool IsDone() override;
+    void Run() override;
+    void Init(PrimitiveParams *params) override;
 
-    private:
+private:
     // Objects
-    std::shared_ptr<IDragonDistanceSensor>            m_sensor;
+    std::shared_ptr<IDragonDistanceSensor> m_sensor;
 
     // Vars
-    int m_underDistanceCounts;						// # of counts that the robot has a cube
-    float m_minTimeToRun;								// Forces the drive to run for at least this long
+    int m_underDistanceCounts; // # of counts that the robot has a cube
+    float m_minTimeToRun;      // Forces the drive to run for at least this long
 
     // Consts
-    const float MIN_CUBE_DISTANCE = 3.0;				// Min Distance in inches to a cube to be counted as in the robot
-    const int UNDER_DISTANCE_COUNT_THRESHOLD = 4;			// # of counts to determine we have a cube.... or a wall
-
+    const float MIN_CUBE_DISTANCE = 3.0;          // Min Distance in inches to a cube to be counted as in the robot
+    const int UNDER_DISTANCE_COUNT_THRESHOLD = 4; // # of counts to determine we have a cube.... or a wall
 };
-

@@ -33,9 +33,21 @@
 #include <mechanisms/Extender/extender.h>
 #include <mechanisms/StateStruc.h>
 
+//========= Hand modified code start section 0 ========
+#include <robotstate/IRobotStateChangeSubscriber.h>
+//========= Hand modified code end section 0 ========
+
 // Third Party Includes
 
+//========= Hand modified code start section 1 ========
+
+//========= Hand modified code end section 1 ========
+
 class ExtenderStateMgr : public StateMgr
+    //========= Hand modified code start section 2 ========
+    ,
+                         public IRobotStateChangeSubscriber
+//========= Hand modified code end section 2 ========
 {
 public:
     /// @enum the various states of the Intake
@@ -73,18 +85,35 @@ public:
         PrimitiveParams *currentParams) override;
 
     void CheckForStateTransition() override;
+    //========= Hand modified code start section 3 ========
     void CheckForSensorTransitions() override;
     void CheckForGamepadTransitions() override;
+
+    // RobotState override
+    void Update(RobotStateChanges::StateChange change, int value) override;
+    //========= Hand modified code end section 3 ========
 
 private:
     ExtenderStateMgr();
     ~ExtenderStateMgr() = default;
 
+    //========= Hand modified code start section 4 ========
+    void CheckForConeGamepadTransitions(TeleopControl *controller);
+    void CheckForCubeGamepadTransitions(TeleopControl *controller);
+    //========= Hand modified code end section 4 ========
+
     Extender *m_extender;
 
+    //========= Hand modified code start section 5 ========
     EXTENDER_STATE m_prevState;
     EXTENDER_STATE m_currentState;
     EXTENDER_STATE m_targetState;
+
+    RobotStateChanges::GamePiece m_gamepieceMode;
+
+    bool m_canAutomaticallyMove = false;
+    double m_extendedPosition;
+    //========= Hand modified code end section 5 ========
 
     static ExtenderStateMgr *m_instance;
 
@@ -97,6 +126,4 @@ private:
     const StateStruc m_human_player_station_extendState = {EXTENDER_STATE::HUMAN_PLAYER_STATION_EXTEND, "HUMAN_PLAYER_STATION_EXTEND", StateType::EXTENDER_STATE, false};
     const StateStruc m_starting_position_extendState = {EXTENDER_STATE::STARTING_POSITION_EXTEND, "STARTING_POSITION_EXTEND", StateType::EXTENDER_STATE, true};
     const StateStruc m_floor_extendState = {EXTENDER_STATE::FLOOR_EXTEND, "FLOOR_EXTEND", StateType::EXTENDER_STATE, false};
-
-    double m_extendedPosition;
 };

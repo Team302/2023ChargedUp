@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -13,7 +13,7 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
-   
+
 #include <string>
 
 #include <hw/DragonCanCoder.h>
@@ -25,55 +25,53 @@ using namespace std;
 using namespace ctre::phoenix;
 using namespace ctre::phoenix::sensors;
 
-DragonCanCoder::DragonCanCoder
-(
-	string						networkTableName,
-	string      			    usage,
-	int 						canID,
-    string                      canBusName,
-    double                      offset,
-    bool                        reverse
-) : WPI_CANCoder(canID, canBusName),
-	m_networkTableName(networkTableName),
-    m_usage(usage)
+DragonCanCoder::DragonCanCoder(
+    string networkTableName,
+    string usage,
+    int canID,
+    string canBusName,
+    double offset,
+    bool reverse) : WPI_CANCoder(canID, canBusName),
+                    m_networkTableName(networkTableName),
+                    m_usage(usage)
 {
     auto error = ConfigFactoryDefault(50);
-    if ( error != ErrorCode::OKAY )
+    if (error != ErrorCode::OKAY)
     {
         Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, networkTableName, string("ConfigFactoryDefault"), to_string(error));
     }
     error = ConfigAbsoluteSensorRange(AbsoluteSensorRange::Signed_PlusMinus180, 0);
-    if ( error != ErrorCode::OKAY )
+    if (error != ErrorCode::OKAY)
     {
         Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, networkTableName, string("ConfigAbsoluteSensorRange"), to_string(error));
     }
 
-    error = ConfigMagnetOffset(offset, 0); 
-    if ( error != ErrorCode::OKAY )
+    error = ConfigMagnetOffset(offset, 0);
+    if (error != ErrorCode::OKAY)
     {
         Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, networkTableName, string("ConfigMagnetOffset"), to_string(error));
     }
 
-    error = ConfigSensorDirection(reverse, 0); 
-    if ( error != ErrorCode::OKAY )
+    error = ConfigSensorDirection(reverse, 0);
+    if (error != ErrorCode::OKAY)
     {
         Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, networkTableName, string("ConfigSensorDirection"), to_string(error));
     }
 
-    error = ConfigSensorInitializationStrategy(SensorInitializationStrategy::BootToAbsolutePosition, 0); 
-    if ( error != ErrorCode::OKAY )
+    error = ConfigSensorInitializationStrategy(SensorInitializationStrategy::BootToAbsolutePosition, 0);
+    if (error != ErrorCode::OKAY)
     {
         Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, networkTableName, string("ConfigSensorDirection"), to_string(error));
     }
 
     error = ConfigVelocityMeasurementPeriod(SensorVelocityMeasPeriod::Period_1Ms, 0);
-    if ( error != ErrorCode::OKAY )
+    if (error != ErrorCode::OKAY)
     {
         Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, networkTableName, string("ConfigVelocityMeasurementPeriod"), to_string(error));
     }
 
     error = ConfigVelocityMeasurementWindow(64, 0);
-    if ( error != ErrorCode::OKAY )
+    if (error != ErrorCode::OKAY)
     {
         Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, networkTableName, string("ConfigVelocityMeasurementWindow"), to_string(error));
     }

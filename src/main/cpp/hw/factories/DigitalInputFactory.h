@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-/// Copyright 2022 Lake Orion Robotics FIRST Team 302
+/// Copyright 2023 Lake Orion Robotics FIRST Team 302
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 /// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -29,33 +29,25 @@ class DragonDigitalInput;
 
 class DigitalInputFactory
 {
-	public:
+public:
+	static DigitalInputFactory *GetFactory();
 
-		static DigitalInputFactory* GetFactory();
+	/// @brief      Create the requested Digital input
+	/// @returns 	DigitalInput*
+	DragonDigitalInput *CreateInput(
+		std::string networkTableName,
+		DigitalInputUsage::DIGITAL_INPUT_USAGE type,
+		int digitalID,
+		bool reversed,
+		units::time::second_t debounceTime);
 
+	/// @brief    Get the requested Digital input
+	DragonDigitalInput *GetInput(
+		DigitalInputUsage::DIGITAL_INPUT_USAGE type);
 
-		/// @brief      Create the requested Digital input
-		/// @returns 	DigitalInput* 
-        DragonDigitalInput* CreateInput
-        (
-			std::string										networkTableName,
-    		DigitalInputUsage::DIGITAL_INPUT_USAGE			type,
-            int 						                    digitalID,
-            bool						                    reversed,
-			units::time::second_t							debounceTime
-        );
+private:
+	DigitalInputFactory();
+	~DigitalInputFactory();
 
-		/// @brief    Get the requested Digital input
-        DragonDigitalInput* GetInput
-        (
-    		DigitalInputUsage::DIGITAL_INPUT_USAGE			type
-        );
-
-
-	private:
-		DigitalInputFactory();
-		~DigitalInputFactory();
-
-		static DigitalInputFactory*	m_factory;
-			
+	static DigitalInputFactory *m_factory;
 };

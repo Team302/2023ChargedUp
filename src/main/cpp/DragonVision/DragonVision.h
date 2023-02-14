@@ -15,17 +15,14 @@
 //====================================================================================================================================================
 
 #pragma once
-
-// C++
-#include <string>
 #include <map>
+#include <string>
 
-// FRC Includes
-#include <frc/geometry/Pose2d.h>
-
-// Team302 Includes
+#include <State.h>
 #include <hw/DragonLimelight.h>
-#include <DragonVision/LimelightState.h>
+#include <DragonVision/DragonVisionTarget.h>
+
+using std::map;
 
 class DragonLimelight;
 class DragonVision
@@ -33,45 +30,24 @@ class DragonVision
 public:
     static DragonVision *GetDragonVision();
 
-    enum LIMELIGHT_STATES
+    enum LIMELIGHT_POSITION
     {
-        RETROREFLECTIVE,
-        APRILTAG,
-        CUBE,
-        CONE
+        FRONT,
+        BACK
     };
 
-    bool AlignedWithCubeNode();
-    bool AlignedWithConeNode();
+    void setPipeline(DragonLimelight::PIPELINE_MODE mode, LIMELIGHT_POSITION position);
+    DragonVisionTarget *getTargetInfo(LIMELIGHT_POSITION position) const;
 
-    bool AlignedWithSubstation();
-    bool AlignedWithCubeGamePiece();
-    bool AlignedWithConeGamePiece();
-
-    units::length::inch_t DistanceFromCubeNode();
-    units::length::inch_t DistanceFromConeNode();
-    units::length::inch_t DistanceFromSubstation();
-    units::length::inch_t DistanceFromCubeGamePiece();
-    units::length::inch_t DistanceFromConeGamePiece();
-
-    units::angle::degree_t AngleFromCubeNode();
-    units::angle::degree_t AngleFromConeNode();
-    units::angle::degree_t AngleFromSubstation();
-    units::angle::degree_t AngleFromCubeGamePiece();
-    units::angle::degree_t AngleFromConeGamePiece();
-
-    frc::Pose2d GetRobotPosition();
-    void SetCurrentState(
-        DragonVision::LIMELIGHT_STATES limelightstate);
-    ~DragonVision() = default;
+    int GetRobotPosition() const;
 
 private:
-    DragonVision(std::string stateName,
-                 int stateId);
+    DragonVision();
+    ~DragonVision() = default;
+
+    DragonLimelight *getLimelight(LIMELIGHT_POSITION position) const;
 
     static DragonVision *m_dragonVision;
-    DragonLimelight *m_frontDragonLimelight;
-    LimelightState *m_currentstate;
-    std::map<LIMELIGHT_STATES, LimelightState *> m_limelightstates;
-    double m_tolerance = 2.0; // allows for 2 degrees of error
+
+    std::map<LIMELIGHT_POSITION, DragonLimelight *> m_DragonLimelightMap;
 };

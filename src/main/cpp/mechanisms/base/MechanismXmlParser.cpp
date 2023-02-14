@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-/// Copyright 2022 Lake Orion Robotics FIRST Team 302
+/// Copyright 2023 Lake Orion Robotics FIRST Team 302
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 /// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -16,7 +16,7 @@
 
 //========================================================================================================
 /// @class MechansimXmlParser
-/// @brief Create a mechaism from an XML definition 
+/// @brief Create a mechaism from an XML definition
 //========================================================================================================
 
 // C++ Includes
@@ -39,7 +39,7 @@
 #include <hw/xml/CancoderXmlParser.h>
 #include <hw/xml/DigitalInputXmlParser.h>
 #include <hw/xml/MotorXmlParser.h>
-#include <hw/xml/ServoXmlParser.h> 
+#include <hw/xml/ServoXmlParser.h>
 #include <hw/xml/SolenoidXmlParser.h>
 #include <mechanisms/base/Mech.h>
 #include <mechanisms/base/MechanismXmlParser.h>
@@ -50,42 +50,38 @@
 // Third Party Includes
 #include <pugixml/pugixml.hpp>
 
-
 using namespace frc;
 using namespace pugi;
 using namespace std;
 
-
-
 /// @brief  Parse a Mechanism XML element and create a Mechanism from its definition.
-void MechanismXmlParser::ParseXML
-(
-    xml_node      mechanismNode
-)
+void MechanismXmlParser::ParseXML(
+    xml_node mechanismNode)
 {
     // initialize attributes
     MechanismTypes::MECHANISM_TYPE type = MechanismTypes::UNKNOWN_MECHANISM;
 
-    bool hasError       = false;
+    bool hasError = false;
     string networkTableName;
     string controlFileName;
 
     // Parse/validate xml
     for (xml_attribute attr = mechanismNode.first_attribute(); attr; attr = attr.next_attribute())
     {
-        string attrName (attr.name());
-        if ( attrName.compare("type") == 0 )
+        string attrName(attr.name());
+        if (attrName.compare("type") == 0)
         {
             string typeStr = attr.as_string();
-            for_each( typeStr.begin(), typeStr.end(), [](char & c){c = ::toupper(c);});
+            for_each(typeStr.begin(), typeStr.end(), [](char &c)
+                     { c = ::toupper(c); });
 
             type = MechanismTypes::GetInstance()->GetType(typeStr);
         }
-        else if ( attrName.compare("networkTable") == 0 )
+        else if (attrName.compare("networkTable") == 0)
         {
             networkTableName = attr.as_string();
         }
-        else if ( attrName.compare("controlFile") == 0 )
+        else if (attrName.compare("controlFile") == 0)
         {
             controlFileName = attr.as_string();
         }
@@ -93,7 +89,7 @@ void MechanismXmlParser::ParseXML
         {
             string msg = "invalid attribute ";
             msg += attr.name();
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("MechanismXmlParser"), string("ParseXML"), msg );
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("MechanismXmlParser"), string("ParseXML"), msg);
             hasError = true;
         }
     }
@@ -111,51 +107,51 @@ void MechanismXmlParser::ParseXML
     DragonSolenoidMap solenoids;
     AnalogInputMap analogInputs;
     DigitalInputMap digitalInputs;
-    DragonCanCoder* canCoder = nullptr;
+    DragonCanCoder *canCoder = nullptr;
 
-    for (xml_node child = mechanismNode.first_child(); child  && !hasError; child = child.next_sibling())
+    for (xml_node child = mechanismNode.first_child(); child && !hasError; child = child.next_sibling())
     {
-        if ( strcmp( child.name(), "motor") == 0 )
+        if (strcmp(child.name(), "motor") == 0)
         {
             auto motor = motorXML.get()->ParseXML(networkTableName, child);
-            if ( motor.get() != nullptr )
+            if (motor.get() != nullptr)
             {
-                motors[ motor.get()->GetType() ] =  motor ;
+                motors[motor.get()->GetType()] = motor;
             }
         }
-        else if ( strcmp( child.name(), "analogInput") == 0 )
+        else if (strcmp(child.name(), "analogInput") == 0)
         {
             auto analogIn = analogXML->ParseXML(networkTableName, child);
-            if ( analogIn != nullptr )
+            if (analogIn != nullptr)
             {
                 analogInputs[analogIn->GetType()] = analogIn;
             }
         }
-        else if ( strcmp( child.name(), "digitalInput") == 0 )
+        else if (strcmp(child.name(), "digitalInput") == 0)
         {
             auto digitalIn = digitalXML->ParseXML(networkTableName, child);
-            if ( digitalIn.get() != nullptr )
+            if (digitalIn.get() != nullptr)
             {
                 digitalInputs[digitalIn.get()->GetType()] = digitalIn;
             }
         }
-        else if ( strcmp( child.name(), "servo") == 0 )
+        else if (strcmp(child.name(), "servo") == 0)
         {
             auto servo = servoXML->ParseXML(networkTableName, child);
-            if ( servo != nullptr )
+            if (servo != nullptr)
             {
                 servos[servo->GetUsage()] = servo;
             }
         }
-        else if ( strcmp( child.name(), "solenoid" ) == 0 )
+        else if (strcmp(child.name(), "solenoid") == 0)
         {
             auto sol = solenoidXML->ParseXML(networkTableName, child);
-            if ( sol.get() != nullptr )
+            if (sol.get() != nullptr)
             {
                 solenoids[sol.get()->GetType()] = sol;
             }
         }
-        else if ( strcmp( child.name(), "canCoder" ) == 0)
+        else if (strcmp(child.name(), "canCoder") == 0)
         {
             canCoder = cancoderXML.get()->ParseXML(networkTableName, child);
         }
@@ -163,24 +159,22 @@ void MechanismXmlParser::ParseXML
         {
             string msg = "unknown child ";
             msg += child.name();
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("MechanismXmlParser"), string("unknown child"), msg );
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("MechanismXmlParser"), string("unknown child"), msg);
         }
     }
 
-
     // create instance
-    if ( !hasError )
+    if (!hasError)
     {
-        MechanismFactory* factory =  MechanismFactory::GetMechanismFactory();
-        factory->CreateMechanism(  type, 
-                                   networkTableName,
-                                   controlFileName,
-                                   motors, 
-                                   solenoids, 
-                                   servos, 
-                                   digitalInputs,
-                                   analogInputs, 
-                                   canCoder );
+        MechanismFactory *factory = MechanismFactory::GetMechanismFactory();
+        factory->CreateMechanism(type,
+                                 networkTableName,
+                                 controlFileName,
+                                 motors,
+                                 solenoids,
+                                 servos,
+                                 digitalInputs,
+                                 analogInputs,
+                                 canCoder);
     }
-
 }

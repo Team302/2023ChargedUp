@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -15,7 +15,7 @@
 
 #include <frc/geometry/Pose2d.h>
 
-//Team302 Includes
+// Team302 Includes
 #include <chassis/swerve/driveStates/TrajectoryDrive.h>
 #include <chassis/ChassisMovement.h>
 #include <chassis/ChassisFactory.h>
@@ -24,59 +24,53 @@
 
 using frc::Pose2d;
 
-TrajectoryDrive::TrajectoryDrive(RobotDrive* robotDrive) : RobotDrive(),
-    m_trajectory(),
-    m_robotDrive(robotDrive),
-    m_holonomicController(frc2::PIDController{1.0, 0.5, 0},
-                          frc2::PIDController{1.0, 0.5, 0},
-                          frc::ProfiledPIDController<units::radian>{0.0,0.0, 0,
-                          frc::TrapezoidProfile<units::radian>::Constraints{0_rad_per_s, 0_rad_per_s / 1_s}}),
-    m_desiredState(),
-    m_trajectoryStates(),
-    m_prevPose(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose()),
-    m_wasMoving(false),
-    m_timer(std::make_unique<frc::Timer>()),
-    m_chassis(ChassisFactory::GetChassisFactory()->GetSwerveChassis()),
-    m_whyDone("Trajectory isn't finished/Error")
+TrajectoryDrive::TrajectoryDrive(RobotDrive *robotDrive) : RobotDrive(),
+                                                           m_trajectory(),
+                                                           m_robotDrive(robotDrive),
+                                                           m_holonomicController(frc2::PIDController{1.0, 0.5, 0},
+                                                                                 frc2::PIDController{1.0, 0.5, 0},
+                                                                                 frc::ProfiledPIDController<units::radian>{0.0, 0.0, 0,
+                                                                                                                           frc::TrapezoidProfile<units::radian>::Constraints{0_rad_per_s, 0_rad_per_s / 1_s}}),
+                                                           m_desiredState(),
+                                                           m_trajectoryStates(),
+                                                           m_prevPose(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose()),
+                                                           m_wasMoving(false),
+                                                           m_timer(std::make_unique<frc::Timer>()),
+                                                           m_chassis(ChassisFactory::GetChassisFactory()->GetSwerveChassis()),
+                                                           m_whyDone("Trajectory isn't finished/Error")
 
 {
-
 }
 
-void TrajectoryDrive::Init
-(
-    ChassisMovement& chassisMovement
-)
+void TrajectoryDrive::Init(
+    ChassisMovement &chassisMovement)
 {
-    //Clear m_trajectoryStates in case it holds onto a previous trajectory
+    // Clear m_trajectoryStates in case it holds onto a previous trajectory
     m_trajectoryStates.clear();
 
     m_trajectory = chassisMovement.trajectory;
     m_trajectoryStates = m_trajectory.States();
 
-
     if (!m_trajectoryStates.empty()) // only go if path name found
     {
-        //Desired state is first state in trajectory
-        m_desiredState = m_trajectoryStates.front(); //m_desiredState is the first state, or starting position
+        // Desired state is first state in trajectory
+        m_desiredState = m_trajectoryStates.front(); // m_desiredState is the first state, or starting position
 
         m_finalState = m_trajectoryStates.back();
 
-        m_timer.get()->Reset(); //Restarts and starts timer
+        m_timer.get()->Reset(); // Restarts and starts timer
         m_timer.get()->Start();
     }
 
     m_delta = m_finalState.pose - ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose();
 }
 
-std::array<frc::SwerveModuleState, 4> TrajectoryDrive::UpdateSwerveModuleStates
-(
-    ChassisMovement& chassisMovement
-)
+std::array<frc::SwerveModuleState, 4> TrajectoryDrive::UpdateSwerveModuleStates(
+    ChassisMovement &chassisMovement)
 {
-    if (!m_trajectoryStates.empty()) //If we have a path parsed / have states to run
+    if (!m_trajectoryStates.empty()) // If we have a path parsed / have states to run
     {
-        if(m_trajectory.InitialPose() != chassisMovement.trajectory.InitialPose())  
+        if (m_trajectory.InitialPose() != chassisMovement.trajectory.InitialPose())
         {
             Init(chassisMovement);
         }
@@ -87,56 +81,53 @@ std::array<frc::SwerveModuleState, 4> TrajectoryDrive::UpdateSwerveModuleStates
         // Use the controller to calculate the chassis speeds for getting there
         frc::ChassisSpeeds refChassisSpeeds;
 
-
-        refChassisSpeeds = m_holonomicController.Calculate( m_chassis->GetPose(),
-                                                          m_desiredState, 
-                                                          frc::Rotation2d(chassisMovement.yawAngle));
+        refChassisSpeeds = m_holonomicController.Calculate(m_chassis->GetPose(),
+                                                           m_desiredState,
+                                                           frc::Rotation2d(chassisMovement.yawAngle));
         chassisMovement.chassisSpeeds = refChassisSpeeds;
 
-         auto swerveChassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
+        auto swerveChassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
 
         if (chassisMovement.headingOption == ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE)
         {
-            auto specifedHeading = dynamic_cast<SpecifiedHeading*>(swerveChassis->GetHeadingState(chassisMovement));
+            auto specifedHeading = dynamic_cast<SpecifiedHeading *>(swerveChassis->GetHeadingState(chassisMovement));
             chassisMovement.chassisSpeeds.omega = units::angular_velocity::radians_per_second_t(0);
             specifedHeading->SetTargetHeading(chassisMovement.yawAngle);
             specifedHeading->UpdateChassisSpeeds(chassisMovement);
         }
 
-        //Set chassisMovement speeds that will be used by RobotDrive
+        // Set chassisMovement speeds that will be used by RobotDrive
         return m_robotDrive->UpdateSwerveModuleStates(chassisMovement);
-
     }
-    else //If we don't have states to run, don't move the robot
+    else // If we don't have states to run, don't move the robot
     {
-        //Create 0 speed frc::ChassisSpeeds
+        // Create 0 speed frc::ChassisSpeeds
         frc::ChassisSpeeds speeds;
         speeds.vx = 0_mps;
         speeds.vy = 0_mps;
         speeds.omega = units::angular_velocity::radians_per_second_t(0);
 
-        //Set chassisMovement speeds that will be used by RobotDrive
+        // Set chassisMovement speeds that will be used by RobotDrive
         chassisMovement.chassisSpeeds = speeds;
-        
+
         return m_robotDrive->UpdateSwerveModuleStates(chassisMovement);
     }
 }
 
 void TrajectoryDrive::CalcCurrentAndDesiredStates()
 {
-    //Get current time
+    // Get current time
     auto sampleTime = units::time::second_t(m_timer.get()->Get());
-    //Set desired state to the state at current time
+    // Set desired state to the state at current time
     m_desiredState = m_trajectory.Sample(sampleTime);
-
 }
 
 bool TrajectoryDrive::IsDone()
 {
-    
+
     bool isDone = false;
-    
-    if (!m_trajectoryStates.empty()) //If we have states... 
+
+    if (!m_trajectoryStates.empty()) // If we have states...
     {
         auto curPos = ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose();
 
@@ -146,7 +137,6 @@ bool TrajectoryDrive::IsDone()
             isDone = true;
             m_whyDone = "Current Pose = Trajectory final pose";
         }
-        
     }
     else
     {
@@ -160,7 +150,7 @@ bool TrajectoryDrive::IsDone()
 bool TrajectoryDrive::IsSamePose(frc::Pose2d currentPose, frc::Pose2d previousPose, double tolerance)
 {
     // Detect if the two poses are the same within a tolerance
-    double dCurPosX = currentPose.X().to<double>() * 100; //cm
+    double dCurPosX = currentPose.X().to<double>() * 100; // cm
     double dCurPosY = currentPose.Y().to<double>() * 100;
     double dPrevPosX = previousPose.X().to<double>() * 100;
     double dPrevPosY = previousPose.Y().to<double>() * 100;

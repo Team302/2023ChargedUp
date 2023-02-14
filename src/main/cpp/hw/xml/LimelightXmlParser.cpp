@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -38,8 +38,10 @@ DragonLimelight *LimelightXmlParser::ParseXML(pugi::xml_node limelightNode)
     std::string tableName = "";
     units::length::inch_t mountingHeight = units::length::inch_t(0.0);
     units::length::inch_t horizontalOffset = units::length::inch_t(0.0);
-    units::angle::degree_t mountingAngle = units::angle::degree_t(0.0);
-    units::angle::degree_t rotation = units::angle::degree_t(0.0);
+    units::length::inch_t forwardOffset = units::length::inch_t(0.0);
+    units::angle::degree_t pitch = units::angle::degree_t(0.0);
+    units::angle::degree_t yaw = units::angle::degree_t(0.0);
+    units::angle::degree_t roll = units::angle::degree_t(0.0);
     units::length::inch_t targetHeight = units::length::inch_t(0.0);
     units::length::inch_t targetHeight2 = units::length::inch_t(0.0);
 
@@ -75,13 +77,21 @@ DragonLimelight *LimelightXmlParser::ParseXML(pugi::xml_node limelightNode)
         {
             horizontalOffset = units::length::inch_t(attr.as_double());
         }
-        else if (strcmp(attr.name(), "mountingangle") == 0)
+        else if (strcmp(attr.name(), "pitch") == 0)
         {
-            mountingAngle = units::angle::degree_t(attr.as_double());
+            pitch = units::angle::degree_t(attr.as_double());
         }
-        else if (strcmp(attr.name(), "rotation") == 0)
+        else if (strcmp(attr.name(), "forwardOffset") == 0)
         {
-            rotation = units::angle::degree_t(attr.as_double());
+            forwardOffset = units::length::inch_t(attr.as_double());
+        }
+        else if (strcmp(attr.name(), "yaw") == 0)
+        {
+            yaw = units::angle::degree_t(attr.as_double());
+        }
+        else if (strcmp(attr.name(), "roll") == 0)
+        {
+            roll = units::angle::degree_t(attr.as_double());
         }
         else if (strcmp(attr.name(), "targetheight") == 0)
         {
@@ -169,8 +179,10 @@ DragonLimelight *LimelightXmlParser::ParseXML(pugi::xml_node limelightNode)
             tableName,
             mountingHeight,
             horizontalOffset,
-            rotation,
-            mountingAngle,
+            forwardOffset,
+            pitch,
+            yaw,
+            roll,
             targetHeight,
             targetHeight2,
             ledMode,

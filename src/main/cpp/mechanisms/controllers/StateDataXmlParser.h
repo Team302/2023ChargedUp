@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-/// Copyright 2022 Lake Orion Robotics FIRST Team 302
+/// Copyright 2023 Lake Orion Robotics FIRST Team 302
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 /// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -36,15 +36,13 @@
 //========================================================================================================
 class StateDataXmlParser
 {
-    public:
-        StateDataXmlParser() = default;
-        virtual ~StateDataXmlParser() = default;
+public:
+    StateDataXmlParser() = default;
+    virtual ~StateDataXmlParser() = default;
 
-        /// @brief      Parse a mechanismState.xml file
-        /// @param [in] MechanismTypes::MECHANISM_TYPE  - mechanism that the states are for
-        /// @return     state data
-        std::vector<MechanismTargetData*> ParseXML
-        (
-            MechanismTypes::MECHANISM_TYPE mechanism
-        );
+    /// @brief      Parse a mechanismState.xml file
+    /// @param [in] MechanismTypes::MECHANISM_TYPE  - mechanism that the states are for
+    /// @return     state data
+    std::vector<MechanismTargetData *> ParseXML(
+        MechanismTypes::MECHANISM_TYPE mechanism);
 };

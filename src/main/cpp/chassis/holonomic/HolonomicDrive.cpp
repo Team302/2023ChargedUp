@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -60,6 +60,7 @@ HolonomicDrive::HolonomicDrive() : State(string("HolonomicDrive"), -1),
 /// @return void
 void HolonomicDrive::Init()
 {
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("Initialized?"), "true");
 }
 
 /// @brief calculate the output for the wheels on the chassis from the throttle and steer components
@@ -69,6 +70,8 @@ void HolonomicDrive::Run()
     ChassisMovement moveInfo;
     moveInfo.driveOption = ChassisOptionEnums::DriveStateType::FIELD_DRIVE;
     moveInfo.controllerType = ChassisOptionEnums::AutonControllerType::HOLONOMIC;
+
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("DriveOptionBEGINNING"), moveInfo.driveOption);
 
     auto controller = TeleopControl::GetInstance();
     if (controller != nullptr && m_chassis != nullptr)
@@ -130,7 +133,7 @@ void HolonomicDrive::Run()
         // Automated driving
         if (m_previousDriveState != ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE)
         {
-            if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_WALL_GRID))
+            if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_LEFT_COLUMN))
             {
                 moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
                 m_previousDriveState = moveInfo.driveOption;
@@ -138,7 +141,7 @@ void HolonomicDrive::Run()
                 m_generatedTrajectory = moveInfo.trajectory;
                 m_field->AddTrajectory("DriverAssist", m_generatedTrajectory);
             }
-            else if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_COOP_GRID))
+            else if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_MIDDLE_COLUMN))
             {
                 moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
                 m_previousDriveState = moveInfo.driveOption;
@@ -146,7 +149,7 @@ void HolonomicDrive::Run()
                 m_generatedTrajectory = moveInfo.trajectory;
                 m_field->AddTrajectory("DriverAssist", m_generatedTrajectory);
             }
-            else if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_HP_GRID))
+            else if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_RIGHT_COLUMN))
             {
                 moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
                 m_previousDriveState = moveInfo.driveOption;
@@ -175,6 +178,13 @@ void HolonomicDrive::Run()
         auto strafe = controller->GetAxisValue(TeleopControlFunctions::HOLONOMIC_DRIVE_STRAFE);
         auto rotate = controller->GetAxisValue(TeleopControlFunctions::HOLONOMIC_DRIVE_ROTATE);
 
+        if (controller->IsButtonPressed(TeleopControlFunctions::SLOW_MODE))
+        {
+            forward *= m_slowModeMultiplier;
+            strafe *= m_slowModeMultiplier;
+            rotate *= m_slowModeMultiplier;
+        }
+
         if (abs(forward) > 0.05 || abs(strafe) > 0.05 || abs(rotate) > 0.05)
         {
             moveInfo.driveOption = ChassisOptionEnums::DriveStateType::FIELD_DRIVE;
@@ -190,11 +200,7 @@ void HolonomicDrive::Run()
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("Vx"), moveInfo.chassisSpeeds.vx.to<double>());
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("Vy"), moveInfo.chassisSpeeds.vy.to<double>());
 
-        // Reset position based on april tag readings
-        if (abs(m_vision->GetRobotPosition().X().to<double>()) > 0.0 && abs(m_vision->GetRobotPosition().Y().to<double>()) > 0.0) // check if we have a valid pose from the limelight
-        {
-            dynamic_cast<SwerveChassis *>(m_chassis)->ResetPose(m_vision->GetRobotPosition()); // if we have a valid pose, reset chassis position
-        }
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("DriveOptionEND"), moveInfo.driveOption);
 
         m_chassis->Drive(moveInfo);
     }

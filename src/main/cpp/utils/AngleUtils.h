@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -17,28 +17,22 @@
 
 #include <units/angle.h>
 
-class AngleUtils 
+class AngleUtils
 {
-    public:        
-        /// @brief find the angle from the startingAngle to the targetAngle
-        /// @param [in] startingAngle - angle to start from
-        /// @param [in] targetAngle - angle to go to
-        /// @returns units::angle::degree_t the angle to traverse to get from the startingAngle
-        ///                                 to the targetAngle 
-        static units::angle::degree_t GetDeltaAngle
-        (
-            units::angle::degree_t  startingAngle,
-            units::angle::degree_t  targetAngle
-        );
+public:
+    /// @brief find the angle from the startingAngle to the targetAngle
+    /// @param [in] startingAngle - angle to start from
+    /// @param [in] targetAngle - angle to go to
+    /// @returns units::angle::degree_t the angle to traverse to get from the startingAngle
+    ///                                 to the targetAngle
+    static units::angle::degree_t GetDeltaAngle(
+        units::angle::degree_t startingAngle,
+        units::angle::degree_t targetAngle);
 
-        /// @brief make sure the angle is between -180.0_deg and 180.0_deg and if it isn't find
-        ///        its equivalent angle within that range
-        /// @param [in] units::angle::degree_t  angle - angle to check
-        /// @returns units::angle::degree_t angle within range
-        static units::angle::degree_t GetEquivAngle
-        (
-            units::angle::degree_t  angle
-        );
-
+    /// @brief make sure the angle is between -180.0_deg and 180.0_deg and if it isn't find
+    ///        its equivalent angle within that range
+    /// @param [in] units::angle::degree_t  angle - angle to check
+    /// @returns units::angle::degree_t angle within range
+    static units::angle::degree_t GetEquivAngle(
+        units::angle::degree_t angle);
 };
-

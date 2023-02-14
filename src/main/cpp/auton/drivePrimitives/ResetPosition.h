@@ -1,5 +1,5 @@
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -15,36 +15,36 @@
 
 #pragma once
 
-//C++ Includes
+// C++ Includes
 #include <memory>
 
-//FRC/WPI Includes
+// FRC/WPI Includes
 #include <frc/trajectory/TrajectoryUtil.h>
 #include <frc/trajectory/TrajectoryConfig.h>
 #include <frc/Filesystem.h>
 #include <wpi/SmallString.h>
 
-//Team 302 Includes
+// Team 302 Includes
 #include <auton/drivePrimitives/IPrimitive.h>
 
-//Forward Declares
+// Forward Declares
 class IChassis;
 class PrimitiveParams;
 
 class ResetPosition : public IPrimitive
 {
-    public:
-        ResetPosition();
+public:
+    ResetPosition();
 
-        virtual ~ResetPosition() = default;
+    virtual ~ResetPosition() = default;
 
-        void Init(PrimitiveParams* params) override;
+    void Init(PrimitiveParams *params) override;
 
-        void Run() override;
+    void Run() override;
 
-        bool IsDone() override;
-    
-    private:
-        std::shared_ptr<IChassis> m_chassis;
-        frc::Trajectory                m_trajectory;
+    bool IsDone() override;
+
+private:
+    std::shared_ptr<IChassis> m_chassis;
+    frc::Trajectory m_trajectory;
 };

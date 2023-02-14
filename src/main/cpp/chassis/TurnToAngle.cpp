@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -32,13 +32,11 @@
 using namespace frc;
 using namespace std;
 
-TurnToAngle::TurnToAngle
-(
-    units::angle::degree_t  targetAngle
-) : State(string("TurnToAAngle"), -1),
-    m_targetAngle(targetAngle),
-    m_chassis(ChassisFactory::GetChassisFactory()->GetSwerveChassis()),
-    m_atTarget(false)
+TurnToAngle::TurnToAngle(
+    units::angle::degree_t targetAngle) : State(string("TurnToAAngle"), -1),
+                                          m_targetAngle(targetAngle),
+                                          m_chassis(ChassisFactory::GetChassisFactory()->GetSwerveChassis()),
+                                          m_atTarget(false)
 {
 }
 
@@ -51,46 +49,46 @@ void TurnToAngle::Init()
 //
 //                current orientation (0)
 //                 +---------------+
-//                 | @           @ | 
-//                 |       ^       | 
-//                 |       |       | 
-//                 |               | 
-//                 |               | 
-//                 | @           @ | 
+//                 | @           @ |
+//                 |       ^       |
+//                 |       |       |
+//                 |               |
+//                 |               |
+//                 | @           @ |
 //                 +---------------+
 //
 //                desired orientation (180 / -180) worse case scenario
 //                 +---------------+
-//                 | @           @ | 
-//                 |       |       | 
-//                 |      \/       | 
-//                 |               | 
-//                 |               | 
-//                 | @           @ | 
+//                 | @           @ |
+//                 |       |       |
+//                 |      \/       |
+//                 |               |
+//                 |               |
+//                 | @           @ |
 //                 +---------------+
 //
 //                desired orientation (+90)
 //                 +---------------+
-//                 | @           @ | 
-//                 |               | 
-//                 |     <--       | 
-//                 |               | 
-//                 |               | 
-//                 | @           @ | 
+//                 | @           @ |
+//                 |               |
+//                 |     <--       |
+//                 |               |
+//                 |               |
+//                 | @           @ |
 //                 +---------------+
 //
 //                desired orientation (-90)
 //                 +---------------+
-//                 | @           @ | 
-//                 |               | 
-//                 |     -->       | 
-//                 |               | 
-//                 |               | 
-//                 | @           @ | 
+//                 | @           @ |
+//                 |               |
+//                 |     -->       |
+//                 |               |
+//                 |               |
+//                 | @           @ |
 //                 +---------------+
 //
 //
-void TurnToAngle::Run() 
+void TurnToAngle::Run()
 {
     if (m_chassis != nullptr)
     {
@@ -101,7 +99,7 @@ void TurnToAngle::Run()
         moveInfo.chassisSpeeds.vy = 0_mps;
         moveInfo.driveOption = ChassisOptionEnums::DriveStateType::ROBOT_DRIVE;
         moveInfo.headingOption = ChassisOptionEnums::HeadingOption::TOWARD_GOAL;
-        
+
         if (std::abs(delta.to<double>()) > m_angleTolerance.to<double>())
         {
             m_pid.SetSetpoint(m_targetAngle.to<double>());

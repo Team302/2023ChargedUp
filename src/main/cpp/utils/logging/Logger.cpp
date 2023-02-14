@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302 
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -23,7 +23,6 @@
 ///
 //========================================================================================================
 
-
 // C++ Includes
 #include <algorithm>
 #include <iostream>
@@ -40,70 +39,62 @@
 // Team 302 includes
 #include <utils/logging/Logger.h>
 
-
 // Third Party Includes
 
 using namespace frc;
 using namespace std;
 
-
 /// @brief Find or create the singleton logger
 /// @returns Logger* pointer to the logger
-Logger* Logger::m_instance = nullptr;
-Logger* Logger::GetLogger()
+Logger *Logger::m_instance = nullptr;
+Logger *Logger::GetLogger()
 {
-    if ( Logger::m_instance == nullptr )
+    if (Logger::m_instance == nullptr)
     {
         Logger::m_instance = new Logger();
     }
     return Logger::m_instance;
 }
 
-
 /// @brief log a message
 /// @param [in] LOGGER_LEVEL: message level
 /// @param [in] std::string: network table name or classname to group messages.  If logging option is DASHBOARD, this will be the network table name
 /// @param [in] std::string: message identifier: within a grouping multiple messages may be displayed this is the prefix/look up key
 /// @param [in] std::string: message/value
-void Logger::LogData
-(
-    LOGGER_LEVEL    level,
-    const string&   group,
-    const string&   identifier,     
-    const string&   message                 
-)
+void Logger::LogData(
+    LOGGER_LEVEL level,
+    const string &group,
+    const string &identifier,
+    const string &message)
 {
     if (ShouldDisplayIt(level, group, identifier, message))
     {
-        switch ( m_option )
+        switch (m_option)
         {
-            case LOGGER_OPTION::CONSOLE:
-            {
-                cout << group << " " << identifier << ": " << message << endl;
-            }
+        case LOGGER_OPTION::CONSOLE:
+        {
+            cout << group << " " << identifier << ": " << message << endl;
+        }
+        break;
+
+        case LOGGER_OPTION::DASHBOARD:
+        {
+            auto table = nt::NetworkTableInstance::GetDefault().GetTable(group);
+            table.get()->PutString(identifier, message);
+        }
+        break;
+
+        default: // case LOGGER_OPTION::EAT_IT:
             break;
-
-            case LOGGER_OPTION::DASHBOARD:
-            {
-                auto table = nt::NetworkTableInstance::GetDefault().GetTable(group);
-        	    table.get()->PutString(identifier, message);
-            }
-            break;
-
-            default:  // case LOGGER_OPTION::EAT_IT:
-                break;
-
         }
     }
 }
 
-void Logger::LogData
-(
-    LOGGER_LEVEL        level,
-    const string&       group,
-    const string&       identifier,     
-    const char*   message                 
-)
+void Logger::LogData(
+    LOGGER_LEVEL level,
+    const string &group,
+    const string &identifier,
+    const char *message)
 {
     LogData(level, group, identifier, string(message));
 }
@@ -111,73 +102,32 @@ void Logger::LogData
 /// @param [in] LOGGER_LEVEL: message level
 /// @param [in] std::string: network table name or classname to group messages.  If logging option is DASHBOARD, this will be the network table name
 /// @param [in] std::string: message identifier: within a grouping multiple messages may be displayed this is the prefix/look up key
-/// @param [in] double: value to display       
-void Logger::LogData
-(
-    LOGGER_LEVEL    level,
-    const string&   group,
-    const string&   identifier,     
-    double          value                 
-)
+/// @param [in] double: value to display
+void Logger::LogData(
+    LOGGER_LEVEL level,
+    const string &group,
+    const string &identifier,
+    double value)
 {
     if (ShouldDisplayIt(level, group, identifier, to_string(value)))
     {
-        switch ( m_option )
+        switch (m_option)
         {
-            case LOGGER_OPTION::CONSOLE:
-            {
-                cout << group << " " << identifier << ": " << to_string(value) << endl;
-            }
-            break;
-
-            case LOGGER_OPTION::DASHBOARD:
-            {
-                auto table = nt::NetworkTableInstance::GetDefault().GetTable(group);
-	            table.get()->PutNumber(identifier, value);
-            }
-            break;
-
-            default:  // case LOGGER_OPTION::EAT_IT:
-                break;
-
+        case LOGGER_OPTION::CONSOLE:
+        {
+            cout << group << " " << identifier << ": " << to_string(value) << endl;
         }
-    }
-}
+        break;
 
-
-/// @brief log a message
-/// @param [in] LOGGER_LEVEL: message level
-/// @param [in] std::string: network table name or classname to group messages.  If logging option is DASHBOARD, this will be the network table name
-/// @param [in] std::string: message identifier: within a grouping multiple messages may be displayed this is the prefix/look up key
-/// @param [in] bool: value to display       
-void Logger::LogData
-(
-    LOGGER_LEVEL            level,   
-    const std::string&      group,
-    const std::string&      identifier,     
-    bool                    value                 
-)
-{
-    if (ShouldDisplayIt(level, group, identifier, to_string(value)))
-    {
-        switch ( m_option )
+        case LOGGER_OPTION::DASHBOARD:
         {
-            case LOGGER_OPTION::CONSOLE:
-            {
-                cout << group << " " << identifier << ": " << to_string(value) << endl;
-            }
+            auto table = nt::NetworkTableInstance::GetDefault().GetTable(group);
+            table.get()->PutNumber(identifier, value);
+        }
+        break;
+
+        default: // case LOGGER_OPTION::EAT_IT:
             break;
-
-            case LOGGER_OPTION::DASHBOARD:
-            {
-                auto table = nt::NetworkTableInstance::GetDefault().GetTable(group);
-	            table.get()->PutBoolean(identifier, value);
-            }
-            break;
-
-            default:  // case LOGGER_OPTION::EAT_IT:
-                break;
-
         }
     }
 }
@@ -186,43 +136,72 @@ void Logger::LogData
 /// @param [in] LOGGER_LEVEL: message level
 /// @param [in] std::string: network table name or classname to group messages.  If logging option is DASHBOARD, this will be the network table name
 /// @param [in] std::string: message identifier: within a grouping multiple messages may be displayed this is the prefix/look up key
-/// @param [in] int: value to display       
-void Logger::LogData
-(
-    LOGGER_LEVEL            level,   
-    const std::string&      group,
-    const std::string&      identifier,     
-    int                     value                 
-)
+/// @param [in] bool: value to display
+void Logger::LogData(
+    LOGGER_LEVEL level,
+    const std::string &group,
+    const std::string &identifier,
+    bool value)
 {
     if (ShouldDisplayIt(level, group, identifier, to_string(value)))
     {
-        switch ( m_option )
+        switch (m_option)
         {
-            case LOGGER_OPTION::CONSOLE:
-            {
-                cout << group << " " << identifier << ": " << to_string(value) << endl;
-            }
+        case LOGGER_OPTION::CONSOLE:
+        {
+            cout << group << " " << identifier << ": " << to_string(value) << endl;
+        }
+        break;
+
+        case LOGGER_OPTION::DASHBOARD:
+        {
+            auto table = nt::NetworkTableInstance::GetDefault().GetTable(group);
+            table.get()->PutBoolean(identifier, value);
+        }
+        break;
+
+        default: // case LOGGER_OPTION::EAT_IT:
             break;
-
-            case LOGGER_OPTION::DASHBOARD:
-            {
-                auto table = nt::NetworkTableInstance::GetDefault().GetTable(group);
-	            table.get()->PutNumber(identifier, value);
-            }
-            break;
-
-            default:  // case LOGGER_OPTION::EAT_IT:
-                break;
-
         }
     }
 }
 
-void Logger::LogData
-(
-    LoggerData&     info
-)
+/// @brief log a message
+/// @param [in] LOGGER_LEVEL: message level
+/// @param [in] std::string: network table name or classname to group messages.  If logging option is DASHBOARD, this will be the network table name
+/// @param [in] std::string: message identifier: within a grouping multiple messages may be displayed this is the prefix/look up key
+/// @param [in] int: value to display
+void Logger::LogData(
+    LOGGER_LEVEL level,
+    const std::string &group,
+    const std::string &identifier,
+    int value)
+{
+    if (ShouldDisplayIt(level, group, identifier, to_string(value)))
+    {
+        switch (m_option)
+        {
+        case LOGGER_OPTION::CONSOLE:
+        {
+            cout << group << " " << identifier << ": " << to_string(value) << endl;
+        }
+        break;
+
+        case LOGGER_OPTION::DASHBOARD:
+        {
+            auto table = nt::NetworkTableInstance::GetDefault().GetTable(group);
+            table.get()->PutNumber(identifier, value);
+        }
+        break;
+
+        default: // case LOGGER_OPTION::EAT_IT:
+            break;
+        }
+    }
+}
+
+void Logger::LogData(
+    LoggerData &info)
 {
     for (auto boollog : info.bools)
     {
@@ -248,13 +227,11 @@ void Logger::LogData
 /// @param [in] std::string: message identifier: within a grouping multiple messages may be displayed this is the prefix/look up key
 /// @param [in] std::string: message/value
 /// @returns bool: true - display the message, false - don't display the message
-bool Logger::ShouldDisplayIt
-(
-    LOGGER_LEVEL    level,
-    const string&   group,
-    const string&   identifier,     
-    const string&   message                 
-)
+bool Logger::ShouldDisplayIt(
+    LOGGER_LEVEL level,
+    const string &group,
+    const string &identifier,
+    const string &message)
 {
     if (m_option == LOGGER_OPTION::EAT_IT)
     {
@@ -265,13 +242,12 @@ bool Logger::ShouldDisplayIt
     {
         string key = group + identifier + message;
         auto it = m_alreadyDisplayed.find(key);
-        if (it == m_alreadyDisplayed.end())  // display if not already displayed
+        if (it == m_alreadyDisplayed.end()) // display if not already displayed
         {
-            m_alreadyDisplayed.insert(key);     // save the key
+            m_alreadyDisplayed.insert(key); // save the key
             return true;
         }
         return false;
-
     }
     return true;
 }
@@ -307,8 +283,8 @@ void Logger::PutLoggingSelectionsOnDashboard()
 /// @brief Read logging option from dashboard, but not every 20ms
 void Logger::PeriodicLog()
 {
-    m_cyclingCounter += 1;          // count 20ms loops
-    if (m_cyclingCounter >= 25)     // execute every 500ms
+    m_cyclingCounter += 1;      // count 20ms loops
+    if (m_cyclingCounter >= 25) // execute every 500ms
     {
         m_cyclingCounter = 0;
 
@@ -322,24 +298,24 @@ void Logger::PeriodicLog()
             // re-work so we aren't writing this out every 25 loops
             m_option = selectedOption <= LOGGER_OPTION::EAT_IT ? selectedOption : LOGGER_OPTION::EAT_IT;
             string optionAsString;
-            switch(selectedOption)
+            switch (selectedOption)
             {
-                case CONSOLE:
-                    optionAsString.assign("CONSOLE");
-                    break;
+            case CONSOLE:
+                optionAsString.assign("CONSOLE");
+                break;
 
-                case DASHBOARD:
-                    optionAsString.assign("DASHBOARD");
-                    break;
+            case DASHBOARD:
+                optionAsString.assign("DASHBOARD");
+                break;
 
-                case EAT_IT:
-                    optionAsString.assign("EAT_IT");
-                    break;
+            case EAT_IT:
+                optionAsString.assign("EAT_IT");
+                break;
 
-                default:
-                    optionAsString.assign("Out of range !");
-                    m_option = EAT_IT;
-                    break;
+            default:
+                optionAsString.assign("Out of range !");
+                m_option = EAT_IT;
+                break;
             }
             LogData(LOGGER_LEVEL::PRINT, string("Logger"), string("Selected Option"), optionAsString);
         }
@@ -355,36 +331,36 @@ void Logger::PeriodicLog()
             m_level = selectedLevel <= LOGGER_LEVEL::PRINT ? selectedLevel : LOGGER_LEVEL::WARNING;
 
             string levelAsString;
-            switch(selectedLevel)
+            switch (selectedLevel)
             {
-                case ERROR_ONCE:
-                    levelAsString.assign("ERROR_ONCE");
-                    break;
+            case ERROR_ONCE:
+                levelAsString.assign("ERROR_ONCE");
+                break;
 
-                case ERROR:
-                    levelAsString.assign("ERROR");
-                    break;
+            case ERROR:
+                levelAsString.assign("ERROR");
+                break;
 
-                case WARNING_ONCE:
-                    levelAsString.assign("WARNING_ONCE");
-                    break;
+            case WARNING_ONCE:
+                levelAsString.assign("WARNING_ONCE");
+                break;
 
-                case WARNING:
-                    levelAsString.assign("WARNING");
-                    break;
+            case WARNING:
+                levelAsString.assign("WARNING");
+                break;
 
-                case PRINT_ONCE:
-                    levelAsString.assign("PRINT_ONCE");
-                    break;
+            case PRINT_ONCE:
+                levelAsString.assign("PRINT_ONCE");
+                break;
 
-                case PRINT:
-                    levelAsString.assign("PRINT");
-                    break;
+            case PRINT:
+                levelAsString.assign("PRINT");
+                break;
 
-                default:
-                    levelAsString.assign("Out of range !");
-                    m_level = WARNING;
-                    break;
+            default:
+                levelAsString.assign("Out of range !");
+                m_level = WARNING;
+                break;
             }
             LogData(LOGGER_LEVEL::PRINT, string("Logger"), string("Selected Level"), levelAsString);
         }
@@ -393,29 +369,24 @@ void Logger::PeriodicLog()
 
 /// @brief set the option for where the logging messages should be displayed
 /// @param [in] LOGGER_OPTION:  logging option for where to log messages
-void Logger::SetLoggingOption
-(
-    LOGGER_OPTION option    
-)
+void Logger::SetLoggingOption(
+    LOGGER_OPTION option)
 {
     m_option = option;
 }
 
 /// @brief set the level for messages that will be displayed
 /// @param [in] LOGGER_LEVEL:  logging level for which messages to display
-void Logger::SetLoggingLevel
-(
-    LOGGER_LEVEL level    
-)
+void Logger::SetLoggingLevel(
+    LOGGER_LEVEL level)
 {
     m_level = level;
 }
 
-
-Logger::Logger() : m_option( LOGGER_OPTION::DASHBOARD ), 
-                   m_level( LOGGER_LEVEL::PRINT ),
+Logger::Logger() : m_option(LOGGER_OPTION::DASHBOARD),
+                   m_level(LOGGER_LEVEL::PRINT),
                    m_alreadyDisplayed(),
-                   m_cyclingCounter(0), 
+                   m_cyclingCounter(0),
                    m_optionChooser(),
                    m_levelChooser()
 {

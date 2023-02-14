@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -32,8 +32,10 @@ public:
         std::string tableName,                          /// <I> - network table name
         units::length::inch_t mountingHeight,           /// <I> - mounting height of the limelight
         units::length::inch_t mountingHorizontalOffset, /// <I> - mounting horizontal offset from the middle of the robot
-        units::angle::degree_t rotation,                /// <I> - clockwise rotation of limelight
-        units::angle::degree_t mountingAngle,           /// <I> - mounting angle of the camera
+        units::length::inch_t forwardOffset,            /// <I> mounting offset forward/back
+        units::angle::degree_t pitch,                   /// <I> - Pitch of limelight
+        units::angle::degree_t yaw,                     /// <I> - Yaw of limelight
+        units::angle::degree_t roll,                    /// <I> - Roll of limelight
         units::length::inch_t targetHeight,             /// <I> - height the target
         units::length::inch_t targetHeight2,            /// <I> - height of second target
         DragonLimelight::LED_MODE ledMode,

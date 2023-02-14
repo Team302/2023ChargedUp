@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -20,14 +20,12 @@ class PrimitiveParams;
 
 class IPrimitive
 {
-    public:
-        const double LOOP_LENGTH = 0.020; //Program loop duration in seconds
+public:
+    const double LOOP_LENGTH = 0.020; // Program loop duration in seconds
 
-        IPrimitive() = default;
-        virtual ~IPrimitive() = default;
-        virtual void Init(PrimitiveParams*	Parms) = 0;
-        virtual void Run() = 0;
-        virtual bool IsDone() = 0;
-
+    IPrimitive() = default;
+    virtual ~IPrimitive() = default;
+    virtual void Init(PrimitiveParams *Parms) = 0;
+    virtual void Run() = 0;
+    virtual bool IsDone() = 0;
 };
-

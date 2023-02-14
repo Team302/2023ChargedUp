@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -33,38 +33,36 @@ namespace frc
     class Timer;
 }
 
-
-class TurnAngle : public IPrimitive 
+class TurnAngle : public IPrimitive
 {
-    public:
-        TurnAngle();
-        virtual ~TurnAngle() = default;
+public:
+    TurnAngle();
+    virtual ~TurnAngle() = default;
 
-        void Init(PrimitiveParams* params) override;
-        void Run() override;
-        bool IsDone() override;
+    void Init(PrimitiveParams *params) override;
+    void Run() override;
+    bool IsDone() override;
 
-    private:
-        const double PROPORTIONAL_COEFF  = 3.0; //0.5
-        const double INTREGRAL_COEFF     = 0.0;
-        const double DERIVATIVE_COEFF    = 0.0;
-        const double FEET_FORWARD_COEFF  = 0.0;
+private:
+    const double PROPORTIONAL_COEFF = 3.0; // 0.5
+    const double INTREGRAL_COEFF = 0.0;
+    const double DERIVATIVE_COEFF = 0.0;
+    const double FEET_FORWARD_COEFF = 0.0;
 
-        std::shared_ptr<IChassis> m_chassis;
-   		std::unique_ptr<frc::Timer> m_timer;
+    std::shared_ptr<IChassis> m_chassis;
+    std::unique_ptr<frc::Timer> m_timer;
 
-        double m_targetAngle;
-        double m_maxTime;
-        double m_leftPos;
-        double m_rightPos;
-        bool m_isDone;
+    double m_targetAngle;
+    double m_maxTime;
+    double m_leftPos;
+    double m_rightPos;
+    bool m_isDone;
 
-        const double ANGLE_THRESH = 2; // +/- threshold for being at angle
-        const double MAX_VELOCITY = 20; //inches per second
-        const double MIN_VELOCITY = 4;
-        const double ANGLE_DIFFERENCE_VELOCITY_MULTIPLIER = 0.7;
+    const double ANGLE_THRESH = 2;  // +/- threshold for being at angle
+    const double MAX_VELOCITY = 20; // inches per second
+    const double MIN_VELOCITY = 4;
+    const double ANGLE_DIFFERENCE_VELOCITY_MULTIPLIER = 0.7;
 
-        DragonPigeon*                   m_pigeon;
-        double                          m_heading;
+    DragonPigeon *m_pigeon;
+    double m_heading;
 };
-

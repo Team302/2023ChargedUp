@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -13,7 +13,6 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
-
 
 // C++ Includes
 #include <string>
@@ -38,121 +37,105 @@
 #include <hw/ctreadapters/DragonVelocityRPSToCTREAdapter.h>
 #include <hw/ctreadapters/DragonVoltageToCTREAdapter.h>
 
-
-
 // Third Party Includes
 #include <ctre/phoenix/motorcontrol/can/WPI_BaseMotorController.h>
 
-
-
 using namespace std;
 
-
-DragonControlToCTREAdapterFactory* DragonControlToCTREAdapterFactory::m_factory = nullptr;
-
-
+DragonControlToCTREAdapterFactory *DragonControlToCTREAdapterFactory::m_factory = nullptr;
 
 //=======================================================================================
 /// Method: GetInstance
 /// @brief  Get the factory singleton
 /// @return DragonServoFactory*    pointer to the factory
 //=======================================================================================
-DragonControlToCTREAdapterFactory* DragonControlToCTREAdapterFactory::GetFactory()
+DragonControlToCTREAdapterFactory *DragonControlToCTREAdapterFactory::GetFactory()
 {
-    if ( DragonControlToCTREAdapterFactory::m_factory == nullptr )
+    if (DragonControlToCTREAdapterFactory::m_factory == nullptr)
     {
         DragonControlToCTREAdapterFactory::m_factory = new DragonControlToCTREAdapterFactory();
     }
     return DragonControlToCTREAdapterFactory::m_factory;
 }
 
-
-DragonControlToCTREAdapter* DragonControlToCTREAdapterFactory::CreatePercentOuptutAdapter
-(
-    std::string                                                     networkTableName,  
-    ctre::phoenix::motorcontrol::can::WPI_BaseMotorController*      controller
-)
-{    
+DragonControlToCTREAdapter *DragonControlToCTREAdapterFactory::CreatePercentOuptutAdapter(
+    std::string networkTableName,
+    ctre::phoenix::motorcontrol::can::WPI_BaseMotorController *controller)
+{
 
     ControlData controlInfo;
     DistanceAngleCalcStruc calcStruc;
     return CreateAdapter(networkTableName, 0, &controlInfo, calcStruc, controller);
 }
-DragonControlToCTREAdapter* DragonControlToCTREAdapterFactory::CreateAdapter
-(
-    std::string                                                     networkTableName,  
-    int                                                             controllerSlot, 
-    ControlData*                                                    controlInfo,          
-    DistanceAngleCalcStruc                                          calcStruc,                          
-    ctre::phoenix::motorcontrol::can::WPI_BaseMotorController*      controller
-)
+DragonControlToCTREAdapter *DragonControlToCTREAdapterFactory::CreateAdapter(
+    std::string networkTableName,
+    int controllerSlot,
+    ControlData *controlInfo,
+    DistanceAngleCalcStruc calcStruc,
+    ctre::phoenix::motorcontrol::can::WPI_BaseMotorController *controller)
 {
     if (controlInfo != nullptr && controller != nullptr)
     {
         switch (controlInfo->GetMode())
         {
-            case ControlModes::CONTROL_TYPE::PERCENT_OUTPUT:
-                return new DragonPercentOutputToCTREAdapter(networkTableName, controllerSlot, controlInfo, calcStruc, controller);
-                break;
+        case ControlModes::CONTROL_TYPE::PERCENT_OUTPUT:
+            return new DragonPercentOutputToCTREAdapter(networkTableName, controllerSlot, controlInfo, calcStruc, controller);
+            break;
 
-			case ControlModes::CONTROL_TYPE::POSITION_ABSOLUTE:
-                return new DragonTicksToCTREAdapter(networkTableName, controllerSlot, controlInfo, calcStruc, controller);
-                break;
+        case ControlModes::CONTROL_TYPE::POSITION_ABSOLUTE:
+            return new DragonTicksToCTREAdapter(networkTableName, controllerSlot, controlInfo, calcStruc, controller);
+            break;
 
-			case ControlModes::CONTROL_TYPE::POSITION_DEGREES:
-                return new DragonPositionDegreeToCTREAdapter(networkTableName, controllerSlot, controlInfo, calcStruc, controller);
-                break;
+        case ControlModes::CONTROL_TYPE::POSITION_DEGREES:
+            return new DragonPositionDegreeToCTREAdapter(networkTableName, controllerSlot, controlInfo, calcStruc, controller);
+            break;
 
-			case ControlModes::CONTROL_TYPE::POSITION_INCH:
-                return new DragonPositionInchToCTREAdapter(networkTableName, controllerSlot, controlInfo, calcStruc, controller);
-                break;
+        case ControlModes::CONTROL_TYPE::POSITION_INCH:
+            return new DragonPositionInchToCTREAdapter(networkTableName, controllerSlot, controlInfo, calcStruc, controller);
+            break;
 
-			case ControlModes::CONTROL_TYPE::POSITION_DEGREES_ABSOLUTE:
-                return new DragonPercentOutputToCTREAdapter(networkTableName, controllerSlot, controlInfo, calcStruc, controller);
-                break;
+        case ControlModes::CONTROL_TYPE::POSITION_DEGREES_ABSOLUTE:
+            return new DragonPercentOutputToCTREAdapter(networkTableName, controllerSlot, controlInfo, calcStruc, controller);
+            break;
 
-			case ControlModes::CONTROL_TYPE::TRAPEZOID:		
-                return new DragonTrapezoidToCTREAdapter(networkTableName, controllerSlot, controlInfo, calcStruc, controller);
-                break;
+        case ControlModes::CONTROL_TYPE::TRAPEZOID:
+            return new DragonTrapezoidToCTREAdapter(networkTableName, controllerSlot, controlInfo, calcStruc, controller);
+            break;
 
-			case ControlModes::CONTROL_TYPE::VELOCITY_DEGREES:
-                return new DragonVelocityDegreeToCTREAdapter(networkTableName, controllerSlot, controlInfo, calcStruc, controller);
-                break;
+        case ControlModes::CONTROL_TYPE::VELOCITY_DEGREES:
+            return new DragonVelocityDegreeToCTREAdapter(networkTableName, controllerSlot, controlInfo, calcStruc, controller);
+            break;
 
-			case ControlModes::CONTROL_TYPE::VELOCITY_INCH:
-                return new DragonVelocityInchToCTREAdapter(networkTableName, controllerSlot, controlInfo, calcStruc, controller);
-                break;
+        case ControlModes::CONTROL_TYPE::VELOCITY_INCH:
+            return new DragonVelocityInchToCTREAdapter(networkTableName, controllerSlot, controlInfo, calcStruc, controller);
+            break;
 
-			case ControlModes::CONTROL_TYPE::VELOCITY_RPS:
-                return new DragonVelocityRPSToCTREAdapter(networkTableName, controllerSlot, controlInfo, calcStruc, controller);
-                break;
+        case ControlModes::CONTROL_TYPE::VELOCITY_RPS:
+            return new DragonVelocityRPSToCTREAdapter(networkTableName, controllerSlot, controlInfo, calcStruc, controller);
+            break;
 
-			case ControlModes::CONTROL_TYPE::CURRENT:
-                break;
+        case ControlModes::CONTROL_TYPE::CURRENT:
+            break;
 
-			case ControlModes::CONTROL_TYPE::MOTION_PROFILE:
-                break;
+        case ControlModes::CONTROL_TYPE::MOTION_PROFILE:
+            break;
 
-			case ControlModes::CONTROL_TYPE::MOTION_PROFILE_ARC:
-                break;
+        case ControlModes::CONTROL_TYPE::MOTION_PROFILE_ARC:
+            break;
 
-            case ControlModes::CONTROL_TYPE::VOLTAGE:
-                return new DragonVoltageToCTREAdapter(networkTableName, controllerSlot, controlInfo, calcStruc, controller);
-                break;
+        case ControlModes::CONTROL_TYPE::VOLTAGE:
+            return new DragonVoltageToCTREAdapter(networkTableName, controllerSlot, controlInfo, calcStruc, controller);
+            break;
 
-			default:
-                string msg{"Invalid control data "};
-                msg += to_string(controller->GetDeviceID());
-				Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("DragonControlToCTREAdapterFactory"), string("CreateAdapter"), msg);
-                return new DragonPercentOutputToCTREAdapter(networkTableName, controllerSlot, controlInfo, calcStruc, controller);
-                break;
-		}	
+        default:
+            string msg{"Invalid control data "};
+            msg += to_string(controller->GetDeviceID());
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("DragonControlToCTREAdapterFactory"), string("CreateAdapter"), msg);
+            return new DragonPercentOutputToCTREAdapter(networkTableName, controllerSlot, controlInfo, calcStruc, controller);
+            break;
+        }
     }
     string msg{"Invalid contrrol information "};
     Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("DragonControlToCTREAdapterFactory"), string("CreateAdapter"), msg);
     return new DragonPercentOutputToCTREAdapter(networkTableName, controllerSlot, controlInfo, calcStruc, controller);
 }
-
-
-
-

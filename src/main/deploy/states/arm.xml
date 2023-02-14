@@ -4,8 +4,8 @@
     identifier="RotateToAngle"
     mode="POSITION_DEGREES"
     constrolServer="MOTORCONTROLLER"
-    proportional="0.0025"
-    integral="0.0"
+    proportional="0.021"
+    integral="0.0004"
     derivative="0.0"
     feedforward="0.0"
     izone="0.0"
@@ -13,7 +13,7 @@
     cruisevelocity="0.0" />
   <controlData
     identifier="HoldAngle"
-    mode="POSITION_DEGREES"
+    mode="PERCENT_OUTPUT"
     constrolServer="MOTORCONTROLLER"
     proportional="0.0"
     integral="0.0"

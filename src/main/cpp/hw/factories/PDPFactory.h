@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -19,24 +19,23 @@
 // FRC includes
 #include <frc/PowerDistribution.h>
 
-
 /// @class PDPFactory
 /// @brief This controls the creation of the PDP
 class PDPFactory
 {
-	public:
-		/// @brief  Find or create the analog input factory
-		/// @return PDPFactory* pointer to the factory
-		static PDPFactory* GetFactory();
+public:
+	/// @brief  Find or create the analog input factory
+	/// @return PDPFactory* pointer to the factory
+	static PDPFactory *GetFactory();
 
-        frc::PowerDistribution* GetPDP() const { return m_pdp; };
-        frc::PowerDistribution* CreatePDP(int canID, frc::PowerDistribution::ModuleType type);
+	frc::PowerDistribution *GetPDP() const { return m_pdp; };
+	frc::PowerDistribution *CreatePDP(int canID, frc::PowerDistribution::ModuleType type);
 
-	private:
-		PDPFactory();
-		virtual ~PDPFactory() = default;
+private:
+	PDPFactory();
+	virtual ~PDPFactory() = default;
 
-        frc::PowerDistribution* m_pdp;
+	frc::PowerDistribution *m_pdp;
 
-		static PDPFactory*	m_factory;
+	static PDPFactory *m_factory;
 };

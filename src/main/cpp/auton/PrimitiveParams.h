@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -29,84 +29,72 @@
 #include <mechanisms/extender/ExtenderStateMgr.h>
 #include <mechanisms/grabber/GrabberStateMgr.h>
 
-
-// @ADDMECH include for your mechanism 
+// @ADDMECH include for your mechanism
 
 #include <chassis/IChassis.h>
 
 // Third Party Includes
 
-
 class PrimitiveParams
 {
-    public:
+public:
+    PrimitiveParams(
+        PRIMITIVE_IDENTIFIER id,
+        float time,
+        float distance,
+        float xLoc,
+        float yLoc,
+        ChassisOptionEnums::HeadingOption headingOption,
+        float heading,
+        float startDriveSpeed,
+        float endDriveSpeed,
+        std::string pathName,
+        // @ADDMECH add parameter for your mechanism state
+        ArmStateMgr::ARM_STATE armState,
+        ExtenderStateMgr::EXTENDER_STATE extenderState,
+        GrabberStateMgr::GRABBER_STATE grabberState
 
-        PrimitiveParams
-        (
-                PRIMITIVE_IDENTIFIER                                id,
-                float                                               time,
-                float                                               distance,
-                float                                               xLoc,
-                float                                               yLoc,
-                ChassisOptionEnums::HeadingOption                   headingOption,
-                float                                               heading,
-                float                                               startDriveSpeed,
-                float                                               endDriveSpeed,
-                std::string                                         pathName,
-                // @ADDMECH add parameter for your mechanism state
-                ArmStateMgr::ARM_STATE                              armState,
-                ExtenderStateMgr::EXTENDER_STATE                    extenderState,
-                GrabberStateMgr::GRABBER_STATE                      grabberState
+    ); // Constructor. Takes in all parameters
 
-                
-        );//Constructor. Takes in all parameters
+    PrimitiveParams() = delete;
+    virtual ~PrimitiveParams() = default; // Destructor
 
-        PrimitiveParams() = delete;
-        virtual ~PrimitiveParams() = default;//Destructor
+    // Some getters
+    PRIMITIVE_IDENTIFIER GetID() const { return m_id; };
+    float GetTime() const { return m_time; };
+    float GetDistance() const { return m_distance; };
+    float GetXLocation() const { return m_xLoc; };
+    float GetYLocation() const { return m_yLoc; };
+    ChassisOptionEnums::HeadingOption GetHeadingOption() const { return m_headingOption; };
+    float GetHeading() const { return m_heading; };
+    float GetDriveSpeed() const { return m_startDriveSpeed; };
+    float GetEndDriveSpeed() const { return m_endDriveSpeed; };
+    std::string GetPathName() const { return m_pathName; };
+    ArmStateMgr::ARM_STATE GetArmState() const { return m_armState; };
+    ExtenderStateMgr::EXTENDER_STATE GetExtenderState() const { return m_extenderState; };
+    GrabberStateMgr::GRABBER_STATE GetGrabberState() const { return m_grabberState; };
 
+    // @ADDMECH Add methods to get the state mgr for mechanism
 
-        //Some getters
-        PRIMITIVE_IDENTIFIER GetID() const {return m_id;};
-        float GetTime() const {return m_time;};
-        float GetDistance() const {return m_distance;};
-        float GetXLocation() const {return m_xLoc;};
-        float GetYLocation() const {return m_yLoc;};
-        ChassisOptionEnums::HeadingOption GetHeadingOption() const {return m_headingOption;};
-        float GetHeading() const {return m_heading;};
-        float GetDriveSpeed() const {return m_startDriveSpeed;};
-        float GetEndDriveSpeed() const {return m_endDriveSpeed;};
-        std::string GetPathName() const {return m_pathName;};
-        ArmStateMgr::ARM_STATE GetArmState() const {return m_armState;};
-        ExtenderStateMgr::EXTENDER_STATE GetExtenderState() const {return m_extenderState;};
-         GrabberStateMgr::GRABBER_STATE GetGrabberState() const {return m_grabberState;};
-        
-        // @ADDMECH Add methods to get the state mgr for mechanism 
+    // Setters
+    void SetDistance(float distance) { m_distance = distance; };
 
-
-
-        //Setters
-        void SetDistance(float distance) {m_distance = distance;};
-
-    private:
-        //Primitive Parameters
-        PRIMITIVE_IDENTIFIER                                m_id; //Primitive ID
-        float                                               m_time;
-        float                                               m_distance;
-        float                                               m_xLoc;
-        float                                               m_yLoc;
-        ChassisOptionEnums::HeadingOption                   m_headingOption;
-        float                                               m_heading;
-        float                                               m_startDriveSpeed;
-        float                                               m_endDriveSpeed;
-        std::string                                         m_pathName;
-        // @ADDMECH add attribute for your mechanism state 
-        ArmStateMgr::ARM_STATE                              m_armState;
-        ExtenderStateMgr::EXTENDER_STATE                    m_extenderState;
-        GrabberStateMgr::GRABBER_STATE                      m_grabberState;
-
+private:
+    // Primitive Parameters
+    PRIMITIVE_IDENTIFIER m_id; // Primitive ID
+    float m_time;
+    float m_distance;
+    float m_xLoc;
+    float m_yLoc;
+    ChassisOptionEnums::HeadingOption m_headingOption;
+    float m_heading;
+    float m_startDriveSpeed;
+    float m_endDriveSpeed;
+    std::string m_pathName;
+    // @ADDMECH add attribute for your mechanism state
+    ArmStateMgr::ARM_STATE m_armState;
+    ExtenderStateMgr::EXTENDER_STATE m_extenderState;
+    GrabberStateMgr::GRABBER_STATE m_grabberState;
 };
 
-typedef std::vector<PrimitiveParams*> PrimitiveParamsVector;
-
-
-
+typedef std::vector<PrimitiveParams *> PrimitiveParamsVector;
