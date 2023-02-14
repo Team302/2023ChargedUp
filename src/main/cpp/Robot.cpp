@@ -85,9 +85,6 @@ void Robot::RobotInit()
  */
 void Robot::RobotPeriodic()
 {
-    static int mycounter = 0;
-    static int my2ndcounter = 0;
-    mycounter++;
     LoggableItemMgr::GetInstance()->LogData();
     Logger::GetLogger()->PeriodicLog();
 
@@ -101,6 +98,11 @@ void Robot::RobotPeriodic()
     }
 
 #ifdef ENABLE_VISION
+    static int mycounter = 0;
+    static int my2ndcounter = 0;
+
+    mycounter++;
+
     auto vision = DragonVision::GetDragonVision();
 
     LoggerIntValue count = {string("counter"), mycounter};

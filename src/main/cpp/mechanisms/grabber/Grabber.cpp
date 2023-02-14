@@ -30,6 +30,11 @@
 #include <mechanisms/base/Mech1Solenoid.h>
 #include <mechanisms/grabber/grabber.h>
 
+// Third Party Includes
+//========= Hand modified code start section 1 ========
+
+//========= Hand modified code end section 1 ========
+
 using namespace std;
 
 /// @brief Create an Grabber mechanism wiht 1 independent motor
@@ -40,6 +45,10 @@ using namespace std;
 Grabber::Grabber(
 	std::string controlFileName,
 	std::string networkTableName,
-	std::shared_ptr<DragonSolenoid> solenoid) : Mech1Solenoid(MechanismTypes::MECHANISM_TYPE::GRABBER, controlFileName, networkTableName, solenoid)
+	std::shared_ptr<DragonSolenoid> solenoid0) : Mech1Solenoid(MechanismTypes::MECHANISM_TYPE::GRABBER, controlFileName, networkTableName, solenoid0)
 {
 }
+
+//========= Hand modified code start section 0 ========
+
+//========= Hand modified code end section 0 ========
