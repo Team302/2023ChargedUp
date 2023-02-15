@@ -106,6 +106,21 @@ private:
 
     static ArmStateMgr *m_instance;
 
+    // Hold Position function components
+    const double m_cubeOffset = 0.04592;
+    const double m_cubeArmComponent = -0.0001809;
+    const double m_cubeExtenderComponent = 0.0005709;
+    const double m_cubeArmSquaredComponent = 0.000005494;
+    const double m_cubeArmExtenderComponent = 0.000001729;
+    const double m_cubeExtenderSquaredComponent = 0.000001729;
+
+    const double m_coneOffset = 0.04592;
+    const double m_coneArmComponent = -0.0001809;
+    const double m_coneExtenderComponent = 0.0005709;
+    const double m_coneArmSquaredComponent = 0.000005494;
+    const double m_coneArmExtenderComponent = 0.000001729;
+    const double m_coneExtenderSquaredComponent = 0.000001729;
+
     const StateStruc m_hold_position_rotateState = {ARM_STATE::HOLD_POSITION_ROTATE, "HOLD_POSITION_ROTATE", StateType::ARM_STATE, false};
     const StateStruc m_manual_rotateState = {ARM_STATE::MANUAL_ROTATE, "MANUAL_ROTATE", StateType::MANUAL_ARM_STATE, false};
     const StateStruc m_cube_backrow_rotateState = {ARM_STATE::CUBE_BACKROW_ROTATE, "CUBE_BACKROW_ROTATE", StateType::ARM_STATE, false};

@@ -43,7 +43,8 @@ void ArmManualState::Run()
         auto percent = m_controller->GetAxisValue(TeleopControlFunctions::MANUAL_ROTATE);
         if (percent < 0.0)
         {
-            percent *= 0.3;
+            percent *= GetCurrentTarget(); // if we want to change downward speed change,
+                                           // update target in xml
         }
 
         /// DEBUGGING

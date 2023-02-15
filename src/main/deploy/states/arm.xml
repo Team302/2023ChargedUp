@@ -56,7 +56,7 @@
     stateIdentifier="MANUAL_ROTATE"
     controlDataIdentifier="PercentOutput"
     controlDataIdentifier2=""
-    value="0"
+    value="0.3"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />

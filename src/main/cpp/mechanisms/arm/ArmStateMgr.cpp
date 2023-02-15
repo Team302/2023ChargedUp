@@ -260,13 +260,13 @@ void ArmStateMgr::CheckForStateTransition()
             {
                 if (m_gamepieceMode == RobotStateChanges::GamePiece::Cube)
                 {
-                    m_arm->UpdateTarget(0.04592 + -0.0001809 * armAngle + 0.0005709 * extenderPos + 0.000005494 * armAngle * armAngle + 0.000001729 * armAngle * extenderPos + 0.00000003838 * extenderPos * extenderPos);
+                    // f term function for cube
+                    m_arm->UpdateTarget(m_cubeOffset + m_cubeArmComponent * armAngle + m_cubeExtenderComponent * extenderPos + m_cubeArmSquaredComponent * pow(armAngle, 2) + m_cubeArmExtenderComponent * armAngle * extenderPos + m_cubeExtenderSquaredComponent * pow(extenderPos, 2));
                 }
                 else if (m_gamepieceMode == RobotStateChanges::GamePiece::Cone && m_grabberState == GrabberStateMgr::GRABBER_STATE::GRAB)
                 {
                     // f term function for cone
-                    // This formula needs to be updated
-                    m_arm->UpdateTarget(0.04592 + -0.0001809 * armAngle + 0.0005709 * extenderPos + 0.000005494 * armAngle * armAngle + 0.000001729 * armAngle * extenderPos + 0.00000003838 * extenderPos * extenderPos);
+                    m_arm->UpdateTarget(m_coneOffset + m_coneArmComponent * armAngle + m_coneExtenderComponent * extenderPos + m_coneArmSquaredComponent * pow(armAngle, 2) + m_coneArmExtenderComponent * armAngle * extenderPos + m_coneExtenderSquaredComponent * pow(extenderPos, 2));
                 }
             }
         }

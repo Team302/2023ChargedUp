@@ -61,7 +61,7 @@ public:
     /// @brief  return the current state
     /// @return int - the current state
     inline int GetCurrentState() const { return m_currentStateID; };
-    inline State *GetSpecifiedState(int stateID) const { return m_stateVector[stateID]; };
+    inline State *GetSpecifiedState(unsigned int stateID) const { return stateID < m_stateVector.size() ? m_stateVector[stateID] : nullptr; };
     inline State *GetCurrentStatePtr() const { return m_stateVector[m_currentStateID]; };
 
     void LogInformation() const override;

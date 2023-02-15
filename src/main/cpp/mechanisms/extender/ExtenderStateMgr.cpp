@@ -272,7 +272,7 @@ void ExtenderStateMgr::CheckForStateTransition()
         if (m_targetState != m_currentState || m_targetState == EXTENDER_STATE::MANUAL_EXTEND_RETRACT)
         {
             auto armAngle = MechanismFactory::GetMechanismFactory()->GetArm()->GetPositionDegrees().to<double>();
-            if (armAngle < 10.0)
+            if (armAngle < m_armAngleTolerance)
             {
                 m_targetState = EXTENDER_STATE::MANUAL_EXTEND_RETRACT;
             }
