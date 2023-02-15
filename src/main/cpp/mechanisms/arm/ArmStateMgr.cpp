@@ -58,6 +58,7 @@ ArmStateMgr *ArmStateMgr::GetInstance()
 
 /// @brief    initialize the state manager, parse the configuration file and create the states.
 ArmStateMgr::ArmStateMgr() : StateMgr(),
+                             IRobotStateChangeSubscriber(),
                              m_arm(MechanismFactory::GetMechanismFactory()->GetArm()),
                              m_prevState(ARM_STATE::STARTING_POSITION_ROTATE),
                              m_currentState(ARM_STATE::STARTING_POSITION_ROTATE),
@@ -79,6 +80,7 @@ ArmStateMgr::ArmStateMgr() : StateMgr(),
     stateMap["FLOOR_POSITION_ROTATE"] = m_floor_position_rotateState;
 
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::DesiredGamePiece);
+    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::GrabberState);
 
     Init(m_arm, stateMap);
     if (m_arm != nullptr)
@@ -256,7 +258,16 @@ void ArmStateMgr::CheckForStateTransition()
             // holding currently based on just "F term" Created surface map function based on arm and extender position
             if (m_arm->GetPositionDegrees().to<double>() > 10.0)
             {
-                m_arm->UpdateTarget(0.04592 + -0.0001809 * armAngle + 0.0005709 * extenderPos + 0.000005494 * armAngle * armAngle + 0.000001729 * armAngle * extenderPos + 0.00000003838 * extenderPos * extenderPos);
+                if (m_gamepieceMode == RobotStateChanges::GamePiece::Cube)
+                {
+                    m_arm->UpdateTarget(0.04592 + -0.0001809 * armAngle + 0.0005709 * extenderPos + 0.000005494 * armAngle * armAngle + 0.000001729 * armAngle * extenderPos + 0.00000003838 * extenderPos * extenderPos);
+                }
+                else if (m_gamepieceMode == RobotStateChanges::GamePiece::Cone && m_grabberState == GrabberStateMgr::GRABBER_STATE::GRAB)
+                {
+                    // f term function for cone
+                    // This formula needs to be updated
+                    m_arm->UpdateTarget(0.04592 + -0.0001809 * armAngle + 0.0005709 * extenderPos + 0.000005494 * armAngle * armAngle + 0.000001729 * armAngle * extenderPos + 0.00000003838 * extenderPos * extenderPos);
+                }
             }
         }
     }
@@ -267,5 +278,9 @@ void ArmStateMgr::Update(RobotStateChanges::StateChange change, int state)
     if (change == RobotStateChanges::DesiredGamePiece)
     {
         m_gamepieceMode = static_cast<RobotStateChanges::GamePiece>(state);
+    }
+    else if (change == RobotStateChanges::GrabberState)
+    {
+        m_grabberState = static_cast<GrabberStateMgr::GRABBER_STATE>(state);
     }
 }
