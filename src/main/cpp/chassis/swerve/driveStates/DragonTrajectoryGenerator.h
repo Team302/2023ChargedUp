@@ -44,7 +44,10 @@ public:
         GRID_HP_COL_THREE,
         GRID_WALL_INTERMEDIATE,
         GRID_COOP_INTERMEDIATE,
-        GRID_HP_INTERMEDIATE
+        GRID_HP_INTERMEDIATE,
+        CHARGE_PAD_COMMUNITY_INTERMEDIATE,
+        CHARGE_PAD_CENTER,
+        CHARGE_PAD_FIELD_INTERMEDIATE
     };
 
     enum TARGET_POSITION
@@ -52,7 +55,8 @@ public:
         COLUMN_ONE,
         COLUMN_TWO,
         COLUMN_THREE,
-        HUMAN_PLAYER_SUBSTATION
+        HUMAN_PLAYER_SUBSTATION,
+        CHARGE_PAD
     };
 
     DragonTrajectoryGenerator(units::meters_per_second_t maxVelocity,

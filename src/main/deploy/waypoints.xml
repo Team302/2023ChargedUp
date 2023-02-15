@@ -4,7 +4,6 @@
 <!--Coordinates have an origin at the bottom left corner of the field (red loading zone)-->
 <!--Column one is closest to the spectator wall, column three is closest to loading zone-->
 <!--Coordinates are in meters, rotation in degrees-->  
-<!-- @TODO: Determine if we need a separate red/blue y coordinate, right now they are the same for each-->  
     <waypoint identifier="GRID_WALL_INTERMEDIATE"
               blueXCoordinate="4.3"
               blueYCoordinate="0.75"
@@ -89,4 +88,26 @@
               redXCoordinate="14.7"
               redYCoordinate="5.0"
               redRotation="180.0"/>
+    
+    <waypoint identifier="CHARGE_PAD_COMMUNITY_INTERMEDIATE"
+              blueXCoordinate="1.95"
+              blueYCoordinate="5.0"
+              blueRotation="180.0"
+              redXCoordinate="14.7"
+              redYCoordinate="5.0"
+              redRotation="0.0"/>
+    <waypoint identifier="CHARGE_PAD_CENTER"
+              blueXCoordinate="1.95"
+              blueYCoordinate="5.0"
+              blueRotation="180.0"
+              redXCoordinate="12.7"
+              redYCoordinate="2.75"
+              redRotation="0.0"/>
+    <waypoint identifier="CHARGE_PAD_FIELD_INTERMEDIATE"
+              blueXCoordinate="5.3"
+              blueYCoordinate="2.75"
+              blueRotation="180.0"
+              redXCoordinate="9.5"
+              redYCoordinate="2.75"
+              redRotation="0.0"/> <!--Done-->
 </waypoints>

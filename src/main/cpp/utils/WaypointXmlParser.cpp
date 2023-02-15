@@ -58,6 +58,9 @@ void WaypointXmlParser::ParseWaypoints()
     waypointMap[string("GRID_HP_COL_ONE")] = DragonTrajectoryGenerator::WAYPOINTS::GRID_HP_COL_ONE;
     waypointMap[string("GRID_HP_COL_TWO")] = DragonTrajectoryGenerator::WAYPOINTS::GRID_HP_COL_TWO;
     waypointMap[string("GRID_HP_COL_THREE")] = DragonTrajectoryGenerator::WAYPOINTS::GRID_HP_COL_THREE;
+    waypointMap[string("CHARGE_PAD_COMMUNITY_INTERMEDIATE")] = DragonTrajectoryGenerator::WAYPOINTS::CHARGE_PAD_COMMUNITY_INTERMEDIATE;
+    waypointMap[string("CHARGE_PAD_CENTER")] = DragonTrajectoryGenerator::WAYPOINTS::CHARGE_PAD_CENTER;
+    waypointMap[string("CHARGE_PAD_FIELD_INTERMEDIATE")] = DragonTrajectoryGenerator::WAYPOINTS::CHARGE_PAD_FIELD_INTERMEDIATE;
 
     bool hasError = false;
 
