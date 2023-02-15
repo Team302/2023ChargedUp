@@ -4,7 +4,7 @@
     identifier="HoldPosition"
     mode="POSITION_INCH"
     constrolServer="MOTORCONTROLLER"
-    proportional="0.04"
+    proportional="0.01"
     integral="0.000075"
     derivative="0.0"
     feedforward="0.0"
@@ -91,7 +91,7 @@
     solenoid2="NONE" />
   <mechanismTarget
     stateIdentifier="STARTING_POSITION_EXTEND"
-    controlDataIdentifier="PercentOutput"
+    controlDataIdentifier="ExtendPosition"
     controlDataIdentifier2=""
     value="0"
     secondValue=""
@@ -101,7 +101,7 @@
     stateIdentifier="FLOOR_EXTEND"
     controlDataIdentifier="ExtendPosition"
     controlDataIdentifier2=""
-    value="7.5"
+    value="9.0"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
