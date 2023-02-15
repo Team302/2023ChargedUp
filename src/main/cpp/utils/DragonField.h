@@ -40,5 +40,5 @@ private:
     frc::Field2d m_field;
     std::vector<frc::FieldObject2d *> m_objects;
 
-        static DragonField *m_instance;
+    static DragonField *m_instance;
 };

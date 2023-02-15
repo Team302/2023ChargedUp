@@ -1,5 +1,6 @@
+
 //====================================================================================================================================================
-// Copyright 2023 Lake Orion Robotics FIRST Team 302
+// Copyright 2022 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -13,41 +14,40 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-// Team 302 Includes
-#include <mechanisms/arm/ArmManualState.h>
-#include <mechanisms/arm/ArmState.h>
-#include <mechanisms/controllers/ControlData.h>
-#include <teleopcontrol/TeleopControl.h>
-#include <mechanisms/MechanismFactory.h>
+#pragma once
+#include <map>
+#include <string>
 
-ArmManualState::ArmManualState(std::string stateName,
-                               int stateId,
-                               ControlData *control0,
-                               double target0) : ArmState(stateName, stateId, control0, target0),
-                                                 m_arm(MechanismFactory::GetMechanismFactory()->GetArm()),
-                                                 m_controller(TeleopControl::GetInstance())
-{
-}
+#include <State.h>
+#include <hw/DragonLimelight.h>
+#include <DragonVision/DragonVisionTarget.h>
 
-void ArmManualState::Init()
-{
-}
+using std::map;
 
-void ArmManualState::Run()
+class DragonLimelight;
+class DragonVision
 {
-    if (m_controller != nullptr && m_arm != nullptr)
+public:
+    static DragonVision *GetDragonVision();
+
+    enum LIMELIGHT_POSITION
     {
-        auto percent = m_controller->GetAxisValue(TeleopControlFunctions::MANUAL_ROTATE);
-        if (percent < 0.0)
-        {
-            percent *= 0.3;
-        }
-        m_arm->UpdateTarget(percent);
-        m_arm->Update();
-    }
-}
+        FRONT,
+        BACK
+    };
 
-bool ArmManualState::AtTarget() const
-{
-    return true;
-}
+    void setPipeline(DragonLimelight::PIPELINE_MODE mode, LIMELIGHT_POSITION position);
+    DragonVisionTarget *getTargetInfo(LIMELIGHT_POSITION position) const;
+
+    int GetRobotPosition() const;
+
+private:
+    DragonVision();
+    ~DragonVision() = default;
+
+    DragonLimelight *getLimelight(LIMELIGHT_POSITION position) const;
+
+    static DragonVision *m_dragonVision;
+
+    std::map<LIMELIGHT_POSITION, DragonLimelight *> m_DragonLimelightMap;
+};

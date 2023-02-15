@@ -39,12 +39,14 @@ using namespace std;
 GrabberState::GrabberState(
 	string stateName,
 	int stateId,
-	MechanismTargetData::SOLENOID solState) : Mech1SolenoidState(MechanismFactory::GetMechanismFactory()->GetGrabber(), stateName, stateId, solState),
-											  m_grabber(MechanismFactory::GetMechanismFactory()->GetGrabber())
+	MechanismTargetData::SOLENOID solState0) : Mech1SolenoidState(MechanismFactory::GetMechanismFactory()->GetGrabber(), stateName, stateId, solState0),
+											   m_grabber(MechanismFactory::GetMechanismFactory()->GetGrabber())
 {
 }
 
 bool GrabberState::AtTarget() const
 {
+	//========= Hand modified code start section 0 ========
+	//========= Hand modified code end section 0 ========
 	return true;
 }

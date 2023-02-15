@@ -54,6 +54,7 @@ shared_ptr<DragonSolenoid> SolenoidXmlParser::ParseXML(
     bool reversed = false;
 
     bool hasError = false;
+    frc::PneumaticsModuleType type = frc::PneumaticsModuleType::REVPH;
 
     for (xml_attribute attr = solenoidNode.first_attribute(); attr && !hasError; attr = attr.next_attribute())
     {
@@ -65,6 +66,19 @@ shared_ptr<DragonSolenoid> SolenoidXmlParser::ParseXML(
         {
             pcmID = attr.as_int();
             hasError = HardwareIDValidation::ValidateCANID(pcmID, string("SolenoidXmlParser::ParseXML"));
+        }
+        else if (strcmp(attr.name(), "type") == 0)
+        {
+
+            auto val = string(attr.value());
+            if (val.compare("CTRECPM") == 0)
+            {
+                type = frc::PneumaticsModuleType::CTREPCM;
+            }
+            else if (val.compare("REVPH") == 0)
+            {
+                type = frc::PneumaticsModuleType::REVPH;
+            }
         }
         else if (strcmp(attr.name(), "channel") == 0)
         {
@@ -87,7 +101,7 @@ shared_ptr<DragonSolenoid> SolenoidXmlParser::ParseXML(
 
     if (!hasError)
     {
-        solenoid = make_shared<DragonSolenoid>(networkTableName, usage, pcmID, channel, reversed);
+        solenoid = make_shared<DragonSolenoid>(networkTableName, usage, pcmID, type, channel, reversed);
     }
     return solenoid;
 }

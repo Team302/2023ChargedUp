@@ -23,6 +23,7 @@
 ///  @brief      	Interface for state classes
 class State : public LoggableItem
 {
+
 public:
     State(
         std::string stateName,

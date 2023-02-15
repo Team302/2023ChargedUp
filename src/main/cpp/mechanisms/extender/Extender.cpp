@@ -31,7 +31,9 @@
 #include <mechanisms/extender/extender.h>
 
 // Third Party Includes
+//========= Hand modified code start section 1 ========
 #include <ctre/phoenix/motorcontrol/can/WPI_TalonFX.h>
+//========= Hand modified code end section 1 ========
 
 using namespace std;
 
@@ -47,6 +49,7 @@ Extender::Extender(
 {
 }
 
+//========= Hand modified code start section 0 ========
 void Extender::ResetIfFullyExtended(double counts)
 {
 	if (GetMotor().get()->IsForwardLimitSwitchClosed())
@@ -68,3 +71,4 @@ void Extender::ResetIfFullyRetracted()
 		sensors.SetIntegratedSensorPosition(0, 0);
 	}
 }
+//========= Hand modified code end section 0 ========
