@@ -266,7 +266,7 @@ void ArmStateMgr::CheckForStateTransition()
                 {
                     // f term function for cone
                     // This formula needs to be updated
-                    m_arm->UpdateTarget(0.04592 + -0.0001809 * armAngle + 0.0005709 * extenderPos + 0.000005494 * armAngle * armAngle + 0.000001729 * armAngle * extenderPos + 0.00000003838 * extenderPos * extenderPos);
+                    m_arm->UpdateTarget(-0.000028968 * pow(armAngle, 2) + 0.00300252 * armAngle + 0.000227121 * pow(extenderPos, 2) - 0.00330623 * extenderPos + 0.00346646);
                 }
             }
         }
