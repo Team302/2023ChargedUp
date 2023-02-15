@@ -40,6 +40,9 @@
 
 // Third Party Includes
 
+//========= Hand modified code start section 0 ========
+//========= Hand modified code end section 0 ========
+
 using namespace std;
 
 ArmStateMgr *ArmStateMgr::m_instance = nullptr;
@@ -60,10 +63,14 @@ ArmStateMgr *ArmStateMgr::GetInstance()
 ArmStateMgr::ArmStateMgr() : StateMgr(),
                              IRobotStateChangeSubscriber(),
                              m_arm(MechanismFactory::GetMechanismFactory()->GetArm()),
+                             m_arm(MechanismFactory::GetMechanismFactory()->GetArm())
+                             //========= Hand modified code start section 1 ========
+                             ,
                              m_prevState(ARM_STATE::STARTING_POSITION_ROTATE),
                              m_currentState(ARM_STATE::STARTING_POSITION_ROTATE),
                              m_targetState(ARM_STATE::STARTING_POSITION_ROTATE),
                              m_gamepieceMode(RobotStateChanges::None)
+//========= Hand modified code end section 1 ========
 
 {
     map<string, StateStruc> stateMap;
@@ -87,6 +94,10 @@ ArmStateMgr::ArmStateMgr() : StateMgr(),
     {
         m_arm->AddStateMgr(this);
     }
+
+    //========= Hand modified code start section 2 ========
+    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::DesiredGamePiece);
+    //========= Hand modified code end section 2 ========
 }
 
 /// @brief  Get the current Parameter parm value for the state of this mechanism
@@ -99,6 +110,47 @@ int ArmStateMgr::GetCurrentStateParam(
     return StateMgr::GetCurrentStateParam(currentParams);
 }
 
+/// @brief Check if driver inputs or sensors trigger a state transition
+void ArmStateMgr::CheckForStateTransition()
+{
+    //========= Hand modified code start section 3 ========
+     CheckForSensorTransitions();
+    if (m_checkGamePadTransitions)
+    {
+        CheckForGamepadTransitions();
+    }
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Current State"), m_targetState);
+
+    if (m_targetState != m_currentState)
+    {
+        SetCurrentState(m_targetState, true);
+        RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmRotateState, m_targetState);
+
+        if (m_targetState == ARM_STATE::HOLD_POSITION_ROTATE)
+        {
+            double armAngle = m_arm->GetPositionDegrees().to<double>();
+            double extenderPos = MechanismFactory::GetMechanismFactory()->GetExtender()->GetPositionInches().to<double>();
+            // holding currently based on just "F term" Created surface map function based on arm and extender position
+            if (m_arm->GetPositionDegrees().to<double>() > 10.0)
+            {
+                if (m_gamepieceMode == RobotStateChanges::GamePiece::Cube)
+                {
+                    m_arm->UpdateTarget(0.04592 + -0.0001809 * armAngle + 0.0005709 * extenderPos + 0.000005494 * armAngle * armAngle + 0.000001729 * armAngle * extenderPos + 0.00000003838 * extenderPos * extenderPos);
+                }
+                else if (m_gamepieceMode == RobotStateChanges::GamePiece::Cone && m_grabberState == GrabberStateMgr::GRABBER_STATE::GRAB)
+                {
+                    // f term function for cone
+                    // This formula needs to be updated
+                    m_arm->UpdateTarget(-0.000028968 * pow(armAngle, 2) + 0.00300252 * armAngle + 0.000227121 * pow(extenderPos, 2) - 0.00330623 * extenderPos + 0.00346646);
+                }
+            }
+        }
+    }
+
+    //========= Hand modified code end section 3 ========
+}
+
+//========= Hand modified code start section 4 ========
 /// @brief Check driver inputs for a state transition
 void ArmStateMgr::CheckForGamepadTransitions()
 {
@@ -235,44 +287,6 @@ void ArmStateMgr::CheckForSensorTransitions()
     }
 }
 
-/// @brief Check if driver inputs or sensors trigger a state transition
-void ArmStateMgr::CheckForStateTransition()
-{
-
-    CheckForSensorTransitions();
-    if (m_checkGamePadTransitions)
-    {
-        CheckForGamepadTransitions();
-    }
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Current State"), m_targetState);
-
-    if (m_targetState != m_currentState)
-    {
-        SetCurrentState(m_targetState, true);
-        RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmRotateState, m_targetState);
-
-        if (m_targetState == ARM_STATE::HOLD_POSITION_ROTATE)
-        {
-            double armAngle = m_arm->GetPositionDegrees().to<double>();
-            double extenderPos = MechanismFactory::GetMechanismFactory()->GetExtender()->GetPositionInches().to<double>();
-            // holding currently based on just "F term" Created surface map function based on arm and extender position
-            if (m_arm->GetPositionDegrees().to<double>() > 10.0)
-            {
-                if (m_gamepieceMode == RobotStateChanges::GamePiece::Cube)
-                {
-                    m_arm->UpdateTarget(0.04592 + -0.0001809 * armAngle + 0.0005709 * extenderPos + 0.000005494 * armAngle * armAngle + 0.000001729 * armAngle * extenderPos + 0.00000003838 * extenderPos * extenderPos);
-                }
-                else if (m_gamepieceMode == RobotStateChanges::GamePiece::Cone && m_grabberState == GrabberStateMgr::GRABBER_STATE::GRAB)
-                {
-                    // f term function for cone
-                    // This formula needs to be updated
-                    m_arm->UpdateTarget(-0.000028968 * pow(armAngle, 2) + 0.00300252 * armAngle + 0.000227121 * pow(extenderPos, 2) - 0.00330623 * extenderPos + 0.00346646);
-                }
-            }
-        }
-    }
-}
-
 void ArmStateMgr::Update(RobotStateChanges::StateChange change, int state)
 {
     if (change == RobotStateChanges::DesiredGamePiece)
@@ -284,3 +298,4 @@ void ArmStateMgr::Update(RobotStateChanges::StateChange change, int state)
         m_grabberState = static_cast<GrabberStateMgr::GRABBER_STATE>(state);
     }
 }
+//========= Hand modified code end section 4 ========

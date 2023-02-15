@@ -31,7 +31,9 @@
 #include <mechanisms/arm/arm.h>
 
 // Third Party Includes
+//========= Hand modified code start section 1 ========
 #include <ctre/phoenix/motorcontrol/can/WPI_TalonFX.h>
+//========= Hand modified code end section 1 ========
 
 using namespace std;
 
@@ -47,6 +49,8 @@ Arm::Arm(
 {
 }
 
+//========= Hand modified code start section 0 ========
+
 void Arm::ResetIfArmDown()
 {
 	if (GetMotor().get()->IsReverseLimitSwitchClosed())
@@ -57,3 +61,5 @@ void Arm::ResetIfArmDown()
 		sensors.SetIntegratedSensorPosition(0, 0);
 	}
 }
+
+//========= Hand modified code end section 0 ========

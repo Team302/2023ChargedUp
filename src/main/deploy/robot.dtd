@@ -91,7 +91,10 @@
 		  mountingheight    CDATA #REQUIRED
 		  horizontaloffset  CDATA "0.0"
 		  mountingangle     CDATA #REQUIRED
-		  rotation          ( 0.0 | 90.0 | 180.0 | 270.0 ) "0.0"
+		  forwardOffset         CDATA #REQUIRED
+          pitch           CDATA #REQUIRED
+          yaw             CDATA #REQUIRED
+          roll            (0 | 90 | 180 | 270) "0"
 		  targetheight      CDATA #REQUIRED
 		  targetheight2     CDATA #REQUIRED
 		  defaultledmode	( currentpipeline | off | blink | on ) "currentpipeline" 
@@ -190,6 +193,7 @@
                               60 | 61 | 62 ) "0"
           channel           (  0 |  1 |  2 |  3 |  4 |  5 |  6 |  7 ) "0"
           reversed          (true | false ) "false"
+          type              (CTREPCM | REVPH ) "REVPH"
 >
 <!-- Servos -->
 <!-- see ServoUsage.cpp for the valid strings for usage -->

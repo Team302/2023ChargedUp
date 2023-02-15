@@ -45,5 +45,7 @@ public:
 	Arm() = delete;
 	~Arm() override = default;
 
+	//========= Hand modified code start section 0 ========
 	void ResetIfArmDown();
+	//========= Hand modified code end section 0 ========
 };
