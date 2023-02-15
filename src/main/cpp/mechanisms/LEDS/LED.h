@@ -36,6 +36,8 @@ class LED
         std::array<int,3> getColorValues(Colors c);
         bool IsInitialized();
         void Initialize(int PWMport,  int ledSize);
+
+        
         
         ~LED();
         LED() = delete;

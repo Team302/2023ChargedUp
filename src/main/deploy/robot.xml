@@ -4,8 +4,8 @@
     canId="1"
     type="REV" />
   <led
-    pwmId="0"
-    number="15"
+    pwmId="8"
+    number="144"
     />  
   <pigeon
     canId="0"

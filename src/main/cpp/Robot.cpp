@@ -33,6 +33,7 @@ using namespace std;
 
 void Robot::RobotInit() 
 {
+    m_driverfeedback->isWantCone(true);
     Logger::GetLogger()->PutLoggingSelectionsOnDashboard();
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("RobotInit"), string("arrived"));   
     
@@ -83,6 +84,8 @@ void Robot::RobotInit()
 void Robot::RobotPeriodic() 
 {
 
+    m_driverfeedback->UpdateFeedback();
+
     if (m_chassis != nullptr)
     {
         m_chassis->UpdateOdometry();  // ToDo:: Move to RobotState
@@ -111,8 +114,7 @@ void Robot::RobotPeriodic()
         m_previewer->CheckCurrentAuton();
     }
 
-    m_driverfeedback->isWantCone(true);
-    m_driverfeedback->UpdateFeedback();
+
 }
 
 /**
