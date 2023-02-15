@@ -24,16 +24,13 @@ public:
     AutomatedSystemTest() = default;
     ~AutomatedSystemTest() = default;
     void AutoTest();
-    void Init()
-    {
-        double GetBasePDHValue();
-    }
+    void Init();
 
 private:
+    double InitialPDPWatts;
     bool reachedcurrentstate = false;
     double GetCurrentPDHValue();
-    string GetCurrentTest();
-    static PDPFactory GetFactory();
+    double GetBasePDHValue();
     void GetTestSwerve();
     void GetTestExtender();
     void GetTestArm();

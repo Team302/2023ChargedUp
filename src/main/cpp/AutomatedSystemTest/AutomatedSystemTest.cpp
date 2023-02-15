@@ -21,12 +21,17 @@
 
 using namespace std;
 
-double GetBasePDHValue()
+void AutomatedSystemTest::Init()
+{
+    double InitialPDPWatts = GetBasePDHValue();
+}
+double AutomatedSystemTest::GetBasePDHValue()
 {
     auto PDP = PDPFactory::GetFactory()->GetPDP();
     if (PDP != nullptr)
     {
-        return PDP->GetTotalPower();
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("automatedsystemtest"), string("test"), InitialPDPWatts);
+        return PDP->GetTotalCurrent();
     }
     Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("automatedsystemtest"), string("pdh energy"), "cannot accses pdh");
     return 0;
@@ -36,9 +41,9 @@ double AutomatedSystemTest::GetCurrentPDHValue()
 {
     ArmStateMgr::GetInstance()->SetCurrentState(ArmStateMgr::ARM_STATE::STARTING_POSITION_ROTATE, true);
     auto armstate = ArmStateMgr::GetInstance()->GetCurrentState();
-    if (armstate = ArmStateMgr::ARM_STATE::STARTING_POSITION_ROTATE)
+    if (armstate == ArmStateMgr::ARM_STATE::STARTING_POSITION_ROTATE)
     {
-        reachedcurrentstate = true;
+        (reachedcurrentstate = true);
     }
 
     auto PDP = PDPFactory::GetFactory()->GetPDP();
@@ -46,7 +51,13 @@ double AutomatedSystemTest::GetCurrentPDHValue()
     {
         return PDP->GetTotalPower();
     }
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("automatedsystemtest"), string("pdh energy"), "cannot accses pdh");
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("automatedsystemtest"), string("test2"), "cannot accses pdh");
     return 0;
     ArmStateMgr::GetInstance()->SetCurrentState(ArmStateMgr::ARM_STATE::CONE_BACKROW_ROTATE, true);
+    if (PDP != nullptr)
+    {
+        return PDP->GetTotalPower();
+    }
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("automatedsystemtest"), string("test1"), "cannot accses pdh");
+    return 0;
 }

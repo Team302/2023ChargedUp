@@ -275,7 +275,7 @@ void Robot::TestInit()
 {
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TestInit"), string("arrived"));
     m_autotest = new AutomatedSystemTest();
-    if (m_autotest == nullptr)
+    if (m_autotest != nullptr)
     {
         m_autotest->Init();
     }
