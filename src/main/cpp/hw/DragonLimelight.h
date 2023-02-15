@@ -81,11 +81,16 @@ public:
         std::string tableName,                          /// <I> - network table name
         units::length::inch_t mountingHeight,           /// <I> - mounting height of the limelight
         units::length::inch_t mountingHorizontalOffset, /// <I> - mounting horizontal offset from the middle of the robot
-        units::angle::degree_t rotation,                /// <I> - clockwise rotation of limelight
-        units::angle::degree_t mountingAngle,           /// <I> - mounting angle of the camera
+        units::length::inch_t forwardOffset,                /// <I> mounting offset forward/back
+        units::angle::degree_t pitch,                 /// <I> - Pitch of limelight
+        units::angle::degree_t yaw,                   /// <I> - Yaw of limelight
+        units::angle::degree_t roll,                  /// <I> - Roll of limelight
         units::length::inch_t targetHeight,             /// <I> - height the target
-        units::length::inch_t targetHeight2             /// <I> - height of second target
-    );
+        units::length::inch_t targetHeight2,            /// <I> - height of second target
+        LED_MODE ledMode,
+        CAM_MODE camMode,
+        STREAM_MODE streamMode,
+        SNAPSHOT_MODE snapMode);
 
     ///-----------------------------------------------------------------------------------
     /// Method:         ~DragonLimelight (destructor)
@@ -115,7 +120,9 @@ public:
 
     void PrintValues(); // Prints out all values to ensure everything is working and connected
 
-    units::angle::degree_t GetMountingAngle() const { return m_mountingAngle; }
+    units::angle::degree_t GetLimelightPitch() const { return m_pitch; }
+    units::angle::degree_t GetLimelightYaw() const { return m_yaw; }
+    units::angle::degree_t GetLimelightRoll() const { return m_roll; }
     units::length::inch_t GetMountingHeight() const { return m_mountHeight; }
     units::length::inch_t GetTargetHeight() const { return m_targetHeight; }
 
@@ -123,11 +130,20 @@ protected:
     units::angle::degree_t GetTx() const;
     units::angle::degree_t GetTy() const;
 
+    void SetLimelightPosition(units::length::inch_t mountHeight,
+                              units::length::inch_t mountHorizontalOffset,
+                              units::length::inch_t mountForwardOffset,
+                              units::angle::degree_t pitch,
+                              units::angle::degree_t yaw,
+                              units::angle::degree_t roll);
+
     std::shared_ptr<nt::NetworkTable> m_networktable;
     units::length::inch_t m_mountHeight;
     units::length::inch_t m_mountingHorizontalOffset;
-    units::angle::degree_t m_rotation;
-    units::angle::degree_t m_mountingAngle;
+    units::length::inch_t m_mountingForwardOffset;
+    units::angle::degree_t m_yaw;
+    units::angle::degree_t m_pitch;
+    units::angle::degree_t m_roll;
     units::length::inch_t m_targetHeight;
     units::length::inch_t m_targetHeight2;
 

@@ -30,18 +30,6 @@ DragonSolenoid::DragonSolenoid(
     string networkTableName,
     SolenoidUsage::SOLENOID_USAGE usage,
     int pcmID,
-    int channel,
-    bool reversed)
-{
-    InitSingle(networkTableName, usage, pcmID, PneumaticsModuleType::REVPH, channel, reversed);
-    frc::Compressor compressor{1, frc::PneumaticsModuleType::REVPH};
-    compressor.EnableAnalog(units::pressure::pounds_per_square_inch_t(m_minPressure), units::pressure::pounds_per_square_inch_t(m_maxPressure));
-}
-
-DragonSolenoid::DragonSolenoid(
-    string networkTableName,
-    SolenoidUsage::SOLENOID_USAGE usage,
-    int pcmID,
     PneumaticsModuleType pcmType,
     int channel,
     bool reversed)
@@ -130,6 +118,7 @@ void DragonSolenoid::InitSingle(
     int channel,
     bool reversed)
 {
+    frc::Compressor compressor{1, pcmType};
     m_networkTableName = networkTableName;
     m_usage = usage;
     m_solenoid = new Solenoid(pcmID, pcmType, channel);
@@ -146,6 +135,7 @@ void DragonSolenoid::InitDouble(
     int reverseChannel,
     bool reversed)
 {
+    frc::Compressor compressor{1, pcmType};
     m_networkTableName = networkTableName;
     m_usage = usage;
     m_solenoid = nullptr;

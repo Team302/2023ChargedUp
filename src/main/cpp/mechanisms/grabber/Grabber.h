@@ -41,7 +41,11 @@ public:
 	Grabber(
 		std::string controlFileName,
 		std::string networkTableName,
-		std::shared_ptr<DragonSolenoid> solenoid);
+		std::shared_ptr<DragonSolenoid> solenoid0);
 	Grabber() = delete;
 	~Grabber() override = default;
+
+	//========= Hand modified code start section 0 ========
+
+	//========= Hand modified code end section 0 ========
 };

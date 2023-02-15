@@ -21,32 +21,8 @@
 //	//========= Hand modified code end section x ========
 //==============================================================
 
-// C++ Includes
-#include <string>
+#pragma once
 
-// FRC includes
-
-// Team 302 includes
-#include <mechanisms/base/Mech1SolenoidState.h>
-#include <mechanisms/controllers/ControlData.h>
-#include <mechanisms/grabber/GrabberState.h>
-#include <mechanisms/MechanismFactory.h>
-
-// Third Party Includes
-
-using namespace std;
-
-GrabberState::GrabberState(
-	string stateName,
-	int stateId,
-	MechanismTargetData::SOLENOID solState0) : Mech1SolenoidState(MechanismFactory::GetMechanismFactory()->GetGrabber(), stateName, stateId, solState0),
-											   m_grabber(MechanismFactory::GetMechanismFactory()->GetGrabber())
-{
-}
-
-bool GrabberState::AtTarget() const
-{
-	//========= Hand modified code start section 0 ========
-	//========= Hand modified code end section 0 ========
-	return true;
-}
+#include <mechanisms\arm\Arm.h>
+#include <mechanisms\extender\Extender.h>
+#include <mechanisms\grabber\Grabber.h>
