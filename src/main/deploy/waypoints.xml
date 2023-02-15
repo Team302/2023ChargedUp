@@ -97,8 +97,8 @@
               redYCoordinate="5.0"
               redRotation="0.0"/>
     <waypoint identifier="CHARGE_PAD_CENTER"
-              blueXCoordinate="1.95"
-              blueYCoordinate="5.0"
+              blueXCoordinate="4.0"
+              blueYCoordinate="2.75"
               blueRotation="180.0"
               redXCoordinate="12.7"
               redYCoordinate="2.75"
