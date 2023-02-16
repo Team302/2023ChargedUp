@@ -63,7 +63,7 @@ string AutonSelector::GetSelectedAutoFile()
 		autonfile += GetAlianceColor();
 		autonfile += ("COOPThreeP.xml");
 	}
-	Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string(""), std::string("actual file"), autonfile);
+	Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("auton file"), std::string("actual file"), autonfile);
 	return autonfile;
 }
 
