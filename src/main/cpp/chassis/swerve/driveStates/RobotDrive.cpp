@@ -55,9 +55,20 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates(Chass
     auto chassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
     if (chassis != nullptr)
     {
-        if (chassis->IsTipping())
+        auto pitch = chassis->GetPitch();
+        if (std::abs(pitch.to<double>()) > m_tippingTolerance)
         {
+            auto adjust = m_maxspeed * m_tippingConstant * pitch.to<double>();
+            chassisMovement.chassisSpeeds.vx += adjust;
         }
+
+        auto roll = chassis->GetRoll();
+        if (std::abs(roll.to<double>()) > m_tippingTolerance)
+        {
+            auto adjust = m_maxspeed * m_tippingConstant * roll.to<double>();
+            chassisMovement.chassisSpeeds.vy += adjust;
+        }
+
         // These calculations are based on Ether's Chief Delphi derivation
         // The only changes are that that derivation is based on positive angles being clockwise
         // and our codes/sensors are based on positive angles being counter clockwise.

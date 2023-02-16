@@ -199,13 +199,6 @@ void SwerveChassis::Drive()
     // No-op for now
 }
 
-bool SwerveChassis::IsTipping() const
-{
-    auto pitch = m_pigeon->GetPitch();
-    auto roll = m_pigeon->GetRoll();
-
-    return (std::abs(pitch) > m_tippingTolerance || std::abs(roll) > m_tippingTolerance);
-}
 ISwerveDriveState *SwerveChassis::GetSpecifiedDriveState(
     ChassisOptionEnums::DriveStateType driveOption)
 {
@@ -265,6 +258,18 @@ units::angle::degree_t SwerveChassis::GetYaw() const
 {
     units::degree_t yaw{m_pigeon->GetYaw()};
     return yaw;
+}
+
+units::angle::degree_t SwerveChassis::GetPitch() const
+{
+    units::degree_t pitch{m_pigeon->GetPitch()};
+    return pitch;
+}
+
+units::angle::degree_t SwerveChassis::GetRoll() const
+{
+    units::degree_t roll{m_pigeon->GetRoll()};
+    return roll;
 }
 
 /// @brief update the chassis odometry based on current states of the swerve modules and the pigeon

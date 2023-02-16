@@ -125,6 +125,8 @@ public:
     std::shared_ptr<SwerveModule> GetBackRight() const { return m_backRight; }
     frc::Pose2d GetPose() const;
     units::angle::degree_t GetYaw() const override;
+    units::angle::degree_t GetPitch() const;
+    units::angle::degree_t GetRoll() const;
 
     // Dummy functions for IChassis Implementation
     inline IChassis::CHASSIS_TYPE GetType() const override { return IChassis::CHASSIS_TYPE::SWERVE; };
@@ -137,8 +139,6 @@ public:
     ISwerveDriveState *GetSpecifiedDriveState(ChassisOptionEnums::DriveStateType driveOption);
 
     ISwerveDriveOrientation *GetHeadingState(ChassisMovement moveInfo);
-
-    bool IsTipping() const;
 
 private:
     ISwerveDriveState *GetDriveState(ChassisMovement moveInfo);
@@ -203,6 +203,4 @@ private:
     ISwerveDriveOrientation *m_currentOrientationState;
 
     bool m_initialized = false;
-
-    const double m_tippingTolerance = 5.0;
 };

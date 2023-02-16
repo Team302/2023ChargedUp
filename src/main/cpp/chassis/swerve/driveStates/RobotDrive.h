@@ -43,4 +43,6 @@ protected:
     units::length::inch_t m_wheelbase;
     units::length::inch_t m_wheeltrack;
     units::velocity::feet_per_second_t m_maxspeed;
+    const double m_tippingTolerance = 30.0;
+    const double m_tippingConstant = 0.1;
 };
