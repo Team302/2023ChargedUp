@@ -50,6 +50,8 @@ Compressor *PCMXmlParser::ParseXML(
 
     // initialize attributes to default values
     int canID = 0;
+    double minPressure = 105;
+    double maxPressure = 115;
     frc::PneumaticsModuleType type = frc::PneumaticsModuleType::REVPH;
 
     bool hasError = false;
@@ -61,6 +63,14 @@ Compressor *PCMXmlParser::ParseXML(
         {
             canID = attr.as_int();
             hasError = HardwareIDValidation::ValidateCANID(canID, string("PCMXmlParser::ParseXML"));
+        }
+        else if (strcmp(attr.name(), "minPSI") == 0)
+        {
+            minPressure = attr.as_double();
+        }
+        else if (strcmp(attr.name(), "maxPSI") == 0)
+        {
+            maxPressure = attr.as_double();
         }
         else if (strcmp(attr.name(), "type") == 0)
         {
@@ -90,6 +100,7 @@ Compressor *PCMXmlParser::ParseXML(
     {
 
         pcm = new Compressor(canID, type);
+        pcm->EnableAnalog(units::pressure::pounds_per_square_inch_t(minPressure), units::pressure::pounds_per_square_inch_t(maxPressure));
 
         // todo create objects
     }
