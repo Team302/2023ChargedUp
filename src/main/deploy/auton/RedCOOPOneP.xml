@@ -5,14 +5,30 @@
 	   pathname="RedCOOPOne2.wpilib.json"/>
     <!--score preloaded cone-->
     <primitive id="DO_NOTHING"
-               time="2.0"
+               arm="CUBE_BACKROW_ROTATE"
+               extender="CUBE_BACKROW_EXTEND"
+               grabber="GRAB"
+               time="1.5"
+               />
+    <primitive id="DO_NOTHING"
+               arm="CUBE_BACKROW_ROTATE"
+               extender="CUBE_BACKROW_EXTEND"
+               grabber="OPEN"
+               time="0.5"
                />
     <!--drive to charing station-->
     <primitive id="DRIVE_PATH"
                pathname="RedCOOPOne2.wpilib.json"
+               arm="STARTING_POSITION_ROTATE"
+               extender="STARTING_POSITION_EXTEND"
+               grabber="OPEN"
                time="3.0"
                />
     <primitive id="DO_NOTHING"
+               pathname="RedCOOPOne2.wpilib.json"
+               arm="STARTING_POSITION_ROTATE"
+               extender="STARTING_POSITION_EXTEND"
+               grabber="OPEN"
                time="10.0"
                />
 <auton>
