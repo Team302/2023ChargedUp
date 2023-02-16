@@ -61,11 +61,10 @@ ArmStateMgr *ArmStateMgr::GetInstance()
 
 /// @brief    initialize the state manager, parse the configuration file and create the states.
 ArmStateMgr::ArmStateMgr() : StateMgr(),
-                             IRobotStateChangeSubscriber(),
-                             m_arm(MechanismFactory::GetMechanismFactory()->GetArm()),
                              m_arm(MechanismFactory::GetMechanismFactory()->GetArm())
                              //========= Hand modified code start section 1 ========
                              ,
+                             IRobotStateChangeSubscriber(),
                              m_prevState(ARM_STATE::STARTING_POSITION_ROTATE),
                              m_currentState(ARM_STATE::STARTING_POSITION_ROTATE),
                              m_targetState(ARM_STATE::STARTING_POSITION_ROTATE),
@@ -114,7 +113,7 @@ int ArmStateMgr::GetCurrentStateParam(
 void ArmStateMgr::CheckForStateTransition()
 {
     //========= Hand modified code start section 3 ========
-     CheckForSensorTransitions();
+    CheckForSensorTransitions();
     if (m_checkGamePadTransitions)
     {
         CheckForGamepadTransitions();

@@ -34,6 +34,7 @@
 #include <mechanisms/StateStruc.h>
 
 //========= Hand modified code start section 0 ========
+#include <mechanisms/grabber/GrabberStateMgr.h>
 #include <robotstate/IRobotStateChangeSubscriber.h>
 #include <robotstate/RobotStateChanges.h>
 //========= Hand modified code end section 0 ========

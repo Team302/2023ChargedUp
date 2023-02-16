@@ -112,7 +112,10 @@ private:
     RobotStateChanges::GamePiece m_gamepieceMode;
 
     bool m_canAutomaticallyMove = false;
-    double m_extendedPosition;
+    const double m_extendedPosition;
+    bool m_goToStartingConfig = true;
+
+    ArmStateMgr::ARM_STATE m_armState;
     //========= Hand modified code end section 5 ========
 
     static ExtenderStateMgr *m_instance;

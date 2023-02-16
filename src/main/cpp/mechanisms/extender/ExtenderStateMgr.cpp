@@ -157,6 +157,8 @@ void ExtenderStateMgr::CheckForGamepadTransitions()
             if (abs(controller->GetAxisValue(TeleopControlFunctions::MANUAL_EXTEND_RETRACT)) > 0.1)
             {
                 m_targetState = EXTENDER_STATE::MANUAL_EXTEND_RETRACT;
+                Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ExtenderMgr"), string("Extender Pct"), controller->GetAxisValue(TeleopControlFunctions::MANUAL_EXTEND_RETRACT));
+
                 m_prevState = m_targetState;
             }
             // else if (!m_goToStartingConfig)
