@@ -134,7 +134,6 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates(
     return {m_flState, m_frState, m_blState, m_brState};
 }
 
-void RobotDrive::Init(
-    ChassisMovement &chassisMovement)
+void RobotDrive::Init(ChassisMovement &chassisMovement)
 {
 }

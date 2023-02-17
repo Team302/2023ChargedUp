@@ -54,21 +54,21 @@ frc::Trajectory DragonTrajectoryGenerator::GenerateTrajectory(frc::Pose2d curren
         double distToWallGrid = 0.0;
         double distToCoopGrid = 0.0;
         double distToHPGrid = 0.0;
-        bool behindChargingPad = false;
+        bool outsideCommunity = false;
 
         if (m_fmsData->GetAllianceColor() == frc::DriverStation::Alliance::kBlue)
         {
             distToWallGrid = DistanceBetweenPoses::GetDeltaBetweenPoses(currentPose, m_blueWaypoints[WAYPOINTS::GRID_WALL_COL_TWO]);
             distToCoopGrid = DistanceBetweenPoses::GetDeltaBetweenPoses(currentPose, m_blueWaypoints[WAYPOINTS::GRID_COOP_COL_TWO]);
             distToHPGrid = DistanceBetweenPoses::GetDeltaBetweenPoses(currentPose, m_blueWaypoints[WAYPOINTS::GRID_HP_COL_TWO]);
-            behindChargingPad = currentPose.X() > m_blueWaypoints[WAYPOINTS::GRID_WALL_INTERMEDIATE].X() ? true : false;
+            outsideCommunity = currentPose.X() > m_blueWaypoints[WAYPOINTS::GRID_WALL_INTERMEDIATE].X() ? true : false;
         }
         else if (m_fmsData->GetAllianceColor() == frc::DriverStation::Alliance::kRed)
         {
             distToWallGrid = DistanceBetweenPoses::GetDeltaBetweenPoses(currentPose, m_redWaypoints[WAYPOINTS::GRID_WALL_COL_TWO]);
             distToCoopGrid = DistanceBetweenPoses::GetDeltaBetweenPoses(currentPose, m_redWaypoints[WAYPOINTS::GRID_COOP_COL_TWO]);
             distToHPGrid = DistanceBetweenPoses::GetDeltaBetweenPoses(currentPose, m_redWaypoints[WAYPOINTS::GRID_HP_COL_TWO]);
-            behindChargingPad = currentPose.X() < m_redWaypoints[WAYPOINTS::GRID_WALL_INTERMEDIATE].X() ? true : false;
+            outsideCommunity = currentPose.X() < m_redWaypoints[WAYPOINTS::GRID_WALL_INTERMEDIATE].X() ? true : false;
         }
 
         if (distToWallGrid < distToCoopGrid && distToWallGrid < distToHPGrid) // going to wall grid
@@ -89,7 +89,7 @@ frc::Trajectory DragonTrajectoryGenerator::GenerateTrajectory(frc::Pose2d curren
                 break;
             }
 
-            if (behindChargingPad)
+            if (outsideCommunity)
             {
                 intermediatePoints.emplace_back(frc::Translation2d{m_blueWaypoints[WAYPOINTS::GRID_WALL_INTERMEDIATE].X(),
                                                                    m_blueWaypoints[WAYPOINTS::GRID_WALL_INTERMEDIATE].Y()});
@@ -113,7 +113,7 @@ frc::Trajectory DragonTrajectoryGenerator::GenerateTrajectory(frc::Pose2d curren
                 break;
             }
 
-            if (behindChargingPad)
+            if (outsideCommunity)
             {
                 intermediatePoints.emplace_back(frc::Translation2d{m_blueWaypoints[WAYPOINTS::GRID_COOP_INTERMEDIATE].X(),
                                                                    m_blueWaypoints[WAYPOINTS::GRID_COOP_INTERMEDIATE].Y()});
@@ -137,7 +137,7 @@ frc::Trajectory DragonTrajectoryGenerator::GenerateTrajectory(frc::Pose2d curren
                 break;
             }
 
-            if (behindChargingPad)
+            if (outsideCommunity)
             {
                 intermediatePoints.emplace_back(frc::Translation2d{m_blueWaypoints[WAYPOINTS::GRID_HP_INTERMEDIATE].X(),
                                                                    m_blueWaypoints[WAYPOINTS::GRID_HP_INTERMEDIATE].Y()});
