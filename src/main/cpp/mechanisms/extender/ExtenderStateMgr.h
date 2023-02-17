@@ -35,6 +35,7 @@
 
 //========= Hand modified code start section 0 ========
 #include <robotstate/IRobotStateChangeSubscriber.h>
+#include <mechanisms/arm/ArmStateMgr.h>
 //========= Hand modified code end section 0 ========
 
 // Third Party Includes
@@ -112,10 +113,8 @@ private:
     RobotStateChanges::GamePiece m_gamepieceMode;
 
     bool m_canAutomaticallyMove = false;
-    const double m_extendedPosition;
     bool m_goToStartingConfig = true;
-
-    ArmStateMgr::ARM_STATE m_armState;
+    double m_extendedPosition;
     //========= Hand modified code end section 5 ========
 
     static ExtenderStateMgr *m_instance;
@@ -129,4 +128,8 @@ private:
     const StateStruc m_human_player_station_extendState = {EXTENDER_STATE::HUMAN_PLAYER_STATION_EXTEND, "HUMAN_PLAYER_STATION_EXTEND", StateType::EXTENDER_STATE, false};
     const StateStruc m_starting_position_extendState = {EXTENDER_STATE::STARTING_POSITION_EXTEND, "STARTING_POSITION_EXTEND", StateType::EXTENDER_STATE, true};
     const StateStruc m_floor_extendState = {EXTENDER_STATE::FLOOR_EXTEND, "FLOOR_EXTEND", StateType::EXTENDER_STATE, false};
+
+    ArmStateMgr::ARM_STATE m_armState;
+
+    const double m_armAngleTolerance = 10.0;
 };

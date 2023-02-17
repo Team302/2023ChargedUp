@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE auton SYSTEM "auton.dtd">
+<auton>
+    <primitive id="RESET_POSITION"
+			   pathname="8.wpilib.json"/>
+
+    <!--drive to cone-->
+    <primitive id="DRIVE_PATH"
+               pathname="8.wpilib.json"
+               headingOption="SPECIFIED_ANGLE"
+               heading="0"
+               time="20.0"
+               />
+
+</auton>

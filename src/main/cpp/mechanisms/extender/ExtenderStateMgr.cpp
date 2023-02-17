@@ -62,17 +62,17 @@ ExtenderStateMgr *ExtenderStateMgr::GetInstance()
 
 /// @brief    initialize the state manager, parse the configuration file and create the states.
 ExtenderStateMgr::ExtenderStateMgr() : StateMgr(),
+                                       IRobotStateChangeSubscriber(),
                                        m_extender(MechanismFactory::GetMechanismFactory()->GetExtender())
                                        //========= Hand modified code start section 1 ========
                                        ,
-                                       IRobotStateChangeSubscriber(),
                                        m_prevState(EXTENDER_STATE::STARTING_POSITION_EXTEND),
                                        m_currentState(EXTENDER_STATE::STARTING_POSITION_EXTEND),
                                        m_targetState(EXTENDER_STATE::STARTING_POSITION_EXTEND),
                                        m_gamepieceMode(RobotStateChanges::None),
-                                       m_armState(ArmStateMgr::ARM_STATE::HOLD_POSITION_ROTATE),
-                                       m_extendedPosition(84320.3176) // 22.25 inches in counts for extender
-                                                                      //========= Hand modified code end section 1 ========
+                                       m_extendedPosition(84320.3176), // 22.25 inches in counts for extender
+                                       m_armState(ArmStateMgr::ARM_STATE::HOLD_POSITION_ROTATE)
+//========= Hand modified code end section 1 ========
 
 {
     map<string, StateStruc> stateMap;
