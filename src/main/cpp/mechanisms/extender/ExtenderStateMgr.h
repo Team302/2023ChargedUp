@@ -114,7 +114,6 @@ private:
 
     bool m_canAutomaticallyMove = false;
     bool m_goToStartingConfig = true;
-    double m_extendedPosition;
     //========= Hand modified code end section 5 ========
 
     static ExtenderStateMgr *m_instance;
@@ -133,5 +132,4 @@ private:
 
     const double m_extendedPosition;
     const double m_armAngleTolerance = 10.0;
-
 };
