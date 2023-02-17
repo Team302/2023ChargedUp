@@ -1,11 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <statedata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <controlData
-    identifier="RotateToAngle"
+    identifier="RotateToUpwardAngle"
     mode="POSITION_DEGREES"
     constrolServer="MOTORCONTROLLER"
-    proportional="0.021"
-    integral="0.0004"
+    proportional="0.022"
+    integral="0.00045"
+    derivative="0.0"
+    feedforward="0.0"
+    izone="0.0"
+    maxacceleration="0.0"
+    cruisevelocity="0.0" />
+  <controlData
+    identifier="RotateToDownwardAngle"
+    mode="POSITION_DEGREES"
+    constrolServer="MOTORCONTROLLER"
+    proportional="0.01"
+    integral="0.0001"
     derivative="0.0"
     feedforward="0.0"
     izone="0.0"
@@ -45,13 +56,13 @@
     stateIdentifier="MANUAL_ROTATE"
     controlDataIdentifier="PercentOutput"
     controlDataIdentifier2=""
-    value="0"
+    value="0.3"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
   <mechanismTarget
     stateIdentifier="CUBE_BACKROW_ROTATE"
-    controlDataIdentifier="RotateToAngle"
+    controlDataIdentifier="RotateToUpwardAngle"
     controlDataIdentifier2=""
     value="58"
     secondValue=""
@@ -59,23 +70,39 @@
     solenoid2="NONE" />
   <mechanismTarget
     stateIdentifier="CONE_BACKROW_ROTATE"
-    controlDataIdentifier="RotateToAngle"
+    controlDataIdentifier="RotateToUpwardAngle"
     controlDataIdentifier2=""
     value="70"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
   <mechanismTarget
-    stateIdentifier="CUBE_MIDROW_ROTATE"
-    controlDataIdentifier="RotateToAngle"
+    stateIdentifier="CUBE_MIDROW_ROTATE_UP"
+    controlDataIdentifier="RotateToUpwardAngle"
     controlDataIdentifier2=""
     value="42"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
   <mechanismTarget
-    stateIdentifier="CONE_MIDROW_ROTATE"
-    controlDataIdentifier="RotateToAngle"
+    stateIdentifier="CUBE_MIDROW_ROTATE_DOWN"
+    controlDataIdentifier="RotateToDownwardAngle"
+    controlDataIdentifier2=""
+    value="42"
+    secondValue=""
+    solenoid="NONE"
+    solenoid2="NONE" />
+  <mechanismTarget
+    stateIdentifier="CONE_MIDROW_ROTATE_UP"
+    controlDataIdentifier="RotateToUpwardAngle"
+    controlDataIdentifier2=""
+    value="58"
+    secondValue=""
+    solenoid="NONE"
+    solenoid2="NONE" />
+  <mechanismTarget
+    stateIdentifier="CONE_MIDROW_ROTATE_DOWN"
+    controlDataIdentifier="RotateToDownwardAngle"
     controlDataIdentifier2=""
     value="58"
     secondValue=""
@@ -83,7 +110,7 @@
     solenoid2="NONE" />
   <mechanismTarget
     stateIdentifier="HUMAN_PLAYER_STATION_ROTATE"
-    controlDataIdentifier="RotateToAngle"
+    controlDataIdentifier="RotateToUpwardAngle"
     controlDataIdentifier2=""
     value="62"
     secondValue=""
@@ -91,7 +118,7 @@
     solenoid2="NONE" />
   <mechanismTarget
     stateIdentifier="STARTING_POSITION_ROTATE"
-    controlDataIdentifier="HoldAngle"
+    controlDataIdentifier="RotateToDownwardAngle"
     controlDataIdentifier2=""
     value="0"
     secondValue=""
@@ -99,9 +126,9 @@
     solenoid2="NONE" />
   <mechanismTarget
     stateIdentifier="FLOOR_POSITION_ROTATE"
-    controlDataIdentifier="RotateToAngle"
+    controlDataIdentifier="RotateToDownwardAngle"
     controlDataIdentifier2=""
-    value="10"
+    value="18"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />

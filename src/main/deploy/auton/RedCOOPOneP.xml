@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE auton SYSTEM "auton.dtd">
+<auton>
+<primitive id="RESET_POSITION"
+	   pathname="RedCOOPOne2.wpilib.json"/>
+    <!--score preloaded cone-->
+    <primitive id="DO_NOTHING"
+               time="2.0"
+               />
+    <!--drive to charing station-->
+    <primitive id="DRIVE_PATH"
+               pathname="RedCOOPOne2.wpilib.json"
+               time="3.0"
+               />
+    <primitive id="DO_NOTHING"
+               time="10.0"
+               />
+<auton>
