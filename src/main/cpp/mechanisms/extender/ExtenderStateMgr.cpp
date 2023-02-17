@@ -62,17 +62,17 @@ ExtenderStateMgr *ExtenderStateMgr::GetInstance()
 
 /// @brief    initialize the state manager, parse the configuration file and create the states.
 ExtenderStateMgr::ExtenderStateMgr() : StateMgr(),
+                                       IRobotStateChangeSubscriber(),
                                        m_extender(MechanismFactory::GetMechanismFactory()->GetExtender())
                                        //========= Hand modified code start section 1 ========
                                        ,
-                                       IRobotStateChangeSubscriber(),
                                        m_prevState(EXTENDER_STATE::STARTING_POSITION_EXTEND),
                                        m_currentState(EXTENDER_STATE::STARTING_POSITION_EXTEND),
                                        m_targetState(EXTENDER_STATE::STARTING_POSITION_EXTEND),
                                        m_gamepieceMode(RobotStateChanges::None),
-                                       m_armState(ArmStateMgr::ARM_STATE::HOLD_POSITION_ROTATE),
-                                       m_extendedPosition(84320.3176) // 22.25 inches in counts for extender
-                                                                      //========= Hand modified code end section 1 ========
+                                       m_extendedPosition(84320.3176), // 22.25 inches in counts for extender
+                                       m_armState(ArmStateMgr::ARM_STATE::HOLD_POSITION_ROTATE)
+//========= Hand modified code end section 1 ========
 
 {
     map<string, StateStruc> stateMap;
@@ -292,43 +292,6 @@ void ExtenderStateMgr::CheckForSensorTransitions()
         // If we are hitting limit switches, reset position
         m_extender->ResetIfFullyExtended(m_extendedPosition);
         m_extender->ResetIfFullyRetracted();
-    }
-}
-
-/// @brief Check if driver inputs or sensors trigger a state transition
-void ExtenderStateMgr::CheckForStateTransition()
-{
-    CheckForSensorTransitions();
-
-    if (m_checkGamePadTransitions)
-    {
-        CheckForGamepadTransitions();
-    }
-
-    /// DEBUGGING
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ExtenderMgr"), string("Current State"), m_targetState);
-
-    if (m_extender != nullptr)
-    {
-        if (m_targetState != m_currentState || m_targetState == EXTENDER_STATE::MANUAL_EXTEND_RETRACT)
-        {
-            auto armAngle = MechanismFactory::GetMechanismFactory()->GetArm()->GetPositionDegrees().to<double>();
-            if (armAngle < m_armAngleTolerance)
-            {
-                m_targetState = EXTENDER_STATE::MANUAL_EXTEND_RETRACT;
-            }
-
-            SetCurrentState(m_targetState, true);
-            RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmExtenderState, m_targetState);
-
-            /*if (m_targetState == EXTENDER_STATE::HOLD_POSITION_EXTEND)
-            {
-                m_extender->UpdateTarget(dynamic_cast<Mech1IndMotorState *>(GetStateVector()[m_prevState])->GetCurrentTarget()); // Get the target of the previous state by referencing the state vector
-            }*/
-        }
-
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ExtenderMgr"), string("Current Target"), m_extender->GetTarget());
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ExtenderMgr"), string("Current Position (Inches)"), m_extender->GetPositionInches().to<double>());
     }
 }
 

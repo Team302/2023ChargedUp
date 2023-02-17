@@ -130,6 +130,5 @@ private:
 
     ArmStateMgr::ARM_STATE m_armState;
 
-    const double m_extendedPosition;
     const double m_armAngleTolerance = 10.0;
 };

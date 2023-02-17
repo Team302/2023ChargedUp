@@ -124,26 +124,26 @@ void ArmStateMgr::CheckForStateTransition()
         SetCurrentState(m_targetState, true);
         RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmRotateState, m_targetState);
 
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Target"), m_arm->GetTarget());
-
         if (m_targetState == ARM_STATE::HOLD_POSITION_ROTATE)
         {
-            // holding currently based on just "F term" need to update to funciton with extender potentially.
-            if (m_arm->GetPositionDegrees().to<double>() > 50.0)
+            double armAngle = m_arm->GetPositionDegrees().to<double>();
+            double extenderPos = MechanismFactory::GetMechanismFactory()->GetExtender()->GetPositionInches().to<double>();
+            // holding currently based on just "F term" Created surface map function based on arm and extender position
+            if (m_arm->GetPositionDegrees().to<double>() > 10.0)
             {
-                m_arm->UpdateTarget(0.0495);
-            }
-            else if (m_arm->GetPositionDegrees().to<double>() > 27.5)
-            {
-                m_arm->UpdateTarget(0.0485);
-            }
-            else if (m_arm->GetPositionDegrees().to<double>() > 4.5) // Floor arm angle
-            {
-                m_arm->UpdateTarget(0.0425);
+                if (m_gamepieceMode == RobotStateChanges::GamePiece::Cube)
+                {
+                    // f term function for cube
+                    m_arm->UpdateTarget(m_cubeOffset + m_cubeArmComponent * armAngle + m_cubeExtenderComponent * extenderPos + m_cubeArmSquaredComponent * pow(armAngle, 2) + m_cubeArmExtenderComponent * armAngle * extenderPos + m_cubeExtenderSquaredComponent * pow(extenderPos, 2));
+                }
+                else if (m_gamepieceMode == RobotStateChanges::GamePiece::Cone && m_grabberState == GrabberStateMgr::GRABBER_STATE::GRAB)
+                {
+                    // f term function for cone
+                    m_arm->UpdateTarget(m_coneOffset + m_coneArmComponent * armAngle + m_coneExtenderComponent * extenderPos + m_coneArmSquaredComponent * pow(armAngle, 2) + m_coneArmExtenderComponent * armAngle * extenderPos + m_coneExtenderSquaredComponent * pow(extenderPos, 2));
+                }
             }
         }
     }
-
     //========= Hand modified code end section 3 ========
 }
 
@@ -281,44 +281,6 @@ void ArmStateMgr::CheckForSensorTransitions()
         m_arm->ResetIfArmDown();
 
         // Check arm angle and run any states dependent on it
-    }
-}
-
-/// @brief Check if driver inputs or sensors trigger a state transition
-void ArmStateMgr::CheckForStateTransition()
-{
-
-    CheckForSensorTransitions();
-    if (m_checkGamePadTransitions)
-    {
-        CheckForGamepadTransitions();
-    }
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Current State"), m_targetState);
-
-    if (m_targetState != m_currentState)
-    {
-        SetCurrentState(m_targetState, true);
-        RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmRotateState, m_targetState);
-
-        if (m_targetState == ARM_STATE::HOLD_POSITION_ROTATE)
-        {
-            double armAngle = m_arm->GetPositionDegrees().to<double>();
-            double extenderPos = MechanismFactory::GetMechanismFactory()->GetExtender()->GetPositionInches().to<double>();
-            // holding currently based on just "F term" Created surface map function based on arm and extender position
-            if (m_arm->GetPositionDegrees().to<double>() > 10.0)
-            {
-                if (m_gamepieceMode == RobotStateChanges::GamePiece::Cube)
-                {
-                    // f term function for cube
-                    m_arm->UpdateTarget(m_cubeOffset + m_cubeArmComponent * armAngle + m_cubeExtenderComponent * extenderPos + m_cubeArmSquaredComponent * pow(armAngle, 2) + m_cubeArmExtenderComponent * armAngle * extenderPos + m_cubeExtenderSquaredComponent * pow(extenderPos, 2));
-                }
-                else if (m_gamepieceMode == RobotStateChanges::GamePiece::Cone && m_grabberState == GrabberStateMgr::GRABBER_STATE::GRAB)
-                {
-                    // f term function for cone
-                    m_arm->UpdateTarget(m_coneOffset + m_coneArmComponent * armAngle + m_coneExtenderComponent * extenderPos + m_coneArmSquaredComponent * pow(armAngle, 2) + m_coneArmExtenderComponent * armAngle * extenderPos + m_coneExtenderSquaredComponent * pow(extenderPos, 2));
-                }
-            }
-        }
     }
 }
 
