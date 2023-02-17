@@ -12,6 +12,7 @@
                />
     <!--auto balance-->
     <primitive id="DO_NOTHING"
+               pathname="RedCOOPOne2.wpilib.json"
                time="10.0"
                />
 </auton>
