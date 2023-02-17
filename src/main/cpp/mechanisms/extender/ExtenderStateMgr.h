@@ -114,7 +114,6 @@ private:
 
     bool m_canAutomaticallyMove = false;
     bool m_goToStartingConfig = true;
-    double m_extendedPosition;
     //========= Hand modified code end section 5 ========
 
     static ExtenderStateMgr *m_instance;
