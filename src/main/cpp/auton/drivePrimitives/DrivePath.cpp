@@ -27,7 +27,7 @@
 
 // 302 Includes
 #include <auton/drivePrimitives/DrivePath.h>
-#include <auton/drivePrimitives/DragonTrajectoryUtils.h>>
+#include <auton/drivePrimitives/DragonTrajectoryUtils.h>
 #include <chassis/ChassisMovement.h>
 #include <chassis/ChassisOptionEnums.h>
 #include <chassis/ChassisFactory.h>

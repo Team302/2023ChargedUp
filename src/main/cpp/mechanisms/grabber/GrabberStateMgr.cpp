@@ -62,10 +62,10 @@ GrabberStateMgr *GrabberStateMgr::GetInstance()
 
 /// @brief    initialize the state manager, parse the configuration file and create the states.
 GrabberStateMgr::GrabberStateMgr() : StateMgr(),
+                                     IRobotStateChangeSubscriber(),
                                      m_grabber(MechanismFactory::GetMechanismFactory()->GetGrabber())
                                      //========= Hand modified code start section 1 ========
                                      ,
-                                     IRobotStateChangeSubscriber(),
                                      m_currentState(GRABBER_STATE::OPEN),
                                      m_targetState(GRABBER_STATE::OPEN)
 //========= Hand modified code end section 1 ========
