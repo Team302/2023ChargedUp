@@ -66,7 +66,6 @@ GrabberStateMgr::GrabberStateMgr() : StateMgr(),
                                      m_grabber(MechanismFactory::GetMechanismFactory()->GetGrabber())
                                      //========= Hand modified code start section 1 ========
                                      ,
-                                     IRobotStateChangeSubscriber(),
                                      m_currentState(GRABBER_STATE::GRAB),
                                      m_targetState(GRABBER_STATE::GRAB)
 //========= Hand modified code end section 1 ========
