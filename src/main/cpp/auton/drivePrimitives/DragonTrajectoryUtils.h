@@ -1,3 +1,4 @@
+
 //====================================================================================================================================================
 // Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
@@ -12,54 +13,15 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
+
 #pragma once
 
-// C++ Includes
-#include <memory>
+#include <frc/trajectory/Trajectory.h>
 
-// Team302 Includes
 #include <auton/PrimitiveParams.h>
-#include <auton/drivePrimitives/IPrimitive.h>
-#include <chassis/ChassisFactory.h>
-#include <chassis/IChassis.h>
-#include <chassis/ChassisOptionEnums.h>
 
-// FRC,WPI Includes
-#include <frc/controller/HolonomicDriveController.h>
-#include <frc/controller/RamseteController.h>
-#include <frc/Filesystem.h>
-#include <frc/geometry/Pose2d.h>
-#include <frc/Timer.h>
-#include <frc/trajectory/TrajectoryConfig.h>
-#include <frc/trajectory/TrajectoryUtil.h>
-#include <wpi/SmallString.h>
-
-namespace frc
-{
-    class Timer;
-}
-
-class DrivePath : public IPrimitive
+class DragonTrajectoryUtils
 {
 public:
-    DrivePath();
-
-    virtual ~DrivePath() = default;
-
-    void Init(PrimitiveParams *params) override;
-    void Run() override;
-    bool IsDone() override;
-
-private:
-    std::shared_ptr<IChassis> m_chassis;
-    std::unique_ptr<frc::Timer> m_timer;
-    frc::Trajectory m_trajectory;
-    bool m_runHoloController;
-
-    std::string m_pathname;
-
-    ChassisOptionEnums::HeadingOption m_headingOption;
-    double m_heading;
-    double m_maxTime;
-    std::string m_ntName;
+    static frc::Trajectory GetTrajectory(PrimitiveParams *params);
 };

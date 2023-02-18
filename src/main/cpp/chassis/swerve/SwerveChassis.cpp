@@ -333,20 +333,15 @@ ChassisSpeeds SwerveChassis::GetChassisSpeeds() const
 /// @brief Reset the current chassis pose based on the provided pose and rotation
 /// @param [in] const Pose2d&       pose        Current XY position
 /// @param [in] const Rotation2d&   angle       Current rotation angle
-void SwerveChassis::ResetPose(
-    const Pose2d &pose,
-    const Rotation2d &angle)
+void SwerveChassis::ResetPose(const Pose2d &pose, const Rotation2d &angle)
 {
     m_poseEstimator.ResetPosition(angle, wpi::array<frc::SwerveModulePosition, 4>{m_frontLeft.get()->GetPosition(), m_frontRight.get()->GetPosition(), m_backLeft.get()->GetPosition(), m_backRight.get()->GetPosition()}, pose);
-
     SetEncodersToZero();
 }
 
-void SwerveChassis::ResetPose(
-    const Pose2d &pose)
+void SwerveChassis::ResetPose(const Pose2d &pose)
 {
     Rotation2d angle = pose.Rotation();
-
     ResetPose(pose, angle);
 }
 
@@ -361,7 +356,6 @@ ChassisSpeeds SwerveChassis::GetFieldRelativeSpeeds(
     auto forward = temp;
 
     ChassisSpeeds output{forward, strafe, rot};
-
     return output;
 }
 

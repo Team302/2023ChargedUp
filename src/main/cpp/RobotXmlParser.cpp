@@ -40,7 +40,7 @@
 #include <chassis/ChassisXmlParser.h>
 #include <hw/DragonPigeon.h>
 #include <hw/xml/CameraXmlParser.h>
-#include <hw/xml/ledXmlParser.h>
+#include <hw/xml/LedXmlParser.h>
 #include <hw/xml/LimelightXmlParser.h>
 #include <hw/xml/PDPXmlParser.h>
 #include <hw/xml/PigeonXmlParser.h>
