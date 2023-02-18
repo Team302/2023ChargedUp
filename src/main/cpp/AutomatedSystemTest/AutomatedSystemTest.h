@@ -30,21 +30,29 @@ class AutomatedSystemTest
 public:
     AutomatedSystemTest();
     ~AutomatedSystemTest() = default;
-    void AutoTest();
     void Init();
+    void Run();
 
 private:
+    int m_swerveforwardtimer = 0;
+    bool m_finishedarmtest = false;
+    bool m_gotbasepdpuseage = false;
+    bool m_finishedextendertest = false;
+    bool m_finishedchassistest = false;
+    bool isdone = false;
     double m_basepdpusage;
     double m_armusage;
     double m_extenderusage;
     double m_swervechassisforwardusage;
+    double m_swervechassisstrafeusage;
+    double m_swervechassisturnusage;
     double test;
     double m_InitialPDPWatts;
     frc::PowerDistribution *m_PDP;
-    void GetBasePDPValue();
-    void GetTestSwerveInit();
-    void GetTestExtender();
-    void GetTestArm();
+    void BasePDPValue();
+    void TestSwerve();
+    void TestExtender();
+    void TestArm();
     // double GetTestPnumatics();
     // double GetPDHTemp();
 };

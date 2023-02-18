@@ -285,6 +285,10 @@ void Robot::TestInit()
 
 void Robot::TestPeriodic()
 {
+    if (m_autotest != nullptr)
+    {
+        m_autotest->Run();
+    }
 }
 
 #ifndef RUNNING_FRC_TESTS
