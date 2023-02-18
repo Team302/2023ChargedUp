@@ -45,10 +45,15 @@ using namespace std;
 Grabber::Grabber(
 	std::string controlFileName,
 	std::string networkTableName,
-	std::shared_ptr<DragonSolenoid> solenoid0) : Mech1Solenoid(MechanismTypes::MECHANISM_TYPE::GRABBER, controlFileName, networkTableName, solenoid0)
+	std::shared_ptr<DragonSolenoid> solenoid0,
+	std::shared_ptr<DragonDigitalInput> sensor0) : Mech1Solenoid(MechanismTypes::MECHANISM_TYPE::GRABBER, controlFileName, networkTableName, solenoid0),
+												   m_bannerSensor(sensor0)
 {
 }
 
 //========= Hand modified code start section 0 ========
-
+bool Grabber::IsGamePiecePresent()
+{
+	return m_bannerSensor->Get();
+}
 //========= Hand modified code end section 0 ========

@@ -66,8 +66,8 @@ GrabberStateMgr::GrabberStateMgr() : StateMgr(),
                                      //========= Hand modified code start section 1 ========
                                      ,
                                      IRobotStateChangeSubscriber(),
-                                     m_currentState(GRABBER_STATE::OPEN),
-                                     m_targetState(GRABBER_STATE::OPEN)
+                                     m_currentState(GRABBER_STATE::GRAB),
+                                     m_targetState(GRABBER_STATE::GRAB)
 //========= Hand modified code end section 1 ========
 
 {
@@ -127,12 +127,11 @@ void GrabberStateMgr::CheckForSensorTransitions()
     if (m_grabber != nullptr)
     {
         // look at banner sensor to determine target state
-        // if (bannersensor->DetectsObject())
-        //{
-        // m_targetState = GRABBER_STATE::GRAB;
-        //}
-        // else...
-        // if()
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("GrabberStateMgr"), std::string("DigitalInputValue"), m_grabber->IsGamePiecePresent());
+        if (m_grabber->IsGamePiecePresent())
+        {
+            m_targetState = GRABBER_STATE::GRAB;
+        }
     }
 }
 
@@ -142,7 +141,7 @@ void GrabberStateMgr::CheckForGamepadTransitions()
     if (m_grabber != nullptr)
     {
         m_currentState = static_cast<GRABBER_STATE>(GetCurrentState());
-        m_targetState = m_currentState;
+        // m_targetState = m_currentState;
 
         auto controller = TeleopControl::GetInstance();
         if (controller != nullptr)
