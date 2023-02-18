@@ -105,7 +105,7 @@ public:
     double GetTargetArea() const;
     units::angle::degree_t GetTargetSkew() const;
     units::time::microsecond_t GetPipelineLatency() const;
-    units::length::inch_t EstimateTargetDistance() const;
+    units::length::inch_t EstimateTargetXdistance() const;
     std::vector<double> Get3DSolve() const;
     PIPELINE_MODE getPipeline() const;
 
@@ -124,7 +124,7 @@ public:
     units::angle::degree_t GetLimelightPitch() const { return m_pitch; }
     units::angle::degree_t GetLimelightYaw() const { return m_yaw; }
     units::angle::degree_t GetLimelightRoll() const { return m_roll; }
-    units::length::inch_t GetMountingHeight() const { return m_mountHeight; }
+    units::length::inch_t GetLimelightMountingHeight() const { return m_mountHeight; }
     units::length::inch_t GetTargetHeight() const { return m_targetHeight; }
 
 protected:
