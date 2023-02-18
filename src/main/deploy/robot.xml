@@ -10,6 +10,9 @@
   <pcm
     canId="0"
     type="REV" />
+  <pcm
+    canId="1"
+    type="REV" />
   <pigeon
     canId="0"
     canBusName="canivore"

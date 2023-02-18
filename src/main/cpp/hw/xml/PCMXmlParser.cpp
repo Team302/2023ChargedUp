@@ -49,10 +49,14 @@ Compressor *PCMXmlParser::ParseXML(
     Compressor *pcm = nullptr;
 
     // initialize attributes to default values
+<<<<<<< Updated upstream
     int canID = 0;
     double minPressure = 105;
     double maxPressure = 115;
     frc::PneumaticsModuleType type = frc::PneumaticsModuleType::REVPH;
+=======
+    int canID = 1;
+>>>>>>> Stashed changes
 
     bool hasError = false;
 
