@@ -22,17 +22,6 @@
                heading="179.5"
                time="2.0"
                />
-    <!--drive to gamepiece-->
-    <primitive id="DRIVE_PATH"
-               pathname="RedHPOne4.wpilib.json"
-               headingOption="SPECIFIED_ANGLE"
-               heading="179.5"
-               time="2.0"
-               />
-    <!--pick up gamepiece-->
-    <primitive id="DO_NOTHING"
-               time="2.0"
-               />
     <!--auto balance-->
     <primitive id="DO_NOTHING"
                time="10.0"
