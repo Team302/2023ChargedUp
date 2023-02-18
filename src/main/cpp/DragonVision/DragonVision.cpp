@@ -45,14 +45,20 @@ DragonVision::DragonVision()
 	m_DragonLimelightMap[LIMELIGHT_POSITION::BACK] = LimelightFactory::GetLimelightFactory()->GetLimelight(LimelightUsages::SECONDARY);
 }
 
-void DragonVision::setPipeline(DragonLimelight::PIPELINE_MODE mode, LIMELIGHT_POSITION position)
+bool DragonVision::setPipeline(DragonLimelight::PIPELINE_MODE mode, LIMELIGHT_POSITION position)
 {
 	DragonLimelight *dll = getLimelight(position);
 
 	if (dll != nullptr)
 	{
-		dll->SetPipeline(mode);
+		return dll->SetPipeline(mode);
 	}
+	return false;
+}
+
+bool DragonVision::setPipeline(DragonLimelight::PIPELINE_MODE mode)
+{
+	return setPipeline(mode, LIMELIGHT_POSITION::FRONT);
 }
 
 /// @brief Use this function to get the currently detected target information
@@ -64,16 +70,25 @@ DragonVisionTarget *DragonVision::getTargetInfo(LIMELIGHT_POSITION position) con
 
 	if ((dll != nullptr) && (dll->HasTarget()))
 	{
+		units::length::inch_t dist;
+		units::angle::degree_t deg = dll->GetTargetHorizontalOffsetRobotFrame(&dist);
 		DragonVisionTarget *dvt = new DragonVisionTarget(
 			dll->getPipeline(),
 			dll->EstimateTargetDistance(),
 			dll->GetTargetHorizontalOffset(),
+			deg,
+			dist,
 			dll->GetTargetVerticalOffset(),
 			dll->GetPipelineLatency());
 		return dvt;
 	}
 
 	return nullptr;
+}
+
+DragonVisionTarget *DragonVision::getTargetInfo() const
+{
+	return getTargetInfo(LIMELIGHT_POSITION::FRONT);
 }
 
 int DragonVision::GetRobotPosition() const

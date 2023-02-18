@@ -132,7 +132,10 @@ units::angle::degree_t DragonLimelight::GetTy() const
     auto nt = m_networktable.get();
     if (nt != nullptr)
     {
-        return units::angle::degree_t(nt->GetNumber("ty", 0.0));
+        double v = nt->GetNumber("ty", 0.0);
+
+        return units::angle::degree_t(v);
+        // return units::angle::degree_t(nt->GetNumber("ty", 0.0));
     }
     return units::angle::degree_t(0.0);
 }
@@ -141,22 +144,44 @@ units::angle::degree_t DragonLimelight::GetTargetHorizontalOffset() const
 {
     if (abs(m_roll.to<double>()) < 1.0)
     {
-        return GetTx();
+        return -1.0 * GetTx();
     }
     else if (abs(m_roll.to<double>() - 90.0) < 1.0)
     {
-        return -1.0 * GetTy();
+        return GetTy();
     }
     else if (abs(m_roll.to<double>() - 180.0) < 1.0)
     {
-        return -1.0 * GetTx();
+        return GetTx();
     }
     else if (abs(m_roll.to<double>() - 270.0) < 1.0)
     {
-        return GetTy();
+        return -1.0 * GetTy();
     }
     Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("DragonLimelight"), string("GetTargetVerticalOffset"), string("Invalid limelight rotation"));
     return GetTx();
+}
+
+units::angle::degree_t DragonLimelight::GetTargetHorizontalOffsetRobotFrame(units::length::inch_t *targetDistOffset) const
+{
+    units::angle::degree_t limelightFrameHorizAngle = GetTargetHorizontalOffset();
+    units::angle::radian_t limelightFrameHorizAngleRad = limelightFrameHorizAngle;
+    units::length::inch_t targetDistance = EstimateTargetDistance();
+
+    units::length::inch_t targetHorizOffset = targetDistance * tan(limelightFrameHorizAngleRad.to<double>());
+    units::length::inch_t targetHorizOffsetRobotFrame = targetHorizOffset + m_mountingHorizontalOffset; // the offset is negative if the limelight is to the left of the center of the robot
+    units::length::inch_t targetDistanceRobotFrame = targetDistance + m_mountingForwardOffset;          // the offset is negative if the limelight is behind the center of the robot
+
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("targetHorizOffset_inch "), targetHorizOffset.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("targetHorizOffsetRobotFrame_inch "), targetHorizOffsetRobotFrame.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("targetDistanceRobotFrame_inch "), targetDistanceRobotFrame.to<double>());
+
+    // units::angle::radian_t angleOffset = units::angle::radian_t(atan((targetHorizOffsetRobotFrame / targetDistanceRobotFrame).to<float>()));
+    units::angle::radian_t angleOffset = units::angle::radian_t(0);
+
+    *targetDistOffset = targetHorizOffsetRobotFrame;
+
+    return angleOffset;
 }
 
 units::angle::degree_t DragonLimelight::GetTargetVerticalOffset() const
@@ -235,13 +260,14 @@ void DragonLimelight::SetCamMode(DragonLimelight::CAM_MODE mode)
     }
 }
 
-void DragonLimelight::SetPipeline(int pipeline)
+bool DragonLimelight::SetPipeline(int pipeline)
 {
     auto nt = m_networktable.get();
     if (nt != nullptr)
     {
-        nt->PutNumber("pipeline", pipeline);
+        return nt->PutNumber("pipeline", pipeline);
     }
+    return false;
 }
 
 void DragonLimelight::SetStreamMode(DragonLimelight::STREAM_MODE mode)
@@ -295,18 +321,48 @@ void DragonLimelight::PrintValues()
 
 units::length::inch_t DragonLimelight::EstimateTargetDistance() const
 {
-    units::angle::degree_t angleFromHorizon = (GetLimelightPitch() + GetTargetVerticalOffset());
+    units::angle::degree_t angleFromHorizon;
+    units::angle::degree_t limelightAngleFromHorizon;
+    units::angle::degree_t limelightRoll = GetLimelightRoll();
+
+    if (abs(limelightRoll.to<double>()) < 1.0)
+    {
+        limelightAngleFromHorizon = GetLimelightPitch();
+    }
+    else if (abs(limelightRoll.to<double>() - 90.0) < 1.0)
+    {
+        limelightAngleFromHorizon = -1.0 * GetLimelightYaw();
+    }
+    else if (abs(limelightRoll.to<double>() - 180.0) < 1.0)
+    {
+        limelightAngleFromHorizon = -1.0 * GetLimelightPitch();
+    }
+    else if (abs(limelightRoll.to<double>() - 270.0) < 1.0)
+    {
+        limelightAngleFromHorizon = GetLimelightYaw();
+    }
+    else
+    {
+        // not handled
+    }
+
+    angleFromHorizon = (limelightAngleFromHorizon + GetTargetVerticalOffset());
     units::angle::radian_t angleRad = angleFromHorizon;
     double tanAngle = tan(angleRad.to<double>());
 
     auto deltaHgt = GetTargetHeight() - GetMountingHeight();
+    units::length::inch_t distanceToTarget = units::length::inch_t((GetTargetHeight() - GetMountingHeight()) / tanAngle);
 
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("angleFromHorizon "), angleFromHorizon.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("angleRad "), angleRad.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("limelightAngleFromHorizon "), limelightAngleFromHorizon.to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("mounting angle "), GetLimelightPitch().to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("target vertical angle "), GetTargetVerticalOffset().to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("angle radians "), angleRad.to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("deltaH "), deltaHgt.to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("tan angle "), tanAngle);
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("distance "), ((GetTargetHeight() - GetMountingHeight()) / tanAngle).to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("distance "), (distanceToTarget).to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("targetHeight "), (GetTargetHeight()).to<double>());
 
-    return (GetTargetHeight() - GetMountingHeight()) / tanAngle;
+    return distanceToTarget;
 }

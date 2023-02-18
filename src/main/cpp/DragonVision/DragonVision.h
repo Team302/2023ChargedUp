@@ -36,8 +36,10 @@ public:
         BACK
     };
 
-    void setPipeline(DragonLimelight::PIPELINE_MODE mode, LIMELIGHT_POSITION position);
+    bool setPipeline(DragonLimelight::PIPELINE_MODE mode, LIMELIGHT_POSITION position);
+    bool setPipeline(DragonLimelight::PIPELINE_MODE mode);
     DragonVisionTarget *getTargetInfo(LIMELIGHT_POSITION position) const;
+    DragonVisionTarget *getTargetInfo() const;
 
     int GetRobotPosition() const;
 

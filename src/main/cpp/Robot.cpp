@@ -68,7 +68,7 @@ void Robot::RobotInit()
     m_previewer = new AutonPreviewer(m_cyclePrims); // TODO:: Move to DriveTeamFeedback
     m_field = DragonField::GetInstance();           // TODO: move to drive team feedback
 
-    m_dragonLimeLight = LimelightFactory::GetLimelightFactory()->GetLimelight(); // ToDo:: Move to Dragon Vision
+    //    m_dragonLimeLight = LimelightFactory::GetLimelightFactory()->GetLimelight(); // ToDo:: Move to Dragon Vision
 
     StateMgrHelper::InitStateMgrs();
 
@@ -97,6 +97,7 @@ void Robot::RobotPeriodic()
         m_robotState->Run();
     }
 
+#define ENABLE_VISION
 #ifdef ENABLE_VISION
     static int mycounter = 0;
     static int my2ndcounter = 0;
@@ -110,6 +111,9 @@ void Robot::RobotPeriodic()
     {
         LoggerStringValue status = {string("HW connection Status"), "Dragon vision is not null"};
 
+        vision->setPipeline(DragonLimelight::APRIL_TAG, DragonVision::FRONT);
+
+#ifdef SWITCH_PIPELINE
         if (mycounter % (5000 / 20) == 0)
         {
             my2ndcounter++;
@@ -122,7 +126,7 @@ void Robot::RobotPeriodic()
             }
             else
             {
-                vision->setPipeline(DragonLimelight::RETRO_REFLECTIVE, DragonVision::FRONT);
+                //  vision->setPipeline(DragonLimelight::RETRO_REFLECTIVE, DragonVision::FRONT);
                 a = 1;
             }
 
@@ -132,12 +136,13 @@ void Robot::RobotPeriodic()
 
             Logger::GetLogger()->LogData(data);
         }
+#endif
+        DragonVisionTarget *dvt = vision->getTargetInfo();
 
-        DragonVisionTarget *dvt = vision->getTargetInfo(DragonVision::FRONT);
         if (dvt == nullptr)
         {
             LoggerStringValue status = {string("Status"), "No target found or missing limelight"};
-            LoggerData data = {LOGGER_LEVEL::PRINT, string("DragonLimelight"), {}, {}, {}, {status}};
+            LoggerData data = {LOGGER_LEVEL::PRINT, string("DragonLimelight"), {}, {}, {count}, {status}};
             Logger::GetLogger()->LogData(data);
         }
         else
@@ -145,8 +150,10 @@ void Robot::RobotPeriodic()
             LoggerStringValue status = {string("Status"), "Target found"};
             LoggerDoubleValue vertAngle = {string("VertAngle"), dvt->getVerticalAngleToTarget().to<double>()};
             LoggerDoubleValue horAngle = {string("HorizAngle"), dvt->getHorizontalAngleToTarget().to<double>()};
-            LoggerDoubleValue distance = {string("distance "), dvt->getDistanceToTarget().to<double>()};
-            LoggerData data = {LOGGER_LEVEL::PRINT, string("DragonLimelight"), {}, {vertAngle, horAngle, distance}, {}, {status}};
+            LoggerDoubleValue yDistance = {string("y distance "), dvt->getDistanceToTarget().to<double>()};
+            LoggerDoubleValue xDistance = {string("x distance "), dvt->getHorizontalDistanceToTargetRobotFrame().to<double>()};
+            LoggerDoubleValue horAngleRF = {string("HorizAngleRobotFrame "), dvt->getHorizontalAngleToTargetRobotFrame().to<double>()};
+            LoggerData data = {LOGGER_LEVEL::PRINT, string("DragonLimelight"), {}, {vertAngle, horAngle, yDistance, xDistance, horAngleRF}, {count}, {status}};
             Logger::GetLogger()->LogData(data);
         }
     }
@@ -182,7 +189,12 @@ void Robot::RobotPeriodic()
     {
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DEUBGGING"), string("Pigeon Nullptr?"), "true");
     }
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DEUBGGING"), string("Pigeon Yaw"), pigeon->GetYaw());
+    else
+    {
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Pigeon"), string("Pigeon Yaw"), pigeon->GetYaw());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Pigeon"), string("Pigeon Pitch"), pigeon->GetPitch());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Pigeon"), string("Pigeon Roll"), pigeon->GetRoll());
+    }
 }
 
 /**

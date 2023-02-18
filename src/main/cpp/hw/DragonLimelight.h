@@ -81,10 +81,10 @@ public:
         std::string tableName,                          /// <I> - network table name
         units::length::inch_t mountingHeight,           /// <I> - mounting height of the limelight
         units::length::inch_t mountingHorizontalOffset, /// <I> - mounting horizontal offset from the middle of the robot
-        units::length::inch_t forwardOffset,                /// <I> mounting offset forward/back
-        units::angle::degree_t pitch,                 /// <I> - Pitch of limelight
-        units::angle::degree_t yaw,                   /// <I> - Yaw of limelight
-        units::angle::degree_t roll,                  /// <I> - Roll of limelight
+        units::length::inch_t forwardOffset,            /// <I> mounting offset forward/back
+        units::angle::degree_t pitch,                   /// <I> - Pitch of limelight
+        units::angle::degree_t yaw,                     /// <I> - Yaw of limelight
+        units::angle::degree_t roll,                    /// <I> - Roll of limelight
         units::length::inch_t targetHeight,             /// <I> - height the target
         units::length::inch_t targetHeight2,            /// <I> - height of second target
         LED_MODE ledMode,
@@ -100,6 +100,7 @@ public:
 
     bool HasTarget() const;
     units::angle::degree_t GetTargetHorizontalOffset() const;
+    units::angle::degree_t GetTargetHorizontalOffsetRobotFrame(units::length::inch_t *targetDistOffset) const;
     units::angle::degree_t GetTargetVerticalOffset() const;
     double GetTargetArea() const;
     units::angle::degree_t GetTargetSkew() const;
@@ -112,7 +113,7 @@ public:
     void SetTargetHeight(units::length::inch_t targetHeight);
     void SetLEDMode(DragonLimelight::LED_MODE mode);
     void SetCamMode(DragonLimelight::CAM_MODE mode);
-    void SetPipeline(int pipeline);
+    bool SetPipeline(int pipeline);
     void SetStreamMode(DragonLimelight::STREAM_MODE mode);
     void ToggleSnapshot(DragonLimelight::SNAPSHOT_MODE toggle);
     void SetCrosshairPos(double crosshairPosX, double crosshairPosY);
