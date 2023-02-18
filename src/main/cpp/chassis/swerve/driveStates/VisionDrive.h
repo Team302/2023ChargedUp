@@ -15,39 +15,30 @@
 
 #pragma once
 
-class ChassisOptionEnums
+// FRC Includes
+#include <frc/kinematics/SwerveModuleState.h>
+#include <frc/kinematics/ChassisSpeeds.h>
+#include <frc/geometry/Transform2d.h>
+
+// Team302 Includes
+#include <chassis/swerve/driveStates/RobotDrive.h>
+
+class VisionDrive : public RobotDrive
 {
 public:
-    enum HeadingOption
-    {
-        MAINTAIN,
-        TOWARD_GOAL,
-        SPECIFIED_ANGLE
-    };
+    VisionDrive(RobotDrive *robotDrive);
 
-    enum DriveStateType
-    {
-        ROBOT_DRIVE,
-        FIELD_DRIVE,
-        TRAJECTORY_DRIVE,
-        POLAR_DRIVE,
-        HOLD_DRIVE,
-        VISION_DRIVE,
-        STOP_DRIVE
-    };
+    std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates(
+        ChassisMovement &chassisMovement) override;
 
-    enum NoMovementOption
-    {
-        STOP,
-        HOLD_POSITION
-    };
+    void Init(
+        ChassisMovement &chassisMovement) override;
 
-    enum AutonControllerType
-    {
-        RAMSETE,
-        HOLONOMIC
-    };
+    void UpdateOffsets(frc::Transform2d offset);
 
-    ChassisOptionEnums() = delete;
-    ~ChassisOptionEnums() = delete;
+private:
+    RobotDrive *m_robotDrive;
+    frc::Transform2d m_offsetFromTarget;
+
+    const double m_kP = 1.0;
 };

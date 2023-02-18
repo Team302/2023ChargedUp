@@ -13,41 +13,41 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#pragma once
+#include <frc/geometry/Rotation2d.h>
+#include <frc/geometry/Pose2d.h>
 
-class ChassisOptionEnums
+// Team302 Includes
+#include <chassis/swerve/driveStates/VisionDrive.h>
+#include <chassis/ChassisFactory.h>
+
+/// DEBUGGING
+#include <utils/logging/Logger.h>
+
+VisionDrive::VisionDrive(RobotDrive *robotDrive) : RobotDrive(),
+                                                   m_robotDrive(robotDrive)
 {
-public:
-    enum HeadingOption
-    {
-        MAINTAIN,
-        TOWARD_GOAL,
-        SPECIFIED_ANGLE
-    };
+}
 
-    enum DriveStateType
-    {
-        ROBOT_DRIVE,
-        FIELD_DRIVE,
-        TRAJECTORY_DRIVE,
-        POLAR_DRIVE,
-        HOLD_DRIVE,
-        VISION_DRIVE,
-        STOP_DRIVE
-    };
+std::array<frc::SwerveModuleState, 4> VisionDrive::UpdateSwerveModuleStates(
+    ChassisMovement &chassisMovement)
+{
+    // update chassis speeds or create new chassis speeds to move based on horizontal and depth offset given by mr muscats code
+    /// TODO: make sure transform2d is coming in formatted correctly, horizontal offset is vy, depth offset is vx
+    auto xSpeed = m_offsetFromTarget.X() * m_kP;
+    auto ySpeed = m_offsetFromTarget.Y() * m_kP;
 
-    enum NoMovementOption
-    {
-        STOP,
-        HOLD_POSITION
-    };
+    chassisMovement.chassisSpeeds.vx = units::velocity::meters_per_second_t(xSpeed);
+    chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(ySpeed);
 
-    enum AutonControllerType
-    {
-        RAMSETE,
-        HOLONOMIC
-    };
+    return m_robotDrive->UpdateSwerveModuleStates(chassisMovement);
+}
 
-    ChassisOptionEnums() = delete;
-    ~ChassisOptionEnums() = delete;
-};
+void VisionDrive::Init(
+    ChassisMovement &chassisMovement)
+{
+}
+
+void VisionDrive::UpdateOffsets(frc::Transform2d offset)
+{
+    m_offsetFromTarget = offset;
+}
