@@ -72,6 +72,8 @@ void Robot::RobotInit()
 
     StateMgrHelper::InitStateMgrs();
 
+    m_autotest = nullptr;
+
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("RobotInit"), string("end"));
 }
 
@@ -273,10 +275,10 @@ void Robot::DisabledPeriodic()
 
 void Robot::TestInit()
 {
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TestInit"), string("arrived"));
     m_autotest = new AutomatedSystemTest();
     if (m_autotest != nullptr)
     {
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TestInit"), string("arrived"));
         m_autotest->Init();
     }
 }

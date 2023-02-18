@@ -21,7 +21,7 @@ class PowerDistribution;
 class AutomatedSystemTest
 {
 public:
-    AutomatedSystemTest() = default;
+    AutomatedSystemTest();
     ~AutomatedSystemTest() = default;
     void AutoTest();
     void Init();
@@ -29,6 +29,7 @@ public:
 private:
     double InitialPDPWatts;
     bool reachedcurrentstate = false;
+    frc::PowerDistribution *m_PDP;
     double GetCurrentPDHValue();
     double GetBasePDHValue();
     void GetTestSwerve();

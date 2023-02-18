@@ -12,28 +12,32 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
-// author: not charlie writer of bad code
+// author: not charlie writer of dumb code copy/paster of better code
 #include <AutomatedSystemTest/AutomatedSystemTest.h>
 #include <frc/PowerDistribution.h>
 #include <hw/factories/PDPFactory.h>
 #include <utils/logging/Logger.h>
 #include <hal/PowerDistribution.h>
+#include <utils/logging/LoggerData.h>
+#include <utils/logging/LoggerEnums.h>
 
 using namespace std;
-
+AutomatedSystemTest::AutomatedSystemTest()
+{
+    m_PDP = PDPFactory::GetFactory()->GetPDP();
+}
 void AutomatedSystemTest::Init()
 {
     double InitialPDPWatts = GetBasePDHValue();
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("startingwattage"), (InitialPDPWatts));
 }
 double AutomatedSystemTest::GetBasePDHValue()
 {
-    auto PDP = PDPFactory::GetFactory()->GetPDP();
-    if (PDP != nullptr)
+    if (m_PDP != nullptr)
     {
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("automatedsystemtest"), string("test"), InitialPDPWatts);
-        return PDP->GetTotalCurrent();
+        return m_PDP->GetTotalCurrent();
     }
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("automatedsystemtest"), string("pdh energy"), "cannot accses pdh");
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("Automatedsystemtest"), string("pdh energy"), "cannot accses pdp");
     return 0;
 }
 
@@ -45,19 +49,11 @@ double AutomatedSystemTest::GetCurrentPDHValue()
     {
         (reachedcurrentstate = true);
     }
-
-    auto PDP = PDPFactory::GetFactory()->GetPDP();
-    if (PDP != nullptr)
-    {
-        return PDP->GetTotalPower();
-    }
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("automatedsystemtest"), string("test2"), "cannot accses pdh");
-    return 0;
     ArmStateMgr::GetInstance()->SetCurrentState(ArmStateMgr::ARM_STATE::CONE_BACKROW_ROTATE, true);
-    if (PDP != nullptr)
+    if (m_PDP != nullptr)
     {
-        return PDP->GetTotalPower();
+        return m_PDP->GetTotalCurrent();
     }
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("automatedsystemtest"), string("test1"), "cannot accses pdh");
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("Automatedsystemtest"), string("test1"), "cannot accses pdp1");
     return 0;
 }
