@@ -16,6 +16,13 @@
 #include <frc/PowerDistribution.h>
 #include <hw/factories/PDPFactory.h>
 #include <mechanisms/arm/ArmStateMgr.h>
+#include <mechanisms/extender/ExtenderStateMgr.h>
+#include <chassis/swerve/swerveChassis.h>
+#include <chassis/swerve/headingStates/ISwerveDriveOrientation.h>
+#include <chassis/ChassisFactory.h>
+#include <chassis/ChassisMovement.h>
+#include <frc/kinematics/ChassisSpeeds.h>
+
 using namespace std;
 class PowerDistribution;
 class AutomatedSystemTest
@@ -27,14 +34,17 @@ public:
     void Init();
 
 private:
-    double InitialPDPWatts;
-    bool reachedcurrentstate = false;
+    double m_basepdpusage;
+    double m_armusage;
+    double m_extenderusage;
+    double m_swervechassisforwardusage;
+    double test;
+    double m_InitialPDPWatts;
     frc::PowerDistribution *m_PDP;
-    double GetCurrentPDHValue();
-    double GetBasePDHValue();
-    void GetTestSwerve();
+    void GetBasePDPValue();
+    void GetTestSwerveInit();
     void GetTestExtender();
     void GetTestArm();
-    void GetTestPnumatics();
-    void GetPDHTemp();
+    // double GetTestPnumatics();
+    // double GetPDHTemp();
 };
