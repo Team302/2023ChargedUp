@@ -128,7 +128,7 @@ void GrabberStateMgr::CheckForSensorTransitions()
     {
         // look at banner sensor to determine target state
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("GrabberStateMgr"), std::string("DigitalInputValue"), m_grabber->IsGamePiecePresent());
-        if (m_grabber->IsGamePiecePresent())
+        if (m_grabber->IsGamePiecePresent() && MechanismFactory::GetMechanismFactory()->GetArm()->GetPositionDegrees().to<double>() > m_floorThreshold)
         {
             m_targetState = GRABBER_STATE::GRAB;
         }
