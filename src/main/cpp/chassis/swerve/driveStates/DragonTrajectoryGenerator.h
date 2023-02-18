@@ -19,6 +19,7 @@
 #include <map>
 
 // FRC Includes
+#include <frc/DriverStation.h>
 #include <frc/geometry/Pose2d.h>
 #include <units/velocity.h>
 #include <units/acceleration.h>
@@ -27,6 +28,14 @@
 
 // Team 302 Includes
 #include <utils/FMSData.h>
+
+struct trajectoryWaypointInfo
+{
+    double distToWallGrid = 0.0;
+    double distToCoopGrid = 0.0;
+    double distToHPGrid = 0.0;
+    bool outsideCommunity = false;
+};
 
 class DragonTrajectoryGenerator
 {
@@ -70,6 +79,7 @@ public:
     frc::Trajectory GenerateTrajectory(frc::Pose2d currentPose, TARGET_POSITION endPoint);
 
 private:
+    trajectoryWaypointInfo GetWayPointInfo(frc::Pose2d currentPose, frc::DriverStation::Alliance alliance) const;
     frc::TrajectoryConfig m_config;
 
     std::unordered_map<WAYPOINTS, frc::Pose2d> m_redWaypoints;
