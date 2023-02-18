@@ -2,21 +2,17 @@
 <!DOCTYPE auton SYSTEM "auton.dtd">
 <auton>
 <primitive id="RESET_POSITION"
-	   pathname="RedCOOPOne2.wpilib.json"/>
+	   pathname="RedCOOPOne1.wpilib.json"/>
     <!--score preloaded cone-->
     <primitive id="DO_NOTHING"
                time="1.5"
                />
+    <!--score preloaded cube-->
     <primitive id="DO_NOTHING"
                time="0.5"
                />
-    <!--drive to charing station-->
-    <primitive id="DRIVE_PATH"
-               pathname="RedCOOPOne2.wpilib.json"
-               time="3.0"
-               />
+    <!--auto balance-->
     <primitive id="DO_NOTHING"
-               pathname="RedCOOPOne2.wpilib.json"
                time="10.0"
                />
 </auton>
