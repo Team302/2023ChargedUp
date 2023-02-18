@@ -34,8 +34,10 @@
 #include <mechanisms/StateStruc.h>
 
 //========= Hand modified code start section 0 ========
+#include <mechanisms/grabber/GrabberStateMgr.h>
 #include <robotstate/IRobotStateChangeSubscriber.h>
 #include <robotstate/RobotStateChanges.h>
+#include <mechanisms/grabber/GrabberStateMgr.h>
 //========= Hand modified code end section 0 ========
 
 // Third Party Includes
@@ -58,8 +60,10 @@ public:
         MANUAL_ROTATE,
         CUBE_BACKROW_ROTATE,
         CONE_BACKROW_ROTATE,
-        CUBE_MIDROW_ROTATE,
-        CONE_MIDROW_ROTATE,
+        CUBE_MIDROW_ROTATE_UP,
+        CUBE_MIDROW_ROTATE_DOWN,
+        CONE_MIDROW_ROTATE_UP,
+        CONE_MIDROW_ROTATE_DOWN,
         HUMAN_PLAYER_STATION_ROTATE,
         STARTING_POSITION_ROTATE,
         FLOOR_POSITION_ROTATE
@@ -70,8 +74,10 @@ public:
         {"MANUAL_ROTATE", ARM_STATE::MANUAL_ROTATE},
         {"CUBE_BACKROW_ROTATE", ARM_STATE::CUBE_BACKROW_ROTATE},
         {"CONE_BACKROW_ROTATE", ARM_STATE::CONE_BACKROW_ROTATE},
-        {"CUBE_MIDROW_ROTATE", ARM_STATE::CUBE_MIDROW_ROTATE},
-        {"CONE_MIDROW_ROTATE", ARM_STATE::CONE_MIDROW_ROTATE},
+        {"CUBE_MIDROW_ROTATE_UP", ARM_STATE::CUBE_MIDROW_ROTATE_UP},
+        {"CUBE_MIDROW_ROTATE_DOWN", ARM_STATE::CUBE_MIDROW_ROTATE_DOWN},
+        {"CONE_MIDROW_ROTATE_UP", ARM_STATE::CONE_MIDROW_ROTATE_UP},
+        {"CONE_MIDROW_ROTATE_DOWN", ARM_STATE::CONE_MIDROW_ROTATE_DOWN},
         {"HUMAN_PLAYER_STATION_ROTATE", ARM_STATE::HUMAN_PLAYER_STATION_ROTATE},
         {"STARTING_POSITION_ROTATE", ARM_STATE::STARTING_POSITION_ROTATE},
         {"FLOOR_POSITION_ROTATE", ARM_STATE::FLOOR_POSITION_ROTATE}};
@@ -113,14 +119,33 @@ private:
     RobotStateChanges::GamePiece m_gamepieceMode;
     //========= Hand modified code end section 5 ========
 
+    GrabberStateMgr::GRABBER_STATE m_grabberState;
+
     static ArmStateMgr *m_instance;
+
+    // Hold Position function components
+    const double m_cubeOffset = 0.04592;
+    const double m_cubeArmComponent = -0.0001809;
+    const double m_cubeExtenderComponent = 0.0005709;
+    const double m_cubeArmSquaredComponent = 0.000005494;
+    const double m_cubeArmExtenderComponent = 0.000001729;
+    const double m_cubeExtenderSquaredComponent = 0.000001729;
+
+    const double m_coneOffset = 0.04592;
+    const double m_coneArmComponent = -0.0001809;
+    const double m_coneExtenderComponent = 0.0005709;
+    const double m_coneArmSquaredComponent = 0.000005494;
+    const double m_coneArmExtenderComponent = 0.000001729;
+    const double m_coneExtenderSquaredComponent = 0.000001729;
 
     const StateStruc m_hold_position_rotateState = {ARM_STATE::HOLD_POSITION_ROTATE, "HOLD_POSITION_ROTATE", StateType::ARM_STATE, false};
     const StateStruc m_manual_rotateState = {ARM_STATE::MANUAL_ROTATE, "MANUAL_ROTATE", StateType::MANUAL_ARM_STATE, false};
     const StateStruc m_cube_backrow_rotateState = {ARM_STATE::CUBE_BACKROW_ROTATE, "CUBE_BACKROW_ROTATE", StateType::ARM_STATE, false};
     const StateStruc m_cone_backrow_rotateState = {ARM_STATE::CONE_BACKROW_ROTATE, "CONE_BACKROW_ROTATE", StateType::ARM_STATE, false};
-    const StateStruc m_cube_midrow_rotateState = {ARM_STATE::CUBE_MIDROW_ROTATE, "CUBE_MIDROW_ROTATE", StateType::ARM_STATE, false};
-    const StateStruc m_cone_midrow_rotateState = {ARM_STATE::CONE_MIDROW_ROTATE, "CONE_MIDROW_ROTATE", StateType::ARM_STATE, false};
+    const StateStruc m_cube_midrow_rotate_upState = {ARM_STATE::CUBE_MIDROW_ROTATE_UP, "CUBE_MIDROW_ROTATE", StateType::ARM_STATE, false};
+    const StateStruc m_cube_midrow_rotate_downState = {ARM_STATE::CUBE_MIDROW_ROTATE_DOWN, "CUBE_MIDROW_ROTATE", StateType::ARM_STATE, false};
+    const StateStruc m_cone_midrow_rotate_upState = {ARM_STATE::CONE_MIDROW_ROTATE_UP, "CONE_MIDROW_ROTATE", StateType::ARM_STATE, false};
+    const StateStruc m_cone_midrow_rotate_downState = {ARM_STATE::CONE_MIDROW_ROTATE_DOWN, "CONE_MIDROW_ROTATE", StateType::ARM_STATE, false};
     const StateStruc m_human_player_station_rotateState = {ARM_STATE::HUMAN_PLAYER_STATION_ROTATE, "HUMAN_PLAYER_STATION_ROTATE", StateType::ARM_STATE, false};
     const StateStruc m_starting_position_rotateState = {ARM_STATE::STARTING_POSITION_ROTATE, "STARTING_POSITION_ROTATE", StateType::ARM_STATE, true};
     const StateStruc m_floor_position_rotateState = {ARM_STATE::FLOOR_POSITION_ROTATE, "FLOOR_POSITION_ROTATE", StateType::ARM_STATE, false};
