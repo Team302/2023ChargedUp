@@ -60,6 +60,12 @@ GrabberStateMgr* GrabberStateMgr::GetInstance()
 /// @brief    initialize the state manager, parse the configuration file and create the states.
 GrabberStateMgr::GrabberStateMgr() : StateMgr(),
                                      m_grabber(MechanismFactory::GetMechanismFactory()->GetGrabber())
+                                     //========= Hand modified code start section 1 ========
+                                     ,
+                                     m_currentState(GRABBER_STATE::GRAB),
+                                     m_targetState(GRABBER_STATE::GRAB)
+//========= Hand modified code end section 1 ========
+
 {
     map<string, StateStruc> stateMap;
 	stateMap["OPEN"] = m_openState;
