@@ -3,11 +3,10 @@
 <auton>
 <primitive id="RESET_POSITION"
 	   pathname="RedCOOPOne1.wpilib.json"/>
-    <!--score preloaded cone-->
+    <!--score preloaded cube -->
     <primitive id="DO_NOTHING"
                time="1.5"
                />
-    <!--score preloaded cube-->
     <primitive id="DO_NOTHING"
                time="0.5"
                />
