@@ -62,6 +62,7 @@ GrabberStateMgr *GrabberStateMgr::GetInstance()
 
 /// @brief    initialize the state manager, parse the configuration file and create the states.
 GrabberStateMgr::GrabberStateMgr() : StateMgr(),
+                                     IRobotStateChangeSubscriber(),
                                      m_grabber(MechanismFactory::GetMechanismFactory()->GetGrabber())
                                      //========= Hand modified code start section 1 ========
                                      ,
