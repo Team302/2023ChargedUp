@@ -3,9 +3,6 @@
   <pdp
     canId="1"
     type="REV" />
-  <!--<led
-    pwmId="9"
-    number="50"/>-->
   <pigeon
     canId="0"
     canBusName="canivore"

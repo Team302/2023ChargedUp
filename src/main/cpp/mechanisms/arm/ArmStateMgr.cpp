@@ -131,7 +131,12 @@ void ArmStateMgr::CheckForStateTransition()
             // holding currently based on just "F term" Created surface map function based on arm and extender position
             if (m_arm->GetPositionDegrees().to<double>() > 10.0)
             {
-                if (m_gamepieceMode == RobotStateChanges::GamePiece::Cube || m_grabberState == GrabberStateMgr::GRABBER_STATE::OPEN)
+                if (extenderPos > 21.0 && armAngle > 40.0)
+                {
+                    // specific f term for outlier position
+                    m_arm->UpdateTarget(0.115);
+                }
+                else if (m_gamepieceMode == RobotStateChanges::GamePiece::Cube || m_grabberState == GrabberStateMgr::GRABBER_STATE::OPEN)
                 {
                     // f term function for cube
                     m_arm->UpdateTarget(m_cubeOffset + m_cubeArmComponent * armAngle + m_cubeExtenderComponent * extenderPos + m_cubeArmSquaredComponent * pow(armAngle, 2) + m_cubeExtenderSquaredComponent * pow(extenderPos, 2));
