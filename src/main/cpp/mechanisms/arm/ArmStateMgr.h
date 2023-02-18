@@ -138,6 +138,7 @@ private:
 
     const double m_fullExtensionExtenderPos = 21.0;
     const double m_fullExtensionArmAngle = 40.0;
+    const double m_fTermAngleThreshold = 10.0;
 
     const StateStruc m_hold_position_rotateState = {ARM_STATE::HOLD_POSITION_ROTATE, "HOLD_POSITION_ROTATE", StateType::ARM_STATE, false};
     const StateStruc m_manual_rotateState = {ARM_STATE::MANUAL_ROTATE, "MANUAL_ROTATE", StateType::MANUAL_ARM_STATE, false};
