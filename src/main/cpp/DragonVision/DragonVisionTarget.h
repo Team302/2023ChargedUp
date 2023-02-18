@@ -29,8 +29,8 @@ public:
     DragonVisionTarget(DragonLimelight::PIPELINE_MODE targetType,
                        units::length::inch_t distanceFromTarget,
                        units::angle::degree_t horizontalAngleFromTarget,
-                       units::angle::degree_t horizontalAngleFromTargetRobotFrame,
                        units::length::inch_t horizontalDistanceFromTargetRobotFrame,
+                       units::length::inch_t distanceFromTargetRobotFrame,
                        units::angle::degree_t verticalAngleFromTarget,
                        units::time::millisecond_t latency);
 
@@ -38,8 +38,8 @@ public:
 
     units::length::inch_t getDistanceToTarget();
     units::angle::degree_t getHorizontalAngleToTarget();
-    units::angle::degree_t getHorizontalAngleToTargetRobotFrame();
-    units::length::inch_t getHorizontalDistanceToTargetRobotFrame();
+    units::length::inch_t getYdistanceToTargetRobotFrame();
+    units::length::inch_t getXdistanceToTargetRobotFrame();
     units::angle::degree_t getVerticalAngleToTarget();
     DragonLimelight::PIPELINE_MODE getTargetType();
     units::time::millisecond_t getLatency();
@@ -47,8 +47,8 @@ public:
 private:
     units::length::inch_t m_distanceFromTarget;
     units::angle::degree_t m_horizontalAngleToTarget;
-    units::angle::degree_t m_horizontalAngleToTargetRobotFrame;
     units::length::inch_t m_horizontalDistanceToTargetRobotFrame;
+    units::length::inch_t m_distanceToTargetRobotFrame;
     units::angle::degree_t m_verticalAngleToTarget;
     DragonLimelight::PIPELINE_MODE m_targetType;
     units::time::millisecond_t m_latency;

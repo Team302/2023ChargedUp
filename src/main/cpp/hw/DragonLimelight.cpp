@@ -162,7 +162,7 @@ units::angle::degree_t DragonLimelight::GetTargetHorizontalOffset() const
     return GetTx();
 }
 
-units::angle::degree_t DragonLimelight::GetTargetHorizontalOffsetRobotFrame(units::length::inch_t *targetDistOffset) const
+units::angle::degree_t DragonLimelight::GetTargetHorizontalOffsetRobotFrame(units::length::inch_t *targetDistOffset_RF, units::length::inch_t *targetDistfromRobot_RF) const
 {
     units::angle::degree_t limelightFrameHorizAngle = GetTargetHorizontalOffset();
     units::angle::radian_t limelightFrameHorizAngleRad = limelightFrameHorizAngle;
@@ -179,7 +179,8 @@ units::angle::degree_t DragonLimelight::GetTargetHorizontalOffsetRobotFrame(unit
     // units::angle::radian_t angleOffset = units::angle::radian_t(atan((targetHorizOffsetRobotFrame / targetDistanceRobotFrame).to<float>()));
     units::angle::radian_t angleOffset = units::angle::radian_t(0);
 
-    *targetDistOffset = targetHorizOffsetRobotFrame;
+    *targetDistOffset_RF = targetHorizOffsetRobotFrame;
+    *targetDistfromRobot_RF = targetDistanceRobotFrame;
 
     return angleOffset;
 }

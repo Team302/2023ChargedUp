@@ -70,14 +70,15 @@ DragonVisionTarget *DragonVision::getTargetInfo(LIMELIGHT_POSITION position) con
 
 	if ((dll != nullptr) && (dll->HasTarget()))
 	{
-		units::length::inch_t dist;
-		units::angle::degree_t deg = dll->GetTargetHorizontalOffsetRobotFrame(&dist);
+		units::length::inch_t dist_x;
+		units::length::inch_t dist_y;
+		units::angle::degree_t deg = dll->GetTargetHorizontalOffsetRobotFrame(&dist_y, &dist_x);
 		DragonVisionTarget *dvt = new DragonVisionTarget(
 			dll->getPipeline(),
 			dll->EstimateTargetDistance(),
 			dll->GetTargetHorizontalOffset(),
-			deg,
-			dist,
+			dist_x,
+			dist_y,
 			dll->GetTargetVerticalOffset(),
 			dll->GetPipelineLatency());
 		return dvt;

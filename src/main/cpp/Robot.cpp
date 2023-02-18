@@ -150,10 +150,9 @@ void Robot::RobotPeriodic()
             LoggerStringValue status = {string("Status"), "Target found"};
             LoggerDoubleValue vertAngle = {string("VertAngle"), dvt->getVerticalAngleToTarget().to<double>()};
             LoggerDoubleValue horAngle = {string("HorizAngle"), dvt->getHorizontalAngleToTarget().to<double>()};
-            LoggerDoubleValue yDistance = {string("y distance "), dvt->getDistanceToTarget().to<double>()};
-            LoggerDoubleValue xDistance = {string("x distance "), dvt->getHorizontalDistanceToTargetRobotFrame().to<double>()};
-            LoggerDoubleValue horAngleRF = {string("HorizAngleRobotFrame "), dvt->getHorizontalAngleToTargetRobotFrame().to<double>()};
-            LoggerData data = {LOGGER_LEVEL::PRINT, string("DragonLimelight"), {}, {vertAngle, horAngle, yDistance, xDistance, horAngleRF}, {count}, {status}};
+            LoggerDoubleValue yDistance = {string("y distance RF "), dvt->getYdistanceToTargetRobotFrame().to<double>()};
+            LoggerDoubleValue xDistance = {string("x distance RF "), dvt->getXdistanceToTargetRobotFrame().to<double>()};
+            LoggerData data = {LOGGER_LEVEL::PRINT, string("DragonLimelight"), {}, {vertAngle, horAngle, yDistance, xDistance}, {count}, {status}};
             Logger::GetLogger()->LogData(data);
         }
     }
