@@ -180,7 +180,7 @@ void Robot::RobotPeriodic()
     //     feedback->UpdateFeedback();
     // }
 
-    m_ledstates->SolidColorPattern(LED::GREEN);
+    m_ledstates->AlternatingBlinkingPattern(LED::GREEN);
     auto pigeon = PigeonFactory::GetFactory()->GetCenterPigeon();
     if (pigeon == nullptr)
     {
