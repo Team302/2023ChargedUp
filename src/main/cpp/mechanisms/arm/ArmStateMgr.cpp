@@ -131,7 +131,7 @@ void ArmStateMgr::CheckForStateTransition()
             // holding currently based on just "F term" Created surface map function based on arm and extender position
             if (m_arm->GetPositionDegrees().to<double>() > 10.0)
             {
-                if (extenderPos > 21.0 && armAngle > 40.0)
+                if (extenderPos > m_fullExtensionExtenderPos && armAngle > m_fullExtensionArmAngle)
                 {
                     // specific f term for outlier position
                     m_arm->UpdateTarget(0.115);
