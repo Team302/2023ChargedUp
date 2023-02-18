@@ -12,7 +12,6 @@
                pathname="BlueHP1.wpilib.json"
                time="0.5"
                />
-    <!--drive to gamepiece-->
     <primitive id="DRIVE_PATH"
                pathname="BlueHP1_0.wpilib.json"
                time="1.0"

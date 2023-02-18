@@ -15,7 +15,7 @@
     <!--drive to gamepiece and turn-->
     <primitive id="DRIVE_PATH"
                pathname="RedHP1-0.wpilib.json"
-               time="3.0"
+               time="4.0"
                />
     <!--pick up gamepiece-->
     <primitive id="DO_NOTHING"
@@ -26,15 +26,9 @@
                pathname="RedHP2.wpilib.json"
                time="3.0"
                />
-    <!--vison takes robot to correct scoring station-->
     <!--score gamepiece-->
     <primitive id="DO_NOTHING"
                time="2.0"
                />
-    <!--drive to charing station-->
-    <!--<primitive id="DRIVE_PATH"
-               pathname="RedHP5.wpilib.json"
-               time="3.0"
-               />-->
-    <!--park on driving station-->
+    <!--auto balance-->
 </auton>
