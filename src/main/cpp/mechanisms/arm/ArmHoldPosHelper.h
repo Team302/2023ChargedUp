@@ -13,36 +13,38 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#include <mechanisms/arm/ArmState.h>
-#include <robotstate/IRobotStateChangeSubscriber.h>
+#pragma once
+
+// Team 302 Includes
+#include <robotstate/RobotStateChanges.h>
 #include <mechanisms/grabber/GrabberStateMgr.h>
 
-class ControlData;
-class Arm;
-class TeleopControl;
-
-class ArmManualState : public ArmState, public IRobotStateChangeSubscriber
+class ArmHoldPosHelper
 {
 public:
-    ArmManualState() = delete;
-    ArmManualState(std::string stateName,
-                   int stateId,
-                   ControlData *control0,
-                   double target0);
+    ArmHoldPosHelper();
+    ~ArmHoldPosHelper() = default;
 
-    ~ArmManualState() = default;
-
-    void Init() override;
-    void Run() override;
-    bool AtTarget() const override;
-
-    void Update(RobotStateChanges::StateChange change, int state) override;
+    static double CalculateHoldPositionTarget(double armAngle,
+                                              double extenderPosition,
+                                              RobotStateChanges::GamePiece gamepieceMode,
+                                              GrabberStateMgr::GRABBER_STATE grabberState);
 
 private:
-    Arm *m_arm;
-    TeleopControl *m_controller;
+    // Hold Position function components
+    static constexpr double m_cubeOffset = 0.0446119;
+    static constexpr double m_cubeArmComponent = -0.00010589;
+    static constexpr double m_cubeExtenderComponent = 0.000633812;
+    static constexpr double m_cubeArmSquaredComponent = 0.00000489504;
+    static constexpr double m_cubeExtenderSquaredComponent = 0.00000226623;
 
-    RobotStateChanges::GamePiece m_gamepieceMode;
+    static constexpr double m_coneOffset = 0.0412269;
+    static constexpr double m_coneArmComponent = 0.000421601;
+    static constexpr double m_coneExtenderComponent = 0.000703398;
+    static constexpr double m_coneArmSquaredComponent = -0.00000267649;
+    static constexpr double m_coneExtenderSquaredComponent = -0.0000138281;
 
-    GrabberStateMgr::GRABBER_STATE m_grabberState;
+    static constexpr double m_fTermAngleThreshold = 10.0;
+    static constexpr double m_fullExtensionExtenderPos = 21.0;
+    static constexpr double m_fullExtensionArmAngle = 40.0;
 };
