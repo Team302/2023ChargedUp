@@ -129,6 +129,9 @@ void ArmStateMgr::CheckForStateTransition()
             double armAngle = m_arm->GetPositionDegrees().to<double>();
             double extenderPos = MechanismFactory::GetMechanismFactory()->GetExtender()->GetPositionInches().to<double>();
             // holding currently based on just "F term" Created surface map function based on arm and extender position
+
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Game Piece"), m_gamepieceMode);
+
             if (m_arm->GetPositionDegrees().to<double>() > m_fTermAngleThreshold)
             {
                 if (extenderPos > m_fullExtensionExtenderPos && armAngle > m_fullExtensionArmAngle)
