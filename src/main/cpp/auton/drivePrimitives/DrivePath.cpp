@@ -27,6 +27,7 @@
 
 // 302 Includes
 #include <auton/drivePrimitives/DrivePath.h>
+#include <auton/drivePrimitives/DragonTrajectoryUtils.h>>
 #include <chassis/ChassisMovement.h>
 #include <chassis/ChassisOptionEnums.h>
 #include <chassis/ChassisFactory.h>
@@ -43,7 +44,6 @@ DrivePath::DrivePath() : m_chassis(ChassisFactory::GetChassisFactory()->GetIChas
                          m_timer(make_unique<Timer>()),
                          m_trajectory(),
                          m_runHoloController(true),
-                         m_ramseteController(),
                          // max velocity of 1 rotation per second and a max acceleration of 180 degrees per second squared.
                          m_headingOption(ChassisOptionEnums::HeadingOption::MAINTAIN),
                          m_heading(0.0),
@@ -60,11 +60,12 @@ void DrivePath::Init(PrimitiveParams *params)
     m_heading = params->GetHeading();
     m_maxTime = params->GetTime();
 
+    m_trajectory = DragonTrajectoryUtils::GetTrajectory(params);
+    // GetTrajectory(params->GetPathName()); // Parses path from json file based on path name given in xml
+
     // Start timeout timer for path
     m_timer.get()->Reset();
     m_timer.get()->Start();
-
-    GetTrajectory(params->GetPathName()); // Parses path from json file based on path name given in xml
 }
 void DrivePath::Run()
 {
@@ -131,6 +132,7 @@ bool DrivePath::IsDone()
     }
 }
 
+/**
 void DrivePath::GetTrajectory // Parses pathweaver json to create a series of points that we can drive the robot to
     (
         string path)
@@ -145,3 +147,4 @@ void DrivePath::GetTrajectory // Parses pathweaver json to create a series of po
         m_timer.get()->Reset();
     }
 }
+**/

@@ -84,8 +84,14 @@ frc::Trajectory DragonTrajectoryGenerator::GenerateTrajectory(frc::Pose2d curren
             case TARGET_POSITION::COLUMN_THREE:
                 endWaypoint = WAYPOINTS::GRID_WALL_COL_THREE;
                 break;
+
+            case TARGET_POSITION::CHARGE_PAD:
+                endWaypoint = WAYPOINTS::CHARGE_PAD_CENTER;
+                break;
+
             default:
-                Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("TrajectoryGenerator"), std::string("Grid Wall"), std::string("Could not find target position"));
+                Logger::GetLogger()
+                    ->LogData(LOGGER_LEVEL::PRINT, std::string("TrajectoryGenerator"), std::string("Grid Wall"), std::string("Could not find target position"));
                 break;
             }
 
@@ -108,6 +114,10 @@ frc::Trajectory DragonTrajectoryGenerator::GenerateTrajectory(frc::Pose2d curren
             case TARGET_POSITION::COLUMN_THREE:
                 endWaypoint = WAYPOINTS::GRID_COOP_COL_THREE;
                 break;
+            case TARGET_POSITION::CHARGE_PAD:
+                endWaypoint = WAYPOINTS::CHARGE_PAD_CENTER;
+                break;
+
             default:
                 Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("TrajectoryGenerator"), std::string("Grid Coop"), std::string("Could not find target position"));
                 break;
@@ -132,6 +142,10 @@ frc::Trajectory DragonTrajectoryGenerator::GenerateTrajectory(frc::Pose2d curren
             case TARGET_POSITION::COLUMN_THREE:
                 endWaypoint = WAYPOINTS::GRID_HP_COL_THREE;
                 break;
+            case TARGET_POSITION::CHARGE_PAD:
+                endWaypoint = WAYPOINTS::CHARGE_PAD_CENTER;
+                break;
+
             default:
                 Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("TrajectoryGenerator"), std::string("Grid HP"), std::string("Could not find target position"));
                 break;

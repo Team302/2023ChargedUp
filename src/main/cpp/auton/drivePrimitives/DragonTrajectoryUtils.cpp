@@ -1,3 +1,4 @@
+
 //====================================================================================================================================================
 // Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
@@ -12,57 +13,28 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
+
 #pragma once
 
-// C++ Includes
-#include <memory>
-
-// Team302 Includes
-#include <auton/PrimitiveParams.h>
-#include <auton/drivePrimitives/IPrimitive.h>
-#include <chassis/ChassisFactory.h>
-#include <chassis/IChassis.h>
-#include <chassis/ChassisOptionEnums.h>
-
-// FRC,WPI Includes
-#include <frc/controller/HolonomicDriveController.h>
-#include <frc/controller/RamseteController.h>
 #include <frc/Filesystem.h>
-#include <frc/geometry/Pose2d.h>
-#include <frc/Timer.h>
-#include <frc/trajectory/TrajectoryConfig.h>
+#include <frc/trajectory/Trajectory.h>
 #include <frc/trajectory/TrajectoryUtil.h>
-#include <wpi/SmallString.h>
 
-namespace frc
+#include <auton/drivePrimitives/DragonTrajectoryUtils.h>
+#include <auton/PrimitiveParams.h>
+
+using frc::Trajectory;
+
+Trajectory DragonTrajectoryUtils::GetTrajectory(PrimitiveParams *params)
 {
-    class Timer;
+    auto path = params->GetPathName();
+    if (!path.empty()) // only go if path name found
+    {
+        // Read path into trajectory for deploy directory.  JSON File ex. Bounce1.wpilib.json
+        auto deployDir = frc::filesystem::GetDeployDirectory();
+        deployDir += "/paths/output/" + path;
+
+        return frc::TrajectoryUtil::FromPathweaverJson(deployDir); // Creates a trajectory or path that can be used in the code, parsed from pathweaver json
+    }
+    return frc::Trajectory();
 }
-
-class DrivePath : public IPrimitive
-{
-public:
-    DrivePath();
-
-    virtual ~DrivePath() = default;
-
-    void Init(PrimitiveParams *params) override;
-    void Run() override;
-    bool IsDone() override;
-
-private:
-    // void GetTrajectory(std::string path);
-    // void CalcCurrentAndDesiredStates();
-
-    std::shared_ptr<IChassis> m_chassis;
-    std::unique_ptr<frc::Timer> m_timer;
-    frc::Trajectory m_trajectory;
-    bool m_runHoloController;
-
-    std::string m_pathname;
-
-    ChassisOptionEnums::HeadingOption m_headingOption;
-    double m_heading;
-    double m_maxTime;
-    std::string m_ntName;
-};
