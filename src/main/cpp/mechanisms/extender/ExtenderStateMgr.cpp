@@ -124,16 +124,20 @@ void ExtenderStateMgr::CheckForStateTransition()
 
     if (m_extender != nullptr)
     {
-        if (m_targetState != m_currentState && (m_canAutomaticallyMove || m_targetState == EXTENDER_STATE::MANUAL_EXTEND_RETRACT))
+        if (m_targetState != m_currentState || m_targetState == EXTENDER_STATE::MANUAL_EXTEND_RETRACT)
         {
+            auto armAngle = MechanismFactory::GetMechanismFactory()->GetArm()->GetPositionDegrees().to<double>();
+            if (armAngle < 10.0)
+            {
+                m_targetState = EXTENDER_STATE::MANUAL_EXTEND_RETRACT;
+            }
+
             SetCurrentState(m_targetState, true);
             RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmExtenderState, m_targetState);
-
-            if (m_targetState == EXTENDER_STATE::HOLD_POSITION_EXTEND)
-            {
-                m_extender->UpdateTarget(dynamic_cast<Mech1IndMotorState *>(GetStateVector()[m_prevState])->GetCurrentTarget()); // Get the target of the previous state by referencing the state vector
-            }
         }
+
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ExtenderMgr"), string("Current Target"), m_extender->GetTarget());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ExtenderMgr"), string("Current Position (Inches)"), m_extender->GetPositionInches().to<double>());
     }
     //========= Hand modified code end section 3 ========
 }
@@ -153,6 +157,8 @@ void ExtenderStateMgr::CheckForGamepadTransitions()
             if (abs(controller->GetAxisValue(TeleopControlFunctions::MANUAL_EXTEND_RETRACT)) > 0.1)
             {
                 m_targetState = EXTENDER_STATE::MANUAL_EXTEND_RETRACT;
+                Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ExtenderMgr"), string("Extender Pct"), controller->GetAxisValue(TeleopControlFunctions::MANUAL_EXTEND_RETRACT));
+
                 m_prevState = m_targetState;
             }
             // else if (!m_goToStartingConfig)
