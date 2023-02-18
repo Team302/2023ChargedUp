@@ -118,9 +118,10 @@ void MechanismFactory::CreateMechanism(
 	case MechanismTypes::GRABBER:
 	{
 		auto solenoid1 = GetSolenoid(solenoids, SolenoidUsage::GrabberSolenoid);
-		if (solenoid1.get() != nullptr)
+		auto sensor0 = GetDigitalInput(digitalInputs, DigitalInputUsage::DIGITAL_INPUT_USAGE::GRABBER_SENSEOR);
+		if (solenoid1.get() != nullptr && sensor0.get() != nullptr)
 		{
-			m_grabber = new Grabber(controlFileName, networkTableName, solenoid1);
+			m_grabber = new Grabber(controlFileName, networkTableName, solenoid1, sensor0);
 		}
 	}
 	break;
