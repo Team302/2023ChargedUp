@@ -61,7 +61,6 @@ void DrivePath::Init(PrimitiveParams *params)
     m_maxTime = params->GetTime();
 
     m_trajectory = DragonTrajectoryUtils::GetTrajectory(params);
-    // GetTrajectory(params->GetPathName()); // Parses path from json file based on path name given in xml
 
     // Start timeout timer for path
     m_timer.get()->Reset();
@@ -131,20 +130,3 @@ bool DrivePath::IsDone()
         return false;
     }
 }
-
-/**
-void DrivePath::GetTrajectory // Parses pathweaver json to create a series of points that we can drive the robot to
-    (
-        string path)
-{
-    if (!path.empty()) // only go if path name found
-    {
-        // Read path into trajectory for deploy directory.  JSON File ex. Bounce1.wpilib.json
-        auto deployDir = frc::filesystem::GetDeployDirectory();
-        deployDir += "/paths/output/" + path;
-
-        m_trajectory = frc::TrajectoryUtil::FromPathweaverJson(deployDir); // Creates a trajectory or path that can be used in the code, parsed from pathweaver json
-        m_timer.get()->Reset();
-    }
-}
-**/

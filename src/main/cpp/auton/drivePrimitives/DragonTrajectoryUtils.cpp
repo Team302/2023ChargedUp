@@ -14,8 +14,6 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#pragma once
-
 #include <frc/Filesystem.h>
 #include <frc/trajectory/Trajectory.h>
 #include <frc/trajectory/TrajectoryUtil.h>
@@ -24,6 +22,7 @@
 #include <auton/PrimitiveParams.h>
 
 using frc::Trajectory;
+using frc::TrajectoryUtil;
 
 Trajectory DragonTrajectoryUtils::GetTrajectory(PrimitiveParams *params)
 {
@@ -34,7 +33,7 @@ Trajectory DragonTrajectoryUtils::GetTrajectory(PrimitiveParams *params)
         auto deployDir = frc::filesystem::GetDeployDirectory();
         deployDir += "/paths/output/" + path;
 
-        return frc::TrajectoryUtil::FromPathweaverJson(deployDir); // Creates a trajectory or path that can be used in the code, parsed from pathweaver json
+        return TrajectoryUtil::FromPathweaverJson(deployDir); // Creates a trajectory or path that can be used in the code, parsed from pathweaver json
     }
-    return frc::Trajectory();
+    return Trajectory();
 }

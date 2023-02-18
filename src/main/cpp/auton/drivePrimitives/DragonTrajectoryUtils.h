@@ -16,9 +16,7 @@
 
 #pragma once
 
-#include <frc/Filesystem.h>
 #include <frc/trajectory/Trajectory.h>
-#include <frc/trajectory/TrajectoryUtil.h>
 
 #include <auton/PrimitiveParams.h>
 
