@@ -3,6 +3,7 @@
   <pdp
     canId="1"
     type="REV" />
+  
   <pigeon
     canId="0"
     canBusName="canivore"
@@ -47,6 +48,9 @@
     crosshairy=""
     secondcrosshairx=""
     secondcrosshairy="" />
+  <led
+    pwmId = "9"
+    number = "32" />  
   <chassis
     type="SWERVE"
     wheelDiameter="4.0"
@@ -264,6 +268,7 @@
         voltageCompensationEnable="true"
        
        />
+        
       <motor
         usage="SWERVE_TURN"
         canId="17"

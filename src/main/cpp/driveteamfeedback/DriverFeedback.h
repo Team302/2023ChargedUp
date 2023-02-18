@@ -29,6 +29,8 @@ public:
 
     void Update(RobotStateChanges::StateChange change, int value) override;
 
+    bool m_WantCube = false;
+
 private:
     DriverFeedback();
     ~DriverFeedback() = default;
@@ -49,7 +51,6 @@ private:
     };
 
     LEDStates *m_LEDStates = LEDStates::GetInstance();
-    bool m_WantCube = false;
     bool m_WantCone = false;
     bool m_GamePieceReadyToPickUp = false;
     bool m_GamePieceInGrabber = false;

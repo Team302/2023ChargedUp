@@ -38,6 +38,8 @@ using namespace std;
 
 void Robot::RobotInit()
 {
+    m_ledstates = LEDStates::GetInstance();
+
     Logger::GetLogger()->PutLoggingSelectionsOnDashboard();
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("RobotInit"), string("arrived"));
 
@@ -171,12 +173,14 @@ void Robot::RobotPeriodic()
 
     m_tuner->ListenForUpdates();
 
-    auto feedback = DriverFeedback::GetInstance();
-    if (feedback != nullptr)
-    {
-        feedback->UpdateFeedback();
-    }
+    // auto feedback = DriverFeedback::GetInstance();
+    // if (feedback != nullptr)
+    // {
+    //     feedback->m_WantCube = true;
+    //     feedback->UpdateFeedback();
+    // }
 
+    m_ledstates->SolidColorPattern(LED::GREEN);
     auto pigeon = PigeonFactory::GetFactory()->GetCenterPigeon();
     if (pigeon == nullptr)
     {
