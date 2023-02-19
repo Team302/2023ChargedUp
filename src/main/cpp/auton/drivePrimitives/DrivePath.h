@@ -51,15 +51,10 @@ public:
     bool IsDone() override;
 
 private:
-    void GetTrajectory(std::string path);
-    void CalcCurrentAndDesiredStates();
-
     std::shared_ptr<IChassis> m_chassis;
     std::unique_ptr<frc::Timer> m_timer;
     frc::Trajectory m_trajectory;
     bool m_runHoloController;
-
-    frc::RamseteController m_ramseteController;
 
     std::string m_pathname;
 
