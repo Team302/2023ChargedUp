@@ -38,8 +38,8 @@ public:
 
     bool setPipeline(DragonLimelight::PIPELINE_MODE mode, LIMELIGHT_POSITION position);
     bool setPipeline(DragonLimelight::PIPELINE_MODE mode);
-    DragonVisionTarget *getTargetInfo(LIMELIGHT_POSITION position) const;
-    DragonVisionTarget *getTargetInfo() const;
+    std::shared_ptr<DragonVisionTarget> getTargetInfo(LIMELIGHT_POSITION position) const;
+    std::shared_ptr<DragonVisionTarget> getTargetInfo() const;
 
     int GetRobotPosition() const;
 

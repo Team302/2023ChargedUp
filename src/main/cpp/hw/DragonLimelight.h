@@ -105,9 +105,14 @@ public:
     double GetTargetArea() const;
     units::angle::degree_t GetTargetSkew() const;
     units::time::microsecond_t GetPipelineLatency() const;
-    units::length::inch_t EstimateTargetXdistance() const;
     std::vector<double> Get3DSolve() const;
     PIPELINE_MODE getPipeline() const;
+
+    units::length::inch_t EstimateTargetXdistance() const;
+    units::length::inch_t EstimateTargetYdistance() const;
+
+    units::length::inch_t EstimateTargetXdistance_RelToRobotCoords() const;
+    units::length::inch_t EstimateTargetYdistance_RelToRobotCoords() const;
 
     // Setters
     void SetTargetHeight(units::length::inch_t targetHeight);

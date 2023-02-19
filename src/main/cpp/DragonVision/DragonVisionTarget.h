@@ -29,9 +29,9 @@ public:
     DragonVisionTarget(DragonLimelight::PIPELINE_MODE targetType,
                        units::length::inch_t distanceFromTarget,
                        units::angle::degree_t horizontalAngleFromTarget,
-                       units::length::inch_t horizontalDistanceFromTargetRobotFrame,
-                       units::length::inch_t distanceFromTargetRobotFrame,
                        units::angle::degree_t verticalAngleFromTarget,
+                       units::length::inch_t xDistanceToTargetRobotFrame,
+                       units::length::inch_t yDistanceToTargetRobotFrame,
                        units::time::millisecond_t latency);
 
     ~DragonVisionTarget() = default;
@@ -47,8 +47,8 @@ public:
 private:
     units::length::inch_t m_distanceFromTarget;
     units::angle::degree_t m_horizontalAngleToTarget;
-    units::length::inch_t m_horizontalDistanceToTargetRobotFrame;
-    units::length::inch_t m_distanceToTargetRobotFrame;
+    units::length::inch_t m_yDistanceToTargetRobotFrame;
+    units::length::inch_t m_xDistanceToTargetRobotFrame;
     units::angle::degree_t m_verticalAngleToTarget;
     DragonLimelight::PIPELINE_MODE m_targetType;
     units::time::millisecond_t m_latency;

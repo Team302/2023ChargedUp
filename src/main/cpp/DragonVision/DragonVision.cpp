@@ -64,22 +64,19 @@ bool DragonVision::setPipeline(DragonLimelight::PIPELINE_MODE mode)
 /// @brief Use this function to get the currently detected target information
 /// @param position From which limelight to get the info
 /// @return If a target has not been acquired, returns null, otherwise a pointer to an object containing all the information
-DragonVisionTarget *DragonVision::getTargetInfo(LIMELIGHT_POSITION position) const
+std::shared_ptr<DragonVisionTarget> DragonVision::getTargetInfo(LIMELIGHT_POSITION position) const
 {
 	DragonLimelight *dll = getLimelight(position);
 
 	if ((dll != nullptr) && (dll->HasTarget()))
 	{
-		units::length::inch_t dist_x;
-		units::length::inch_t dist_y;
-		units::angle::degree_t deg = dll->GetTargetHorizontalOffsetRobotFrame(&dist_y, &dist_x);
-		DragonVisionTarget *dvt = new DragonVisionTarget(
+		std::shared_ptr<DragonVisionTarget> dvt = make_shared<DragonVisionTarget>(
 			dll->getPipeline(),
 			dll->EstimateTargetXdistance(),
 			dll->GetTargetHorizontalOffset(),
-			dist_x,
-			dist_y,
 			dll->GetTargetVerticalOffset(),
+			dll->EstimateTargetXdistance_RelToRobotCoords(),
+			dll->EstimateTargetYdistance_RelToRobotCoords(),
 			dll->GetPipelineLatency());
 		return dvt;
 	}
@@ -87,7 +84,7 @@ DragonVisionTarget *DragonVision::getTargetInfo(LIMELIGHT_POSITION position) con
 	return nullptr;
 }
 
-DragonVisionTarget *DragonVision::getTargetInfo() const
+std::shared_ptr<DragonVisionTarget> DragonVision::getTargetInfo() const
 {
 	return getTargetInfo(LIMELIGHT_POSITION::FRONT);
 }
@@ -97,7 +94,7 @@ int DragonVision::GetRobotPosition() const
 	return 0;
 }
 
-/// @brief Gets a pointer to the lilelight at the specified position
+/// @brief Gets a pointer to the limelight at the specified position
 /// @param position The physical location of the limelight
 /// @return A pointer to the lilelight object
 DragonLimelight *DragonVision::getLimelight(LIMELIGHT_POSITION position) const

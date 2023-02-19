@@ -27,17 +27,17 @@ using namespace std;
 DragonVisionTarget::DragonVisionTarget(DragonLimelight::PIPELINE_MODE targetType,
 									   units::length::inch_t distanceFromTarget,
 									   units::angle::degree_t horizontaAngleFromTarget,
-									   units::length::inch_t horizontalDistanceFromTargetRobotFrame,
-									   units::length::inch_t distanceFromTargetRobotFrame,
 									   units::angle::degree_t verticalAngleFromTarget,
+									   units::length::inch_t xDistanceToTargetRobotFrame,
+									   units::length::inch_t yDistanceToTargetRobotFrame,
 									   units::time::millisecond_t latency)
 {
 	m_targetType = targetType;
 	m_distanceFromTarget = distanceFromTarget;
 	m_horizontalAngleToTarget = horizontaAngleFromTarget;
-	m_horizontalDistanceToTargetRobotFrame = horizontalDistanceFromTargetRobotFrame;
-	m_distanceToTargetRobotFrame = distanceFromTargetRobotFrame;
 	m_verticalAngleToTarget = verticalAngleFromTarget;
+	m_xDistanceToTargetRobotFrame = xDistanceToTargetRobotFrame;
+	m_yDistanceToTargetRobotFrame = yDistanceToTargetRobotFrame;
 	m_latency = latency;
 }
 
@@ -53,12 +53,12 @@ units::angle::degree_t DragonVisionTarget::getHorizontalAngleToTarget()
 
 units::length::inch_t DragonVisionTarget::getYdistanceToTargetRobotFrame()
 {
-	return m_distanceToTargetRobotFrame;
+	return m_yDistanceToTargetRobotFrame;
 }
 
 units::length::inch_t DragonVisionTarget::getXdistanceToTargetRobotFrame()
 {
-	return m_horizontalDistanceToTargetRobotFrame;
+	return m_xDistanceToTargetRobotFrame;
 }
 
 units::angle::degree_t DragonVisionTarget::getVerticalAngleToTarget()

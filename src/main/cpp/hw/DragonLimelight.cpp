@@ -164,13 +164,16 @@ units::angle::degree_t DragonLimelight::GetTargetHorizontalOffset() const
 
 units::angle::degree_t DragonLimelight::GetTargetHorizontalOffsetRobotFrame(units::length::inch_t *targetDistOffset_RF, units::length::inch_t *targetDistfromRobot_RF) const
 {
+    // Get the horizontal angle to the target and conver to radians
     units::angle::degree_t limelightFrameHorizAngle = GetTargetHorizontalOffset();
     units::angle::radian_t limelightFrameHorizAngleRad = limelightFrameHorizAngle;
-    units::length::inch_t targetDistance = EstimateTargetXdistance();
 
-    units::length::inch_t targetHorizOffset = targetDistance * tan(limelightFrameHorizAngleRad.to<double>());
+    units::length::inch_t targetXdistance = EstimateTargetXdistance();
+
+    units::length::inch_t targetHorizOffset = targetXdistance * tan(limelightFrameHorizAngleRad.to<double>());
+
     units::length::inch_t targetHorizOffsetRobotFrame = targetHorizOffset + m_mountingHorizontalOffset; // the offset is negative if the limelight is to the left of the center of the robot
-    units::length::inch_t targetDistanceRobotFrame = targetDistance + m_mountingForwardOffset;          // the offset is negative if the limelight is behind the center of the robot
+    units::length::inch_t targetDistanceRobotFrame = targetXdistance + m_mountingForwardOffset;         // the offset is negative if the limelight is behind the center of the robot
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("targetHorizOffset_inch "), targetHorizOffset.to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("targetHorizOffsetRobotFrame_inch "), targetHorizOffsetRobotFrame.to<double>());
@@ -317,7 +320,7 @@ void DragonLimelight::PrintValues()
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("PrintValues YOffset"), to_string(GetTargetVerticalOffset().to<double>()));
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("PrintValues Area"), to_string(GetTargetArea()));
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("PrintValues Skew"), to_string(GetTargetSkew().to<double>()));
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string(":PrintValues Latency"), to_string(GetPipelineLatency().to<double>()));
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("PrintValues Latency"), to_string(GetPipelineLatency().to<double>()));
 }
 
 units::length::inch_t DragonLimelight::EstimateTargetXdistance() const
@@ -366,5 +369,40 @@ units::length::inch_t DragonLimelight::EstimateTargetXdistance() const
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("x_distanceToTarget "), (x_distanceToTarget).to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("targetHeight "), (GetTargetHeight()).to<double>());
 
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("x_distanceToTarget_LL_inch "), x_distanceToTarget.to<double>());
+
     return x_distanceToTarget;
+}
+
+units::length::inch_t DragonLimelight::EstimateTargetYdistance() const
+{
+    // Get the horizontal angle to the target and convert to radians
+    units::angle::degree_t limelightFrameHorizAngle = GetTargetHorizontalOffset();
+    units::angle::radian_t limelightFrameHorizAngleRad = limelightFrameHorizAngle;
+
+    units::length::inch_t targetXdistance = EstimateTargetXdistance();
+
+    units::length::inch_t targetYoffset = -1 * targetXdistance * tan(limelightFrameHorizAngleRad.to<double>()); // * -1 beacuse if the angle is positve, the distance is in the neg y direction
+
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("targetYoffset_LL_inch "), targetYoffset.to<double>());
+
+    return targetYoffset;
+}
+
+units::length::inch_t DragonLimelight::EstimateTargetXdistance_RelToRobotCoords() const
+{
+    units::length::inch_t targetXoffset_RF_inch = EstimateTargetXdistance() + m_mountingForwardOffset; ///< the offset is negative if the limelight is behind the center of the robot
+
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("targetYoffset_RF_inch "), targetXoffset_RF_inch.to<double>());
+
+    return targetXoffset_RF_inch;
+}
+
+units::length::inch_t DragonLimelight::EstimateTargetYdistance_RelToRobotCoords() const
+{
+    units::length::inch_t targetYoffset_RF_inch = EstimateTargetYdistance() + m_mountingHorizontalOffset; ///< the offset is negative if the limelight is to the left of the center of the robot
+
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("targetYoffset_RF_inch "), targetYoffset_RF_inch.to<double>());
+
+    return targetYoffset_RF_inch;
 }

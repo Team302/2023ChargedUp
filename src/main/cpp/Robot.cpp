@@ -99,11 +99,12 @@ void Robot::RobotPeriodic()
 
 #define ENABLE_VISION
 #ifdef ENABLE_VISION
-    static int mycounter = 0;
-    static int my2ndcounter = 0;
+    // This is an example of how to use RobotVision
 
+    static int mycounter = 0;
     mycounter++;
 
+    // First get the DragonVision singleton
     auto vision = DragonVision::GetDragonVision();
 
     LoggerIntValue count = {string("counter"), mycounter};
@@ -111,33 +112,11 @@ void Robot::RobotPeriodic()
     {
         LoggerStringValue status = {string("HW connection Status"), "Dragon vision is not null"};
 
-        vision->setPipeline(DragonLimelight::APRIL_TAG, DragonVision::FRONT);
+        // Set the pipeline. You do not need to call this function repeatedly
+        vision->setPipeline(DragonLimelight::APRIL_TAG);
 
-#ifdef SWITCH_PIPELINE
-        if (mycounter % (5000 / 20) == 0)
-        {
-            my2ndcounter++;
-
-            int a = 0;
-            if (my2ndcounter % 2 == 0)
-            {
-                vision->setPipeline(DragonLimelight::APRIL_TAG, DragonVision::FRONT);
-                a = 2;
-            }
-            else
-            {
-                //  vision->setPipeline(DragonLimelight::RETRO_REFLECTIVE, DragonVision::FRONT);
-                a = 1;
-            }
-
-            LoggerDoubleValue pipelin = {string("Pipeline"), a};
-
-            LoggerData data = {LOGGER_LEVEL::PRINT, string("DragonLimelight"), {}, {pipelin}, {count}, {status}};
-
-            Logger::GetLogger()->LogData(data);
-        }
-#endif
-        DragonVisionTarget *dvt = vision->getTargetInfo();
+        // Next get a pointer
+        std::shared_ptr<DragonVisionTarget> dvt = vision->getTargetInfo();
 
         if (dvt == nullptr)
         {
@@ -148,10 +127,10 @@ void Robot::RobotPeriodic()
         else
         {
             LoggerStringValue status = {string("Status"), "Target found"};
-            LoggerDoubleValue vertAngle = {string("VertAngle"), dvt->getVerticalAngleToTarget().to<double>()};
-            LoggerDoubleValue horAngle = {string("HorizAngle"), dvt->getHorizontalAngleToTarget().to<double>()};
-            LoggerDoubleValue yDistance = {string("y distance RF "), dvt->getYdistanceToTargetRobotFrame().to<double>()};
-            LoggerDoubleValue xDistance = {string("x distance RF "), dvt->getXdistanceToTargetRobotFrame().to<double>()};
+            LoggerDoubleValue vertAngle = {string("VertAngle"), dvt.get()->getVerticalAngleToTarget().to<double>()};
+            LoggerDoubleValue horAngle = {string("HorizAngle"), dvt.get()->getHorizontalAngleToTarget().to<double>()};
+            LoggerDoubleValue xDistance = {string("x distance RF "), dvt.get()->getXdistanceToTargetRobotFrame().to<double>()};
+            LoggerDoubleValue yDistance = {string("y distance RF "), dvt.get()->getYdistanceToTargetRobotFrame().to<double>()};
             LoggerData data = {LOGGER_LEVEL::PRINT, string("DragonLimelight"), {}, {vertAngle, horAngle, yDistance, xDistance}, {count}, {status}};
             Logger::GetLogger()->LogData(data);
         }
