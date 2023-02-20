@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <robot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <pdp
+   <pdp
     canId="1"
-    type="REV"
-     />
-  <pcm
+    type="REV" />
+   <pcm
     canId="1"
     type="REV"
      minPSI="105.0"
@@ -16,7 +15,7 @@
     type="pigeon2"
     rotation="0.0"
     usage="CENTER_OF_ROTATION" />
-  <limelight
+    <limelight
     usage="MAINLIMELIGHT"
     tablename="limelight-front"
     mountingheight="37.325"
@@ -42,7 +41,7 @@
     horizontaloffset="0.0"
     forwardOffset="-8.405"
     yaw="0"
-    roll="180"
+    roll="0.0"
     pitch="0.0"
     targetheight=""
     targetheight2=""
@@ -121,7 +120,7 @@
       <cancoder
         canId="1"
         canBusName="canivore"
-        offset="-118.301"
+        offset="123.311"
         reverse = "false"
         />
     </swervemodule>
@@ -179,7 +178,7 @@
       <cancoder
         canId="19"
         canBusName="canivore"
-        offset="-146.953"
+        offset="-4.307"
         reverse="false" />
     </swervemodule>
     <swervemodule
@@ -236,7 +235,7 @@
       <cancoder
         canId="3"
         canBusName="canivore"
-        offset="-102.041"
+        offset="-136.143"
         reverse="false" />
     </swervemodule>
     <swervemodule
@@ -294,23 +293,22 @@
       <cancoder
         canId="17"
         canBusName="canivore"
-        offset="-23.643"
+        offset="-68.467"
         reverse="false" />
     </swervemodule>
   </chassis>
-
   <mechanism
     type="ARM"
     networkTable="armNT"
     controlFile="arm.xml">
     <motor
       usage="ARM"
-      canId="4"
+      canId="5"
       canBusName="rio"
-      pdpID="4"
+      pdpID="5"
       type="FALCON"
-      inverted="false"
-      sensorInverted="false"
+      inverted="true"
+      sensorInverted="true"
       feedbackDevice="INTERNAL"
       countsPerRev="2048"
       gearRatio="84"
@@ -335,9 +333,9 @@
     controlFile="extender.xml">
     <motor
       usage="Extender"
-      canId="15"
+      canId="4"
       canBusName="rio"
-      pdpID="15"
+      pdpID="4"
       type="FALCON"
       inverted="false"
       sensorInverted="false"
@@ -359,14 +357,15 @@
     networkTable="grabberNT"
     controlFile="grabber.xml">
     <solenoid
-      usage="GrabberSolenoid"
+      usage="GrabberSolenoid1"
       canId="1"
       channel="0"
-      reversed="false"/>
-    <digitalInput 
-      usage="GRABBER_SENSOR"
-      digitalId="9"
-      reversed="true"/>
+      reversed="false" />
+    <solenoid
+      usage="GrabberSolenoid2"
+      canId="1"
+      channel="1"
+      reversed="false" />
   </mechanism>
   <roborio
     orientation="X_LEFT_Y_UP" />

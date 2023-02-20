@@ -142,7 +142,7 @@ SwerveChassis::SwerveChassis(
                               m_storedYaw(m_pigeon->GetYaw()),
                               m_yawCorrection(units::angular_velocity::degrees_per_second_t(0.0)),
                               m_targetHeading(units::angle::degree_t(0)),
-                              m_limelight(LimelightFactory::GetLimelightFactory()->GetLimelight()),
+                              m_vision(DragonVision::GetDragonVision()),
                               m_networkTableName(networkTableName),
                               m_controlFileName(controlFileName)
 {
@@ -297,10 +297,41 @@ void SwerveChassis::UpdateOdometry()
     units::degree_t yaw{m_pigeon->GetYaw()};
     Rotation2d rot2d{yaw};
 
-    m_poseEstimator.Update(rot2d, wpi::array<frc::SwerveModulePosition, 4>{m_frontLeft.get()->GetPosition(),
-                                                                           m_frontRight.get()->GetPosition(),
-                                                                           m_backLeft.get()->GetPosition(),
-                                                                           m_backRight.get()->GetPosition()});
+    if (m_vision != nullptr && m_vision->GetRobotPosition().X().to<double>() != 0 && m_vision->GetRobotPosition().Y().to<double>() != 0)
+    {
+        frc::Pose2d pose = m_vision->GetRobotPosition();
+        if (m_vision->getTargetInfo() != nullptr)
+        {
+            auto distToTarget = m_vision->getTargetInfo()->getDistanceToTarget().to<double>();
+
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("UpdateOdometry"), string("DistToTarget"), distToTarget);
+
+            if (distToTarget < 60 && !m_hasResetToVisionTarget)
+            {
+                m_poseEstimator.ResetPosition(rot2d, wpi::array<frc::SwerveModulePosition, 4>{m_frontLeft.get()->GetPosition(), m_frontRight.get()->GetPosition(), m_backLeft.get()->GetPosition(), m_backRight.get()->GetPosition()}, pose);
+                m_hasResetToVisionTarget = true;
+            }
+            else if (distToTarget < 110)
+            {
+                m_poseEstimator.AddVisionMeasurement(pose, frc::Timer::GetFPGATimestamp());
+            }
+            else
+            {
+                m_hasResetToVisionTarget = false;
+                m_poseEstimator.Update(rot2d, wpi::array<frc::SwerveModulePosition, 4>{m_frontLeft.get()->GetPosition(),
+                                                                                       m_frontRight.get()->GetPosition(),
+                                                                                       m_backLeft.get()->GetPosition(),
+                                                                                       m_backRight.get()->GetPosition()});
+            }
+        }
+    }
+    else
+    {
+        m_poseEstimator.Update(rot2d, wpi::array<frc::SwerveModulePosition, 4>{m_frontLeft.get()->GetPosition(),
+                                                                               m_frontRight.get()->GetPosition(),
+                                                                               m_backLeft.get()->GetPosition(),
+                                                                               m_backRight.get()->GetPosition()});
+    }
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("SwerveOdometry"), std::string("X Position: "), m_poseEstimator.GetEstimatedPosition().X().to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("SwerveOdometry"), std::string("Y Position: "), m_poseEstimator.GetEstimatedPosition().Y().to<double>());
@@ -335,8 +366,12 @@ ChassisSpeeds SwerveChassis::GetChassisSpeeds() const
 /// @param [in] const Rotation2d&   angle       Current rotation angle
 void SwerveChassis::ResetPose(const Pose2d &pose, const Rotation2d &angle)
 {
-    m_poseEstimator.ResetPosition(angle, wpi::array<frc::SwerveModulePosition, 4>{m_frontLeft.get()->GetPosition(), m_frontRight.get()->GetPosition(), m_backLeft.get()->GetPosition(), m_backRight.get()->GetPosition()}, pose);
+    units::degree_t yaw{m_pigeon->GetYaw()};
+    Rotation2d rot2d{yaw};
+
     SetEncodersToZero();
+
+    m_poseEstimator.ResetPosition(rot2d, wpi::array<frc::SwerveModulePosition, 4>{m_frontLeft.get()->GetPosition(), m_frontRight.get()->GetPosition(), m_backLeft.get()->GetPosition(), m_backRight.get()->GetPosition()}, pose);
 }
 
 void SwerveChassis::ResetPose(const Pose2d &pose)

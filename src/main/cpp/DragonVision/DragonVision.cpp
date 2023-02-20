@@ -21,6 +21,7 @@
 
 #include <DragonVision/DragonVision.h>
 #include <hw/factories/LimelightFactory.h>
+#include <utils/FMSData.h>
 
 #include <string>
 // Third Party Includes
@@ -89,9 +90,46 @@ std::shared_ptr<DragonVisionTarget> DragonVision::getTargetInfo() const
 	return getTargetInfo(LIMELIGHT_POSITION::FRONT);
 }
 
-int DragonVision::GetRobotPosition() const
+frc::Pose2d DragonVision::GetRobotPosition() const
 {
-	return 0;
+	frc::DriverStation::Alliance alliance = FMSData::GetInstance()->GetAllianceColor();
+	DragonLimelight *dllFront = getLimelight(LIMELIGHT_POSITION::FRONT);
+	DragonLimelight *dllBack = getLimelight(LIMELIGHT_POSITION::BACK);
+
+	if ((dllFront != nullptr) && (dllFront->HasTarget()))
+	{
+		if (alliance == frc::DriverStation::Alliance::kBlue)
+		{
+			return dllFront->GetBlueFieldPosition();
+		}
+		else if (alliance == frc::DriverStation::Alliance::kRed)
+		{
+			return dllFront->GetRedFieldPosition();
+		}
+		else
+		{
+			return frc::Pose2d{};
+		}
+	}
+	else if ((dllBack != nullptr) && (dllBack->HasTarget()))
+	{
+		if (alliance == frc::DriverStation::Alliance::kBlue)
+		{
+			return dllBack->GetBlueFieldPosition();
+		}
+		else if (alliance == frc::DriverStation::Alliance::kRed)
+		{
+			return dllBack->GetRedFieldPosition();
+		}
+		else
+		{
+			return frc::Pose2d{};
+		}
+	}
+	else
+	{
+		return frc::Pose2d{};
+	}
 }
 
 /// @brief Gets a pointer to the limelight at the specified position

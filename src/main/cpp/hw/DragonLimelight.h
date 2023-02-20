@@ -25,6 +25,7 @@
 #include <units/angle.h>
 #include <units/length.h>
 #include <units/time.h>
+#include <frc/geometry/Pose2d.h>
 
 // Team 302 includes
 
@@ -107,6 +108,9 @@ public:
     units::time::microsecond_t GetPipelineLatency() const;
     std::vector<double> Get3DSolve() const;
     PIPELINE_MODE getPipeline() const;
+
+    frc::Pose2d GetRedFieldPosition() const;
+    frc::Pose2d GetBlueFieldPosition() const;
 
     units::length::inch_t EstimateTargetXdistance() const;
     units::length::inch_t EstimateTargetYdistance() const;
