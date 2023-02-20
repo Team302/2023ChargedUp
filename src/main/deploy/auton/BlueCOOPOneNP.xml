@@ -1,4 +1,6 @@
+
 <!--arm test path-->
+
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE auton SYSTEM "auton.dtd">
 <auton>
@@ -6,29 +8,9 @@
 	   pathname="ArmTest.wpilib.json"/>
   <!--score preloaded cone-->
     <primitive id="DO_NOTHING"
-               arm="CUBE_BACKROW_ROTATE"
-               extender="CUBE_BACKROW_EXTEND"
-               grabber="GRAB"
+               arm="HUMAN_PLAYER_STATION_ROTATE"
+               extender="HUMAN_PLAYER_STATION_EXTEND"
+               grabber="OPEN"
                time="1.5"
-               />
-    <primitive id="DO_NOTHING"
-               arm="CUBE_BACKROW_ROTATE"
-               extender="CUBE_BACKROW_EXTEND"
-               grabber="OPEN"
-               time="0.5"
-               />
-    <!--drive to charing station-->
-    <primitive id="DO_NOTHING"
-               arm="STARTING_POSITION_ROTATE"
-               extender="STARTING_POSITION_EXTEND"
-               grabber="OPEN"
-               time="3.0"
-               />
-    <!--Parked on charging station-->
-    <primitive id="DO_NOTHING"
-               arm="STARTING_POSITION_ROTATE"
-               extender="STARTING_POSITION_EXTEND"
-               grabber="OPEN"
-               time="10.0"
                />
 </auton>
