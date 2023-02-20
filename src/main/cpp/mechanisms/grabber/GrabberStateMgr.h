@@ -92,6 +92,7 @@ private:
     //========= Hand modified code start section 5 ========
     GRABBER_STATE m_currentState;
     GRABBER_STATE m_targetState;
+    GRABBER_STATE m_prevState;
 
     bool m_followOtherMechs = false;
     const double m_floorThreshold = 15.0;
