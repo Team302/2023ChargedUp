@@ -1,8 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <robot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <pdp
+  <pcm
     canId="1"
-    type="REV" />
+    type="REV"
+     minPSI="105.0"
+     maxPSI="115.0"
+     />
   <pigeon
     canId="0"
     canBusName="canivore"

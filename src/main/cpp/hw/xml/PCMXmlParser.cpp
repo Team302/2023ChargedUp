@@ -51,7 +51,7 @@ Compressor *PCMXmlParser::ParseXML(
     // initialize attributes to default values
 
     int canID = 1;
-    double minPressure = 105;
+    double minPressure = 95;
     double maxPressure = 115;
     frc::PneumaticsModuleType type = frc::PneumaticsModuleType::REVPH;
 
