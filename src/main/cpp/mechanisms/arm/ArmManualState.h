@@ -41,6 +41,7 @@ public:
 private:
     Arm *m_arm;
     TeleopControl *m_controller;
+    ControlData *m_controlData;
 
     RobotStateChanges::GamePiece m_gamepieceMode;
 

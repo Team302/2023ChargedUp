@@ -7,7 +7,7 @@
   <pcm
     canId="1"
     type="REV"
-     minPSI="105.0"
+     minPSI="95.0"
      maxPSI="115.0"
      />
   <pigeon

@@ -121,9 +121,10 @@ void ExtenderStateMgr::CheckForStateTransition()
 
     if (m_extender != nullptr)
     {
-        if (m_targetState != m_currentState || m_targetState == EXTENDER_STATE::MANUAL_EXTEND_RETRACT)
+        if ((m_targetState != m_currentState && m_targetState != m_prevState) || m_targetState == EXTENDER_STATE::MANUAL_EXTEND_RETRACT)
         {
             SetCurrentState(m_targetState, true);
+            m_prevState = m_targetState;
             RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmExtenderState, m_targetState);
         }
     }
@@ -234,6 +235,11 @@ void ExtenderStateMgr::CheckForSensorTransitions()
         m_extender->ResetIfFullyRetracted();
 
         auto armAngle = MechanismFactory::GetMechanismFactory()->GetArm()->GetPositionDegrees().to<double>();
+        if (armAngle < 10.0)
+        {
+            m_targetState = EXTENDER_STATE::MANUAL_EXTEND_RETRACT;
+        }
+        
         auto armTarget = MechanismFactory::GetMechanismFactory()->GetArm()->GetTarget();
         if ((armAngle < m_armFloorTolerance || abs(armAngle - armTarget) > m_armAngleTolerance) && m_targetState != EXTENDER_STATE::MANUAL_EXTEND_RETRACT)
         {

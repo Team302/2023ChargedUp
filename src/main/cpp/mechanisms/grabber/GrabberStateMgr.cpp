@@ -66,7 +66,8 @@ GrabberStateMgr::GrabberStateMgr() : StateMgr(),
                                      //========= Hand modified code start section 1 ========
                                      ,
                                      m_currentState(GRABBER_STATE::GRAB),
-                                     m_targetState(GRABBER_STATE::GRAB)
+                                     m_targetState(GRABBER_STATE::GRAB),
+                                     m_prevState(GRABBER_STATE::GRAB)
 //========= Hand modified code end section 1 ========
 
 {
@@ -99,22 +100,24 @@ int GrabberStateMgr::GetCurrentStateParam(
 void GrabberStateMgr::CheckForStateTransition()
 {
     //========= Hand modified code start section 3 ========
-    CheckForSensorTransitions();
     if (m_grabber != nullptr)
     {
-        // if (!m_followOtherMechs)
-        //{
-        CheckForGamepadTransitions();
-        //}
+        CheckForSensorTransitions();
+        if (m_checkGamePadTransitions)
+        {
+            CheckForGamepadTransitions();
+        }
 
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("GrabberStateMgr"), std::string("m_targetState"), m_targetState);
-
-        if (m_targetState != m_currentState)
+        if (m_targetState != m_currentState && m_targetState != m_prevState)
         {
             SetCurrentState(m_targetState, true);
+            m_prevState = m_targetState;
             RobotState::GetInstance()->PublishStateChange(RobotStateChanges::GrabberState, m_targetState);
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("GrabberStateMgr"), std::string("Changing state to: "), m_targetState);
         }
+    }
+    else
+    {
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("GrabberStateMgr"), std::string("have grabber"), false);
     }
     //========= Hand modified code end section 3 ========
 }
@@ -125,8 +128,6 @@ void GrabberStateMgr::CheckForSensorTransitions()
 {
     if (m_grabber != nullptr)
     {
-        // look at banner sensor to determine target state
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("GrabberStateMgr"), std::string("DigitalInputValue"), m_grabber->IsGamePiecePresent());
         // ignore sensor if we are less than 15 degrees above ground
         if (m_grabber->IsGamePiecePresent() && MechanismFactory::GetMechanismFactory()->GetArm()->GetPositionDegrees().to<double>() > m_floorThreshold)
         {
@@ -136,6 +137,10 @@ void GrabberStateMgr::CheckForSensorTransitions()
         {
             m_targetState = GRABBER_STATE::GRAB;
         }
+    }
+    else
+    {
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("GrabberStateMgr"), std::string("grabber"), false);
     }
 }
 
