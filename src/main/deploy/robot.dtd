@@ -1,4 +1,4 @@
-<!ELEMENT robot (pdp?, pcm*, pigeon*, limelight*, chassis, mechanism*, camera*, roborio* )>
+<!ELEMENT robot (pdp?, pcm*, pigeon*, limelight*, chassis, mechanism*, camera*, roborio*, led* )>
 
 <!ELEMENT roborio EMPTY>
 <!ATTLIST roborio
@@ -87,7 +87,7 @@
 <!ELEMENT limelight EMPTY>
 <!ATTLIST limelight 
 		  usage 			( MAINLIMELIGHT | SECONDARYLIMELIGHT ) "MAINLIMELIGHT"
-		  tablename         ( limelight | limelight2 ) "limelight"
+		  tablename         CDATA #REQUIRED
 		  mountingheight    CDATA #REQUIRED
 		  horizontaloffset  CDATA "0.0"
 		  mountingangle     CDATA #REQUIRED
