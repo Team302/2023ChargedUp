@@ -118,11 +118,18 @@ void ArmStateMgr::CheckForStateTransition()
     {
         CheckForGamepadTransitions();
     }
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Current State"), m_targetState);
 
-    if (m_targetState != m_currentState && m_targetState != m_prevState)
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Current State"), m_currentState);
+
+    /// DEBUGGING
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Target: "), m_arm->GetTarget());
+
+    if (m_targetState != m_currentState // && m_targetState != m_prevState
+    )
     {
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Setting target state to: "), m_targetState);
         SetCurrentState(m_targetState, true);
+
         m_prevState = m_targetState;
         RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmRotateState, m_targetState);
 
@@ -197,10 +204,6 @@ void ArmStateMgr::CheckForConeGamepadTransitions(TeleopControl *controller)
         {
             m_targetState = ARM_STATE::HUMAN_PLAYER_STATION_ROTATE;
         }
-        else
-        {
-            m_targetState = ARM_STATE::HOLD_POSITION_ROTATE;
-        }
     }
 }
 
@@ -231,10 +234,6 @@ void ArmStateMgr::CheckForCubeGamepadTransitions(TeleopControl *controller)
         {
             m_targetState = ARM_STATE::HUMAN_PLAYER_STATION_ROTATE;
         }
-        else
-        {
-            m_targetState = ARM_STATE::HOLD_POSITION_ROTATE;
-        }
     }
 }
 
@@ -250,7 +249,7 @@ void ArmStateMgr::CheckForSensorTransitions()
         m_arm->ResetIfArmDown();
 
         // If arm is at target and the prev state hasn't changed then stay in hold
-        if (abs(m_arm->GetPositionDegrees().to<double>() - m_arm->GetTarget()) < 5.0 && m_arm->GetPositionDegrees().to<double>() > 1.0 && m_prevState == m_targetState)
+        if (abs(m_arm->GetPositionDegrees().to<double>() - m_arm->GetTarget()) < 5.0 && m_arm->GetPositionDegrees().to<double>() > 1.0)
         {
             m_targetState = ARM_STATE::HOLD_POSITION_ROTATE;
         }

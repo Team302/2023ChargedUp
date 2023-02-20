@@ -53,6 +53,8 @@ void ArmManualState::Run()
                                                                               MechanismFactory::GetMechanismFactory()->GetExtender()->GetPositionInches().to<double>(),
                                                                               m_gamepieceMode,
                                                                               m_grabberState);
+        /// debugging
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ArmManualState", "Target: ", target);
 
         m_arm->UpdateTarget(target);
         m_arm->Update();
