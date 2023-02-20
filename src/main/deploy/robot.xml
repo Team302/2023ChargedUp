@@ -15,17 +15,17 @@
     type="pigeon2"
     rotation="0.0"
     usage="CENTER_OF_ROTATION" />
-    <limelight
+  <limelight
     usage="MAINLIMELIGHT"
     tablename="limelight-front"
     mountingheight="37.325"
     horizontaloffset="-7.689"
     forwardOffset="-7.24"
-    yaw="18.0"
-    roll="270"
+    yaw="18.25"
+    roll="90"
     pitch="0.0"
-    targetheight=""
-    targetheight2=""
+    targetheight="18.0"
+    targetheight2="27.25"
     defaultledmode="currentpipeline"
     defaultcammode="vision"
     streammode="sidebyside"

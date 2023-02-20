@@ -424,7 +424,7 @@ units::length::inch_t DragonLimelight::EstimateTargetXdistance_RelToRobotCoords(
 {
     units::length::inch_t targetXoffset_RF_inch = EstimateTargetXdistance() + m_mountingForwardOffset; ///< the offset is negative if the limelight is behind the center of the robot
 
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("targetYoffset_RF_inch "), targetXoffset_RF_inch.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("targetXoffset_RF_inch "), targetXoffset_RF_inch.to<double>());
 
     return targetXoffset_RF_inch;
 }
