@@ -42,21 +42,18 @@ using frc::Compressor;
 /// @param [in] xml_node PCMNode the <PCM element in the xml document
 /// @return     Compressor*   PCM object
 Compressor *PCMXmlParser::ParseXML(
-    xml_node PCMNode /// <I> - PCM node in the XML file
+    pugi::xml_node PCMNode /// <I> - PCM node in the XML file
 )
 {
     // initialize output
     Compressor *pcm = nullptr;
 
     // initialize attributes to default values
-<<<<<<< Updated upstream
-    int canID = 0;
+
+    int canID = 1;
     double minPressure = 105;
     double maxPressure = 115;
     frc::PneumaticsModuleType type = frc::PneumaticsModuleType::REVPH;
-=======
-    int canID = 1;
->>>>>>> Stashed changes
 
     bool hasError = false;
 
@@ -102,11 +99,8 @@ Compressor *PCMXmlParser::ParseXML(
     // If no errors, create the object
     if (!hasError)
     {
-
         pcm = new Compressor(canID, type);
         pcm->EnableAnalog(units::pressure::pounds_per_square_inch_t(minPressure), units::pressure::pounds_per_square_inch_t(maxPressure));
-
-        // todo create objects
     }
     return pcm;
 }
