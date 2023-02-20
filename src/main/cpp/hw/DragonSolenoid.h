@@ -72,9 +72,6 @@ private:
         int reverseChannel,
         bool reversed);
 
-    double m_minPressure = 105.0; // PSI
-    double m_maxPressure = 115.0; // PSI
-
     std::string m_networkTableName;
     SolenoidUsage::SOLENOID_USAGE m_usage;
     frc::Solenoid *m_solenoid;

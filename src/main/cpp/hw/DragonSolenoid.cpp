@@ -139,7 +139,6 @@ void DragonSolenoid::InitDouble(
     int reverseChannel,
     bool reversed)
 {
-    frc::Compressor compressor{1, pcmType};
     m_networkTableName = networkTableName;
     m_usage = usage;
     m_solenoid = nullptr;

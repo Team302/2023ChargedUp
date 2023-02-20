@@ -39,5 +39,5 @@ public:
     /// @param [in] xml_node PDPNode the <PDP element in the xml document
     /// @return     PowerDistributionPanel*   PDP object
     frc::Compressor *ParseXML(
-        pugi::xml_node PDPNode);
+        pugi::xml_node PCMNode);
 };
