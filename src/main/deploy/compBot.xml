@@ -3,6 +3,12 @@
   <pdp
     canId="1"
     type="REV" />
+  <pcm
+    canId="1"
+    type="REV"
+     minPSI="105.0"
+     maxPSI="115.0"
+     />
   <pigeon
     canId="0"
     canBusName="canivore"

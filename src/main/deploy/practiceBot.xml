@@ -1,8 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <robot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <pdp
+   <pdp
     canId="1"
     type="REV" />
+   <pcm
+    canId="1"
+    type="REV"
+     minPSI="105.0"
+     maxPSI="115.0"
+     />
   <pigeon
     canId="0"
     canBusName="canivore"
@@ -11,13 +17,15 @@
     usage="CENTER_OF_ROTATION" />
   <limelight
     usage="MAINLIMELIGHT"
-    tablename="limelight"
+    tablename="limelight-front"
     mountingheight="37.325"
-    horizontaloffset="7.689"
-    mountingangle="-18.0"
-    rotation="90.0"
-    targetheight=""
-    targetheight2=""
+    horizontaloffset="-7.689"
+    forwardOffset="-7.24"
+    yaw="18.0"
+    roll="90"
+    pitch="0.0"
+    targetheight="18.0"
+    targetheight2="27.25"
     defaultledmode="currentpipeline"
     defaultcammode="vision"
     streammode="sidebyside"
@@ -28,11 +36,13 @@
     secondcrosshairy="" />
   <limelight
     usage="SECONDARYLIMELIGHT"
-    tablename="limelight2"
+    tablename="limelight-back"
     mountingheight="34.472"
     horizontaloffset="0.0"
-    mountingangle="0.0"
-    rotation="0.0"
+    forwardOffset="-8.405"
+    yaw="0"
+    roll="0.0"
+    pitch="0.0"
     targetheight=""
     targetheight2=""
     defaultledmode="currentpipeline"
