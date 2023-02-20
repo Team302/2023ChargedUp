@@ -121,7 +121,7 @@ void ExtenderStateMgr::CheckForStateTransition()
 
     if (m_extender != nullptr)
     {
-        if (m_targetState != m_currentState || m_targetState == EXTENDER_STATE::MANUAL_EXTEND_RETRACT)
+        if ((m_targetState != m_currentState && m_targetState != m_prevState) || m_targetState == EXTENDER_STATE::MANUAL_EXTEND_RETRACT)
         {
             SetCurrentState(m_targetState, true);
             m_prevState = m_targetState;

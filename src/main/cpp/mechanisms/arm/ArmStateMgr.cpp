@@ -119,7 +119,7 @@ void ArmStateMgr::CheckForStateTransition()
     }
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Current State"), m_targetState);
 
-    if (m_targetState != m_currentState)
+    if (m_targetState != m_currentState && m_targetState != m_prevState)
     {
         SetCurrentState(m_targetState, true);
         RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmRotateState, m_targetState);
