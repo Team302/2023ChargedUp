@@ -58,21 +58,19 @@ frc::Trajectory DragonTrajectoryGenerator::GenerateTrajectory(frc::Pose2d curren
         double distToWallGrid = 0.0;
         double distToCoopGrid = 0.0;
         double distToHPGrid = 0.0;
-        bool outsideCommunity = false;
+        bool outsideCommunity = IsOutsideCommunity(currentPose);
 
         if (m_fmsData->GetAllianceColor() == frc::DriverStation::Alliance::kBlue)
         {
             distToWallGrid = DistanceBetweenPoses::GetDeltaBetweenPoses(currentPose, m_blueWaypoints[WAYPOINTS::GRID_WALL_COL_TWO]);
             distToCoopGrid = DistanceBetweenPoses::GetDeltaBetweenPoses(currentPose, m_blueWaypoints[WAYPOINTS::GRID_COOP_COL_TWO]);
             distToHPGrid = DistanceBetweenPoses::GetDeltaBetweenPoses(currentPose, m_blueWaypoints[WAYPOINTS::GRID_HP_COL_TWO]);
-            outsideCommunity = currentPose.X() > m_blueWaypoints[WAYPOINTS::GRID_WALL_INTERMEDIATE].X() ? true : false;
         }
         else if (m_fmsData->GetAllianceColor() == frc::DriverStation::Alliance::kRed)
         {
             distToWallGrid = DistanceBetweenPoses::GetDeltaBetweenPoses(currentPose, m_redWaypoints[WAYPOINTS::GRID_WALL_COL_TWO]);
             distToCoopGrid = DistanceBetweenPoses::GetDeltaBetweenPoses(currentPose, m_redWaypoints[WAYPOINTS::GRID_COOP_COL_TWO]);
             distToHPGrid = DistanceBetweenPoses::GetDeltaBetweenPoses(currentPose, m_redWaypoints[WAYPOINTS::GRID_HP_COL_TWO]);
-            outsideCommunity = currentPose.X() < m_redWaypoints[WAYPOINTS::GRID_WALL_INTERMEDIATE].X() ? true : false;
         }
 
         if (distToWallGrid < distToCoopGrid && distToWallGrid < distToHPGrid) // going to wall grid
@@ -153,8 +151,25 @@ frc::Trajectory DragonTrajectoryGenerator::GenerateTrajectory(frc::Pose2d curren
     }
     else if (endPoint == TARGET_POSITION::CHARGE_PAD)
     {
-        auto waypointInfo = GetWayPointInfo(currentPose);
-        if ()
+        endWaypoint = WAYPOINTS::CHARGE_PAD_CENTER;
+
+        auto outsideCommunity = IsOutsideCommunity(currentPose);
+        if (outsideCommunity)
+        {
+            if (m_fmsData->GetAllianceColor() == frc::DriverStation::Alliance::kBlue)
+            {
+                intermediatePoints.emplace_back(frc::Translation2d{m_blueWaypoints[WAYPOINTS::GRID_WALL_INTERMEDIATE].X(),
+                                                                   m_blueWaypoints[WAYPOINTS::GRID_WALL_INTERMEDIATE].Y()});
+            }
+            else
+            {
+                intermediatePoints.emplace_back(frc::Translation2d{m_redWaypoints[WAYPOINTS::GRID_WALL_INTERMEDIATE].X(),
+                                                                   m_redWaypoints[WAYPOINTS::GRID_WALL_INTERMEDIATE].Y()});
+            }
+        }
+        if (outsideCommunity)
+        {
+        }
     }
 
     double distanceToFinalPoint = 0.0;
