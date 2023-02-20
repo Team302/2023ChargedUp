@@ -20,6 +20,7 @@
 #include <frc/Filesystem.h>
 
 // Team 302 includes
+#include <auton/drivePrimitives/DragonTrajectoryUtils.h>
 #include <auton/drivePrimitives/ResetPosition.h>
 #include <auton/PrimitiveParams.h>
 #include <auton/drivePrimitives/IPrimitive.h>
@@ -36,6 +37,16 @@ ResetPosition::ResetPosition() : m_chassis(ChassisFactory::GetChassisFactory()->
 
 void ResetPosition::Init(PrimitiveParams *params)
 {
+
+    m_trajectory = DragonTrajectoryUtils::GetTrajectory(params);
+    m_chassis->ResetPose(m_trajectory.InitialPose());
+
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Reset Position"), string("Auton Info: ResetPosX"), m_chassis.get()->GetPose().X().to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Reset Position"), string("Auton Info: ResetPosY"), m_chassis.get()->GetPose().Y().to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Reset Position"), string("Auton Info: InitialPoseX"), m_trajectory.InitialPose().X().to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Reset Position"), string("Auton Info: InitialPoseY"), m_trajectory.InitialPose().Y().to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Reset Position"), string("Auton Info: InitialPoseOmega"), m_trajectory.InitialPose().Rotation().Degrees().to<double>());
+    /**
     string pathToLoad = params->GetPathName();
 
     if (pathToLoad != "")
@@ -52,6 +63,7 @@ void ResetPosition::Init(PrimitiveParams *params)
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Reset Position"), string("Auton Info: InitialPoseY"), m_trajectory.InitialPose().Y().to<double>());
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Reset Position"), string("Auton Info: InitialPoseOmega"), m_trajectory.InitialPose().Rotation().Degrees().to<double>());
     }
+    **/
 }
 
 void ResetPosition::Run()

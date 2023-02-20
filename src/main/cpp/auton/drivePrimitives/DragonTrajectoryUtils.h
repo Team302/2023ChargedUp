@@ -1,3 +1,4 @@
+
 //====================================================================================================================================================
 // Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
@@ -13,37 +14,14 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#include <mechanisms/arm/ArmState.h>
-#include <robotstate/IRobotStateChangeSubscriber.h>
-#include <mechanisms/grabber/GrabberStateMgr.h>
+#pragma once
 
-class ControlData;
-class Arm;
-class TeleopControl;
+#include <frc/trajectory/Trajectory.h>
 
-class ArmManualState : public ArmState, public IRobotStateChangeSubscriber
+#include <auton/PrimitiveParams.h>
+
+class DragonTrajectoryUtils
 {
 public:
-    ArmManualState() = delete;
-    ArmManualState(std::string stateName,
-                   int stateId,
-                   ControlData *control0,
-                   double target0);
-
-    ~ArmManualState() = default;
-
-    void Init() override;
-    void Run() override;
-    bool AtTarget() const override;
-
-    void Update(RobotStateChanges::StateChange change, int state) override;
-
-private:
-    Arm *m_arm;
-    TeleopControl *m_controller;
-    ControlData *m_controlData;
-
-    RobotStateChanges::GamePiece m_gamepieceMode;
-
-    GrabberStateMgr::GRABBER_STATE m_grabberState;
+    static frc::Trajectory GetTrajectory(PrimitiveParams *params);
 };

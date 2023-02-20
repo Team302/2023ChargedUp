@@ -1,3 +1,4 @@
+
 //====================================================================================================================================================
 // Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
@@ -13,37 +14,26 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#include <mechanisms/arm/ArmState.h>
-#include <robotstate/IRobotStateChangeSubscriber.h>
-#include <mechanisms/grabber/GrabberStateMgr.h>
+#include <frc/Filesystem.h>
+#include <frc/trajectory/Trajectory.h>
+#include <frc/trajectory/TrajectoryUtil.h>
 
-class ControlData;
-class Arm;
-class TeleopControl;
+#include <auton/drivePrimitives/DragonTrajectoryUtils.h>
+#include <auton/PrimitiveParams.h>
 
-class ArmManualState : public ArmState, public IRobotStateChangeSubscriber
+using frc::Trajectory;
+using frc::TrajectoryUtil;
+
+Trajectory DragonTrajectoryUtils::GetTrajectory(PrimitiveParams *params)
 {
-public:
-    ArmManualState() = delete;
-    ArmManualState(std::string stateName,
-                   int stateId,
-                   ControlData *control0,
-                   double target0);
+    auto path = params->GetPathName();
+    if (!path.empty()) // only go if path name found
+    {
+        // Read path into trajectory for deploy directory.  JSON File ex. Bounce1.wpilib.json
+        auto deployDir = frc::filesystem::GetDeployDirectory();
+        deployDir += "/paths/output/" + path;
 
-    ~ArmManualState() = default;
-
-    void Init() override;
-    void Run() override;
-    bool AtTarget() const override;
-
-    void Update(RobotStateChanges::StateChange change, int state) override;
-
-private:
-    Arm *m_arm;
-    TeleopControl *m_controller;
-    ControlData *m_controlData;
-
-    RobotStateChanges::GamePiece m_gamepieceMode;
-
-    GrabberStateMgr::GRABBER_STATE m_grabberState;
-};
+        return TrajectoryUtil::FromPathweaverJson(deployDir); // Creates a trajectory or path that can be used in the code, parsed from pathweaver json
+    }
+    return Trajectory();
+}
