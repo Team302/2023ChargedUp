@@ -123,6 +123,7 @@ void ArmStateMgr::CheckForStateTransition()
     if (m_targetState != m_currentState)
     {
         SetCurrentState(m_targetState, true);
+        m_prevState = m_targetState;
         RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmRotateState, m_targetState);
 
         if (m_targetState == ARM_STATE::HOLD_POSITION_ROTATE)
@@ -156,7 +157,6 @@ void ArmStateMgr::CheckForGamepadTransitions()
             if (abs(controller->GetAxisValue(TeleopControlFunctions::MANUAL_ROTATE)) > 0.05)
             {
                 m_targetState = ARM_STATE::MANUAL_ROTATE;
-                m_prevState = m_targetState;
             }
             else if (m_gamepieceMode == RobotStateChanges::Cone)
             {
@@ -165,12 +165,6 @@ void ArmStateMgr::CheckForGamepadTransitions()
             else if (m_gamepieceMode == RobotStateChanges::Cube)
             {
                 CheckForCubeGamepadTransitions(controller);
-            }
-
-            // If arm is at target and the prev state hasn't changed then stay in hold
-            if (abs(m_arm->GetPositionDegrees().to<double>() - m_arm->GetTarget()) < 5.0 && m_arm->GetPositionDegrees().to<double>() > 1.0 && m_prevState == m_targetState)
-            {
-                m_targetState = ARM_STATE::HOLD_POSITION_ROTATE;
             }
         }
     }
@@ -183,7 +177,6 @@ void ArmStateMgr::CheckForConeGamepadTransitions(TeleopControl *controller)
         if (controller->IsButtonPressed(TeleopControlFunctions::BACKROW))
         {
             m_targetState = ARM_STATE::CONE_BACKROW_ROTATE;
-            m_prevState = m_targetState;
         }
         else if (controller->IsButtonPressed(TeleopControlFunctions::MIDROW))
         {
@@ -195,18 +188,14 @@ void ArmStateMgr::CheckForConeGamepadTransitions(TeleopControl *controller)
             {
                 m_targetState = ARM_STATE::CONE_MIDROW_ROTATE_UP;
             }
-
-            m_prevState = m_targetState;
         }
         else if (controller->IsButtonPressed(TeleopControlFunctions::FLOOR_POSITION))
         {
             m_targetState = ARM_STATE::FLOOR_POSITION_ROTATE;
-            m_prevState = m_targetState;
         }
         else if (controller->IsButtonPressed(TeleopControlFunctions::HUMAN_PLAYER_STATION))
         {
             m_targetState = ARM_STATE::HUMAN_PLAYER_STATION_ROTATE;
-            m_prevState = m_targetState;
         }
         else
         {
@@ -222,7 +211,6 @@ void ArmStateMgr::CheckForCubeGamepadTransitions(TeleopControl *controller)
         if (controller->IsButtonPressed(TeleopControlFunctions::BACKROW))
         {
             m_targetState = ARM_STATE::CUBE_BACKROW_ROTATE;
-            m_prevState = m_targetState;
         }
         else if (controller->IsButtonPressed(TeleopControlFunctions::MIDROW))
         {
@@ -234,18 +222,14 @@ void ArmStateMgr::CheckForCubeGamepadTransitions(TeleopControl *controller)
             {
                 m_targetState = ARM_STATE::CUBE_MIDROW_ROTATE_UP;
             }
-
-            m_prevState = m_targetState;
         }
         else if (controller->IsButtonPressed(TeleopControlFunctions::FLOOR_POSITION))
         {
             m_targetState = ARM_STATE::FLOOR_POSITION_ROTATE;
-            m_prevState = m_targetState;
         }
         else if (controller->IsButtonPressed(TeleopControlFunctions::HUMAN_PLAYER_STATION))
         {
             m_targetState = ARM_STATE::HUMAN_PLAYER_STATION_ROTATE;
-            m_prevState = m_targetState;
         }
         else
         {
@@ -265,7 +249,11 @@ void ArmStateMgr::CheckForSensorTransitions()
         // If we are hitting limit switch, reset position
         m_arm->ResetIfArmDown();
 
-        // Check arm angle and run any states dependent on it
+        // If arm is at target and the prev state hasn't changed then stay in hold
+        if (abs(m_arm->GetPositionDegrees().to<double>() - m_arm->GetTarget()) < 5.0 && m_arm->GetPositionDegrees().to<double>() > 1.0 && m_prevState == m_targetState)
+        {
+            m_targetState = ARM_STATE::HOLD_POSITION_ROTATE;
+        }
     }
 }
 
