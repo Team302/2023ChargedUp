@@ -62,7 +62,6 @@ GrabberStateMgr *GrabberStateMgr::GetInstance()
 
 /// @brief    initialize the state manager, parse the configuration file and create the states.
 GrabberStateMgr::GrabberStateMgr() : StateMgr(),
-                                     IRobotStateChangeSubscriber(),
                                      m_grabber(MechanismFactory::GetMechanismFactory()->GetGrabber())
                                      //========= Hand modified code start section 1 ========
                                      ,
@@ -130,6 +129,10 @@ void GrabberStateMgr::CheckForSensorTransitions()
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("GrabberStateMgr"), std::string("DigitalInputValue"), m_grabber->IsGamePiecePresent());
         // ignore sensor if we are less than 15 degrees above ground
         if (m_grabber->IsGamePiecePresent() && MechanismFactory::GetMechanismFactory()->GetArm()->GetPositionDegrees().to<double>() > m_floorThreshold)
+        {
+            m_targetState = GRABBER_STATE::GRAB;
+        }
+        if (MechanismFactory::GetMechanismFactory()->GetArm()->GetPositionDegrees().to<double>() < m_floorThreshold)
         {
             m_targetState = GRABBER_STATE::GRAB;
         }

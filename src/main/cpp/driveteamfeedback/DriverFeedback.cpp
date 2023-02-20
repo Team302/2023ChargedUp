@@ -102,7 +102,7 @@ void DriverFeedback::UpdateLEDStates()
         {
             m_LEDStates->ResetVariables();
         }
-        m_LEDStates->SolidColorPattern(LED::BLACK);
+        m_LEDStates->SolidColorPattern(LED::GREEN);
         currentState = DriverFeedbackStates::NONE;
     }
 }
