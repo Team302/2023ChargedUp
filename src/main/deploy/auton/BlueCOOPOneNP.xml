@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE auton SYSTEM "auton.dtd">
+<auton>
+<primitive id="RESET_POSITION"
+	   pathname="ArmTest.wpilib.json"/>
+    <!--score preloaded cube -->
+    <primitive id="DO_NOTHING"
+               time="1.5"
+               />
+    <primitive id="DO_NOTHING"
+               time="0.5"
+               />
+    <!--auto balance-->
+    <primitive id="DO_NOTHING"
+               time="10.0"
+               />
+</auton>
