@@ -123,13 +123,6 @@ void ExtenderStateMgr::CheckForStateTransition()
     {
         if (m_targetState != m_currentState || m_targetState == EXTENDER_STATE::MANUAL_EXTEND_RETRACT)
         {
-            auto armAngle = MechanismFactory::GetMechanismFactory()->GetArm()->GetPositionDegrees().to<double>();
-            auto armTarget = MechanismFactory::GetMechanismFactory()->GetArm()->GetTarget();
-            if ((armAngle < m_armAngleTolerance || abs(armAngle - armTarget) > m_armAngleTolerance) && m_targetState != EXTENDER_STATE::MANUAL_EXTEND_RETRACT)
-            {
-                m_targetState = EXTENDER_STATE::STARTING_POSITION_EXTEND;
-            }
-
             SetCurrentState(m_targetState, true);
             RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmExtenderState, m_targetState);
         }
@@ -156,8 +149,6 @@ void ExtenderStateMgr::CheckForGamepadTransitions()
 
                 m_prevState = m_targetState;
             }
-            // else if (!m_goToStartingConfig)
-            //{
             else if (controller->IsButtonPressed(TeleopControlFunctions::STARTING_POSITION))
             {
                 m_targetState = EXTENDER_STATE::STARTING_POSITION_EXTEND;
@@ -178,10 +169,8 @@ void ExtenderStateMgr::CheckForGamepadTransitions()
             {
                 CheckForCubeGamepadTransitions(controller);
             }
-            //}
-            else
+            else if (m_targetState != EXTENDER_STATE::STARTING_POSITION_EXTEND)
             {
-                // m_targetState = EXTENDER_STATE::STARTING_POSITION_EXTEND;
                 m_targetState = EXTENDER_STATE::HOLD_POSITION_EXTEND;
             }
         }
@@ -243,6 +232,13 @@ void ExtenderStateMgr::CheckForSensorTransitions()
         // If we are hitting limit switches, reset position
         m_extender->ResetIfFullyExtended(m_extendedPosition);
         m_extender->ResetIfFullyRetracted();
+
+        auto armAngle = MechanismFactory::GetMechanismFactory()->GetArm()->GetPositionDegrees().to<double>();
+        auto armTarget = MechanismFactory::GetMechanismFactory()->GetArm()->GetTarget();
+        if ((armAngle < m_armFloorTolerance || abs(armAngle - armTarget) > m_armAngleTolerance) && m_targetState != EXTENDER_STATE::MANUAL_EXTEND_RETRACT)
+        {
+            m_targetState = EXTENDER_STATE::STARTING_POSITION_EXTEND;
+        }
     }
 }
 
