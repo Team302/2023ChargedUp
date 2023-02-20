@@ -53,10 +53,29 @@ frc::Trajectory DragonTrajectoryGenerator::GenerateTrajectory(frc::Pose2d curren
     WAYPOINTS endWaypoint;
 
     // check if we are going to grids
-    if (endPoint != TARGET_POSITION::HUMAN_PLAYER_SUBSTATION)
+    if (endPoint == TARGET_POSITION::COLUMN_ONE || endPoint == TARGET_POSITION::COLUMN_TWO || endPoint == TARGET_POSITION::COLUMN_THREE)
     {
-        auto waypointInfo = GetWayPointInfo(currentPose, m_fmsData->GetAllianceColor());
-        if (waypointInfo.distToWallGrid < waypointInfo.distToCoopGrid && waypointInfo.distToWallGrid < waypointInfo.distToHPGrid) // going to wall grid
+        double distToWallGrid = 0.0;
+        double distToCoopGrid = 0.0;
+        double distToHPGrid = 0.0;
+        bool outsideCommunity = false;
+
+        if (m_fmsData->GetAllianceColor() == frc::DriverStation::Alliance::kBlue)
+        {
+            distToWallGrid = DistanceBetweenPoses::GetDeltaBetweenPoses(currentPose, m_blueWaypoints[WAYPOINTS::GRID_WALL_COL_TWO]);
+            distToCoopGrid = DistanceBetweenPoses::GetDeltaBetweenPoses(currentPose, m_blueWaypoints[WAYPOINTS::GRID_COOP_COL_TWO]);
+            distToHPGrid = DistanceBetweenPoses::GetDeltaBetweenPoses(currentPose, m_blueWaypoints[WAYPOINTS::GRID_HP_COL_TWO]);
+            outsideCommunity = currentPose.X() > m_blueWaypoints[WAYPOINTS::GRID_WALL_INTERMEDIATE].X() ? true : false;
+        }
+        else if (m_fmsData->GetAllianceColor() == frc::DriverStation::Alliance::kRed)
+        {
+            distToWallGrid = DistanceBetweenPoses::GetDeltaBetweenPoses(currentPose, m_redWaypoints[WAYPOINTS::GRID_WALL_COL_TWO]);
+            distToCoopGrid = DistanceBetweenPoses::GetDeltaBetweenPoses(currentPose, m_redWaypoints[WAYPOINTS::GRID_COOP_COL_TWO]);
+            distToHPGrid = DistanceBetweenPoses::GetDeltaBetweenPoses(currentPose, m_redWaypoints[WAYPOINTS::GRID_HP_COL_TWO]);
+            outsideCommunity = currentPose.X() < m_redWaypoints[WAYPOINTS::GRID_WALL_INTERMEDIATE].X() ? true : false;
+        }
+
+        if (distToWallGrid < distToCoopGrid && distToWallGrid < distToHPGrid) // going to wall grid
         {
             switch (endPoint)
             {
@@ -74,13 +93,13 @@ frc::Trajectory DragonTrajectoryGenerator::GenerateTrajectory(frc::Pose2d curren
                 break;
             }
 
-            if (waypointInfo.outsideCommunity)
+            if (outsideCommunity)
             {
                 intermediatePoints.emplace_back(frc::Translation2d{m_blueWaypoints[WAYPOINTS::GRID_WALL_INTERMEDIATE].X(),
                                                                    m_blueWaypoints[WAYPOINTS::GRID_WALL_INTERMEDIATE].Y()});
             }
         }
-        else if (waypointInfo.distToCoopGrid < waypointInfo.distToWallGrid && waypointInfo.distToCoopGrid < waypointInfo.distToHPGrid)
+        else if (distToCoopGrid < distToWallGrid && distToCoopGrid < distToHPGrid)
         {
             switch (endPoint)
             {
@@ -98,7 +117,7 @@ frc::Trajectory DragonTrajectoryGenerator::GenerateTrajectory(frc::Pose2d curren
                 break;
             }
 
-            if (waypointInfo.outsideCommunity)
+            if (outsideCommunity)
             {
                 intermediatePoints.emplace_back(frc::Translation2d{m_blueWaypoints[WAYPOINTS::GRID_COOP_INTERMEDIATE].X(),
                                                                    m_blueWaypoints[WAYPOINTS::GRID_COOP_INTERMEDIATE].Y()});
@@ -122,15 +141,20 @@ frc::Trajectory DragonTrajectoryGenerator::GenerateTrajectory(frc::Pose2d curren
                 break;
             }
 
-            if (waypointInfo.outsideCommunity)
+            if (outsideCommunity)
             {
                 intermediatePoints.emplace_back(frc::Translation2d{m_blueWaypoints[WAYPOINTS::GRID_HP_INTERMEDIATE].X(),
                                                                    m_blueWaypoints[WAYPOINTS::GRID_HP_INTERMEDIATE].Y()});
             }
         }
     }
-    else // we are going to human player substation
+    else if (endPoint == TARGET_POSITION::HUMAN_PLAYER_SUBSTATION)
     {
+    }
+    else if (endPoint == TARGET_POSITION::CHARGE_PAD)
+    {
+        auto waypointInfo = GetWayPointInfo(currentPose);
+        if ()
     }
 
     double distanceToFinalPoint = 0.0;
@@ -161,22 +185,15 @@ frc::Trajectory DragonTrajectoryGenerator::GenerateTrajectory(frc::Pose2d curren
     }
 }
 
-trajectoryWaypointInfo DragonTrajectoryGenerator::GetWayPointInfo(Pose2d currentPose, DriverStation::Alliance alliance) const
+bool DragonTrajectoryGenerator::IsOutsideCommunity(Pose2d currentPose)
 {
-    trajectoryWaypointInfo waypointInfo;
     if (m_fmsData->GetAllianceColor() == DriverStation::Alliance::kBlue)
     {
-        waypointInfo.distToWallGrid = DistanceBetweenPoses::GetDeltaBetweenPoses(currentPose, m_blueWaypoints[WAYPOINTS::GRID_WALL_COL_TWO]);
-        waypointInfo.distToCoopGrid = DistanceBetweenPoses::GetDeltaBetweenPoses(currentPose, m_blueWaypoints[WAYPOINTS::GRID_COOP_COL_TWO]);
-        waypointInfo.distToHPGrid = DistanceBetweenPoses::GetDeltaBetweenPoses(currentPose, m_blueWaypoints[WAYPOINTS::GRID_HP_COL_TWO]);
-        waypointInfo.outsideCommunity = currentPose.X() > m_blueWaypoints[WAYPOINTS::GRID_WALL_INTERMEDIATE].X() ? true : false;
+        return currentPose.X() > m_blueWaypoints[WAYPOINTS::GRID_WALL_INTERMEDIATE].X() ? true : false;
     }
     else if (m_fmsData->GetAllianceColor() == DriverStation::Alliance::kRed)
     {
-        waypointInfo.distToWallGrid = DistanceBetweenPoses::GetDeltaBetweenPoses(currentPose, m_redWaypoints[WAYPOINTS::GRID_WALL_COL_TWO]);
-        waypointInfo.distToCoopGrid = DistanceBetweenPoses::GetDeltaBetweenPoses(currentPose, m_redWaypoints[WAYPOINTS::GRID_COOP_COL_TWO]);
-        waypointInfo.distToHPGrid = DistanceBetweenPoses::GetDeltaBetweenPoses(currentPose, m_redWaypoints[WAYPOINTS::GRID_HP_COL_TWO]);
-        waypointInfo.outsideCommunity = currentPose.X() < m_redWaypoints[WAYPOINTS::GRID_WALL_INTERMEDIATE].X() ? true : false;
+        return currentPose.X() < m_redWaypoints[WAYPOINTS::GRID_WALL_INTERMEDIATE].X() ? true : false;
     }
-    return waypointInfo;
+    return false;
 }
