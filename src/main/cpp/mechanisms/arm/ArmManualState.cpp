@@ -16,6 +16,7 @@
 // Team 302 Includes
 #include <mechanisms/arm/ArmManualState.h>
 #include <mechanisms/arm/ArmState.h>
+#include <mechanisms/arm/ArmHoldPosHelper.h>
 #include <mechanisms/controllers/ControlData.h>
 #include <teleopcontrol/TeleopControl.h>
 #include <mechanisms/MechanismFactory.h>
@@ -27,6 +28,7 @@ ArmManualState::ArmManualState(std::string stateName,
                                int stateId,
                                ControlData *control0,
                                double target0) : ArmState(stateName, stateId, control0, target0),
+                                                 IRobotStateChangeSubscriber(),
                                                  m_arm(MechanismFactory::GetMechanismFactory()->GetArm()),
                                                  m_controller(TeleopControl::GetInstance())
 {
@@ -47,10 +49,12 @@ void ArmManualState::Run()
                                            // update target in xml
         }
 
-        /// DEBUGGING
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("ManualArmState"), std::string("Rotate Percent"), percent);
+        auto target = percent + ArmHoldPosHelper::CalculateHoldPositionTarget(m_arm->GetPositionDegrees().to<double>(),
+                                                                              MechanismFactory::GetMechanismFactory()->GetExtender()->GetPositionInches().to<double>(),
+                                                                              m_gamepieceMode,
+                                                                              m_grabberState);
 
-        m_arm->UpdateTarget(percent);
+        m_arm->UpdateTarget(target);
         m_arm->Update();
     }
 }
@@ -58,4 +62,16 @@ void ArmManualState::Run()
 bool ArmManualState::AtTarget() const
 {
     return true;
+}
+
+void ArmManualState::Update(RobotStateChanges::StateChange change, int state)
+{
+    if (change == RobotStateChanges::DesiredGamePiece)
+    {
+        m_gamepieceMode = static_cast<RobotStateChanges::GamePiece>(state);
+    }
+    else if (change == RobotStateChanges::GrabberState)
+    {
+        m_grabberState = static_cast<GrabberStateMgr::GRABBER_STATE>(state);
+    }
 }

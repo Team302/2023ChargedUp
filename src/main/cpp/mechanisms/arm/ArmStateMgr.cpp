@@ -37,6 +37,7 @@
 #include <robotstate/RobotState.h>
 #include <robotstate/RobotStateChanges.h>
 #include <utils/logging/Logger.h>
+#include <mechanisms/arm/ArmHoldPosHelper.h>
 
 // Third Party Includes
 
@@ -122,31 +123,15 @@ void ArmStateMgr::CheckForStateTransition()
     if (m_targetState != m_currentState)
     {
         SetCurrentState(m_targetState, true);
+        m_prevState = m_targetState;
         RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmRotateState, m_targetState);
 
         if (m_targetState == ARM_STATE::HOLD_POSITION_ROTATE)
         {
             double armAngle = m_arm->GetPositionDegrees().to<double>();
             double extenderPos = MechanismFactory::GetMechanismFactory()->GetExtender()->GetPositionInches().to<double>();
-            // holding currently based on just "F term" Created surface map function based on arm and extender position
-            if (m_arm->GetPositionDegrees().to<double>() > m_fTermAngleThreshold)
-            {
-                if (extenderPos > m_fullExtensionExtenderPos && armAngle > m_fullExtensionArmAngle)
-                {
-                    // specific f term for outlier position
-                    m_arm->UpdateTarget(0.115);
-                }
-                else if (m_gamepieceMode == RobotStateChanges::GamePiece::Cube || m_grabberState == GrabberStateMgr::GRABBER_STATE::OPEN)
-                {
-                    // f term function for cube
-                    m_arm->UpdateTarget(m_cubeOffset + m_cubeArmComponent * armAngle + m_cubeExtenderComponent * extenderPos + m_cubeArmSquaredComponent * pow(armAngle, 2) + m_cubeExtenderSquaredComponent * pow(extenderPos, 2));
-                }
-                else if (m_gamepieceMode == RobotStateChanges::GamePiece::Cone && m_grabberState == GrabberStateMgr::GRABBER_STATE::GRAB)
-                {
-                    // f term function for cone
-                    m_arm->UpdateTarget(m_coneOffset + m_coneArmComponent * armAngle + m_coneExtenderComponent * extenderPos + m_coneArmSquaredComponent * pow(armAngle, 2) + m_coneExtenderSquaredComponent * pow(extenderPos, 2));
-                }
-            }
+
+            m_arm->UpdateTarget(ArmHoldPosHelper::CalculateHoldPositionTarget(armAngle, extenderPos, m_gamepieceMode, m_grabberState));
         }
     }
     //========= Hand modified code end section 3 ========
@@ -172,7 +157,6 @@ void ArmStateMgr::CheckForGamepadTransitions()
             if (abs(controller->GetAxisValue(TeleopControlFunctions::MANUAL_ROTATE)) > 0.05)
             {
                 m_targetState = ARM_STATE::MANUAL_ROTATE;
-                m_prevState = m_targetState;
             }
             else if (m_gamepieceMode == RobotStateChanges::Cone)
             {
@@ -181,16 +165,6 @@ void ArmStateMgr::CheckForGamepadTransitions()
             else if (m_gamepieceMode == RobotStateChanges::Cube)
             {
                 CheckForCubeGamepadTransitions(controller);
-            }
-
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Target"), m_arm->GetTarget());
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Target State"), m_targetState);
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Previous State"), m_prevState);
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Position (Degrees)"), m_arm->GetPositionDegrees().to<double>());
-            // If arm is at target and the prev state hasn't changed then stay in hold
-            if (abs(m_arm->GetPositionDegrees().to<double>() - m_arm->GetTarget()) < 1.0 && m_arm->GetPositionDegrees().to<double>() > 1.0 && m_prevState == m_targetState)
-            {
-                m_targetState = ARM_STATE::HOLD_POSITION_ROTATE;
             }
         }
     }
@@ -203,7 +177,6 @@ void ArmStateMgr::CheckForConeGamepadTransitions(TeleopControl *controller)
         if (controller->IsButtonPressed(TeleopControlFunctions::BACKROW))
         {
             m_targetState = ARM_STATE::CONE_BACKROW_ROTATE;
-            m_prevState = m_targetState;
         }
         else if (controller->IsButtonPressed(TeleopControlFunctions::MIDROW))
         {
@@ -215,18 +188,14 @@ void ArmStateMgr::CheckForConeGamepadTransitions(TeleopControl *controller)
             {
                 m_targetState = ARM_STATE::CONE_MIDROW_ROTATE_UP;
             }
-
-            m_prevState = m_targetState;
         }
         else if (controller->IsButtonPressed(TeleopControlFunctions::FLOOR_POSITION))
         {
             m_targetState = ARM_STATE::FLOOR_POSITION_ROTATE;
-            m_prevState = m_targetState;
         }
         else if (controller->IsButtonPressed(TeleopControlFunctions::HUMAN_PLAYER_STATION))
         {
             m_targetState = ARM_STATE::HUMAN_PLAYER_STATION_ROTATE;
-            m_prevState = m_targetState;
         }
         else
         {
@@ -242,7 +211,6 @@ void ArmStateMgr::CheckForCubeGamepadTransitions(TeleopControl *controller)
         if (controller->IsButtonPressed(TeleopControlFunctions::BACKROW))
         {
             m_targetState = ARM_STATE::CUBE_BACKROW_ROTATE;
-            m_prevState = m_targetState;
         }
         else if (controller->IsButtonPressed(TeleopControlFunctions::MIDROW))
         {
@@ -254,18 +222,14 @@ void ArmStateMgr::CheckForCubeGamepadTransitions(TeleopControl *controller)
             {
                 m_targetState = ARM_STATE::CUBE_MIDROW_ROTATE_UP;
             }
-
-            m_prevState = m_targetState;
         }
         else if (controller->IsButtonPressed(TeleopControlFunctions::FLOOR_POSITION))
         {
             m_targetState = ARM_STATE::FLOOR_POSITION_ROTATE;
-            m_prevState = m_targetState;
         }
         else if (controller->IsButtonPressed(TeleopControlFunctions::HUMAN_PLAYER_STATION))
         {
             m_targetState = ARM_STATE::HUMAN_PLAYER_STATION_ROTATE;
-            m_prevState = m_targetState;
         }
         else
         {
@@ -285,7 +249,11 @@ void ArmStateMgr::CheckForSensorTransitions()
         // If we are hitting limit switch, reset position
         m_arm->ResetIfArmDown();
 
-        // Check arm angle and run any states dependent on it
+        // If arm is at target and the prev state hasn't changed then stay in hold
+        if (abs(m_arm->GetPositionDegrees().to<double>() - m_arm->GetTarget()) < 5.0 && m_arm->GetPositionDegrees().to<double>() > 1.0 && m_prevState == m_targetState)
+        {
+            m_targetState = ARM_STATE::HOLD_POSITION_ROTATE;
+        }
     }
 }
 
