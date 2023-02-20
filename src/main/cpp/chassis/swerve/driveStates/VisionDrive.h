@@ -34,11 +34,12 @@ public:
     void Init(
         ChassisMovement &chassisMovement) override;
 
-    void UpdateOffsets(frc::Transform2d offset);
+    void UpdateOffsets(units::length::inch_t xOffset, units::length::inch_t yOffset);
 
 private:
     RobotDrive *m_robotDrive;
-    frc::Transform2d m_offsetFromTarget;
+    units::length::inch_t m_xOffset;
+    units::length::inch_t m_yOffset;
 
     const double m_kP = 1.0;
 };

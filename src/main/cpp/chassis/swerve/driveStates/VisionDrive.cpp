@@ -32,12 +32,11 @@ std::array<frc::SwerveModuleState, 4> VisionDrive::UpdateSwerveModuleStates(
     ChassisMovement &chassisMovement)
 {
     // update chassis speeds or create new chassis speeds to move based on horizontal and depth offset given by mr muscats code
-    /// TODO: make sure transform2d is coming in formatted correctly, horizontal offset is vy, depth offset is vx
-    auto xSpeed = m_offsetFromTarget.X() * m_kP;
-    auto ySpeed = m_offsetFromTarget.Y() * m_kP;
+    units::velocity::meters_per_second_t xSpeed = m_xOffset * m_kP / 1_s;
+    units::velocity::meters_per_second_t ySpeed = m_yOffset * m_kP / 1_s;
 
-    chassisMovement.chassisSpeeds.vx = units::velocity::meters_per_second_t(xSpeed);
-    chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(ySpeed);
+    chassisMovement.chassisSpeeds.vx = xSpeed;
+    chassisMovement.chassisSpeeds.vy = ySpeed;
 
     return m_robotDrive->UpdateSwerveModuleStates(chassisMovement);
 }
@@ -47,7 +46,8 @@ void VisionDrive::Init(
 {
 }
 
-void VisionDrive::UpdateOffsets(frc::Transform2d offset)
+void VisionDrive::UpdateOffsets(units::length::inch_t xOffset, units::length::inch_t yOffset)
 {
-    m_offsetFromTarget = offset;
+    m_xOffset = xOffset;
+    m_yOffset = yOffset;
 }
