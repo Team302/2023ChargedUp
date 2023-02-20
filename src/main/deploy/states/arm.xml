@@ -128,7 +128,7 @@
     stateIdentifier="FLOOR_POSITION_ROTATE"
     controlDataIdentifier="RotateToDownwardAngle"
     controlDataIdentifier2=""
-    value="18"
+    value="10"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
