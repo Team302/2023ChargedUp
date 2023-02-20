@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -15,41 +15,13 @@
 //====================================================================================================================================================
 
 #pragma once
-#include <map>
-#include <string>
 
-#include <State.h>
-#include <hw/DragonLimelight.h>
-#include <DragonVision/DragonVisionTarget.h>
+#include <frc/trajectory/Trajectory.h>
 
-using std::map;
+#include <auton/PrimitiveParams.h>
 
-class DragonLimelight;
-class DragonVision
+class DragonTrajectoryUtils
 {
 public:
-    static DragonVision *GetDragonVision();
-
-    enum LIMELIGHT_POSITION
-    {
-        FRONT,
-        BACK
-    };
-
-    bool setPipeline(DragonLimelight::PIPELINE_MODE mode, LIMELIGHT_POSITION position);
-    bool setPipeline(DragonLimelight::PIPELINE_MODE mode);
-    std::shared_ptr<DragonVisionTarget> getTargetInfo(LIMELIGHT_POSITION position) const;
-    std::shared_ptr<DragonVisionTarget> getTargetInfo() const;
-
-    int GetRobotPosition() const;
-
-private:
-    DragonVision();
-    ~DragonVision() = default;
-
-    DragonLimelight *getLimelight(LIMELIGHT_POSITION position) const;
-
-    static DragonVision *m_dragonVision;
-
-    std::map<LIMELIGHT_POSITION, DragonLimelight *> m_DragonLimelightMap;
+    static frc::Trajectory GetTrajectory(PrimitiveParams *params);
 };

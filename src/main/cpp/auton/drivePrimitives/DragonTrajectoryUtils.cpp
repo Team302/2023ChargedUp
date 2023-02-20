@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -14,42 +14,26 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#pragma once
-#include <map>
-#include <string>
+#include <frc/Filesystem.h>
+#include <frc/trajectory/Trajectory.h>
+#include <frc/trajectory/TrajectoryUtil.h>
 
-#include <State.h>
-#include <hw/DragonLimelight.h>
-#include <DragonVision/DragonVisionTarget.h>
+#include <auton/drivePrimitives/DragonTrajectoryUtils.h>
+#include <auton/PrimitiveParams.h>
 
-using std::map;
+using frc::Trajectory;
+using frc::TrajectoryUtil;
 
-class DragonLimelight;
-class DragonVision
+Trajectory DragonTrajectoryUtils::GetTrajectory(PrimitiveParams *params)
 {
-public:
-    static DragonVision *GetDragonVision();
-
-    enum LIMELIGHT_POSITION
+    auto path = params->GetPathName();
+    if (!path.empty()) // only go if path name found
     {
-        FRONT,
-        BACK
-    };
+        // Read path into trajectory for deploy directory.  JSON File ex. Bounce1.wpilib.json
+        auto deployDir = frc::filesystem::GetDeployDirectory();
+        deployDir += "/paths/output/" + path;
 
-    bool setPipeline(DragonLimelight::PIPELINE_MODE mode, LIMELIGHT_POSITION position);
-    bool setPipeline(DragonLimelight::PIPELINE_MODE mode);
-    std::shared_ptr<DragonVisionTarget> getTargetInfo(LIMELIGHT_POSITION position) const;
-    std::shared_ptr<DragonVisionTarget> getTargetInfo() const;
-
-    int GetRobotPosition() const;
-
-private:
-    DragonVision();
-    ~DragonVision() = default;
-
-    DragonLimelight *getLimelight(LIMELIGHT_POSITION position) const;
-
-    static DragonVision *m_dragonVision;
-
-    std::map<LIMELIGHT_POSITION, DragonLimelight *> m_DragonLimelightMap;
-};
+        return TrajectoryUtil::FromPathweaverJson(deployDir); // Creates a trajectory or path that can be used in the code, parsed from pathweaver json
+    }
+    return Trajectory();
+}

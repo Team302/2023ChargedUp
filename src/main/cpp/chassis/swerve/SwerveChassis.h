@@ -88,8 +88,7 @@ public:
     void ZeroAlignSwerveModules();
 
     /// @brief Drive the chassis
-    void Drive(
-        ChassisMovement moveInfo) override;
+    void Drive(ChassisMovement moveInfo) override;
 
     void Drive() override;
 
@@ -114,8 +113,7 @@ public:
 
     /// @brief Reset the current chassis pose based on the provided pose (the rotation comes from the Pigeon)
     /// @param [in] const Pose2d&       pose        Current XY position
-    void ResetPose(
-        const frc::Pose2d &pose) override;
+    void ResetPose(const frc::Pose2d &pose) override;
 
     // static constexpr auto MaxSpeed = 3.0_mps;
     // static constexpr units::angular_velocity::radians_per_second_t MaxAngularSpeed{wpi::numbers::pi};
@@ -146,17 +144,13 @@ public:
 
     void ReZero();
 
-    ISwerveDriveOrientation *GetSpecifiedHeadingState(
-        ChassisOptionEnums::HeadingOption headingOption);
-    ISwerveDriveState *GetSpecifiedDriveState(
-        ChassisOptionEnums::DriveStateType driveOption);
+    ISwerveDriveOrientation *GetSpecifiedHeadingState(ChassisOptionEnums::HeadingOption headingOption);
+    ISwerveDriveState *GetSpecifiedDriveState(ChassisOptionEnums::DriveStateType driveOption);
 
-    ISwerveDriveOrientation *GetHeadingState(
-        ChassisMovement moveInfo);
+    ISwerveDriveOrientation *GetHeadingState(ChassisMovement moveInfo);
 
 private:
-    ISwerveDriveState *GetDriveState(
-        ChassisMovement moveInfo);
+    ISwerveDriveState *GetDriveState(ChassisMovement moveInfo);
 
     frc::ChassisSpeeds GetFieldRelativeSpeeds(
         units::meters_per_second_t xSpeed,
