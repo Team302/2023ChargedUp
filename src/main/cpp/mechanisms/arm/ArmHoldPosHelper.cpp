@@ -30,7 +30,7 @@ double ArmHoldPosHelper::CalculateHoldPositionTarget(double armAngle,
         if (extenderPos > m_fullExtensionExtenderPos && armAngle > m_fullExtensionArmAngle)
         {
             // specific f term for outlier position
-            return 0.115;
+            return m_fullExtensionFTerm;
         }
         else if (gamepieceMode == RobotStateChanges::GamePiece::Cube || grabberState == GrabberStateMgr::GRABBER_STATE::OPEN)
         {

@@ -44,6 +44,8 @@ private:
     static constexpr double m_coneArmSquaredComponent = -0.00000267649;
     static constexpr double m_coneExtenderSquaredComponent = -0.0000138281;
 
+    static constexpr double m_fullExtensionFTerm = 0.115;
+
     static constexpr double m_fTermAngleThreshold = 10.0;
     static constexpr double m_fullExtensionExtenderPos = 21.0;
     static constexpr double m_fullExtensionArmAngle = 40.0;
