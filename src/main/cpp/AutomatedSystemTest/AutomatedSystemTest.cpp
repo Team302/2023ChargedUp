@@ -25,18 +25,29 @@ using namespace std;
 AutomatedSystemTest::AutomatedSystemTest()
 {
     m_PDP = PDPFactory::GetFactory()->GetPDP();
+    m_swerveforwardtimer = 0;
+    m_swervestrafetimer = 0;
+    m_swervetruntimer = 0;
+    m_armtimer = 0;
+    m_extendertimer = 0;
+    m_disableswerveforwardtest = false;
 }
 void AutomatedSystemTest::Init()
 {
     BasePDPValue();
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("startingwattage"), (m_basepdpusage));
+    m_swerveforwardtimer = 0;
+    m_swervestrafetimer = 0;
+    m_swervetruntimer = 0;
+    m_armtimer = 0;
+    m_extendertimer = 0;
+    m_disableswerveforwardtest = false;
 }
 void AutomatedSystemTest::Run()
 {
-    TestArm();
-    TestExtender();
+    // TestArm();
+    // TestExtender();
     TestSwerve();
-    isdone = true;
 }
 void AutomatedSystemTest::BasePDPValue()
 {
@@ -45,12 +56,15 @@ void AutomatedSystemTest::BasePDPValue()
         m_basepdpusage = m_PDP->GetTotalCurrent();
         m_gotbasepdpuseage = true;
     }
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("Automatedsystemtest"), string("pdp"), "cannot accses pdp");
+    else
+    {
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("Automatedsystemtest"), string("pdp"), "cannot accses pdp");
+    }
 }
 
 void AutomatedSystemTest::TestArm()
 {
-    if (m_gotbasepdpuseage = true)
+    if (m_gotbasepdpuseage == true)
     {
         ArmStateMgr::GetInstance()->SetCurrentState(ArmStateMgr::ARM_STATE::STARTING_POSITION_ROTATE, true);
         auto m_armstate = ArmStateMgr::GetInstance()->GetCurrentState();
@@ -72,7 +86,7 @@ void AutomatedSystemTest::TestArm()
 }
 void AutomatedSystemTest::TestExtender()
 {
-    if (m_finishedarmtest = true)
+    if (m_finishedarmtest == true)
     {
         ExtenderStateMgr::GetInstance()->SetCurrentState(ExtenderStateMgr::EXTENDER_STATE::STARTING_POSITION_EXTEND, (true));
         auto m_extenderstate = ExtenderStateMgr::GetInstance()->GetCurrentState();
@@ -93,53 +107,80 @@ void AutomatedSystemTest::TestExtender()
 }
 void AutomatedSystemTest::TestSwerve()
 {
+    m_finishedextendertest = true;
     if (m_finishedextendertest = true)
     {
         auto m_swervechassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
         auto maxspeed = m_swervechassis->GetMaxSpeed();
         auto maxAngSpeed = m_swervechassis->GetMaxAngularSpeed();
         ChassisMovement moveinfo;
-        moveinfo.driveOption = ChassisOptionEnums::DriveStateType::FIELD_DRIVE;
         if (m_swervechassis != nullptr)
         {
             m_swervechassis->ZeroAlignSwerveModules();
+            m_finishedzeroswerve = true;
         }
         else
         {
             Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("Automatedsystemtest"), string("chassis"), "cannot accses swervedrive");
         }
-        moveinfo.chassisSpeeds.vx = 1.0 * maxspeed;
-        m_swerveforwardtimer++;
+        if (m_finishedzeroswerve == true, m_disableswerveforwardtest == false)
+        {
+            moveinfo.chassisSpeeds.vx = 0.5 * maxspeed;
+            m_swervechassis->Drive(moveinfo);
+            m_swerveforwardtimer++;
+            if (m_swerveforwardtimer > 40)
+            {
+                if (m_PDP != nullptr)
+                {
+                    m_swervechassisforwardusage = m_PDP->GetTotalCurrent();
+                    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("swerve forward usage"), (m_swervechassisforwardusage));
+                    moveinfo.chassisSpeeds.vx = 0.0 * maxspeed;
+                    m_swervechassis->Drive(moveinfo);
+                    // m_finishedchassisforwardtest = true;
+                    m_disableswerveforwardtest = true;
+                }
+                else
+                {
+                    Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("Automatedsystemtest"), string("pdp"), "cannot accses pdp");
+                }
+            }
+        }
+        if (m_finishedchassisforwardtest == true)
+        {
+            moveinfo.chassisSpeeds.vy = 1.0 * maxspeed;
+            m_swervechassis->Drive(moveinfo);
+            m_swervestrafetimer++;
+            if (m_swervestrafetimer > 1000)
+            {
+                if (m_PDP != nullptr)
+                {
+                    m_swervechassisstrafeusage = m_PDP->GetTotalCurrent();
+                    moveinfo.chassisSpeeds.vy = 0.0 * maxspeed;
+                    m_swervechassis->Drive(moveinfo);
+                }
+                else
+                {
+                    Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("Automatedsystemtest"), string("pdp"), "cannot accses pdp");
+                }
+            }
+        }
 
-        if (m_PDP != nullptr)
+        if (m_finishedchassisstrafetest == true)
         {
-            m_swervechassisforwardusage = m_PDP->GetTotalCurrent();
-            moveinfo.chassisSpeeds.vx = 0.0 * maxspeed;
-        }
-        else
-        {
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("Automatedsystemtest"), string("pdp"), "cannot accses pdp");
-        }
-        moveinfo.chassisSpeeds.vy = 1.0 * maxspeed;
-        if (m_PDP != nullptr)
-        {
-            m_swervechassisstrafeusage = m_PDP->GetTotalCurrent();
-            moveinfo.chassisSpeeds.vy = 0.0 * maxspeed;
-        }
-        else
-        {
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("Automatedsystemtest"), string("pdp"), "cannot accses pdp");
-        }
-        moveinfo.chassisSpeeds.omega = 1.0 * maxAngSpeed;
-
-        if (m_PDP != nullptr)
-        {
-            m_swervechassisturnusage = m_PDP->GetTotalCurrent();
-            moveinfo.chassisSpeeds.omega = 0.0 * maxAngSpeed;
-        }
-        else
-        {
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("Automatedsystemtest"), string("pdp"), "cannot accses pdp");
+            moveinfo.chassisSpeeds.omega = 1.0 * maxAngSpeed;
+            m_swervechassis->Drive(moveinfo);
+            m_swervetruntimer++;
+            if (m_swervetruntimer > 2000)
+                if (m_PDP != nullptr)
+                {
+                    m_swervechassisturnusage = m_PDP->GetTotalCurrent();
+                    moveinfo.chassisSpeeds.omega = 0.0 * maxAngSpeed;
+                    m_swervechassis->Drive(moveinfo);
+                }
+                else
+                {
+                    Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("Automatedsystemtest"), string("pdp"), "cannot accses pdp");
+                }
         }
     }
 }

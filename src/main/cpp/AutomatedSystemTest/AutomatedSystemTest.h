@@ -34,12 +34,21 @@ public:
     void Run();
 
 private:
+    int m_armtimer = 0;
+    int m_extendertimer = 0;
+    int m_swervetruntimer = 0;
+    int m_swervestrafetimer = 0;
     int m_swerveforwardtimer = 0;
     bool m_finishedarmtest = false;
     bool m_gotbasepdpuseage = false;
     bool m_finishedextendertest = false;
     bool m_finishedchassistest = false;
-    bool isdone = false;
+    bool m_finishedchassisforwardtest = false;
+    bool m_finishedchassisstrafetest = false;
+    bool m_finishedchassisturntest = false;
+    bool m_finishedalltest = false;
+    bool m_finishedzeroswerve = false;
+    bool m_disableswerveforwardtest = false;
     double m_basepdpusage;
     double m_armusage;
     double m_extenderusage;
