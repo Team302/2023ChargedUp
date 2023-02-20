@@ -27,6 +27,8 @@
 #include <utils/HardwareIDValidation.h>
 #include <utils/logging/Logger.h>
 #include <hw/xml/PCMXmlParser.h>
+#include <frc/PneumaticsModuleType.h>
+#include <frc/Compressor.h>
 
 // Third Party Includes
 #include <pugixml/pugixml.hpp>
@@ -34,19 +36,24 @@
 using namespace frc;
 using namespace pugi;
 using namespace std;
+using frc::Compressor;
 
 /// @brief      Parse a pcm XML element and create a PowerDistributionPanel* from its definition.
 /// @param [in] xml_node PCMNode the <PCM element in the xml document
 /// @return     Compressor*   PCM object
 Compressor *PCMXmlParser::ParseXML(
-    xml_node PCMNode /// <I> - PCM node in the XML file
+    pugi::xml_node PCMNode /// <I> - PCM node in the XML file
 )
 {
     // initialize output
     Compressor *pcm = nullptr;
 
     // initialize attributes to default values
-    int canID = 0;
+
+    int canID = 1;
+    double minPressure = 95;
+    double maxPressure = 115;
+    frc::PneumaticsModuleType type = frc::PneumaticsModuleType::REVPH;
 
     bool hasError = false;
 
@@ -57,6 +64,26 @@ Compressor *PCMXmlParser::ParseXML(
         {
             canID = attr.as_int();
             hasError = HardwareIDValidation::ValidateCANID(canID, string("PCMXmlParser::ParseXML"));
+        }
+        else if (strcmp(attr.name(), "minPSI") == 0)
+        {
+            minPressure = attr.as_double();
+        }
+        else if (strcmp(attr.name(), "maxPSI") == 0)
+        {
+            maxPressure = attr.as_double();
+        }
+        else if (strcmp(attr.name(), "type") == 0)
+        {
+            auto val = string(attr.value());
+            if (val.compare("CTRECPM") == 0)
+            {
+                type = frc::PneumaticsModuleType::CTREPCM;
+            }
+            else if (val.compare("REVPH") == 0)
+            {
+                type = frc::PneumaticsModuleType::REVPH;
+            }
         }
         else
         {
@@ -72,7 +99,8 @@ Compressor *PCMXmlParser::ParseXML(
     // If no errors, create the object
     if (!hasError)
     {
-        // todo create objects
+        pcm = new Compressor(canID, type);
+        pcm->EnableAnalog(units::pressure::pounds_per_square_inch_t(minPressure), units::pressure::pounds_per_square_inch_t(maxPressure));
     }
     return pcm;
 }

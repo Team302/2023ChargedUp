@@ -95,7 +95,7 @@ private:
     GRABBER_STATE m_prevState;
 
     bool m_followOtherMechs = false;
-    const double m_floorThreshold = 15.0;
+    const double m_floorThreshold = 4.0;
     //========= Hand modified code end section 5 ========
 
     static GrabberStateMgr *m_instance;
