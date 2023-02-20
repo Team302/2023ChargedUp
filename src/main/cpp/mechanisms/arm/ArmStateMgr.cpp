@@ -61,9 +61,9 @@ ArmStateMgr *ArmStateMgr::GetInstance()
 
 /// @brief    initialize the state manager, parse the configuration file and create the states.
 ArmStateMgr::ArmStateMgr() : StateMgr(),
-                             m_arm(MechanismFactory::GetMechanismFactory()->GetArm())
+                             IRobotStateChangeSubscriber(),
+                             m_arm(MechanismFactory::GetMechanismFactory()->GetArm()),
                              //========= Hand modified code start section 1 ========
-                             ,
                              m_prevState(ARM_STATE::STARTING_POSITION_ROTATE),
                              m_currentState(ARM_STATE::STARTING_POSITION_ROTATE),
                              m_targetState(ARM_STATE::STARTING_POSITION_ROTATE),
@@ -76,11 +76,16 @@ ArmStateMgr::ArmStateMgr() : StateMgr(),
     stateMap["MANUAL_ROTATE"] = m_manual_rotateState;
     stateMap["CUBE_BACKROW_ROTATE"] = m_cube_backrow_rotateState;
     stateMap["CONE_BACKROW_ROTATE"] = m_cone_backrow_rotateState;
-    stateMap["CUBE_MIDROW_ROTATE"] = m_cube_midrow_rotateState;
-    stateMap["CONE_MIDROW_ROTATE"] = m_cone_midrow_rotateState;
+    stateMap["CUBE_MIDROW_ROTATE_UP"] = m_cube_midrow_rotate_upState;
+    stateMap["CUBE_MIDROW_ROTATE_DOWN"] = m_cube_midrow_rotate_downState;
+    stateMap["CONE_MIDROW_ROTATE_UP"] = m_cone_midrow_rotate_upState;
+    stateMap["CONE_MIDROW_ROTATE_DOWN"] = m_cone_midrow_rotate_downState;
     stateMap["HUMAN_PLAYER_STATION_ROTATE"] = m_human_player_station_rotateState;
     stateMap["STARTING_POSITION_ROTATE"] = m_starting_position_rotateState;
     stateMap["FLOOR_POSITION_ROTATE"] = m_floor_position_rotateState;
+
+    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::DesiredGamePiece);
+    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::GrabberState);
 
     Init(m_arm, stateMap);
     if (m_arm != nullptr)
@@ -119,26 +124,34 @@ void ArmStateMgr::CheckForStateTransition()
         SetCurrentState(m_targetState, true);
         RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmRotateState, m_targetState);
 
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Target"), m_arm->GetTarget());
-
         if (m_targetState == ARM_STATE::HOLD_POSITION_ROTATE)
         {
-            // holding currently based on just "F term" need to update to funciton with extender potentially.
-            if (m_arm->GetPositionDegrees().to<double>() > 50.0)
+            double armAngle = m_arm->GetPositionDegrees().to<double>();
+            double extenderPos = MechanismFactory::GetMechanismFactory()->GetExtender()->GetPositionInches().to<double>();
+            // holding currently based on just "F term" Created surface map function based on arm and extender position
+
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Game Piece"), m_gamepieceMode);
+
+            if (m_arm->GetPositionDegrees().to<double>() > m_fTermAngleThreshold)
             {
-                m_arm->UpdateTarget(0.0495);
-            }
-            else if (m_arm->GetPositionDegrees().to<double>() > 27.5)
-            {
-                m_arm->UpdateTarget(0.0485);
-            }
-            else if (m_arm->GetPositionDegrees().to<double>() > 4.5) // Floor arm angle
-            {
-                m_arm->UpdateTarget(0.0425);
+                if (extenderPos > m_fullExtensionExtenderPos && armAngle > m_fullExtensionArmAngle)
+                {
+                    // specific f term for outlier position
+                    m_arm->UpdateTarget(0.115);
+                }
+                else if (m_gamepieceMode == RobotStateChanges::GamePiece::Cube || m_grabberState == GrabberStateMgr::GRABBER_STATE::OPEN)
+                {
+                    // f term function for cube
+                    m_arm->UpdateTarget(m_cubeOffset + m_cubeArmComponent * armAngle + m_cubeExtenderComponent * extenderPos + m_cubeArmSquaredComponent * pow(armAngle, 2) + m_cubeExtenderSquaredComponent * pow(extenderPos, 2));
+                }
+                else if (m_gamepieceMode == RobotStateChanges::GamePiece::Cone && m_grabberState == GrabberStateMgr::GRABBER_STATE::GRAB)
+                {
+                    // f term function for cone
+                    m_arm->UpdateTarget(m_coneOffset + m_coneArmComponent * armAngle + m_coneExtenderComponent * extenderPos + m_coneArmSquaredComponent * pow(armAngle, 2) + m_coneExtenderSquaredComponent * pow(extenderPos, 2));
+                }
             }
         }
     }
-
     //========= Hand modified code end section 3 ========
 }
 
@@ -172,6 +185,11 @@ void ArmStateMgr::CheckForGamepadTransitions()
             {
                 CheckForCubeGamepadTransitions(controller);
             }
+
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Target"), m_arm->GetTarget());
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Target State"), m_targetState);
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Previous State"), m_prevState);
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Position (Degrees)"), m_arm->GetPositionDegrees().to<double>());
             // If arm is at target and the prev state hasn't changed then stay in hold
             if (abs(m_arm->GetPositionDegrees().to<double>() - m_arm->GetTarget()) < 1.0 && m_arm->GetPositionDegrees().to<double>() > 1.0 && m_prevState == m_targetState)
             {
@@ -192,7 +210,15 @@ void ArmStateMgr::CheckForConeGamepadTransitions(TeleopControl *controller)
         }
         else if (controller->IsButtonPressed(TeleopControlFunctions::MIDROW))
         {
-            m_targetState = ARM_STATE::CONE_MIDROW_ROTATE;
+            if (m_arm->GetPositionDegrees().to<double>() > dynamic_cast<ArmState *>(GetSpecifiedState(ARM_STATE::CONE_MIDROW_ROTATE_DOWN))->GetCurrentTarget())
+            {
+                m_targetState = ARM_STATE::CONE_MIDROW_ROTATE_DOWN;
+            }
+            else
+            {
+                m_targetState = ARM_STATE::CONE_MIDROW_ROTATE_UP;
+            }
+
             m_prevState = m_targetState;
         }
         else if (controller->IsButtonPressed(TeleopControlFunctions::FLOOR_POSITION))
@@ -223,7 +249,15 @@ void ArmStateMgr::CheckForCubeGamepadTransitions(TeleopControl *controller)
         }
         else if (controller->IsButtonPressed(TeleopControlFunctions::MIDROW))
         {
-            m_targetState = ARM_STATE::CUBE_MIDROW_ROTATE;
+            if (m_arm->GetPositionDegrees().to<double>() > dynamic_cast<ArmState *>(GetSpecifiedState(ARM_STATE::CUBE_MIDROW_ROTATE_DOWN))->GetCurrentTarget())
+            {
+                m_targetState = ARM_STATE::CUBE_MIDROW_ROTATE_DOWN;
+            }
+            else
+            {
+                m_targetState = ARM_STATE::CUBE_MIDROW_ROTATE_UP;
+            }
+
             m_prevState = m_targetState;
         }
         else if (controller->IsButtonPressed(TeleopControlFunctions::FLOOR_POSITION))
@@ -263,6 +297,10 @@ void ArmStateMgr::Update(RobotStateChanges::StateChange change, int state)
     if (change == RobotStateChanges::DesiredGamePiece)
     {
         m_gamepieceMode = static_cast<RobotStateChanges::GamePiece>(state);
+    }
+    else if (change == RobotStateChanges::GrabberState)
+    {
+        m_grabberState = static_cast<GrabberStateMgr::GRABBER_STATE>(state);
     }
 }
 //========= Hand modified code end section 4 ========

@@ -32,17 +32,17 @@ using namespace std;
 using namespace pugi;
 
 PrimitiveParamsVector PrimitiveParser::ParseXML(
-    string fileName)
+    string fulldirfile)
 {
 
     PrimitiveParamsVector paramVector;
     auto hasError = false;
 
-    auto deployDir = frc::filesystem::GetDeployDirectory();
-    auto autonDir = deployDir + "/auton/";
+    // auto deployDir = frc::filesystem::GetDeployDirectory();
+    // auto autonDir = deployDir + "/auton/";
 
-    string fulldirfile = autonDir;
-    fulldirfile += fileName;
+    // string fulldirfile = autonDir;
+    // fulldirfile += fileName;
     // initialize the xml string to enum maps
     map<string, PRIMITIVE_IDENTIFIER> primStringToEnumMap;
     primStringToEnumMap["DO_NOTHING"] = DO_NOTHING;
@@ -235,7 +235,7 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(
     }
     else
     {
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("PrimitiveParser"), string("ParseXML error parsing file"), fileName);
+        // Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("PrimitiveParser"), string("ParseXML error parsing file"), fileName);
         Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("PrimitiveParser"), string("ParseXML error message"), result.description());
     }
     return paramVector;

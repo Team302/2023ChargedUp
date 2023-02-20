@@ -20,6 +20,9 @@
 #include <teleopcontrol/TeleopControl.h>
 #include <mechanisms/MechanismFactory.h>
 
+/// DEBUGGING
+#include <utils/logging/Logger.h>
+
 ArmManualState::ArmManualState(std::string stateName,
                                int stateId,
                                ControlData *control0,
@@ -40,8 +43,13 @@ void ArmManualState::Run()
         auto percent = m_controller->GetAxisValue(TeleopControlFunctions::MANUAL_ROTATE);
         if (percent < 0.0)
         {
-            percent *= 0.3;
+            percent *= GetCurrentTarget(); // if we want to change downward speed change,
+                                           // update target in xml
         }
+
+        /// DEBUGGING
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("ManualArmState"), std::string("Rotate Percent"), percent);
+
         m_arm->UpdateTarget(percent);
         m_arm->Update();
     }

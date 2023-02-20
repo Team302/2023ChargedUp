@@ -191,6 +191,10 @@ units::angular_velocity::degrees_per_second_t SwerveChassis::CalcHeadingCorrecti
 void SwerveChassis::Drive(
     ChassisMovement moveInfo)
 {
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("swerve"), string("Vx"), moveInfo.chassisSpeeds.vx.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("swerve"), string("Vy"), moveInfo.chassisSpeeds.vy.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("swerve"), string("Omega"), moveInfo.chassisSpeeds.omega.to<double>());
+
     m_currentOrientationState = GetHeadingState(moveInfo);
     if (m_currentOrientationState != nullptr)
     {
@@ -198,6 +202,9 @@ void SwerveChassis::Drive(
     }
 
     m_currentDriveState = GetDriveState(moveInfo);
+
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("swerve"), string("m_currentDriveState "), m_currentDriveState != nullptr ? string("not nullptr ") : string("nullptr"));
+
     if (m_currentDriveState != nullptr)
     {
         auto states = m_currentDriveState->UpdateSwerveModuleStates(moveInfo);
@@ -326,20 +333,15 @@ ChassisSpeeds SwerveChassis::GetChassisSpeeds() const
 /// @brief Reset the current chassis pose based on the provided pose and rotation
 /// @param [in] const Pose2d&       pose        Current XY position
 /// @param [in] const Rotation2d&   angle       Current rotation angle
-void SwerveChassis::ResetPose(
-    const Pose2d &pose,
-    const Rotation2d &angle)
+void SwerveChassis::ResetPose(const Pose2d &pose, const Rotation2d &angle)
 {
     m_poseEstimator.ResetPosition(angle, wpi::array<frc::SwerveModulePosition, 4>{m_frontLeft.get()->GetPosition(), m_frontRight.get()->GetPosition(), m_backLeft.get()->GetPosition(), m_backRight.get()->GetPosition()}, pose);
-
     SetEncodersToZero();
 }
 
-void SwerveChassis::ResetPose(
-    const Pose2d &pose)
+void SwerveChassis::ResetPose(const Pose2d &pose)
 {
     Rotation2d angle = pose.Rotation();
-
     ResetPose(pose, angle);
 }
 
@@ -354,7 +356,6 @@ ChassisSpeeds SwerveChassis::GetFieldRelativeSpeeds(
     auto forward = temp;
 
     ChassisSpeeds output{forward, strafe, rot};
-
     return output;
 }
 

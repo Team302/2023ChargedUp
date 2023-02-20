@@ -118,6 +118,11 @@ void DragonSolenoid::InitSingle(
     int channel,
     bool reversed)
 {
+    frc::Compressor compressor{1, pcmType};
+
+    /// DEBUGGING
+    compressor.EnableAnalog(units::pressure::pounds_per_square_inch_t(105.0), units::pressure::pounds_per_square_inch_t(115.0));
+
     m_networkTableName = networkTableName;
     m_usage = usage;
     m_solenoid = new Solenoid(pcmID, pcmType, channel);
