@@ -16,12 +16,10 @@
 
 #include <driveteamfeedback/LED.h>
 
-LED::LED(int PWMport)
+LED::LED(int PWMport, int ledSize)
 {
-    m_led = new frc::AddressableLED(PWMport);
-    m_led->SetLength(kLength);
-    m_led->SetData(m_ledBuffer);
-    m_led->Start();
+    kLength = ledSize;
+    m_PWMport = PWMport;
 }
 LED *LED::m_instance = nullptr;
 
@@ -29,9 +27,26 @@ LED *LED::GetInstance()
 {
     if (LED::m_instance == nullptr)
     {
-        LED::m_instance = new LED(0);
+        LED::m_instance = new LED(0, 0);
     }
     return LED::m_instance;
+}
+
+bool LED::IsInitialized()
+{
+    return m_led != nullptr;
+}
+void LED::Initialize(int PWMport, int ledSize)
+{
+    kLength = ledSize;
+    m_PWMport = PWMport;
+    m_ledBuffer.resize(ledSize);
+
+    m_led = new frc::AddressableLED(PWMport);
+    m_led->SetLength(kLength);
+    std::span thisspan{m_ledBuffer.data(), m_ledBuffer.size()};
+    m_led->SetData(thisspan);
+    m_led->Start();
 }
 
 std::array<int, 3> LED::getColorValues(Colors c)

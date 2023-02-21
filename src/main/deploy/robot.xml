@@ -54,6 +54,9 @@
     crosshairy=""
     secondcrosshairx=""
     secondcrosshairy="" />
+  <led
+    pwmId = "8"
+    number = "122" />  
   <chassis
     type="SWERVE"
     wheelDiameter="4.0"
@@ -271,6 +274,7 @@
         voltageCompensationEnable="true"
        
        />
+        
       <motor
         usage="SWERVE_TURN"
         canId="17"

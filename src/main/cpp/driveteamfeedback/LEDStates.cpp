@@ -19,7 +19,7 @@
 void LEDStates::BlinkingPattern(LED::Colors c)
 {
 
-    if (timer == 10)
+    if (timer == 5)
     {
         colorLoop += colorLoop < 1 ? 1 : -colorLoop;
         auto color = colorLoop >= 1 ? m_LED->getColorValues(c) : m_LED->getColorValues(m_LED->BLACK);
@@ -27,7 +27,8 @@ void LEDStates::BlinkingPattern(LED::Colors c)
         {
             m_LED->m_ledBuffer[i].SetRGB(color[0], color[1], color[2]);
         }
-        m_LED->m_led->SetData(m_LED->m_ledBuffer);
+        std::span thisspan{m_LED->m_ledBuffer.data(), m_LED->m_ledBuffer.size()};
+        m_LED->m_led->SetData(thisspan);
         timer = 0;
     }
     timer++;
@@ -39,19 +40,25 @@ void LEDStates::SolidColorPattern(LED::Colors c)
     {
         m_LED->m_ledBuffer[i].SetRGB(color[0], color[1], color[2]);
     }
-    m_LED->m_led->SetData(m_LED->m_ledBuffer);
+    std::span thisspan{m_LED->m_ledBuffer.data(), m_LED->m_ledBuffer.size()};
+    m_LED->m_led->SetData(thisspan);
 }
 void LEDStates::ChaserPattern(LED::Colors c)
 {
-    loopThroughIndividualLEDs += loopThroughIndividualLEDs < m_LED->kLength - 1 ? 1 : -loopThroughIndividualLEDs;
+    if (timer > 3)
+    {
+        loopThroughIndividualLEDs += loopThroughIndividualLEDs < m_LED->kLength - 1 ? 1 : -loopThroughIndividualLEDs;
 
-    auto color = colorLoop >= 0 ? m_LED->getColorValues(c) : m_LED->getColorValues(LED::BLACK);
+        auto color = colorLoop >= 0 ? m_LED->getColorValues(c) : m_LED->getColorValues(LED::BLACK);
 
-    colorLoop += colorLoop < m_LED->kLength - 1 ? 1 : -((colorLoop * 2) + 1);
+        colorLoop += colorLoop < m_LED->kLength - 1 ? 1 : -((colorLoop * 2) + 1);
 
-    m_LED->m_ledBuffer[loopThroughIndividualLEDs].SetRGB(color[0], color[1], color[2]);
-    m_LED->m_led->SetData(m_LED->m_ledBuffer);
-    timer = 0;
+        m_LED->m_ledBuffer[loopThroughIndividualLEDs].SetRGB(color[0], color[1], color[2]);
+        std::span thisspan{m_LED->m_ledBuffer.data(), m_LED->m_ledBuffer.size()};
+        m_LED->m_led->SetData(thisspan);
+        timer = 0;
+    }
+    timer++;
 }
 void LEDStates::AlternatingBlinkingPattern(LED::Colors c)
 {
@@ -71,14 +78,15 @@ void LEDStates::AlternatingBlinkingPattern(LED::Colors c)
         {
             m_LED->m_ledBuffer[i * 2].SetRGB(currentColor2[0], currentColor2[1], currentColor2[2]);
         }
-        m_LED->m_led->SetData(m_LED->m_ledBuffer);
+        std::span thisspan{m_LED->m_ledBuffer.data(), m_LED->m_ledBuffer.size()};
+        m_LED->m_led->SetData(thisspan);
         timer = 0;
     }
     timer++;
 }
 void LEDStates::AlternatingBlinkingPattern(LED::Colors c1, LED::Colors c2)
 {
-    if (timer >= 10)
+    if (timer >= 3)
     {
         auto currentColor1 = colorLoop == 0 ? m_LED->getColorValues(c1) : m_LED->getColorValues(c2);
         auto currentColor2 = colorLoop == 1 ? m_LED->getColorValues(c1) : m_LED->getColorValues(c2);
@@ -94,14 +102,15 @@ void LEDStates::AlternatingBlinkingPattern(LED::Colors c1, LED::Colors c2)
         {
             m_LED->m_ledBuffer[i * 2].SetRGB(currentColor2[0], currentColor2[1], currentColor2[2]);
         }
-        m_LED->m_led->SetData(m_LED->m_ledBuffer);
+        std::span thisspan{m_LED->m_ledBuffer.data(), m_LED->m_ledBuffer.size()};
+        m_LED->m_led->SetData(thisspan);
         timer = 0;
     }
     timer++;
 }
 void LEDStates::ClosingInChaserPattern(LED::Colors c)
 {
-    if (timer == 7)
+    if (timer == 2)
     {
         int halfLength = (m_LED->kLength - 1) / 2;
         loopThroughIndividualLEDs += loopThroughIndividualLEDs < halfLength ? 1 : -loopThroughIndividualLEDs;
@@ -110,7 +119,9 @@ void LEDStates::ClosingInChaserPattern(LED::Colors c)
         colorLoop += colorLoop < halfLength ? 1 : -((colorLoop * 2) + 1);
         m_LED->m_ledBuffer[loopThroughIndividualLEDs].SetRGB(color[0], color[1], color[2]);
         m_LED->m_ledBuffer[loopout].SetRGB(color[0], color[1], color[2]);
-        m_LED->m_led->SetData(m_LED->m_ledBuffer);
+
+        std::span thisspan{m_LED->m_ledBuffer.data(), m_LED->m_ledBuffer.size()};
+        m_LED->m_led->SetData(thisspan);
         timer = 0;
     }
     timer++;
@@ -139,5 +150,6 @@ void LEDStates::LEDsOff()
     {
         m_LED->m_ledBuffer[i].SetRGB(0, 0, 0);
     }
-    m_LED->m_led->SetData(m_LED->m_ledBuffer);
+    std::span thisspan{m_LED->m_ledBuffer.data(), m_LED->m_ledBuffer.size()};
+    m_LED->m_led->SetData(thisspan);
 }

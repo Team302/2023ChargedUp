@@ -42,7 +42,7 @@ void DriverFeedback::UpdateLEDStates()
         {
             m_LEDStates->ResetVariables();
         }
-        m_LEDStates->ClosingInChaserPattern(LED::YELLOW);
+        m_LEDStates->AlternatingBlinkingPattern(LED::YELLOW);
         currentState = DriverFeedbackStates::ALIGNED_WITH_CONE_NODE;
     }
     else if (DriverFeedback::m_AlignedWithCubeNode)
@@ -52,7 +52,7 @@ void DriverFeedback::UpdateLEDStates()
         {
             m_LEDStates->ResetVariables();
         }
-        m_LEDStates->ClosingInChaserPattern(LED::PURPLE);
+        m_LEDStates->AlternatingBlinkingPattern(LED::PURPLE);
         currentState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
     }
     else if (DriverFeedback::m_GamePieceInGrabber)
@@ -72,7 +72,7 @@ void DriverFeedback::UpdateLEDStates()
         {
             m_LEDStates->ResetVariables();
         }
-        m_LEDStates->SolidColorPattern(LED::PURPLE);
+        m_LEDStates->BlinkingPattern(LED::PURPLE);
         currentState = DriverFeedbackStates::WANT_CUBE;
     }
     else if (DriverFeedback::m_WantCone)
@@ -82,7 +82,7 @@ void DriverFeedback::UpdateLEDStates()
         {
             m_LEDStates->ResetVariables();
         }
-        m_LEDStates->SolidColorPattern(LED::YELLOW);
+        m_LEDStates->BlinkingPattern(LED::YELLOW);
         currentState = DriverFeedbackStates::WANT_CONE;
     }
     else if (DriverFeedback::m_GamePieceReadyToPickUp)
