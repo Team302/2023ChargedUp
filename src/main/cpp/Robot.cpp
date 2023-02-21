@@ -38,8 +38,6 @@ using namespace std;
 
 void Robot::RobotInit()
 {
-    m_ledstates = LEDStates::GetInstance();
-
     Logger::GetLogger()->PutLoggingSelectionsOnDashboard();
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("RobotInit"), string("arrived"));
 

@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-// Copyright 2022 Lake Orion Robotics FIRST Team 302
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -20,7 +20,7 @@
 // FRC includes
 
 // Team 302 includes
-#include <driveteamfeedback/LED.h>
+#include <hw/DragonLeds.h>
 #include <hw/xml/LedXmlParser.h>
 #include <utils/HardwareIDValidation.h>
 #include <utils/logging/Logger.h>
@@ -38,7 +38,7 @@ using namespace std;
 //
 // Returns:     void
 //-----------------------------------------------------------------------
-LED *LedXmlParser::ParseXML(
+DragonLeds *LedXmlParser::ParseXML(
     pugi::xml_node ledNode)
 {
     // initialize attributes to default values
@@ -72,7 +72,7 @@ LED *LedXmlParser::ParseXML(
     // create the object
     if (!hasError)
     {
-        auto leds = LED::GetInstance();
+        auto leds = DragonLeds::GetInstance();
         if (leds != nullptr && !leds->IsInitialized())
         {
             leds->Initialize(pwmID, numLeds);
