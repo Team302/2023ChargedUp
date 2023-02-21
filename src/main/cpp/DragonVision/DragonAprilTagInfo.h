@@ -14,14 +14,19 @@
 //====================================================================================================================================================
 
 #pragma once
+#include <optional>
 
 #include <frc/apriltag/AprilTagFieldLayout.h>
+#include <frc/geometry/Pose3d.h>
 
-class AprilTagInfo
+class DragonAprilTagInfo
 {
 public:
-    AprilTagInfo();
-    ~AprilTagInfo() = default;
+    DragonAprilTagInfo();
+    ~DragonAprilTagInfo() = default;
+
+    std::optional<frc::Pose3d> Get3DPose(int tagid);
+    std::optional<units::length::inch_t> GetHeight(int tagid);
 
 private:
     frc::AprilTagFieldLayout m_layout;

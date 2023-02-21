@@ -18,7 +18,7 @@
 // Team302 Includes
 #include <chassis/swerve/headingStates/ISwerveDriveOrientation.h>
 #include <chassis/DragonTargetFinder.h>
-#include <hw/DragonLimelight.h>
+#include <DragonVision/DragonLimelight.h>
 
 class FaceGoalHeading : public ISwerveDriveOrientation
 {

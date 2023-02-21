@@ -51,8 +51,8 @@
 #include <chassis/swerve/headingStates/MaintainHeading.h>
 #include <chassis/swerve/headingStates/SpecifiedHeading.h>
 
-#include <hw/DragonLimelight.h>
-#include <hw/factories/LimelightFactory.h>
+#include <DragonVision/DragonLimelight.h>
+#include <DragonVision/LimelightFactory.h>
 #include <utils/AngleUtils.h>
 #include <utils/ConversionUtils.h>
 #include <utils/logging/Logger.h>

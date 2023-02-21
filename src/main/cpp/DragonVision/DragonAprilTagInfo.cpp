@@ -13,13 +13,31 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#include <frc/apriltag/AprilTagFieldLayout.h>
+#include <optional>
 
-#include <DragonVision/AprilTagInfo.h>
+#include <frc/apriltag/AprilTagFieldLayout.h>
+#include <frc/apriltag/AprilTagFields.h>
+
+#include <DragonVision/DragonAprilTagInfo.h>
 
 using frc::AprilTagFieldLayout;
+using frc::Pose3d;
 
-AprilTagInfo::AprilTagInfo() : m_layout()
+DragonAprilTagInfo::DragonAprilTagInfo() : m_layout(frc::LoadAprilTagLayoutField(frc::AprilTagField::k2023ChargedUp))
 {
-    m_layout.
+}
+
+std::optional<Pose3d> DragonAprilTagInfo::Get3DPose(int tagid)
+{
+    return m_layout.GetTagPose(tagid);
+}
+
+std::optional<units::length::inch_t> DragonAprilTagInfo::GetHeight(int tagid)
+{
+    auto pose = Get3DPose(tagid);
+    if (pose.has_value())
+    {
+        return pose->Z();
+    }
+    return {};
 }

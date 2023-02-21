@@ -20,7 +20,7 @@
 // FRC includes
 
 // Team 302 includes
-#include <hw/usages/LimelightUsages.h>
+#include <DragonVision/LimelightUsages.h>
 #include <utils/logging/Logger.h>
 
 // Third Party Includes

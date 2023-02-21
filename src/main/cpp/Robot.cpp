@@ -15,7 +15,7 @@
 #include <chassis/IChassis.h>
 #include <chassis/mecanum/MecanumChassis.h>
 #include <driveteamfeedback/DriverFeedback.h>
-#include <hw/factories/LimelightFactory.h>
+#include <DragonVision/LimelightFactory.h>
 #include <mechanisms/StateMgrHelper.h>
 #include <Robot.h>
 #include <robotstate/RobotState.h>
