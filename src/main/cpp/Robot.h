@@ -18,7 +18,7 @@
 
 #include <frc/TimedRobot.h>
 #include <DragonVision/DragonVision.h>
-#include <driveteamfeedback/LEDStates.h>
+
 class ArcadeDrive;
 class CyclePrimitives;
 class DragonLimelight;
@@ -59,5 +59,4 @@ private:
     DragonField *m_field;
     AutonPreviewer *m_previewer;
     RobotState *m_robotState;
-    LEDStates *m_ledstates;
 };
