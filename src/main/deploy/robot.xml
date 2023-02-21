@@ -323,7 +323,7 @@
       voltageCompensationEnable="true"
       countsPerDegree="455.15" />
     <cancoder
-      canId="5"
+      canId="4"
       canBusName="rio"
       offset="0.0"
       reverse="false" />
@@ -362,6 +362,10 @@
       canId="1"
       channel="0"
       reversed="false" />
+    <digitalInput  
+      usage="GRABBER_SENSOR" 
+      digitalId="9" 
+      reversed="true"/> 
   </mechanism>
   <roborio
     orientation="X_LEFT_Y_UP" />

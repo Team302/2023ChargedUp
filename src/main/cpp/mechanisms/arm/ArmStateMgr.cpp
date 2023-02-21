@@ -123,9 +123,9 @@ void ArmStateMgr::CheckForStateTransition()
 
     /// DEBUGGING
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Target: "), m_arm->GetTarget());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Current Pos: "), m_arm->GetPositionDegrees().to<double>());
 
-    if (m_targetState != m_currentState // && m_targetState != m_prevState
-    )
+    if (m_targetState != m_currentState)
     {
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Setting target state to: "), m_targetState);
         SetCurrentState(m_targetState, true);

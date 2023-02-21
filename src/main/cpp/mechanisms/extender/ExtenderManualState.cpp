@@ -25,7 +25,8 @@ ExtenderManualState::ExtenderManualState(std::string stateName,
                                          ControlData *control0,
                                          double target0) : ExtenderState(stateName, stateId, control0, target0),
                                                            m_extender(MechanismFactory::GetMechanismFactory()->GetExtender()),
-                                                           m_controller(TeleopControl::GetInstance())
+                                                           m_controller(TeleopControl::GetInstance()),
+                                                           m_controlData(control0)
 {
 }
 
@@ -38,6 +39,7 @@ void ExtenderManualState::Run()
     if (m_controller != nullptr && m_extender != nullptr)
     {
         auto percent = 0.5 * m_controller->GetAxisValue(TeleopControlFunctions::MANUAL_EXTEND_RETRACT);
+        m_extender->SetControlConstants(0, m_controlData);
         m_extender->UpdateTarget(percent);
         m_extender->Update();
     }
