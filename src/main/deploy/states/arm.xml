@@ -56,7 +56,7 @@
     stateIdentifier="MANUAL_ROTATE"
     controlDataIdentifier="PercentOutput"
     controlDataIdentifier2=""
-    value="0.3"
+    value="0.4"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
@@ -128,7 +128,7 @@
     stateIdentifier="FLOOR_POSITION_ROTATE"
     controlDataIdentifier="RotateToDownwardAngle"
     controlDataIdentifier2=""
-    value="10"
+    value="11.5"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
