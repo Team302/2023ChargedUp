@@ -15,8 +15,14 @@
 
 #pragma once
 
+#include <frc/apriltag/AprilTagFieldLayout.h>
+
 class AprilTagInfo
 {
+public:
     AprilTagInfo();
     ~AprilTagInfo() = default;
+
+private:
+    frc::AprilTagFieldLayout m_layout;
 };
