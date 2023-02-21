@@ -304,9 +304,9 @@
     controlFile="arm.xml">
     <motor
       usage="ARM"
-      canId="5"
+      canId="4"
       canBusName="rio"
-      pdpID="5"
+      pdpID="4"
       type="FALCON"
       inverted="false"
       sensorInverted="false"
@@ -323,7 +323,7 @@
       voltageCompensationEnable="true"
       countsPerDegree="455.15" />
     <cancoder
-      canId="5"
+      canId="4"
       canBusName="rio"
       offset="0.0"
       reverse="false" />
