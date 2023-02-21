@@ -37,4 +37,5 @@ public:
 private:
     Extender *m_extender;
     TeleopControl *m_controller;
+    ControlData *m_controlData;
 };

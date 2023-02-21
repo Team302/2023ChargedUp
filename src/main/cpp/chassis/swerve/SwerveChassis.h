@@ -44,7 +44,7 @@
 #include <chassis/PoseEstimatorEnum.h>
 #include <chassis/swerve/SwerveModule.h>
 #include <chassis/ChassisMovement.h>
-#include <hw/DragonLimelight.h>
+#include <DragonVision/DragonVision.h>
 #include <hw/DragonPigeon.h>
 #include <hw/factories/PigeonFactory.h>
 
@@ -219,7 +219,7 @@ private:
 
     DragonTargetFinder m_targetFinder;
     units::angle::degree_t m_targetHeading;
-    DragonLimelight *m_limelight;
+    DragonVision *m_vision;
 
     std::string m_networkTableName;
     std::string m_controlFileName;
@@ -230,4 +230,5 @@ private:
     ISwerveDriveOrientation *m_currentOrientationState;
 
     bool m_initialized = false;
+    bool m_hasResetToVisionTarget = false;
 };

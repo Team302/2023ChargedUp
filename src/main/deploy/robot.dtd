@@ -1,5 +1,4 @@
-<!ELEMENT robot (pdp?, pcm*, pigeon*, limelight*, chassis, mechanism*, camera*, roborio*, led*)>
-
+<!ELEMENT robot (pdp?, pcm*, pigeon*, limelight*, chassis, mechanism*, camera*, roborio*, led* )>
 
 <!ELEMENT roborio EMPTY>
 <!ATTLIST roborio

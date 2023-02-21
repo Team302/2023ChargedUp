@@ -20,7 +20,7 @@
 // FRC includes
 
 // Team 302 includes
-#include <driveteamfeedback/LED.h>
+#include <hw/DragonLeds.h>
 #include <hw/xml/LedXmlParser.h>
 #include <utils/HardwareIDValidation.h>
 #include <utils/logging/Logger.h>
@@ -38,7 +38,7 @@ using namespace std;
 //
 // Returns:     void
 //-----------------------------------------------------------------------
-LED *LedXmlParser::ParseXML(
+DragonLeds *LedXmlParser::ParseXML(
     pugi::xml_node ledNode)
 {
     // initialize attributes to default values
@@ -72,7 +72,7 @@ LED *LedXmlParser::ParseXML(
     // create the object
     if (!hasError)
     {
-        auto leds = LED::GetInstance();
+        auto leds = DragonLeds::GetInstance();
         if (leds != nullptr && !leds->IsInitialized())
         {
             leds->Initialize(pwmID, numLeds);

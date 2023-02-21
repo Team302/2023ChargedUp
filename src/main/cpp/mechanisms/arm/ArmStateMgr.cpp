@@ -102,11 +102,9 @@ ArmStateMgr::ArmStateMgr() : StateMgr(),
 /// @brief  Get the current Parameter parm value for the state of this mechanism
 /// @param PrimitiveParams* currentParams current set of primitive parameters
 /// @returns int state id - -1 indicates that there is not a state to set
-int ArmStateMgr::GetCurrentStateParam(
-    PrimitiveParams *currentParams)
+int ArmStateMgr::GetCurrentStateParam(PrimitiveParams *currentParams)
 {
-    // normally get the state from primitive params
-    return StateMgr::GetCurrentStateParam(currentParams);
+    return static_cast<int>(currentParams->GetArmState());
 }
 
 /// @brief Check if driver inputs or sensors trigger a state transition
@@ -123,9 +121,9 @@ void ArmStateMgr::CheckForStateTransition()
 
     /// DEBUGGING
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Target: "), m_arm->GetTarget());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Current Pos: "), m_arm->GetPositionDegrees().to<double>());
 
-    if (m_targetState != m_currentState // && m_targetState != m_prevState
-    )
+    if (m_targetState != m_currentState)
     {
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Setting target state to: "), m_targetState);
         SetCurrentState(m_targetState, true);

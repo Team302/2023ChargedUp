@@ -2,18 +2,24 @@
 <!DOCTYPE auton SYSTEM "auton.dtd">
 <auton>
 <primitive id="RESET_POSITION"
-			   pathname="BlueCOOP1.wpilib.json"/>
-    <!--score preloaded cone-->
+	   pathname="BlueCOOPOne1Slow.wpilib.json"/>
+    <!--score preloaded cube -->
+    <primitive id="DO_NOTHING"
+               time="2.0"
+               />
+    <!--drive over charging station-->
+    <primitive id="DRIVE_PATH"
+               pathname="BlueCOOPOne1Slow.wpilib.json"
+               time="10.0"
+               />
+    <!--turn-->
     <primitive id="DO_NOTHING"
                headingOption="SPECIFIED_ANGLE"
                heading="0"
-               time="2.0"
+               time="1.5"
                />
-        <!--drive to charing station-->
-    <primitive id="DRIVE_PATH"
-               pathname="BlueCOOP5.wpilib.json"
-               headingOption="SPECIFIED_ANGLE"
-               heading="0"
-               time="4.0"
+    <!--auto balance-->
+    <primitive id="DO_NOTHING"
+               time="10.0"
                />
 </auton>

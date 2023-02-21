@@ -57,9 +57,11 @@ public:
         GRAB
     };
 
+    const std::string m_grabberXMLOpenString{"OPEN"};
+    const std::string m_grabberXMLGrabString{"GRAB"};
     const std::map<const std::string, GRABBER_STATE> m_grabberXmlStringToStateEnumMap{
-        {"OPEN", GRABBER_STATE::OPEN},
-        {"GRAB", GRABBER_STATE::GRAB}};
+        {m_grabberXMLOpenString, GRABBER_STATE::OPEN},
+        {m_grabberXMLGrabString, GRABBER_STATE::GRAB}};
 
     /// @brief  Find or create the state manmanager
     static GrabberStateMgr *GetInstance();

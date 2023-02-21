@@ -26,6 +26,10 @@
 #include <units/angle.h>
 #include <units/length.h>
 #include <units/time.h>
+#include <networktables/DoubleArrayTopic.h>
+#include <frc/geometry/Pose3d.h>
+#include <frc/geometry/Rotation3d.h>
+#include <units/length.h>
 
 // Team 302 includes
 #include <hw/DragonLimelight.h>
@@ -99,6 +103,33 @@ DragonLimelight::PIPELINE_MODE DragonLimelight::getPipeline() const
         return (PIPELINE_MODE)(nt->GetNumber("getpipe", PIPELINE_MODE::UNKNOWN));
     }
     return PIPELINE_MODE::UNKNOWN;
+}
+
+frc::Pose2d DragonLimelight::GetRedFieldPosition() const
+{
+    if (m_networktable.get() != nullptr)
+    {
+        auto topic = m_networktable.get()->GetDoubleArrayTopic("botpose_wpired");
+        std::vector<double> position = topic.GetEntry(std::array<double, 6>{}).Get(); // default value is empty array
+
+        frc::Rotation3d rotation = frc::Rotation3d{units::angle::degree_t(position[3]), units::angle::degree_t(position[4]), units::angle::degree_t(position[5])};
+        return frc::Pose3d{units::meter_t(position[0]), units::meter_t(position[1]), units::meter_t(position[2]), rotation}.ToPose2d();
+    }
+}
+
+frc::Pose2d DragonLimelight::GetBlueFieldPosition() const
+{
+    if (m_networktable.get() != nullptr)
+    {
+        auto topic = m_networktable.get()->GetDoubleArrayTopic("botpose_wpiblue");
+        std::vector<double> position = topic.GetEntry(std::array<double, 6>{}).Get(); // default value is empty array
+
+        // For tanay
+        //  topic.Publish().Set(std::array<double,6>{LLforw, });
+
+        frc::Rotation3d rotation = frc::Rotation3d{units::angle::degree_t(position[3]), units::angle::degree_t(position[4]), units::angle::degree_t(position[5])};
+        return frc::Pose3d{units::meter_t(position[0]), units::meter_t(position[1]), units::meter_t(position[2]), rotation}.ToPose2d();
+    }
 }
 
 std::vector<double> DragonLimelight::Get3DSolve() const
@@ -393,7 +424,7 @@ units::length::inch_t DragonLimelight::EstimateTargetXdistance_RelToRobotCoords(
 {
     units::length::inch_t targetXoffset_RF_inch = EstimateTargetXdistance() + m_mountingForwardOffset; ///< the offset is negative if the limelight is behind the center of the robot
 
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("targetYoffset_RF_inch "), targetXoffset_RF_inch.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("targetXoffset_RF_inch "), targetXoffset_RF_inch.to<double>());
 
     return targetXoffset_RF_inch;
 }
