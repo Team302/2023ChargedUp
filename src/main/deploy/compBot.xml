@@ -2,7 +2,8 @@
 <robot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <pdp
     canId="1"
-    type="REV" />
+    type="REV"
+     />
   <pcm
     canId="1"
     type="REV"
@@ -304,9 +305,9 @@
     controlFile="arm.xml">
     <motor
       usage="ARM"
-      canId="4"
+      canId="5"
       canBusName="rio"
-      pdpID="4"
+      pdpID="5"
       type="FALCON"
       inverted="false"
       sensorInverted="false"
@@ -361,7 +362,11 @@
       usage="GrabberSolenoid"
       canId="1"
       channel="0"
-      reversed="false" />
+      reversed="false"/>
+    <digitalInput 
+      usage="GRABBER_SENSOR"
+      digitalId="9"
+      reversed="true"/>
   </mechanism>
   <roborio
     orientation="X_LEFT_Y_UP" />
