@@ -299,30 +299,30 @@ void SwerveChassis::UpdateOdometry()
 
     if (m_vision != nullptr && m_vision->GetRobotPosition().X().to<double>() != 0 && m_vision->GetRobotPosition().Y().to<double>() != 0)
     {
-        frc::Pose2d pose = m_vision->GetRobotPosition();
-        if (m_vision->getTargetInfo() != nullptr)
+        auto targetInfo = m_vision->getTargetInfo();
+        if (targetInfo != nullptr)
         {
-            auto distToTarget = m_vision->getTargetInfo()->getDistanceToTarget().to<double>();
+            auto distToTarget = targetInfo->getDistanceToTarget().to<double>();
+            frc::Pose2d pose = m_vision->GetRobotPosition();
 
             Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("UpdateOdometry"), string("DistToTarget"), distToTarget);
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("UpdateOdometry"), string("HasReset"), m_hasResetToVisionTarget);
 
-            if (distToTarget < 60 && !m_hasResetToVisionTarget)
+            if (distToTarget < 60 && !m_hasResetToVisionTarget && pose.X().to<double>() > 0 && pose.Y().to<double>() > 0) // Need to add low pass filter for all 3 conditions
             {
                 m_poseEstimator.ResetPosition(rot2d, wpi::array<frc::SwerveModulePosition, 4>{m_frontLeft.get()->GetPosition(), m_frontRight.get()->GetPosition(), m_backLeft.get()->GetPosition(), m_backRight.get()->GetPosition()}, pose);
                 m_hasResetToVisionTarget = true;
             }
-            else if (distToTarget < 110)
-            {
-                m_poseEstimator.AddVisionMeasurement(pose, frc::Timer::GetFPGATimestamp());
-            }
             else
             {
-                m_hasResetToVisionTarget = false;
                 m_poseEstimator.Update(rot2d, wpi::array<frc::SwerveModulePosition, 4>{m_frontLeft.get()->GetPosition(),
                                                                                        m_frontRight.get()->GetPosition(),
                                                                                        m_backLeft.get()->GetPosition(),
                                                                                        m_backRight.get()->GetPosition()});
             }
+            /*else if (distToTarget < 90)
+            {
+                m_poseEstimator.AddVisionMeasurement(pose, frc::Timer::GetFPGATimestamp());*/
         }
     }
     else
@@ -331,13 +331,13 @@ void SwerveChassis::UpdateOdometry()
                                                                                m_frontRight.get()->GetPosition(),
                                                                                m_backLeft.get()->GetPosition(),
                                                                                m_backRight.get()->GetPosition()});
+        m_hasResetToVisionTarget = false;
+
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("SwerveOdometry"), std::string("X Position: "), m_poseEstimator.GetEstimatedPosition().X().to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("SwerveOdometry"), std::string("Y Position: "), m_poseEstimator.GetEstimatedPosition().Y().to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("SwerveOdometry"), std::string("Rotation: "), m_poseEstimator.GetEstimatedPosition().Rotation().Degrees().to<double>());
     }
-
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("SwerveOdometry"), std::string("X Position: "), m_poseEstimator.GetEstimatedPosition().X().to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("SwerveOdometry"), std::string("Y Position: "), m_poseEstimator.GetEstimatedPosition().Y().to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("SwerveOdometry"), std::string("Rotation: "), m_poseEstimator.GetEstimatedPosition().Rotation().Degrees().to<double>());
 }
-
 /// @brief set all of the encoders to zero
 void SwerveChassis::SetEncodersToZero()
 {
