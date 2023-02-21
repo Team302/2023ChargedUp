@@ -362,6 +362,10 @@
       canId="1"
       channel="0"
       reversed="false" />
+    <digitalInput  
+      usage="GRABBER_SENSOR" 
+      digitalId="9" 
+      reversed="true"/> 
   </mechanism>
   <roborio
     orientation="X_LEFT_Y_UP" />
