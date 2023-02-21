@@ -1,6 +1,6 @@
 
 //====================================================================================================================================================
-/// Copyright 2022 Lake Orion Robotics FIRST Team 302
+/// Copyright 2023 Lake Orion Robotics FIRST Team 302
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 /// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -17,7 +17,7 @@
 #pragma once
 
 // Team 302 includes
-#include <driveteamfeedback/LED.h>
+#include <hw/DragonLeds.h>
 
 // Third Party Includes
 #include <pugixml/pugixml.hpp>
@@ -30,6 +30,6 @@ public:
 
     /// @brief Parse a servo XML element and create a DragonServo from its definition.
     /// @return std::shared_ptr<DragonServo> servo
-    LED *ParseXML(
+    DragonLeds *ParseXML(
         pugi::xml_node ledNode);
 };
