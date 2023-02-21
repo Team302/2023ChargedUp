@@ -30,7 +30,8 @@ ArmManualState::ArmManualState(std::string stateName,
                                double target0) : ArmState(stateName, stateId, control0, target0),
                                                  IRobotStateChangeSubscriber(),
                                                  m_arm(MechanismFactory::GetMechanismFactory()->GetArm()),
-                                                 m_controller(TeleopControl::GetInstance())
+                                                 m_controller(TeleopControl::GetInstance()),
+                                                 m_controlData(control0)
 {
 }
 
@@ -53,7 +54,7 @@ void ArmManualState::Run()
                                                                               MechanismFactory::GetMechanismFactory()->GetExtender()->GetPositionInches().to<double>(),
                                                                               m_gamepieceMode,
                                                                               m_grabberState);
-
+        m_arm->SetControlConstants(0, m_controlData);
         m_arm->UpdateTarget(target);
         m_arm->Update();
     }

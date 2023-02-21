@@ -153,7 +153,7 @@ void Robot::RobotPeriodic()
     }
     if (m_field != nullptr)
     {
-        // m_field->UpdateRobotPosition(m_chassis->GetPose()); // ToDo:: Move to DriveTeamFeedback (also don't assume m_field isn't a nullptr)
+        m_field->UpdateRobotPosition(m_chassis->GetPose()); // ToDo:: Move to DriveTeamFeedback (also don't assume m_field isn't a nullptr)
     }
 
     m_tuner->ListenForUpdates();
@@ -230,7 +230,7 @@ void Robot::TeleopInit()
     // now in teleop, clear field of trajectories
     if (m_field != nullptr)
     {
-        // m_field->ResetField(); // ToDo:  Move to DriveTeamFeedback
+        m_field->ResetField(); // ToDo:  Move to DriveTeamFeedback
     }
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopInit"), string("end"));*/

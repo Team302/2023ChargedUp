@@ -6,7 +6,7 @@
    <pcm
     canId="1"
     type="REV"
-     minPSI="105.0"
+     minPSI="95.0"
      maxPSI="115.0"
      />
   <pigeon
@@ -24,7 +24,7 @@
     yaw="18.0"
     roll="90"
     pitch="0.0"
-    targetheight="18.0"
+    targetheight="18.25"
     targetheight2="27.25"
     defaultledmode="currentpipeline"
     defaultcammode="vision"
@@ -307,8 +307,8 @@
       canBusName="rio"
       pdpID="5"
       type="FALCON"
-      inverted="true"
-      sensorInverted="true"
+      inverted="false"
+      sensorInverted="false"
       feedbackDevice="INTERNAL"
       countsPerRev="2048"
       gearRatio="84"
