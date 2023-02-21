@@ -79,8 +79,7 @@ void StateMgrHelper::SetMechanismStateFromParam(PrimitiveParams *params)
     }
 }
 
-void StateMgrHelper::SetCheckGamepadInputsForStateTransitions(
-    bool check)
+void StateMgrHelper::SetCheckGamepadInputsForStateTransitions(bool check)
 {
     for (auto i = MechanismTypes::MECHANISM_TYPE::UNKNOWN_MECHANISM + 1; i < MechanismTypes::MECHANISM_TYPE::MAX_MECHANISM_TYPES; ++i)
     {
@@ -93,10 +92,7 @@ void StateMgrHelper::SetCheckGamepadInputsForStateTransitions(
     }
 }
 
-State *StateMgrHelper::CreateState(
-    Mech *mech,
-    StateStruc &stateInfo,
-    MechanismTargetData *targetData)
+State *StateMgrHelper::CreateState(Mech *mech, StateStruc &stateInfo, MechanismTargetData *targetData)
 {
     auto controlData = targetData->GetController();
     // auto controlData2 = targetData->GetController2();

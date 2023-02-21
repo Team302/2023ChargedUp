@@ -31,8 +31,7 @@
 using namespace std;
 using namespace pugi;
 
-PrimitiveParamsVector PrimitiveParser::ParseXML(
-    string fulldirfile)
+PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
 {
 
     PrimitiveParamsVector paramVector;
@@ -146,7 +145,7 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(
                         {
                             pathName = attr.value();
                         }
-                        else if (strcmp(attr.name(), "Arm") == 0)
+                        else if (strcmp(attr.name(), "arm") == 0)
                         {
                             auto armItr = ArmStateMgr::GetInstance()->m_armXmlStringToStateEnumMap.find(attr.value());
                             if (armItr != ArmStateMgr::GetInstance()->m_armXmlStringToStateEnumMap.end())
@@ -159,7 +158,7 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(
                                 hasError = true;
                             }
                         }
-                        else if (strcmp(attr.name(), "Extender") == 0)
+                        else if (strcmp(attr.name(), "extender") == 0)
                         {
                             auto extenderItr = ExtenderStateMgr::GetInstance()->m_extenderXmlStringToStateEnumMap.find(attr.value());
                             if (extenderItr != ExtenderStateMgr::GetInstance()->m_extenderXmlStringToStateEnumMap.end())
@@ -172,7 +171,7 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(
                                 hasError = true;
                             }
                         }
-                        else if (strcmp(attr.name(), "Grabber") == 0)
+                        else if (strcmp(attr.name(), "grabber") == 0)
                         {
                             auto grabberItr = GrabberStateMgr::GetInstance()->m_grabberXmlStringToStateEnumMap.find(attr.value());
                             if (grabberItr != GrabberStateMgr::GetInstance()->m_grabberXmlStringToStateEnumMap.end())
