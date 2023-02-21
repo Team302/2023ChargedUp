@@ -19,7 +19,7 @@
 void LEDStates::BlinkingPattern(LED::Colors c)
 {
 
-    if (timer == 10)
+    if (timer == 5)
     {
         colorLoop += colorLoop < 1 ? 1 : -colorLoop;
         auto color = colorLoop >= 1 ? m_LED->getColorValues(c) : m_LED->getColorValues(m_LED->BLACK);
