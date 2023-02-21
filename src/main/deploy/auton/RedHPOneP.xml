@@ -14,7 +14,7 @@
                />
     <primitive id="DRIVE_PATH"
                pathname="RedHPOne2.wpilib.json"
-               time="4.0"
+               time="3.0"
                />
     <primitive id="DRIVE_PATH"
                pathname="RedHPOne3.wpilib.json"
