@@ -59,10 +59,8 @@ void StateMgrHelper::RunCurrentMechanismStates()
     }
 }
 
-void StateMgrHelper::SetMechanismStateFromParam(
-    PrimitiveParams *params)
+void StateMgrHelper::SetMechanismStateFromParam(PrimitiveParams *params)
 {
-
     if (params != nullptr)
     {
         for (auto i = MechanismTypes::MECHANISM_TYPE::UNKNOWN_MECHANISM + 1; i < MechanismTypes::MECHANISM_TYPE::MAX_MECHANISM_TYPES; ++i)
