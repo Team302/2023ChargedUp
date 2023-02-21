@@ -357,10 +357,15 @@
     networkTable="grabberNT"
     controlFile="grabber.xml">
     <solenoid
-      usage="GrabberSolenoid"
+      usage="GrabberSolenoid1"
       canId="1"
       channel="0"
-      reversed="false"/>
+      reversed="false" />
+    <solenoid
+      usage="GrabberSolenoid2"
+      canId="1"
+      channel="1"
+      reversed="false" />
   </mechanism>
   <roborio
     orientation="X_LEFT_Y_UP" />
