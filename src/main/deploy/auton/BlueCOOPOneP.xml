@@ -10,7 +10,13 @@
     <!--drive over charging station-->
     <primitive id="DRIVE_PATH"
                pathname="BlueCOOPOne1Slow.wpilib.json"
-               time="20.0"
+               time="10.0"
+               />
+    <!--turn-->
+    <primitive id="DO_NOTHING"
+               headingOption="SPECIFIED_ANGLE"
+               heading="0"
+               time="1.5"
                />
     <!--auto balance-->
     <primitive id="DO_NOTHING"
