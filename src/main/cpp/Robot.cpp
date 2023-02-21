@@ -173,14 +173,12 @@ void Robot::RobotPeriodic()
 
     m_tuner->ListenForUpdates();
 
-    // auto feedback = DriverFeedback::GetInstance();
-    // if (feedback != nullptr)
-    // {
-    //     feedback->m_WantCube = true;
-    //     feedback->UpdateFeedback();
-    // }
+    auto feedback = DriverFeedback::GetInstance();
+    if (feedback != nullptr)
+    {
+        feedback->UpdateFeedback();
+    }
 
-    m_ledstates->AlternatingBlinkingPattern(LED::GREEN);
     auto pigeon = PigeonFactory::GetFactory()->GetCenterPigeon();
     if (pigeon == nullptr)
     {

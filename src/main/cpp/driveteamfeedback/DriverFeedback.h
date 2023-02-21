@@ -29,7 +29,12 @@ public:
 
     void Update(RobotStateChanges::StateChange change, int value) override;
 
-    bool m_WantCube = false;
+    void setWantCube(bool wantCube);
+    void setWantCone(bool wantCone);
+    void setGamePieceInGrabber(bool gamePieceInGrabber);
+    void setGamePieceReadyToPickUp(bool gamePieceInGrabber);
+    void setAllignedWithCubeNode(bool allignedWithCubeNode);
+    void setAllignedWithConeNode(bool allignedWithConeNode);
 
 private:
     DriverFeedback();
@@ -56,6 +61,7 @@ private:
     bool m_GamePieceInGrabber = false;
     bool m_AlignedWithConeNode = false;
     bool m_AlignedWithCubeNode = false;
+    bool m_WantCube = false;
 
     static DriverFeedback *m_instance;
 

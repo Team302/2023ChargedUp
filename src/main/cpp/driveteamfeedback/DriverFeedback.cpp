@@ -42,7 +42,7 @@ void DriverFeedback::UpdateLEDStates()
         {
             m_LEDStates->ResetVariables();
         }
-        m_LEDStates->ClosingInChaserPattern(LED::YELLOW);
+        m_LEDStates->BlinkingPattern(LED::YELLOW);
         currentState = DriverFeedbackStates::ALIGNED_WITH_CONE_NODE;
     }
     else if (DriverFeedback::m_AlignedWithCubeNode)
@@ -52,7 +52,7 @@ void DriverFeedback::UpdateLEDStates()
         {
             m_LEDStates->ResetVariables();
         }
-        m_LEDStates->ClosingInChaserPattern(LED::PURPLE);
+        m_LEDStates->BlinkingPattern(LED::PURPLE);
         currentState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
     }
     else if (DriverFeedback::m_GamePieceInGrabber)
@@ -102,7 +102,7 @@ void DriverFeedback::UpdateLEDStates()
         {
             m_LEDStates->ResetVariables();
         }
-        m_LEDStates->SolidColorPattern(LED::BLACK);
+        m_LEDStates->SolidColorPattern(LED::GREEN);
         currentState = DriverFeedbackStates::NONE;
     }
 }
