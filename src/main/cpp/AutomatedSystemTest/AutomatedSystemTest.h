@@ -49,6 +49,8 @@ private:
     bool m_finishedalltest = false;
     bool m_finishedzeroswerve = false;
     bool m_disableswerveforwardtest = false;
+    bool m_disableswervestrafetest = false;
+    bool m_finishedswervestrafetest = false;
     double m_basepdpusage;
     double m_armusage;
     double m_extenderusage;

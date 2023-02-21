@@ -136,7 +136,7 @@ void AutomatedSystemTest::TestSwerve()
                     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("swerve forward usage"), (m_swervechassisforwardusage));
                     moveinfo.chassisSpeeds.vx = 0.0 * maxspeed;
                     m_swervechassis->Drive(moveinfo);
-                    // m_finishedchassisforwardtest = true;
+                    m_finishedchassisforwardtest = true;
                     m_disableswerveforwardtest = true;
                 }
                 else
@@ -145,18 +145,19 @@ void AutomatedSystemTest::TestSwerve()
                 }
             }
         }
-        if (m_finishedchassisforwardtest == true)
+        if (m_finishedchassisforwardtest == true, m_disableswervestrafetest = false)
         {
             moveinfo.chassisSpeeds.vy = 1.0 * maxspeed;
             m_swervechassis->Drive(moveinfo);
             m_swervestrafetimer++;
-            if (m_swervestrafetimer > 1000)
+            if (m_swervestrafetimer > 20)
             {
                 if (m_PDP != nullptr)
                 {
                     m_swervechassisstrafeusage = m_PDP->GetTotalCurrent();
                     moveinfo.chassisSpeeds.vy = 0.0 * maxspeed;
                     m_swervechassis->Drive(moveinfo);
+                    m_disableswervestrafetest = true;
                 }
                 else
                 {
