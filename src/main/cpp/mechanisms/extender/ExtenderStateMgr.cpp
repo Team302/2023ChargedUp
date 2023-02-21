@@ -119,25 +119,14 @@ void ExtenderStateMgr::CheckForStateTransition()
         CheckForGamepadTransitions();
     }
 
-    /// DEBUGGING
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ExtenderMgr"), string("Current State"), m_targetState);
-
     if (m_extender != nullptr)
     {
-        if (m_targetState != m_currentState || m_targetState == EXTENDER_STATE::MANUAL_EXTEND_RETRACT)
+        if ((m_targetState != m_currentState && m_targetState != m_prevState) || m_targetState == EXTENDER_STATE::MANUAL_EXTEND_RETRACT)
         {
-            auto armAngle = MechanismFactory::GetMechanismFactory()->GetArm()->GetPositionDegrees().to<double>();
-            if (armAngle < 10.0)
-            {
-                m_targetState = EXTENDER_STATE::MANUAL_EXTEND_RETRACT;
-            }
-
             SetCurrentState(m_targetState, true);
+            m_prevState = m_targetState;
             RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmExtenderState, m_targetState);
         }
-
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ExtenderMgr"), string("Current Target"), m_extender->GetTarget());
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ExtenderMgr"), string("Current Position (Inches)"), m_extender->GetPositionInches().to<double>());
     }
     //========= Hand modified code end section 3 ========
 }
@@ -161,8 +150,6 @@ void ExtenderStateMgr::CheckForGamepadTransitions()
 
                 m_prevState = m_targetState;
             }
-            // else if (!m_goToStartingConfig)
-            //{
             else if (controller->IsButtonPressed(TeleopControlFunctions::STARTING_POSITION))
             {
                 m_targetState = EXTENDER_STATE::STARTING_POSITION_EXTEND;
@@ -183,62 +170,10 @@ void ExtenderStateMgr::CheckForGamepadTransitions()
             {
                 CheckForCubeGamepadTransitions(controller);
             }
-            else
+            else if (m_targetState != EXTENDER_STATE::STARTING_POSITION_EXTEND)
             {
                 m_targetState = EXTENDER_STATE::HOLD_POSITION_EXTEND;
             }
-            /*}
-            else
-            {
-                m_targetState = EXTENDER_STATE::STARTING_POSITION_EXTEND;
-            }*/
-
-            /// DEBUGGING, all of these functions are needed for testing
-            /*else if (controller->IsButtonPressed(TeleopControlFunctions::CUBE_BACKROW_EXTEND))
-            {
-                m_targetState = EXTENDER_STATE::CUBE_BACKROW_EXTEND;
-                m_prevState = m_targetState;
-            }
-            else if (controller->IsButtonPressed(TeleopControlFunctions::HOLD_POSITION_EXTEND))
-            {
-                m_targetState = EXTENDER_STATE::HOLD_POSITION_EXTEND;
-                m_prevState = m_targetState;
-            }
-            else if (controller->IsButtonPressed(TeleopControlFunctions::CONE_BACKROW_EXTEND))
-            {
-                m_targetState = EXTENDER_STATE::CONE_BACKROW_EXTEND;
-                m_prevState = m_targetState;
-            }
-            else if (controller->IsButtonPressed(TeleopControlFunctions::CUBE_MIDROW_EXTEND))
-            {
-                m_targetState = EXTENDER_STATE::CUBE_MIDROW_EXTEND;
-                m_prevState = m_targetState;
-            }
-            else if (controller->IsButtonPressed(TeleopControlFunctions::CONE_MIDROW_EXTEND))
-            {
-                m_targetState = EXTENDER_STATE::CONE_MIDROW_EXTEND;
-                m_prevState = m_targetState;
-            }
-            else if (controller->IsButtonPressed(TeleopControlFunctions::HUMAN_PLAYER_STATION_EXTEND))
-            {
-                m_targetState = EXTENDER_STATE::HUMAN_PLAYER_STATION_EXTEND;
-                m_prevState = m_targetState;
-            }
-            else if (controller->IsButtonPressed(TeleopControlFunctions::STARTING_POSITION_EXTEND))
-            {
-                m_targetState = EXTENDER_STATE::STARTING_POSITION_EXTEND;
-                m_prevState = m_targetState;
-            }
-            else if (controller->IsButtonPressed(TeleopControlFunctions::FLOOR_EXTEND))
-            {
-                m_targetState = EXTENDER_STATE::FLOOR_EXTEND;
-                m_prevState = m_targetState;
-            }
-            else
-            {
-                m_targetState = EXTENDER_STATE::HOLD_POSITION_EXTEND;
-            }*/
-            /// DEBUGGING, all of these functions are needed for testing
         }
     }
 }
@@ -298,6 +233,18 @@ void ExtenderStateMgr::CheckForSensorTransitions()
         // If we are hitting limit switches, reset position
         m_extender->ResetIfFullyExtended(m_extendedPosition);
         m_extender->ResetIfFullyRetracted();
+
+        auto armAngle = MechanismFactory::GetMechanismFactory()->GetArm()->GetPositionDegrees().to<double>();
+        if (armAngle < 10.0)
+        {
+            m_targetState = EXTENDER_STATE::MANUAL_EXTEND_RETRACT;
+        }
+        
+        auto armTarget = MechanismFactory::GetMechanismFactory()->GetArm()->GetTarget();
+        if ((armAngle < m_armFloorTolerance || abs(armAngle - armTarget) > m_armAngleTolerance) && m_targetState != EXTENDER_STATE::MANUAL_EXTEND_RETRACT)
+        {
+            m_targetState = EXTENDER_STATE::STARTING_POSITION_EXTEND;
+        }
     }
 }
 
@@ -306,9 +253,9 @@ void ExtenderStateMgr::Update(RobotStateChanges::StateChange change, int value)
     if (change == RobotStateChanges::StateChange::ArmRotateState)
     {
         m_armState = static_cast<ArmStateMgr::ARM_STATE>(value);
-        if (m_armState != ArmStateMgr::ARM_STATE::HOLD_POSITION_ROTATE)
+        if (m_armState != ArmStateMgr::ARM_STATE::HOLD_POSITION_ROTATE || m_armState != ArmStateMgr::ARM_STATE::MANUAL_ROTATE)
         {
-            m_goToStartingConfig = true;
+            // m_goToStartingConfig = true;
         }
         else
         {

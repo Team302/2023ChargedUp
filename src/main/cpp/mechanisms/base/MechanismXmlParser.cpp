@@ -151,12 +151,13 @@ void MechanismXmlParser::ParseXML(
                 solenoids[sol.get()->GetType()] = sol;
             }
         }
-        else if (strcmp(child.name(), "canCoder") == 0)
+        else if (strcmp(child.name(), "cancoder") == 0)
         {
             canCoder = cancoderXML.get()->ParseXML(networkTableName, child);
         }
         else
         {
+            hasError = true;
             string msg = "unknown child ";
             msg += child.name();
             Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("MechanismXmlParser"), string("unknown child"), msg);
