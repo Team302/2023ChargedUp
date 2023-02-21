@@ -304,9 +304,9 @@
     controlFile="arm.xml">
     <motor
       usage="ARM"
-      canId="4"
+      canId="5"
       canBusName="rio"
-      pdpID="4"
+      pdpID="5"
       type="FALCON"
       inverted="false"
       sensorInverted="false"
