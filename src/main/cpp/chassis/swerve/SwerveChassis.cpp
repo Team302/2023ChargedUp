@@ -308,21 +308,26 @@ void SwerveChassis::UpdateOdometry()
             Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("UpdateOdometry"), string("DistToTarget"), distToTarget);
             Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("UpdateOdometry"), string("HasReset"), m_hasResetToVisionTarget);
 
-            if (distToTarget < 60 && !m_hasResetToVisionTarget && pose.X().to<double>() > 0 && pose.Y().to<double>() > 0) // Need to add low pass filter for all 3 conditions
+            if (distToTarget > 29.5 && !m_hasResetToVisionTarget && distToTarget < 80 && !m_hasResetToVisionTarget && pose.X().to<double>() > 0 && pose.Y().to<double>() > 0) // Need to add low pass filter for all 3 conditions
             {
                 m_poseEstimator.ResetPosition(rot2d, wpi::array<frc::SwerveModulePosition, 4>{m_frontLeft.get()->GetPosition(), m_frontRight.get()->GetPosition(), m_backLeft.get()->GetPosition(), m_backRight.get()->GetPosition()}, pose);
                 m_hasResetToVisionTarget = true;
             }
-            else
+            else if (distToTarget < 80 && distToTarget < 200)
             {
                 m_poseEstimator.Update(rot2d, wpi::array<frc::SwerveModulePosition, 4>{m_frontLeft.get()->GetPosition(),
                                                                                        m_frontRight.get()->GetPosition(),
                                                                                        m_backLeft.get()->GetPosition(),
                                                                                        m_backRight.get()->GetPosition()});
             }
-            /*else if (distToTarget < 90)
+            else if (distToTarget < 200)
             {
-                m_poseEstimator.AddVisionMeasurement(pose, frc::Timer::GetFPGATimestamp());*/
+                m_poseEstimator.Update(rot2d, wpi::array<frc::SwerveModulePosition, 4>{m_frontLeft.get()->GetPosition(),
+                                                                                       m_frontRight.get()->GetPosition(),
+                                                                                       m_backLeft.get()->GetPosition(),
+                                                                                       m_backRight.get()->GetPosition()});
+                m_hasResetToVisionTarget = false;
+            }
         }
     }
     else
