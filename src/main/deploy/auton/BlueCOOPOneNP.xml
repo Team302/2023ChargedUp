@@ -7,9 +7,39 @@
     <primitive id="RESET_POSITION"
 	            pathname="ArmTest.wpilib.json"/>
     <primitive id="DO_NOTHING"
-               arm="HUMAN_PLAYER_STATION_ROTATE"
-               extender="HUMAN_PLAYER_STATION_EXTEND"
+               arm="CUBE_BACKROW_ROTATE"
+               extender="STARTING_POSITION_EXTEND"
+               grabber="GRAB"
+               time="0.5"
+               />
+    <primitive id="DO_NOTHING"
+               arm="CUBE_BACKROW_ROTATE"
+               extender="CUBE_BACKROW_EXTEND"
+               grabber="GRAB"
+               time="0.5"
+               />
+    <primitive id="DO_NOTHING"
+               arm="CUBE_BACKROW_ROTATE"
+               extender="CUBE_BACKROW_EXTEND"
                grabber="OPEN"
-               time="1.5"
+               time="0.5"
+               />
+    <primitive id="DO_NOTHING"
+               arm="CUBE_BACKROW_ROTATE"
+               extender="STARTING_POSITION_EXTEND"
+               grabber="OPEN"
+               time="0.5"
+               />
+    <primitive id="DO_NOTHING"
+               arm="STARTING_POSITION_ROTATE"
+               extender="STARTING_POSITION_EXTEND"
+               grabber="OPEN"
+               time="0.5"
+               />
+    <primitive id="DO_NOTHING"
+               arm="STARTING_POSITION_ROTATE"
+               extender="STARTING_POSITION_EXTEND"
+               grabber="GRAB"
+               time="0.5"
                />
 </auton>
