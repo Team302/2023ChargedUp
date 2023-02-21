@@ -34,11 +34,7 @@ public:
     void Run();
 
 private:
-    int m_armtimer = 0;
-    int m_extendertimer = 0;
-    int m_swervetruntimer = 0;
-    int m_swervestrafetimer = 0;
-    int m_swerveforwardtimer = 0;
+    int m_timer = 0;
     bool m_finishedarmtest = false;
     bool m_gotbasepdpuseage = false;
     bool m_finishedextendertest = false;
