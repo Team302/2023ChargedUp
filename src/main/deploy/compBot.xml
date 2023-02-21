@@ -22,10 +22,10 @@
     horizontaloffset="-7.689"
     forwardOffset="-7.24"
     yaw="18.0"
-    roll="90"
+    roll="270"
     pitch="0.0"
-    targetheight="18.25"
-    targetheight2="27.25"
+    targetheight=""
+    targetheight2=""
     defaultledmode="currentpipeline"
     defaultcammode="vision"
     streammode="sidebyside"
@@ -33,7 +33,7 @@
     crosshairx=""
     crosshairy=""
     secondcrosshairx=""
-    secondcrosshairy=""/>
+    secondcrosshairy="" />
   <limelight
     usage="SECONDARYLIMELIGHT"
     tablename="limelight-back"
@@ -323,7 +323,7 @@
       voltageCompensationEnable="true"
       countsPerDegree="455.15" />
     <cancoder
-      canId="4"
+      canId="5"
       canBusName="rio"
       offset="0.0"
       reverse="false" />
@@ -361,11 +361,11 @@
       usage="GrabberSolenoid"
       canId="1"
       channel="0"
-      reversed="false" />
-    <digitalInput  
-      usage="GRABBER_SENSOR" 
-      digitalId="9" 
-      reversed="true"/> 
+      reversed="false"/>
+    <digitalInput 
+      usage="GRABBER_SENSOR"
+      digitalId="9"
+      reversed="true"/>
   </mechanism>
   <roborio
     orientation="X_LEFT_Y_UP" />
