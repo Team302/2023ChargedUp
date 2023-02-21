@@ -22,10 +22,10 @@
     horizontaloffset="-7.689"
     forwardOffset="-7.24"
     yaw="18.0"
-    roll="90"
+    roll="270"
     pitch="0.0"
-    targetheight="18.25"
-    targetheight2="27.25"
+    targetheight=""
+    targetheight2=""
     defaultledmode="currentpipeline"
     defaultcammode="vision"
     streammode="sidebyside"
@@ -33,7 +33,7 @@
     crosshairx=""
     crosshairy=""
     secondcrosshairx=""
-    secondcrosshairy=""/>
+    secondcrosshairy="" />
   <limelight
     usage="SECONDARYLIMELIGHT"
     tablename="limelight-back"

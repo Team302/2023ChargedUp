@@ -239,7 +239,7 @@ void ExtenderStateMgr::CheckForSensorTransitions()
         }
 
         auto armTarget = MechanismFactory::GetMechanismFactory()->GetArm()->GetTarget();
-        if ((armAngle < m_armFloorTolerance || abs(armAngle - armTarget) > m_armAngleTolerance) && m_targetState != EXTENDER_STATE::MANUAL_EXTEND_RETRACT)
+        if ((armAngle < m_armAngleTolerance || abs(armAngle - armTarget) > m_armAngleTolerance) && m_targetState != EXTENDER_STATE::MANUAL_EXTEND_RETRACT)
         {
             m_targetState = EXTENDER_STATE::STARTING_POSITION_EXTEND;
         }
