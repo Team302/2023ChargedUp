@@ -2,13 +2,15 @@
 <!DOCTYPE auton SYSTEM "auton.dtd">
 <auton>
 <primitive id="RESET_POSITION"
-	   pathname="RedCOOPOne1.wpilib.json"/>
+	   pathname="RedCOOPOne1Slow.wpilib.json"/>
     <!--score preloaded cube -->
     <primitive id="DO_NOTHING"
-               time="1.5"
+               time="2.0"
                />
-    <primitive id="DO_NOTHING"
-               time="0.5"
+    <!--drive over charging station-->
+    <primitive id="DRIVE_PATH"
+               pathname="RedCOOPOne1Slow.wpilib.json"
+               time="20.0"
                />
     <!--auto balance-->
     <primitive id="DO_NOTHING"
