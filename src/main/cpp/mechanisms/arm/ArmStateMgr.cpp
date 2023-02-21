@@ -102,11 +102,9 @@ ArmStateMgr::ArmStateMgr() : StateMgr(),
 /// @brief  Get the current Parameter parm value for the state of this mechanism
 /// @param PrimitiveParams* currentParams current set of primitive parameters
 /// @returns int state id - -1 indicates that there is not a state to set
-int ArmStateMgr::GetCurrentStateParam(
-    PrimitiveParams *currentParams)
+int ArmStateMgr::GetCurrentStateParam(PrimitiveParams *currentParams)
 {
-    // normally get the state from primitive params
-    return StateMgr::GetCurrentStateParam(currentParams);
+    return static_cast<int>(currentParams->GetArmState());
 }
 
 /// @brief Check if driver inputs or sensors trigger a state transition
