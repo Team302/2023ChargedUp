@@ -1,9 +1,9 @@
 {
   "lengthUnit": "Meter",
   "exportUnit": "Always Meters",
-  "maxVelocity": 2.0,
+  "maxVelocity": 4.0,
   "maxAcceleration": 2.0,
   "trackWidth": 20.75,
   "gameName": "Charged Up",
-  "outputDir": "../src/main/deploy/auton/output/slowPaths/output"
+  "outputDir": "../src/main/deploy/auton/output/Fast Paths"
 }
