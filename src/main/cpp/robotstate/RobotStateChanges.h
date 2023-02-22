@@ -72,8 +72,8 @@ public:
 
     enum DriveAssist
     {
-        Off,
-        On
+        DriveAssistOff,
+        DriveAssistOn
     };
 
     enum GamePeriod
@@ -85,7 +85,7 @@ public:
 
     enum CompressorState
     {
-        On,
-        Off
+        CompressorOff,
+        CompressorOn
     };
 };
