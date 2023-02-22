@@ -385,11 +385,7 @@ void SwerveChassis::ResetPoseToVision()
     auto targetInfo = m_vision->getTargetInfo();
     if (targetInfo != nullptr)
     {
-        auto distToTarget = targetInfo->getDistanceToTarget().to<double>();
         frc::Pose2d pose = m_vision->GetRobotPosition();
-
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("UpdateOdometry"), string("DistToTarget"), distToTarget);
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("UpdateOdometry"), string("HasReset"), m_hasResetToVisionTarget);
 
         if (pose.X().to<double>() > 0 && pose.Y().to<double>() > 0) // Need to add low pass filter for all 3 conditions
         {
@@ -403,6 +399,9 @@ void SwerveChassis::ResetPoseToVision()
         currentPose.Rotation().Degrees() = units::angle::degree_t(0.0);
 
         m_poseEstimator.ResetPosition(rot2d, wpi::array<frc::SwerveModulePosition, 4>{m_frontLeft.get()->GetPosition(), m_frontRight.get()->GetPosition(), m_backLeft.get()->GetPosition(), m_backRight.get()->GetPosition()}, currentPose);
+
+        /// DEBUGGING
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("UpdateOdometry"), string("ResetPoseToVision"), "Tried setting yaw to zero");
     }
 }
 

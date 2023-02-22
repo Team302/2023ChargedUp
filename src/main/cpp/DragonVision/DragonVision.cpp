@@ -71,9 +71,29 @@ std::shared_ptr<DragonVisionTarget> DragonVision::getTargetInfo(LIMELIGHT_POSITI
 
 	if ((dll != nullptr) && (dll->HasTarget()))
 	{
+		// units::length::inch_t distance;
+
+		// In place until we can get the field position of an april tag
+		units::length::inch_t distance = dll->EstimateTargetXdistance();
+
+		/*if (dll->getPipeline() != DragonLimelight::PIPELINE_MODE::APRIL_TAG)
+		{
+			distance = dll->EstimateTargetXdistance();
+		}
+		else
+		{
+
+
+			frc::Translation2d robotTranslation = GetRobotPosition(position).Translation();
+			frc::Translation2d aprilTagTranslation = GetAprilTagPosition(tagId).Translation();
+
+			distance = robotTranslation.Distance(aprilTagTranslation);
+
+		}*/
+
 		std::shared_ptr<DragonVisionTarget> dvt = make_shared<DragonVisionTarget>(
 			dll->getPipeline(),
-			dll->EstimateTargetXdistance(),
+			distance,
 			dll->GetTargetHorizontalOffset(),
 			dll->GetTargetVerticalOffset(),
 			dll->EstimateTargetXdistance_RelToRobotCoords(),
@@ -120,6 +140,32 @@ frc::Pose2d DragonVision::GetRobotPosition() const
 		else if (alliance == frc::DriverStation::Alliance::kRed)
 		{
 			return dllBack->GetRedFieldPosition();
+		}
+		else
+		{
+			return frc::Pose2d{};
+		}
+	}
+	else
+	{
+		return frc::Pose2d{};
+	}
+}
+
+frc::Pose2d DragonVision::GetRobotPosition(LIMELIGHT_POSITION position) const
+{
+	frc::DriverStation::Alliance alliance = FMSData::GetInstance()->GetAllianceColor();
+	DragonLimelight *limelight = getLimelight(position);
+
+	if ((limelight != nullptr) && (limelight->HasTarget()))
+	{
+		if (alliance == frc::DriverStation::Alliance::kBlue)
+		{
+			return limelight->GetBlueFieldPosition();
+		}
+		else if (alliance == frc::DriverStation::Alliance::kRed)
+		{
+			return limelight->GetRedFieldPosition();
 		}
 		else
 		{
