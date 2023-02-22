@@ -23,6 +23,7 @@
 #include <robotstate/RobotStateChangeBroker.h>
 #include <teleopcontrol/TeleopControl.h>
 #include <utils/DragonField.h>
+#include <xml/PCMXmlParser.cpp>
 
 using frc::DriverStation;
 
@@ -78,6 +79,17 @@ void RobotState::Run()
     if (DriverStation::IsTeleopEnabled())
     {
         auto controller = TeleopControl::GetInstance();
+        if (controller != nullptr)
+        {
+            if (controller->IsButtonPressed(TeleopControlFunctions::COMPRESSOR_ON))
+            {
+                if (m_wasReleased)
+                {
+                    pcm
+                }
+            }
+            m_wasReleased = !controller->IsButtonPressed(TeleopControlFunctions::COMPRESSOR_OFF);
+        }
         if (controller != nullptr)
         {
             if (controller->IsButtonPressed(TeleopControlFunctions::CYCLE_GRABBER))

@@ -44,6 +44,7 @@ private:
     std::vector<RobotStateChangeBroker *> m_brokers;
     RobotStateChanges::GamePiece m_gamePiece;
     RobotStateChanges::GamePeriod m_gamePhase;
+    RobotStateChanges::CompressorState m_compressorCurrent;
 
     bool m_wasReleased;
 
