@@ -26,11 +26,13 @@
                arm="CONE_BACKROW_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                grabber="OPEN"
-               time="0.25"
+               time="0.15"
                />
     <!--drive to charing station-->
     <primitive id="DRIVE_PATH"
                pathname="RedHPOne1.wpilib.json"
+                arm="STARTING_POSITION_ROTATE"
+               extender="STARTING_POSITION_EXTEND"
                time="2.0"
                />
     <primitive id="DRIVE_PATH"
