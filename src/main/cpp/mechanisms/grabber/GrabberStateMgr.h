@@ -35,6 +35,7 @@
 
 //========= Hand modified code start section 0 ========
 #include <robotstate/IRobotStateChangeSubscriber.h>
+#include <robotstate/RobotState.h>
 //========= Hand modified code end section 0 ========
 
 // Third Party Includes
@@ -101,6 +102,7 @@ private:
     //========= Hand modified code end section 5 ========
 
     static GrabberStateMgr *m_instance;
+    RobotState *m_RobotState;
 
     const StateStruc m_openState = {GRABBER_STATE::OPEN, "OPEN", StateType::GRABBER_STATE, false};
     const StateStruc m_grabState = {GRABBER_STATE::GRAB, "GRAB", StateType::GRABBER_STATE, true};

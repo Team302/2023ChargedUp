@@ -140,3 +140,8 @@ void RobotState::PublishGameStateChanges()
         PublishStateChange(RobotStateChanges::GameState, gameState);
     }
 }
+
+RobotStateChanges::GamePiece RobotState::getCurrentGamePiece()
+{
+    return m_gamePiece;
+}

@@ -75,6 +75,8 @@ GrabberStateMgr::GrabberStateMgr() : StateMgr(),
     stateMap["OPEN"] = m_openState;
     stateMap["GRAB"] = m_grabState;
 
+    m_RobotState = RobotState::GetInstance();
+
     Init(m_grabber, stateMap);
     if (m_grabber != nullptr)
     {
@@ -130,10 +132,12 @@ void GrabberStateMgr::CheckForSensorTransitions()
         if (m_grabber->IsGamePiecePresent() && MechanismFactory::GetMechanismFactory()->GetArm()->GetPositionDegrees().to<double>() > m_floorThreshold)
         {
             m_targetState = GRABBER_STATE::GRAB;
+            m_RobotState->PublishStateChange(RobotStateChanges::HoldingGamePiece, m_RobotState->getCurrentGamePiece());
         }
         if (MechanismFactory::GetMechanismFactory()->GetArm()->GetPositionDegrees().to<double>() < m_floorThreshold)
         {
             m_targetState = GRABBER_STATE::GRAB;
+            m_RobotState->PublishStateChange(RobotStateChanges::HoldingGamePiece, m_RobotState->getCurrentGamePiece());
         }
     }
     else

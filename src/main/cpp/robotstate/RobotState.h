@@ -33,6 +33,7 @@ public:
     static RobotState *GetInstance();
     void RegisterForStateChanges(IRobotStateChangeSubscriber *subscriber, RobotStateChanges::StateChange change);
     void PublishStateChange(RobotStateChanges::StateChange change, int newValue);
+    RobotStateChanges::GamePiece getCurrentGamePiece();
 
 private:
     void PublishGameStateChanges();

@@ -55,15 +55,25 @@ void DriverFeedback::UpdateLEDStates()
         m_LEDStates->ClosingInChaserPattern(LED::PURPLE);
         currentState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
     }
-    else if (DriverFeedback::m_GamePieceInGrabber)
+    else if (DriverFeedback::m_CubeInGrabber)
     {
 
-        if (currentState != DriverFeedbackStates::GAME_PIECE_IN_GRABBER)
+        if (currentState != DriverFeedbackStates::CUBE_IN_GRABBER)
         {
             m_LEDStates->ResetVariables();
         }
-        m_LEDStates->AlternatingBlinkingPattern(LED::YELLOW, LED::PURPLE);
-        currentState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
+        m_LEDStates->SolidColorPattern(LED::PURPLE);
+        currentState = DriverFeedbackStates::CUBE_IN_GRABBER;
+    }
+    else if (DriverFeedback::m_ConeInGraber)
+    {
+
+        if (currentState != DriverFeedbackStates::CONE_IN_GRABBER)
+        {
+            m_LEDStates->ResetVariables();
+        }
+        m_LEDStates->SolidColorPattern(LED::YELLOW);
+        currentState = DriverFeedbackStates::CONE_IN_GRABBER;
     }
     else if (DriverFeedback::m_WantCube)
     {
@@ -72,7 +82,7 @@ void DriverFeedback::UpdateLEDStates()
         {
             m_LEDStates->ResetVariables();
         }
-        m_LEDStates->SolidColorPattern(LED::PURPLE);
+        m_LEDStates->BlinkingPattern(LED::PURPLE);
         currentState = DriverFeedbackStates::WANT_CUBE;
     }
     else if (DriverFeedback::m_WantCone)
@@ -82,7 +92,7 @@ void DriverFeedback::UpdateLEDStates()
         {
             m_LEDStates->ResetVariables();
         }
-        m_LEDStates->SolidColorPattern(LED::YELLOW);
+        m_LEDStates->BlinkingPattern(LED::YELLOW);
         currentState = DriverFeedbackStates::WANT_CONE;
     }
     else if (DriverFeedback::m_GamePieceReadyToPickUp)
@@ -109,6 +119,7 @@ void DriverFeedback::UpdateLEDStates()
 
 DriverFeedback::DriverFeedback() : IRobotStateChangeSubscriber()
 {
+    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::HoldingGamePiece);
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::DesiredGamePiece);
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::GameState);
 }
@@ -125,5 +136,11 @@ void DriverFeedback::Update(RobotStateChanges::StateChange change, int value)
         auto state = static_cast<RobotStateChanges::GamePeriod>(value);
         m_AutonomousEnabled = state == RobotStateChanges::Auton;
         m_TeleopEnabled = state == RobotStateChanges::Teleop;
+    }
+    else if (change == RobotStateChanges::HoldingGamePiece)
+    {
+        auto state = static_cast<RobotStateChanges::GamePiece>(value);
+        m_CubeInGrabber = state == RobotStateChanges::Cube;
+        m_ConeInGraber = state == RobotStateChanges::Cone;
     }
 }

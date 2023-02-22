@@ -40,7 +40,8 @@ private:
     {
         ALIGNED_WITH_CONE_NODE,
         ALIGNED_WITH_CUBE_NODE,
-        GAME_PIECE_IN_GRABBER,
+        CUBE_IN_GRABBER,
+        CONE_IN_GRABBER,
         WANT_CUBE,
         WANT_CONE,
         GAME_PIECE_READY_TO_PICK_UP,
@@ -51,6 +52,8 @@ private:
     LEDStates *m_LEDStates = LEDStates::GetInstance();
     bool m_WantCube = false;
     bool m_WantCone = false;
+    bool m_CubeInGrabber = false;
+    bool m_ConeInGraber = false;
     bool m_GamePieceReadyToPickUp = false;
     bool m_GamePieceInGrabber = false;
     bool m_AlignedWithConeNode = false;
