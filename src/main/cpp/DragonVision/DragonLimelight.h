@@ -28,6 +28,7 @@
 #include <frc/geometry/Pose2d.h>
 
 // Team 302 includes
+#include <DragonVision/DragonAprilTagInfo.h>
 
 // Third Party Includes
 
@@ -108,6 +109,7 @@ public:
     units::time::microsecond_t GetPipelineLatency() const;
     std::vector<double> Get3DSolve() const;
     PIPELINE_MODE getPipeline() const;
+    int getAprilTagID() const;
 
     frc::Pose2d GetRedFieldPosition() const;
     frc::Pose2d GetBlueFieldPosition() const;
@@ -134,7 +136,7 @@ public:
     units::angle::degree_t GetLimelightYaw() const { return m_yaw; }
     units::angle::degree_t GetLimelightRoll() const { return m_roll; }
     units::length::inch_t GetLimelightMountingHeight() const { return m_mountHeight; }
-    units::length::inch_t GetTargetHeight() const { return m_targetHeight; }
+    std::optional<units::length::inch_t> GetTargetHeight() const;
 
 protected:
     units::angle::degree_t GetTx() const;
@@ -158,4 +160,7 @@ protected:
     units::length::inch_t m_targetHeight2;
 
     double PI = 3.14159265;
+
+private:
+    DragonAprilTagInfo m_aprilTagInfo;
 };

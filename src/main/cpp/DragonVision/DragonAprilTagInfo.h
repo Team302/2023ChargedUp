@@ -25,8 +25,8 @@ public:
     DragonAprilTagInfo();
     ~DragonAprilTagInfo() = default;
 
-    std::optional<frc::Pose3d> Get3DPose(int tagid);
-    std::optional<units::length::inch_t> GetHeight(int tagid);
+    std::optional<frc::Pose3d> Get3DPose(int tagid) const;
+    std::optional<units::length::inch_t> GetHeight(int tagid) const;
 
 private:
     frc::AprilTagFieldLayout m_layout;

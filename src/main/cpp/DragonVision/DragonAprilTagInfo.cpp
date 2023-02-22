@@ -27,12 +27,12 @@ DragonAprilTagInfo::DragonAprilTagInfo() : m_layout(frc::LoadAprilTagLayoutField
 {
 }
 
-std::optional<Pose3d> DragonAprilTagInfo::Get3DPose(int tagid)
+std::optional<Pose3d> DragonAprilTagInfo::Get3DPose(int tagid) const
 {
     return m_layout.GetTagPose(tagid);
 }
 
-std::optional<units::length::inch_t> DragonAprilTagInfo::GetHeight(int tagid)
+std::optional<units::length::inch_t> DragonAprilTagInfo::GetHeight(int tagid) const
 {
     auto pose = Get3DPose(tagid);
     if (pose.has_value())

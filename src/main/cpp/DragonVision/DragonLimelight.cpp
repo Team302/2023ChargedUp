@@ -105,6 +105,19 @@ DragonLimelight::PIPELINE_MODE DragonLimelight::getPipeline() const
     return PIPELINE_MODE::UNKNOWN;
 }
 
+/// @brief Assume that the current pipeline is AprilTag and that a target is detected
+/// @return -1 if the network table cannot be found
+int DragonLimelight::getAprilTagID() const
+{
+    auto nt = m_networktable.get();
+    if (nt != nullptr)
+    {
+        return round(nt->GetNumber("tid", -1));
+    }
+
+    return -1;
+}
+
 frc::Pose2d DragonLimelight::GetRedFieldPosition() const
 {
     if (m_networktable.get() != nullptr)
@@ -354,6 +367,16 @@ void DragonLimelight::PrintValues()
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("PrintValues Latency"), to_string(GetPipelineLatency().to<double>()));
 }
 
+std::optional<units::length::inch_t> DragonLimelight::GetTargetHeight() const
+{
+    if (getPipeline() == PIPELINE_MODE::APRIL_TAG)
+    {
+        return m_aprilTagInfo.GetHeight(getAprilTagID());
+    }
+
+    return {};
+}
+
 units::length::inch_t DragonLimelight::EstimateTargetXdistance() const
 {
     units::angle::degree_t totalAngleFromHorizontal; ///< the vertical angle from a horizontal datum to the target
@@ -387,22 +410,29 @@ units::length::inch_t DragonLimelight::EstimateTargetXdistance() const
     units::angle::radian_t angleRad = totalAngleFromHorizontal; // angle in radians
     double tanOfAngle = tan(angleRad.to<double>());
 
-    auto deltaHeight = GetTargetHeight() - GetLimelightMountingHeight();
-    units::length::inch_t x_distanceToTarget = units::length::inch_t((GetTargetHeight() - GetLimelightMountingHeight()) / tanOfAngle);
+    std::optional<units::length::inch_t> theTargetHeight = GetTargetHeight();
 
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("totalAngleFromHorizontal "), totalAngleFromHorizontal.to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("angleRad "), angleRad.to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("limelightAngleFromHorizontal "), limelightAngleFromHorizontal.to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("Limelight mounting angle "), GetLimelightPitch().to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("target vertical angle "), GetTargetVerticalOffset().to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("deltaHeight "), deltaHeight.to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("tanOfAngle "), tanOfAngle);
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("x_distanceToTarget "), (x_distanceToTarget).to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("targetHeight "), (GetTargetHeight()).to<double>());
+    if (theTargetHeight.has_value())
+    {
+        auto deltaHeight = theTargetHeight.value() - GetLimelightMountingHeight();
+        units::length::inch_t x_distanceToTarget = units::length::inch_t((theTargetHeight.value() - GetLimelightMountingHeight()) / tanOfAngle);
 
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("x_distanceToTarget_LL_inch "), x_distanceToTarget.to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("totalAngleFromHorizontal "), totalAngleFromHorizontal.to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("angleRad "), angleRad.to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("limelightAngleFromHorizontal "), limelightAngleFromHorizontal.to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("Limelight mounting angle "), GetLimelightPitch().to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("target vertical angle "), GetTargetVerticalOffset().to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("deltaHeight "), deltaHeight.to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("tanOfAngle "), tanOfAngle);
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("x_distanceToTarget "), (x_distanceToTarget).to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("targetHeight "), theTargetHeight.value().to<double>());
 
-    return x_distanceToTarget;
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("x_distanceToTarget_LL_inch "), x_distanceToTarget.to<double>());
+
+        return x_distanceToTarget;
+    }
+
+    return units::length::inch_t(0);
 }
 
 units::length::inch_t DragonLimelight::EstimateTargetYdistance() const
