@@ -164,6 +164,7 @@ void ExtenderStateMgr::CheckForGamepadTransitions()
             else if (controller->IsButtonPressed(TeleopControlFunctions::STARTING_POSITION))
             {
                 m_targetState = EXTENDER_STATE::STARTING_POSITION_EXTEND;
+                m_prevState = m_targetState;
             }
             else if (controller->IsButtonPressed(TeleopControlFunctions::HUMAN_PLAYER_STATION))
             {
