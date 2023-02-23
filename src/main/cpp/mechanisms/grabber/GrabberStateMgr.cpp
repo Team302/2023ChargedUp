@@ -134,7 +134,7 @@ void GrabberStateMgr::CheckForSensorTransitions()
             m_targetState = GRABBER_STATE::GRAB;
             m_RobotState->PublishStateChange(RobotStateChanges::HoldingGamePiece, m_RobotState->getCurrentGamePiece());
         }
-        if (MechanismFactory::GetMechanismFactory()->GetArm()->GetPositionDegrees().to<double>() < m_floorThreshold)
+        if (MechanismFactory::GetMechanismFactory()->GetArm()->GetPositionDegrees().to<double>() < m_protectThreshold)
         {
             m_targetState = GRABBER_STATE::GRAB;
             m_RobotState->PublishStateChange(RobotStateChanges::HoldingGamePiece, m_RobotState->getCurrentGamePiece());
