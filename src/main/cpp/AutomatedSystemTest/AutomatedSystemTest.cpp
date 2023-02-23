@@ -170,26 +170,30 @@ void AutomatedSystemTest::TestSwerve()
         }
 
         // swerve turn test
-        /* m_finishedchassisstrafetest = true;
-         if (m_finishedchassisstrafetest == true && m_finishedchassisturntest == false)
-         {
-             m_timer++;
-             if (m_timer > 80)
-             {
-                 moveinfo.chassisSpeeds.omega = 0.05 * maxAngSpeed;
-                 m_swervechassis->Drive(moveinfo);
-                 if (m_PDP != nullptr)
-                 {
-                     m_swervechassisturnusage = m_PDP->GetTotalCurrent();
-                     moveinfo.chassisSpeeds.omega = 0.0 * maxAngSpeed;
-                     m_swervechassis->Drive(moveinfo);
-                     m_finishedswerveturntest = true;
-                 }
-                 else
-                 {
-                     Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("Automatedsystemtest"), string("pdp"), "cannot accses pdp");
-                 }
-             }
-         }*/
+        if (m_finishedchassisstrafetest == true && m_finishedchassisturntest == false)
+        {
+            m_timer2++;
+            if (m_timer2 > 20 && m_timer2 < 59)
+            {
+                m_swervechassis->ZeroAlignSwerveModules();
+                m_timer2++;
+                moveinfo.chassisSpeeds.omega = 0.05 * maxAngSpeed;
+                m_swervechassis->Drive(moveinfo);
+                if (m_timer2 > 60)
+                {
+                    if (m_PDP != nullptr)
+                    {
+                        m_swervechassisturnusage = m_PDP->GetTotalCurrent();
+                        moveinfo.chassisSpeeds.omega = 0.0 * maxAngSpeed;
+                        m_swervechassis->Drive(moveinfo);
+                        m_finishedswerveturntest = true;
+                    }
+                }
+                else
+                {
+                    Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("Automatedsystemtest"), string("pdp"), "cannot accses pdp");
+                }
+            }
+        }
     }
 }
