@@ -57,9 +57,11 @@ public:
         GRAB
     };
 
+    const std::string m_grabberXMLOpenString{"OPEN"};
+    const std::string m_grabberXMLGrabString{"GRAB"};
     const std::map<const std::string, GRABBER_STATE> m_grabberXmlStringToStateEnumMap{
-        {"OPEN", GRABBER_STATE::OPEN},
-        {"GRAB", GRABBER_STATE::GRAB}};
+        {m_grabberXMLOpenString, GRABBER_STATE::OPEN},
+        {m_grabberXMLGrabString, GRABBER_STATE::GRAB}};
 
     /// @brief  Find or create the state manmanager
     static GrabberStateMgr *GetInstance();
@@ -95,7 +97,8 @@ private:
     GRABBER_STATE m_prevState;
 
     bool m_followOtherMechs = false;
-    const double m_floorThreshold = 4.0;
+    const double m_floorThreshold = 15.0;
+    const double m_protectThreshold = 3.0;
     //========= Hand modified code end section 5 ========
 
     static GrabberStateMgr *m_instance;

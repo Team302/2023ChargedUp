@@ -101,11 +101,9 @@ ExtenderStateMgr::ExtenderStateMgr() : StateMgr(),
 /// @brief  Get the current Parameter parm value for the state of this mechanism
 /// @param PrimitiveParams* currentParams current set of primitive parameters
 /// @returns int state id - -1 indicates that there is not a state to set
-int ExtenderStateMgr::GetCurrentStateParam(
-    PrimitiveParams *currentParams)
+int ExtenderStateMgr::GetCurrentStateParam(PrimitiveParams *currentParams)
 {
-    // normally get the state from primitive params
-    return StateMgr::GetCurrentStateParam(currentParams);
+    return static_cast<int>(currentParams->GetExtenderState());
 }
 
 /// @brief Check if driver inputs or sensors trigger a state transition
@@ -166,6 +164,7 @@ void ExtenderStateMgr::CheckForGamepadTransitions()
             else if (controller->IsButtonPressed(TeleopControlFunctions::STARTING_POSITION))
             {
                 m_targetState = EXTENDER_STATE::STARTING_POSITION_EXTEND;
+                m_prevState = m_targetState;
             }
             else if (controller->IsButtonPressed(TeleopControlFunctions::HUMAN_PLAYER_STATION))
             {

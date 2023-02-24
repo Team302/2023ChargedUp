@@ -89,11 +89,9 @@ GrabberStateMgr::GrabberStateMgr() : StateMgr(),
 /// @brief  Get the current Parameter parm value for the state of this mechanism
 /// @param PrimitiveParams* currentParams current set of primitive parameters
 /// @returns int state id - -1 indicates that there is not a state to set
-int GrabberStateMgr::GetCurrentStateParam(
-    PrimitiveParams *currentParams)
+int GrabberStateMgr::GetCurrentStateParam(PrimitiveParams *currentParams)
 {
-    // normally get the state from primitive params
-    return StateMgr::GetCurrentStateParam(currentParams);
+    return static_cast<int>(currentParams->GetGrabberState());
 }
 
 /// @brief Check if driver inputs or sensors trigger a state transition
@@ -133,7 +131,7 @@ void GrabberStateMgr::CheckForSensorTransitions()
         {
             m_targetState = GRABBER_STATE::GRAB;
         }
-        if (MechanismFactory::GetMechanismFactory()->GetArm()->GetPositionDegrees().to<double>() < m_floorThreshold)
+        if (MechanismFactory::GetMechanismFactory()->GetArm()->GetPositionDegrees().to<double>() < m_protectThreshold)
         {
             m_targetState = GRABBER_STATE::GRAB;
         }

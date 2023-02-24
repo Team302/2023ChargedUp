@@ -54,13 +54,6 @@ Grabber::Grabber(
 //========= Hand modified code start section 0 ========
 bool Grabber::IsGamePiecePresent()
 {
-	if (m_bannerSensor.get() != nullptr)
-	{
-		return m_bannerSensor->Get();
-	}
-	else
-	{
-		return false;
-	}
+	return (m_bannerSensor.get() != nullptr) ? m_bannerSensor->Get() : false;
 }
 //========= Hand modified code end section 0 ========
