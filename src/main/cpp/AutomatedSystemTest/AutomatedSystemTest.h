@@ -37,7 +37,6 @@ private:
     int m_timer0 = 0;
     int m_timer1 = 0;
     int m_timer2 = 0;
-    int m_timer3 = 0;
     bool m_finishedarmtest = false;
     bool m_gotbasepdpuseage = false;
     bool m_finishedextendertest = false;
@@ -52,6 +51,8 @@ private:
     bool m_finishedswervestrafetest = false;
     bool m_disableswerveturntest = false;
     bool m_finishedswerveturntest = false;
+    bool m_finishedstartswervestrafetest = false;
+    bool m_finishedstartswerveturntest = false;
     double m_basepdpusage;
     double m_armusage;
     double m_extenderusage;
