@@ -109,14 +109,20 @@ frc::Pose2d DragonLimelight::GetRedFieldPosition() const
 {
     if (m_networktable.get() != nullptr)
     {
-        auto topic = m_networktable.get()->GetDoubleArrayTopic("botpose_wpired");
+        auto blueTopic = m_networktable.get()->GetDoubleArrayTopic("botpose_wpiblue");
+        auto redTopic = m_networktable.get()->GetDoubleArrayTopic("botpose_wpired");
 
-        std::vector<double> position = topic.GetEntry(std::array<double, 7>{}).Get(); // default value is empty array
+        std::vector<double> bluePosition = blueTopic.GetEntry(std::array<double, 7>{}).Get(); // default value is empty array
+        std::vector<double> redPosition = redTopic.GetEntry(std::array<double, 7>{}).Get();   // default value is empty array
 
         // do we want to also store total latency (7th element in array) here?
 
-        frc::Rotation3d rotation = frc::Rotation3d{units::angle::degree_t(position[3]), units::angle::degree_t(position[4]), units::angle::degree_t(position[5])};
-        return frc::Pose3d{units::meter_t(position[0]), units::meter_t(position[1]), units::meter_t(position[2]), rotation}.ToPose2d();
+        frc::Rotation3d rotation = frc::Rotation3d{units::angle::degree_t(redPosition[3]), units::angle::degree_t(redPosition[4]), units::angle::degree_t(redPosition[5])};
+        return frc::Pose3d{units::meter_t(bluePosition[0]), units::meter_t(bluePosition[1]), units::meter_t(bluePosition[2]), rotation}.ToPose2d();
+    }
+    else
+    {
+        return frc::Pose2d{};
     }
 }
 
@@ -131,6 +137,10 @@ frc::Pose2d DragonLimelight::GetBlueFieldPosition() const
 
         frc::Rotation3d rotation = frc::Rotation3d{units::angle::degree_t(position[3]), units::angle::degree_t(position[4]), units::angle::degree_t(position[5])};
         return frc::Pose3d{units::meter_t(position[0]), units::meter_t(position[1]), units::meter_t(position[2]), rotation}.ToPose2d();
+    }
+    else
+    {
+        return frc::Pose2d{};
     }
 }
 
