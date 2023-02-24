@@ -415,7 +415,7 @@ units::length::inch_t DragonLimelight::EstimateTargetXdistance() const
     if (theTargetHeight.has_value())
     {
         auto deltaHeight = theTargetHeight.value() - GetLimelightMountingHeight();
-        units::length::inch_t x_distanceToTarget = units::length::inch_t((theTargetHeight.value() - GetLimelightMountingHeight()) / tanOfAngle);
+        units::length::inch_t x_distanceToTarget = units::length::inch_t(deltaHeight / tanOfAngle);
 
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("totalAngleFromHorizontal "), totalAngleFromHorizontal.to<double>());
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("angleRad "), angleRad.to<double>());
