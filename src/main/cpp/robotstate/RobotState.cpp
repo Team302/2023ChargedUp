@@ -93,9 +93,7 @@ void RobotState::Run()
     }
 }
 
-void RobotState::RegisterForStateChanges(
-    IRobotStateChangeSubscriber *subscriber,
-    RobotStateChanges::StateChange change)
+void RobotState::RegisterForStateChanges(IRobotStateChangeSubscriber *subscriber, RobotStateChanges::StateChange change)
 {
     auto slot = static_cast<unsigned int>(change);
     if (slot < m_brokers.size())
@@ -104,9 +102,7 @@ void RobotState::RegisterForStateChanges(
     }
 }
 
-void RobotState::PublishStateChange(
-    RobotStateChanges::StateChange change,
-    int newValue)
+void RobotState::PublishStateChange(RobotStateChanges::StateChange change, int newValue)
 {
     auto slot = static_cast<unsigned int>(change);
     if (slot < m_brokers.size())
