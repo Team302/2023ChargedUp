@@ -44,7 +44,7 @@
 #include <chassis/PoseEstimatorEnum.h>
 #include <chassis/swerve/SwerveModule.h>
 #include <chassis/ChassisMovement.h>
-#include <hw/DragonLimelight.h>
+#include <DragonVision/DragonVision.h>
 #include <hw/DragonPigeon.h>
 #include <hw/factories/PigeonFactory.h>
 
@@ -136,12 +136,22 @@ public:
 
     void ReZero();
 
+    ISwerveDriveOrientation *GetSpecifiedHeadingState(ChassisOptionEnums::HeadingOption headingOption);
     ISwerveDriveState *GetSpecifiedDriveState(ChassisOptionEnums::DriveStateType driveOption);
 
     ISwerveDriveOrientation *GetHeadingState(ChassisMovement moveInfo);
 
 private:
     ISwerveDriveState *GetDriveState(ChassisMovement moveInfo);
+
+    frc::ChassisSpeeds GetFieldRelativeSpeeds(
+        units::meters_per_second_t xSpeed,
+        units::meters_per_second_t ySpeed,
+        units::radians_per_second_t rot);
+
+    units::angular_velocity::degrees_per_second_t CalcHeadingCorrection(
+        units::angle::degree_t targetAngle,
+        double kP);
 
     std::shared_ptr<SwerveModule> m_frontLeft;
     std::shared_ptr<SwerveModule> m_frontRight;
@@ -192,7 +202,7 @@ private:
 
     DragonTargetFinder m_targetFinder;
     units::angle::degree_t m_targetHeading;
-    DragonLimelight *m_limelight;
+    DragonVision *m_vision;
 
     std::string m_networkTableName;
     std::string m_controlFileName;
@@ -203,4 +213,5 @@ private:
     ISwerveDriveOrientation *m_currentOrientationState;
 
     bool m_initialized = false;
+    bool m_hasResetToVisionTarget = false;
 };

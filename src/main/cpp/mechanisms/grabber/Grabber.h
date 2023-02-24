@@ -29,6 +29,7 @@
 
 // Team 302 includes
 #include <mechanisms/base/Mech1Solenoid.h>
+#include <hw/DragonDigitalInput.h>
 
 class Grabber : public Mech1Solenoid
 {
@@ -37,11 +38,21 @@ public:
 	/// @param [in] std::string the name of the file that will set control parameters for this mechanism
 	/// @param [in] std::string the name of the network table for logging information
 	/// @param [in] std::shared_ptr<IDragonMotorController>
+	/// @param [in] std::shared_ptr<DragonDigitalInput>
 
 	Grabber(
 		std::string controlFileName,
 		std::string networkTableName,
-		std::shared_ptr<DragonSolenoid> solenoid);
+		std::shared_ptr<DragonSolenoid> solenoid0,
+		std::shared_ptr<DragonDigitalInput> sensor0);
 	Grabber() = delete;
 	~Grabber() override = default;
+
+	//========= Hand modified code start section 0 ========
+
+	bool IsGamePiecePresent();
+
+private:
+	std::shared_ptr<DragonDigitalInput> m_bannerSensor;
+	//========= Hand modified code end section 0 ========
 };

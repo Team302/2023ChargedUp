@@ -16,16 +16,22 @@
 // Team 302 Includes
 #include <mechanisms/arm/ArmManualState.h>
 #include <mechanisms/arm/ArmState.h>
+#include <mechanisms/arm/ArmHoldPosHelper.h>
 #include <mechanisms/controllers/ControlData.h>
 #include <teleopcontrol/TeleopControl.h>
 #include <mechanisms/MechanismFactory.h>
+
+/// DEBUGGING
+#include <utils/logging/Logger.h>
 
 ArmManualState::ArmManualState(std::string stateName,
                                int stateId,
                                ControlData *control0,
                                double target0) : ArmState(stateName, stateId, control0, target0),
+                                                 IRobotStateChangeSubscriber(),
                                                  m_arm(MechanismFactory::GetMechanismFactory()->GetArm()),
-                                                 m_controller(TeleopControl::GetInstance())
+                                                 m_controller(TeleopControl::GetInstance()),
+                                                 m_controlData(control0)
 {
 }
 
@@ -40,9 +46,16 @@ void ArmManualState::Run()
         auto percent = m_controller->GetAxisValue(TeleopControlFunctions::MANUAL_ROTATE);
         if (percent < 0.0)
         {
-            percent *= 0.3;
+            percent *= GetCurrentTarget(); // if we want to change downward speed change,
+                                           // update target in xml
         }
-        m_arm->UpdateTarget(percent);
+
+        auto target = percent + ArmHoldPosHelper::CalculateHoldPositionTarget(m_arm->GetPositionDegrees().to<double>(),
+                                                                              MechanismFactory::GetMechanismFactory()->GetExtender()->GetPositionInches().to<double>(),
+                                                                              m_gamepieceMode,
+                                                                              m_grabberState);
+        m_arm->SetControlConstants(0, m_controlData);
+        m_arm->UpdateTarget(target);
         m_arm->Update();
     }
 }
@@ -50,4 +63,16 @@ void ArmManualState::Run()
 bool ArmManualState::AtTarget() const
 {
     return true;
+}
+
+void ArmManualState::Update(RobotStateChanges::StateChange change, int state)
+{
+    if (change == RobotStateChanges::DesiredGamePiece)
+    {
+        m_gamepieceMode = static_cast<RobotStateChanges::GamePiece>(state);
+    }
+    else if (change == RobotStateChanges::GrabberState)
+    {
+        m_grabberState = static_cast<GrabberStateMgr::GRABBER_STATE>(state);
+    }
 }

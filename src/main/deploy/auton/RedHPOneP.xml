@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE auton SYSTEM "auton.dtd">
+<auton>
+<primitive id="RESET_POSITION"
+	   pathname="RedHPOne1.wpilib.json"/>
+    <!--score preloaded cone-->
+    <primitive id="DO_NOTHING"
+               time="2.0"
+               />
+    <!--drive to charing station-->
+    <primitive id="DRIVE_PATH"
+               pathname="RedHPOne1.wpilib.json"
+               time="2.0"
+               />
+    <primitive id="DRIVE_PATH"
+               pathname="RedHPOne2.wpilib.json"
+               time="3.0"
+               />
+    <primitive id="DRIVE_PATH"
+               pathname="RedHPOne3.wpilib.json"
+               headingOption="SPECIFIED_ANGLE"
+               heading="179.5"
+               time="2.0"
+               />
+    <!--auto balance-->
+    <primitive id="DO_NOTHING"
+               time="10.0"
+               />
+</auton>

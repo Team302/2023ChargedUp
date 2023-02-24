@@ -14,12 +14,14 @@
 //====================================================================================================================================================
 
 #include <mechanisms/arm/ArmState.h>
+#include <robotstate/IRobotStateChangeSubscriber.h>
+#include <mechanisms/grabber/GrabberStateMgr.h>
 
 class ControlData;
 class Arm;
 class TeleopControl;
 
-class ArmManualState : public ArmState
+class ArmManualState : public ArmState, public IRobotStateChangeSubscriber
 {
 public:
     ArmManualState() = delete;
@@ -34,7 +36,14 @@ public:
     void Run() override;
     bool AtTarget() const override;
 
+    void Update(RobotStateChanges::StateChange change, int state) override;
+
 private:
     Arm *m_arm;
     TeleopControl *m_controller;
+    ControlData *m_controlData;
+
+    RobotStateChanges::GamePiece m_gamepieceMode;
+
+    GrabberStateMgr::GRABBER_STATE m_grabberState;
 };

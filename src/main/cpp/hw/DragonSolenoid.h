@@ -27,12 +27,7 @@ class DragonSolenoid
 {
 public:
     DragonSolenoid() = delete;
-    DragonSolenoid(
-        std::string networkTableName,
-        SolenoidUsage::SOLENOID_USAGE usage,
-        int pcmID,
-        int channel,
-        bool reversed);
+
     DragonSolenoid(
         std::string networkTableName,
         SolenoidUsage::SOLENOID_USAGE usage,
@@ -76,9 +71,6 @@ private:
         int forwardChannel,
         int reverseChannel,
         bool reversed);
-
-    double m_minPressure = 105.0; // PSI
-    double m_maxPressure = 115.0; // PSI
 
     std::string m_networkTableName;
     SolenoidUsage::SOLENOID_USAGE m_usage;

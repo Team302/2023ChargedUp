@@ -32,11 +32,22 @@
 #include <mechanisms/base/StateMgr.h>
 #include <mechanisms/Grabber/grabber.h>
 #include <mechanisms/StateStruc.h>
+
+//========= Hand modified code start section 0 ========
 #include <robotstate/IRobotStateChangeSubscriber.h>
+//========= Hand modified code end section 0 ========
 
 // Third Party Includes
 
-class GrabberStateMgr : public StateMgr, public IRobotStateChangeSubscriber
+//========= Hand modified code start section 1 ========
+
+//========= Hand modified code end section 1 ========
+
+class GrabberStateMgr : public StateMgr
+    //========= Hand modified code start section 2 ========
+    ,
+                        public IRobotStateChangeSubscriber
+//========= Hand modified code end section 2 ========
 {
 public:
     /// @enum the various states of the Intake
@@ -46,9 +57,11 @@ public:
         GRAB
     };
 
+    const std::string m_grabberXMLOpenString{"OPEN"};
+    const std::string m_grabberXMLGrabString{"GRAB"};
     const std::map<const std::string, GRABBER_STATE> m_grabberXmlStringToStateEnumMap{
-        {"OPEN", GRABBER_STATE::OPEN},
-        {"GRAB", GRABBER_STATE::GRAB}};
+        {m_grabberXMLOpenString, GRABBER_STATE::OPEN},
+        {m_grabberXMLGrabString, GRABBER_STATE::GRAB}};
 
     /// @brief  Find or create the state manmanager
     static GrabberStateMgr *GetInstance();
@@ -60,22 +73,33 @@ public:
         PrimitiveParams *currentParams) override;
 
     void CheckForStateTransition() override;
+    //========= Hand modified code start section 3 ========
     void CheckForSensorTransitions() override;
     void CheckForGamepadTransitions() override;
 
     // RobotState override
     void Update(RobotStateChanges::StateChange change, int value) override;
+    //========= Hand modified code end section 3 ========
 
 private:
     GrabberStateMgr();
     ~GrabberStateMgr() = default;
 
+    //========= Hand modified code start section 4 ========
+
+    //========= Hand modified code end section 4 ========
+
     Grabber *m_grabber;
 
+    //========= Hand modified code start section 5 ========
     GRABBER_STATE m_currentState;
     GRABBER_STATE m_targetState;
+    GRABBER_STATE m_prevState;
 
     bool m_followOtherMechs = false;
+    const double m_floorThreshold = 15.0;
+    const double m_protectThreshold = 3.0;
+    //========= Hand modified code end section 5 ========
 
     static GrabberStateMgr *m_instance;
 

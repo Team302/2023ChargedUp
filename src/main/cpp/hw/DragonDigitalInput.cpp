@@ -55,13 +55,14 @@ bool DragonDigitalInput::Get() const
 {
 	if (m_digital != nullptr)
 	{
+		auto digitReading = m_digital->Get();
 		if (m_debouncer != nullptr)
 		{
-			return (m_reversed) ? m_debouncer->Calculate(!m_digital->Get()) : m_debouncer->Calculate(m_digital->Get());
+			return (m_reversed) ? m_debouncer->Calculate(!digitReading) : m_debouncer->Calculate(digitReading);
 		}
 		else
 		{
-			return (m_reversed) ? !m_digital->Get() : m_digital->Get();
+			return (m_reversed) ? !digitReading : digitReading;
 		}
 	}
 	else

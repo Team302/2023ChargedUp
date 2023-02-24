@@ -25,6 +25,7 @@
 #include <units/angle.h>
 #include <units/length.h>
 #include <units/time.h>
+#include <frc/geometry/Pose2d.h>
 
 // Team 302 includes
 
@@ -81,11 +82,16 @@ public:
         std::string tableName,                          /// <I> - network table name
         units::length::inch_t mountingHeight,           /// <I> - mounting height of the limelight
         units::length::inch_t mountingHorizontalOffset, /// <I> - mounting horizontal offset from the middle of the robot
-        units::angle::degree_t rotation,                /// <I> - clockwise rotation of limelight
-        units::angle::degree_t mountingAngle,           /// <I> - mounting angle of the camera
+        units::length::inch_t forwardOffset,            /// <I> mounting offset forward/back
+        units::angle::degree_t pitch,                   /// <I> - Pitch of limelight
+        units::angle::degree_t yaw,                     /// <I> - Yaw of limelight
+        units::angle::degree_t roll,                    /// <I> - Roll of limelight
         units::length::inch_t targetHeight,             /// <I> - height the target
-        units::length::inch_t targetHeight2             /// <I> - height of second target
-    );
+        units::length::inch_t targetHeight2,            /// <I> - height of second target
+        LED_MODE ledMode,
+        CAM_MODE camMode,
+        STREAM_MODE streamMode,
+        SNAPSHOT_MODE snapMode);
 
     ///-----------------------------------------------------------------------------------
     /// Method:         ~DragonLimelight (destructor)
@@ -95,19 +101,28 @@ public:
 
     bool HasTarget() const;
     units::angle::degree_t GetTargetHorizontalOffset() const;
+    units::angle::degree_t GetTargetHorizontalOffsetRobotFrame(units::length::inch_t *targetDistOffset_RF, units::length::inch_t *targetDistfromRobot_RF) const;
     units::angle::degree_t GetTargetVerticalOffset() const;
     double GetTargetArea() const;
     units::angle::degree_t GetTargetSkew() const;
     units::time::microsecond_t GetPipelineLatency() const;
-    units::length::inch_t EstimateTargetDistance() const;
     std::vector<double> Get3DSolve() const;
     PIPELINE_MODE getPipeline() const;
+
+    frc::Pose2d GetRedFieldPosition() const;
+    frc::Pose2d GetBlueFieldPosition() const;
+
+    units::length::inch_t EstimateTargetXdistance() const;
+    units::length::inch_t EstimateTargetYdistance() const;
+
+    units::length::inch_t EstimateTargetXdistance_RelToRobotCoords() const;
+    units::length::inch_t EstimateTargetYdistance_RelToRobotCoords() const;
 
     // Setters
     void SetTargetHeight(units::length::inch_t targetHeight);
     void SetLEDMode(DragonLimelight::LED_MODE mode);
     void SetCamMode(DragonLimelight::CAM_MODE mode);
-    void SetPipeline(int pipeline);
+    bool SetPipeline(int pipeline);
     void SetStreamMode(DragonLimelight::STREAM_MODE mode);
     void ToggleSnapshot(DragonLimelight::SNAPSHOT_MODE toggle);
     void SetCrosshairPos(double crosshairPosX, double crosshairPosY);
@@ -115,19 +130,30 @@ public:
 
     void PrintValues(); // Prints out all values to ensure everything is working and connected
 
-    units::angle::degree_t GetMountingAngle() const { return m_mountingAngle; }
-    units::length::inch_t GetMountingHeight() const { return m_mountHeight; }
+    units::angle::degree_t GetLimelightPitch() const { return m_pitch; }
+    units::angle::degree_t GetLimelightYaw() const { return m_yaw; }
+    units::angle::degree_t GetLimelightRoll() const { return m_roll; }
+    units::length::inch_t GetLimelightMountingHeight() const { return m_mountHeight; }
     units::length::inch_t GetTargetHeight() const { return m_targetHeight; }
 
 protected:
     units::angle::degree_t GetTx() const;
     units::angle::degree_t GetTy() const;
 
+    void SetLimelightPosition(units::length::inch_t mountHeight,
+                              units::length::inch_t mountHorizontalOffset,
+                              units::length::inch_t mountForwardOffset,
+                              units::angle::degree_t pitch,
+                              units::angle::degree_t yaw,
+                              units::angle::degree_t roll);
+
     std::shared_ptr<nt::NetworkTable> m_networktable;
     units::length::inch_t m_mountHeight;
     units::length::inch_t m_mountingHorizontalOffset;
-    units::angle::degree_t m_rotation;
-    units::angle::degree_t m_mountingAngle;
+    units::length::inch_t m_mountingForwardOffset;
+    units::angle::degree_t m_yaw;
+    units::angle::degree_t m_pitch;
+    units::angle::degree_t m_roll;
     units::length::inch_t m_targetHeight;
     units::length::inch_t m_targetHeight2;
 

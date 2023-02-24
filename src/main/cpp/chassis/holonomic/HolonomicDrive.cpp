@@ -50,8 +50,8 @@ HolonomicDrive::HolonomicDrive() : State(string("HolonomicDrive"), -1),
                                    m_trajectoryGenerator(new DragonTrajectoryGenerator(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetMaxSpeed(),
                                                                                        ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetMaxAcceleration())),
                                    m_previousDriveState(ChassisOptionEnums::DriveStateType::FIELD_DRIVE),
-                                   m_generatedTrajectory(frc::Trajectory()),
-                                   m_field(DragonField::GetInstance())
+                                   m_generatedTrajectory(frc::Trajectory()) //,
+                                                                            // m_field(DragonField::GetInstance())
 {
 }
 
@@ -73,6 +73,10 @@ void HolonomicDrive::Run()
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("DriveOptionBEGINNING"), moveInfo.driveOption);
 
     auto controller = TeleopControl::GetInstance();
+
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("chassis "), m_chassis != nullptr ? string("not nullptr ") : string("nullptr"));
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("controller "), controller != nullptr ? string("not nullptr ") : string("nullptr"));
+
     if (controller != nullptr && m_chassis != nullptr)
     {
         moveInfo.headingOption = ChassisOptionEnums::HeadingOption::MAINTAIN;
@@ -138,7 +142,7 @@ void HolonomicDrive::Run()
                 m_previousDriveState = moveInfo.driveOption;
                 moveInfo.trajectory = m_trajectoryGenerator->GenerateTrajectory(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose(), DragonTrajectoryGenerator::TARGET_POSITION::COLUMN_ONE);
                 m_generatedTrajectory = moveInfo.trajectory;
-                m_field->AddTrajectory("DriverAssist", m_generatedTrajectory);
+                // m_field->AddTrajectory("DriverAssist", m_generatedTrajectory);
             }
             else if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_MIDDLE_COLUMN))
             {
@@ -146,7 +150,7 @@ void HolonomicDrive::Run()
                 m_previousDriveState = moveInfo.driveOption;
                 moveInfo.trajectory = m_trajectoryGenerator->GenerateTrajectory(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose(), DragonTrajectoryGenerator::TARGET_POSITION::COLUMN_TWO);
                 m_generatedTrajectory = moveInfo.trajectory;
-                m_field->AddTrajectory("DriverAssist", m_generatedTrajectory);
+                // m_field->AddTrajectory("DriverAssist", m_generatedTrajectory);
             }
             else if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_RIGHT_COLUMN))
             {
@@ -154,7 +158,7 @@ void HolonomicDrive::Run()
                 m_previousDriveState = moveInfo.driveOption;
                 moveInfo.trajectory = m_trajectoryGenerator->GenerateTrajectory(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose(), DragonTrajectoryGenerator::TARGET_POSITION::COLUMN_THREE);
                 m_generatedTrajectory = moveInfo.trajectory;
-                m_field->AddTrajectory("DriverAssist", m_generatedTrajectory);
+                // m_field->AddTrajectory("DriverAssist", m_generatedTrajectory);
             }
         }
         else
@@ -172,6 +176,9 @@ void HolonomicDrive::Run()
 
         auto maxSpeed = m_chassis->GetMaxSpeed();
         auto maxAngSpeed = m_chassis->GetMaxAngularSpeed();
+
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("maxspeed "), maxSpeed.to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("maxangspeed "), maxAngSpeed.to<double>());
 
         auto forward = controller->GetAxisValue(TeleopControlFunctions::HOLONOMIC_DRIVE_FORWARD);
         auto strafe = controller->GetAxisValue(TeleopControlFunctions::HOLONOMIC_DRIVE_STRAFE);

@@ -36,7 +36,7 @@ public:
 	GrabberState(
 		std::string stateName,
 		int stateId,
-		MechanismTargetData::SOLENOID solState);
+		MechanismTargetData::SOLENOID solState0);
 	~GrabberState() = default;
 
 	bool AtTarget() const override;

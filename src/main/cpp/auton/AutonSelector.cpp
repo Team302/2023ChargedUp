@@ -33,6 +33,9 @@
 #include <auton/AutonSelector.h>
 #include <utils/logging/Logger.h>
 #include <utils/FMSData.h>
+
+#include <pugixml/pugixml.hpp>
+
 using namespace std;
 
 //---------------------------------------------------------------------
@@ -54,23 +57,34 @@ string AutonSelector::GetSelectedAutoFile()
 	autonfile += GetNumofPiecesinauton();
 	autonfile += GetParkOnChargeStation();
 	autonfile += std::string(".xml");
-	Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string(""), std::string("determined name"), autonfile);
+	Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("auton file"), std::string("determined name"), autonfile);
 
-	if (FileExists(autonfile) == false)
+	if (!FileExists(autonfile))
 	{
 		autonfile = frc::filesystem::GetDeployDirectory();
 		autonfile += std::string("/auton/");
 		autonfile += GetAlianceColor();
 		autonfile += ("COOPThreeP.xml");
+		Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("auton file"), std::string("File Exists"), false);
 	}
-	Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string(""), std::string("actual file"), autonfile);
+	else
+	{
+		Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("auton file"), std::string("File Exists"), true);
+	}
+	Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("auton file"), std::string("actual file"), autonfile);
 	return autonfile;
 }
 
 bool AutonSelector::FileExists(const std::string &name)
 {
-	ifstream f(name.c_str());
-	return f.good();
+
+	pugi::xml_document doc;
+	pugi::xml_parse_result result = doc.load_file(name.c_str());
+	if (result)
+	{
+		return true;
+	}
+	return false;
 }
 
 string AutonSelector::GetParkOnChargeStation()
@@ -109,7 +123,7 @@ string AutonSelector::GetNumofPiecesinauton()
 void AutonSelector::PutChoicesOnDashboard()
 {
 	m_chrgstatchooser.AddOption("yes", "P");
-	m_chrgstatchooser.AddOption("no", "Np");
+	m_chrgstatchooser.AddOption("no", "NP");
 	frc::SmartDashboard::PutData("prkonchrgstat", &m_chrgstatchooser);
 
 	m_startposchooser.AddOption("Gridcoop", "COOP");

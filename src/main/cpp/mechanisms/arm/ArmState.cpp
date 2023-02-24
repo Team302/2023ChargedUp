@@ -47,6 +47,7 @@ ArmState::ArmState(
 
 bool ArmState::AtTarget() const
 {
+	//========= Hand modified code start section 0 ========
 	/*
 	if (m_arm != nullptr)
 	{
@@ -55,6 +56,6 @@ bool ArmState::AtTarget() const
 			return true;
 		}
 	}*/
-
+	//========= Hand modified code end section 0 ========
 	return true;
 }
