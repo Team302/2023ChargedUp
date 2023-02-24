@@ -21,42 +21,33 @@
 //	//========= Hand modified code end section x ========
 //==============================================================
 
-#pragma once
-
-#include <map>
+// C++ Includes
 #include <string>
 
-//========================================================================================================
-///	 @class			MechanismTypes
-///  @brief      	This contains the enum for the mechanism types
-//========================================================================================================
-class MechanismTypes
+// FRC includes
+
+// Team 302 includes
+#include <mechanisms/base/Mech1IndMotor.h>
+#include <mechanisms/controllers/ControlData.h>
+#include <mechanisms/ActiveIntake/ActiveIntakeState.h>
+#include <mechanisms/MechanismFactory.h>
+
+// Third Party Includes
+
+using namespace std;
+
+ActiveIntakeState::ActiveIntakeState(
+    string stateName,
+    int stateId,
+    ControlData *control,
+    double target) : Mech1IndMotorState(MechanismFactory::GetMechanismFactory()->GetActiveIntake(), stateName, stateId, control, target),
+                     m_activeIntake(MechanismFactory::GetMechanismFactory()->GetActiveIntake())
 {
-public:
-    //==================================================================================
-    /// enum:           MECHANISM_TYPE
-    /// description:    Indicates the type of mechanism
-    //==================================================================================
-    enum MECHANISM_TYPE
-    {
-        UNKNOWN_MECHANISM = -1,
-        ARM,
-        EXTENDER,
-        GRABBER,
-        ACTIVEINTAKE,
+}
 
-        MAX_MECHANISM_TYPES
-    };
-
-    static MechanismTypes *GetInstance();
-
-    MECHANISM_TYPE GetType(
-        std::string typeString);
-
-private:
-    static MechanismTypes *m_instance;
-    MechanismTypes();
-    ~MechanismTypes();
-
-    std::map<std::string, MECHANISM_TYPE> m_typeMap;
-};
+bool ActiveIntakeState::AtTarget() const
+{
+    //========= Hand modified code start section 0 ========
+    //========= Hand modified code end section 0 ========
+    return true;
+}

@@ -21,42 +21,17 @@
 //	//========= Hand modified code end section x ========
 //==============================================================
 
-#pragma once
+#include <mechanisms/ActiveIntake/ActiveIntake.h>
 
-#include <map>
-#include <string>
-
-//========================================================================================================
-///	 @class			MechanismTypes
-///  @brief      	This contains the enum for the mechanism types
-//========================================================================================================
-class MechanismTypes
+ActiveIntake::ActiveIntake(std::string controlFileName,
+                           std::string networkTableName,
+                           std::shared_ptr<DragonDigitalInput> sensor0,
+                           std::shared_ptr<IDragonMotorController> motorController) : Mech1IndMotor(MechanismTypes::MECHANISM_TYPE::GRABBER, controlFileName, networkTableName, motorController),
+                                                                                      m_bannerSensor(sensor0)
 {
-public:
-    //==================================================================================
-    /// enum:           MECHANISM_TYPE
-    /// description:    Indicates the type of mechanism
-    //==================================================================================
-    enum MECHANISM_TYPE
-    {
-        UNKNOWN_MECHANISM = -1,
-        ARM,
-        EXTENDER,
-        GRABBER,
-        ACTIVEINTAKE,
+}
 
-        MAX_MECHANISM_TYPES
-    };
-
-    static MechanismTypes *GetInstance();
-
-    MECHANISM_TYPE GetType(
-        std::string typeString);
-
-private:
-    static MechanismTypes *m_instance;
-    MechanismTypes();
-    ~MechanismTypes();
-
-    std::map<std::string, MECHANISM_TYPE> m_typeMap;
-};
+bool ActiveIntake::IsGamePiecePresent()
+{
+    return (m_bannerSensor.get() != nullptr) ? m_bannerSensor->Get() : false;
+}

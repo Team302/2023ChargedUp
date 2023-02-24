@@ -23,40 +23,21 @@
 
 #pragma once
 
-#include <map>
-#include <string>
+#include <hw/DragonDigitalInput.h>
+#include <mechanisms\base\Mech1IndMotor.h>
 
-//========================================================================================================
-///	 @class			MechanismTypes
-///  @brief      	This contains the enum for the mechanism types
-//========================================================================================================
-class MechanismTypes
+class ActiveIntake : public Mech1IndMotor
 {
 public:
-    //==================================================================================
-    /// enum:           MECHANISM_TYPE
-    /// description:    Indicates the type of mechanism
-    //==================================================================================
-    enum MECHANISM_TYPE
-    {
-        UNKNOWN_MECHANISM = -1,
-        ARM,
-        EXTENDER,
-        GRABBER,
-        ACTIVEINTAKE,
+    ActiveIntake(std::string controlFileName,
+                 std::string networkTableName,
+                 std::shared_ptr<DragonDigitalInput> sensor0,
+                 std::shared_ptr<IDragonMotorController> motorController);
+    ActiveIntake() = delete;
+    ~ActiveIntake() override = default;
 
-        MAX_MECHANISM_TYPES
-    };
-
-    static MechanismTypes *GetInstance();
-
-    MECHANISM_TYPE GetType(
-        std::string typeString);
+    bool IsGamePiecePresent();
 
 private:
-    static MechanismTypes *m_instance;
-    MechanismTypes();
-    ~MechanismTypes();
-
-    std::map<std::string, MECHANISM_TYPE> m_typeMap;
+    std::shared_ptr<DragonDigitalInput> m_bannerSensor;
 };

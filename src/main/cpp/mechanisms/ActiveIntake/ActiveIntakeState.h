@@ -22,41 +22,27 @@
 //==============================================================
 
 #pragma once
-
-#include <map>
 #include <string>
 
-//========================================================================================================
-///	 @class			MechanismTypes
-///  @brief      	This contains the enum for the mechanism types
-//========================================================================================================
-class MechanismTypes
+#include <mechanisms/base/Mech1indMotorState.h>
+
+class ControlData;
+class ActiveIntake;
+
+class ActiveIntakeState : public Mech1IndMotorState
 {
 public:
-    //==================================================================================
-    /// enum:           MECHANISM_TYPE
-    /// description:    Indicates the type of mechanism
-    //==================================================================================
-    enum MECHANISM_TYPE
-    {
-        UNKNOWN_MECHANISM = -1,
-        ARM,
-        EXTENDER,
-        GRABBER,
-        ACTIVEINTAKE,
+    ActiveIntakeState() = delete;
+    ActiveIntakeState(
+        std::string stateName,
+        int stateId,
+        ControlData *control,
+        double target);
+    ~ActiveIntakeState() = default;
 
-        MAX_MECHANISM_TYPES
-    };
-
-    static MechanismTypes *GetInstance();
-
-    MECHANISM_TYPE GetType(
-        std::string typeString);
+    bool AtTarget() const override;
+    ActiveIntake *GetActiveIntake() const { return m_activeIntake; }
 
 private:
-    static MechanismTypes *m_instance;
-    MechanismTypes();
-    ~MechanismTypes();
-
-    std::map<std::string, MECHANISM_TYPE> m_typeMap;
+    ActiveIntake *m_activeIntake;
 };
