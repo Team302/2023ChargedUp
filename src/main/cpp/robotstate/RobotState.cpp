@@ -42,7 +42,8 @@ RobotState::RobotState() : m_chassis(nullptr),
                            m_brokers(),
                            m_gamePiece(RobotStateChanges::GamePiece::Cone),
                            m_gamePhase(RobotStateChanges::Disabled),
-                           m_wasReleased(true)
+                           m_wasGamePieceButtonReleased(true),
+                           m_wasCompressorButtonReleased(true)
 {
     m_brokers.reserve(RobotStateChanges::LoopCounter);
     auto start = static_cast<int>(RobotStateChanges::DesiredGamePiece);
@@ -81,26 +82,26 @@ void RobotState::Run()
         auto controller = TeleopControl::GetInstance();
         if (controller != nullptr)
         {
-            if (controller->IsButtonPressed(TeleopControlFunctions::COMPRESSOR_ON))
+            if (controller->IsButtonPressed(TeleopControlFunctions::TOGGLE_COMPRESSER))
             {
-                if (m_wasReleased)
+                if (m_wasCompressorButtonReleased)
                 {
                     // pcm
                 }
             }
-            m_wasReleased = !controller->IsButtonPressed(TeleopControlFunctions::COMPRESSOR_OFF);
+            m_wasCompressorButtonReleased = !controller->IsButtonPressed(TeleopControlFunctions::TOGGLE_COMPRESSER);
         }
         if (controller != nullptr)
         {
             if (controller->IsButtonPressed(TeleopControlFunctions::CYCLE_GRABBER))
             {
-                if (m_wasReleased)
+                if (m_wasGamePieceButtonReleased)
                 {
                     m_gamePiece = (m_gamePiece == RobotStateChanges::Cube) ? RobotStateChanges::Cone : RobotStateChanges::Cube;
                     PublishStateChange(RobotStateChanges::DesiredGamePiece, m_gamePiece);
                 }
             }
-            m_wasReleased = !controller->IsButtonPressed(TeleopControlFunctions::CYCLE_GRABBER);
+            m_wasGamePieceButtonReleased = !controller->IsButtonPressed(TeleopControlFunctions::CYCLE_GRABBER);
         }
     }
 }

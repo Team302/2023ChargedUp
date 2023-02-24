@@ -46,7 +46,8 @@ private:
     RobotStateChanges::GamePeriod m_gamePhase;
     RobotStateChanges::CompressorState m_compressorCurrent;
 
-    bool m_wasReleased;
+    bool m_wasGamePieceButtonReleased;
+    bool m_wasCompressorButtonReleased;
 
     static RobotState *m_instance;
 };
