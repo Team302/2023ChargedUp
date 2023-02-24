@@ -98,33 +98,11 @@ frc::Pose2d DragonVision::GetRobotPosition() const
 
 	if ((dllFront != nullptr) && (dllFront->HasTarget()))
 	{
-		if (alliance == frc::DriverStation::Alliance::kBlue)
-		{
-			return dllFront->GetBlueFieldPosition();
-		}
-		else if (alliance == frc::DriverStation::Alliance::kRed)
-		{
-			return dllFront->GetRedFieldPosition();
-		}
-		else
-		{
-			return frc::Pose2d{};
-		}
+		return dllFront->GetBlueFieldPosition();
 	}
 	else if ((dllBack != nullptr) && (dllBack->HasTarget()))
 	{
-		if (alliance == frc::DriverStation::Alliance::kBlue)
-		{
-			return dllBack->GetBlueFieldPosition();
-		}
-		else if (alliance == frc::DriverStation::Alliance::kRed)
-		{
-			return dllBack->GetRedFieldPosition();
-		}
-		else
-		{
-			return frc::Pose2d{};
-		}
+		return dllBack->GetBlueFieldPosition();
 	}
 	else
 	{
