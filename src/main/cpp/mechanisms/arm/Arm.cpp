@@ -62,4 +62,14 @@ void Arm::ResetIfArmDown()
 	}
 }
 
+double Arm::ArmAngletLimit(double TargetAngle)
+{
+	if (TargetAngle > 80)
+	{
+		return 80;
+	}
+
+	return TargetAngle;
+}
+
 //========= Hand modified code end section 0 ========

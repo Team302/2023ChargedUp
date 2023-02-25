@@ -135,8 +135,10 @@ void ArmStateMgr::CheckForStateTransition()
         {
             double armAngle = m_arm->GetPositionDegrees().to<double>();
             double extenderPos = MechanismFactory::GetMechanismFactory()->GetExtender()->GetPositionInches().to<double>();
+            double RequestedTarget = ArmHoldPosHelper::CalculateHoldPositionTarget(armAngle, extenderPos, m_gamepieceMode, m_grabberState);
+            RequestedTarget = m_arm->ArmAngletLimit(RequestedTarget);
 
-            m_arm->UpdateTarget(ArmHoldPosHelper::CalculateHoldPositionTarget(armAngle, extenderPos, m_gamepieceMode, m_grabberState));
+            m_arm->UpdateTarget(RequestedTarget);
         }
     }
     //========= Hand modified code end section 3 ========

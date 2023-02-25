@@ -47,5 +47,7 @@ public:
 
 	//========= Hand modified code start section 0 ========
 	void ResetIfArmDown();
+
+	double ArmAngletLimit(double TargetAngle);
 	//========= Hand modified code end section 0 ========
 };
