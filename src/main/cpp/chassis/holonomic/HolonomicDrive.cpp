@@ -198,6 +198,14 @@ void HolonomicDrive::Run()
 
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("Run"), string("axis read"));
 
+        // temporary fix for resetting odomtery by apriltags, issues with rotation
+        if (FMSData::GetInstance()->GetAllianceColor() == frc::DriverStation::Alliance::kRed)
+        {
+            forward *= -1.0;
+            strafe *= -1.0;
+            rotate *= -1.0;
+        }
+
         moveInfo.chassisSpeeds.vx = forward * maxSpeed;
         moveInfo.chassisSpeeds.vy = strafe * maxSpeed;
         moveInfo.chassisSpeeds.omega = rotate * maxAngSpeed;

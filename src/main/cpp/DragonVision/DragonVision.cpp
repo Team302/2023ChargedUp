@@ -123,33 +123,11 @@ frc::Pose2d DragonVision::GetRobotPosition() const
 
 	if ((dllFront != nullptr) && (dllFront->HasTarget()))
 	{
-		if (alliance == frc::DriverStation::Alliance::kBlue)
-		{
-			return dllFront->GetBlueFieldPosition();
-		}
-		else if (alliance == frc::DriverStation::Alliance::kRed)
-		{
-			return dllFront->GetRedFieldPosition();
-		}
-		else
-		{
-			return frc::Pose2d{};
-		}
+		return dllFront->GetBlueFieldPosition();
 	}
 	else if ((dllBack != nullptr) && (dllBack->HasTarget()))
 	{
-		if (alliance == frc::DriverStation::Alliance::kBlue)
-		{
-			return dllBack->GetBlueFieldPosition();
-		}
-		else if (alliance == frc::DriverStation::Alliance::kRed)
-		{
-			return dllBack->GetRedFieldPosition();
-		}
-		else
-		{
-			return frc::Pose2d{};
-		}
+		return dllBack->GetBlueFieldPosition();
 	}
 	else
 	{
@@ -164,18 +142,7 @@ frc::Pose2d DragonVision::GetRobotPosition(LIMELIGHT_POSITION position) const
 
 	if ((limelight != nullptr) && (limelight->HasTarget()))
 	{
-		if (alliance == frc::DriverStation::Alliance::kBlue)
-		{
-			return limelight->GetBlueFieldPosition();
-		}
-		else if (alliance == frc::DriverStation::Alliance::kRed)
-		{
-			return limelight->GetRedFieldPosition();
-		}
-		else
-		{
-			return frc::Pose2d{};
-		}
+		return limelight->GetBlueFieldPosition();
 	}
 	else
 	{
