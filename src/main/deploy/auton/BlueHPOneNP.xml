@@ -53,24 +53,11 @@
                grabber="GRAB"
                time="5.0"
                />
-    <primitive id="DRIVE_PATH"
-               pathname="BlueHPOne3.wpilib.json"
-               headingOption="SPECIFIED_ANGLE"
-               heading="0"
-               grabber="GRAB"
-               time="3.0"
-               />
-    <!--drive onto charging station-->
-    <primitive id="DRIVE_PATH"
-               pathname="BlueHPOne4Slow.wpilib.json"
-               headingOption="SPECIFIED_ANGLE"
-               heading="0"
-               grabber="GRAB"
-               time="6.0"
-               />
     <!--auto balance-->
     <primitive id="DO_NOTHING"
                grabber="GRAB"
+               headingOption="SPECIFIED_ANGLE"
+               heading="0"
                time="10.0"
                /> 
 </auton>
