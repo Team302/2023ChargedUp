@@ -30,15 +30,15 @@ AutoBalanceDrive::AutoBalanceDrive(RobotDrive *robotDrive) : RobotDrive(), m_rob
 
 std::array<frc::SwerveModuleState, 4> AutoBalanceDrive::UpdateSwerveModuleStates(ChassisMovement &chassisMovement)
 {
-    auto pitch = m_chassis != nullptr ? m_chassis->GetPitch() : units::degree_t(0.0);
-    auto roll = m_chassis != nullptr ? m_chassis->GetRoll() : units::degree_t(0.0);
+    auto pitch = m_chassis != nullptr ? m_chassis->GetPitch().to<double>() : 0.0;
+    auto roll = m_chassis != nullptr ? m_chassis->GetRoll().to<double>() : 0.0;
 
-    chassisMovement.chassisSpeeds.vx = pitch.to<double>() * m_pitchConstant;
-    chassisMovement.chassisSpeeds.vy = roll.to<double>() * m_rollConstant;
+    chassisMovement.chassisSpeeds.vx = pitch * m_pitchConstant;
+    chassisMovement.chassisSpeeds.vy = roll * m_rollConstant;
     chassisMovement.chassisSpeeds.omega = units::radians_per_second_t(0.0);
 
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Auto Balance Drive", "pitch", pitch.to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Auto Balance Drive", "roll", roll.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Auto Balance Drive", "pitch", pitch);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Auto Balance Drive", "roll", roll);
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Auto Balance Drive", "vx", chassisMovement.chassisSpeeds.vx.to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Auto Balance Drive", "vy", chassisMovement.chassisSpeeds.vy.to<double>());
 

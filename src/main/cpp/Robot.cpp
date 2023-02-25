@@ -12,7 +12,7 @@
 #include <auton/CyclePrimitives.h>
 #include <chassis/ChassisFactory.h>
 #include <chassis/holonomic/HolonomicDrive.h>
-#include <chassis/IChassis.h>
+#include <chassis/swerve/SwerveChassis.h>
 #include <chassis/mecanum/MecanumChassis.h>
 #include <driveteamfeedback/DriverFeedback.h>
 #include <hw/factories/LimelightFactory.h>
@@ -88,6 +88,12 @@ void Robot::RobotPeriodic()
     LoggableItemMgr::GetInstance()->LogData();
     Logger::GetLogger()->PeriodicLog();
 
+    if (m_chassis != nullptr)
+    {
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "balance info", "yaw", m_chassis->GetYaw().to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "balance info", "pitch", m_chassis->GetPitch().to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "balance info", "roll", m_chassis->GetRoll().to<double>());
+    }
     if (m_tuner != nullptr)
     {
         m_tuner->ListenForUpdates();
@@ -149,7 +155,7 @@ void Robot::RobotPeriodic()
     {
         m_previewer->CheckCurrentAuton();
     }
-    if (m_field != nullptr)
+    if (m_field != nullptr && m_chassis != nullptr)
     {
         m_field->UpdateRobotPosition(m_chassis->GetPose()); // ToDo:: Move to DriveTeamFeedback (also don't assume m_field isn't a nullptr)
     }
