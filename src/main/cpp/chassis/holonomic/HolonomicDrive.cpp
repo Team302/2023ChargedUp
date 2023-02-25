@@ -203,7 +203,6 @@ void HolonomicDrive::Run()
         {
             forward *= -1.0;
             strafe *= -1.0;
-            rotate *= -1.0;
         }
 
         moveInfo.chassisSpeeds.vx = forward * maxSpeed;
