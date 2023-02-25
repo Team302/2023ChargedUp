@@ -103,14 +103,15 @@ public:
     /// @brief Get encoder values
     double GetEncoderValues(std::shared_ptr<SwerveModule> motor);
 
-    /// @brief Reset the current chassis pose based on the provided pose and rotation
-    /// @param [in] const Pose2d&       pose        Current XY position
-    /// @param [in] const Rotation2d&   angle       Current rotation angle
-    void ResetPose(const frc::Pose2d &pose, const frc::Rotation2d &angle);
-
     /// @brief Reset the current chassis pose based on the provided pose (the rotation comes from the Pigeon)
     /// @param [in] const Pose2d&       pose        Current XY position
     void ResetPose(const frc::Pose2d &pose) override;
+
+    /// @brief Reset chassis pose based on vision data (designed to be used by HolonomicDrive to fix/update field orientation)
+    void ResetPoseToVision();
+
+    // static constexpr auto MaxSpeed = 3.0_mps;
+    // static constexpr units::angular_velocity::radians_per_second_t MaxAngularSpeed{wpi::numbers::pi};
 
     units::length::inch_t GetWheelDiameter() const { return m_wheelDiameter; }
     units::length::inch_t GetWheelBase() const { return m_wheelBase; }
@@ -133,8 +134,6 @@ public:
     inline void Initialize() override{};
 
     void SetTargetHeading(units::angle::degree_t targetYaw) override;
-
-    void ReZero();
 
     ISwerveDriveOrientation *GetSpecifiedHeadingState(ChassisOptionEnums::HeadingOption headingOption);
     ISwerveDriveState *GetSpecifiedDriveState(ChassisOptionEnums::DriveStateType driveOption);
