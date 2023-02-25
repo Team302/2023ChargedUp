@@ -1,46 +1,36 @@
-
-<!--arm test path-->
-
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE auton SYSTEM "auton.dtd">
 <auton>
-    <primitive id="RESET_POSITION"
-	            pathname="ArmTest.wpilib.json"
-                grabber="GRAB"/>
-    <primitive id="DO_NOTHING"
-               arm="CUBE_BACKROW_ROTATE"
+<primitive id="RESET_POSITION"
+	           pathname="BlueCOOPOne1Slow.wpilib.json"
+               grabber="GRAB"/>
+    <!--score preloaded cone-->
+        <primitive id="DO_NOTHING"
+               arm="CONE_BACKROW_ROTATE"
                extender="STARTING_POSITION_EXTEND"
+               grabber="GRAB"
+               time="0.35"
+               />
+    <primitive id="DO_NOTHING"
+               arm="CONE_BACKROW_ROTATE"
+               extender="CONE_BACKROW_EXTEND"
                grabber="GRAB"
                time="0.5"
                />
     <primitive id="DO_NOTHING"
-               arm="CUBE_BACKROW_ROTATE"
-               extender="CUBE_BACKROW_EXTEND"
-               grabber="GRAB"
-               time="0.5"
-               />
-    <primitive id="DO_NOTHING"
-               arm="CUBE_BACKROW_ROTATE"
-               extender="CUBE_BACKROW_EXTEND"
+               arm="CONE_BACKROW_ROTATE"
+               extender="CONE_BACKROW_EXTEND"
                grabber="OPEN"
-               time="0.25"
+               time="0.35"
                />
     <primitive id="DO_NOTHING"
-               arm="CUBE_BACKROW_ROTATE"
-               extender="STARTING_POSITION_EXTEND"
-               grabber="OPEN"
-               time="0.15"
-               />
-    <primitive id="DO_NOTHING"
-               arm="STARTING_POSITION_ROTATE"
+               arm="CONE_BACKROW_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                grabber="OPEN"
                time="0.5"
                />
+    <!--do nothing!-->
     <primitive id="DO_NOTHING"
-               arm="STARTING_POSITION_ROTATE"
-               extender="STARTING_POSITION_EXTEND"
-               grabber="GRAB"
-               time="0.5"
+               time="10.0"
                />
 </auton>
