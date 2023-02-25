@@ -34,25 +34,21 @@ public:
     void Run();
 
 private:
+    enum TEST_STEP
+    {
+        NO_TEST,
+        ARM_TEST,
+        EXTENDER_TEST,
+        SWERVE_VX_FORWARD,
+        SWERVE_VX_BACKWARD,
+        SWERVE_VY_FORWARD,
+        SWERVE_VY_BACKWARD,
+    };
+    TEST_STEP m_testStep = TEST_STEP::NO_TEST;
     int m_timer0 = 0;
     int m_timer1 = 0;
     int m_timer2 = 0;
-    bool m_finishedarmtest = false;
-    bool m_gotbasepdpuseage = false;
-    bool m_finishedextendertest = false;
-    bool m_finishedchassistest = false;
-    bool m_finishedchassisforwardtest = false;
-    bool m_finishedchassisstrafetest = false;
-    bool m_finishedchassisturntest = false;
-    bool m_finishedalltest = false;
-    bool m_finishedzeroswerve = false;
-    bool m_disableswerveforwardtest = false;
-    bool m_disableswervestrafetest = false;
-    bool m_finishedswervestrafetest = false;
-    bool m_disableswerveturntest = false;
-    bool m_finishedswerveturntest = false;
-    bool m_finishedstartswervestrafetest = false;
-    bool m_finishedstartswerveturntest = false;
+    int m_timer3 = 0;
     double m_basepdpusage;
     double m_armusage;
     double m_extenderusage;
@@ -62,10 +58,13 @@ private:
     double test;
     double m_InitialPDPWatts;
     frc::PowerDistribution *m_PDP;
-    void BasePDPValue();
-    void TestSwerve();
-    void TestExtender();
-    void TestArm();
+    bool BasePDPValue();
+    bool TestExtender();
+    bool TestArm();
+    bool TestswervevxForward();
+    bool TestswervevxBackward();
+    bool TestswervevyForward();
+    bool TestswervevyBackward();
     // double GetTestPnumatics();
     // double GetPDHTemp();
 };

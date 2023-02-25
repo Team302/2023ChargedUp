@@ -210,7 +210,7 @@ void Robot::AutonomousPeriodic()
 
 void Robot::TeleopInit()
 {
-    /*Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopInit"), string("arrived"));
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopInit"), string("arrived"));
 
     if (m_controller == nullptr)
     {
@@ -233,18 +233,12 @@ void Robot::TeleopInit()
         m_field->ResetField(); // ToDo:  Move to DriveTeamFeedback
     }
 
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopInit"), string("end"));*/
-    m_autotest = new AutomatedSystemTest();
-    if (m_autotest != nullptr)
-    {
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TestInit"), string("arrived"));
-        m_autotest->Init();
-    }
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopInit"), string("end"));
 }
 
 void Robot::TeleopPeriodic()
 {
-    /*Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopPeriodic"), string("arrived"));
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopPeriodic"), string("arrived"));
     if (m_chassis != nullptr && m_controller != nullptr)
     {
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("HolonomicRun"), string("arrived"));
@@ -255,12 +249,7 @@ void Robot::TeleopPeriodic()
     }
     StateMgrHelper::RunCurrentMechanismStates();
 
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopPeriodic"), string("end"));*/
-    if (m_autotest != nullptr)
-    {
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("Testperiodic"), string("arrived"));
-        m_autotest->Run();
-    }
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopPeriodic"), string("end"));
 }
 
 void Robot::DisabledInit()
@@ -276,10 +265,21 @@ void Robot::DisabledPeriodic()
 
 void Robot::TestInit()
 {
+    m_autotest = new AutomatedSystemTest();
+    if (m_autotest != nullptr)
+    {
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TestInit"), string("arrived"));
+        m_autotest->Init();
+    }
 }
 
 void Robot::TestPeriodic()
 {
+    if (m_autotest != nullptr)
+    {
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("Testperiodic"), string("arrived"));
+        m_autotest->Run();
+    }
 }
 
 #ifndef RUNNING_FRC_TESTS
