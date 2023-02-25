@@ -2,8 +2,8 @@
 <!DOCTYPE auton SYSTEM "auton.dtd">
 <auton>
 <primitive id="RESET_POSITION"
-	   pathname="BlueHPOne1.wpilib.json"
-       grabber="GRAB"/>
+	           pathname="RedCOOPOne1Slow.wpilib.json"
+               grabber="GRAB"/>
     <!--score preloaded cone-->
         <primitive id="DO_NOTHING"
                arm="CONE_BACKROW_ROTATE"
@@ -29,35 +29,8 @@
                grabber="OPEN"
                time="0.5"
                />
-    <!--drive to charing station-->
-    <primitive id="DRIVE_PATH"
-               pathname="BlueHPOne1.wpilib.json"
-               headingOption="SPECIFIED_ANGLE"
-               heading="180"
-               arm="STARTING_POSITION_ROTATE"
-               grabber="GRAB"
-               time="0.5"
-               />
-    <primitive id="DRIVE_PATH"
-               pathname="BlueHPOne4.wpilib.json"
-               headingOption="SPECIFIED_ANGLE"
-               heading="180"
-               arm="STARTING_POSITION_ROTATE"
-               grabber="GRAB"
-               time="2.0"
-               />
-    <primitive id="DRIVE_PATH"
-               pathname="BlueHPOne2.wpilib.json"
-               headingOption="SPECIFIED_ANGLE"
-               heading="180"
-               grabber="GRAB"
-               time="5.0"
-               />
     <!--do nothing!-->
     <primitive id="DO_NOTHING"
-               grabber="GRAB"
-               headingOption="SPECIFIED_ANGLE"
-               heading="0"
                time="10.0"
-               /> 
+               />
 </auton>
