@@ -89,15 +89,11 @@ void HolonomicDrive::Run()
             moveInfo.headingOption = ChassisOptionEnums::HeadingOption::TOWARD_GOAL;
         }
 
-        if (controller->IsButtonPressed(TeleopControlFunctions::REZERO_PIGEON))
+        if (controller->IsButtonPressed(TeleopControlFunctions::RESET_POSITION))
         {
-            auto factory = PigeonFactory::GetFactory();
-            auto m_pigeon = factory->GetPigeon(DragonPigeon::PIGEON_USAGE::CENTER_OF_ROBOT);
-            m_pigeon->ReZeroPigeon(0.0, 0.0);
             if (m_swerve != nullptr)
             {
-                m_swerve->ZeroAlignSwerveModules();
-                m_swerve->ReZero();
+                m_swerve->ResetPoseToVision();
             }
         }
 
@@ -138,6 +134,7 @@ void HolonomicDrive::Run()
         {
             if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_LEFT_COLUMN))
             {
+                m_swerve->ResetPoseToVision();
                 moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
                 m_previousDriveState = moveInfo.driveOption;
                 moveInfo.trajectory = m_trajectoryGenerator->GenerateTrajectory(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose(), DragonTrajectoryGenerator::TARGET_POSITION::COLUMN_ONE);
@@ -146,6 +143,7 @@ void HolonomicDrive::Run()
             }
             else if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_MIDDLE_COLUMN))
             {
+                m_swerve->ResetPoseToVision();
                 moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
                 m_previousDriveState = moveInfo.driveOption;
                 moveInfo.trajectory = m_trajectoryGenerator->GenerateTrajectory(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose(), DragonTrajectoryGenerator::TARGET_POSITION::COLUMN_TWO);
@@ -154,6 +152,7 @@ void HolonomicDrive::Run()
             }
             else if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_RIGHT_COLUMN))
             {
+                m_swerve->ResetPoseToVision();
                 moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
                 m_previousDriveState = moveInfo.driveOption;
                 moveInfo.trajectory = m_trajectoryGenerator->GenerateTrajectory(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose(), DragonTrajectoryGenerator::TARGET_POSITION::COLUMN_THREE);
@@ -198,6 +197,13 @@ void HolonomicDrive::Run()
         }
 
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("Run"), string("axis read"));
+
+        // temporary fix for resetting odomtery by apriltags, issues with rotation
+        if (FMSData::GetInstance()->GetAllianceColor() == frc::DriverStation::Alliance::kRed)
+        {
+            forward *= -1.0;
+            strafe *= -1.0;
+        }
 
         moveInfo.chassisSpeeds.vx = forward * maxSpeed;
         moveInfo.chassisSpeeds.vy = strafe * maxSpeed;

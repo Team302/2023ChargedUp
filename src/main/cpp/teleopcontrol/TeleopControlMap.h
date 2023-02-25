@@ -163,7 +163,7 @@ robin_hood::unordered_map<TeleopControlFunctions::FUNCTION, const TeleopControlB
     {TeleopControlFunctions::DRIVE_TO_LEFT_COLUMN, driverXButton},
     {TeleopControlFunctions::DRIVE_TO_MIDDLE_COLUMN, driverYButton},
     {TeleopControlFunctions::DRIVE_TO_RIGHT_COLUMN, driverBButton},
-    {TeleopControlFunctions::REZERO_PIGEON, driverAButton},
+    {TeleopControlFunctions::RESET_POSITION, driverAButton},
     {TeleopControlFunctions::HOLD_POSITION, driverLBumper},
     {TeleopControlFunctions::SLOW_MODE, driverRBumper},
 
