@@ -1,0 +1,73 @@
+//====================================================================================================================================================
+// Copyright 2023 Lake Orion Robotics FIRST Team 302
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+// OR OTHER DEALINGS IN THE SOFTWARE.
+//====================================================================================================================================================
+
+// C++
+#include <string>
+
+// FRC Includes
+#include <frc/controller/PIDController.h>
+#include <frc/controller/ProfiledPIDController.h>
+#include <frc/kinematics/ChassisSpeeds.h>
+#include <frc/Filesystem.h>
+#include <frc/trajectory/TrajectoryUtil.h>
+#include <units/angular_velocity.h>
+#include <wpi/fs.h>
+
+// 302 Includes
+#include <auton/drivePrimitives/AutoBalance.h>
+#include <auton/drivePrimitives/DragonTrajectoryUtils.h>
+#include <chassis/ChassisMovement.h>
+#include <chassis/ChassisOptionEnums.h>
+#include <chassis/ChassisFactory.h>
+#include <chassis/IChassis.h>
+#include <utils/logging/Logger.h>
+#include <chassis/swerve/driveStates/TrajectoryDrive.h>
+
+using namespace std;
+using namespace frc;
+
+using namespace wpi::math;
+
+AutoBalance::AutoBalance() : m_chassis(ChassisFactory::GetChassisFactory()->GetSwerveChassis()),
+                             // max velocity of 1 rotation per second and a max acceleration of 180 degrees per second squared.
+                             m_headingOption(ChassisOptionEnums::HeadingOption::MAINTAIN),
+                             m_ntName("AutoBalance")
+{
+}
+void AutoBalance::Init(PrimitiveParams *params)
+{
+}
+void AutoBalance::Run()
+{
+    if (m_chassis != nullptr)
+    {
+        ChassisMovement moveInfo;
+        moveInfo.driveOption = ChassisOptionEnums::DriveStateType::AUTO_BALANCE;
+        moveInfo.headingOption = ChassisOptionEnums::HeadingOption::MAINTAIN;
+        m_chassis->Drive(moveInfo);
+    }
+}
+
+bool AutoBalance::IsDone()
+{
+    if (m_chassis != nullptr)
+    {
+        auto pitch = m_chassis->GetPitch().to<double>();
+        auto roll = m_chassis->GetRoll().to<double>();
+
+        return (abs(pitch) < m_balanceTolerance && abs(roll) < m_balanceTolerance);
+    }
+    return true;
+}

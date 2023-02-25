@@ -40,6 +40,7 @@
 #include <chassis/PoseEstimatorEnum.h>
 #include <chassis/swerve/SwerveChassis.h>
 
+#include <chassis/swerve/driveStates/AutoBalanceDrive.h>
 #include <chassis/swerve/driveStates/FieldDrive.h>
 #include <chassis/swerve/driveStates/HoldDrive.h>
 #include <chassis/swerve/driveStates/RobotDrive.h>
@@ -155,11 +156,12 @@ void SwerveChassis::InitStates()
 {
     m_robotDrive = new RobotDrive();
 
-    m_driveStateMap[ChassisOptionEnums::DriveStateType::FIELD_DRIVE] = new FieldDrive(m_robotDrive);
-    m_driveStateMap[ChassisOptionEnums::DriveStateType::HOLD_DRIVE] = new HoldDrive();
-    m_driveStateMap[ChassisOptionEnums::DriveStateType::ROBOT_DRIVE] = m_robotDrive;
-    m_driveStateMap[ChassisOptionEnums::DriveStateType::STOP_DRIVE] = new StopDrive();
-    m_driveStateMap[ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE] = new TrajectoryDrive(m_robotDrive);
+    m_driveStateMap[ChassisOptionEnums::FIELD_DRIVE] = new FieldDrive(m_robotDrive);
+    m_driveStateMap[ChassisOptionEnums::HOLD_DRIVE] = new HoldDrive();
+    m_driveStateMap[ChassisOptionEnums::ROBOT_DRIVE] = m_robotDrive;
+    m_driveStateMap[ChassisOptionEnums::STOP_DRIVE] = new StopDrive();
+    m_driveStateMap[ChassisOptionEnums::TRAJECTORY_DRIVE] = new TrajectoryDrive(m_robotDrive);
+    m_driveStateMap[ChassisOptionEnums::AUTO_BALANCE] = new AutoBalanceDrive(m_robotDrive);
 
     m_headingStateMap[ChassisOptionEnums::HeadingOption::MAINTAIN] = new MaintainHeading();
     m_headingStateMap[ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE] = new SpecifiedHeading();
@@ -206,8 +208,7 @@ void SwerveChassis::Drive()
     // No-op for now
 }
 
-ISwerveDriveState *SwerveChassis::GetSpecifiedDriveState(
-    ChassisOptionEnums::DriveStateType driveOption)
+ISwerveDriveState *SwerveChassis::GetSpecifiedDriveState(ChassisOptionEnums::DriveStateType driveOption)
 {
     auto itr = m_driveStateMap.find(driveOption);
     if (itr == m_driveStateMap.end())
@@ -217,8 +218,7 @@ ISwerveDriveState *SwerveChassis::GetSpecifiedDriveState(
     return itr->second;
 }
 
-ISwerveDriveOrientation *SwerveChassis::GetHeadingState(
-    ChassisMovement moveInfo)
+ISwerveDriveOrientation *SwerveChassis::GetHeadingState(ChassisMovement moveInfo)
 {
     auto itr = m_headingStateMap.find(moveInfo.headingOption);
     if (itr == m_headingStateMap.end())
@@ -227,8 +227,7 @@ ISwerveDriveOrientation *SwerveChassis::GetHeadingState(
     }
     return itr->second;
 }
-ISwerveDriveState *SwerveChassis::GetDriveState(
-    ChassisMovement moveInfo)
+ISwerveDriveState *SwerveChassis::GetDriveState(ChassisMovement moveInfo)
 {
     auto itr = m_driveStateMap.find(moveInfo.driveOption);
     if (itr == m_driveStateMap.end())

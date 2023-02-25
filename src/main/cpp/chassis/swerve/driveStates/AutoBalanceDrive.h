@@ -1,4 +1,3 @@
-
 //====================================================================================================================================================
 // Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
@@ -16,26 +15,28 @@
 
 #pragma once
 
-// C++ Includes
+// FRC Includes
+#include <frc/kinematics/SwerveModuleState.h>
+#include <frc/kinematics/ChassisSpeeds.h>
 
-// FRC includes
+// Team302 Includes
+#include <chassis/swerve/driveStates/RobotDrive.h>
 
-// Team 302 includes
+class SwerveChassis;
 
-// Third Party Includes
-
-enum PRIMITIVE_IDENTIFIER
+class AutoBalanceDrive : public RobotDrive
 {
-  UNKNOWN_PRIMITIVE = -1,
-  DO_NOTHING,
-  HOLD_POSITION,
-  DRIVE_DISTANCE,
-  DRIVE_TIME,
-  DRIVE_TO_WALL,
-  TURN_ANGLE_ABS,
-  TURN_ANGLE_REL,
-  DRIVE_PATH,
-  RESET_POSITION,
-  AUTO_BALANCE,
-  MAX_AUTON_PRIMITIVES
+public:
+    AutoBalanceDrive(RobotDrive *robotDrive);
+
+    std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates(ChassisMovement &chassisMovement) override;
+
+    void Init(ChassisMovement &chassisMovement) override;
+
+private:
+    RobotDrive *m_robotDrive;
+    SwerveChassis *m_chassis;
+
+    const units::feet_per_second_t m_pitchConstant = units::feet_per_second_t(0.1);
+    const units::feet_per_second_t m_rollConstant = units::feet_per_second_t(0.1);
 };

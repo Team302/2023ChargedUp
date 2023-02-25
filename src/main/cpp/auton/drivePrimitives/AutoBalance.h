@@ -1,4 +1,3 @@
-
 //====================================================================================================================================================
 // Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
@@ -13,29 +12,43 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
-
 #pragma once
 
 // C++ Includes
+#include <memory>
 
-// FRC includes
+// Team302 Includes
+#include <auton/PrimitiveParams.h>
+#include <auton/drivePrimitives/IPrimitive.h>
+#include <chassis/ChassisFactory.h>
+#include <chassis/swerve/SwerveChassis.h>
+#include <chassis/ChassisOptionEnums.h>
 
-// Team 302 includes
+// FRC,WPI Includes
+#include <frc/controller/HolonomicDriveController.h>
+#include <frc/controller/RamseteController.h>
+#include <frc/Filesystem.h>
+#include <frc/geometry/Pose2d.h>
+#include <frc/trajectory/TrajectoryConfig.h>
+#include <frc/trajectory/TrajectoryUtil.h>
+#include <wpi/SmallString.h>
 
-// Third Party Includes
-
-enum PRIMITIVE_IDENTIFIER
+class AutoBalance : public IPrimitive
 {
-  UNKNOWN_PRIMITIVE = -1,
-  DO_NOTHING,
-  HOLD_POSITION,
-  DRIVE_DISTANCE,
-  DRIVE_TIME,
-  DRIVE_TO_WALL,
-  TURN_ANGLE_ABS,
-  TURN_ANGLE_REL,
-  DRIVE_PATH,
-  RESET_POSITION,
-  AUTO_BALANCE,
-  MAX_AUTON_PRIMITIVES
+public:
+    AutoBalance();
+
+    virtual ~AutoBalance() = default;
+
+    void Init(PrimitiveParams *params) override;
+    void Run() override;
+    bool IsDone() override;
+
+private:
+    SwerveChassis *m_chassis;
+
+    ChassisOptionEnums::HeadingOption m_headingOption;
+    std::string m_ntName;
+
+    const double m_balanceTolerance = 2.0;
 };

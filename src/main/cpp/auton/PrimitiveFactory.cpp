@@ -48,6 +48,7 @@ PrimitiveFactory::PrimitiveFactory() : m_DriveStop(nullptr),
 									   m_driveToWall(nullptr),
 									   m_driveLidarDistance(nullptr),
 									   m_resetPosition(nullptr),
+									   m_autoBalance(nullptr),
 									   m_drivePath(nullptr)
 {
 }
@@ -133,6 +134,13 @@ IPrimitive *PrimitiveFactory::GetIPrimitive(PrimitiveParams *primitivePasser)
 		}
 		primitive = m_drivePath;
 		break;
+
+	case AUTO_BALANCE:
+		if (m_autoBalance == nullptr)
+		{
+			//			m_autoBalance = new AutoBalance();
+		}
+		primitive = m_autoBalance;
 
 	default:
 		break;

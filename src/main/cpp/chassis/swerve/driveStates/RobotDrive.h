@@ -28,6 +28,7 @@ class RobotDrive : public ISwerveDriveState
 {
 public:
     RobotDrive();
+    ~RobotDrive() = default;
 
     std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates(
         ChassisMovement &chassisMovement) override;
