@@ -36,21 +36,28 @@
                heading="0"
                arm="STARTING_POSITION_ROTATE"
                grabber="GRAB"
-               time="1.0"
+               time="0.5"
                />
     <primitive id="DRIVE_PATH"
                pathname="RedHPOne2.wpilib.json"
                headingOption="SPECIFIED_ANGLE"
                heading="0"
                grabber="GRAB"
-               time="10.0"
+               time="3.0"
+               />
+    <primitive id="DRIVE_PATH"
+               pathname="RedHPOne4.wpilib.json"
+               headingOption="SPECIFIED_ANGLE"
+               heading="0"
+               grabber="GRAB"
+               time="5.0"
                />
     <primitive id="DRIVE_PATH"
                pathname="RedHPOne3.wpilib.json"
                headingOption="SPECIFIED_ANGLE"
                heading="179.5"
                grabber="GRAB"
-               time="5.0"
+               time="2.0"
                />
     <!--drive on charing station-->
     <primitive id="DRIVE_PATH"
@@ -62,6 +69,7 @@
                />
     <!--auto balance-->
     <primitive id="DO_NOTHING"
+               grabber="GRAB"
                time="10.0"
                />
 </auton>
