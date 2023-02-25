@@ -27,6 +27,8 @@ public:
 
     void UpdateLEDStates();
 
+    void UpdateCompressorState();
+
     void Update(RobotStateChanges::StateChange change, int value) override;
 
 private:
@@ -44,6 +46,8 @@ private:
         WANT_CUBE,
         WANT_CONE,
         GAME_PIECE_READY_TO_PICK_UP,
+        COMPRESSOR_ON,
+        COMPRESSOR_OFF,
         NONE
 
     };

@@ -23,7 +23,7 @@
 #include <robotstate/RobotStateChangeBroker.h>
 #include <teleopcontrol/TeleopControl.h>
 #include <utils/DragonField.h>
-// #include <xml/PCMXmlParser.cpp>
+#include <hw/factories/CompressorFactory.h>
 
 using frc::DriverStation;
 
@@ -86,7 +86,17 @@ void RobotState::Run()
             {
                 if (m_wasCompressorButtonReleased)
                 {
-                    // pcm
+                    if (RobotStateChanges::CompressorState::CompressorOn)
+                    {
+                        frc::Compressor *EnableAnalog(units::pounds_per_square_inch_t minPressure, units::pounds_per_square_inch_t maxPressure);
+                        PublishStateChange(RobotStateChanges::CompressorChange, m_compressorCurrent);
+                    }
+
+                    else if (RobotStateChanges::CompressorState::CompressorOff)
+                    {
+                        frc::Compressor *Disable;
+                        PublishStateChange(RobotStateChanges::CompressorChange, m_compressorCurrent);
+                    }
                 }
             }
             m_wasCompressorButtonReleased = !controller->IsButtonPressed(TeleopControlFunctions::TOGGLE_COMPRESSER);

@@ -32,6 +32,19 @@ DriverFeedback *DriverFeedback::GetInstance()
 void DriverFeedback::UpdateFeedback()
 {
     UpdateLEDStates();
+    UpdateCompressorState();
+}
+void DriverFeedback::UpdateCompressorState()
+{
+    if (RobotStateChanges::CompressorState::CompressorOn)
+    {
+        currentState = DriverFeedbackStates::COMPRESSOR_ON;
+    }
+
+    else if (RobotStateChanges::CompressorState::CompressorOff)
+    {
+        currentState = DriverFeedbackStates::COMPRESSOR_OFF;
+    }
 }
 void DriverFeedback::UpdateLEDStates()
 {
