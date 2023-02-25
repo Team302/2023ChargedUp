@@ -5,7 +5,7 @@
 	   pathname="RedCOOPOne1Slow.wpilib.json"
        grabber="GRAB"/>
     <!--score preloaded cone-->
-        <primitive id="DO_NOTHING"
+    <primitive id="DO_NOTHING"
                arm="CONE_BACKROW_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                grabber="GRAB"
