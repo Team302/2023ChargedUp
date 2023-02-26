@@ -28,7 +28,7 @@ class PowerDistribution;
 class AutomatedSystemTest
 {
 public:
-    AutomatedSystemTest();
+    AutomatedSystemTest() = default;
     ~AutomatedSystemTest() = default;
     void Init();
     void Run();
@@ -36,15 +36,17 @@ public:
 private:
     enum TEST_STEP
     {
-        NO_TEST,
-        ARM_TEST,
-        EXTENDER_TEST,
-        SWERVE_VX_FORWARD,
-        SWERVE_VX_BACKWARD,
-        SWERVE_VY_FORWARD,
-        SWERVE_VY_BACKWARD,
+        BASE_TEST = 0,
+        ARM_TEST = 1,
+        EXTENDER_TEST = 2,
+        SWERVE_VX_FORWARD = 3,
+        SWERVE_VX_BACKWARD = 4,
+        SWERVE_VY_FORWARD = 5,
+        SWERVE_VY_BACKWARD = 6,
     };
-    TEST_STEP m_testStep = TEST_STEP::NO_TEST;
+    TEST_STEP m_testStep;
+    bool finishedcurrentstep;
+    int TestStepnum;
     int m_timer0 = 0;
     int m_timer1 = 0;
     int m_timer2 = 0;
