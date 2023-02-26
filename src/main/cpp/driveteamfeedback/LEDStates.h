@@ -16,6 +16,7 @@
 
 #pragma once
 #include <driveteamfeedback/LED.h>
+#include <vector>
 
 class LEDStates
 {
@@ -36,4 +37,9 @@ private:
     int colorLoop = 0;
     int timer;
     static LEDStates *m_instance;
+
+    const int blinkPatternPeriod = 10;
+
+    void setBufferAllLEDsColor(std::array<int, 3> color);
+    void setBufferAllLEDsAlternatingColor(std::array<int, 3> color1, std::array<int, 3> color2);
 };

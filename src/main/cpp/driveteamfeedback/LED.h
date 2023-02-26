@@ -16,12 +16,11 @@
 
 #pragma once
 #include <frc/AddressableLED.h>
+#include <vector>
 
 class LED
 {
 public:
-        LED(int PWMport);
-
         enum Colors
         {
                 RED,
@@ -35,17 +34,19 @@ public:
                 MAX_STATE
         };
 
-        static constexpr int kLength = 15;
+        std::vector<frc::AddressableLED::LEDData> m_ledBuffer;
 
-        frc::AddressableLED *m_led;
-        std::array<frc::AddressableLED::LEDData, kLength> m_ledBuffer;
+        void Initialize(int PWMport, int numLeds);
+        void commitLedData();
 
         std::array<int, 3> getColorValues(Colors c);
-        ~LED();
-        LED() = delete;
 
         static LED *GetInstance();
 
 private:
         static LED *m_instance;
+        frc::AddressableLED *m_addressibleLeds;
+
+        ~LED();
+        LED();
 };
