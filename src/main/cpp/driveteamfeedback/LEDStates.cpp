@@ -17,7 +17,7 @@
 #include <driveteamfeedback/LEDStates.h>
 #include <span>
 
-void LEDStates::BlinkingPattern(LED::Colors c)
+void LEDStates::BlinkingPattern(DragonLeds::Colors c)
 {
     if (timer > 2 * blinkPatternPeriod)
         timer = 0;
@@ -34,18 +34,18 @@ void LEDStates::BlinkingPattern(LED::Colors c)
     timer++;
 }
 
-void LEDStates::SolidColorPattern(LED::Colors c)
+void LEDStates::SolidColorPattern(DragonLeds::Colors c)
 {
     m_LEDstring->setBufferAllLEDsColor(m_LEDstring->getColorValues(c));
     m_LEDstring->commitLedData();
 }
 
-void LEDStates::AlternatingColorBlinkingPattern(LED::Colors c)
+void LEDStates::AlternatingColorBlinkingPattern(DragonLeds::Colors c)
 {
     AlternatingColorBlinkingPattern(c, m_LEDstring->BLACK);
 }
 
-void LEDStates::AlternatingColorBlinkingPattern(LED::Colors c1, LED::Colors c2)
+void LEDStates::AlternatingColorBlinkingPattern(DragonLeds::Colors c1, DragonLeds::Colors c2)
 {
     if (timer > 2 * alternatingColorBlinkPatternPeriod)
         timer = 0;
@@ -62,7 +62,7 @@ void LEDStates::AlternatingColorBlinkingPattern(LED::Colors c1, LED::Colors c2)
     timer++;
 }
 
-void LEDStates::ClosingInChaserPattern(LED::Colors c)
+void LEDStates::ClosingInChaserPattern(DragonLeds::Colors c)
 {
     if (timer == 7)
     {
@@ -80,11 +80,11 @@ void LEDStates::ClosingInChaserPattern(LED::Colors c)
     timer++;
 }
 
-void LEDStates::ChaserPattern(LED::Colors c)
+void LEDStates::ChaserPattern(DragonLeds::Colors c)
 {
     loopThroughIndividualLEDs += loopThroughIndividualLEDs < m_LEDstring->m_ledBuffer.size() - 1 ? 1 : -loopThroughIndividualLEDs;
 
-    auto color = colorLoop >= 0 ? m_LEDstring->getColorValues(c) : m_LEDstring->getColorValues(LED::BLACK);
+    auto color = colorLoop >= 0 ? m_LEDstring->getColorValues(c) : m_LEDstring->getColorValues(DragonLeds::BLACK);
 
     colorLoop += colorLoop < m_LEDstring->m_ledBuffer.size() - 1 ? 1 : -((colorLoop * 2) + 1);
 

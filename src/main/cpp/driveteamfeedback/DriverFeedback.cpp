@@ -42,17 +42,16 @@ void DriverFeedback::UpdateLEDStates()
         {
             m_LEDStates->ResetVariables();
         }
-        m_LEDStates->ClosingInChaserPattern(LED::YELLOW);
+        m_LEDStates->ClosingInChaserPattern(DragonLeds::YELLOW);
         currentState = DriverFeedbackStates::ALIGNED_WITH_CONE_NODE;
     }
     else if (DriverFeedback::m_AlignedWithCubeNode)
     {
-
         if (currentState != DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE)
         {
             m_LEDStates->ResetVariables();
         }
-        m_LEDStates->ClosingInChaserPattern(LED::PURPLE);
+        m_LEDStates->ClosingInChaserPattern(DragonLeds::PURPLE);
         currentState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
     }
     else if (DriverFeedback::m_GamePieceInGrabber)
@@ -62,7 +61,7 @@ void DriverFeedback::UpdateLEDStates()
         {
             m_LEDStates->ResetVariables();
         }
-        m_LEDStates->AlternatingColorBlinkingPattern(LED::YELLOW, LED::PURPLE);
+        m_LEDStates->AlternatingColorBlinkingPattern(DragonLeds::YELLOW, DragonLeds::PURPLE);
         currentState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
     }
     else if (DriverFeedback::m_WantCube)
@@ -70,7 +69,7 @@ void DriverFeedback::UpdateLEDStates()
         if (currentState != DriverFeedbackStates::WANT_CUBE)
         {
             m_LEDStates->ResetVariables();
-            m_LEDStates->SolidColorPattern(LED::PURPLE);
+            m_LEDStates->SolidColorPattern(DragonLeds::PURPLE);
             currentState = DriverFeedbackStates::WANT_CUBE;
         }
     }
@@ -79,7 +78,7 @@ void DriverFeedback::UpdateLEDStates()
         if (currentState != DriverFeedbackStates::WANT_CONE)
         {
             m_LEDStates->ResetVariables();
-            m_LEDStates->SolidColorPattern(LED::YELLOW);
+            m_LEDStates->SolidColorPattern(DragonLeds::YELLOW);
             currentState = DriverFeedbackStates::WANT_CONE;
         }
     }
@@ -88,7 +87,7 @@ void DriverFeedback::UpdateLEDStates()
         if (currentState != DriverFeedbackStates::GAME_PIECE_READY_TO_PICK_UP)
         {
             m_LEDStates->ResetVariables();
-            m_LEDStates->SolidColorPattern(LED::GREEN);
+            m_LEDStates->SolidColorPattern(DragonLeds::GREEN);
             currentState = DriverFeedbackStates::GAME_PIECE_READY_TO_PICK_UP;
         }
     }
@@ -97,7 +96,7 @@ void DriverFeedback::UpdateLEDStates()
         if (currentState != DriverFeedbackStates::NONE)
         {
             m_LEDStates->ResetVariables();
-            m_LEDStates->SolidColorPattern(LED::GREEN);
+            m_LEDStates->SolidColorPattern(DragonLeds::GREEN);
             currentState = DriverFeedbackStates::NONE;
         }
     }
