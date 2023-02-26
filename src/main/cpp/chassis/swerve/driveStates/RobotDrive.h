@@ -17,6 +17,7 @@
 
 #include <frc/kinematics/SwerveModuleState.h>
 #include <units/length.h>
+#include <units/time.h>
 #include <units/velocity.h>
 
 // Team302 Includes
@@ -47,6 +48,4 @@ protected:
 
 private:
     void CorrectForTipping(ChassisMovement &chassisMovement);
-    const double m_tippingTolerance = 30.0;
-    const double m_tippingConstant = 0.1;
 };

@@ -30,11 +30,15 @@ AutoBalanceDrive::AutoBalanceDrive(RobotDrive *robotDrive) : RobotDrive(), m_rob
 
 std::array<frc::SwerveModuleState, 4> AutoBalanceDrive::UpdateSwerveModuleStates(ChassisMovement &chassisMovement)
 {
+    // pitch is positive when back of robot is lifted and negative when front of robot is lifted
+    // roll is positive when the left side of the robot is lifted and negative when the right side of the robot is lifted
+
     auto pitch = m_chassis != nullptr ? m_chassis->GetPitch().to<double>() : 0.0;
     auto roll = m_chassis != nullptr ? m_chassis->GetRoll().to<double>() : 0.0;
 
-    chassisMovement.chassisSpeeds.vx = pitch * m_pitchConstant;
-    chassisMovement.chassisSpeeds.vy = roll * m_rollConstant;
+    // need to drive toware the lifted side
+    chassisMovement.chassisSpeeds.vx = -1.0 * pitch * m_pitchConstant;
+    chassisMovement.chassisSpeeds.vy = -1.0 * roll * m_rollConstant;
     chassisMovement.chassisSpeeds.omega = units::radians_per_second_t(0.0);
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Auto Balance Drive", "pitch", pitch);

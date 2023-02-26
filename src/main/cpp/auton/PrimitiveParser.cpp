@@ -24,7 +24,6 @@
 #include <auton/PrimitiveParser.h>
 #include <auton/drivePrimitives/IPrimitive.h>
 #include <utils/logging/Logger.h>
-// @ADDMECH include for your mechanism state
 
 #include <pugixml/pugixml.hpp>
 
