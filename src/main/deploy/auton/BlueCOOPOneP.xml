@@ -15,7 +15,7 @@
                arm="CONE_BACKROW_ROTATE"
                extender="CONE_BACKROW_EXTEND"
                grabber="GRAB"
-               time="0.5"
+               time="0.6"
                />
     <primitive id="DO_NOTHING"
                arm="CONE_BACKROW_ROTATE"
@@ -35,7 +35,7 @@
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                grabber="GRAB"
-               time="5.0"
+               time="2.0"
                />
     <!--do nothing!-->
     <primitive id="DO_NOTHING"
