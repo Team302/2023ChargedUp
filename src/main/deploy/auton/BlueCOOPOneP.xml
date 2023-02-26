@@ -35,7 +35,7 @@
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                grabber="GRAB"
-               time="2.0"
+               time="2.65"
                />
     <!--do nothing!-->
     <primitive id="DO_NOTHING"
