@@ -21,15 +21,16 @@
 class LEDStates
 {
 public:
-    void LEDsOff();
+    void setLEDsOn();
+    void setLEDsOff();
     void ResetVariables();
     void ChaserPattern(LED::Colors c);
     void BlinkingPattern(LED::Colors c);
     void SolidColorPattern(LED::Colors c);
-    void AlternatingBlinkingPattern(LED::Colors c);
-    void AlternatingBlinkingPattern(LED::Colors c1, LED::Colors c2);
+    void AlternatingColorBlinkingPattern(LED::Colors c);
+    void AlternatingColorBlinkingPattern(LED::Colors c1, LED::Colors c2);
     void ClosingInChaserPattern(LED::Colors c);
-    LED *m_LED = LED::GetInstance();
+    LED *m_LEDstring = LED::GetInstance();
     static LEDStates *GetInstance();
 
 private:
@@ -39,7 +40,5 @@ private:
     static LEDStates *m_instance;
 
     const int blinkPatternPeriod = 10;
-
-    void setBufferAllLEDsColor(std::array<int, 3> color);
-    void setBufferAllLEDsAlternatingColor(std::array<int, 3> color1, std::array<int, 3> color2);
+    const int alternatingColorBlinkPatternPeriod = 10;
 };

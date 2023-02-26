@@ -62,48 +62,44 @@ void DriverFeedback::UpdateLEDStates()
         {
             m_LEDStates->ResetVariables();
         }
-        m_LEDStates->AlternatingBlinkingPattern(LED::YELLOW, LED::PURPLE);
+        m_LEDStates->AlternatingColorBlinkingPattern(LED::YELLOW, LED::PURPLE);
         currentState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
     }
     else if (DriverFeedback::m_WantCube)
     {
-
         if (currentState != DriverFeedbackStates::WANT_CUBE)
         {
             m_LEDStates->ResetVariables();
+            m_LEDStates->SolidColorPattern(LED::PURPLE);
+            currentState = DriverFeedbackStates::WANT_CUBE;
         }
-        m_LEDStates->SolidColorPattern(LED::PURPLE);
-        currentState = DriverFeedbackStates::WANT_CUBE;
     }
     else if (DriverFeedback::m_WantCone)
     {
-
         if (currentState != DriverFeedbackStates::WANT_CONE)
         {
             m_LEDStates->ResetVariables();
+            m_LEDStates->SolidColorPattern(LED::YELLOW);
+            currentState = DriverFeedbackStates::WANT_CONE;
         }
-        m_LEDStates->SolidColorPattern(LED::YELLOW);
-        currentState = DriverFeedbackStates::WANT_CONE;
     }
     else if (DriverFeedback::m_GamePieceReadyToPickUp)
     {
-
         if (currentState != DriverFeedbackStates::GAME_PIECE_READY_TO_PICK_UP)
         {
             m_LEDStates->ResetVariables();
+            m_LEDStates->SolidColorPattern(LED::GREEN);
+            currentState = DriverFeedbackStates::GAME_PIECE_READY_TO_PICK_UP;
         }
-        m_LEDStates->SolidColorPattern(LED::GREEN);
-        currentState = DriverFeedbackStates::GAME_PIECE_READY_TO_PICK_UP;
     }
     else
     {
-
         if (currentState != DriverFeedbackStates::NONE)
         {
             m_LEDStates->ResetVariables();
+            m_LEDStates->SolidColorPattern(LED::GREEN);
+            currentState = DriverFeedbackStates::NONE;
         }
-        m_LEDStates->SolidColorPattern(LED::GREEN);
-        currentState = DriverFeedbackStates::NONE;
     }
 }
 

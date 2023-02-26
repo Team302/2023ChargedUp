@@ -19,61 +19,46 @@
 
 void LEDStates::BlinkingPattern(LED::Colors c)
 {
-    if (timer == blinkPatternPeriod)
-    {
-        if (timer / blinkPatternPeriod == 0)
-            setBufferAllLEDsColor(m_LED->getColorValues(c));
-        else
-        {
-            setBufferAllLEDsColor(m_LED->getColorValues(m_LED->BLACK));
-            timer = 0;
-        }
-        m_LED->commitLedData();
-    }
+    if (timer > 2 * blinkPatternPeriod)
+        timer = 0;
+
+    int blinkState = (timer / blinkPatternPeriod) % 2;
+
+    if (blinkState == 0)
+        m_LEDstring->setBufferAllLEDsColor(m_LEDstring->getColorValues(c));
+    else
+        m_LEDstring->setBufferAllLEDsBlack();
+
+    m_LEDstring->commitLedData();
 
     timer++;
 }
 
 void LEDStates::SolidColorPattern(LED::Colors c)
 {
-    setBufferAllLEDsColor(m_LED->getColorValues(c));
-    m_LED->commitLedData();
+    m_LEDstring->setBufferAllLEDsColor(m_LEDstring->getColorValues(c));
+    m_LEDstring->commitLedData();
 }
 
-void LEDStates::ChaserPattern(LED::Colors c)
+void LEDStates::AlternatingColorBlinkingPattern(LED::Colors c)
 {
-    loopThroughIndividualLEDs += loopThroughIndividualLEDs < m_LED->m_ledBuffer.size() - 1 ? 1 : -loopThroughIndividualLEDs;
-
-    auto color = colorLoop >= 0 ? m_LED->getColorValues(c) : m_LED->getColorValues(LED::BLACK);
-
-    colorLoop += colorLoop < m_LED->m_ledBuffer.size() - 1 ? 1 : -((colorLoop * 2) + 1);
-
-    m_LED->m_ledBuffer[loopThroughIndividualLEDs].SetRGB(color[0], color[1], color[2]);
-
-    m_LED->commitLedData();
-
-    timer = 0;
+    AlternatingColorBlinkingPattern(c, m_LEDstring->BLACK);
 }
 
-void LEDStates::AlternatingBlinkingPattern(LED::Colors c)
+void LEDStates::AlternatingColorBlinkingPattern(LED::Colors c1, LED::Colors c2)
 {
-    AlternatingBlinkingPattern(c, m_LED->BLACK);
-}
-
-void LEDStates::AlternatingBlinkingPattern(LED::Colors c1, LED::Colors c2)
-{
-    if (timer >= 10)
-    {
-        auto currentColor1 = colorLoop == 0 ? m_LED->getColorValues(c1) : m_LED->getColorValues(c2);
-        auto currentColor2 = colorLoop == 1 ? m_LED->getColorValues(c1) : m_LED->getColorValues(c2);
-
-        colorLoop += colorLoop < 1 ? 1 : -colorLoop;
-
-        setBufferAllLEDsAlternatingColor(currentColor1, currentColor2);
-        m_LED->commitLedData();
-
+    if (timer > 2 * alternatingColorBlinkPatternPeriod)
         timer = 0;
-    }
+
+    int blinkState = (timer / blinkPatternPeriod) % 2;
+
+    if (blinkState == 0)
+        m_LEDstring->setBufferAllLEDsAlternatingColor(m_LEDstring->getColorValues(c1), m_LEDstring->getColorValues(c2));
+    else
+        m_LEDstring->setBufferAllLEDsAlternatingColor(m_LEDstring->getColorValues(c2), m_LEDstring->getColorValues(c1));
+
+    m_LEDstring->commitLedData();
+
     timer++;
 }
 
@@ -81,19 +66,35 @@ void LEDStates::ClosingInChaserPattern(LED::Colors c)
 {
     if (timer == 7)
     {
-        int halfLength = (m_LED->m_ledBuffer.size() - 1) / 2;
+        int halfLength = (m_LEDstring->m_ledBuffer.size() - 1) / 2;
         loopThroughIndividualLEDs += loopThroughIndividualLEDs < halfLength ? 1 : -loopThroughIndividualLEDs;
-        int loopout = (m_LED->m_ledBuffer.size() - 1) - loopThroughIndividualLEDs;
-        auto color = colorLoop >= 0 ? m_LED->getColorValues(c) : m_LED->getColorValues(m_LED->BLACK);
+        int loopout = (m_LEDstring->m_ledBuffer.size() - 1) - loopThroughIndividualLEDs;
+        auto color = colorLoop >= 0 ? m_LEDstring->getColorValues(c) : m_LEDstring->getColorValues(m_LEDstring->BLACK);
         colorLoop += colorLoop < halfLength ? 1 : -((colorLoop * 2) + 1);
-        m_LED->m_ledBuffer[loopThroughIndividualLEDs].SetRGB(color[0], color[1], color[2]);
-        m_LED->m_ledBuffer[loopout].SetRGB(color[0], color[1], color[2]);
+        m_LEDstring->m_ledBuffer[loopThroughIndividualLEDs].SetRGB(color[0], color[1], color[2]);
+        m_LEDstring->m_ledBuffer[loopout].SetRGB(color[0], color[1], color[2]);
 
-        m_LED->commitLedData();
+        m_LEDstring->commitLedData();
         timer = 0;
     }
     timer++;
 }
+
+void LEDStates::ChaserPattern(LED::Colors c)
+{
+    loopThroughIndividualLEDs += loopThroughIndividualLEDs < m_LEDstring->m_ledBuffer.size() - 1 ? 1 : -loopThroughIndividualLEDs;
+
+    auto color = colorLoop >= 0 ? m_LEDstring->getColorValues(c) : m_LEDstring->getColorValues(LED::BLACK);
+
+    colorLoop += colorLoop < m_LEDstring->m_ledBuffer.size() - 1 ? 1 : -((colorLoop * 2) + 1);
+
+    m_LEDstring->m_ledBuffer[loopThroughIndividualLEDs].SetRGB(color[0], color[1], color[2]);
+
+    m_LEDstring->commitLedData();
+
+    timer = 0;
+}
+
 void LEDStates::ResetVariables()
 {
     loopThroughIndividualLEDs = -1;
@@ -102,7 +103,6 @@ void LEDStates::ResetVariables()
 }
 
 LEDStates *LEDStates::m_instance = nullptr;
-
 LEDStates *LEDStates::GetInstance()
 {
     if (LEDStates::m_instance == nullptr)
@@ -112,31 +112,12 @@ LEDStates *LEDStates::GetInstance()
     return LEDStates::m_instance;
 }
 
-void LEDStates::LEDsOff()
+void LEDStates::setLEDsOff()
 {
-    for (int i = 0; i < m_LED->m_ledBuffer.size(); i++)
-    {
-        m_LED->m_ledBuffer[i].SetRGB(0, 0, 0);
-    }
-
-    m_LED->commitLedData();
+    m_LEDstring->setOff();
 }
 
-void LEDStates::setBufferAllLEDsColor(std::array<int, 3> color)
+void LEDStates::setLEDsOn()
 {
-    for (uint i = 0; i < m_LED->m_ledBuffer.size(); i++)
-    {
-        m_LED->m_ledBuffer[i].SetRGB(color[0], color[1], color[2]);
-    }
-}
-
-void LEDStates::setBufferAllLEDsAlternatingColor(std::array<int, 3> color1, std::array<int, 3> color2)
-{
-    for (uint i = 0; i < m_LED->m_ledBuffer.size(); i++)
-    {
-        if (i % 2 == 0)
-            m_LED->m_ledBuffer[i].SetRGB(color1[0], color1[1], color1[2]);
-        else
-            m_LED->m_ledBuffer[i].SetRGB(color2[0], color2[1], color2[2]);
-    }
+    m_LEDstring->setOn();
 }

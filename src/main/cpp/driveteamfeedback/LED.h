@@ -39,6 +39,12 @@ public:
         void Initialize(int PWMport, int numLeds);
         void commitLedData();
 
+        void setOn();
+        void setOff();
+        void setBufferAllLEDsColor(std::array<int, 3> color);
+        void setBufferAllLEDsAlternatingColor(std::array<int, 3> color1, std::array<int, 3> color2);
+        void setBufferAllLEDsBlack();
+
         std::array<int, 3> getColorValues(Colors c);
 
         static LED *GetInstance();

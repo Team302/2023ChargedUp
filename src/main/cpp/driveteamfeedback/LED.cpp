@@ -27,14 +27,24 @@ void LED::Initialize(int PWMport, int numLeds)
     m_addressibleLeds->SetLength(numLeds);
 
     commitLedData();
+    setOn();
+}
+
+void LED::setOn()
+{
     m_addressibleLeds->Start();
 }
-LED *LED::m_instance = nullptr;
+
+void LED::setOff()
+{
+    m_addressibleLeds->Stop();
+}
 
 LED::LED()
 {
 }
 
+LED *LED::m_instance = nullptr;
 LED *LED::GetInstance()
 {
     if (LED::m_instance == nullptr)
@@ -73,4 +83,28 @@ void LED::commitLedData()
 {
     std::span ledSpan{m_ledBuffer.data(), m_ledBuffer.size()};
     m_addressibleLeds->SetData(ledSpan);
+}
+
+void LED::setBufferAllLEDsColor(std::array<int, 3> color)
+{
+    for (uint i = 0; i < m_ledBuffer.size(); i++)
+    {
+        m_ledBuffer[i].SetRGB(color[0], color[1], color[2]);
+    }
+}
+
+void LED::setBufferAllLEDsAlternatingColor(std::array<int, 3> color1, std::array<int, 3> color2)
+{
+    for (uint i = 0; i < m_ledBuffer.size(); i++)
+    {
+        if (i % 2 == 0)
+            m_ledBuffer[i].SetRGB(color1[0], color1[1], color1[2]);
+        else
+            m_ledBuffer[i].SetRGB(color2[0], color2[1], color2[2]);
+    }
+}
+
+void LED::setBufferAllLEDsBlack()
+{
+    setBufferAllLEDsColor(getColorValues(BLACK));
 }
