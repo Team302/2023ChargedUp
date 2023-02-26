@@ -174,10 +174,11 @@ void HolonomicDrive::Run()
 
         // add button to drive to loading zone
 
-        // if (controller->IsButtonPressed(TeleopControlFunctions::::HOLD_POSITION))
-        //{
-        // m_chassis.get()->DriveHoldPosition();
-        //}
+        if (controller->IsButtonPressed(TeleopControlFunctions::HOLD_POSITION))
+        {
+            moveInfo.driveOption = ChassisOptionEnums::DriveStateType::HOLD_DRIVE;
+            m_previousDriveState = moveInfo.driveOption;
+        }
 
         auto maxSpeed = m_chassis->GetMaxSpeed();
         auto maxAngSpeed = m_chassis->GetMaxAngularSpeed();
