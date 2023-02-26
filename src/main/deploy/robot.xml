@@ -310,8 +310,8 @@
       canBusName="rio"
       pdpID="5"
       type="FALCON"
-      inverted="false"
-      sensorInverted="false"
+      inverted="true"
+      sensorInverted="true"
       feedbackDevice="INTERNAL"
       countsPerRev="2048"
       gearRatio="84"
@@ -360,7 +360,7 @@
     networkTable="grabberNT"
     controlFile="grabber.xml">
     <solenoid
-      usage="GrabberSolenoid"
+      usage="GrabberSolenoid1"
       canId="1"
       channel="0"
       reversed="false" />
