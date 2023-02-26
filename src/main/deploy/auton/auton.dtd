@@ -1,5 +1,7 @@
-<!ELEMENT auton (primitive*) >
+<!ELEMENT auton (snippet*) primitive*) >
 
+<!ELEMENT snippet EMPTY>
+<!ATTLIST snippet file CDATA #IMPLIED>
 
 <!ELEMENT primitive EMPTY >
 <!ATTLIST primitive 

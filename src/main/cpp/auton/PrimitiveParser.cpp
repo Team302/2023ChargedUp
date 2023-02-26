@@ -69,7 +69,27 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
         {
             for (xml_node primitiveNode = node.first_child(); primitiveNode; primitiveNode = primitiveNode.next_sibling())
             {
-                if (strcmp(primitiveNode.name(), "primitive") == 0)
+                if (strcmp(primitiveNode.name(), "snippet") == 0)
+                {
+                    for (xml_attribute attr = primitiveNode.first_attribute(); attr; attr = attr.next_attribute())
+                    {
+                        if (strcmp(attr.name(), "file") == 0)
+                        {
+                            auto filename = string(attr.value());
+                            auto snippetParams = ParseXML(filename);
+                            if (!snippetParams.empty())
+                            {
+                                paramVector.insert(paramVector.end(), snippetParams.begin(), snippetParams.end());
+                            }
+                            else
+                            {
+                                Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("PrimitiveParser"), string("snipped had no params"), attr.value());
+                                hasError = true;
+                            }
+                        }
+                    }
+                }
+                else if (strcmp(primitiveNode.name(), "primitive") == 0)
                 {
                     auto primitiveType = UNKNOWN_PRIMITIVE;
                     auto time = 15.0;
