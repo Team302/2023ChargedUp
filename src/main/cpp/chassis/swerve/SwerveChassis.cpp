@@ -298,7 +298,7 @@ void SwerveChassis::UpdateOdometry()
     units::degree_t yaw{m_pigeon->GetYaw()};
     Rotation2d rot2d{yaw};
 
-    if (m_vision != nullptr)
+    /*if (m_vision == nullptr)
     {
         auto targetInfo = m_vision->getTargetInfo();
         if (targetInfo != nullptr)
@@ -332,13 +332,13 @@ void SwerveChassis::UpdateOdometry()
         }
     }
     else
-    {
-        m_poseEstimator.Update(rot2d, wpi::array<frc::SwerveModulePosition, 4>{m_frontLeft.get()->GetPosition(),
-                                                                               m_frontRight.get()->GetPosition(),
-                                                                               m_backLeft.get()->GetPosition(),
-                                                                               m_backRight.get()->GetPosition()});
-        m_hasResetToVisionTarget = false;
-    }
+    {*/
+    m_poseEstimator.Update(rot2d, wpi::array<frc::SwerveModulePosition, 4>{m_frontLeft.get()->GetPosition(),
+                                                                           m_frontRight.get()->GetPosition(),
+                                                                           m_backLeft.get()->GetPosition(),
+                                                                           m_backRight.get()->GetPosition()});
+    //   m_hasResetToVisionTarget = false;
+    // }
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("SwerveOdometry"), std::string("X Position: "), m_poseEstimator.GetEstimatedPosition().X().to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("SwerveOdometry"), std::string("Y Position: "), m_poseEstimator.GetEstimatedPosition().Y().to<double>());
