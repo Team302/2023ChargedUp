@@ -47,4 +47,5 @@ private:
     frc::Trajectory m_generatedTrajectory;
     DragonField *m_field;
     double m_slowModeMultiplier = 0.4;
+    bool m_hasResetPosition = false;
 };

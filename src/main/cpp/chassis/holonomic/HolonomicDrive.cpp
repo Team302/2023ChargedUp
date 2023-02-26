@@ -89,12 +89,18 @@ void HolonomicDrive::Run()
             moveInfo.headingOption = ChassisOptionEnums::HeadingOption::TOWARD_GOAL;
         }
 
-        if (controller->IsButtonPressed(TeleopControlFunctions::RESET_POSITION))
+        if (controller->IsButtonPressed(TeleopControlFunctions::RESET_POSITION) && !m_hasResetPosition)
         {
             if (m_swerve != nullptr)
             {
                 m_swerve->ResetPoseToVision();
             }
+
+            m_hasResetPosition = true;
+        }
+        else
+        {
+            m_hasResetPosition = false;
         }
 
         if (m_swerve != nullptr)

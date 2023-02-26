@@ -52,24 +52,11 @@
                grabber="GRAB"
                time="5.0"
                />
-    <primitive id="DRIVE_PATH"
-               pathname="RedHPOne3.wpilib.json"
-               headingOption="SPECIFIED_ANGLE"
-               heading="179.5"
-               grabber="GRAB"
-               time="2.0"
-               />
-    <!--drive on charing station-->
-    <primitive id="DRIVE_PATH"
-               pathname="RedHPOne4Slow.wpilib.json"
-               headingOption="SPECIFIED_ANGLE"
-               heading="179.5"
-               grabber="GRAB"
-               time="10.0"
-               />
-    <!--auto balance-->
+    <!--do nothing!-->
     <primitive id="DO_NOTHING"
                grabber="GRAB"
+               headingOption="SPECIFIED_ANGLE"
+               heading="180"
                time="10.0"
                />
 </auton>
