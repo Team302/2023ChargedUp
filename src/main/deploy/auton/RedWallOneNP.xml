@@ -53,7 +53,7 @@
                grabber="GRAB"
                time="7.0"
                />
-    <!--do nothing!-->
+    <!-- do nothing!-->
     <primitive id="DO_NOTHING"
                headingOption="SPECIFIED_ANGLE"
                heading="179.5"
