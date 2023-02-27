@@ -43,4 +43,5 @@ double ArmHoldPosHelper::CalculateHoldPositionTarget(double armAngle,
             return (m_coneOffset + m_coneArmComponent * armAngle + m_coneExtenderComponent * extenderPos + m_coneArmSquaredComponent * pow(armAngle, 2) + m_coneExtenderSquaredComponent * pow(extenderPos, 2));
         }
     }
+    return 0.0;
 }

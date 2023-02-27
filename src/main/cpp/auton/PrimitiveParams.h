@@ -77,7 +77,8 @@ public:
     // @ADDMECH Add methods to get the state mgr for mechanism
 
     // Setters
-    void SetDistance(float distance) { m_distance = distance; };
+    void SetDistance(float distance) { m_distance = distance; }
+    void SetPathName(std::string path) { m_pathName = path; }
 
 private:
     // Primitive Parameters
