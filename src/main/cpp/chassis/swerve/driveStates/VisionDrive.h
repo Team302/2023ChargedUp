@@ -17,24 +17,30 @@
 
 // FRC Includes
 #include <frc/kinematics/SwerveModuleState.h>
+#include <frc/kinematics/ChassisSpeeds.h>
+#include <frc/geometry/Transform2d.h>
 
 // Team302 Includes
-#include <chassis/swerve/headingStates/ISwerveDriveOrientation.h>
-#include <chassis/ChassisMovement.h>
+#include <chassis/swerve/driveStates/RobotDrive.h>
 
-class ISwerveDriveState
+class VisionDrive : public RobotDrive
 {
 public:
-    ISwerveDriveState() = default;
+    VisionDrive(RobotDrive *robotDrive);
 
-    /// @brief Initialize the state
-    void virtual Init(
-        ChassisMovement &chassisMovement) = 0;
+    std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates(
+        ChassisMovement &chassisMovement) override;
 
-    void virtual UpdateOffsets(units::length::inch_t xOffset, units::length::inch_t yOffset){};
+    void Init(
+        ChassisMovement &chassisMovement) override;
 
-    /// @brief Calculate the swerve module states based on chassis movement and orientation option
-    /// @return std::array<frc::SwerveModuleState*, 4> - 4 calculated swerve module states
-    virtual std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates(
-        ChassisMovement &chassisMovement) = 0;
+    void UpdateOffsets(units::length::inch_t xOffset, units::length::inch_t yOffset) override;
+
+private:
+    RobotDrive *m_robotDrive;
+    units::length::inch_t m_xOffset;
+    units::length::inch_t m_yOffset;
+
+    const double m_kP = 2.5;
+    const double m_kAngleP = 1.0;
 };
