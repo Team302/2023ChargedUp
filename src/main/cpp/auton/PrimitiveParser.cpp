@@ -257,5 +257,22 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
         // Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("PrimitiveParser"), string("ParseXML error parsing file"), fileName);
         Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("PrimitiveParser"), string("ParseXML error message"), result.description());
     }
+
+    std::string path;
+    for (auto itr = paramVector.rbegin(); itr != paramVector.rend(); ++itr)
+    {
+        auto param = *itr;
+        if (param->GetID() == PRIMITIVE_IDENTIFIER::DRIVE_PATH)
+        {
+            path = param->GetPathName();
+        }
+        else if (param->GetID() == PRIMITIVE_IDENTIFIER::RESET_POSITION)
+        {
+            if (param->GetPathName().empty())
+            {
+                param->SetPathName(path);
+            }
+        }
+    }
     return paramVector;
 }
