@@ -51,17 +51,23 @@ class ActiveIntakeStateMgr : public StateMgr
 {
 public:
     /// @enum the various states of the Intake
-    enum ActiveIntake_STATE
+    enum ACTIVEINTAKE_STATE
     {
-        OPEN,
-        GRAB
+        OFF,
+        INTAKE,
+        HOLD,
+        PLACE
     };
 
-    const std::string m_ActiveIntakeXMLOpenString{"OPEN"};
-    const std::string m_ActiveIntakeXMLGrabString{"GRAB"};
-    const std::map<const std::string, ActiveIntake_STATE> m_ActiveIntakeXmlStringToStateEnumMap{
-        {m_ActiveIntakeXMLOpenString, ActiveIntake_STATE::OPEN},
-        {m_ActiveIntakeXMLGrabString, ActiveIntake_STATE::GRAB}};
+    const std::string m_ActiveIntakeXMLOffString{"OFF"};
+    const std::string m_ActiveIntakeXMLIntakeString{"INTAKE"};
+    const std::string m_ActiveIntakeXMLHoldString{"HOLD"};
+    const std::string m_ActiveIntakeXMLPlaceString{"PLACE"};
+    const std::map<const std::string, ACTIVEINTAKE_STATE> m_ActiveIntakeXmlStringToStateEnumMap{
+        {m_ActiveIntakeXMLOffString, ACTIVEINTAKE_STATE::OFF},
+        {m_ActiveIntakeXMLIntakeString, ACTIVEINTAKE_STATE::INTAKE},
+        {m_ActiveIntakeXMLHoldString, ACTIVEINTAKE_STATE::HOLD},
+        {m_ActiveIntakeXMLPlaceString, ACTIVEINTAKE_STATE::PLACE}};
 
     /// @brief  Find or create the state manmanager
     static ActiveIntakeStateMgr *GetInstance();
@@ -89,12 +95,12 @@ private:
 
     //========= Hand modified code end section 4 ========
 
-    ActiveIntake *m_ActiveIntake;
+    ActiveIntake *m_activeIntake;
 
     //========= Hand modified code start section 5 ========
-    ActiveIntake_STATE m_currentState;
-    ActiveIntake_STATE m_targetState;
-    ActiveIntake_STATE m_prevState;
+    ACTIVEINTAKE_STATE m_currentState;
+    ACTIVEINTAKE_STATE m_targetState;
+    ACTIVEINTAKE_STATE m_prevState;
 
     bool m_followOtherMechs = false;
     const double m_floorThreshold = 15.0;
@@ -103,6 +109,10 @@ private:
 
     static ActiveIntakeStateMgr *m_instance;
 
-    // const StateStruc m_openState = {ActiveIntake_STATE::OPEN, "OPEN", StateType::ActiveIntake_STATE, false};
-    // const StateStruc m_grabState = {ActiveIntake_STATE::GRAB, "GRAB", StateType::ActiveIntake_STATE, true};
+    const StateStruc m_off = {ACTIVEINTAKE_STATE::OFF, "OFF", StateType::GRABBER_STATE, true};
+    const StateStruc m_intake = {ACTIVEINTAKE_STATE::INTAKE, "INTAKE", StateType::GRABBER_STATE, false};
+    const StateStruc m_hold = {ACTIVEINTAKE_STATE::HOLD, "HOLD", StateType::GRABBER_STATE, false};
+    const StateStruc m_place = {ACTIVEINTAKE_STATE::PLACE, "PLACE", StateType::GRABBER_STATE, false};
 };
+// const StateStruc m_openState = {ActiveIntake_STATE::OPEN, "OPEN", StateType::ActiveIntake_STATE, false};
+// const StateStruc m_grabState = {ActiveIntake_STATE::GRAB, "GRAB", StateType::ActiveIntake_STATE, true};

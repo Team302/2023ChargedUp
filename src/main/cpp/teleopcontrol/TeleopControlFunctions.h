@@ -87,6 +87,9 @@ public:
         // Active intake controls?
         INTAKE,
         EXPEL,
-        MAX_FUNCTIONS
+        MAX_FUNCTIONS,
+        PLACE,
+        HOLD,
+        OFF
     };
 };
