@@ -55,6 +55,7 @@ private:
     bool m_GamePieceInGrabber = false;
     bool m_AlignedWithConeNode = false;
     bool m_AlignedWithCubeNode = false;
+    int m_controllerCounter = 0;
 
     static DriverFeedback *m_instance;
 
