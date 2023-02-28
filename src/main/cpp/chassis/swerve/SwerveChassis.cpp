@@ -41,6 +41,7 @@
 #include <chassis/swerve/SwerveChassis.h>
 
 #include <chassis/swerve/driveStates/FieldDrive.h>
+#include <chassis/swerve/driveStates/VisionDrive.h>
 #include <chassis/swerve/driveStates/HoldDrive.h>
 #include <chassis/swerve/driveStates/RobotDrive.h>
 #include <chassis/swerve/driveStates/StopDrive.h>
@@ -159,6 +160,7 @@ void SwerveChassis::InitStates()
     m_robotDrive = new RobotDrive();
 
     m_driveStateMap[ChassisOptionEnums::DriveStateType::FIELD_DRIVE] = new FieldDrive(m_robotDrive);
+    m_driveStateMap[ChassisOptionEnums::DriveStateType::VISION_DRIVE] = new VisionDrive(m_robotDrive);
     m_driveStateMap[ChassisOptionEnums::DriveStateType::HOLD_DRIVE] = new HoldDrive();
     m_driveStateMap[ChassisOptionEnums::DriveStateType::ROBOT_DRIVE] = m_robotDrive;
     m_driveStateMap[ChassisOptionEnums::DriveStateType::STOP_DRIVE] = new StopDrive();
@@ -337,8 +339,8 @@ void SwerveChassis::UpdateOdometry()
                                                                            m_frontRight.get()->GetPosition(),
                                                                            m_backLeft.get()->GetPosition(),
                                                                            m_backRight.get()->GetPosition()});
-    //   m_hasResetToVisionTarget = false;
-    // }
+    m_hasResetToVisionTarget = false;
+    //}
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("SwerveOdometry"), std::string("X Position: "), m_poseEstimator.GetEstimatedPosition().X().to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("SwerveOdometry"), std::string("Y Position: "), m_poseEstimator.GetEstimatedPosition().Y().to<double>());
@@ -382,7 +384,7 @@ void SwerveChassis::ResetPoseToVision()
     units::degree_t yaw{m_pigeon->GetYaw()};
     Rotation2d rot2d{yaw};
 
-    auto targetInfo = m_vision->getTargetInfo();
+    /*auto targetInfo = m_vision->getTargetInfo();
     if (targetInfo != nullptr)
     {
         frc::Pose2d pose = m_vision->GetRobotPosition();
@@ -393,11 +395,11 @@ void SwerveChassis::ResetPoseToVision()
         }
     }
     else // if we don't have a target, just reset yaw to 0 (we do this in case field orientation breaks)
-    {
-        m_pigeon->ReZeroPigeon(0.0, 0.0);
+    {*/
+    m_pigeon->ReZeroPigeon(0.0, 0.0);
 
-        ZeroAlignSwerveModules();
-    }
+    ZeroAlignSwerveModules();
+    //}
 }
 
 ChassisSpeeds SwerveChassis::GetFieldRelativeSpeeds(
