@@ -46,8 +46,6 @@
                />
     <primitive id="DRIVE_PATH"
                pathname="RedWallOne2.wpilib.json"
-               headingOption="SPECIFIED_ANGLE"
-               heading="179.5"
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                grabber="GRAB"
