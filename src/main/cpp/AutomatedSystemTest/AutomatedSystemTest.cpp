@@ -92,6 +92,15 @@ void AutomatedSystemTest::Run()
 }
 bool AutomatedSystemTest::BasePDPValue()
 {
+    /*
+    if (m_PDP != nullptr)
+    {
+        m_basepdpusage = m_PDP->GetTotalCurrent();
+        return true;
+    }
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("pdp"), "cannot accses pdp");
+    return false;
+    */
     if (m_PDP != nullptr)
     {
         m_basepdpusage = m_PDP->GetTotalCurrent();
@@ -161,6 +170,25 @@ bool AutomatedSystemTest::TestswervevxForward()
         ChassisMovement moveinfo;
 
         m_timer0++;
+        /*
+        doing nothing for 20 loops
+        forward for 4980
+        might be nice to have methods for each item
+
+        if (m_timer < 20 )
+        {
+            moveinfo.chassisSpeeds.vx = 0.0 * maxspeed;
+        }
+        else if (m_timer < 5000)
+        {
+            moveinfo.chassisSpeeds.vx = 0.5 * maxspeed;
+        }
+        if (m_timer < 10000)
+        {
+            moveinfo.chassisSpeeds.vx = 0.0 * maxspeed;
+        }
+        m_swervechassis->Drive(moveinfo);
+        */
         if (m_timer0 > 20 && m_timer0 < 5000)
         {
             Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("started swervedrive"), "reached");
