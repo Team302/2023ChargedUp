@@ -57,7 +57,10 @@ string AutonSelector::GetSelectedAutoFile()
 	autonfile += GetNumofPiecesinauton();
 	autonfile += GetParkOnChargeStation();
 	autonfile += std::string(".xml");
-	Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("auton file"), std::string("determined name"), autonfile);
+
+	auto table = nt::NetworkTableInstance::GetDefault().GetTable("auton file");
+
+	table.get()->PutString("determined name", autonfile);
 
 	if (!FileExists(autonfile))
 	{
@@ -65,13 +68,16 @@ string AutonSelector::GetSelectedAutoFile()
 		autonfile += std::string("/auton/");
 		autonfile += GetAlianceColor();
 		autonfile += ("COOPThreeP.xml");
-		Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("auton file"), std::string("File Exists"), false);
+
+		table.get()->PutBoolean("File Exists", false);
 	}
 	else
 	{
-		Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("auton file"), std::string("File Exists"), true);
+		table.get()->PutBoolean("File Exists", true);
 	}
-	Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("auton file"), std::string("actual file"), autonfile);
+
+	table.get()->PutString("actual file", autonfile);
+
 	return autonfile;
 }
 
