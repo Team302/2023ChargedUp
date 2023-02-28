@@ -28,7 +28,7 @@ class PowerDistribution;
 class AutomatedSystemTest
 {
 public:
-    AutomatedSystemTest() = default;
+    AutomatedSystemTest();
     ~AutomatedSystemTest() = default;
     void Init();
     void Run();

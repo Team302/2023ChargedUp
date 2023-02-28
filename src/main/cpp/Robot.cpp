@@ -99,7 +99,7 @@ void Robot::RobotPeriodic()
         m_robotState->Run();
     }
 
-#define ENABLE_VISION
+// #define ENABLE_VISION
 #ifdef ENABLE_VISION
     // This is an example of how to use RobotVision
 
@@ -210,7 +210,7 @@ void Robot::AutonomousPeriodic()
 
 void Robot::TeleopInit()
 {
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopInit"), string("arrived"));
+    /*Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopInit"), string("arrived"));
 
     if (m_controller == nullptr)
     {
@@ -233,12 +233,20 @@ void Robot::TeleopInit()
         m_field->ResetField(); // ToDo:  Move to DriveTeamFeedback
     }
 
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopInit"), string("end"));
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopInit"), string("end"));*/
+
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TestInit"), string("arrived"));
+    m_autotest = new AutomatedSystemTest();
+    if (m_autotest != nullptr)
+    {
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("abc"), string("have autotest"));
+        m_autotest->Init();
+    }
 }
 
 void Robot::TeleopPeriodic()
 {
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopPeriodic"), string("arrived"));
+    /*Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopPeriodic"), string("arrived"));
     if (m_chassis != nullptr && m_controller != nullptr)
     {
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("HolonomicRun"), string("arrived"));
@@ -249,7 +257,13 @@ void Robot::TeleopPeriodic()
     }
     StateMgrHelper::RunCurrentMechanismStates();
 
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopPeriodic"), string("end"));
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopPeriodic"), string("end"));*/
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("Testperiodic"), string("arrived"));
+    if (m_autotest != nullptr)
+    {
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("def"), string("running autotest"));
+        m_autotest->Run();
+    }
 }
 
 void Robot::DisabledInit()
@@ -265,21 +279,10 @@ void Robot::DisabledPeriodic()
 
 void Robot::TestInit()
 {
-    m_autotest = new AutomatedSystemTest();
-    if (m_autotest != nullptr)
-    {
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TestInit"), string("arrived"));
-        m_autotest->Init();
-    }
 }
 
 void Robot::TestPeriodic()
 {
-    if (m_autotest != nullptr)
-    {
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("Testperiodic"), string("arrived"));
-        m_autotest->Run();
-    }
 }
 
 #ifndef RUNNING_FRC_TESTS
