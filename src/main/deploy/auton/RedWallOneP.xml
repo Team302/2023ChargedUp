@@ -47,6 +47,8 @@
     <primitive id="DRIVE_PATH"
                pathname="RedWallOne2.wpilib.json"
                arm="STARTING_POSITION_ROTATE"
+               headingOption="SPECIFIED_ANGLE"
+               heading="0"
                extender="STARTING_POSITION_EXTEND"
                grabber="GRAB"
                time="7.0"
@@ -58,7 +60,7 @@
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                grabber="GRAB"
-               time="4.0"
+               time="3.0"
                />
     <!--drive onto charging station-->
     <primitive id="DRIVE_PATH"
