@@ -88,13 +88,13 @@ void RobotState::Run()
                 {
                     if (RobotStateChanges::CompressorState::CompressorOn)
                     {
-                        frc::Compressor *EnableAnalog(units::pounds_per_square_inch_t minPressure, units::pounds_per_square_inch_t maxPressure);
+                        CompressorFactory::GetFactory()->EnableCompressor();
                         PublishStateChange(RobotStateChanges::CompressorChange, m_compressorCurrent);
                     }
 
                     else if (RobotStateChanges::CompressorState::CompressorOff)
                     {
-                        frc::Compressor *Disable;
+                        CompressorFactory::GetFactory()->DisableCompressor();
                         PublishStateChange(RobotStateChanges::CompressorChange, m_compressorCurrent);
                     }
                 }

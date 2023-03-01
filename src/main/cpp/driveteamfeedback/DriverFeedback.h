@@ -60,6 +60,7 @@ private:
     bool m_AlignedWithConeNode = false;
     bool m_AlignedWithCubeNode = false;
     int m_controllerCounter = 0;
+    bool m_compressorOn = true;
 
     static DriverFeedback *m_instance;
 

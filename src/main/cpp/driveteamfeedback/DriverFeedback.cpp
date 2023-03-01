@@ -39,19 +39,15 @@ void DriverFeedback::UpdateFeedback()
 {
     UpdateLEDStates();
     UpdateCompressorState();
+    CheckControllers();
 }
 void DriverFeedback::UpdateCompressorState()
 {
-    if (RobotStateChanges::CompressorState::CompressorOn)
+    if (m_controllerCounter == 0)
     {
-        m_compressorState = DriverFeedbackStates::COMPRESSOR_ON;
+        auto table = nt::NetworkTableInstance::GetDefault().GetTable("Compressor");
+        table.get()->PutBoolean(std::string("Compressor on"), m_compressorOn);
     }
-
-    else if (RobotStateChanges::CompressorState::CompressorOff)
-    {
-        m_compressorState = DriverFeedbackStates::COMPRESSOR_OFF;
-    }
-    CheckControllers();
 }
 void DriverFeedback::UpdateLEDStates()
 {
@@ -150,6 +146,7 @@ void DriverFeedback::Update(RobotStateChanges::StateChange change, int value)
     else if (change == RobotStateChanges::StateChange::CompressorChange)
     {
         auto compressor = static_cast<RobotStateChanges::CompressorState>(value);
+        m_compressorOn = compressor == RobotStateChanges::CompressorOn;
     }
 }
 
