@@ -58,3 +58,33 @@ Compressor *CompressorFactory::CreateCompressor(int canID, frc::PneumaticsModule
     }
     return m_compressor;
 }
+
+void CompressorFactory::EnableCompressor()
+{
+    ClearStickyFaults();
+    if (m_compressor != nullptr)
+    {
+        m_compressor->EnableAnalog(m_minPressure, m_maxPressure);
+    }
+}
+
+void CompressorFactory::DisableCompressor()
+{
+    ClearStickyFaults();
+    if (m_compressor != nullptr)
+    {
+        m_compressor->Disable();
+    }
+}
+
+void CompressorFactory::ClearStickyFaults()
+{
+    if (m_hub != nullptr)
+    {
+        m_hub->ClearStickyFaults();
+    }
+    if (m_pcm != nullptr)
+    {
+        m_pcm->ClearAllStickyFaults();
+    }
+}
