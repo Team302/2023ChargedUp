@@ -15,7 +15,7 @@
                arm="CONE_BACKROW_ROTATE"
                extender="CONE_BACKROW_EXTEND"
                grabber="GRAB"
-               time="0.5"
+               time="0.6"
                />
     <primitive id="DO_NOTHING"
                arm="CONE_BACKROW_ROTATE"
@@ -58,7 +58,7 @@
                headingOption="SPECIFIED_ANGLE"
                heading="0"
                grabber="GRAB"
-               time="3.0"
+               time="2.0"
                />
     <!--drive onto charging station-->
     <primitive id="DRIVE_PATH"
