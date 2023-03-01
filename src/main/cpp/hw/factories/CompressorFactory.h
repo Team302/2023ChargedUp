@@ -19,6 +19,8 @@
 // FRC includes
 #include <frc/Compressor.h>
 #include <units/pressure.h>
+#include <frc/PneumaticHub.h>
+#include <frc/PneumaticsControlModule.h>
 
 class CompressorFactory
 {
@@ -38,6 +40,8 @@ private:
     frc::Compressor *m_compressor;
     units::pressure::pounds_per_square_inch_t m_minPressure;
     units::pressure::pounds_per_square_inch_t m_maxPressure;
+    frc::PneumaticHub *m_hub;
+    frc::PneumaticsControlModule *m_pcm;
 
     static CompressorFactory *m_factory;
 };

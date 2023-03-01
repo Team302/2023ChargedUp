@@ -37,7 +37,7 @@ CompressorFactory *CompressorFactory::GetFactory()
     return CompressorFactory::m_factory;
 }
 
-CompressorFactory::CompressorFactory() : m_compressor(nullptr), m_minPressure(units::pounds_per_square_inch_t(0.0)), m_maxPressure(units::pounds_per_square_inch_t(0.0))
+CompressorFactory::CompressorFactory() : m_compressor(nullptr), m_minPressure(units::pounds_per_square_inch_t(0.0)), m_maxPressure(units::pounds_per_square_inch_t(0.0)), m_hub(nullptr), m_pcm(nullptr)
 {
 }
 
@@ -47,6 +47,14 @@ Compressor *CompressorFactory::CreateCompressor(int canID, frc::PneumaticsModule
     {
         m_compressor = new Compressor(canID, type);
         m_compressor->EnableAnalog(minPressure, maxPressure);
+        if (type == frc::PneumaticsModuleType::CTREPCM)
+        {
+            m_pcm = new frc::PneumaticsControlModule(canID);
+        }
+        else
+        {
+            m_hub = new frc::PneumaticHub(canID);
+        }
     }
     return m_compressor;
 }
