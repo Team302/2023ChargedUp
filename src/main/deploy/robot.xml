@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <robot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--
   <pdp
     canId="1"
     type="REV" />
@@ -15,6 +16,7 @@
     type="pigeon2"
     rotation="0.0"
     usage="CENTER_OF_ROTATION" />
+    -->
   <limelight
     usage="MAINLIMELIGHT"
     tablename="limelight-front"
@@ -356,6 +358,25 @@
       voltageCompensationEnable="false"
       countsPerInch="3811.0878"/>
   </mechanism>
+ <mechanism
+    type="ACTIVEINTAKE"
+    networkTable="ActiveIntakeNT"
+    controlFile="ActiveIntake.xml">
+    <motor
+      usage="ACTIVE_INTAKE"
+      canId="0"
+      canBusName="rio"
+      pdpID="0"
+      type="FALCON"
+      inverted="false"
+      sensorInverted="false"
+      feedbackDevice="INTERNAL"
+      countsPerRev="2048"
+      gearRatio="10"
+      voltageCompensationSaturation="10.5"
+      voltageCompensationEnable="false"/>
+  </mechanism>
+
   <mechanism
     type="GRABBER"
     networkTable="grabberNT"
