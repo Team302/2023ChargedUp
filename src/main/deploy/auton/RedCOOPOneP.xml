@@ -38,7 +38,7 @@
                time="3.0"
                />
     <!--auto balance-->
-    <primitive id="DO_NOTHING"
+    <primitive id="AUTO_BALANCE"
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                grabber="GRAB"

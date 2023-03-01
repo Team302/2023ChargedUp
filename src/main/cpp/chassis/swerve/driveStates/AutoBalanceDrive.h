@@ -15,37 +15,28 @@
 
 #pragma once
 
+// FRC Includes
 #include <frc/kinematics/SwerveModuleState.h>
-#include <units/length.h>
-#include <units/time.h>
-#include <units/velocity.h>
+#include <frc/kinematics/ChassisSpeeds.h>
 
 // Team302 Includes
-#include <chassis/swerve/SwerveChassis.h>
-#include <chassis/swerve/driveStates/ISwerveDriveState.h>
-#include <chassis/ChassisMovement.h>
+#include <chassis/swerve/driveStates/RobotDrive.h>
 
-class RobotDrive : public ISwerveDriveState
+class SwerveChassis;
+
+class AutoBalanceDrive : public RobotDrive
 {
 public:
-    RobotDrive();
-    ~RobotDrive() = default;
+    AutoBalanceDrive(RobotDrive *robotDrive);
 
-    std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates(
-        ChassisMovement &chassisMovement) override;
+    std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates(ChassisMovement &chassisMovement) override;
 
     void Init(ChassisMovement &chassisMovement) override;
 
-protected:
-    frc::SwerveModuleState m_flState;
-    frc::SwerveModuleState m_frState;
-    frc::SwerveModuleState m_blState;
-    frc::SwerveModuleState m_brState;
-
-    units::length::inch_t m_wheelbase;
-    units::length::inch_t m_wheeltrack;
-    units::velocity::feet_per_second_t m_maxspeed;
-
 private:
-    void CorrectForTipping(ChassisMovement &chassisMovement);
+    RobotDrive *m_robotDrive;
+    SwerveChassis *m_chassis;
+
+    const units::feet_per_second_t m_pitchConstant = units::feet_per_second_t(0.1);
+    const units::feet_per_second_t m_rollConstant = units::feet_per_second_t(0.1);
 };

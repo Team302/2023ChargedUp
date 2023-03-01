@@ -12,40 +12,48 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
-
 #pragma once
 
-#include <frc/kinematics/SwerveModuleState.h>
-#include <units/length.h>
-#include <units/time.h>
-#include <units/velocity.h>
+// C++ Includes
+#include <memory>
 
 // Team302 Includes
+#include <auton/PrimitiveParams.h>
+#include <auton/drivePrimitives/IPrimitive.h>
+#include <chassis/ChassisFactory.h>
 #include <chassis/swerve/SwerveChassis.h>
-#include <chassis/swerve/driveStates/ISwerveDriveState.h>
-#include <chassis/ChassisMovement.h>
+#include <chassis/ChassisOptionEnums.h>
 
-class RobotDrive : public ISwerveDriveState
+// FRC,WPI Includes
+#include <frc/controller/HolonomicDriveController.h>
+#include <frc/controller/RamseteController.h>
+#include <frc/Filesystem.h>
+#include <frc/geometry/Pose2d.h>
+#include <frc/trajectory/TrajectoryConfig.h>
+#include <frc/trajectory/TrajectoryUtil.h>
+#include <wpi/SmallString.h>
+#include <frc/Timer.h>
+
+class AutoBalance : public IPrimitive
 {
 public:
-    RobotDrive();
-    ~RobotDrive() = default;
+    AutoBalance();
 
-    std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates(
-        ChassisMovement &chassisMovement) override;
+    virtual ~AutoBalance() = default;
 
-    void Init(ChassisMovement &chassisMovement) override;
-
-protected:
-    frc::SwerveModuleState m_flState;
-    frc::SwerveModuleState m_frState;
-    frc::SwerveModuleState m_blState;
-    frc::SwerveModuleState m_brState;
-
-    units::length::inch_t m_wheelbase;
-    units::length::inch_t m_wheeltrack;
-    units::velocity::feet_per_second_t m_maxspeed;
+    void Init(PrimitiveParams *params) override;
+    void Run() override;
+    bool IsDone() override;
 
 private:
-    void CorrectForTipping(ChassisMovement &chassisMovement);
+    SwerveChassis *m_chassis;
+
+    frc::Timer *m_timer;
+
+    const double m_balanceTimeout = 2.0;
+
+    ChassisOptionEnums::HeadingOption m_headingOption;
+    std::string m_ntName;
+
+    const double m_balanceTolerance = 2.0;
 };
