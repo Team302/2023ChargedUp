@@ -85,36 +85,35 @@ void DragonPigeon::ReZeroPigeon(double angleDeg, int timeoutMs)
 
 double DragonPigeon::GetRawPitch()
 {
-    return 0.0;
-    /**
-    double ypr[3];
-    m_pigeon.get()->GetYawPitchRoll(ypr);
-
-    // return ypr[1]; // yaw = 0 pitch = 1 roll = 2
-    return ypr[2];
-    **/
+    auto pitch = 0.0;
+    if (m_pigeon != nullptr)
+    {
+        pitch = -m_pigeon->GetPitch();
+    }
+    else if (m_pigeon2 != nullptr)
+    {
+        pitch = -m_pigeon2->GetPitch();
+    }
+    return remainder(pitch, 360.0);
 }
 
 double DragonPigeon::GetRawRoll()
 {
-    return 0.0;
-    /**
-    double ypr[3];
-    m_pigeon.get()->GetYawPitchRoll(ypr);
-
-    // return ypr[2]; // yaw = 0 pitch = 1 roll = 2
-    return ypr[1];
-    **/
+    auto roll = 0.0;
+    if (m_pigeon != nullptr)
+    {
+        roll = -m_pigeon->GetRoll();
+    }
+    else if (m_pigeon2 != nullptr)
+    {
+        roll = -m_pigeon2->GetRoll();
+    }
+    return remainder(roll, 360.0);
 }
 
 double DragonPigeon::GetRawYaw()
 {
-    // double yaw = m_pigeon.get()->GetFusedHeading();
-    // double ypr[3]; // yaw = 0 pitch = 1 roll = 2
-    // m_pigeon.get()->GetYawPitchRoll(ypr);
-    // double yaw = ypr[0];
     double yaw = 0.0;
-
     if (m_pigeon != nullptr)
     {
         yaw = m_pigeon->GetYaw();

@@ -75,8 +75,8 @@ std::shared_ptr<DragonVisionTarget> DragonVision::getTargetInfo(LIMELIGHT_POSITI
 
 		// In place until we can get the field position of an april tag
 		units::length::inch_t xDistance = dll->EstimateTargetXdistance();
-		units::length::inch_t yDistance = dll->EstimateTargetYdistance();
-		units::length::inch_t distance = units::length::inch_t(sqrt(pow(xDistance.to<double>(), 2) + pow(yDistance.to<double>(), 2)));
+		// units::length::inch_t yDistance = dll->EstimateTargetYdistance();
+		// units::length::inch_t distance = units::length::inch_t(sqrt(pow(xDistance.to<double>(), 2) + pow(yDistance.to<double>(), 2)));
 
 		/*if (dll->getPipeline() != DragonLimelight::PIPELINE_MODE::APRIL_TAG)
 		{
@@ -96,7 +96,7 @@ std::shared_ptr<DragonVisionTarget> DragonVision::getTargetInfo(LIMELIGHT_POSITI
 		std::shared_ptr<DragonVisionTarget>
 			dvt = make_shared<DragonVisionTarget>(
 				dll->getPipeline(),
-				distance,
+				xDistance,
 				dll->GetTargetHorizontalOffset(),
 				dll->GetTargetVerticalOffset(),
 				dll->EstimateTargetXdistance_RelToRobotCoords(),
