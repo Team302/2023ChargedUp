@@ -32,6 +32,7 @@ public:
         TRAJECTORY_DRIVE,
         POLAR_DRIVE,
         HOLD_DRIVE,
+        VISION_DRIVE,
         STOP_DRIVE
     };
 

@@ -41,6 +41,7 @@
 #include <chassis/swerve/SwerveChassis.h>
 
 #include <chassis/swerve/driveStates/FieldDrive.h>
+#include <chassis/swerve/driveStates/VisionDrive.h>
 #include <chassis/swerve/driveStates/HoldDrive.h>
 #include <chassis/swerve/driveStates/RobotDrive.h>
 #include <chassis/swerve/driveStates/StopDrive.h>
@@ -53,6 +54,7 @@
 
 #include <hw/DragonLimelight.h>
 #include <hw/factories/LimelightFactory.h>
+#include <utils/FMSData.h>
 #include <utils/AngleUtils.h>
 #include <utils/ConversionUtils.h>
 #include <utils/logging/Logger.h>
@@ -158,6 +160,7 @@ void SwerveChassis::InitStates()
     m_robotDrive = new RobotDrive();
 
     m_driveStateMap[ChassisOptionEnums::DriveStateType::FIELD_DRIVE] = new FieldDrive(m_robotDrive);
+    m_driveStateMap[ChassisOptionEnums::DriveStateType::VISION_DRIVE] = new VisionDrive(m_robotDrive);
     m_driveStateMap[ChassisOptionEnums::DriveStateType::HOLD_DRIVE] = new HoldDrive();
     m_driveStateMap[ChassisOptionEnums::DriveStateType::ROBOT_DRIVE] = m_robotDrive;
     m_driveStateMap[ChassisOptionEnums::DriveStateType::STOP_DRIVE] = new StopDrive();
@@ -297,7 +300,7 @@ void SwerveChassis::UpdateOdometry()
     units::degree_t yaw{m_pigeon->GetYaw()};
     Rotation2d rot2d{yaw};
 
-    if (m_vision != nullptr && m_vision->GetRobotPosition().X().to<double>() != 0 && m_vision->GetRobotPosition().Y().to<double>() != 0)
+    /*if (m_vision != nullptr)
     {
         auto targetInfo = m_vision->getTargetInfo();
         if (targetInfo != nullptr)
@@ -308,7 +311,7 @@ void SwerveChassis::UpdateOdometry()
             Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("UpdateOdometry"), string("DistToTarget"), distToTarget);
             Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("UpdateOdometry"), string("HasReset"), m_hasResetToVisionTarget);
 
-            if (distToTarget > 29.5 && !m_hasResetToVisionTarget && distToTarget < 80 && !m_hasResetToVisionTarget && pose.X().to<double>() > 0 && pose.Y().to<double>() > 0) // Need to add low pass filter for all 3 conditions
+            if (distToTarget > 29.5 && !m_hasResetToVisionTarget && distToTarget < 80 && pose.X().to<double>() > 0 && pose.Y().to<double>() > 0) // Need to add low pass filter for all 3 conditions
             {
                 m_poseEstimator.ResetPosition(rot2d, wpi::array<frc::SwerveModulePosition, 4>{m_frontLeft.get()->GetPosition(), m_frontRight.get()->GetPosition(), m_backLeft.get()->GetPosition(), m_backRight.get()->GetPosition()}, pose);
                 m_hasResetToVisionTarget = true;
@@ -331,17 +334,17 @@ void SwerveChassis::UpdateOdometry()
         }
     }
     else
-    {
-        m_poseEstimator.Update(rot2d, wpi::array<frc::SwerveModulePosition, 4>{m_frontLeft.get()->GetPosition(),
-                                                                               m_frontRight.get()->GetPosition(),
-                                                                               m_backLeft.get()->GetPosition(),
-                                                                               m_backRight.get()->GetPosition()});
-        m_hasResetToVisionTarget = false;
+    {*/
+    m_poseEstimator.Update(rot2d, wpi::array<frc::SwerveModulePosition, 4>{m_frontLeft.get()->GetPosition(),
+                                                                           m_frontRight.get()->GetPosition(),
+                                                                           m_backLeft.get()->GetPosition(),
+                                                                           m_backRight.get()->GetPosition()});
+    m_hasResetToVisionTarget = false;
+    //}
 
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("SwerveOdometry"), std::string("X Position: "), m_poseEstimator.GetEstimatedPosition().X().to<double>());
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("SwerveOdometry"), std::string("Y Position: "), m_poseEstimator.GetEstimatedPosition().Y().to<double>());
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("SwerveOdometry"), std::string("Rotation: "), m_poseEstimator.GetEstimatedPosition().Rotation().Degrees().to<double>());
-    }
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("SwerveOdometry"), std::string("X Position: "), m_poseEstimator.GetEstimatedPosition().X().to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("SwerveOdometry"), std::string("Y Position: "), m_poseEstimator.GetEstimatedPosition().Y().to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("SwerveOdometry"), std::string("Rotation: "), m_poseEstimator.GetEstimatedPosition().Rotation().Degrees().to<double>());
 }
 /// @brief set all of the encoders to zero
 void SwerveChassis::SetEncodersToZero()
@@ -366,10 +369,7 @@ ChassisSpeeds SwerveChassis::GetChassisSpeeds() const
                                          m_backRight.get()->GetState()});
 }
 
-/// @brief Reset the current chassis pose based on the provided pose and rotation
-/// @param [in] const Pose2d&       pose        Current XY position
-/// @param [in] const Rotation2d&   angle       Current rotation angle
-void SwerveChassis::ResetPose(const Pose2d &pose, const Rotation2d &angle)
+void SwerveChassis::ResetPose(const Pose2d &pose)
 {
     units::degree_t yaw{m_pigeon->GetYaw()};
     Rotation2d rot2d{yaw};
@@ -379,10 +379,27 @@ void SwerveChassis::ResetPose(const Pose2d &pose, const Rotation2d &angle)
     m_poseEstimator.ResetPosition(rot2d, wpi::array<frc::SwerveModulePosition, 4>{m_frontLeft.get()->GetPosition(), m_frontRight.get()->GetPosition(), m_backLeft.get()->GetPosition(), m_backRight.get()->GetPosition()}, pose);
 }
 
-void SwerveChassis::ResetPose(const Pose2d &pose)
+void SwerveChassis::ResetPoseToVision()
 {
-    Rotation2d angle = pose.Rotation();
-    ResetPose(pose, angle);
+    units::degree_t yaw{m_pigeon->GetYaw()};
+    Rotation2d rot2d{yaw};
+
+    /*auto targetInfo = m_vision->getTargetInfo();
+    if (targetInfo != nullptr)
+    {
+        frc::Pose2d pose = m_vision->GetRobotPosition();
+
+        if (pose.X().to<double>() > 0 && pose.Y().to<double>() > 0) // Need to add low pass filter for all 3 conditions
+        {
+            m_poseEstimator.ResetPosition(rot2d, wpi::array<frc::SwerveModulePosition, 4>{m_frontLeft.get()->GetPosition(), m_frontRight.get()->GetPosition(), m_backLeft.get()->GetPosition(), m_backRight.get()->GetPosition()}, pose);
+        }
+    }
+    else // if we don't have a target, just reset yaw to 0 (we do this in case field orientation breaks)
+    {*/
+    m_pigeon->ReZeroPigeon(0.0, 0.0);
+
+    ZeroAlignSwerveModules();
+    //}
 }
 
 ChassisSpeeds SwerveChassis::GetFieldRelativeSpeeds(
@@ -402,9 +419,4 @@ ChassisSpeeds SwerveChassis::GetFieldRelativeSpeeds(
 void SwerveChassis::SetTargetHeading(units::angle::degree_t targetYaw)
 {
     m_targetHeading = targetYaw;
-}
-
-void SwerveChassis::ReZero()
-{
-    m_storedYaw = units::angle::degree_t(0.0);
 }

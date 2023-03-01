@@ -149,7 +149,7 @@ void Robot::RobotPeriodic()
     {
         m_previewer->CheckCurrentAuton();
     }
-    if (m_field != nullptr)
+    if (m_field != nullptr && m_chassis != nullptr)
     {
         m_field->UpdateRobotPosition(m_chassis->GetPose()); // ToDo:: Move to DriveTeamFeedback (also don't assume m_field isn't a nullptr)
     }

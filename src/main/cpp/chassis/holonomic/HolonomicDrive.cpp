@@ -38,6 +38,8 @@
 #include <utils/logging/Logger.h>
 #include <chassis/swerve/driveStates/DragonTrajectoryGenerator.h>
 #include <utils/DragonField.h>
+#include <DragonVision/DragonVision.h>
+#include <chassis/swerve/driveStates/VisionDrive.h>
 
 using namespace std;
 using namespace frc;
@@ -89,16 +91,18 @@ void HolonomicDrive::Run()
             moveInfo.headingOption = ChassisOptionEnums::HeadingOption::TOWARD_GOAL;
         }
 
-        if (controller->IsButtonPressed(TeleopControlFunctions::REZERO_PIGEON))
+        if (controller->IsButtonPressed(TeleopControlFunctions::RESET_POSITION) && !m_hasResetPosition)
         {
-            auto factory = PigeonFactory::GetFactory();
-            auto m_pigeon = factory->GetPigeon(DragonPigeon::PIGEON_USAGE::CENTER_OF_ROBOT);
-            m_pigeon->ReZeroPigeon(0.0, 0.0);
             if (m_swerve != nullptr)
             {
-                m_swerve->ZeroAlignSwerveModules();
-                m_swerve->ReZero();
+                m_swerve->ResetPoseToVision();
             }
+
+            m_hasResetPosition = true;
+        }
+        else
+        {
+            m_hasResetPosition = false;
         }
 
         if (m_swerve != nullptr)
@@ -138,27 +142,68 @@ void HolonomicDrive::Run()
         {
             if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_LEFT_COLUMN))
             {
-                moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
+                if (DragonVision::GetDragonVision()->getTargetInfo() != nullptr)
+                {
+                    auto targetInfo = DragonVision::GetDragonVision()->getTargetInfo();
+                    if (targetInfo->getDistanceToTarget().to<double>() < 110.0)
+                    {
+                        moveInfo.driveOption = ChassisOptionEnums::DriveStateType::VISION_DRIVE;
+                        m_previousDriveState = moveInfo.driveOption;
+                        auto visionDrive = dynamic_cast<VisionDrive *>(m_swerve->GetSpecifiedDriveState(ChassisOptionEnums::DriveStateType::VISION_DRIVE));
+                        visionDrive->UpdateOffsets(units::length::inch_t(0.0), units::length::inch_t(21.5));
+                    }
+                }
+                /*moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
                 m_previousDriveState = moveInfo.driveOption;
                 moveInfo.trajectory = m_trajectoryGenerator->GenerateTrajectory(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose(), DragonTrajectoryGenerator::TARGET_POSITION::COLUMN_ONE);
-                m_generatedTrajectory = moveInfo.trajectory;
+                m_generatedTrajectory = moveInfo.trajectory;*/
                 // m_field->AddTrajectory("DriverAssist", m_generatedTrajectory);
             }
             else if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_MIDDLE_COLUMN))
             {
-                moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
+                if (DragonVision::GetDragonVision()->getTargetInfo() != nullptr)
+                {
+                    auto targetInfo = DragonVision::GetDragonVision()->getTargetInfo();
+                    if (targetInfo->getDistanceToTarget().to<double>() < 110.0)
+                    {
+                        moveInfo.driveOption = ChassisOptionEnums::DriveStateType::VISION_DRIVE;
+                        m_previousDriveState = moveInfo.driveOption;
+                        auto visionDrive = dynamic_cast<VisionDrive *>(m_swerve->GetSpecifiedDriveState(ChassisOptionEnums::DriveStateType::VISION_DRIVE));
+                        visionDrive->UpdateOffsets(units::length::inch_t(0.0), units::length::inch_t(0.0));
+                    }
+                }
+                /*moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
                 m_previousDriveState = moveInfo.driveOption;
                 moveInfo.trajectory = m_trajectoryGenerator->GenerateTrajectory(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose(), DragonTrajectoryGenerator::TARGET_POSITION::COLUMN_TWO);
-                m_generatedTrajectory = moveInfo.trajectory;
+                m_generatedTrajectory = moveInfo.trajectory;*/
                 // m_field->AddTrajectory("DriverAssist", m_generatedTrajectory);
             }
             else if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_RIGHT_COLUMN))
             {
-                moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
+                auto targetInfo = DragonVision::GetDragonVision()->getTargetInfo();
+                    if (targetInfo->getDistanceToTarget().to<double>() < 110.0)
+                    {
+                        moveInfo.driveOption = ChassisOptionEnums::DriveStateType::VISION_DRIVE;
+                        m_previousDriveState = moveInfo.driveOption;
+                        auto visionDrive = dynamic_cast<VisionDrive *>(m_swerve->GetSpecifiedDriveState(ChassisOptionEnums::DriveStateType::VISION_DRIVE));
+                        visionDrive->UpdateOffsets(units::length::inch_t(0.0), units::length::inch_t(-21.5));
+                    }
+                /*moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
                 m_previousDriveState = moveInfo.driveOption;
                 moveInfo.trajectory = m_trajectoryGenerator->GenerateTrajectory(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose(), DragonTrajectoryGenerator::TARGET_POSITION::COLUMN_THREE);
-                m_generatedTrajectory = moveInfo.trajectory;
+                m_generatedTrajectory = moveInfo.trajectory;*/
                 // m_field->AddTrajectory("DriverAssist", m_generatedTrajectory);
+                if (DragonVision::GetDragonVision()->getTargetInfo() != nullptr)
+                {
+                    auto targetInfo = DragonVision::GetDragonVision()->getTargetInfo();
+                    if (targetInfo->getDistanceToTarget().to<double>() < 110.0)
+                    {
+                        moveInfo.driveOption = ChassisOptionEnums::DriveStateType::VISION_DRIVE;
+                        m_previousDriveState = moveInfo.driveOption;
+                        auto visionDrive = dynamic_cast<VisionDrive *>(m_swerve->GetSpecifiedDriveState(ChassisOptionEnums::DriveStateType::VISION_DRIVE));
+                        visionDrive->UpdateOffsets(units::length::inch_t(0.0), units::length::inch_t(-21.5));
+                    }
+                }
             }
         }
         else
@@ -169,10 +214,11 @@ void HolonomicDrive::Run()
 
         // add button to drive to loading zone
 
-        // if (controller->IsButtonPressed(TeleopControlFunctions::::HOLD_POSITION))
-        //{
-        // m_chassis.get()->DriveHoldPosition();
-        //}
+        if (controller->IsButtonPressed(TeleopControlFunctions::HOLD_POSITION))
+        {
+            moveInfo.driveOption = ChassisOptionEnums::DriveStateType::HOLD_DRIVE;
+            m_previousDriveState = moveInfo.driveOption;
+        }
 
         auto maxSpeed = m_chassis->GetMaxSpeed();
         auto maxAngSpeed = m_chassis->GetMaxAngularSpeed();
@@ -198,6 +244,13 @@ void HolonomicDrive::Run()
         }
 
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("Run"), string("axis read"));
+
+        // temporary fix for resetting odomtery by apriltags, issues with rotation
+        if (FMSData::GetInstance()->GetAllianceColor() == frc::DriverStation::Alliance::kRed)
+        {
+            forward *= -1.0;
+            strafe *= -1.0;
+        }
 
         moveInfo.chassisSpeeds.vx = forward * maxSpeed;
         moveInfo.chassisSpeeds.vy = strafe * maxSpeed;

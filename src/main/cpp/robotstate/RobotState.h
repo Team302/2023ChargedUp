@@ -24,6 +24,7 @@
 class IChassis;
 class IRobotStateChangeSubscriber;
 class RobotStateChangeBroker;
+class TeleopControl;
 
 class RobotState
 {
@@ -36,6 +37,7 @@ public:
 
 private:
     void PublishGameStateChanges();
+    void CheckGamePieceMode(TeleopControl *controller);
 
     RobotState();
     ~RobotState();
