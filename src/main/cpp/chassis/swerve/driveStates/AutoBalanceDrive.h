@@ -1,4 +1,3 @@
-
 //====================================================================================================================================================
 // Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
@@ -14,47 +13,30 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#include <driveteamfeedback/LED.h>
+#pragma once
 
-LED::LED(int PWMport)
-{
-    m_led = new frc::AddressableLED(PWMport);
-    m_led->SetLength(kLength);
-    m_led->SetData(m_ledBuffer);
-    m_led->Start();
-}
-LED *LED::m_instance = nullptr;
+// FRC Includes
+#include <frc/kinematics/SwerveModuleState.h>
+#include <frc/kinematics/ChassisSpeeds.h>
 
-LED *LED::GetInstance()
-{
-    if (LED::m_instance == nullptr)
-    {
-        LED::m_instance = new LED(0);
-    }
-    return LED::m_instance;
-}
+// Team302 Includes
+#include <chassis/swerve/driveStates/RobotDrive.h>
 
-std::array<int, 3> LED::getColorValues(Colors c)
+class SwerveChassis;
+
+class AutoBalanceDrive : public RobotDrive
 {
-    switch (c)
-    {
-    case RED:
-        return {255, 0, 0};
-    case GREEN:
-        return {0, 255, 0};
-    case BLUE:
-        return {0, 0, 255};
-    case YELLOW:
-        return {255, 160, 0};
-    case PURPLE:
-        return {75, 0, 130};
-    case AZUL:
-        return {0, 255, 255};
-    case WHITE:
-        return {255, 255, 180};
-    case BLACK:
-        return {0, 0, 0};
-    default:
-        return {0, 0, 0};
-    }
-}
+public:
+    AutoBalanceDrive(RobotDrive *robotDrive);
+
+    std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates(ChassisMovement &chassisMovement) override;
+
+    void Init(ChassisMovement &chassisMovement) override;
+
+private:
+    RobotDrive *m_robotDrive;
+    SwerveChassis *m_chassis;
+
+    const units::feet_per_second_t m_pitchConstant = units::feet_per_second_t(0.1);
+    const units::feet_per_second_t m_rollConstant = units::feet_per_second_t(0.1);
+};

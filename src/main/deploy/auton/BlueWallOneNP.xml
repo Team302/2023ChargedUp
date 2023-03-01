@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE auton SYSTEM "auton.dtd">
+<auton>
+<primitive id="RESET_POSITION"
+	   pathname="BlueWallOne1.wpilib.json"
+       grabber="GRAB"/>
+    <!--score preloaded cone-->
+        <primitive id="DO_NOTHING"
+               arm="CONE_BACKROW_ROTATE"
+               extender="STARTING_POSITION_EXTEND"
+               grabber="GRAB"
+               time="0.35"
+               />
+    <primitive id="DO_NOTHING"
+               arm="CONE_BACKROW_ROTATE"
+               extender="CONE_BACKROW_EXTEND"
+               grabber="GRAB"
+               time="0.6"
+               />
+    <primitive id="DO_NOTHING"
+               arm="CONE_BACKROW_ROTATE"
+               extender="CONE_BACKROW_EXTEND"
+               grabber="OPEN"
+               time="0.35"
+               />
+    <primitive id="DO_NOTHING"
+               arm="CONE_BACKROW_ROTATE"
+               extender="STARTING_POSITION_EXTEND"
+               grabber="OPEN"
+               time="0.5"
+               />
+    <!--drive to charing station-->
+    <primitive id="DRIVE_PATH"
+               pathname="BlueWallOne1.wpilib.json"
+               headingOption="SPECIFIED_ANGLE"
+               heading="180"
+               arm="STARTING_POSITION_ROTATE"
+               extender="STARTING_POSITION_EXTEND"
+               grabber="GRAB"
+               time="0.5"
+               />
+    <primitive id="DRIVE_PATH"
+               pathname="BlueWallOne4.wpilib.json"
+               headingOption="SPECIFIED_ANGLE"
+               heading="180"
+               arm="STARTING_POSITION_ROTATE"
+               extender="STARTING_POSITION_EXTEND"
+               grabber="GRAB"
+               time="4.0"
+               />
+    <primitive id="DRIVE_PATH"
+               pathname="BlueWallOne2.wpilib.json"
+               headingOption="SPECIFIED_ANGLE"
+               heading="180"
+               arm="STARTING_POSITION_ROTATE"
+               extender="STARTING_POSITION_EXTEND"
+               grabber="GRAB"
+               time="7.0"
+               />
+    <!--do nothing!-->
+    <primitive id="DO_NOTHING"
+               headingOption="SPECIFIED_ANGLE"
+               heading="180"
+               arm="STARTING_POSITION_ROTATE"
+               extender="STARTING_POSITION_EXTEND"
+               grabber="GRAB"
+               time="10.0"
+               />
+</auton>

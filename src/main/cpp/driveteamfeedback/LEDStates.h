@@ -15,20 +15,22 @@
 //====================================================================================================================================================
 
 #pragma once
-#include <driveteamfeedback/LED.h>
+#include <hw/DragonLeds.h>
+#include <vector>
 
 class LEDStates
 {
 public:
-    void LEDsOff();
+    void setLEDsOn();
+    void setLEDsOff();
     void ResetVariables();
-    void ChaserPattern(LED::Colors c);
-    void BlinkingPattern(LED::Colors c);
-    void SolidColorPattern(LED::Colors c);
-    void AlternatingBlinkingPattern(LED::Colors c);
-    void AlternatingBlinkingPattern(LED::Colors c1, LED::Colors c2);
-    void ClosingInChaserPattern(LED::Colors c);
-    LED *m_LED = LED::GetInstance();
+    void ChaserPattern(DragonLeds::Colors c);
+    void BlinkingPattern(DragonLeds::Colors c);
+    void SolidColorPattern(DragonLeds::Colors c);
+    void AlternatingColorBlinkingPattern(DragonLeds::Colors c);
+    void AlternatingColorBlinkingPattern(DragonLeds::Colors c1, DragonLeds::Colors c2);
+    void ClosingInChaserPattern(DragonLeds::Colors c);
+    DragonLeds *m_LEDstring = DragonLeds::GetInstance();
     static LEDStates *GetInstance();
 
 private:
@@ -36,4 +38,7 @@ private:
     int colorLoop = 0;
     int timer;
     static LEDStates *m_instance;
+
+    const int blinkPatternPeriod = 10;
+    const int alternatingColorBlinkPatternPeriod = 10;
 };

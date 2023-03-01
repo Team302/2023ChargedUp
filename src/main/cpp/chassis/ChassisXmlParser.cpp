@@ -65,16 +65,12 @@ IChassis *ChassisXmlParser::ParseXML(
     units::length::inch_t wheelDiameter(0.0);
     units::length::inch_t wheelBase(0.0);
     units::length::inch_t track(0.0);
-    double odometryComplianceCoefficient = 1.0;
     units::velocity::meters_per_second_t maxVelocity(0.0);
     units::radians_per_second_t maxAngularSpeed(0.0);
     units::acceleration::meters_per_second_squared_t maxAcceleration(0.0);
     units::angular_acceleration::radians_per_second_squared_t maxAngularAcceleration(0.0);
     string networkTableName;
     string controlFileName;
-
-    // ChassisSpeedCalcEnum speedCalcOption = ChassisSpeedCalcEnum::ETHER;
-    PoseEstimatorEnum poseEstOption = PoseEstimatorEnum::EULER_AT_CHASSIS;
 
     bool hasError = false;
 
@@ -134,10 +130,6 @@ IChassis *ChassisXmlParser::ParseXML(
         {
             wheelDiameter = units::length::inch_t(attr.as_double());
         }
-        else if (attrName.compare("odometryComplianceCoefficient") == 0)
-        {
-            odometryComplianceCoefficient = attr.as_double();
-        }
         else if (attrName.compare("networkTable") == 0)
         {
             networkTableName = attr.as_string();
@@ -145,64 +137,6 @@ IChassis *ChassisXmlParser::ParseXML(
         else if (attrName.compare("controlFile") == 0)
         {
             controlFileName = attr.as_string();
-        }
-        /** TODO: remove this is unused **/
-        else if (attrName.compare("wheelSpeedCalcOption") == 0)
-        {
-            /**
-            auto val = string( attr.value() );
-            if (val.compare( "WPI") == 0)
-            {
-                speedCalcOption = ChassisSpeedCalcEnum::WPI_METHOD;
-            }
-            else if (val.compare("ETHER") == 0)
-            {
-                speedCalcOption = ChassisSpeedCalcEnum::ETHER;
-            }
-            else if (val.compare("ETHER") == 0)
-            {
-                speedCalcOption = ChassisSpeedCalcEnum::ETHER;
-            }
-            else
-            {
-                string msg = "unknown Chassis Speed Calc Option ";
-                msg += val;
-                Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("ChassisXmlParser::ParseXML"), msg );
-                hasError = true;
-            }
-            **/
-        }
-        /** **/
-        else if (attrName.compare("poseEstimationOption") == 0)
-        {
-            auto val = string(attr.value());
-            if (val.compare("WPI") == 0)
-            {
-                poseEstOption = PoseEstimatorEnum::WPI;
-            }
-            else if (val.compare("EULERCHASSIS") == 0)
-            {
-                poseEstOption = PoseEstimatorEnum::EULER_AT_CHASSIS;
-            }
-            else if (val.compare("EULERWHEEL") == 0)
-            {
-                poseEstOption = PoseEstimatorEnum::EULER_USING_MODULES;
-            }
-            else if (val.compare("POSECHASSIS") == 0)
-            {
-                poseEstOption = PoseEstimatorEnum::POSE_EST_AT_CHASSIS;
-            }
-            else if (val.compare("POSEWHEEL") == 0)
-            {
-                poseEstOption = PoseEstimatorEnum::POSE_EST_USING_MODULES;
-            }
-            else
-            {
-                string msg = "unknown Chassis Pose Estimation Option ";
-                msg += val;
-                Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("ChassisXmlParser"), string("ParseXML"), msg);
-                hasError = true;
-            }
         }
         else // log errors
         {
@@ -287,10 +221,7 @@ IChassis *ChassisXmlParser::ParseXML(
                                              lfront,
                                              rfront,
                                              lback,
-                                             rback,
-                                             // speedCalcOption,
-                                             poseEstOption,
-                                             odometryComplianceCoefficient);
+                                             rback);
         }
         else // log errors
         {

@@ -36,8 +36,8 @@ private:
     DriverFeedback();
     ~DriverFeedback() = default;
 
-    bool m_AutonomousEnabled;
-    bool m_TeleopEnabled;
+    bool m_AutonomousEnabled = false;
+    bool m_TeleopEnabled = false;
 
     enum DriverFeedbackStates
     {
@@ -53,6 +53,7 @@ private:
     };
 
     LEDStates *m_LEDStates = LEDStates::GetInstance();
+    bool m_GrabberIsOpen = false;
     bool m_WantCube = false;
     bool m_WantCone = false;
     bool m_GamePieceReadyToPickUp = false;
@@ -66,4 +67,7 @@ private:
 
     DriverFeedbackStates m_gamePieceState = DriverFeedbackStates::NONE;
     DriverFeedbackStates m_compressorState = DriverFeedbackStates::NONE;
+    bool m_grabberStateChanged = true;
+
+    void resetRequests(void);
 };
