@@ -14,118 +14,111 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#include <memory>
-#include <string>
-#include <vector>
-
-#include <hw/DragonLeds.h>
-#include <frc/AddressableLED.h>
+#include <hw/DragonLeds.h >
 #include <utils/logging/Logger.h>
 
-using namespace frc;
-using namespace std;
+#include <span>
+#include <string>
 
-DragonLeds *DragonLeds::m_instance = nullptr;
-DragonLeds *DragonLeds::GetInstance()
-{
-    if (DragonLeds::m_instance == nullptr)
-    {
-        DragonLeds::m_instance = new DragonLeds();
-    }
-    return DragonLeds::m_instance;
-}
-
-DragonLeds::DragonLeds() : m_leds(),
-                           m_num(0),
-                           m_ledData(),
-                           m_firstPixelHue(0),
-                           m_colorChaseStart(0)
-{
-}
-void DragonLeds::Initialize(
-    int deviceID, // <I> - PWM ID
-    int numLeds   // <I> - number of LEDs
-
-)
+void DragonLeds::Initialize(int PWMport, int numLeds)
 {
     if (!IsInitialized())
     {
-        m_leds = std::make_unique<frc::AddressableLED>(deviceID);
-        m_num = numLeds;
-        m_firstPixelHue = 0;
-        m_colorChaseStart = 0;
-        m_ledData.resize(numLeds);
-        for (auto i = 0; i < numLeds; ++i)
-        {
-            m_ledData[i].SetRGB(0, 255, 0);
-        }
+        m_addressibleLeds = new frc::AddressableLED(PWMport);
+        m_addressibleLeds->SetLength(numLeds);
+
+        m_ledBuffer.resize(numLeds);
+
+        setBufferAllLEDsColor(getColorValues(Colors::GREEN));
+        commitLedData();
+        setOn();
     }
     else
     {
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("DragonLeds"), string("Already defined"), string("Only one allowed"));
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, std::string("DragonLeds"), std::string("Already defined"), std::string("Only one allowed"));
     }
 }
 
 bool DragonLeds::IsInitialized() const
 {
-    return m_num > 0;
+    return m_addressibleLeds != nullptr;
 }
 
-void DragonLeds::SetColor(
-    LedColor color)
+void DragonLeds::setOn()
 {
-    switch (color)
-    {
-    case SOLID_RED:
-        for (auto i = 0; i < m_num; ++i)
-        {
-            m_ledData[i].SetRGB(255, 0, 0);
-        }
-        break;
-    case SOLID_GREEN:
-        for (auto i = 0; i < m_num; ++i)
-        {
-            m_ledData[i].SetRGB(0, 255, 0);
-        }
-        break;
-    case SOLID_BLUE:
-        for (auto i = 0; i < m_num; ++i)
-        {
-            m_ledData[i].SetRGB(0, 0, 255);
-        }
-        break;
+    m_addressibleLeds->Start();
+}
 
+void DragonLeds::setOff()
+{
+    m_addressibleLeds->Stop();
+}
+
+DragonLeds::DragonLeds() : m_addressibleLeds()
+{
+}
+
+DragonLeds *DragonLeds::m_instance = nullptr;
+DragonLeds *DragonLeds::GetInstance()
+{
+    if (m_instance == nullptr)
+    {
+        m_instance = new DragonLeds();
+    }
+    return m_instance;
+}
+
+std::array<int, 3> DragonLeds::getColorValues(Colors c)
+{
+    switch (c)
+    {
+    case RED:
+        return {255, 0, 0};
+    case GREEN:
+        return {0, 255, 0};
+    case BLUE:
+        return {0, 0, 255};
+    case YELLOW:
+        return {255, 160, 0};
+    case PURPLE:
+        return {75, 0, 130};
+    case AZUL:
+        return {0, 255, 255};
+    case WHITE:
+        return {255, 255, 180};
+    case BLACK:
+        return {0, 0, 0};
     default:
-        break;
+        return {0, 0, 0};
     }
-
-    if (color != m_color)
-    {
-        for (auto i = m_colorChaseStart; i < m_colorChaseStart + 3 && i < m_num; ++i)
-        {
-            m_ledData[i].SetRGB(0, 0, 0);
-        }
-        m_colorChaseStart += 3;
-    }
-    else
-    {
-        m_colorChaseStart = 0;
-    }
-    m_firstPixelHue = 0;
-    m_color = color;
 }
 
-void DragonLeds::SetRainbow()
+void DragonLeds::commitLedData()
 {
-    for (auto i = 0; i < m_num; ++i)
+    std::span ledSpan{m_ledBuffer.data(), m_ledBuffer.size()};
+    m_addressibleLeds->SetData(ledSpan);
+}
+
+void DragonLeds::setBufferAllLEDsColor(std::array<int, 3> color)
+{
+    for (uint i = 0; i < m_ledBuffer.size(); i++)
     {
-        // Calculate the hue - hue is easier for rainbows because the color
-        // shape is a circle so only one value needs to precess
-        const auto pixelHue = (m_firstPixelHue + (i * 180 / m_num)) % 180;
-        // Set the value
-        m_ledData[i].SetHSV(pixelHue, 255, 128);
+        m_ledBuffer[i].SetRGB(color[0], color[1], color[2]);
     }
-    m_firstPixelHue += 3;   // Increase by to make the rainbow "move"
-    m_firstPixelHue %= 180; // Check bounds
-    m_colorChaseStart = 0;
+}
+
+void DragonLeds::setBufferAllLEDsAlternatingColor(std::array<int, 3> color1, std::array<int, 3> color2)
+{
+    for (uint i = 0; i < m_ledBuffer.size(); i++)
+    {
+        if (i % 2 == 0)
+            m_ledBuffer[i].SetRGB(color1[0], color1[1], color1[2]);
+        else
+            m_ledBuffer[i].SetRGB(color2[0], color2[1], color2[2]);
+    }
+}
+
+void DragonLeds::setBufferAllLEDsBlack()
+{
+    setBufferAllLEDsColor(getColorValues(BLACK));
 }
