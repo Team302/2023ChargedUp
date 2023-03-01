@@ -37,8 +37,8 @@
                grabber="GRAB"
                time="5.0"
                />
-    <!--Balance on charging station-->
-    <primitive id="AUTO_BALANCE"
+    <!--do nothing!-->
+    <primitive id="DO_NOTHING"
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                grabber="GRAB"

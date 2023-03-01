@@ -18,6 +18,7 @@
 #include <auton/PrimitiveEnums.h>
 #include <auton/PrimitiveFactory.h>
 #include <auton/PrimitiveParser.h>
+#include <auton/drivePrimitives/AutoBalance.h>
 #include <auton/drivePrimitives/DriveStop.h>
 #include <auton/drivePrimitives/DriveDistance.h>
 #include <auton/drivePrimitives/DrivePath.h>
@@ -138,7 +139,7 @@ IPrimitive *PrimitiveFactory::GetIPrimitive(PrimitiveParams *primitivePasser)
 	case AUTO_BALANCE:
 		if (m_autoBalance == nullptr)
 		{
-			//			m_autoBalance = new AutoBalance();
+			m_autoBalance = new AutoBalance();
 		}
 		primitive = m_autoBalance;
 

@@ -24,6 +24,9 @@
 #include <chassis/ChassisOptionEnums.h>
 #include <chassis/ChassisFactory.h>
 
+/// DEBUGGING
+#include <utils/logging/Logger.h>
+
 using namespace std;
 using namespace frc;
 
@@ -37,20 +40,26 @@ AutoBalance::AutoBalance() : m_chassis(ChassisFactory::GetChassisFactory()->GetS
 }
 void AutoBalance::Init(PrimitiveParams *params)
 {
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "ArrivedAtInit", true);
 }
 void AutoBalance::Run()
 {
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "ArrivedAtRun", true);
+
     if (m_chassis != nullptr)
     {
         ChassisMovement moveInfo;
         moveInfo.driveOption = ChassisOptionEnums::DriveStateType::AUTO_BALANCE;
         moveInfo.headingOption = ChassisOptionEnums::HeadingOption::MAINTAIN;
+
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "DriveState", moveInfo.driveOption);
         m_chassis->Drive(moveInfo);
     }
 }
 
 bool AutoBalance::IsDone()
 {
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "ArrivedAtDone", true);
     if (m_chassis != nullptr)
     {
         auto pitch = m_chassis->GetPitch().to<double>();
