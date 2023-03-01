@@ -32,6 +32,7 @@
 #include <frc/trajectory/TrajectoryConfig.h>
 #include <frc/trajectory/TrajectoryUtil.h>
 #include <wpi/SmallString.h>
+#include <frc/Timer.h>
 
 class AutoBalance : public IPrimitive
 {
@@ -46,6 +47,10 @@ public:
 
 private:
     SwerveChassis *m_chassis;
+
+    frc::Timer *m_timer;
+
+    const double m_balanceTimeout = 2.0;
 
     ChassisOptionEnums::HeadingOption m_headingOption;
     std::string m_ntName;

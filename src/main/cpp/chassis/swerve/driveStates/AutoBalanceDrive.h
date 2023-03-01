@@ -37,6 +37,6 @@ private:
     RobotDrive *m_robotDrive;
     SwerveChassis *m_chassis;
 
-    const units::feet_per_second_t m_pitchConstant = units::feet_per_second_t(0.25);
-    const units::feet_per_second_t m_rollConstant = units::feet_per_second_t(0.25);
+    const units::feet_per_second_t m_pitchConstant = units::feet_per_second_t(0.1);
+    const units::feet_per_second_t m_rollConstant = units::feet_per_second_t(0.1);
 };

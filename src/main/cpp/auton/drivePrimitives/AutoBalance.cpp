@@ -35,7 +35,8 @@ using namespace wpi::math;
 AutoBalance::AutoBalance() : m_chassis(ChassisFactory::GetChassisFactory()->GetSwerveChassis()),
                              // max velocity of 1 rotation per second and a max acceleration of 180 degrees per second squared.
                              m_headingOption(ChassisOptionEnums::HeadingOption::MAINTAIN),
-                             m_ntName("AutoBalance")
+                             m_ntName("AutoBalance"),
+                             m_timer(new frc::Timer())
 {
 }
 void AutoBalance::Init(PrimitiveParams *params)
@@ -64,8 +65,16 @@ bool AutoBalance::IsDone()
     {
         auto pitch = m_chassis->GetPitch().to<double>();
         auto roll = m_chassis->GetRoll().to<double>();
+        if (abs(pitch) < m_balanceTolerance && abs(roll) < m_balanceTolerance)
+        {
+            m_timer->Start();
+        }
+        else
+        {
+            m_timer->Reset();
+        }
 
-        return (abs(pitch) < m_balanceTolerance && abs(roll) < m_balanceTolerance);
+        return m_timer->Get().to<double>() > m_balanceTimeout;
     }
     return true;
 }

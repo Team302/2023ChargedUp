@@ -228,6 +228,13 @@ void Robot::TeleopInit()
         {
             m_holonomic->Init();
         }
+
+        // Create chassismovement to flush out any drive options from auton
+        ChassisMovement resetMoveInfo;
+        resetMoveInfo.driveOption = ChassisOptionEnums::DriveStateType::FIELD_DRIVE;
+        resetMoveInfo.headingOption = ChassisOptionEnums::HeadingOption::MAINTAIN;
+
+        m_chassis->Drive();
     }
     StateMgrHelper::RunCurrentMechanismStates();
 
