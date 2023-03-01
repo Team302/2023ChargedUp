@@ -17,6 +17,7 @@
 #pragma once
 #include <frc/AddressableLED.h>
 #include <vector>
+#include <array>
 
 class DragonLeds
 {
