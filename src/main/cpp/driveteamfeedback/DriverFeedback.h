@@ -62,5 +62,6 @@ private:
 
     static DriverFeedback *m_instance;
 
-    DriverFeedbackStates currentState = DriverFeedbackStates::NONE;
+    DriverFeedbackStates m_gamePieceState = DriverFeedbackStates::NONE;
+    DriverFeedbackStates m_compressorState = DriverFeedbackStates::NONE;
 };

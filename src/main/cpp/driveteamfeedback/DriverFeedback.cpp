@@ -38,12 +38,12 @@ void DriverFeedback::UpdateCompressorState()
 {
     if (RobotStateChanges::CompressorState::CompressorOn)
     {
-        currentState = DriverFeedbackStates::COMPRESSOR_ON;
+        m_compressorState = DriverFeedbackStates::COMPRESSOR_ON;
     }
 
     else if (RobotStateChanges::CompressorState::CompressorOff)
     {
-        currentState = DriverFeedbackStates::COMPRESSOR_OFF;
+        m_compressorState = DriverFeedbackStates::COMPRESSOR_OFF;
     }
 }
 void DriverFeedback::UpdateLEDStates()
@@ -51,72 +51,72 @@ void DriverFeedback::UpdateLEDStates()
     if (DriverFeedback::m_AlignedWithConeNode)
     {
 
-        if (currentState != DriverFeedbackStates::ALIGNED_WITH_CONE_NODE)
+        if (m_gamePieceState != DriverFeedbackStates::ALIGNED_WITH_CONE_NODE)
         {
             m_LEDStates->ResetVariables();
         }
         m_LEDStates->ClosingInChaserPattern(LED::YELLOW);
-        currentState = DriverFeedbackStates::ALIGNED_WITH_CONE_NODE;
+        m_gamePieceState = DriverFeedbackStates::ALIGNED_WITH_CONE_NODE;
     }
     else if (DriverFeedback::m_AlignedWithCubeNode)
     {
 
-        if (currentState != DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE)
+        if (m_gamePieceState != DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE)
         {
             m_LEDStates->ResetVariables();
         }
         m_LEDStates->ClosingInChaserPattern(LED::PURPLE);
-        currentState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
+        m_gamePieceState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
     }
     else if (DriverFeedback::m_GamePieceInGrabber)
     {
 
-        if (currentState != DriverFeedbackStates::GAME_PIECE_IN_GRABBER)
+        if (m_gamePieceState != DriverFeedbackStates::GAME_PIECE_IN_GRABBER)
         {
             m_LEDStates->ResetVariables();
         }
         m_LEDStates->AlternatingBlinkingPattern(LED::YELLOW, LED::PURPLE);
-        currentState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
+        m_gamePieceState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
     }
     else if (DriverFeedback::m_WantCube)
     {
 
-        if (currentState != DriverFeedbackStates::WANT_CUBE)
+        if (m_gamePieceState != DriverFeedbackStates::WANT_CUBE)
         {
             m_LEDStates->ResetVariables();
         }
         m_LEDStates->SolidColorPattern(LED::PURPLE);
-        currentState = DriverFeedbackStates::WANT_CUBE;
+        m_gamePieceState = DriverFeedbackStates::WANT_CUBE;
     }
     else if (DriverFeedback::m_WantCone)
     {
 
-        if (currentState != DriverFeedbackStates::WANT_CONE)
+        if (m_gamePieceState != DriverFeedbackStates::WANT_CONE)
         {
             m_LEDStates->ResetVariables();
         }
         m_LEDStates->SolidColorPattern(LED::YELLOW);
-        currentState = DriverFeedbackStates::WANT_CONE;
+        m_gamePieceState = DriverFeedbackStates::WANT_CONE;
     }
     else if (DriverFeedback::m_GamePieceReadyToPickUp)
     {
 
-        if (currentState != DriverFeedbackStates::GAME_PIECE_READY_TO_PICK_UP)
+        if (m_gamePieceState != DriverFeedbackStates::GAME_PIECE_READY_TO_PICK_UP)
         {
             m_LEDStates->ResetVariables();
         }
         m_LEDStates->SolidColorPattern(LED::GREEN);
-        currentState = DriverFeedbackStates::GAME_PIECE_READY_TO_PICK_UP;
+        m_gamePieceState = DriverFeedbackStates::GAME_PIECE_READY_TO_PICK_UP;
     }
     else
     {
 
-        if (currentState != DriverFeedbackStates::NONE)
+        if (m_gamePieceState != DriverFeedbackStates::NONE)
         {
             m_LEDStates->ResetVariables();
         }
         m_LEDStates->SolidColorPattern(LED::GREEN);
-        currentState = DriverFeedbackStates::NONE;
+        m_gamePieceState = DriverFeedbackStates::NONE;
     }
 }
 
@@ -124,6 +124,7 @@ DriverFeedback::DriverFeedback() : IRobotStateChangeSubscriber()
 {
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::DesiredGamePiece);
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::GameState);
+    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::CompressorChange);
 }
 void DriverFeedback::Update(RobotStateChanges::StateChange change, int value)
 {
@@ -138,5 +139,9 @@ void DriverFeedback::Update(RobotStateChanges::StateChange change, int value)
         auto state = static_cast<RobotStateChanges::GamePeriod>(value);
         m_AutonomousEnabled = state == RobotStateChanges::Auton;
         m_TeleopEnabled = state == RobotStateChanges::Teleop;
+    }
+    else if (change == RobotStateChanges::StateChange::CompressorChange)
+    {
+        auto compressor = static_cast<RobotStateChanges::CompressorState>(value);
     }
 }
