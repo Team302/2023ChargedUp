@@ -13,10 +13,16 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
+#include <frc/DriverStation.h>
 #include <driveteamfeedback/DriverFeedback.h>
 #include <robotstate/RobotState.h>
 #include <robotstate/RobotStateChanges.h>
 #include <robotstate/IRobotStateChangeSubscriber.h>
+#include <networktables/NetworkTableInstance.h>
+#include <networktables/NetworkTable.h>
+#include <networktables/NetworkTableEntry.h>
+
+using frc::DriverStation;
 
 DriverFeedback *DriverFeedback::m_instance = nullptr;
 
@@ -45,6 +51,7 @@ void DriverFeedback::UpdateCompressorState()
     {
         m_compressorState = DriverFeedbackStates::COMPRESSOR_OFF;
     }
+    CheckControllers();
 }
 void DriverFeedback::UpdateLEDStates()
 {
@@ -143,5 +150,22 @@ void DriverFeedback::Update(RobotStateChanges::StateChange change, int value)
     else if (change == RobotStateChanges::StateChange::CompressorChange)
     {
         auto compressor = static_cast<RobotStateChanges::CompressorState>(value);
+    }
+}
+
+void DriverFeedback::CheckControllers()
+{
+    if (m_controllerCounter == 0)
+    {
+        auto table = nt::NetworkTableInstance::GetDefault().GetTable("XBOX Controller");
+        for (auto i = 0; i < DriverStation::kJoystickPorts; ++i)
+        {
+            table.get()->PutBoolean(std::string("Controller") + std::to_string(i), DriverStation::GetJoystickIsXbox(i));
+        }
+    }
+    m_controllerCounter++;
+    if (m_controllerCounter > 25)
+    {
+        m_controllerCounter = 0;
     }
 }

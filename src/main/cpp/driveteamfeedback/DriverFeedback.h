@@ -32,6 +32,7 @@ public:
     void Update(RobotStateChanges::StateChange change, int value) override;
 
 private:
+    void CheckControllers();
     DriverFeedback();
     ~DriverFeedback() = default;
 
@@ -49,7 +50,6 @@ private:
         COMPRESSOR_ON,
         COMPRESSOR_OFF,
         NONE
-
     };
 
     LEDStates *m_LEDStates = LEDStates::GetInstance();
@@ -59,6 +59,7 @@ private:
     bool m_GamePieceInGrabber = false;
     bool m_AlignedWithConeNode = false;
     bool m_AlignedWithCubeNode = false;
+    int m_controllerCounter = 0;
 
     static DriverFeedback *m_instance;
 

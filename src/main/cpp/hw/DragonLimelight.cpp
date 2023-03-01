@@ -109,11 +109,18 @@ frc::Pose2d DragonLimelight::GetRedFieldPosition() const
 {
     if (m_networktable.get() != nullptr)
     {
-        auto topic = m_networktable.get()->GetDoubleArrayTopic("botpose_wpired");
-        std::vector<double> position = topic.GetEntry(std::array<double, 6>{}).Get(); // default value is empty array
+        auto blueTopic = m_networktable.get()->GetDoubleArrayTopic("botpose_wpiblue");
 
-        frc::Rotation3d rotation = frc::Rotation3d{units::angle::degree_t(position[3]), units::angle::degree_t(position[4]), units::angle::degree_t(position[5])};
-        return frc::Pose3d{units::meter_t(position[0]), units::meter_t(position[1]), units::meter_t(position[2]), rotation}.ToPose2d();
+        std::vector<double> bluePosition = blueTopic.GetEntry(std::array<double, 7>{}).Get(); // default value is empty array
+
+        // do we want to also store total latency (7th element in array) here?
+
+        frc::Rotation3d rotation = frc::Rotation3d{units::angle::degree_t(bluePosition[3]), units::angle::degree_t(bluePosition[4]), units::angle::degree_t(bluePosition[5])};
+        return frc::Pose3d{units::meter_t(bluePosition[0]), units::meter_t(bluePosition[1]), units::meter_t(bluePosition[2]), rotation}.ToPose2d();
+    }
+    else
+    {
+        return frc::Pose2d{};
     }
 }
 
@@ -122,13 +129,16 @@ frc::Pose2d DragonLimelight::GetBlueFieldPosition() const
     if (m_networktable.get() != nullptr)
     {
         auto topic = m_networktable.get()->GetDoubleArrayTopic("botpose_wpiblue");
-        std::vector<double> position = topic.GetEntry(std::array<double, 6>{}).Get(); // default value is empty array
+        std::vector<double> position = topic.GetEntry(std::array<double, 7>{}).Get(); // default value is empty array
 
-        // For tanay
-        //  topic.Publish().Set(std::array<double,6>{LLforw, });
+        // do we want to also store total latency (7th element in array) here?
 
         frc::Rotation3d rotation = frc::Rotation3d{units::angle::degree_t(position[3]), units::angle::degree_t(position[4]), units::angle::degree_t(position[5])};
         return frc::Pose3d{units::meter_t(position[0]), units::meter_t(position[1]), units::meter_t(position[2]), rotation}.ToPose2d();
+    }
+    else
+    {
+        return frc::Pose2d{};
     }
 }
 
