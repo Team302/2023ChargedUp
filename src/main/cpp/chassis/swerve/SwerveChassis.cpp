@@ -300,7 +300,7 @@ void SwerveChassis::UpdateOdometry()
     units::degree_t yaw{m_pigeon->GetYaw()};
     Rotation2d rot2d{yaw};
 
-    /*if (m_vision != nullptr)
+    /*if (m_vision == nullptr)
     {
         auto targetInfo = m_vision->getTargetInfo();
         if (targetInfo != nullptr)

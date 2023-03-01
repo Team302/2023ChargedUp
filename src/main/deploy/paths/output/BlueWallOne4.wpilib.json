@@ -1,0 +1,137 @@
+[
+{
+"acceleration": -2.0,
+"curvature": -0.0,
+"pose": {
+"rotation": {
+"radians": 1.5707963267948966
+},
+"translation": {
+"x": 2.4,
+"y": 1.5999999999999996
+}
+},
+"time": 0.0,
+"velocity": -0.0
+},
+{
+"acceleration": -2.0000000000000004,
+"curvature": -0.0,
+"pose": {
+"rotation": {
+"radians": 1.5707963267948966
+},
+"translation": {
+"x": 2.4,
+"y": 1.4755297241210936
+}
+},
+"time": 0.35280345219244386,
+"velocity": -0.7056069043848877
+},
+{
+"acceleration": -2.0000000000000004,
+"curvature": -0.0,
+"pose": {
+"rotation": {
+"radians": 1.5707963267948966
+},
+"translation": {
+"x": 2.4,
+"y": 1.3534160156250001
+}
+},
+"time": 0.4965722348007382,
+"velocity": -0.9931444696014765
+},
+{
+"acceleration": -1.9999999999999085,
+"curvature": -0.0,
+"pose": {
+"rotation": {
+"radians": 1.5707963267948966
+},
+"translation": {
+"x": 2.4,
+"y": 1.2340818481445313
+}
+},
+"time": 0.6049116893030488,
+"velocity": -1.209823378606098
+},
+{
+"acceleration": 2.0,
+"curvature": -0.0,
+"pose": {
+"rotation": {
+"radians": 1.5707963267948966
+},
+"translation": {
+"x": 2.4,
+"y": 1.1165000000000012
+}
+},
+"time": 0.6953416426476978,
+"velocity": -1.3906832852953877
+},
+{
+"acceleration": 2.0,
+"curvature": -0.0,
+"pose": {
+"rotation": {
+"radians": 1.5707963267948966
+},
+"translation": {
+"x": 2.4,
+"y": 0.9989181518554711
+}
+},
+"time": 0.7857715959923471,
+"velocity": -1.209823378606089
+},
+{
+"acceleration": 1.9999999999999998,
+"curvature": -0.0,
+"pose": {
+"rotation": {
+"radians": 1.5707963267948966
+},
+"translation": {
+"x": 2.4,
+"y": 0.8795839843750031
+}
+},
+"time": 0.8941110504946579,
+"velocity": -0.9931444696014675
+},
+{
+"acceleration": 2.0000000000000004,
+"curvature": -0.0,
+"pose": {
+"rotation": {
+"radians": 1.5707963267948966
+},
+"translation": {
+"x": 2.4,
+"y": 0.7574702758789122
+}
+},
+"time": 1.0378798331029504,
+"velocity": -0.7056069043848827
+},
+{
+"acceleration": 2.0000000000000004,
+"curvature": -0.0,
+"pose": {
+"rotation": {
+"radians": 1.5707963267948966
+},
+"translation": {
+"x": 2.4,
+"y": 0.633000000000008
+}
+},
+"time": 1.3906832852953916,
+"velocity": -0.0
+}
+]

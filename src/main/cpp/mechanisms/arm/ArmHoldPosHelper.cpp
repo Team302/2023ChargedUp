@@ -25,7 +25,7 @@ double ArmHoldPosHelper::CalculateHoldPositionTarget(double armAngle,
                                                      RobotStateChanges::GamePiece gamepieceMode,
                                                      GrabberStateMgr::GRABBER_STATE grabberState)
 {
-    if (armAngle > m_fTermAngleThreshold)
+    if (armAngle > m_fTermAngleThreshold && armAngle < m_maxArmAngle)
     {
         if (extenderPos > m_fullExtensionExtenderPos && armAngle > m_fullExtensionArmAngle)
         {
@@ -43,4 +43,6 @@ double ArmHoldPosHelper::CalculateHoldPositionTarget(double armAngle,
             return (m_coneOffset + m_coneArmComponent * armAngle + m_coneExtenderComponent * extenderPos + m_coneArmSquaredComponent * pow(armAngle, 2) + m_coneExtenderSquaredComponent * pow(extenderPos, 2));
         }
     }
+
+    return 0.0;
 }
