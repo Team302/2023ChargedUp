@@ -26,7 +26,8 @@ AutomatedSystemTest::AutomatedSystemTest()
 {
     m_PDP = PDPFactory::GetFactory()->GetPDP();
     TEST_STEP m_testStep;
-    finishedcurrentstep;
+    m_finishedcurrentstep;
+    m_finishedcurrentstep;
     TestStepnum;
     m_timer0 = 0;
     m_timer1 = 0;
@@ -38,7 +39,6 @@ AutomatedSystemTest::AutomatedSystemTest()
     m_swervechassisforwardusage;
     m_swervechassisstrafeusage;
     m_swervechassisturnusage;
-    test;
     m_InitialPDPWatts;
     frc::PowerDistribution *m_PDP;
 }
@@ -92,7 +92,7 @@ void AutomatedSystemTest::Run()
 }
 bool AutomatedSystemTest::BasePDPValue()
 {
-    /*
+
     if (m_PDP != nullptr)
     {
         m_basepdpusage = m_PDP->GetTotalCurrent();
@@ -100,7 +100,7 @@ bool AutomatedSystemTest::BasePDPValue()
     }
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("pdp"), "cannot accses pdp");
     return false;
-    */
+
     if (m_PDP != nullptr)
     {
         m_basepdpusage = m_PDP->GetTotalCurrent();
@@ -158,69 +158,50 @@ bool AutomatedSystemTest::TestExtender()
     ExtenderStateMgr::GetInstance()->SetCurrentState(ExtenderStateMgr::EXTENDER_STATE::STARTING_POSITION_EXTEND, (true));
     return false;
 }
+
 // swerve forward test
 bool AutomatedSystemTest::TestswervevxForward()
 {
+    m_finishedcurrentstep = false;
+    m_startedtest = false;
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("start swerve vx forward"), "reached");
     auto m_swervechassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
     if (m_swervechassis != nullptr)
     {
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("checked if swerve chassis is a null ptr"), "reached");
-        auto maxspeed = m_swervechassis->GetMaxSpeed();
         ChassisMovement moveinfo;
+        auto maxspeed = m_swervechassis->GetMaxSpeed();
 
-        m_timer0++;
-        /*
-        doing nothing for 20 loops
-        forward for 4980
-        might be nice to have methods for each item
+        if (!m_finishedcurrentstep)
+        {
+            m_timer0++;
+            // doing nothing for 20 loops
+            // forward for 4980
+            // might be nice to have methods for each item
 
-        if (m_timer < 20 )
-        {
-            moveinfo.chassisSpeeds.vx = 0.0 * maxspeed;
-        }
-        else if (m_timer < 5000)
-        {
-            moveinfo.chassisSpeeds.vx = 0.5 * maxspeed;
-        }
-        if (m_timer < 10000)
-        {
-            moveinfo.chassisSpeeds.vx = 0.0 * maxspeed;
-        }
-        m_swervechassis->Drive(moveinfo);
-        */
-        if (m_timer0 > 20 && m_timer0 < 5000)
-        {
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("started swervedrive"), "reached");
-            moveinfo.chassisSpeeds.vx = 0.5 * maxspeed;
-            m_swervechassis->Drive(moveinfo);
-        }
-        else if (m_timer0 > 10000)
-        {
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("timer finished"), "reached");
-            if (m_PDP != nullptr)
+            if (m_timer0 > 20)
             {
-                // m_swervechassisforwardusage = m_PDP->GetTotalCurrent();
-                Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("swerve forward usage"), (m_swervechassisforwardusage));
-                // moveinfo.chassisSpeeds.vx = 0.0 * maxspeed;
-                Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("check id pdp is a null ptr"), "reached");
-                // m_swervechassis->Drive(moveinfo);
-                return true;
+                if (m_startedtest == false && m_timer0 > 40)
+                {
+                    moveinfo.chassisSpeeds.vx = 0.5 * maxspeed;
+                    m_startedtest = true;
+                }
+                else if (m_startedtest == true && m_timer0 > 200)
+                {
+                    m_swervechassisforwardusage = m_PDP->GetTotalCurrent();
+                    moveinfo.chassisSpeeds.vx = 0.0 * maxspeed;
+                    m_finishedcurrenttest = true;
+                }
+                m_swervechassis->Drive(moveinfo);
             }
             else
             {
-                Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("pdp"), "cannot accses pdp");
-                moveinfo.chassisSpeeds.vx = 0.0 * maxspeed;
-                m_swervechassis->Drive(moveinfo);
-                return false;
+                m_swervechassis->ZeroAlignSwerveModules();
             }
-        }
-        else
-        {
-            // m_swervechassis->ZeroAlignSwerveModules();
+            return true;
         }
     }
 }
+
 bool AutomatedSystemTest::TestswervevxBackward()
 {
     // chasis backwards test
@@ -322,37 +303,3 @@ bool AutomatedSystemTest::TestswervevyBackward()
         }
     }
 }
-
-// swerve turn test
-
-/*if (m_finishedchassisstrafetest == true && m_finishedchassisturntest == false)
-{
-    m_timer2++;
-    m_swervechassis->ZeroAlignSwerveModules();
-
-    if (m_timer2 > 20 && m_timer2 < 59)
-    {
-        moveinfo.chassisSpeeds.omega = 0.0 * maxAngSpeed;
-        m_swervechassis->Drive(moveinfo);
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("timer 2 start"), (m_timer2));
-        m_finishedstartswerveturntest = true;
-    }
-}
-if (m_timer2 > 400 && m_finishedstartswerveturntest == true)
-{
-
-    if (m_PDP != nullptr)
-    {
-        m_swervechassisturnusage = m_PDP->GetTotalCurrent();
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("timer 2 end"), (m_timer2));
-        moveinfo.chassisSpeeds.omega = 0.0 * maxAngSpeed;
-        m_swervechassis->Drive(moveinfo);
-        m_swervechassis->ZeroAlignSwerveModules();
-        m_finishedswerveturntest = true;
-    }
-
-    else
-    {
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("pdp"), "cannot accses pdp");
-    }
-}*/

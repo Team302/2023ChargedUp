@@ -45,7 +45,9 @@ private:
         SWERVE_VY_BACKWARD = 6,
     };
     TEST_STEP m_testStep;
-    bool finishedcurrentstep;
+    bool m_finishedcurrentstep;
+    bool m_finishedcurrenttest;
+    bool m_startedtest;
     int TestStepnum;
     int m_timer0 = 0;
     int m_timer1 = 0;
@@ -57,7 +59,6 @@ private:
     double m_swervechassisforwardusage;
     double m_swervechassisstrafeusage;
     double m_swervechassisturnusage;
-    double test;
     double m_InitialPDPWatts;
     frc::PowerDistribution *m_PDP;
     bool BasePDPValue();
