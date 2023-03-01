@@ -30,6 +30,7 @@ public:
     void Update(RobotStateChanges::StateChange change, int value) override;
 
 private:
+    void CheckControllers();
     DriverFeedback();
     ~DriverFeedback() = default;
 
@@ -45,7 +46,6 @@ private:
         WANT_CONE,
         GAME_PIECE_READY_TO_PICK_UP,
         NONE
-
     };
 
     LEDStates *m_LEDStates = LEDStates::GetInstance();
@@ -55,6 +55,7 @@ private:
     bool m_GamePieceInGrabber = false;
     bool m_AlignedWithConeNode = false;
     bool m_AlignedWithCubeNode = false;
+    int m_controllerCounter = 0;
 
     static DriverFeedback *m_instance;
 

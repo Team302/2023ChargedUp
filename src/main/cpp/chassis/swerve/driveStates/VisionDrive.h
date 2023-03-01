@@ -1,4 +1,3 @@
-
 //====================================================================================================================================================
 // Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
@@ -15,39 +14,33 @@
 //====================================================================================================================================================
 
 #pragma once
-#include <vector>
 
-#include <frc/DriverStation.h>
+// FRC Includes
+#include <frc/kinematics/SwerveModuleState.h>
+#include <frc/kinematics/ChassisSpeeds.h>
+#include <frc/geometry/Transform2d.h>
 
-#include <robotstate/RobotStateChanges.h>
+// Team302 Includes
+#include <chassis/swerve/driveStates/RobotDrive.h>
 
-class IChassis;
-class IRobotStateChangeSubscriber;
-class RobotStateChangeBroker;
-class TeleopControl;
-
-class RobotState
+class VisionDrive : public RobotDrive
 {
 public:
-    void Init();
-    void Run();
-    static RobotState *GetInstance();
-    void RegisterForStateChanges(IRobotStateChangeSubscriber *subscriber, RobotStateChanges::StateChange change);
-    void PublishStateChange(RobotStateChanges::StateChange change, int newValue);
+    VisionDrive(RobotDrive *robotDrive);
+
+    std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates(
+        ChassisMovement &chassisMovement) override;
+
+    void Init(
+        ChassisMovement &chassisMovement) override;
+
+    void UpdateOffsets(units::length::inch_t xOffset, units::length::inch_t yOffset) override;
 
 private:
-    void PublishGameStateChanges();
-    void CheckGamePieceMode(TeleopControl *controller);
+    RobotDrive *m_robotDrive;
+    units::length::inch_t m_xOffset;
+    units::length::inch_t m_yOffset;
 
-    RobotState();
-    ~RobotState();
-
-    IChassis *m_chassis;
-    std::vector<RobotStateChangeBroker *> m_brokers;
-    RobotStateChanges::GamePiece m_gamePiece;
-    RobotStateChanges::GamePeriod m_gamePhase;
-
-    bool m_wasReleased;
-
-    static RobotState *m_instance;
+    const double m_kP = 2.5;
+    const double m_kAngleP = 1.0;
 };

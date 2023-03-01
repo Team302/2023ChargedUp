@@ -34,6 +34,8 @@ public:
         HOLD_DRIVE,
         STOP_DRIVE,
         AUTO_BALANCE
+        VISION_DRIVE,
+        STOP_DRIVE
     };
 
     enum NoMovementOption

@@ -80,17 +80,22 @@ void RobotState::Run()
         auto controller = TeleopControl::GetInstance();
         if (controller != nullptr)
         {
-            if (controller->IsButtonPressed(TeleopControlFunctions::CYCLE_GRABBER))
-            {
-                if (m_wasReleased)
-                {
-                    m_gamePiece = (m_gamePiece == RobotStateChanges::Cube) ? RobotStateChanges::Cone : RobotStateChanges::Cube;
-                    PublishStateChange(RobotStateChanges::DesiredGamePiece, m_gamePiece);
-                }
-            }
-            m_wasReleased = !controller->IsButtonPressed(TeleopControlFunctions::CYCLE_GRABBER);
+            CheckGamePieceMode(controller);
         }
     }
+}
+
+void RobotState::CheckGamePieceMode(TeleopControl *controller)
+{
+    if (controller->IsButtonPressed(TeleopControlFunctions::CYCLE_GRABBER))
+    {
+        if (m_wasReleased)
+        {
+            m_gamePiece = (m_gamePiece == RobotStateChanges::Cube) ? RobotStateChanges::Cone : RobotStateChanges::Cube;
+            PublishStateChange(RobotStateChanges::DesiredGamePiece, m_gamePiece);
+        }
+    }
+    m_wasReleased = !controller->IsButtonPressed(TeleopControlFunctions::CYCLE_GRABBER);
 }
 
 void RobotState::RegisterForStateChanges(IRobotStateChangeSubscriber *subscriber, RobotStateChanges::StateChange change)
