@@ -46,6 +46,6 @@ public:
 	~Arm() override = default;
 
 	//========= Hand modified code start section 0 ========
-	void ResetIfArmDown();
+	bool ResetIfArmDown();
 	//========= Hand modified code end section 0 ========
 };

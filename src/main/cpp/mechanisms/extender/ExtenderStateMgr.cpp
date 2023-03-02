@@ -69,7 +69,7 @@ ExtenderStateMgr::ExtenderStateMgr() : StateMgr(),
                                        m_prevState(EXTENDER_STATE::STARTING_POSITION_EXTEND),
                                        m_currentState(EXTENDER_STATE::STARTING_POSITION_EXTEND),
                                        m_targetState(EXTENDER_STATE::STARTING_POSITION_EXTEND),
-                                       m_gamepieceMode(RobotStateChanges::None),
+                                       m_gamepieceMode(RobotStateChanges::Cone),
                                        m_extendedPosition(84320.3176), // 22.25 inches in counts for extender
                                        m_armState(ArmStateMgr::ARM_STATE::HOLD_POSITION_ROTATE)
 //========= Hand modified code end section 1 ========
@@ -93,6 +93,7 @@ ExtenderStateMgr::ExtenderStateMgr() : StateMgr(),
     }
 
     //========= Hand modified code start section 2 ========
+    RobotState::GetInstance()->PublishStateChange(RobotStateChanges::DesiredGamePiece, RobotStateChanges::Cone);
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::ArmRotateState);
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::DesiredGamePiece);
     //========= Hand modified code end section 2 ========
@@ -194,12 +195,6 @@ void ExtenderStateMgr::CheckForGamepadTransitions()
 
 void ExtenderStateMgr::CheckForConeGamepadTransitions(TeleopControl *controller)
 {
-    if (m_gamepieceMode == RobotStateChanges::None)
-    {
-        m_gamepieceMode = RobotStateChanges::Cone;
-        RobotState::GetInstance()->PublishStateChange(RobotStateChanges::DesiredGamePiece, m_gamepieceMode);
-    }
-
     if (controller != nullptr)
     {
         if (controller->IsButtonPressed(TeleopControlFunctions::BACKROW))

@@ -37,8 +37,7 @@ public:
     enum GamePiece
     {
         Cone,
-        Cube,
-        None
+        Cube
     };
 
     enum PlacementLocation
