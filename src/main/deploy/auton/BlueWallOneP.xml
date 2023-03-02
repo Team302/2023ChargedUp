@@ -49,7 +49,7 @@
                time="4.0"
                />
     <primitive id="DRIVE_PATH"
-               pathname="BlueWallOne2Slow.wpilib.json"
+               pathname="BlueWallOne2.wpilib.json"
                headingOption="SPECIFIED_ANGLE"
                heading="180"
                arm="STARTING_POSITION_ROTATE"
@@ -64,7 +64,7 @@
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                grabber="GRAB"
-               time="4.0"
+               time="2.0"
                />
     <!--drive onto charging station-->
     <primitive id="DRIVE_PATH"
@@ -74,7 +74,7 @@
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                grabber="GRAB"
-               time="4.0"
+               time="3.0"
                />
     <!--auto balance-->
     <primitive id="AUTO_BALANCE"

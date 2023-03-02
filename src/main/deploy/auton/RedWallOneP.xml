@@ -60,7 +60,7 @@
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                grabber="GRAB"
-               time="3.0"
+               time="1.5"
                />
     <!--drive onto charging station-->
     <primitive id="DRIVE_PATH"
