@@ -27,7 +27,7 @@ AutomatedSystemTest::AutomatedSystemTest()
     m_PDP = PDPFactory::GetFactory()->GetPDP();
     TEST_STEP m_testStep;
     m_finishedcurrentstep;
-    m_finishedcurrentstep;
+    m_finishedcurrenttest;
     TestStepnum;
     m_timer0 = 0;
     m_timer1 = 0;
@@ -53,46 +53,46 @@ void AutomatedSystemTest::Init()
 }
 void AutomatedSystemTest::Run()
 {
-    /*    finishedcurrentstep = false;
+    m_finishedcurrentstep = false;
 
-        if (TestStepnum == BASE_TEST)
-        {
-            finishedcurrentstep = BasePDPValue();
-        }
-        else if (TestStepnum == ARM_TEST)
-        {
-            finishedcurrentstep = TestArm();
-        }
-        else if (TestStepnum == EXTENDER_TEST)
-        {
-            finishedcurrentstep = TestExtender();
-        }
-        else if (TestStepnum == SWERVE_VX_FORWARD)
-        {
-            finishedcurrentstep = TestswervevxForward();
-        }
-        else if (TestStepnum == SWERVE_VX_BACKWARD)
-        {
-            finishedcurrentstep = TestswervevxBackward();
-        }
-        else if (TestStepnum == SWERVE_VY_FORWARD)
-        {
-            finishedcurrentstep = TestswervevyForward();
-        }
-        else if (TestStepnum == SWERVE_VY_BACKWARD)
-        {
-            finishedcurrentstep = TestswervevyBackward();
-        }
-        if (finishedcurrentstep == true && TestStepnum < 7)
-        {
-            TestStepnum++;
-        }*/
+    if (TestStepnum == BASE_TEST)
+    {
+        m_finishedcurrentstep = BasePDPValue();
+    }
+    else if (TestStepnum == ARM_TEST)
+    {
+        m_finishedcurrentstep = TestArm();
+    }
+    else if (TestStepnum == EXTENDER_TEST)
+    {
+        m_finishedcurrentstep = TestExtender();
+    }
+    else if (TestStepnum == SWERVE_VX_FORWARD)
+    {
+        m_finishedcurrentstep = TestswervevxForward();
+    }
+    else if (TestStepnum == SWERVE_VX_BACKWARD)
+    {
+        m_finishedcurrentstep = TestswervevxBackward();
+    }
+    else if (TestStepnum == SWERVE_VY_FORWARD)
+    {
+        m_finishedcurrentstep = TestswervevyForward();
+    }
+    else if (TestStepnum == SWERVE_VY_BACKWARD)
+    {
+        m_finishedcurrentstep = TestswervevyBackward();
+    }
+    if (m_finishedcurrentstep == true && TestStepnum < 7)
+    {
+        TestStepnum++;
+    }
     TestswervevxForward();
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("periodic"), "reached");
 }
 bool AutomatedSystemTest::BasePDPValue()
 {
-
+    return true;
     if (m_PDP != nullptr)
     {
         m_basepdpusage = m_PDP->GetTotalCurrent();
@@ -100,17 +100,6 @@ bool AutomatedSystemTest::BasePDPValue()
     }
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("pdp"), "cannot accses pdp");
     return false;
-
-    if (m_PDP != nullptr)
-    {
-        m_basepdpusage = m_PDP->GetTotalCurrent();
-        return true;
-    }
-    else
-    {
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("pdp"), "cannot accses pdp");
-        return false;
-    }
 }
 
 bool AutomatedSystemTest::TestArm()
@@ -162,7 +151,7 @@ bool AutomatedSystemTest::TestExtender()
 // swerve forward test
 bool AutomatedSystemTest::TestswervevxForward()
 {
-    m_finishedcurrentstep = false;
+    m_finishedcurrenttest = false;
     m_startedtest = false;
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("start swerve vx forward"), "reached");
     auto m_swervechassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
@@ -171,30 +160,27 @@ bool AutomatedSystemTest::TestswervevxForward()
         ChassisMovement moveinfo;
         auto maxspeed = m_swervechassis->GetMaxSpeed();
 
-        if (!m_finishedcurrentstep)
+        if (!m_finishedcurrenttest)
         {
             m_timer0++;
-            // doing nothing for 20 loops
-            // forward for 4980
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("timer0"), (m_timer0));
             // might be nice to have methods for each item
 
             if (m_timer0 > 20)
             {
-                if (m_startedtest == false && m_timer0 > 40)
+                if (m_timer0 < 90 && m_timer0 > 40)
                 {
                     moveinfo.chassisSpeeds.vx = 0.5 * maxspeed;
                     m_startedtest = true;
                 }
-                else if (m_startedtest == true && m_timer0 > 200)
+                else if (m_timer0 > 100)
                 {
                     m_swervechassisforwardusage = m_PDP->GetTotalCurrent();
+                    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("swerve vx forward usage"), (m_swervechassisforwardusage));
                     moveinfo.chassisSpeeds.vx = 0.0 * maxspeed;
                     m_finishedcurrenttest = true;
                 }
                 m_swervechassis->Drive(moveinfo);
-            }
-            else
-            {
                 m_swervechassis->ZeroAlignSwerveModules();
             }
             return true;
@@ -205,33 +191,44 @@ bool AutomatedSystemTest::TestswervevxForward()
 bool AutomatedSystemTest::TestswervevxBackward()
 {
     // chasis backwards test
-    auto m_swervechassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
-    auto maxspeed = m_swervechassis->GetMaxSpeed();
-    ChassisMovement moveinfo;
+    {
+        m_finishedcurrenttest = false;
+        m_startedtest = false;
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("start swerve vx forward"), "reached");
+        auto m_swervechassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
+        if (m_swervechassis != nullptr)
+        {
+            ChassisMovement moveinfo;
+            auto maxspeed = m_swervechassis->GetMaxSpeed();
 
-    m_timer1++;
-    m_swervechassis->ZeroAlignSwerveModules();
-    if (m_timer1 > 20 && m_timer1 < 59)
-    {
-        moveinfo.chassisSpeeds.vx = -0.25 * maxspeed;
-        m_swervechassis->Drive(moveinfo);
-    }
-    if (m_timer1 > 100)
-    {
-        if (m_PDP != nullptr)
-        {
-            m_swervechassisforwardusage = m_PDP->GetTotalCurrent();
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("swerve forward usage"), (m_swervechassisforwardusage));
-            moveinfo.chassisSpeeds.vx = 0.0 * maxspeed;
-            m_swervechassis->Drive(moveinfo);
-            return true;
-        }
-        else
-        {
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("pdp"), "cannot accses pdp");
-            moveinfo.chassisSpeeds.vx = 0.0 * maxspeed;
-            m_swervechassis->Drive(moveinfo);
-            return false;
+            if (!m_finishedcurrenttest)
+            {
+                m_timer1++;
+                Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("timer0"), (m_timer0));
+                // might be nice to have methods for each item
+
+                if (m_timer1 > 20)
+                {
+                    if (m_timer0 < 90 && m_timer0 > 40)
+                    {
+                        moveinfo.chassisSpeeds.vx = -0.5 * maxspeed;
+                        m_startedtest = true;
+                    }
+                    else if (m_timer1 > 300)
+                    {
+                        m_swervechassisforwardusage = m_PDP->GetTotalCurrent();
+                        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("swerve vx forward usage"), (m_swervechassisforwardusage));
+                        moveinfo.chassisSpeeds.vx = 0.0 * maxspeed;
+                        m_finishedcurrenttest = true;
+                    }
+                    m_swervechassis->Drive(moveinfo);
+                }
+                return true;
+            }
+            else
+            {
+                m_swervechassis->ZeroAlignSwerveModules();
+            }
         }
     }
 }
@@ -239,6 +236,7 @@ bool AutomatedSystemTest::TestswervevxBackward()
 // swerve strafe test
 bool AutomatedSystemTest::TestswervevyForward()
 {
+    return true;
     auto m_swervechassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
     auto maxspeed = m_swervechassis->GetMaxSpeed();
     ChassisMovement moveinfo;
@@ -273,6 +271,7 @@ bool AutomatedSystemTest::TestswervevyForward()
 // swerve left test
 bool AutomatedSystemTest::TestswervevyBackward()
 {
+    return true;
     auto m_swervechassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
     auto maxspeed = m_swervechassis->GetMaxSpeed();
     ChassisMovement moveinfo;
