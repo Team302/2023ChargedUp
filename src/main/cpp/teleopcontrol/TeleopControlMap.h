@@ -156,16 +156,18 @@ const TeleopControlButton extra4DPad315 = {TeleopControlMappingEnums::EXTRA4, Te
 
 robin_hood::unordered_map<TeleopControlFunctions::FUNCTION, const TeleopControlButton> teleopControlMapButtonMap{
     //{TeleopControlFunctions::FINDTARGET, driverLBumper},
-    {TeleopControlFunctions::HOLONOMIC_ROTATE_FRONT, driverDPad0},
-    {TeleopControlFunctions::HOLONOMIC_ROTATE_BACK, driverDPad180},
-    {TeleopControlFunctions::HOLONOMIC_ROTATE_LEFT, driverDPad270},
-    {TeleopControlFunctions::HOLONOMIC_ROTATE_RIGHT, driverDPad90},
+    // {TeleopControlFunctions::HOLONOMIC_ROTATE_FRONT, driverDPad0},
+    // {TeleopControlFunctions::HOLONOMIC_ROTATE_BACK, driverDPad180},
+    // {TeleopControlFunctions::HOLONOMIC_ROTATE_LEFT, driverDPad270},
+    // {TeleopControlFunctions::HOLONOMIC_ROTATE_RIGHT, driverDPad90},
     {TeleopControlFunctions::DRIVE_TO_LEFT_COLUMN, driverXButton},
     {TeleopControlFunctions::DRIVE_TO_MIDDLE_COLUMN, driverYButton},
     {TeleopControlFunctions::DRIVE_TO_RIGHT_COLUMN, driverBButton},
-    {TeleopControlFunctions::RESET_POSITION, driverAButton},
+    {TeleopControlFunctions::RESET_POSITION_FORWARD, driverDPad0},
+    {TeleopControlFunctions::RESET_POSITION_BACKWARD, driverDPad180},
     {TeleopControlFunctions::HOLD_POSITION, driverLBumper},
     {TeleopControlFunctions::SLOW_MODE, driverRBumper},
+    {TeleopControlFunctions::AUTO_BALANCE, driverAButton},
 
     {TeleopControlFunctions::STARTING_POSITION, copilotStartButton},
     {TeleopControlFunctions::CYCLE_GRABBER, copilotSelectButton},

@@ -108,7 +108,7 @@ public:
     void ResetPose(const frc::Pose2d &pose) override;
 
     /// @brief Reset chassis pose based on vision data (designed to be used by HolonomicDrive to fix/update field orientation)
-    void ResetPoseToVision();
+    void ResetPoseToVision(double defaultYaw);
 
     // static constexpr auto MaxSpeed = 3.0_mps;
     // static constexpr units::angular_velocity::radians_per_second_t MaxAngularSpeed{wpi::numbers::pi};

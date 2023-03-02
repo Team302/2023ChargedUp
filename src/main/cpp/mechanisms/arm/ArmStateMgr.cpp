@@ -157,7 +157,7 @@ void ArmStateMgr::CheckForGamepadTransitions()
         if (controller != nullptr)
         {
             m_currentState = static_cast<ARM_STATE>(GetCurrentState());
-            m_targetState = m_currentState;
+            // m_targetState = m_currentState;
 
             if (abs(controller->GetAxisValue(TeleopControlFunctions::MANUAL_ROTATE)) > 0.05)
             {
@@ -206,6 +206,10 @@ void ArmStateMgr::CheckForConeGamepadTransitions(TeleopControl *controller)
         {
             m_targetState = ARM_STATE::STARTING_POSITION_ROTATE;
         }
+        else if (m_prevState == ARM_STATE::MANUAL_ROTATE)
+        {
+            m_targetState = ARM_STATE::HOLD_POSITION_ROTATE;
+        }
     }
 }
 
@@ -239,6 +243,10 @@ void ArmStateMgr::CheckForCubeGamepadTransitions(TeleopControl *controller)
         else if (controller->IsButtonPressed(TeleopControlFunctions::STARTING_POSITION))
         {
             m_targetState = ARM_STATE::STARTING_POSITION_ROTATE;
+        }
+        else if (m_prevState == ARM_STATE::MANUAL_ROTATE)
+        {
+            m_targetState = ARM_STATE::HOLD_POSITION_ROTATE;
         }
     }
 }

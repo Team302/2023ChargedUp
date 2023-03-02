@@ -365,7 +365,7 @@ void SwerveChassis::ResetPose(const Pose2d &pose)
     m_poseEstimator.ResetPosition(rot2d, wpi::array<frc::SwerveModulePosition, 4>{m_frontLeft.get()->GetPosition(), m_frontRight.get()->GetPosition(), m_backLeft.get()->GetPosition(), m_backRight.get()->GetPosition()}, pose);
 }
 
-void SwerveChassis::ResetPoseToVision()
+void SwerveChassis::ResetPoseToVision(double defaultYaw)
 {
     units::degree_t yaw{m_pigeon->GetYaw()};
     Rotation2d rot2d{yaw};
@@ -382,7 +382,7 @@ void SwerveChassis::ResetPoseToVision()
     }
     else // if we don't have a target, just reset yaw to 0 (we do this in case field orientation breaks)
     {*/
-    m_pigeon->ReZeroPigeon(0.0, 0.0);
+    m_pigeon->ReZeroPigeon(defaultYaw, 0.0);
 
     ZeroAlignSwerveModules();
     //}
