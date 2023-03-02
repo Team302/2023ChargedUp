@@ -68,7 +68,7 @@ ArmStateMgr::ArmStateMgr() : StateMgr(),
                              m_prevState(ARM_STATE::STARTING_POSITION_ROTATE),
                              m_currentState(ARM_STATE::STARTING_POSITION_ROTATE),
                              m_targetState(ARM_STATE::STARTING_POSITION_ROTATE),
-                             m_gamepieceMode(RobotStateChanges::None)
+                             m_gamepieceMode(RobotStateChanges::Cone)
 //========= Hand modified code end section 1 ========
 
 {
@@ -94,8 +94,9 @@ ArmStateMgr::ArmStateMgr() : StateMgr(),
         m_arm->AddStateMgr(this);
     }
 
-    //========= Hand modified code start section 2 ========
-    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::DesiredGamePiece);
+    //========= Hand modified code start section 2 ========152
+    RobotState::GetInstance()->PublishStateChange(RobotStateChanges::DesiredGamePiece, m_gamepieceMode);
+    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::DesiredGamePiece);
     //========= Hand modified code end section 2 ========
 }
 
@@ -146,11 +147,6 @@ void ArmStateMgr::CheckForStateTransition()
 /// @brief Check driver inputs for a state transition
 void ArmStateMgr::CheckForGamepadTransitions()
 {
-    if (m_gamepieceMode == RobotStateChanges::None)
-    {
-        m_gamepieceMode = RobotStateChanges::Cone;
-        RobotState::GetInstance()->PublishStateChange(RobotStateChanges::DesiredGamePiece, m_gamepieceMode);
-    }
     if (m_arm != nullptr)
     {
         auto controller = TeleopControl::GetInstance();
@@ -206,6 +202,10 @@ void ArmStateMgr::CheckForConeGamepadTransitions(TeleopControl *controller)
         {
             m_targetState = ARM_STATE::STARTING_POSITION_ROTATE;
         }
+        else if (m_prevState == ARM_STATE::MANUAL_ROTATE)
+        {
+            m_targetState = ARM_STATE::HOLD_POSITION_ROTATE;
+        }
     }
 }
 
@@ -240,6 +240,10 @@ void ArmStateMgr::CheckForCubeGamepadTransitions(TeleopControl *controller)
         {
             m_targetState = ARM_STATE::STARTING_POSITION_ROTATE;
         }
+        else if (m_prevState == ARM_STATE::MANUAL_ROTATE)
+        {
+            m_targetState = ARM_STATE::HOLD_POSITION_ROTATE;
+        }
     }
 }
 
@@ -255,7 +259,9 @@ void ArmStateMgr::CheckForSensorTransitions()
         m_arm->ResetIfArmDown();
 
         // If arm is at target and the prev state hasn't changed then stay in hold
-        if (abs(m_arm->GetPositionDegrees().to<double>() - m_arm->GetTarget()) < 5.0 && m_arm->GetPositionDegrees().to<double>() > 1.0)
+        // comment doesn't match code; not sure why if the arm position being > 1 degree is part of the conditional
+        // if (abs(m_arm->GetPositionDegrees().to<double>() - m_arm->GetTarget()) < 5.0 && m_arm->GetPositionDegrees().to<double>() > 1.0)
+        if (abs(m_arm->GetPositionDegrees().to<double>() - m_arm->GetTarget()) < 5.0)
         {
             m_targetState = ARM_STATE::HOLD_POSITION_ROTATE;
         }

@@ -29,8 +29,7 @@ VisionDrive::VisionDrive(RobotDrive *robotDrive) : RobotDrive(),
 {
 }
 
-std::array<frc::SwerveModuleState, 4> VisionDrive::UpdateSwerveModuleStates(
-    ChassisMovement &chassisMovement)
+std::array<frc::SwerveModuleState, 4> VisionDrive::UpdateSwerveModuleStates(ChassisMovement &chassisMovement)
 {
     if (DragonVision::GetDragonVision()->getTargetInfo() != nullptr)
     {
@@ -54,9 +53,8 @@ std::array<frc::SwerveModuleState, 4> VisionDrive::UpdateSwerveModuleStates(
         // chassisMovement.chassisSpeeds.vx = xSpeed;
         chassisMovement.chassisSpeeds.vy = ySpeed;
         // chassisMovement.chassisSpeeds.omega = omegaSpeed;
-
-        return m_robotDrive->UpdateSwerveModuleStates(chassisMovement);
     }
+    return m_robotDrive->UpdateSwerveModuleStates(chassisMovement);
 }
 
 void VisionDrive::Init(
