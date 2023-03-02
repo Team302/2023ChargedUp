@@ -51,7 +51,7 @@ Arm::Arm(
 
 //========= Hand modified code start section 0 ========
 
-void Arm::ResetIfArmDown()
+bool Arm::ResetIfArmDown()
 {
 	if (GetMotor().get()->IsReverseLimitSwitchClosed())
 	{
@@ -59,7 +59,9 @@ void Arm::ResetIfArmDown()
 		auto fx = dynamic_cast<ctre::phoenix::motorcontrol::can::WPI_TalonFX *>(motor.get());
 		auto sensors = fx->GetSensorCollection();
 		sensors.SetIntegratedSensorPosition(0, 0);
+		return true;
 	}
+	return false;
 }
 
 //========= Hand modified code end section 0 ========

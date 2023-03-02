@@ -112,6 +112,11 @@ int ArmStateMgr::GetCurrentStateParam(PrimitiveParams *currentParams)
 void ArmStateMgr::CheckForStateTransition()
 {
     //========= Hand modified code start section 3 ========
+
+    // default to staying in the current state
+    m_currentState = static_cast<ARM_STATE>(GetCurrentState());
+    m_targetState = m_currentState;
+
     CheckForSensorTransitions();
     if (m_checkGamePadTransitions)
     {
@@ -127,17 +132,22 @@ void ArmStateMgr::CheckForStateTransition()
     if (m_targetState != m_currentState)
     {
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Setting target state to: "), m_targetState);
-        SetCurrentState(m_targetState, true);
-
-        m_prevState = m_targetState;
+        SetCurrentState(m_targetState, false);
         RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmRotateState, m_targetState);
 
         if (m_targetState == ARM_STATE::HOLD_POSITION_ROTATE)
         {
             double armAngle = m_arm->GetPositionDegrees().to<double>();
             double extenderPos = MechanismFactory::GetMechanismFactory()->GetExtender()->GetPositionInches().to<double>();
-
             m_arm->UpdateTarget(ArmHoldPosHelper::CalculateHoldPositionTarget(armAngle, extenderPos, m_gamepieceMode, m_grabberState));
+        }
+
+        m_prevState = m_targetState;
+
+        auto statePtr = GetCurrentStatePtr();
+        if (statePtr != nullptr)
+        {
+            statePtr->Run();
         }
     }
     //========= Hand modified code end section 3 ========
@@ -152,9 +162,6 @@ void ArmStateMgr::CheckForGamepadTransitions()
         auto controller = TeleopControl::GetInstance();
         if (controller != nullptr)
         {
-            m_currentState = static_cast<ARM_STATE>(GetCurrentState());
-            m_targetState = m_currentState;
-
             if (abs(controller->GetAxisValue(TeleopControlFunctions::MANUAL_ROTATE)) > 0.05)
             {
                 m_targetState = ARM_STATE::MANUAL_ROTATE;
@@ -173,77 +180,71 @@ void ArmStateMgr::CheckForGamepadTransitions()
 
 void ArmStateMgr::CheckForConeGamepadTransitions(TeleopControl *controller)
 {
-    if (controller != nullptr)
+    if (controller->IsButtonPressed(TeleopControlFunctions::BACKROW))
     {
-        if (controller->IsButtonPressed(TeleopControlFunctions::BACKROW))
+        m_targetState = ARM_STATE::CONE_BACKROW_ROTATE;
+    }
+    else if (controller->IsButtonPressed(TeleopControlFunctions::MIDROW))
+    {
+        if (m_arm->GetPositionDegrees().to<double>() > dynamic_cast<ArmState *>(GetSpecifiedState(ARM_STATE::CONE_MIDROW_ROTATE_DOWN))->GetCurrentTarget())
         {
-            m_targetState = ARM_STATE::CONE_BACKROW_ROTATE;
+            m_targetState = ARM_STATE::CONE_MIDROW_ROTATE_DOWN;
         }
-        else if (controller->IsButtonPressed(TeleopControlFunctions::MIDROW))
+        else
         {
-            if (m_arm->GetPositionDegrees().to<double>() > dynamic_cast<ArmState *>(GetSpecifiedState(ARM_STATE::CONE_MIDROW_ROTATE_DOWN))->GetCurrentTarget())
-            {
-                m_targetState = ARM_STATE::CONE_MIDROW_ROTATE_DOWN;
-            }
-            else
-            {
-                m_targetState = ARM_STATE::CONE_MIDROW_ROTATE_UP;
-            }
+            m_targetState = ARM_STATE::CONE_MIDROW_ROTATE_UP;
         }
-        else if (controller->IsButtonPressed(TeleopControlFunctions::FLOOR_POSITION))
-        {
-            m_targetState = ARM_STATE::FLOOR_POSITION_ROTATE;
-        }
-        else if (controller->IsButtonPressed(TeleopControlFunctions::HUMAN_PLAYER_STATION))
-        {
-            m_targetState = ARM_STATE::HUMAN_PLAYER_STATION_ROTATE;
-        }
-        else if (controller->IsButtonPressed(TeleopControlFunctions::STARTING_POSITION))
-        {
-            m_targetState = ARM_STATE::STARTING_POSITION_ROTATE;
-        }
-        else if (m_prevState == ARM_STATE::MANUAL_ROTATE)
-        {
-            m_targetState = ARM_STATE::HOLD_POSITION_ROTATE;
-        }
+    }
+    else if (controller->IsButtonPressed(TeleopControlFunctions::FLOOR_POSITION))
+    {
+        m_targetState = ARM_STATE::FLOOR_POSITION_ROTATE;
+    }
+    else if (controller->IsButtonPressed(TeleopControlFunctions::HUMAN_PLAYER_STATION))
+    {
+        m_targetState = ARM_STATE::HUMAN_PLAYER_STATION_ROTATE;
+    }
+    else if (controller->IsButtonPressed(TeleopControlFunctions::STARTING_POSITION))
+    {
+        m_targetState = ARM_STATE::STARTING_POSITION_ROTATE;
+    }
+    else if (m_prevState == ARM_STATE::MANUAL_ROTATE)
+    {
+        m_targetState = ARM_STATE::HOLD_POSITION_ROTATE;
     }
 }
 
 void ArmStateMgr::CheckForCubeGamepadTransitions(TeleopControl *controller)
 {
-    if (controller != nullptr)
+    if (controller->IsButtonPressed(TeleopControlFunctions::BACKROW))
     {
-        if (controller->IsButtonPressed(TeleopControlFunctions::BACKROW))
+        m_targetState = ARM_STATE::CUBE_BACKROW_ROTATE;
+    }
+    else if (controller->IsButtonPressed(TeleopControlFunctions::MIDROW))
+    {
+        if (m_arm->GetPositionDegrees().to<double>() > dynamic_cast<ArmState *>(GetSpecifiedState(ARM_STATE::CUBE_MIDROW_ROTATE_DOWN))->GetCurrentTarget())
         {
-            m_targetState = ARM_STATE::CUBE_BACKROW_ROTATE;
+            m_targetState = ARM_STATE::CUBE_MIDROW_ROTATE_DOWN;
         }
-        else if (controller->IsButtonPressed(TeleopControlFunctions::MIDROW))
+        else
         {
-            if (m_arm->GetPositionDegrees().to<double>() > dynamic_cast<ArmState *>(GetSpecifiedState(ARM_STATE::CUBE_MIDROW_ROTATE_DOWN))->GetCurrentTarget())
-            {
-                m_targetState = ARM_STATE::CUBE_MIDROW_ROTATE_DOWN;
-            }
-            else
-            {
-                m_targetState = ARM_STATE::CUBE_MIDROW_ROTATE_UP;
-            }
+            m_targetState = ARM_STATE::CUBE_MIDROW_ROTATE_UP;
         }
-        else if (controller->IsButtonPressed(TeleopControlFunctions::FLOOR_POSITION))
-        {
-            m_targetState = ARM_STATE::FLOOR_POSITION_ROTATE;
-        }
-        else if (controller->IsButtonPressed(TeleopControlFunctions::HUMAN_PLAYER_STATION))
-        {
-            m_targetState = ARM_STATE::HUMAN_PLAYER_STATION_ROTATE;
-        }
-        else if (controller->IsButtonPressed(TeleopControlFunctions::STARTING_POSITION))
-        {
-            m_targetState = ARM_STATE::STARTING_POSITION_ROTATE;
-        }
-        else if (m_prevState == ARM_STATE::MANUAL_ROTATE)
-        {
-            m_targetState = ARM_STATE::HOLD_POSITION_ROTATE;
-        }
+    }
+    else if (controller->IsButtonPressed(TeleopControlFunctions::FLOOR_POSITION))
+    {
+        m_targetState = ARM_STATE::FLOOR_POSITION_ROTATE;
+    }
+    else if (controller->IsButtonPressed(TeleopControlFunctions::HUMAN_PLAYER_STATION))
+    {
+        m_targetState = ARM_STATE::HUMAN_PLAYER_STATION_ROTATE;
+    }
+    else if (controller->IsButtonPressed(TeleopControlFunctions::STARTING_POSITION))
+    {
+        m_targetState = ARM_STATE::STARTING_POSITION_ROTATE;
+    }
+    else if (m_prevState == ARM_STATE::MANUAL_ROTATE)
+    {
+        m_targetState = ARM_STATE::HOLD_POSITION_ROTATE;
     }
 }
 
@@ -252,16 +253,17 @@ void ArmStateMgr::CheckForSensorTransitions()
 {
     if (m_arm != nullptr)
     {
-        m_currentState = static_cast<ARM_STATE>(GetCurrentState());
-        m_targetState = m_currentState;
-
         // If we are hitting limit switch, reset position
-        m_arm->ResetIfArmDown();
+        auto atbottom = m_arm->ResetIfArmDown();
+        if (atbottom)
+        {
+            m_targetState = ARM_STATE::STARTING_POSITION_ROTATE;
+        }
 
         // If arm is at target and the prev state hasn't changed then stay in hold
         // comment doesn't match code; not sure why if the arm position being > 1 degree is part of the conditional
         // if (abs(m_arm->GetPositionDegrees().to<double>() - m_arm->GetTarget()) < 5.0 && m_arm->GetPositionDegrees().to<double>() > 1.0)
-        if (abs(m_arm->GetPositionDegrees().to<double>() - m_arm->GetTarget()) < 5.0)
+        else if (abs(m_arm->GetPositionDegrees().to<double>() - m_arm->GetTarget()) < 5.0)
         {
             m_targetState = ARM_STATE::HOLD_POSITION_ROTATE;
         }
