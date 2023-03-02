@@ -49,7 +49,7 @@
                time="4.0"
                />
     <primitive id="DRIVE_PATH"
-               pathname="BlueWallOne2Slow.wpilib.json"
+               pathname="BlueWallOne2.wpilib.json"
                headingOption="SPECIFIED_ANGLE"
                heading="180"
                arm="STARTING_POSITION_ROTATE"
