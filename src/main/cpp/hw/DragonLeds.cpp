@@ -29,7 +29,7 @@ void DragonLeds::Initialize(int PWMport, int numLeds)
 
         m_ledBuffer.resize(numLeds);
 
-        setBufferAllLEDsColor(getColorValues(Colors::GREEN));
+        setBufferAllLEDsColor(getColorValues(Colors::YELLOW));
         commitLedData();
         setOn();
     }

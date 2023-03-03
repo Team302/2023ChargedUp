@@ -68,7 +68,8 @@ ArmStateMgr::ArmStateMgr() : StateMgr(),
                              m_prevState(ARM_STATE::STARTING_POSITION_ROTATE),
                              m_currentState(ARM_STATE::STARTING_POSITION_ROTATE),
                              m_targetState(ARM_STATE::STARTING_POSITION_ROTATE),
-                             m_gamepieceMode(RobotStateChanges::Cone)
+                             m_gamepieceMode(RobotStateChanges::Cone),
+                             m_grabberState(GrabberStateMgr::GRABBER_STATE::GRAB)
 //========= Hand modified code end section 1 ========
 
 {
@@ -135,14 +136,15 @@ void ArmStateMgr::CheckForStateTransition()
         SetCurrentState(m_targetState, false);
         RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmRotateState, m_targetState);
 
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Setting target state to: "), m_targetState);
+        m_prevState = m_targetState;
+
         if (m_targetState == ARM_STATE::HOLD_POSITION_ROTATE)
         {
             double armAngle = m_arm->GetPositionDegrees().to<double>();
             double extenderPos = MechanismFactory::GetMechanismFactory()->GetExtender()->GetPositionInches().to<double>();
             m_arm->UpdateTarget(ArmHoldPosHelper::CalculateHoldPositionTarget(armAngle, extenderPos, m_gamepieceMode, m_grabberState));
         }
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Setting target state to: "), m_targetState);
-        m_prevState = m_targetState;
 
         auto statePtr = GetCurrentStatePtr();
         if (statePtr != nullptr)
@@ -150,6 +152,19 @@ void ArmStateMgr::CheckForStateTransition()
             statePtr->Run();
         }
     }
+    else if (m_targetState == ARM_STATE::HOLD_POSITION_ROTATE)
+    {
+        double armAngle = m_arm->GetPositionDegrees().to<double>();
+        double extenderPos = MechanismFactory::GetMechanismFactory()->GetExtender()->GetPositionInches().to<double>();
+        m_arm->UpdateTarget(ArmHoldPosHelper::CalculateHoldPositionTarget(armAngle, extenderPos, m_gamepieceMode, m_grabberState));
+
+        auto statePtr = GetCurrentStatePtr();
+        if (statePtr != nullptr)
+        {
+            statePtr->Run();
+        }
+    }
+
     //========= Hand modified code end section 3 ========
 }
 
