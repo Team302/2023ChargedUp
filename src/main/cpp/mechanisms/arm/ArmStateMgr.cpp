@@ -131,7 +131,7 @@ void ArmStateMgr::CheckForStateTransition()
 
     if (m_targetState != m_currentState)
     {
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Setting target state to: "), m_targetState);
+
         SetCurrentState(m_targetState, false);
         RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmRotateState, m_targetState);
 
@@ -141,7 +141,7 @@ void ArmStateMgr::CheckForStateTransition()
             double extenderPos = MechanismFactory::GetMechanismFactory()->GetExtender()->GetPositionInches().to<double>();
             m_arm->UpdateTarget(ArmHoldPosHelper::CalculateHoldPositionTarget(armAngle, extenderPos, m_gamepieceMode, m_grabberState));
         }
-
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Setting target state to: "), m_targetState);
         m_prevState = m_targetState;
 
         auto statePtr = GetCurrentStatePtr();
