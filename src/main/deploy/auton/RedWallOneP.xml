@@ -74,6 +74,8 @@
                />
     <!--auto balance-->
     <primitive id="AUTO_BALANCE"
+               headingOption="SPECIFIED_ANGLE"
+               heading="179.5"
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                grabber="GRAB"
