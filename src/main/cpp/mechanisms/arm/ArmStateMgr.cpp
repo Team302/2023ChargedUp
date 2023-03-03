@@ -131,14 +131,14 @@ void ArmStateMgr::CheckForStateTransition()
 
         m_prevState = m_targetState;
         RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmRotateState, m_targetState);
+    }
 
-        if (m_targetState == ARM_STATE::HOLD_POSITION_ROTATE)
-        {
-            double armAngle = m_arm->GetPositionDegrees().to<double>();
-            double extenderPos = MechanismFactory::GetMechanismFactory()->GetExtender()->GetPositionInches().to<double>();
+    if (m_targetState == ARM_STATE::HOLD_POSITION_ROTATE)
+    {
+        double armAngle = m_arm->GetPositionDegrees().to<double>();
+        double extenderPos = MechanismFactory::GetMechanismFactory()->GetExtender()->GetPositionInches().to<double>();
 
-            m_arm->UpdateTarget(ArmHoldPosHelper::CalculateHoldPositionTarget(armAngle, extenderPos, m_gamepieceMode, m_grabberState));
-        }
+        m_arm->UpdateTarget(ArmHoldPosHelper::CalculateHoldPositionTarget(armAngle, extenderPos, m_gamepieceMode, m_grabberState));
     }
     //========= Hand modified code end section 3 ========
 }
