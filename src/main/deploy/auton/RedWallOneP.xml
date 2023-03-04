@@ -21,7 +21,7 @@
                arm="CONE_BACKROW_ROTATE"
                extender="CONE_BACKROW_EXTEND"
                grabber="OPEN"
-               time="0.35"
+               time="0.45"
                />
     <primitive id="DO_NOTHING"
                arm="CONE_BACKROW_ROTATE"
