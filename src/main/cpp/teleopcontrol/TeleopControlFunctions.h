@@ -50,6 +50,8 @@ public:
         BALANCE_MODE,
         AUTO_BALANCE,
         SLOW_MODE,
+        AUTO_TURN_FORWARD,
+        AUTO_TURN_BACKWARD,
         // Scoring states
         // HOLD_POSITION, // may not need this state
         BACKROW,
