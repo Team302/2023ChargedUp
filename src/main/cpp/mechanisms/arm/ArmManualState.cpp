@@ -31,7 +31,9 @@ ArmManualState::ArmManualState(std::string stateName,
                                                  IRobotStateChangeSubscriber(),
                                                  m_arm(MechanismFactory::GetMechanismFactory()->GetArm()),
                                                  m_controller(TeleopControl::GetInstance()),
-                                                 m_controlData(control0)
+                                                 m_controlData(control0),
+                                                 m_gamepieceMode(RobotStateChanges::Cone),
+                                                 m_grabberState(GrabberStateMgr::GRABBER_STATE::GRAB)
 {
 }
 

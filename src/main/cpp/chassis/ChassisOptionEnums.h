@@ -32,8 +32,9 @@ public:
         TRAJECTORY_DRIVE,
         POLAR_DRIVE,
         HOLD_DRIVE,
-        VISION_DRIVE,
-        STOP_DRIVE
+        STOP_DRIVE,
+        AUTO_BALANCE,
+        VISION_DRIVE
     };
 
     enum NoMovementOption

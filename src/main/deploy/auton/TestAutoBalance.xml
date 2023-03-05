@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE auton SYSTEM "auton.dtd">
+<auton>
+    <primitive id="RESET_POSITION"
+			   pathname="square1.wpilib.json"/>
+    <primitive id="DRIVE_PATH"
+               pathname="square1.wpilib.json"
+               headingOption="SPECIFIED_ANGLE"
+               heading="0"
+               time="5.0"
+               />
+    <primitive id="DRIVE_PATH"
+               pathname="square2.wpilib.json"
+               headingOption="SPECIFIED_ANGLE"
+               heading="90"
+               time="5.0"
+               />
+    <primitive id="DRIVE_PATH"
+               pathname="square3.wpilib.json"
+               headingOption="SPECIFIED_ANGLE"
+               heading="170"
+               time="5.0"
+               />
+    <primitive id="DRIVE_PATH"
+               pathname="square4.wpilib.json"
+               headingOption="SPECIFIED_ANGLE"
+               heading="270"
+               time="5.0"
+               />
+</auton>

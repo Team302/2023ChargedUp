@@ -72,7 +72,6 @@ public:
         units::length::inch_t wheelDiameter,
         units::length::inch_t wheelBase,
         units::length::inch_t track,
-        double odometryComplianceCoefficient,
         units::velocity::meters_per_second_t maxSpeed,
         units::radians_per_second_t maxAngularSpeed,
         units::acceleration::meters_per_second_squared_t maxAcceleration,
@@ -125,17 +124,15 @@ public:
     std::shared_ptr<SwerveModule> GetFrontRight() const { return m_frontRight; }
     std::shared_ptr<SwerveModule> GetBackLeft() const { return m_backLeft; }
     std::shared_ptr<SwerveModule> GetBackRight() const { return m_backRight; }
-    // frc::SwerveDrivePoseEstimator<4> GetPoseEst() const { return m_poseEstimator; }
     frc::Pose2d GetPose() const;
     units::angle::degree_t GetYaw() const override;
+    units::angle::degree_t GetPitch() const;
+    units::angle::degree_t GetRoll() const;
 
     // Dummy functions for IChassis Implementation
     inline IChassis::CHASSIS_TYPE GetType() const override { return IChassis::CHASSIS_TYPE::SWERVE; };
     inline void Initialize() override{};
 
-    void RunWPIAlgorithm(bool runWPI) { m_runWPI = runWPI; }
-    void SetPoseEstOption(PoseEstimatorEnum opt) { m_poseOpt = opt; }
-    double GetodometryComplianceCoefficient() const { return m_odometryComplianceCoefficient; }
     void SetTargetHeading(units::angle::degree_t targetYaw) override;
 
     ISwerveDriveOrientation *GetSpecifiedHeadingState(ChassisOptionEnums::HeadingOption headingOption);
@@ -172,7 +169,6 @@ private:
     units::length::inch_t m_wheelDiameter;
     units::length::inch_t m_wheelBase;
     units::length::inch_t m_track;
-    double m_odometryComplianceCoefficient;
     units::velocity::meters_per_second_t m_maxSpeed;
     units::radians_per_second_t m_maxAngularSpeed;
     units::acceleration::meters_per_second_squared_t m_maxAcceleration;
@@ -200,14 +196,6 @@ private:
 
     frc::SwerveDrivePoseEstimator<4> m_poseEstimator;
 
-    const double kPMaintainHeadingControl = 1.5;  // 4.0, 3.0
-    const double kPAutonSpecifiedHeading = 3.0;   // 4.0
-    const double kPAutonGoalHeadingControl = 5.0; // 2.0
-    const double kPGoalHeadingControl = 6.0;      // 10.0, 7.0
-    const double kPDistance = 10.0;               // 10.0, 7.0
-    const double kIHeadingControl = 0.0;          // not being used
-    const double kDHeadingControl = 0.0;          // not being used
-    const double kFHeadingControl = 0.0;          // not being used
     units::angle::degree_t m_storedYaw;
     units::angular_velocity::degrees_per_second_t m_yawCorrection;
 

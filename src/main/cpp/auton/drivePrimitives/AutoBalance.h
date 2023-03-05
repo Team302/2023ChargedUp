@@ -1,4 +1,3 @@
-
 //====================================================================================================================================================
 // Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
@@ -13,39 +12,48 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
-
 #pragma once
-#include <frc/AddressableLED.h>
 
-class LED
+// C++ Includes
+#include <memory>
+
+// Team302 Includes
+#include <auton/PrimitiveParams.h>
+#include <auton/drivePrimitives/IPrimitive.h>
+#include <chassis/ChassisFactory.h>
+#include <chassis/swerve/SwerveChassis.h>
+#include <chassis/ChassisOptionEnums.h>
+
+// FRC,WPI Includes
+#include <frc/controller/HolonomicDriveController.h>
+#include <frc/controller/RamseteController.h>
+#include <frc/Filesystem.h>
+#include <frc/geometry/Pose2d.h>
+#include <frc/trajectory/TrajectoryConfig.h>
+#include <frc/trajectory/TrajectoryUtil.h>
+#include <wpi/SmallString.h>
+#include <frc/Timer.h>
+
+class AutoBalance : public IPrimitive
 {
 public:
-        LED(int PWMport);
+    AutoBalance();
 
-        enum Colors
-        {
-                RED,
-                GREEN,
-                BLUE,
-                PURPLE,
-                YELLOW,
-                AZUL,
-                BLACK,
-                WHITE,
-                MAX_STATE
-        };
+    virtual ~AutoBalance() = default;
 
-        static constexpr int kLength = 15;
-
-        frc::AddressableLED *m_led;
-        std::array<frc::AddressableLED::LEDData, kLength> m_ledBuffer;
-
-        std::array<int, 3> getColorValues(Colors c);
-        ~LED();
-        LED() = delete;
-
-        static LED *GetInstance();
+    void Init(PrimitiveParams *params) override;
+    void Run() override;
+    bool IsDone() override;
 
 private:
-        static LED *m_instance;
+    SwerveChassis *m_chassis;
+
+    frc::Timer *m_timer;
+
+    const double m_balanceTimeout = 2.0;
+
+    ChassisOptionEnums::HeadingOption m_headingOption;
+    std::string m_ntName;
+
+    const double m_balanceTolerance = 1.0;
 };

@@ -23,13 +23,11 @@
 /// DEBUGGING
 #include <utils/logging/Logger.h>
 
-FieldDrive::FieldDrive(RobotDrive *robotDrive) : RobotDrive(),
-                                                 m_robotDrive(robotDrive)
+FieldDrive::FieldDrive(RobotDrive *robotDrive) : RobotDrive(), m_robotDrive(robotDrive)
 {
 }
 
-std::array<frc::SwerveModuleState, 4> FieldDrive::UpdateSwerveModuleStates(
-    ChassisMovement &chassisMovement)
+std::array<frc::SwerveModuleState, 4> FieldDrive::UpdateSwerveModuleStates(ChassisMovement &chassisMovement)
 {
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "FieldDrive", "VxBEFORE", chassisMovement.chassisSpeeds.vx.to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "FieldDrive", "VyBEFORE", chassisMovement.chassisSpeeds.vy.to<double>());
@@ -48,7 +46,6 @@ std::array<frc::SwerveModuleState, 4> FieldDrive::UpdateSwerveModuleStates(
     return m_robotDrive->UpdateSwerveModuleStates(chassisMovement);
 }
 
-void FieldDrive::Init(
-    ChassisMovement &chassisMovement)
+void FieldDrive::Init(ChassisMovement &chassisMovement)
 {
 }

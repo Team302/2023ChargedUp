@@ -16,6 +16,7 @@
 #include <string>
 
 // FRC Includes
+#include <frc/filter/SlewRateLimiter.h>
 #include <units/velocity.h>
 #include <units/angle.h>
 
@@ -50,9 +51,13 @@ RobotDrive::RobotDrive() : ISwerveDriveState::ISwerveDriveState(),
     }
 }
 
-std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates(
-    ChassisMovement &chassisMovement)
+std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates(ChassisMovement &chassisMovement)
 {
+    if (chassisMovement.checkTipping)
+    {
+        CorrectForTipping(chassisMovement);
+    }
+
     // These calculations are based on Ether's Chief Delphi derivation
     // The only changes are that that derivation is based on positive angles being clockwise
     // and our codes/sensors are based on positive angles being counter clockwise.
@@ -130,11 +135,35 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates(
         m_blState.speed *= ratio;
         m_brState.speed *= ratio;
     }
-
     return {m_flState, m_frState, m_blState, m_brState};
 }
 
-void RobotDrive::Init(
-    ChassisMovement &chassisMovement)
+void RobotDrive::CorrectForTipping(ChassisMovement &chassisMovement)
+
+{
+    auto chassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
+    if (chassis != nullptr)
+    {
+        // pitch is positive when back of robot is lifted and negative when front of robot is lifted
+        // vx is positive driving forward, so if pitch is +, need to slow down
+        auto pitch = chassis->GetPitch();
+        if (std::abs(pitch.to<double>()) > chassisMovement.tippingTolerance.to<double>())
+        {
+            auto adjust = m_maxspeed * chassisMovement.tippingCorrection * pitch.to<double>();
+            chassisMovement.chassisSpeeds.vx -= adjust;
+        }
+
+        // roll is positive when the left side of the robot is lifted and negative when the right side of the robot is lifted
+        // vy is positive strafing left, so if roll is +, need to strafe slower
+        auto roll = chassis->GetRoll();
+        if (std::abs(roll.to<double>()) > chassisMovement.tippingTolerance.to<double>())
+        {
+            auto adjust = m_maxspeed * chassisMovement.tippingCorrection * roll.to<double>();
+            chassisMovement.chassisSpeeds.vy -= adjust;
+        }
+    }
+}
+
+void RobotDrive::Init(ChassisMovement &chassisMovement)
 {
 }

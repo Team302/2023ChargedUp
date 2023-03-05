@@ -23,7 +23,7 @@ class ArcadeDrive;
 class CyclePrimitives;
 class DragonLimelight;
 class HolonomicDrive;
-class IChassis;
+class SwerveChassis;
 class TeleopControl;
 class AdjustableItemMgr;
 class FMSData;
@@ -47,7 +47,7 @@ public:
 
 private:
     TeleopControl *m_controller;
-    IChassis *m_chassis;
+    SwerveChassis *m_chassis;
     CyclePrimitives *m_cyclePrims;
     HolonomicDrive *m_holonomic;
     ArcadeDrive *m_arcade;
