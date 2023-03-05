@@ -43,80 +43,83 @@ void DriverFeedback::UpdateFeedback()
 }
 void DriverFeedback::UpdateLEDStates()
 {
-    if (DriverFeedback::m_AlignedWithConeNode)
+    if (m_LEDStates != nullptr)
     {
-        if (currentState != DriverFeedbackStates::ALIGNED_WITH_CONE_NODE)
+        if (DriverFeedback::m_AlignedWithConeNode)
         {
-            m_LEDStates->ResetVariables();
+            if (currentState != DriverFeedbackStates::ALIGNED_WITH_CONE_NODE)
+            {
+                m_LEDStates->ResetVariables();
+            }
+            m_LEDStates->ClosingInChaserPattern(DragonLeds::YELLOW);
+            currentState = DriverFeedbackStates::ALIGNED_WITH_CONE_NODE;
         }
-        m_LEDStates->ClosingInChaserPattern(DragonLeds::YELLOW);
-        currentState = DriverFeedbackStates::ALIGNED_WITH_CONE_NODE;
-    }
-    else if (DriverFeedback::m_AlignedWithCubeNode)
-    {
-        if (currentState != DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE)
+        else if (DriverFeedback::m_AlignedWithCubeNode)
         {
-            m_LEDStates->ResetVariables();
+            if (currentState != DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE)
+            {
+                m_LEDStates->ResetVariables();
+            }
+            m_LEDStates->ClosingInChaserPattern(DragonLeds::PURPLE);
+            currentState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
         }
-        m_LEDStates->ClosingInChaserPattern(DragonLeds::PURPLE);
-        currentState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
-    }
-    else if (DriverFeedback::m_GamePieceInGrabber)
-    {
+        else if (DriverFeedback::m_GamePieceInGrabber)
+        {
 
-        if (currentState != DriverFeedbackStates::GAME_PIECE_IN_GRABBER)
-        {
-            m_LEDStates->ResetVariables();
+            if (currentState != DriverFeedbackStates::GAME_PIECE_IN_GRABBER)
+            {
+                m_LEDStates->ResetVariables();
+            }
+            m_LEDStates->AlternatingColorBlinkingPattern(DragonLeds::YELLOW, DragonLeds::PURPLE);
+            currentState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
         }
-        m_LEDStates->AlternatingColorBlinkingPattern(DragonLeds::YELLOW, DragonLeds::PURPLE);
-        currentState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
-    }
-    else if (DriverFeedback::m_WantCube)
-    {
-        if (currentState != DriverFeedbackStates::WANT_CUBE)
+        else if (DriverFeedback::m_WantCube)
         {
-            m_LEDStates->ResetVariables();
-            currentState = DriverFeedbackStates::WANT_CUBE;
+            if (currentState != DriverFeedbackStates::WANT_CUBE)
+            {
+                m_LEDStates->ResetVariables();
+                currentState = DriverFeedbackStates::WANT_CUBE;
+            }
+            if (m_grabberStateChanged)
+            {
+                if (m_GrabberIsOpen)
+                    m_LEDStates->BlinkingPattern(DragonLeds::PURPLE);
+                else
+                    m_LEDStates->SolidColorPattern(DragonLeds::PURPLE);
+            }
         }
-        if (m_grabberStateChanged)
+        else if (DriverFeedback::m_WantCone)
         {
-            if (m_GrabberIsOpen)
-                m_LEDStates->BlinkingPattern(DragonLeds::PURPLE);
-            else
-                m_LEDStates->SolidColorPattern(DragonLeds::PURPLE);
+            if (currentState != DriverFeedbackStates::WANT_CONE)
+            {
+                m_LEDStates->ResetVariables();
+                currentState = DriverFeedbackStates::WANT_CONE;
+            }
+            if (m_grabberStateChanged)
+            {
+                if (m_GrabberIsOpen)
+                    m_LEDStates->BlinkingPattern(DragonLeds::YELLOW);
+                else
+                    m_LEDStates->SolidColorPattern(DragonLeds::YELLOW);
+            }
         }
-    }
-    else if (DriverFeedback::m_WantCone)
-    {
-        if (currentState != DriverFeedbackStates::WANT_CONE)
+        else if (DriverFeedback::m_GamePieceReadyToPickUp)
         {
-            m_LEDStates->ResetVariables();
-            currentState = DriverFeedbackStates::WANT_CONE;
+            if (currentState != DriverFeedbackStates::GAME_PIECE_READY_TO_PICK_UP)
+            {
+                m_LEDStates->ResetVariables();
+                m_LEDStates->SolidColorPattern(DragonLeds::GREEN);
+                currentState = DriverFeedbackStates::GAME_PIECE_READY_TO_PICK_UP;
+            }
         }
-        if (m_grabberStateChanged)
+        else
         {
-            if (m_GrabberIsOpen)
-                m_LEDStates->BlinkingPattern(DragonLeds::YELLOW);
-            else
-                m_LEDStates->SolidColorPattern(DragonLeds::YELLOW);
-        }
-    }
-    else if (DriverFeedback::m_GamePieceReadyToPickUp)
-    {
-        if (currentState != DriverFeedbackStates::GAME_PIECE_READY_TO_PICK_UP)
-        {
-            m_LEDStates->ResetVariables();
-            m_LEDStates->SolidColorPattern(DragonLeds::GREEN);
-            currentState = DriverFeedbackStates::GAME_PIECE_READY_TO_PICK_UP;
-        }
-    }
-    else
-    {
-        if (currentState != DriverFeedbackStates::NONE)
-        {
-            m_LEDStates->ResetVariables();
-            m_LEDStates->SolidColorPattern(DragonLeds::GREEN);
-            currentState = DriverFeedbackStates::NONE;
+            if (currentState != DriverFeedbackStates::NONE)
+            {
+                m_LEDStates->ResetVariables();
+                m_LEDStates->SolidColorPattern(DragonLeds::GREEN);
+                currentState = DriverFeedbackStates::NONE;
+            }
         }
     }
 }
