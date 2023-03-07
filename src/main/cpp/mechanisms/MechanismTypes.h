@@ -43,14 +43,13 @@ public:
         ARM,
         EXTENDER,
         GRABBER,
-
+        INTAKE,
         MAX_MECHANISM_TYPES
     };
 
     static MechanismTypes *GetInstance();
 
-    MECHANISM_TYPE GetType(
-        std::string typeString);
+    MECHANISM_TYPE GetType(std::string typeString);
 
 private:
     static MechanismTypes *m_instance;
