@@ -44,3 +44,8 @@ Intake::Intake(string controlFileName,
                                                                   m_gamePieceSw(gamePieceSw)
 {
 }
+
+bool Intake::IsGamePiecePresent()
+{
+    return (m_gamePieceSw.get() != nullptr) ? m_gamePieceSw->Get() : false;
+}

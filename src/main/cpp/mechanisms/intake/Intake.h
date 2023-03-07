@@ -41,6 +41,7 @@ public:
            std::shared_ptr<DragonDigitalInput> gamePieceSw);
     Intake() = delete;
     ~Intake() override = default;
+    bool IsGamePiecePresent();
 
 private:
     std::shared_ptr<DragonDigitalInput> m_gamePieceSw;
