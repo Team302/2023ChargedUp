@@ -35,7 +35,7 @@ public:
     IntakeState() = delete;
     IntakeState(
         Mech1IndMotor1Solenoid *mechanism,
-        std::string identifer,
+        std::string statenName,
         int stateId,
         ControlData *control,
         double target,
