@@ -38,14 +38,16 @@ using namespace std;
 
 IntakeState::IntakeState(
     Mech1IndMotor1Solenoid *mechanism,
-    std::string identifer,
+    std::string stateName,
     int stateId,
     ControlData *control,
     double target,
-    MechanismTargetData::SOLENOID solState) : State(stateName, stateId),
-                                              m_mechanism(mechanism),
-                                              m_motorState(make_shared<Mech1IndMotorState>(mechanism->Get1IndMotorMech(), stateName, stateId, control, target)),
-                                              m_solenoidState(make_shared<Mech1SolenoidState>(mechanism->GetSolenoidMech(), stateName, stateId, solState))
+    MechanismTargetData::SOLENOID solState) : Mech1IndMotor1SolenoidState(mechanism,
+                                                                          stateName,
+                                                                          stateId,
+                                                                          control,
+                                                                          target,
+                                                                          solState)
 {
 }
 
