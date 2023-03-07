@@ -181,13 +181,13 @@ void HolonomicDrive::Run()
             else if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_RIGHT_COLUMN))
             {
                 auto targetInfo = DragonVision::GetDragonVision()->getTargetInfo();
-                    if (targetInfo->getDistanceToTarget().to<double>() < 110.0)
-                    {
-                        moveInfo.driveOption = ChassisOptionEnums::DriveStateType::VISION_DRIVE;
-                        m_previousDriveState = moveInfo.driveOption;
-                        auto visionDrive = dynamic_cast<VisionDrive *>(m_swerve->GetSpecifiedDriveState(ChassisOptionEnums::DriveStateType::VISION_DRIVE));
-                        visionDrive->UpdateOffsets(units::length::inch_t(0.0), units::length::inch_t(-21.5));
-                    }
+                if (targetInfo->getDistanceToTarget().to<double>() < 110.0)
+                {
+                    moveInfo.driveOption = ChassisOptionEnums::DriveStateType::VISION_DRIVE;
+                    m_previousDriveState = moveInfo.driveOption;
+                    auto visionDrive = dynamic_cast<VisionDrive *>(m_swerve->GetSpecifiedDriveState(ChassisOptionEnums::DriveStateType::VISION_DRIVE));
+                    visionDrive->UpdateOffsets(units::length::inch_t(0.0), units::length::inch_t(-21.5));
+                }
                 /*moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
                 m_previousDriveState = moveInfo.driveOption;
                 moveInfo.trajectory = m_trajectoryGenerator->GenerateTrajectory(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose(), DragonTrajectoryGenerator::TARGET_POSITION::COLUMN_THREE);
@@ -218,6 +218,16 @@ void HolonomicDrive::Run()
         {
             moveInfo.driveOption = ChassisOptionEnums::DriveStateType::HOLD_DRIVE;
             m_previousDriveState = moveInfo.driveOption;
+        }
+        if (controller->IsButtonPressed(TeleopControlFunctions::AUTO_TURN_FORWARD))
+        {
+            moveInfo.headingOption = ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE;
+            moveInfo.yawAngle = units::angle::degree_t(0.0);
+        }
+        if (controller->IsButtonPressed(TeleopControlFunctions::AUTO_TURN_BACKWARD))
+        {
+            moveInfo.headingOption = ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE;
+            moveInfo.yawAngle = units::angle::degree_t(180.0);
         }
 
         auto maxSpeed = m_chassis->GetMaxSpeed();
