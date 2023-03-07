@@ -34,13 +34,12 @@ public:
     void Init(
         ChassisMovement &chassisMovement) override;
 
-    void UpdateOffsets(units::length::inch_t xOffset, units::length::inch_t yOffset) override;
+    bool AtTargetX();
+    bool AtTargetY();
 
 private:
     RobotDrive *m_robotDrive;
-    units::length::inch_t m_xOffset;
-    units::length::inch_t m_yOffset;
 
-    const double m_kP = 2.5;
-    const double m_kAngleP = 1.0;
+    const double m_kP_X = 0.1;
+    const double m_kP_Y = 0.05;
 };

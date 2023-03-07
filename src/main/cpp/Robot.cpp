@@ -119,7 +119,7 @@ void Robot::RobotPeriodic()
         LoggerStringValue status = {string("HW connection Status"), "Dragon vision is not null"};
 
         // Set the pipeline. You do not need to call this function repeatedly
-        vision->setPipeline(DragonLimelight::APRIL_TAG);
+        // vision->setPipeline(DragonLimelight::APRIL_TAG);
 
         // Next get a pointer
         std::shared_ptr<DragonVisionTarget> dvt = vision->getTargetInfo();

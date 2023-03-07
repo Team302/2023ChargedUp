@@ -39,10 +39,12 @@ public:
     enum PIPELINE_MODE
     {
         UNKNOWN = -1,
-        RETRO_REFLECTIVE = 0,
+        OFF = 0,
         APRIL_TAG = 1,
-        CONE = 2,
-        CUBE = 3,
+        CONE_LEFT = 2,
+        CONE_RIGHT = 3,
+        CONE = 4,
+        CUBE = 5,
         MAX_PIPELINE_MODE
     };
 
