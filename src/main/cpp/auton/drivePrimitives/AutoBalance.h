@@ -47,13 +47,10 @@ public:
 
 private:
     SwerveChassis *m_chassis;
-
+    ChassisOptionEnums::HeadingOption m_headingOption;
+    std::string m_ntName;
     frc::Timer *m_timer;
 
     const double m_balanceTimeout = 2.0;
-
-    ChassisOptionEnums::HeadingOption m_headingOption;
-    std::string m_ntName;
-
     const double m_balanceTolerance = 1.0;
 };

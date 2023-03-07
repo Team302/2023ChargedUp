@@ -21,6 +21,7 @@
 
 // Team 302 includes
 #include <hw/interfaces/IDragonMotorController.h>
+#include <hw/DragonDigitalInput.h>
 #include <hw/DragonSolenoid.h>
 #include <mechanisms/base/Mech1IndMotor1Solenoid.h>
 
@@ -32,8 +33,15 @@ public:
     /// @param [in] std::string the name of the network table for logging information
     /// @param [in] std::shared_ptr<IDragonMotorController>
     /// @param [in] std::shared_ptr<DragonSolenoid>
-
-    Intake(std::string controlFileName, std::string networkTableName, std::shared_ptr<IDragonMotorController> motorController, std::shared_ptr<DragonSolenoid> solenoid);
+    /// @param [in] std::shared_ptr<DragonDigitalInput>
+    Intake(std::string controlFileName,
+           std::string networkTableName,
+           std::shared_ptr<IDragonMotorController> motorController,
+           std::shared_ptr<DragonSolenoid> solenoid,
+           std::shared_ptr<DragonDigitalInput> gamePieceSw);
     Intake() = delete;
     ~Intake() override = default;
+
+private:
+    std::shared_ptr<DragonDigitalInput> m_gamePieceSw;
 };

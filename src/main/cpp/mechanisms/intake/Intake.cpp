@@ -18,6 +18,8 @@
 #include <string>
 
 // team 302 includes
+#include <hw/DragonDigitalInput.h>
+#include <hw/DragonSolenoid.h>
 #include <hw/interfaces/IDragonMotorController.h>
 #include <mechanisms/base/Mech1IndMotor.h>
 #include <mechanisms/intake/Intake.h>
@@ -33,6 +35,12 @@ using std::string;
 /// @param [in] std::string the name of the network table for logging information
 /// @param [in] std::shared_ptr<IDragonMotorController>
 /// @param [in] std::shared_ptr<DragonSolenoid>
-Intake::Intake(string controlFileName, string networkTableName, shared_ptr<IDragonMotorController> motorController, shared_ptr<DragonSolenoid> solenoid) : Mech1IndMotor1Solenoid(MechanismTypes::MECHANISM_TYPE::INTAKE, controlFileName, networkTableName, motorController, solenoid)
+/// @param [in] std::shared_ptr<DragonDigitalInput>
+Intake::Intake(string controlFileName,
+               string networkTableName,
+               shared_ptr<IDragonMotorController> motorController,
+               shared_ptr<DragonSolenoid> solenoid,
+               std::shared_ptr<DragonDigitalInput> gamePieceSw) : Mech1IndMotor1Solenoid(MechanismTypes::MECHANISM_TYPE::INTAKE, controlFileName, networkTableName, motorController, solenoid),
+                                                                  m_gamePieceSw(gamePieceSw)
 {
 }
