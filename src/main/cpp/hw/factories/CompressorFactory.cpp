@@ -64,7 +64,7 @@ void CompressorFactory::EnableCompressor()
     ClearStickyFaults();
     if (m_compressor != nullptr)
     {
-        m_compressor->EnableAnalog(m_minPressure, m_maxPressure);
+        //     m_compressor->EnableAnalog(m_minPressure, m_maxPressure);
     }
 }
 
@@ -73,7 +73,7 @@ void CompressorFactory::DisableCompressor()
     ClearStickyFaults();
     if (m_compressor != nullptr)
     {
-        m_compressor->Disable();
+        //    m_compressor->Disable();
     }
 }
 
