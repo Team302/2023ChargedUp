@@ -45,6 +45,7 @@ public:
 		UNKNOWN_SOLENOID_USAGE = -1,
 
 		GrabberSolenoid,
+		INTAKE_SOLENOID,
 
 		MAX_SOLENOID_USAGES
 	};

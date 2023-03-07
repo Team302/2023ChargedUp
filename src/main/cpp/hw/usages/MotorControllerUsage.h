@@ -48,6 +48,7 @@ public:
 		SWERVE_TURN,
 		ARM,
 		Extender,
+		INTAKE,
 
 		MAX_MOTOR_CONTROLLER_USAGES
 	};

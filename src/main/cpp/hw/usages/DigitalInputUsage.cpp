@@ -49,6 +49,7 @@ DigitalInputUsage *DigitalInputUsage::GetInstance()
 DigitalInputUsage::DigitalInputUsage()
 {
 	m_usageMap["GRABBER_SENSOR"] = DIGITAL_INPUT_USAGE::GRABBER_SENSEOR;
+	m_usageMap["GAME_PIECE_PRESENT_SENSOR"] = DIGITAL_INPUT_USAGE::GAME_PIECE_PRESENT_SENSOR;
 }
 
 DigitalInputUsage::~DigitalInputUsage()

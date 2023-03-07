@@ -53,6 +53,7 @@ MotorControllerUsage::MotorControllerUsage()
 	m_usageMap["SWERVE_TURN"] = MOTOR_CONTROLLER_USAGE::SWERVE_TURN;
 	m_usageMap["ARM"] = MOTOR_CONTROLLER_USAGE::ARM;
 	m_usageMap["Extender"] = MOTOR_CONTROLLER_USAGE::Extender;
+	m_usageMap["INTAKE"] = MOTOR_CONTROLLER_USAGE::INTAKE;
 }
 
 MotorControllerUsage::~MotorControllerUsage()

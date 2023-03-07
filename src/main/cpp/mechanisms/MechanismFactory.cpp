@@ -129,7 +129,19 @@ void MechanismFactory::CreateMechanism(
 	}
 	break;
 
-		default:
+	case MechanismTypes::INTAKE:
+	{
+		auto motor = GetMotorController(motorControllers, MotorControllerUsage::INTAKE);
+		auto solenoid = GetSolenoid(solenoids, SolenoidUsage::INTAKE_SOLENOID);
+		auto sensor = GetDigitalInput(digitalInputs, DigitalInputUsage::DIGITAL_INPUT_USAGE::GAME_PIECE_PRESENT_SENSOR);
+		if (motor.get() != nullptr && solenoid.get() != nullptr && sensor.get() != nullptr)
+		{
+			m_intake = new Intake(controlFileName, networkTableName, motor, solenoid, sensor);
+		}
+	}
+	break;
+
+	default:
 	{
 		string msg = "unknown Mechanism type ";
 		msg += to_string(type);
