@@ -56,6 +56,7 @@ string AutonSelector::GetSelectedAutoFile()
 	autonfile += GetStartPos();
 	autonfile += GetNumofPiecesinauton();
 	autonfile += GetParkOnChargeStation();
+	autonfile += GetCube();
 	autonfile += std::string(".xml");
 
 	auto table = nt::NetworkTableInstance::GetDefault().GetTable("auton file");
@@ -149,7 +150,7 @@ void AutonSelector::PutChoicesOnDashboard()
 	m_chrgstatchooser.AddOption("no", "NP");
 	frc::SmartDashboard::PutData("park on charg station", &m_chrgstatchooser);
 
-	m_cubechooser.AddOption("Yes", "C");
+	m_cubechooser.AddOption("Yes", "Cube");
 	m_cubechooser.AddOption("No", "");
-	frc::SmartDashboard::PutData("cube", &m_cubechooser);
+	frc::SmartDashboard::PutData("get cube", &m_cubechooser);
 }
