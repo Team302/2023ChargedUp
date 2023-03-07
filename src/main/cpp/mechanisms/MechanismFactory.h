@@ -45,7 +45,7 @@
 #include <mechanisms/arm/Arm.h>
 #include <mechanisms/extender/Extender.h>
 #include <mechanisms/grabber/Grabber.h>
-
+#include <mechanisms/Intake/Intake.h>
 // Third Party Includes
 
 // forward declares
@@ -78,6 +78,7 @@ public:
 	inline Arm *GetArm() const { return m_arm; }
 	inline Extender *GetExtender() const { return m_extender; }
 	inline Grabber *GetGrabber() const { return m_grabber; }
+	inline Intake *GetIntake() const { return m_intake; }
 
 	Mech *GetMechanism(
 		MechanismTypes::MECHANISM_TYPE type) const;
@@ -109,4 +110,5 @@ private:
 	Arm *m_arm;
 	Extender *m_extender;
 	Grabber *m_grabber;
+	Intake *m_intake;
 };
