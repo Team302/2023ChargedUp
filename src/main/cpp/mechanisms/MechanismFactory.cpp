@@ -41,6 +41,7 @@
 #include <mechanisms/arm/Arm.h>
 #include <mechanisms/extender/Extender.h>
 #include <mechanisms/grabber/Grabber.h>
+#include <mechanisms/Intake/Intake.h>
 
 // Third Party Includes
 #include <ctre/phoenix/sensors/CANCoder.h>
