@@ -51,7 +51,7 @@
     <primitive id="DRIVE_PATH"
                pathname="BlueWallOne2.wpilib.json"
                headingOption="SPECIFIED_ANGLE"
-               heading="180"
+               heading="0"
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                grabber="GRAB"
@@ -60,7 +60,7 @@
     <!--do nothing!-->
     <primitive id="DO_NOTHING"
                headingOption="SPECIFIED_ANGLE"
-               heading="180"
+               heading="0"
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                grabber="GRAB"
