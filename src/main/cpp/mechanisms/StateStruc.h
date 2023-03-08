@@ -33,6 +33,7 @@ enum StateType
     //========= Hand modified code start section 0 ========
     MANUAL_ARM_STATE,
     MANUAL_EXTENDER_STATE,
+    INTAKE_STATE,
     //========= Hand modified code end section 0 ========
     MAX_STATE_TYPES
 };
