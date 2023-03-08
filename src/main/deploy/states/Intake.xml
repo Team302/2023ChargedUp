@@ -12,7 +12,7 @@
     maxacceleration="0.0"
     cruisevelocity="0.0" />
   <mechanismTarget
-    stateIdentifier="OFF"
+    stateIdentifier="INTAKE_OFF"
     controlDataIdentifier="intake"
     controlDataIdentifier2=""
     value="0"

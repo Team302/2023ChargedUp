@@ -171,6 +171,10 @@ Mech *MechanismFactory::GetMechanism(
 		return m_grabber;
 		break;
 
+	case MechanismTypes::INTAKE:
+		return m_intake;
+		break;
+
 	default:
 		return nullptr;
 		break;
