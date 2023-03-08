@@ -383,6 +383,15 @@ std::optional<units::length::inch_t> DragonLimelight::GetTargetHeight() const
     {
         return m_aprilTagInfo.GetHeight(getAprilTagID());
     }
+    else if ((getPipeline() >= PIPELINE_MODE::RETRO_REFLECTIVE) && (getPipeline() <= PIPELINE_MODE::RETRO_REFLECTIVE))
+    {
+        units::angle::degree_t ang = GetTargetVerticalOffset();
+
+        if (ang.to<double>() < 0) // Should this setting be in robot.xml?
+            return units::length::inch_t(m_targetHeight);
+        else
+            return units::length::inch_t(m_targetHeight2);
+    }
 
     return {};
 }
