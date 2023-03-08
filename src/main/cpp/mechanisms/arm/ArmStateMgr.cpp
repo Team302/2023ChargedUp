@@ -68,7 +68,8 @@ ArmStateMgr::ArmStateMgr() : StateMgr(),
                              m_prevState(ARM_STATE::STARTING_POSITION_ROTATE),
                              m_currentState(ARM_STATE::STARTING_POSITION_ROTATE),
                              m_targetState(ARM_STATE::STARTING_POSITION_ROTATE),
-                             m_gamepieceMode(RobotStateChanges::None)
+                             m_gamepieceMode(RobotStateChanges::None),
+                             m_grabberState(GrabberStateMgr::GRABBER_STATE::GRAB)
 //========= Hand modified code end section 1 ========
 
 {

@@ -114,6 +114,7 @@ void GrabberStateMgr::CheckForStateTransition()
             // m_prevState = m_targetState;
             RobotState::GetInstance()->PublishStateChange(RobotStateChanges::GrabberState, m_targetState);
         }
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("GrabberStateMgr"), std::string("Current State"), m_targetState);
     }
     else
     {

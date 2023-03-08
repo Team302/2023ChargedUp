@@ -55,5 +55,5 @@ private:
     ChassisOptionEnums::HeadingOption m_headingOption;
     std::string m_ntName;
 
-    const double m_balanceTolerance = 2.0;
+    const double m_balanceTolerance = 1.0;
 };
