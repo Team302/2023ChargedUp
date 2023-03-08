@@ -119,6 +119,10 @@ void IntakeStateMgr::CheckForSensorTransitions()
             m_targetState = INTAKE_STATE::HOLD_CUBE;
             RobotState::GetInstance()->PublishStateChange(RobotStateChanges::HoldingGamePiece, RobotStateChanges::Cube);
         }
+        else if (!hasGamePiece)
+        {
+            RobotState::GetInstance()->PublishStateChange(RobotStateChanges::HoldingGamePiece, RobotStateChanges::None);
+        }
     }
 }
 
