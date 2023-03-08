@@ -222,12 +222,27 @@ void HolonomicDrive::Run()
         if (controller->IsButtonPressed(TeleopControlFunctions::AUTO_TURN_FORWARD))
         {
             moveInfo.headingOption = ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE;
-            moveInfo.yawAngle = units::angle::degree_t(0.0);
+            if (FMSData::GetInstance()->GetAllianceColor() == frc::DriverStation::Alliance::kBlue)
+            {
+                moveInfo.yawAngle = units::angle::degree_t(0.0);
+            }
+            else
+            {
+                moveInfo.yawAngle = units::angle::degree_t(180.0);
+            }
         }
         if (controller->IsButtonPressed(TeleopControlFunctions::AUTO_TURN_BACKWARD))
         {
             moveInfo.headingOption = ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE;
-            moveInfo.yawAngle = units::angle::degree_t(180.0);
+
+            if (FMSData::GetInstance()->GetAllianceColor() == frc::DriverStation::Alliance::kBlue)
+            {
+                moveInfo.yawAngle = units::angle::degree_t(180.0);
+            }
+            else
+            {
+                moveInfo.yawAngle = units::angle::degree_t(0.0);
+            }
         }
 
         auto maxSpeed = m_chassis->GetMaxSpeed();
@@ -255,7 +270,6 @@ void HolonomicDrive::Run()
 
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("Run"), string("axis read"));
 
-        // temporary fix for resetting odomtery by apriltags, issues with rotation
         if (FMSData::GetInstance()->GetAllianceColor() == frc::DriverStation::Alliance::kRed)
         {
             forward *= -1.0;
