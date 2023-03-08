@@ -48,4 +48,5 @@ private:
     DragonField *m_field;
     double m_slowModeMultiplier = 0.3;
     bool m_hasResetPosition = false;
+    bool m_inVisionDrive = false;
 };

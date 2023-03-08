@@ -1,4 +1,3 @@
-
 //====================================================================================================================================================
 // Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
@@ -67,7 +66,7 @@ DragonLimelight::DragonLimelight(
                               m_targetHeight(targetHeight),
                               m_targetHeight2(targetHeight2)
 {
-    SetPipeline(PIPELINE_MODE::RETRO_REFLECTIVE);
+    SetPipeline(PIPELINE_MODE::OFF);
     SetLEDMode(ledMode);
     SetCamMode(camMode);
     SetStreamMode(streamMode);
@@ -383,7 +382,7 @@ std::optional<units::length::inch_t> DragonLimelight::GetTargetHeight() const
     {
         return m_aprilTagInfo.GetHeight(getAprilTagID());
     }
-    else if ((getPipeline() >= PIPELINE_MODE::RETRO_REFLECTIVE) && (getPipeline() <= PIPELINE_MODE::RETRO_REFLECTIVE))
+    else if (getPipeline() == PIPELINE_MODE::CONE_NODE)
     {
         units::angle::degree_t ang = GetTargetVerticalOffset();
 

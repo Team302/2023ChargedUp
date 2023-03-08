@@ -1,4 +1,3 @@
-
 //====================================================================================================================================================
 // Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
@@ -40,10 +39,11 @@ public:
     enum PIPELINE_MODE
     {
         UNKNOWN = -1,
-        RETRO_REFLECTIVE = 0,
+        OFF = 0,
         APRIL_TAG = 1,
-        CONE = 2,
-        CUBE = 3,
+        CONE_NODE = 2,
+        CONE = 3,
+        CUBE = 4,
         MAX_PIPELINE_MODE
     };
 
