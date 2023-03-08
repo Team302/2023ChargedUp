@@ -30,13 +30,16 @@ public:
     frc::Compressor *GetCompressor() const { return m_compressor; };
     frc::Compressor *CreateCompressor(int canID, frc::PneumaticsModuleType type, units::pressure::pounds_per_square_inch_t minPressure, units::pressure::pounds_per_square_inch_t maxPressure);
 
-    void EnableCompressor();
-    void DisableCompressor();
+    void ToggleEnableCompressor();
 
     units::pounds_per_square_inch_t GetMinPressure() const { return m_minPressure; }
     units::pounds_per_square_inch_t GetMaxPressure() const { return m_maxPressure; }
+    units::pounds_per_square_inch_t GetCurrentPressure() const;
 
 private:
+    void EnableCompressor();
+    void DisableCompressor();
+
     void ClearStickyFaults();
     CompressorFactory();
     virtual ~CompressorFactory() = default;

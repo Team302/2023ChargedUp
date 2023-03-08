@@ -37,6 +37,7 @@ public:
 
 private:
     void PublishGameStateChanges();
+    void PublishCompressorInfo();
     void CheckGamePieceMode(TeleopControl *controller);
 
     RobotState();

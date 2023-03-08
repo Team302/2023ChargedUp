@@ -22,6 +22,8 @@
 
 // Team 302 includes
 #include <hw/factories/CompressorFactory.h>
+#include <robotstate/RobotState.h>
+#include <robotstate/RobotStateChanges.h>
 
 // Third Party Includes
 
@@ -59,22 +61,31 @@ Compressor *CompressorFactory::CreateCompressor(int canID, frc::PneumaticsModule
     return m_compressor;
 }
 
-void CompressorFactory::EnableCompressor()
+void CompressorFactory::ToggleEnableCompressor()
 {
-    ClearStickyFaults();
     if (m_compressor != nullptr)
     {
-        //     m_compressor->EnableAnalog(m_minPressure, m_maxPressure);
+        ClearStickyFaults();
+        if (m_compressor->IsEnabled())
+        {
+            DisableCompressor();
+            RobotState::GetInstance()->PublishStateChange(RobotStateChanges::CompressorChange, RobotStateChanges::CompressorOff);
+        }
+        else
+        {
+            EnableCompressor();
+            RobotState::GetInstance()->PublishStateChange(RobotStateChanges::CompressorChange, RobotStateChanges::CompressorOn);
+        }
     }
+}
+void CompressorFactory::EnableCompressor()
+{
+    m_compressor->EnableAnalog(m_minPressure, m_maxPressure);
 }
 
 void CompressorFactory::DisableCompressor()
 {
-    ClearStickyFaults();
-    if (m_compressor != nullptr)
-    {
-        //    m_compressor->Disable();
-    }
+    m_compressor->Disable();
 }
 
 void CompressorFactory::ClearStickyFaults()
@@ -87,4 +98,13 @@ void CompressorFactory::ClearStickyFaults()
     {
         m_pcm->ClearAllStickyFaults();
     }
+}
+
+units::pounds_per_square_inch_t CompressorFactory::GetCurrentPressure() const
+{
+    if (m_compressor != nullptr)
+    {
+        return m_compressor->GetPressure();
+    }
+    return units::pounds_per_square_inch_t(0.0);
 }
