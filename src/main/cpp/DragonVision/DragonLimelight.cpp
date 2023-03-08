@@ -386,7 +386,7 @@ std::optional<units::length::inch_t> DragonLimelight::GetTargetHeight() const
     {
         units::angle::degree_t ang = GetTargetVerticalOffset();
 
-        if (ang.to<double>() < 0) // Should this setting be in robot.xml?
+        if (ang.to<double>() < 15) // Should this setting be in robot.xml?
             return units::length::inch_t(m_targetHeight);
         else
             return units::length::inch_t(m_targetHeight2);
