@@ -27,6 +27,7 @@
 #include <chassis/ChassisFactory.h>
 #include <hw/factories/PigeonFactory.h>
 #include <utils/logging/Logger.h>
+#include <DragonVision/DragonVision.h>
 
 using namespace std;
 using namespace frc;
@@ -39,7 +40,15 @@ void ResetPosition::Init(PrimitiveParams *params)
 {
 
     m_trajectory = DragonTrajectoryUtils::GetTrajectory(params);
-    m_chassis->ResetPose(m_trajectory.InitialPose());
+    if (DragonVision::GetDragonVision()->getTargetInfo() != nullptr)
+    {
+        // dynamic_cast<SwerveChassis *>(m_chassis.get())->ResetPoseToVision();
+        m_chassis->ResetPose(m_trajectory.InitialPose());
+    }
+    else
+    {
+        m_chassis->ResetPose(m_trajectory.InitialPose());
+    }
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Reset Position"), string("Auton Info: ResetPosX"), m_chassis.get()->GetPose().X().to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Reset Position"), string("Auton Info: ResetPosY"), m_chassis.get()->GetPose().Y().to<double>());

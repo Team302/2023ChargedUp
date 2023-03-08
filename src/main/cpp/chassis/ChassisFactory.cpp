@@ -86,9 +86,7 @@ IChassis *ChassisFactory::CreateChassis(
     std::shared_ptr<SwerveModule> frontLeft,
     std::shared_ptr<SwerveModule> frontRight,
     std::shared_ptr<SwerveModule> backLeft,
-    std::shared_ptr<SwerveModule> backRight,
-    PoseEstimatorEnum poseEstOption,
-    double odometryComplianceCoefficient)
+    std::shared_ptr<SwerveModule> backRight)
 {
 
 #ifdef CHASSIS_TYPE_TANK_CHASSIS
@@ -119,12 +117,10 @@ IChassis *ChassisFactory::CreateChassis(
                                  wheelDiameter,
                                  wheelBase,
                                  track,
-                                 odometryComplianceCoefficient,
                                  maxVelocity,
                                  maxAngularSpeed,
                                  maxAcceleration,
                                  maxAngularAcceleration,
-                                 // poseEstOption,
                                  networkTableName,
                                  controlFileName);
     m_chassis = m_swerve;

@@ -53,16 +53,14 @@
     crosshairy=""
     secondcrosshairx=""
     secondcrosshairy="" />
-  <led
+  <!-- led
     pwmId="8"
-    number="144" />
+    number="144" / -->
   <chassis
     type="SWERVE"
     wheelDiameter="4.0"
     wheelBase="20.75"
     track="20.75"
-    wheelSpeedCalcOption="ETHER"
-    poseEstimationOption="WPI"
     maxVelocity="162.0"
     maxAngularVelocity="360"
     maxAcceleration="81"
@@ -360,16 +358,16 @@
     networkTable="grabberNT"
     controlFile="grabber.xml">
     <solenoid
-      usage="GrabberSolenoid1"
+      usage="GrabberSolenoid"
       canId="1"
       channel="0"
       reversed="false" />
-    <solenoid
-      usage="GrabberSolenoid2"
-      canId="1"
-      channel="1"
-      reversed="false" />
+    <digitalInput  
+      usage="GRABBER_SENSOR" 
+      digitalId="9" 
+      reversed="true"/> 
   </mechanism>
+
   <roborio
     orientation="X_LEFT_Y_UP" />
 </robot>

@@ -40,7 +40,9 @@
 #include <chassis/PoseEstimatorEnum.h>
 #include <chassis/swerve/SwerveChassis.h>
 
+#include <chassis/swerve/driveStates/AutoBalanceDrive.h>
 #include <chassis/swerve/driveStates/FieldDrive.h>
+#include <chassis/swerve/driveStates/VisionDrive.h>
 #include <chassis/swerve/driveStates/HoldDrive.h>
 #include <chassis/swerve/driveStates/RobotDrive.h>
 #include <chassis/swerve/driveStates/StopDrive.h>
@@ -53,6 +55,7 @@
 
 #include <DragonVision/DragonLimelight.h>
 #include <DragonVision/LimelightFactory.h>
+#include <utils/FMSData.h>
 #include <utils/AngleUtils.h>
 #include <utils/ConversionUtils.h>
 #include <utils/logging/Logger.h>
@@ -93,7 +96,6 @@ SwerveChassis::SwerveChassis(
     units::length::inch_t wheelDiameter,
     units::length::inch_t wheelBase,
     units::length::inch_t track,
-    double odometryComplianceCoefficient,
     units::velocity::meters_per_second_t maxSpeed,
     units::radians_per_second_t maxAngularSpeed,
     units::acceleration::meters_per_second_squared_t maxAcceleration,
@@ -111,7 +113,6 @@ SwerveChassis::SwerveChassis(
                               m_wheelDiameter(wheelDiameter),
                               m_wheelBase(wheelBase),
                               m_track(track),
-                              m_odometryComplianceCoefficient(odometryComplianceCoefficient),
                               m_maxSpeed(maxSpeed),
                               m_maxAngularSpeed(maxAngularSpeed),
                               m_maxAcceleration(maxAcceleration),               // Not used at the moment
@@ -157,12 +158,12 @@ void SwerveChassis::InitStates()
 {
     m_robotDrive = new RobotDrive();
 
-    m_driveStateMap[ChassisOptionEnums::DriveStateType::FIELD_DRIVE] = new FieldDrive(m_robotDrive);
-    m_driveStateMap[ChassisOptionEnums::DriveStateType::HOLD_DRIVE] = new HoldDrive();
-    m_driveStateMap[ChassisOptionEnums::DriveStateType::ROBOT_DRIVE] = m_robotDrive;
-    m_driveStateMap[ChassisOptionEnums::DriveStateType::STOP_DRIVE] = new StopDrive();
-    m_driveStateMap[ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE] = new TrajectoryDrive(m_robotDrive);
-    // m_driveStateMap[ChassisOptionEnums::DriveStateType::POLAR_DRIVE] = new
+    m_driveStateMap[ChassisOptionEnums::FIELD_DRIVE] = new FieldDrive(m_robotDrive);
+    m_driveStateMap[ChassisOptionEnums::HOLD_DRIVE] = new HoldDrive();
+    m_driveStateMap[ChassisOptionEnums::ROBOT_DRIVE] = m_robotDrive;
+    m_driveStateMap[ChassisOptionEnums::STOP_DRIVE] = new StopDrive();
+    m_driveStateMap[ChassisOptionEnums::TRAJECTORY_DRIVE] = new TrajectoryDrive(m_robotDrive);
+    m_driveStateMap[ChassisOptionEnums::AUTO_BALANCE] = new AutoBalanceDrive(m_robotDrive);
 
     m_headingStateMap[ChassisOptionEnums::HeadingOption::MAINTAIN] = new MaintainHeading();
     m_headingStateMap[ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE] = new SpecifiedHeading();
@@ -177,19 +178,8 @@ void SwerveChassis::ZeroAlignSwerveModules()
     m_backRight.get()->ZeroAlignModule();
 }
 
-units::angular_velocity::degrees_per_second_t SwerveChassis::CalcHeadingCorrection(
-    units::angle::degree_t targetAngle,
-    double kP)
-{
-    auto currentAngle = GetPose().Rotation().Degrees();
-    auto errorAngle = AngleUtils::GetEquivAngle(AngleUtils::GetDeltaAngle(currentAngle, targetAngle));
-    auto correction = units::angular_velocity::degrees_per_second_t(errorAngle.to<double>() * kP);
-    return correction;
-}
-
 /// @brief Drive the chassis
-void SwerveChassis::Drive(
-    ChassisMovement moveInfo)
+void SwerveChassis::Drive(ChassisMovement moveInfo)
 {
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("swerve"), string("Vx"), moveInfo.chassisSpeeds.vx.to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("swerve"), string("Vy"), moveInfo.chassisSpeeds.vy.to<double>());
@@ -215,18 +205,12 @@ void SwerveChassis::Drive(
     }
 }
 
-ISwerveDriveOrientation *SwerveChassis::GetSpecifiedHeadingState(
-    ChassisOptionEnums::HeadingOption headingOption)
+void SwerveChassis::Drive()
 {
-    auto itr = m_headingStateMap.find(headingOption);
-    if (itr == m_headingStateMap.end())
-    {
-        itr = m_headingStateMap.find(ChassisOptionEnums::HeadingOption::MAINTAIN);
-    }
-    return itr->second;
+    // No-op for now
 }
-ISwerveDriveState *SwerveChassis::GetSpecifiedDriveState(
-    ChassisOptionEnums::DriveStateType driveOption)
+
+ISwerveDriveState *SwerveChassis::GetSpecifiedDriveState(ChassisOptionEnums::DriveStateType driveOption)
 {
     auto itr = m_driveStateMap.find(driveOption);
     if (itr == m_driveStateMap.end())
@@ -236,8 +220,7 @@ ISwerveDriveState *SwerveChassis::GetSpecifiedDriveState(
     return itr->second;
 }
 
-ISwerveDriveOrientation *SwerveChassis::GetHeadingState(
-    ChassisMovement moveInfo)
+ISwerveDriveOrientation *SwerveChassis::GetHeadingState(ChassisMovement moveInfo)
 {
     auto itr = m_headingStateMap.find(moveInfo.headingOption);
     if (itr == m_headingStateMap.end())
@@ -246,8 +229,7 @@ ISwerveDriveOrientation *SwerveChassis::GetHeadingState(
     }
     return itr->second;
 }
-ISwerveDriveState *SwerveChassis::GetDriveState(
-    ChassisMovement moveInfo)
+ISwerveDriveState *SwerveChassis::GetDriveState(ChassisMovement moveInfo)
 {
     auto itr = m_driveStateMap.find(moveInfo.driveOption);
     if (itr == m_driveStateMap.end())
@@ -275,11 +257,6 @@ ISwerveDriveState *SwerveChassis::GetDriveState(
     return state;
 }
 
-void SwerveChassis::Drive()
-{
-    // No-op for now
-}
-
 Pose2d SwerveChassis::GetPose() const
 {
     return m_poseEstimator.GetEstimatedPosition();
@@ -291,13 +268,25 @@ units::angle::degree_t SwerveChassis::GetYaw() const
     return yaw;
 }
 
+units::angle::degree_t SwerveChassis::GetPitch() const
+{
+    units::degree_t pitch{m_pigeon->GetPitch()};
+    return pitch;
+}
+
+units::angle::degree_t SwerveChassis::GetRoll() const
+{
+    units::degree_t roll{m_pigeon->GetRoll()};
+    return roll;
+}
+
 /// @brief update the chassis odometry based on current states of the swerve modules and the pigeon
 void SwerveChassis::UpdateOdometry()
 {
     units::degree_t yaw{m_pigeon->GetYaw()};
     Rotation2d rot2d{yaw};
 
-    if (m_vision != nullptr && m_vision->GetRobotPosition().X().to<double>() != 0 && m_vision->GetRobotPosition().Y().to<double>() != 0)
+    /*if (m_vision == nullptr)
     {
         auto targetInfo = m_vision->getTargetInfo();
         if (targetInfo != nullptr)
@@ -308,7 +297,7 @@ void SwerveChassis::UpdateOdometry()
             Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("UpdateOdometry"), string("DistToTarget"), distToTarget);
             Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("UpdateOdometry"), string("HasReset"), m_hasResetToVisionTarget);
 
-            if (distToTarget > 29.5 && !m_hasResetToVisionTarget && distToTarget < 80 && !m_hasResetToVisionTarget && pose.X().to<double>() > 0 && pose.Y().to<double>() > 0) // Need to add low pass filter for all 3 conditions
+            if (distToTarget > 29.5 && !m_hasResetToVisionTarget && distToTarget < 80 && pose.X().to<double>() > 0 && pose.Y().to<double>() > 0) // Need to add low pass filter for all 3 conditions
             {
                 m_poseEstimator.ResetPosition(rot2d, wpi::array<frc::SwerveModulePosition, 4>{m_frontLeft.get()->GetPosition(), m_frontRight.get()->GetPosition(), m_backLeft.get()->GetPosition(), m_backRight.get()->GetPosition()}, pose);
                 m_hasResetToVisionTarget = true;
@@ -331,17 +320,17 @@ void SwerveChassis::UpdateOdometry()
         }
     }
     else
-    {
-        m_poseEstimator.Update(rot2d, wpi::array<frc::SwerveModulePosition, 4>{m_frontLeft.get()->GetPosition(),
-                                                                               m_frontRight.get()->GetPosition(),
-                                                                               m_backLeft.get()->GetPosition(),
-                                                                               m_backRight.get()->GetPosition()});
-        m_hasResetToVisionTarget = false;
+    {*/
+    m_poseEstimator.Update(rot2d, wpi::array<frc::SwerveModulePosition, 4>{m_frontLeft.get()->GetPosition(),
+                                                                           m_frontRight.get()->GetPosition(),
+                                                                           m_backLeft.get()->GetPosition(),
+                                                                           m_backRight.get()->GetPosition()});
+    m_hasResetToVisionTarget = false;
+    //}
 
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("SwerveOdometry"), std::string("X Position: "), m_poseEstimator.GetEstimatedPosition().X().to<double>());
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("SwerveOdometry"), std::string("Y Position: "), m_poseEstimator.GetEstimatedPosition().Y().to<double>());
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("SwerveOdometry"), std::string("Rotation: "), m_poseEstimator.GetEstimatedPosition().Rotation().Degrees().to<double>());
-    }
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("SwerveOdometry"), std::string("X Position: "), m_poseEstimator.GetEstimatedPosition().X().to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("SwerveOdometry"), std::string("Y Position: "), m_poseEstimator.GetEstimatedPosition().Y().to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("SwerveOdometry"), std::string("Rotation: "), m_poseEstimator.GetEstimatedPosition().Rotation().Degrees().to<double>());
 }
 /// @brief set all of the encoders to zero
 void SwerveChassis::SetEncodersToZero()
@@ -366,10 +355,7 @@ ChassisSpeeds SwerveChassis::GetChassisSpeeds() const
                                          m_backRight.get()->GetState()});
 }
 
-/// @brief Reset the current chassis pose based on the provided pose and rotation
-/// @param [in] const Pose2d&       pose        Current XY position
-/// @param [in] const Rotation2d&   angle       Current rotation angle
-void SwerveChassis::ResetPose(const Pose2d &pose, const Rotation2d &angle)
+void SwerveChassis::ResetPose(const Pose2d &pose)
 {
     units::degree_t yaw{m_pigeon->GetYaw()};
     Rotation2d rot2d{yaw};
@@ -379,10 +365,27 @@ void SwerveChassis::ResetPose(const Pose2d &pose, const Rotation2d &angle)
     m_poseEstimator.ResetPosition(rot2d, wpi::array<frc::SwerveModulePosition, 4>{m_frontLeft.get()->GetPosition(), m_frontRight.get()->GetPosition(), m_backLeft.get()->GetPosition(), m_backRight.get()->GetPosition()}, pose);
 }
 
-void SwerveChassis::ResetPose(const Pose2d &pose)
+void SwerveChassis::ResetPoseToVision()
 {
-    Rotation2d angle = pose.Rotation();
-    ResetPose(pose, angle);
+    units::degree_t yaw{m_pigeon->GetYaw()};
+    Rotation2d rot2d{yaw};
+
+    /*auto targetInfo = m_vision->getTargetInfo();
+    if (targetInfo != nullptr)
+    {
+        frc::Pose2d pose = m_vision->GetRobotPosition();
+
+        if (pose.X().to<double>() > 0 && pose.Y().to<double>() > 0) // Need to add low pass filter for all 3 conditions
+        {
+            m_poseEstimator.ResetPosition(rot2d, wpi::array<frc::SwerveModulePosition, 4>{m_frontLeft.get()->GetPosition(), m_frontRight.get()->GetPosition(), m_backLeft.get()->GetPosition(), m_backRight.get()->GetPosition()}, pose);
+        }
+    }
+    else // if we don't have a target, just reset yaw to 0 (we do this in case field orientation breaks)
+    {*/
+    m_pigeon->ReZeroPigeon(0.0, 0.0);
+
+    ZeroAlignSwerveModules();
+    //}
 }
 
 ChassisSpeeds SwerveChassis::GetFieldRelativeSpeeds(
@@ -402,9 +405,4 @@ ChassisSpeeds SwerveChassis::GetFieldRelativeSpeeds(
 void SwerveChassis::SetTargetHeading(units::angle::degree_t targetYaw)
 {
     m_targetHeading = targetYaw;
-}
-
-void SwerveChassis::ReZero()
-{
-    m_storedYaw = units::angle::degree_t(0.0);
 }

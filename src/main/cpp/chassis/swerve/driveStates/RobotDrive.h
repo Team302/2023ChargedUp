@@ -17,6 +17,7 @@
 
 #include <frc/kinematics/SwerveModuleState.h>
 #include <units/length.h>
+#include <units/time.h>
 #include <units/velocity.h>
 
 // Team302 Includes
@@ -28,12 +29,12 @@ class RobotDrive : public ISwerveDriveState
 {
 public:
     RobotDrive();
+    ~RobotDrive() = default;
 
     std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates(
         ChassisMovement &chassisMovement) override;
 
-    void Init(
-        ChassisMovement &chassisMovement) override;
+    void Init(ChassisMovement &chassisMovement) override;
 
 protected:
     frc::SwerveModuleState m_flState;
@@ -44,4 +45,7 @@ protected:
     units::length::inch_t m_wheelbase;
     units::length::inch_t m_wheeltrack;
     units::velocity::feet_per_second_t m_maxspeed;
+
+private:
+    void CorrectForTipping(ChassisMovement &chassisMovement);
 };

@@ -53,13 +53,14 @@
     crosshairy=""
     secondcrosshairx=""
     secondcrosshairy="" />
+  <led
+    pwmId="8"
+    number="122"/>
   <chassis
     type="SWERVE"
     wheelDiameter="4.0"
     wheelBase="20.75"
     track="20.75"
-    wheelSpeedCalcOption="ETHER"
-    poseEstimationOption="WPI"
     maxVelocity="162.0"
     maxAngularVelocity="360"
     maxAcceleration="81"

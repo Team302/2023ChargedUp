@@ -36,7 +36,7 @@ public:
         HOLONOMIC_ROTATE_BACK,
         HOLONOMIC_ROTATE_LEFT,
         HOLONOMIC_ROTATE_RIGHT,
-        REZERO_PIGEON,
+        RESET_POSITION,
         HOLD_POSITION,
         FINDTARGET,
         DRIVE_TO_SHOOTING_SPOT,
@@ -50,6 +50,8 @@ public:
         BALANCE_MODE,
         AUTO_BALANCE,
         SLOW_MODE,
+        AUTO_TURN_FORWARD,
+        AUTO_TURN_BACKWARD,
         // Scoring states
         // HOLD_POSITION, // may not need this state
         BACKROW,

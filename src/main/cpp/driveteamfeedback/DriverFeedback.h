@@ -30,11 +30,12 @@ public:
     void Update(RobotStateChanges::StateChange change, int value) override;
 
 private:
+    void CheckControllers();
     DriverFeedback();
     ~DriverFeedback() = default;
 
-    bool m_AutonomousEnabled;
-    bool m_TeleopEnabled;
+    bool m_AutonomousEnabled = false;
+    bool m_TeleopEnabled = false;
 
     enum DriverFeedbackStates
     {
@@ -45,18 +46,22 @@ private:
         WANT_CONE,
         GAME_PIECE_READY_TO_PICK_UP,
         NONE
-
     };
 
     LEDStates *m_LEDStates = LEDStates::GetInstance();
+    bool m_GrabberIsOpen = false;
     bool m_WantCube = false;
     bool m_WantCone = false;
     bool m_GamePieceReadyToPickUp = false;
     bool m_GamePieceInGrabber = false;
     bool m_AlignedWithConeNode = false;
     bool m_AlignedWithCubeNode = false;
+    int m_controllerCounter = 0;
 
     static DriverFeedback *m_instance;
 
     DriverFeedbackStates currentState = DriverFeedbackStates::NONE;
+    bool m_grabberStateChanged = true;
+
+    void resetRequests(void);
 };

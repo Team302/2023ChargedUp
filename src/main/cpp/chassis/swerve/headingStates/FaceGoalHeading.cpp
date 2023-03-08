@@ -17,8 +17,6 @@
 #include <chassis/swerve/headingStates/FaceGoalHeading.h>
 #include <DragonVision/LimelightFactory.h>
 
-// #include <chassis/swerve/SwerveOdometry.h>
-
 FaceGoalHeading::FaceGoalHeading() : ISwerveDriveOrientation(ChassisOptionEnums::HeadingOption::TOWARD_GOAL),
                                      m_limelight(LimelightFactory::GetLimelightFactory()->GetLimelight())
 {

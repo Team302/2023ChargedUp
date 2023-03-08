@@ -106,12 +106,15 @@ void GrabberStateMgr::CheckForStateTransition()
             CheckForGamepadTransitions();
         }
 
-        if (m_targetState != m_currentState && m_targetState != m_prevState)
+        if (m_targetState != m_currentState
+            //&& m_targetState != m_prevState
+        )
         {
             SetCurrentState(m_targetState, true);
-            m_prevState = m_targetState;
+            // m_prevState = m_targetState;
             RobotState::GetInstance()->PublishStateChange(RobotStateChanges::GrabberState, m_targetState);
         }
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("GrabberStateMgr"), std::string("Current State"), m_targetState);
     }
     else
     {
@@ -127,6 +130,8 @@ void GrabberStateMgr::CheckForSensorTransitions()
     if (m_grabber != nullptr)
     {
         // ignore sensor if we are less than 15 degrees above ground
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("GrabberStateMgr"), std::string("IsGamePiecePresent"), m_grabber->IsGamePiecePresent());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("GrabberStateMgr"), std::string("ArmPositionDegrees"), MechanismFactory::GetMechanismFactory()->GetArm()->GetPositionDegrees().to<double>());
         if (m_grabber->IsGamePiecePresent() && MechanismFactory::GetMechanismFactory()->GetArm()->GetPositionDegrees().to<double>() > m_floorThreshold)
         {
             m_targetState = GRABBER_STATE::GRAB;
@@ -145,14 +150,17 @@ void GrabberStateMgr::CheckForSensorTransitions()
 /// @brief Check for gamepad input to transition
 void GrabberStateMgr::CheckForGamepadTransitions()
 {
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("GrabberStateMgr"), std::string("GamepadTransitions"), "hit");
     if (m_grabber != nullptr)
     {
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("GrabberStateMgr"), std::string("GamepadTransitions"), "grabber != nullptr");
         m_currentState = static_cast<GRABBER_STATE>(GetCurrentState());
         // m_targetState = m_currentState;
 
         auto controller = TeleopControl::GetInstance();
         if (controller != nullptr)
         {
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("GrabberStateMgr"), std::string("GamepadTransitions"), "controller != nullptr");
             if (controller->IsButtonPressed(TeleopControlFunctions::OPEN))
             {
                 m_targetState = GRABBER_STATE::OPEN;
