@@ -76,7 +76,11 @@ void RobotState::Run()
     {
         m_chassis->UpdateOdometry();
     }
+    PublishCompressorInfo();
+}
 
+void RobotState::PublishCompressorInfo()
+{
     if (DriverStation::IsTeleopEnabled())
     {
         auto controller = TeleopControl::GetInstance();
@@ -86,17 +90,7 @@ void RobotState::Run()
             {
                 if (m_wasCompressorButtonReleased)
                 {
-                    if (RobotStateChanges::CompressorState::CompressorOn)
-                    {
-                        CompressorFactory::GetFactory()->EnableCompressor();
-                        PublishStateChange(RobotStateChanges::CompressorChange, m_compressorCurrent);
-                    }
-
-                    else if (RobotStateChanges::CompressorState::CompressorOff)
-                    {
-                        CompressorFactory::GetFactory()->DisableCompressor();
-                        PublishStateChange(RobotStateChanges::CompressorChange, m_compressorCurrent);
-                    }
+                    CompressorFactory::GetFactory()->ToggleEnableCompressor();
                 }
             }
             m_wasCompressorButtonReleased = !controller->IsButtonPressed(TeleopControlFunctions::TOGGLE_COMPRESSER);

@@ -161,7 +161,7 @@ robin_hood::unordered_map<TeleopControlFunctions::FUNCTION, const TeleopControlB
     {TeleopControlFunctions::HOLONOMIC_ROTATE_LEFT, driverDPad270},
     {TeleopControlFunctions::HOLONOMIC_ROTATE_RIGHT, driverDPad90},
     {TeleopControlFunctions::DRIVE_TO_LEFT_COLUMN, driverXButton},
-    // {TeleopControlFunctions::DRIVE_TO_MIDDLE_COLUMN, driverYButton},
+    {TeleopControlFunctions::DRIVE_TO_MIDDLE_COLUMN, driverYButton},
     {TeleopControlFunctions::DRIVE_TO_RIGHT_COLUMN, driverBButton},
     {TeleopControlFunctions::RESET_POSITION, driverAButton},
     {TeleopControlFunctions::HOLD_POSITION, driverLBumper},

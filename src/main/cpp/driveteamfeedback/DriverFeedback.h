@@ -33,6 +33,7 @@ public:
 
 private:
     void CheckControllers();
+    void DisplayPressure();
     DriverFeedback();
     ~DriverFeedback() = default;
 
