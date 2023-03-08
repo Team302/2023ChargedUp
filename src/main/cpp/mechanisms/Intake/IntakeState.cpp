@@ -28,7 +28,8 @@
 
 using namespace std;
 
-IntakeState::IntakeState(std::string stateName, int stateId, ControlData *control, double target, MechanismTargetData::SOLENOID solState) : Mech1IndMotor1SolenoidState(MechanismFactory::GetMechanismFactory()->GetIntake(), stateName, stateId, control, target, solState)
+IntakeState::IntakeState(std::string stateName, int stateId, ControlData *control, double target, MechanismTargetData::SOLENOID solState)
+    : Mech1IndMotor1SolenoidState(MechanismFactory::GetMechanismFactory()->GetIntake(), stateName, stateId, control, target, solState)
 {
 }
 

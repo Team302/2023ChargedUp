@@ -36,12 +36,9 @@ using std::string;
 /// @param [in] std::shared_ptr<IDragonMotorController>
 /// @param [in] std::shared_ptr<DragonSolenoid>
 /// @param [in] std::shared_ptr<DragonDigitalInput>
-Intake::Intake(string controlFileName,
-               string networkTableName,
-               shared_ptr<IDragonMotorController> motorController,
-               shared_ptr<DragonSolenoid> solenoid,
-               std::shared_ptr<DragonDigitalInput> gamePieceSw) : Mech1IndMotor1Solenoid(MechanismTypes::MECHANISM_TYPE::INTAKE, controlFileName, networkTableName, motorController, solenoid),
-                                                                  m_gamePieceSw(gamePieceSw)
+Intake::Intake(string controlFileName, string networkTableName, shared_ptr<IDragonMotorController> motorController, shared_ptr<DragonSolenoid> solenoid, shared_ptr<DragonDigitalInput> gamePieceSw)
+    : Mech1IndMotor1Solenoid(MechanismTypes::MECHANISM_TYPE::INTAKE, controlFileName, networkTableName, motorController, solenoid),
+      m_gamePieceSw(gamePieceSw)
 {
 }
 

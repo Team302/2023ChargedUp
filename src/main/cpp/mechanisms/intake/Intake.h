@@ -34,11 +34,7 @@ public:
     /// @param [in] std::shared_ptr<IDragonMotorController>
     /// @param [in] std::shared_ptr<DragonSolenoid>
     /// @param [in] std::shared_ptr<DragonDigitalInput>
-    Intake(std::string controlFileName,
-           std::string networkTableName,
-           std::shared_ptr<IDragonMotorController> motorController,
-           std::shared_ptr<DragonSolenoid> solenoid,
-           std::shared_ptr<DragonDigitalInput> gamePieceSw);
+    Intake(std::string controlFileName, std::string networkTableName, std::shared_ptr<IDragonMotorController> motorController, std::shared_ptr<DragonSolenoid> solenoid, std::shared_ptr<DragonDigitalInput> gamePieceSw);
     Intake() = delete;
     ~Intake() override = default;
     bool IsGamePiecePresent();
