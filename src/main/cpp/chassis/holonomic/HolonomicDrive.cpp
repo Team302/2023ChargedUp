@@ -95,7 +95,7 @@ void HolonomicDrive::Run()
         {
             if (m_swerve != nullptr)
             {
-                m_swerve->ResetPoseToVision();
+                m_swerve->ResetYaw();
             }
 
             m_hasResetPosition = true;

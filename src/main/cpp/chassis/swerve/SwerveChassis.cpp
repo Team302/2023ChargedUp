@@ -365,27 +365,23 @@ void SwerveChassis::ResetPose(const Pose2d &pose)
     m_poseEstimator.ResetPosition(rot2d, wpi::array<frc::SwerveModulePosition, 4>{m_frontLeft.get()->GetPosition(), m_frontRight.get()->GetPosition(), m_backLeft.get()->GetPosition(), m_backRight.get()->GetPosition()}, pose);
 }
 
-void SwerveChassis::ResetPoseToVision()
+void SwerveChassis::ResetYaw()
 {
     units::degree_t yaw{m_pigeon->GetYaw()};
     Rotation2d rot2d{yaw};
 
-    /*auto targetInfo = m_vision->getTargetInfo();
-    if (targetInfo != nullptr)
-    {
-        frc::Pose2d pose = m_vision->GetRobotPosition();
+    frc::DriverStation::Alliance alliance = FMSData::GetInstance()->GetAllianceColor();
 
-        if (pose.X().to<double>() > 0 && pose.Y().to<double>() > 0) // Need to add low pass filter for all 3 conditions
-        {
-            m_poseEstimator.ResetPosition(rot2d, wpi::array<frc::SwerveModulePosition, 4>{m_frontLeft.get()->GetPosition(), m_frontRight.get()->GetPosition(), m_backLeft.get()->GetPosition(), m_backRight.get()->GetPosition()}, pose);
-        }
+    if (alliance == frc::DriverStation::Alliance::kBlue)
+    {
+        m_pigeon->ReZeroPigeon(0.0, 0.0);
     }
-    else // if we don't have a target, just reset yaw to 0 (we do this in case field orientation breaks)
-    {*/
-    m_pigeon->ReZeroPigeon(0.0, 0.0);
+    else
+    {
+        m_pigeon->ReZeroPigeon(180.0, 0.0);
+    }
 
     ZeroAlignSwerveModules();
-    //}
 }
 
 ChassisSpeeds SwerveChassis::GetFieldRelativeSpeeds(
