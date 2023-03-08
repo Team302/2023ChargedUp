@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE auton SYSTEM "auton.dtd">
+<auton>
+<primitive id="RESET_POSITION"
+	           pathname="BlueCOOPOne1CubeSlow.wpilib.json"
+               grabber="GRAB"/>
+    <!--score preloaded cone-->
+    <primitive id="DO_NOTHING"
+               arm="CONE_BACKROW_ROTATE"
+               extender="STARTING_POSITION_EXTEND"
+               grabber="GRAB"
+               time="0.35"
+               />
+    <primitive id="DO_NOTHING"
+               arm="CONE_BACKROW_ROTATE"
+               extender="CONE_BACKROW_EXTEND"
+               grabber="GRAB"
+               time="0.6"
+               />
+    <primitive id="DO_NOTHING"
+               arm="CONE_BACKROW_ROTATE"
+               extender="CONE_BACKROW_EXTEND"
+               grabber="OPEN"
+               time="0.35"
+               />
+    <primitive id="DO_NOTHING"
+               arm="CONE_BACKROW_ROTATE"
+               extender="STARTING_POSITION_EXTEND"
+               grabber="GRAB"
+               time="0.5"
+               />
+    <!--drive over charging station-->
+    <primitive id="DRIVE_PATH"
+               pathname="BlueCOOPOne1CubeSlow.wpilib.json"
+               arm="STARTING_POSITION_ROTATE"
+               extender="STARTING_POSITION_EXTEND"
+               grabber="GRAB"
+               time="15.0"
+               />
+    <!--auto balance-->
+    <primitive id="AUTO_BALANCE"
+               arm="STARTING_POSITION_ROTATE"
+               extender="STARTING_POSITION_EXTEND"
+               grabber="GRAB"
+               time="10.0"
+               />
+</auton>
