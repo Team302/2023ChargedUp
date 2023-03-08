@@ -46,6 +46,8 @@ Compressor *CompressorFactory::CreateCompressor(int canID, frc::PneumaticsModule
     if (m_compressor == nullptr)
     {
         m_compressor = new Compressor(canID, type);
+        m_minPressure = minPressure;
+        m_maxPressure = maxPressure;
         m_compressor->EnableAnalog(minPressure, maxPressure);
         if (type == frc::PneumaticsModuleType::CTREPCM)
         {
@@ -64,7 +66,7 @@ void CompressorFactory::EnableCompressor()
     ClearStickyFaults();
     if (m_compressor != nullptr)
     {
-        //     m_compressor->EnableAnalog(m_minPressure, m_maxPressure);
+        m_compressor->EnableAnalog(m_minPressure, m_maxPressure);
     }
 }
 
@@ -73,7 +75,7 @@ void CompressorFactory::DisableCompressor()
     ClearStickyFaults();
     if (m_compressor != nullptr)
     {
-        //    m_compressor->Disable();
+        m_compressor->Disable();
     }
 }
 
