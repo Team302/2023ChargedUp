@@ -33,18 +33,8 @@ class IntakeState : public Mech1IndMotor1SolenoidState
 {
 public:
     IntakeState() = delete;
-    IntakeState(
-        Mech1IndMotor1Solenoid *mechanism,
-        std::string statenName,
-        int stateId,
-        ControlData *control,
-        double target,
-        MechanismTargetData::SOLENOID solState);
+    IntakeState(std::string statenName, int stateId, ControlData *control, double target, MechanismTargetData::SOLENOID solState);
     ~IntakeState() = default;
 
     bool AtTarget() const override;
-    Intake *GetIntake() const { return m_intake; }
-
-private:
-    Intake *m_intake;
 };
