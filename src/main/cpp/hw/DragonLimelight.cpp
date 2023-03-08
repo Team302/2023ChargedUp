@@ -67,7 +67,7 @@ DragonLimelight::DragonLimelight(
                               m_targetHeight(targetHeight),
                               m_targetHeight2(targetHeight2)
 {
-    SetPipeline(PIPELINE_MODE::RETRO_REFLECTIVE);
+    SetPipeline(PIPELINE_MODE::OFF);
     SetLEDMode(ledMode);
     SetCamMode(camMode);
     SetStreamMode(streamMode);

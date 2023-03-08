@@ -41,5 +41,7 @@ private:
     RobotDrive *m_robotDrive;
 
     const double m_kP_X = 0.1;
-    const double m_kP_Y = 0.05;
+    const double m_kP_Y = 0.075;
+
+    const double m_tolerance = 1.0; // tolerance in inches
 };

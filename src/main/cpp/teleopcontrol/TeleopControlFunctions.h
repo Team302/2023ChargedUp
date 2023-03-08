@@ -37,8 +37,7 @@ public:
         ARCADE_THROTTLE,
         ARCADE_STEER,
         DRIVE_TO_CUBE_NODE,
-        DRIVE_TO_LEFT_CONE_NODE,  // Left column according to driver pov
-        DRIVE_TO_RIGHT_CONE_NODE, // Right column according to driver pov
+        DRIVE_TO_CONE_NODE,
         DRIVE_TO_HUMAN_PLAYER_RIGHT,
         DRIVE_TO_HUMAN_PLAYER_LEFT,
         BALANCE_MODE,

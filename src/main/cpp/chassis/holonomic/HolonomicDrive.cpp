@@ -104,30 +104,14 @@ void HolonomicDrive::Run()
         }
 
         // Auto alignment to grid nodes
-        if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_LEFT_CONE_NODE))
+        if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_CONE_NODE))
         {
-            DragonVision::GetDragonVision()->setPipeline(DragonLimelight::PIPELINE_MODE::CONE_LEFT);
+            DragonVision::GetDragonVision()->setPipeline(DragonLimelight::PIPELINE_MODE::CONE_NODE);
 
             moveInfo.driveOption = ChassisOptionEnums::DriveStateType::VISION_DRIVE;
             moveInfo.headingOption = ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE;
 
-            frc::DriverStation::Alliance alliance = FMSData::GetInstance()->GetAllianceColor();
-
-            if (alliance == frc::DriverStation::Alliance::kBlue)
-            {
-                moveInfo.yawAngle = units::angle::degree_t(180.0);
-            }
-            else if (alliance == frc::DriverStation::Alliance::kRed)
-            {
-                moveInfo.yawAngle = units::angle::degree_t(0.0);
-            }
-        }
-        else if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_RIGHT_CONE_NODE))
-        {
-            DragonVision::GetDragonVision()->setPipeline(DragonLimelight::PIPELINE_MODE::CONE_RIGHT);
-
-            moveInfo.driveOption = ChassisOptionEnums::DriveStateType::VISION_DRIVE;
-            moveInfo.headingOption = ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE;
+            m_inVisionDrive = true;
 
             frc::DriverStation::Alliance alliance = FMSData::GetInstance()->GetAllianceColor();
 
@@ -147,6 +131,8 @@ void HolonomicDrive::Run()
             moveInfo.driveOption = ChassisOptionEnums::DriveStateType::VISION_DRIVE;
             moveInfo.headingOption = ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE;
 
+            m_inVisionDrive = true;
+
             frc::DriverStation::Alliance alliance = FMSData::GetInstance()->GetAllianceColor();
 
             if (alliance == frc::DriverStation::Alliance::kBlue)
@@ -161,6 +147,8 @@ void HolonomicDrive::Run()
         else
         {
             DragonVision::GetDragonVision()->setPipeline(DragonLimelight::PIPELINE_MODE::OFF);
+
+            m_inVisionDrive = false;
         }
 
         // add button to align with substation
@@ -188,7 +176,7 @@ void HolonomicDrive::Run()
             rotate *= m_slowModeMultiplier;
         }
 
-        if (abs(forward) > 0.05 || abs(strafe) > 0.05 || abs(rotate) > 0.05)
+        if ((abs(forward) > 0.05 || abs(strafe) > 0.05 || abs(rotate) > 0.05) && !m_inVisionDrive)
         {
             moveInfo.driveOption = ChassisOptionEnums::DriveStateType::FIELD_DRIVE;
             m_previousDriveState = moveInfo.driveOption;

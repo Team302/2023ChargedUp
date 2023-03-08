@@ -32,20 +32,31 @@ VisionDrive::VisionDrive(RobotDrive *robotDrive) : RobotDrive(),
 std::array<frc::SwerveModuleState, 4> VisionDrive::UpdateSwerveModuleStates(
     ChassisMovement &chassisMovement)
 {
-    if (DragonVision::GetDragonVision()->getTargetInfo() != nullptr)
-    {
-        auto targetData = DragonVision::GetDragonVision()->getTargetInfo();
-        units::angle::degree_t horizontalAngle = targetData->getHorizontalAngleToTarget();
-        units::length::inch_t xDistance = targetData->getDistanceToTarget();
+    auto targetData = DragonVision::GetDragonVision()->getTargetInfo();
 
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "HorizontalAngle", horizontalAngle.to<double>());
+    if (targetData != nullptr)
+    {
+        units::length::inch_t yDistance = targetData->getYdistanceToTargetRobotFrame();
+        units::length::inch_t xDistance = targetData->getXdistanceToTargetRobotFrame();
+
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "YDistance", yDistance.to<double>());
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "XDistance", xDistance.to<double>());
 
-        chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(m_kP_Y * horizontalAngle.to<double>());
+        if (!AtTargetY())
+        {
+            chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(m_kP_Y * yDistance.to<double>() * -1.0); // negating for robot drive
+        }
+        else
+        {
+            chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(0.0);
+        }
+
         // chassisMovement.chassisSpeeds.vx = units::velocity::meters_per_second_t(m_kP_X * xDistance.to<double>());
 
-        return m_robotDrive->UpdateSwerveModuleStates(chassisMovement);
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "VY", chassisMovement.chassisSpeeds.vy.to<double>());
     }
+
+    return m_robotDrive->UpdateSwerveModuleStates(chassisMovement);
 }
 
 void VisionDrive::Init(
@@ -87,7 +98,18 @@ bool VisionDrive::AtTargetX()
     return false;
 }
 
-bool AtTargetY()
+bool VisionDrive::AtTargetY()
 {
+    auto targetData = DragonVision::GetDragonVision()->getTargetInfo();
+
+    if (targetData != nullptr)
+    {
+        units::length::inch_t yError = targetData->getYdistanceToTargetRobotFrame();
+
+        if (abs(yError.to<double>()) < m_tolerance)
+        {
+            return true;
+        }
+    }
     return false;
 }

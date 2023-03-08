@@ -47,6 +47,7 @@
 #include <chassis/swerve/driveStates/RobotDrive.h>
 #include <chassis/swerve/driveStates/StopDrive.h>
 #include <chassis/swerve/driveStates/TrajectoryDrive.h>
+#include <chassis/swerve/driveStates/VisionDrive.h>
 
 #include <chassis/swerve/headingStates/FaceGoalHeading.h>
 #include <chassis/swerve/headingStates/ISwerveDriveOrientation.h>
@@ -163,6 +164,7 @@ void SwerveChassis::InitStates()
     m_driveStateMap[ChassisOptionEnums::ROBOT_DRIVE] = m_robotDrive;
     m_driveStateMap[ChassisOptionEnums::STOP_DRIVE] = new StopDrive();
     m_driveStateMap[ChassisOptionEnums::TRAJECTORY_DRIVE] = new TrajectoryDrive(m_robotDrive);
+    m_driveStateMap[ChassisOptionEnums::VISION_DRIVE] = new VisionDrive(m_robotDrive);
     m_driveStateMap[ChassisOptionEnums::AUTO_BALANCE] = new AutoBalanceDrive(m_robotDrive);
 
     m_headingStateMap[ChassisOptionEnums::HeadingOption::MAINTAIN] = new MaintainHeading();
