@@ -43,11 +43,8 @@ public:
     ~IntakeState() = default;
 
     bool AtTarget() const override;
-    Intake *GetIntake() const { return m_Intake; }
+    Intake *GetIntake() const { return m_intake; }
 
 private:
-    Intake *m_Intake;
-    Mech1IndMotor1Solenoid *m_mechanism;
-    std::shared_ptr<Mech1IndMotorState> m_motorState;
-    std::shared_ptr<Mech1SolenoidState> m_solenoidState;
+    Intake *m_intake;
 };

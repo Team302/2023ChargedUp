@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<statedata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <controlData
+    identifier="intake"
+    mode="PERCENT_OUTPUT"
+    constrolServer="MOTORCONTROLLER"
+    proportional="0.0"
+    integral="0.0"
+    derivative="0.0"
+    feedforward="0.0"
+    izone="0.0"
+    maxacceleration="0.0"
+    cruisevelocity="0.0" />
+  <mechanismTarget
+    stateIdentifier="OFF"
+    controlDataIdentifier="intake"
+    controlDataIdentifier2=""
+    value="0"
+    secondValue=""
+    solenoid="REVERSE"
+    solenoid2="NONE" />
+  <mechanismTarget
+    stateIdentifier="INTAKE_CONE"
+    controlDataIdentifier="intake"
+    controlDataIdentifier2=""
+    value="1"
+    secondValue=""
+    solenoid="ON"
+    solenoid2="NONE" />
+  <mechanismTarget
+    stateIdentifier="INTAKE_CUBE"
+    controlDataIdentifier="intake"
+    controlDataIdentifier2=""
+    value="1"
+    secondValue=""
+    solenoid="REVERSE"
+    solenoid2="NONE" />
+  <mechanismTarget
+    stateIdentifier="HOLD_CONE"
+    controlDataIdentifier="intake"
+    controlDataIdentifier2=""
+    value="0.2"
+    secondValue=""
+    solenoid="ON"
+    solenoid2="NONE" />
+  <mechanismTarget
+    stateIdentifier="HOLD_CUBE"
+    controlDataIdentifier="intake"
+    controlDataIdentifier2=""
+    value=".2"
+    secondValue=""
+    solenoid="REVERSE"
+    solenoid2="NONE" />
+  <mechanismTarget
+    stateIdentifier="EXPEL_CONE"
+    controlDataIdentifier="intake"
+    controlDataIdentifier2=""
+    value="-1"
+    secondValue=""
+    solenoid="ON"
+    solenoid2="NONE" />
+  <mechanismTarget
+    stateIdentifier="EXPEL_CUBE"
+    controlDataIdentifier="intake"
+    controlDataIdentifier2=""
+    value="-1"
+    secondValue=""
+    solenoid="REVERSE"
+    solenoid2="NONE" />
+  <mechanismTarget
+    stateIdentifier="DROP_CONE"
+    controlDataIdentifier="intake"
+    controlDataIdentifier2=""
+    value="0"
+    secondValue=""
+    solenoid="REVERSE"
+    solenoid2="NONE" />
+</statedata>

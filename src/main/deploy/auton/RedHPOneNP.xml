@@ -29,8 +29,20 @@
                grabber="GRAB"
                time="0.5"
                />
+    <!--exit community-->
+    <primitive id="DRIVE_PATH"
+               pathname="RedHPOne4.wpilib.json"
+               headingOption="SPECIFIED_ANGLE"
+               heading="179.5"
+               arm="STARTING_POSITION_ROTATE"
+               extender="STARTING_POSITION_EXTEND"
+               grabber="GRAB"
+               time="3.0"
+               />
     <!--do nothing!-->
     <primitive id="DO_NOTHING"
+               headingOption="SPECIFIED_ANGLE"
+               heading="179.5"
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                grabber="GRAB"
