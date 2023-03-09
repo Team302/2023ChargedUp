@@ -12,24 +12,49 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
+// C++ Includes
+#include <map>
+#include <memory>
+#include <string>
 
-#pragma once
+// FRC includes
 
-// Team302 Includes
-#include <chassis/swerve/headingStates/ISwerveDriveOrientation.h>
-#include <chassis/DragonTargetFinder.h>
-#include <DragonVision/DragonLimelight.h>
+// Team 302 includes
+#include <DragonVision/LimelightUsages.h>
+#include <utils/logging/Logger.h>
 
-class FaceGoalHeading : public ISwerveDriveOrientation
+// Third Party Includes
+
+using namespace std;
+
+LimelightUsages *LimelightUsages::m_instance = nullptr;
+LimelightUsages *LimelightUsages::GetInstance()
 {
-public:
-    FaceGoalHeading();
-    ~FaceGoalHeading();
+    if (m_instance == nullptr)
+    {
+        m_instance = new LimelightUsages();
+    }
+    return m_instance;
+}
 
-    void UpdateChassisSpeeds(ChassisMovement &chassisMovement) override;
+LimelightUsages::LimelightUsages()
+{
+    m_usageMap["MAINLIMELIGHT"] = LIMELIGHT_USAGE::PRIMARY;
+    m_usageMap["SECONDARYLIMELIGHT"] = LIMELIGHT_USAGE::SECONDARY;
+}
 
-private:
-    DragonTargetFinder m_targetFinder;
+LimelightUsages::~LimelightUsages()
+{
+    m_usageMap.clear();
+}
 
-    DragonLimelight *m_limelight;
-};
+LimelightUsages::LIMELIGHT_USAGE LimelightUsages::GetUsage(string usageString)
+{
+    auto it = m_usageMap.find(usageString);
+    if (it != m_usageMap.end())
+    {
+        return it->second;
+    }
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("LimelightUsages::GetUsage"), string("unknown usage"), usageString);
+    return LimelightUsages::LIMELIGHT_USAGE::UNKNOWN_USAGE;
+}
