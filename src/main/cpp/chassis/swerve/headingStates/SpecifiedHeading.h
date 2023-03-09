@@ -27,7 +27,6 @@ public:
     SpecifiedHeading();
     ~SpecifiedHeading();
     void UpdateChassisSpeeds(ChassisMovement &chassisMovement) override;
-    void SetTargetHeading(units::angle::degree_t targetAngle);
 
 private:
     units::angle::degree_t m_targetAngle;

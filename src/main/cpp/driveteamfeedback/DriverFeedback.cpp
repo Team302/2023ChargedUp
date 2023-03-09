@@ -15,6 +15,7 @@
 
 #include <frc/DriverStation.h>
 #include <driveteamfeedback/DriverFeedback.h>
+#include <hw/factories/CompressorFactory.h>
 #include <robotstate/RobotState.h>
 #include <robotstate/RobotStateChanges.h>
 #include <robotstate/IRobotStateChangeSubscriber.h>
@@ -39,44 +40,59 @@ DriverFeedback *DriverFeedback::GetInstance()
 void DriverFeedback::UpdateFeedback()
 {
     UpdateLEDStates();
+    UpdateCompressorState();
     CheckControllers();
+    DisplayPressure();
+}
+void DriverFeedback::UpdateCompressorState()
+{
+    if (m_controllerCounter == 0)
+    {
+        auto table = nt::NetworkTableInstance::GetDefault().GetTable("Compressor");
+        table.get()->PutBoolean(std::string("Compressor on"), m_compressorOn);
+    }
+}
+void DriverFeedback::DisplayPressure()
+{
+    auto table = nt::NetworkTableInstance::GetDefault().GetTable("Compressor");
+    table.get()->GetNumber(std::string("Pressure"), CompressorFactory::GetFactory()->GetCurrentPressure().to<double>());
 }
 void DriverFeedback::UpdateLEDStates()
 {
     if (DriverFeedback::m_AlignedWithConeNode)
     {
-        if (currentState != DriverFeedbackStates::ALIGNED_WITH_CONE_NODE)
+        if (m_gamePieceState != DriverFeedbackStates::ALIGNED_WITH_CONE_NODE)
         {
             m_LEDStates->ResetVariables();
         }
         m_LEDStates->ClosingInChaserPattern(DragonLeds::YELLOW);
-        currentState = DriverFeedbackStates::ALIGNED_WITH_CONE_NODE;
+        m_gamePieceState = DriverFeedbackStates::ALIGNED_WITH_CONE_NODE;
     }
     else if (DriverFeedback::m_AlignedWithCubeNode)
     {
-        if (currentState != DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE)
+        if (m_gamePieceState != DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE)
         {
             m_LEDStates->ResetVariables();
         }
         m_LEDStates->ClosingInChaserPattern(DragonLeds::PURPLE);
-        currentState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
+        m_gamePieceState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
     }
     else if (DriverFeedback::m_GamePieceInGrabber)
     {
 
-        if (currentState != DriverFeedbackStates::GAME_PIECE_IN_GRABBER)
+        if (m_gamePieceState != DriverFeedbackStates::GAME_PIECE_IN_GRABBER)
         {
             m_LEDStates->ResetVariables();
         }
         m_LEDStates->AlternatingColorBlinkingPattern(DragonLeds::YELLOW, DragonLeds::PURPLE);
-        currentState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
+        m_gamePieceState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
     }
     else if (DriverFeedback::m_WantCube)
     {
-        if (currentState != DriverFeedbackStates::WANT_CUBE)
+        if (m_gamePieceState != DriverFeedbackStates::WANT_CUBE)
         {
             m_LEDStates->ResetVariables();
-            currentState = DriverFeedbackStates::WANT_CUBE;
+            m_gamePieceState = DriverFeedbackStates::WANT_CUBE;
         }
         if (m_grabberStateChanged)
         {
@@ -88,10 +104,10 @@ void DriverFeedback::UpdateLEDStates()
     }
     else if (DriverFeedback::m_WantCone)
     {
-        if (currentState != DriverFeedbackStates::WANT_CONE)
+        if (m_gamePieceState != DriverFeedbackStates::WANT_CONE)
         {
             m_LEDStates->ResetVariables();
-            currentState = DriverFeedbackStates::WANT_CONE;
+            m_gamePieceState = DriverFeedbackStates::WANT_CONE;
         }
         if (m_grabberStateChanged)
         {
@@ -100,23 +116,25 @@ void DriverFeedback::UpdateLEDStates()
             else
                 m_LEDStates->SolidColorPattern(DragonLeds::YELLOW);
         }
+        m_LEDStates->SolidColorPattern(DragonLeds::YELLOW);
+        m_gamePieceState = DriverFeedbackStates::WANT_CONE;
     }
     else if (DriverFeedback::m_GamePieceReadyToPickUp)
     {
-        if (currentState != DriverFeedbackStates::GAME_PIECE_READY_TO_PICK_UP)
+        if (m_gamePieceState != DriverFeedbackStates::GAME_PIECE_READY_TO_PICK_UP)
         {
             m_LEDStates->ResetVariables();
             m_LEDStates->SolidColorPattern(DragonLeds::GREEN);
-            currentState = DriverFeedbackStates::GAME_PIECE_READY_TO_PICK_UP;
+            m_gamePieceState = DriverFeedbackStates::GAME_PIECE_READY_TO_PICK_UP;
         }
     }
     else
     {
-        if (currentState != DriverFeedbackStates::NONE)
+        if (m_gamePieceState != DriverFeedbackStates::NONE)
         {
             m_LEDStates->ResetVariables();
             m_LEDStates->SolidColorPattern(DragonLeds::GREEN);
-            currentState = DriverFeedbackStates::NONE;
+            m_gamePieceState = DriverFeedbackStates::NONE;
         }
     }
 }
@@ -139,6 +157,7 @@ DriverFeedback::DriverFeedback() : IRobotStateChangeSubscriber()
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::GrabberState);
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::DesiredGamePiece);
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::GameState);
+    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::CompressorChange);
 }
 void DriverFeedback::Update(RobotStateChanges::StateChange change, int value)
 {
@@ -166,6 +185,11 @@ void DriverFeedback::Update(RobotStateChanges::StateChange change, int value)
         m_TeleopEnabled = state == RobotStateChanges::Teleop;
 
         resetRequests();
+    }
+    else if (change == RobotStateChanges::StateChange::CompressorChange)
+    {
+        auto compressor = static_cast<RobotStateChanges::CompressorState>(value);
+        m_compressorOn = compressor == RobotStateChanges::CompressorOn;
     }
 }
 

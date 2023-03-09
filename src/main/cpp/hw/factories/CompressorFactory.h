@@ -1,3 +1,4 @@
+
 //====================================================================================================================================================
 // Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
@@ -15,21 +16,39 @@
 
 #pragma once
 
-// Team302 Includes
-#include <chassis/swerve/headingStates/ISwerveDriveOrientation.h>
-#include <chassis/DragonTargetFinder.h>
-#include <DragonVision/DragonLimelight.h>
+// FRC includes
+#include <frc/Compressor.h>
+#include <units/pressure.h>
+#include <frc/PneumaticHub.h>
+#include <frc/PneumaticsControlModule.h>
 
-class FaceGoalHeading : public ISwerveDriveOrientation
+class CompressorFactory
 {
 public:
-    FaceGoalHeading();
-    ~FaceGoalHeading();
+    static CompressorFactory *GetFactory();
 
-    void UpdateChassisSpeeds(ChassisMovement &chassisMovement) override;
+    frc::Compressor *GetCompressor() const { return m_compressor; };
+    frc::Compressor *CreateCompressor(int canID, frc::PneumaticsModuleType type, units::pressure::pounds_per_square_inch_t minPressure, units::pressure::pounds_per_square_inch_t maxPressure);
+
+    void ToggleEnableCompressor();
+
+    units::pounds_per_square_inch_t GetMinPressure() const { return m_minPressure; }
+    units::pounds_per_square_inch_t GetMaxPressure() const { return m_maxPressure; }
+    units::pounds_per_square_inch_t GetCurrentPressure() const;
 
 private:
-    DragonTargetFinder m_targetFinder;
+    void EnableCompressor();
+    void DisableCompressor();
 
-    DragonLimelight *m_limelight;
+    void ClearStickyFaults();
+    CompressorFactory();
+    virtual ~CompressorFactory() = default;
+
+    frc::Compressor *m_compressor;
+    units::pressure::pounds_per_square_inch_t m_minPressure;
+    units::pressure::pounds_per_square_inch_t m_maxPressure;
+    frc::PneumaticHub *m_hub;
+    frc::PneumaticsControlModule *m_pcm;
+
+    static CompressorFactory *m_factory;
 };

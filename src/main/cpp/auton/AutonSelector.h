@@ -38,7 +38,12 @@ public:
 	// Description: default cleanup
 	//---------------------------------------------------------------------
 	virtual ~AutonSelector() = default;
-
+	std::string GetSelectedAutoFile();
+	std::string GetParkOnChargeStation();
+	std::string GetAlianceColor();
+	std::string GetStartPos();
+	std::string GetNumofPiecesinauton();
+	std::string GetCube();
 	//---------------------------------------------------------------------
 	// Method: 		GetSelectedAutoFile
 	// Description: This returns the selected auton file to run.  If it
@@ -46,12 +51,6 @@ public:
 	//				be run.
 	// Returns:		std::string			auton file to run
 	//---------------------------------------------------------------------
-	std::string GetSelectedAutoFile();
-
-	std::string GetParkOnChargeStation();
-	std::string GetAlianceColor();
-	std::string GetStartPos();
-	std::string GetNumofPiecesinauton();
 
 private:
 	//---------------------------------------------------------------------
@@ -60,10 +59,12 @@ private:
 	//				up on the dashboard for selection.
 	// Returns:		void
 	//---------------------------------------------------------------------
+
 	void PutChoicesOnDashboard();
 	bool FileExists(const std::string &name);
 	// Attributues
 	frc::SendableChooser<std::string> m_chrgstatchooser;
 	frc::SendableChooser<std::string> m_startposchooser;
 	frc::SendableChooser<std::string> m_numofgamepiecechooser;
+	frc::SendableChooser<std::string> m_cubechooser;
 };

@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include <hw/DragonLimelight.h>
+#include <DragonVision/DragonLimelight.h>
 
 #include <pugixml/pugixml.hpp>
 

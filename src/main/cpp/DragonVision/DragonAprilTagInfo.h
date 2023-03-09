@@ -12,49 +12,22 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
-// C++ Includes
-#include <map>
-#include <memory>
-#include <string>
 
-// FRC includes
+#pragma once
+#include <optional>
 
-// Team 302 includes
-#include <hw/usages/LimelightUsages.h>
-#include <utils/logging/Logger.h>
+#include <frc/apriltag/AprilTagFieldLayout.h>
+#include <frc/geometry/Pose3d.h>
 
-// Third Party Includes
-
-using namespace std;
-
-LimelightUsages *LimelightUsages::m_instance = nullptr;
-LimelightUsages *LimelightUsages::GetInstance()
+class DragonAprilTagInfo
 {
-    if (m_instance == nullptr)
-    {
-        m_instance = new LimelightUsages();
-    }
-    return m_instance;
-}
+public:
+    DragonAprilTagInfo();
+    ~DragonAprilTagInfo() = default;
 
-LimelightUsages::LimelightUsages()
-{
-    m_usageMap["MAINLIMELIGHT"] = LIMELIGHT_USAGE::PRIMARY;
-    m_usageMap["SECONDARYLIMELIGHT"] = LIMELIGHT_USAGE::SECONDARY;
-}
+    std::optional<frc::Pose3d> Get3DPose(int tagid) const;
+    std::optional<units::length::inch_t> GetHeight(int tagid) const;
 
-LimelightUsages::~LimelightUsages()
-{
-    m_usageMap.clear();
-}
-
-LimelightUsages::LIMELIGHT_USAGE LimelightUsages::GetUsage(string usageString)
-{
-    auto it = m_usageMap.find(usageString);
-    if (it != m_usageMap.end())
-    {
-        return it->second;
-    }
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("LimelightUsages::GetUsage"), string("unknown usage"), usageString);
-    return LimelightUsages::LIMELIGHT_USAGE::UNKNOWN_USAGE;
-}
+private:
+    frc::AprilTagFieldLayout m_layout;
+};
