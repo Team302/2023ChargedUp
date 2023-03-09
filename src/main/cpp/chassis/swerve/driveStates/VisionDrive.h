@@ -40,9 +40,9 @@ public:
 
     enum RELATIVE_POSITION
     {
-        LEFT,
-        CENTER,
-        RIGHT
+        LEFT = 1,
+        CENTER = 2,
+        RIGHT = 3
     };
 
 private:
@@ -61,5 +61,5 @@ private:
 
     SwerveChassis *m_chassis;
 
-    double getOffsetToTarget(RELATIVE_POSITION grid, RELATIVE_POSITION node, uint32_t AprilTagId);
+    double getOffsetToTarget(RELATIVE_POSITION targetGrid, RELATIVE_POSITION targetNode, uint8_t AprilTagId);
 };
