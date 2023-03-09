@@ -34,6 +34,7 @@
 #include <mechanisms/arm/arm.h>
 #include <mechanisms/arm/armState.h>
 #include <mechanisms/arm/armStateMgr.h>
+#include <mechanisms/extender/Extender.h>
 #include <robotstate/RobotState.h>
 #include <robotstate/RobotStateChanges.h>
 #include <utils/logging/Logger.h>
@@ -65,6 +66,7 @@ ArmStateMgr::ArmStateMgr() : StateMgr(),
                              IRobotStateChangeSubscriber(),
                              m_arm(MechanismFactory::GetMechanismFactory()->GetArm()),
                              //========= Hand modified code start section 1 ========
+                             m_extender(MechanismFactory::GetMechanismFactory()->GetExtender()),
                              m_prevState(ARM_STATE::STARTING_POSITION_ROTATE),
                              m_currentState(ARM_STATE::STARTING_POSITION_ROTATE),
                              m_targetState(ARM_STATE::STARTING_POSITION_ROTATE),
@@ -112,33 +114,28 @@ int ArmStateMgr::GetCurrentStateParam(PrimitiveParams *currentParams)
 void ArmStateMgr::CheckForStateTransition()
 {
     //========= Hand modified code start section 3 ========
+    if (m_gamepieceMode == RobotStateChanges::None)
+    {
+        m_gamepieceMode = RobotStateChanges::Cone;
+        RobotState::GetInstance()->PublishStateChange(RobotStateChanges::DesiredGamePiece, m_gamepieceMode);
+    }
+
     CheckForSensorTransitions();
     if (m_checkGamePadTransitions)
     {
         CheckForGamepadTransitions();
     }
 
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Current State"), m_currentState);
-
-    /// DEBUGGING
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Target: "), m_arm->GetTarget());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Current Pos: "), m_arm->GetPositionDegrees().to<double>());
-
     if (m_targetState != m_currentState)
     {
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Setting target state to: "), m_targetState);
-        SetCurrentState(m_targetState, true);
-
-        m_prevState = m_targetState;
-        RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmRotateState, m_targetState);
-
         if (m_targetState == ARM_STATE::HOLD_POSITION_ROTATE)
         {
-            double armAngle = m_arm->GetPositionDegrees().to<double>();
-            double extenderPos = MechanismFactory::GetMechanismFactory()->GetExtender()->GetPositionInches().to<double>();
-
-            m_arm->UpdateTarget(ArmHoldPosHelper::CalculateHoldPositionTarget(armAngle, extenderPos, m_gamepieceMode, m_grabberState));
+            m_targetState == m_gamepieceMode == RobotStateChanges::Cone ? CONE_HOLD_POSITION_ROTATE : CUBE_HOLD_POSITION_ROTATE;
         }
+
+        SetCurrentState(m_targetState, true);
+        m_prevState = m_targetState;
+        RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmRotateState, m_targetState);
     }
     //========= Hand modified code end section 3 ========
 }
@@ -147,100 +144,86 @@ void ArmStateMgr::CheckForStateTransition()
 /// @brief Check driver inputs for a state transition
 void ArmStateMgr::CheckForGamepadTransitions()
 {
-    if (m_gamepieceMode == RobotStateChanges::None)
+    auto controller = TeleopControl::GetInstance();
+    if (controller != nullptr)
     {
-        m_gamepieceMode = RobotStateChanges::Cone;
-        RobotState::GetInstance()->PublishStateChange(RobotStateChanges::DesiredGamePiece, m_gamepieceMode);
-    }
-    if (m_arm != nullptr)
-    {
-        auto controller = TeleopControl::GetInstance();
-        if (controller != nullptr)
-        {
-            m_currentState = static_cast<ARM_STATE>(GetCurrentState());
-            m_targetState = m_currentState;
+        m_currentState = static_cast<ARM_STATE>(GetCurrentState());
+        m_targetState = m_currentState;
 
-            if (abs(controller->GetAxisValue(TeleopControlFunctions::MANUAL_ROTATE)) > 0.05)
-            {
-                m_targetState = ARM_STATE::MANUAL_ROTATE;
-            }
-            else if (m_gamepieceMode == RobotStateChanges::Cone)
-            {
-                CheckForConeGamepadTransitions(controller);
-            }
-            else if (m_gamepieceMode == RobotStateChanges::Cube)
-            {
-                CheckForCubeGamepadTransitions(controller);
-            }
+        if (abs(controller->GetAxisValue(TeleopControlFunctions::MANUAL_ROTATE)) > 0.05)
+        {
+            m_targetState = ARM_STATE::MANUAL_ROTATE;
+        }
+        else if (m_gamepieceMode == RobotStateChanges::Cone)
+        {
+            CheckForConeGamepadTransitions(controller);
+        }
+        else if (m_gamepieceMode == RobotStateChanges::Cube)
+        {
+            CheckForCubeGamepadTransitions(controller);
         }
     }
 }
 
 void ArmStateMgr::CheckForConeGamepadTransitions(TeleopControl *controller)
 {
-    if (controller != nullptr)
+    if (controller->IsButtonPressed(TeleopControlFunctions::BACKROW))
     {
-        if (controller->IsButtonPressed(TeleopControlFunctions::BACKROW))
+        m_targetState = ARM_STATE::CONE_BACKROW_ROTATE;
+    }
+    else if (controller->IsButtonPressed(TeleopControlFunctions::MIDROW))
+    {
+        if (m_arm->GetPositionDegrees().to<double>() > dynamic_cast<ArmState *>(GetSpecifiedState(ARM_STATE::CONE_MIDROW_ROTATE_DOWN))->GetCurrentTarget())
         {
-            m_targetState = ARM_STATE::CONE_BACKROW_ROTATE;
+            m_targetState = ARM_STATE::CONE_MIDROW_ROTATE_DOWN;
         }
-        else if (controller->IsButtonPressed(TeleopControlFunctions::MIDROW))
+        else
         {
-            if (m_arm->GetPositionDegrees().to<double>() > dynamic_cast<ArmState *>(GetSpecifiedState(ARM_STATE::CONE_MIDROW_ROTATE_DOWN))->GetCurrentTarget())
-            {
-                m_targetState = ARM_STATE::CONE_MIDROW_ROTATE_DOWN;
-            }
-            else
-            {
-                m_targetState = ARM_STATE::CONE_MIDROW_ROTATE_UP;
-            }
+            m_targetState = ARM_STATE::CONE_MIDROW_ROTATE_UP;
         }
-        else if (controller->IsButtonPressed(TeleopControlFunctions::FLOOR_POSITION))
-        {
-            m_targetState = ARM_STATE::FLOOR_POSITION_ROTATE;
-        }
-        else if (controller->IsButtonPressed(TeleopControlFunctions::HUMAN_PLAYER_STATION))
-        {
-            m_targetState = ARM_STATE::HUMAN_PLAYER_STATION_ROTATE;
-        }
-        else if (controller->IsButtonPressed(TeleopControlFunctions::STARTING_POSITION))
-        {
-            m_targetState = ARM_STATE::STARTING_POSITION_ROTATE;
-        }
+    }
+    else if (controller->IsButtonPressed(TeleopControlFunctions::FLOOR_POSITION))
+    {
+        m_targetState = ARM_STATE::FLOOR_POSITION_ROTATE;
+    }
+    else if (controller->IsButtonPressed(TeleopControlFunctions::HUMAN_PLAYER_STATION))
+    {
+        m_targetState = ARM_STATE::HUMAN_PLAYER_STATION_ROTATE;
+    }
+    else if (controller->IsButtonPressed(TeleopControlFunctions::STARTING_POSITION))
+    {
+        m_targetState = ARM_STATE::STARTING_POSITION_ROTATE;
     }
 }
 
 void ArmStateMgr::CheckForCubeGamepadTransitions(TeleopControl *controller)
 {
-    if (controller != nullptr)
+    if (controller->IsButtonPressed(TeleopControlFunctions::BACKROW))
     {
-        if (controller->IsButtonPressed(TeleopControlFunctions::BACKROW))
+        m_targetState = ARM_STATE::CUBE_BACKROW_ROTATE;
+    }
+    else if (controller->IsButtonPressed(TeleopControlFunctions::MIDROW))
+    {
+        if (m_arm->GetPositionDegrees().to<double>() > dynamic_cast<ArmState *>(GetSpecifiedState(ARM_STATE::CUBE_MIDROW_ROTATE_DOWN))->GetCurrentTarget())
         {
-            m_targetState = ARM_STATE::CUBE_BACKROW_ROTATE;
+            m_targetState = ARM_STATE::CUBE_MIDROW_ROTATE_DOWN;
         }
-        else if (controller->IsButtonPressed(TeleopControlFunctions::MIDROW))
+        else
         {
-            if (m_arm->GetPositionDegrees().to<double>() > dynamic_cast<ArmState *>(GetSpecifiedState(ARM_STATE::CUBE_MIDROW_ROTATE_DOWN))->GetCurrentTarget())
-            {
-                m_targetState = ARM_STATE::CUBE_MIDROW_ROTATE_DOWN;
-            }
-            else
-            {
-                m_targetState = ARM_STATE::CUBE_MIDROW_ROTATE_UP;
-            }
+            m_targetState = ARM_STATE::CUBE_MIDROW_ROTATE_UP;
         }
-        else if (controller->IsButtonPressed(TeleopControlFunctions::FLOOR_POSITION))
-        {
-            m_targetState = ARM_STATE::FLOOR_POSITION_ROTATE;
-        }
-        else if (controller->IsButtonPressed(TeleopControlFunctions::HUMAN_PLAYER_STATION))
-        {
-            m_targetState = ARM_STATE::HUMAN_PLAYER_STATION_ROTATE;
-        }
-        else if (controller->IsButtonPressed(TeleopControlFunctions::STARTING_POSITION))
-        {
-            m_targetState = ARM_STATE::STARTING_POSITION_ROTATE;
-        }
+    }
+    else if (controller->IsButtonPressed(TeleopControlFunctions::FLOOR_POSITION))
+    {
+        m_targetState = ARM_STATE::FLOOR_POSITION_ROTATE;
+    }
+    else if (controller->IsButtonPressed(TeleopControlFunctions::HUMAN_PLAYER_STATION))
+    {
+        m_targetState = ARM_STATE::HUMAN_PLAYER_STATION_ROTATE;
+    }
+    else if (controller->IsButtonPressed(TeleopControlFunctions::STARTING_POSITION))
+    {
+        m_targetState = ARM_STATE::STARTING_POSITION_ROTATE;
     }
 }
 

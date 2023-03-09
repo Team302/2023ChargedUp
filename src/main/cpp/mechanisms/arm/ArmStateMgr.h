@@ -43,7 +43,10 @@
 // Third Party Includes
 
 //========= Hand modified code start section 1 ========
+
+class Extender;
 class TeleopControl;
+
 //========= Hand modified code end section 1 ========
 
 class ArmStateMgr : public StateMgr
@@ -57,6 +60,8 @@ public:
     enum ARM_STATE
     {
         HOLD_POSITION_ROTATE,
+        CUBE_HOLD_POSITION_ROTATE,
+        CONE_HOLD_POSITION_ROTATE,
         MANUAL_ROTATE,
         CUBE_BACKROW_ROTATE,
         CONE_BACKROW_ROTATE,
@@ -110,8 +115,9 @@ private:
     //========= Hand modified code end section 4 ========
 
     Arm *m_arm;
-
     //========= Hand modified code start section 5 ========
+    Extender *m_extender;
+
     ARM_STATE m_prevState;
     ARM_STATE m_currentState;
     ARM_STATE m_targetState;
