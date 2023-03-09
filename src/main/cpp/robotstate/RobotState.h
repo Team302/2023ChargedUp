@@ -24,6 +24,7 @@
 class IChassis;
 class IRobotStateChangeSubscriber;
 class RobotStateChangeBroker;
+class TeleopControl;
 
 class RobotState
 {
@@ -36,6 +37,8 @@ public:
 
 private:
     void PublishGameStateChanges();
+    void PublishCompressorInfo();
+    void CheckGamePieceMode(TeleopControl *controller);
 
     RobotState();
     ~RobotState();
@@ -44,8 +47,10 @@ private:
     std::vector<RobotStateChangeBroker *> m_brokers;
     RobotStateChanges::GamePiece m_gamePiece;
     RobotStateChanges::GamePeriod m_gamePhase;
+    RobotStateChanges::CompressorState m_compressorCurrent;
 
-    bool m_wasReleased;
+    bool m_wasGamePieceButtonReleased;
+    bool m_wasCompressorButtonReleased;
 
     static RobotState *m_instance;
 };

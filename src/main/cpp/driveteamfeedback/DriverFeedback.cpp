@@ -13,10 +13,18 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
+#include <frc/DriverStation.h>
 #include <driveteamfeedback/DriverFeedback.h>
+#include <hw/factories/CompressorFactory.h>
 #include <robotstate/RobotState.h>
 #include <robotstate/RobotStateChanges.h>
 #include <robotstate/IRobotStateChangeSubscriber.h>
+#include <mechanisms/grabber/GrabberStateMgr.h>
+#include <networktables/NetworkTableInstance.h>
+#include <networktables/NetworkTable.h>
+#include <networktables/NetworkTableEntry.h>
+
+using frc::DriverStation;
 
 DriverFeedback *DriverFeedback::m_instance = nullptr;
 
@@ -32,85 +40,124 @@ DriverFeedback *DriverFeedback::GetInstance()
 void DriverFeedback::UpdateFeedback()
 {
     UpdateLEDStates();
+    UpdateCompressorState();
+    CheckControllers();
+    DisplayPressure();
+}
+void DriverFeedback::UpdateCompressorState()
+{
+    if (m_controllerCounter == 0)
+    {
+        auto table = nt::NetworkTableInstance::GetDefault().GetTable("Compressor");
+        table.get()->PutBoolean(std::string("Compressor on"), m_compressorOn);
+    }
+}
+void DriverFeedback::DisplayPressure()
+{
+    auto table = nt::NetworkTableInstance::GetDefault().GetTable("Compressor");
+    table.get()->GetNumber(std::string("Pressure"), CompressorFactory::GetFactory()->GetCurrentPressure().to<double>());
 }
 void DriverFeedback::UpdateLEDStates()
 {
     if (DriverFeedback::m_AlignedWithConeNode)
     {
-
-        if (currentState != DriverFeedbackStates::ALIGNED_WITH_CONE_NODE)
+        if (m_gamePieceState != DriverFeedbackStates::ALIGNED_WITH_CONE_NODE)
         {
             m_LEDStates->ResetVariables();
         }
-        m_LEDStates->ClosingInChaserPattern(LED::YELLOW);
-        currentState = DriverFeedbackStates::ALIGNED_WITH_CONE_NODE;
+        m_LEDStates->ClosingInChaserPattern(DragonLeds::YELLOW);
+        m_gamePieceState = DriverFeedbackStates::ALIGNED_WITH_CONE_NODE;
     }
     else if (DriverFeedback::m_AlignedWithCubeNode)
     {
-
-        if (currentState != DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE)
+        if (m_gamePieceState != DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE)
         {
             m_LEDStates->ResetVariables();
         }
-        m_LEDStates->ClosingInChaserPattern(LED::PURPLE);
-        currentState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
+        m_LEDStates->ClosingInChaserPattern(DragonLeds::PURPLE);
+        m_gamePieceState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
     }
     else if (DriverFeedback::m_GamePieceInGrabber)
     {
 
-        if (currentState != DriverFeedbackStates::GAME_PIECE_IN_GRABBER)
+        if (m_gamePieceState != DriverFeedbackStates::GAME_PIECE_IN_GRABBER)
         {
             m_LEDStates->ResetVariables();
         }
-        m_LEDStates->AlternatingBlinkingPattern(LED::YELLOW, LED::PURPLE);
-        currentState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
+        m_LEDStates->AlternatingColorBlinkingPattern(DragonLeds::YELLOW, DragonLeds::PURPLE);
+        m_gamePieceState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
     }
     else if (DriverFeedback::m_WantCube)
     {
-
-        if (currentState != DriverFeedbackStates::WANT_CUBE)
+        if (m_gamePieceState != DriverFeedbackStates::WANT_CUBE)
         {
             m_LEDStates->ResetVariables();
+            m_gamePieceState = DriverFeedbackStates::WANT_CUBE;
         }
-        m_LEDStates->SolidColorPattern(LED::PURPLE);
-        currentState = DriverFeedbackStates::WANT_CUBE;
+        if (m_grabberStateChanged)
+        {
+            if (m_GrabberIsOpen)
+                m_LEDStates->BlinkingPattern(DragonLeds::PURPLE);
+            else
+                m_LEDStates->SolidColorPattern(DragonLeds::PURPLE);
+        }
     }
     else if (DriverFeedback::m_WantCone)
     {
-
-        if (currentState != DriverFeedbackStates::WANT_CONE)
+        if (m_gamePieceState != DriverFeedbackStates::WANT_CONE)
         {
             m_LEDStates->ResetVariables();
+            m_gamePieceState = DriverFeedbackStates::WANT_CONE;
         }
-        m_LEDStates->SolidColorPattern(LED::YELLOW);
-        currentState = DriverFeedbackStates::WANT_CONE;
+        if (m_grabberStateChanged)
+        {
+            if (m_GrabberIsOpen)
+                m_LEDStates->BlinkingPattern(DragonLeds::YELLOW);
+            else
+                m_LEDStates->SolidColorPattern(DragonLeds::YELLOW);
+        }
+        m_LEDStates->SolidColorPattern(DragonLeds::YELLOW);
+        m_gamePieceState = DriverFeedbackStates::WANT_CONE;
     }
     else if (DriverFeedback::m_GamePieceReadyToPickUp)
     {
-
-        if (currentState != DriverFeedbackStates::GAME_PIECE_READY_TO_PICK_UP)
+        if (m_gamePieceState != DriverFeedbackStates::GAME_PIECE_READY_TO_PICK_UP)
         {
             m_LEDStates->ResetVariables();
+            m_LEDStates->SolidColorPattern(DragonLeds::GREEN);
+            m_gamePieceState = DriverFeedbackStates::GAME_PIECE_READY_TO_PICK_UP;
         }
-        m_LEDStates->SolidColorPattern(LED::GREEN);
-        currentState = DriverFeedbackStates::GAME_PIECE_READY_TO_PICK_UP;
     }
     else
     {
-
-        if (currentState != DriverFeedbackStates::NONE)
+        if (m_gamePieceState != DriverFeedbackStates::NONE)
         {
             m_LEDStates->ResetVariables();
+            m_LEDStates->SolidColorPattern(DragonLeds::GREEN);
+            m_gamePieceState = DriverFeedbackStates::NONE;
         }
-        m_LEDStates->SolidColorPattern(LED::GREEN);
-        currentState = DriverFeedbackStates::NONE;
     }
+}
+
+void DriverFeedback::resetRequests(void)
+{
+    m_GrabberIsOpen = false;
+    m_WantCube = false;
+    m_WantCone = false;
+    m_GamePieceReadyToPickUp = false;
+    m_GamePieceInGrabber = false;
+    m_AlignedWithConeNode = false;
+    m_AlignedWithCubeNode = false;
+
+    m_grabberStateChanged = true;
 }
 
 DriverFeedback::DriverFeedback() : IRobotStateChangeSubscriber()
 {
+    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::GrabberState);
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::DesiredGamePiece);
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::GameState);
+    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::CompressorChange);
 }
 void DriverFeedback::Update(RobotStateChanges::StateChange change, int value)
 {
@@ -120,10 +167,45 @@ void DriverFeedback::Update(RobotStateChanges::StateChange change, int value)
         m_WantCube = gamepiece == RobotStateChanges::Cube;
         m_WantCone = gamepiece == RobotStateChanges::Cone;
     }
+    else if (change == RobotStateChanges::GrabberState)
+    {
+        auto state = static_cast<GrabberStateMgr::GRABBER_STATE>(value);
+        bool newState = state == GrabberStateMgr::GRABBER_STATE::OPEN;
+
+        if (m_GrabberIsOpen != newState)
+        {
+            m_grabberStateChanged = true;
+            m_GrabberIsOpen = newState;
+        }
+    }
     else if (change == RobotStateChanges::GameState)
     {
         auto state = static_cast<RobotStateChanges::GamePeriod>(value);
         m_AutonomousEnabled = state == RobotStateChanges::Auton;
         m_TeleopEnabled = state == RobotStateChanges::Teleop;
+
+        resetRequests();
+    }
+    else if (change == RobotStateChanges::StateChange::CompressorChange)
+    {
+        auto compressor = static_cast<RobotStateChanges::CompressorState>(value);
+        m_compressorOn = compressor == RobotStateChanges::CompressorOn;
+    }
+}
+
+void DriverFeedback::CheckControllers()
+{
+    if (m_controllerCounter == 0)
+    {
+        auto table = nt::NetworkTableInstance::GetDefault().GetTable("XBOX Controller");
+        for (auto i = 0; i < DriverStation::kJoystickPorts; ++i)
+        {
+            table.get()->PutBoolean(std::string("Controller") + std::to_string(i), DriverStation::GetJoystickIsXbox(i));
+        }
+    }
+    m_controllerCounter++;
+    if (m_controllerCounter > 25)
+    {
+        m_controllerCounter = 0;
     }
 }

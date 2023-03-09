@@ -56,8 +56,12 @@ string AutonSelector::GetSelectedAutoFile()
 	autonfile += GetStartPos();
 	autonfile += GetNumofPiecesinauton();
 	autonfile += GetParkOnChargeStation();
+	autonfile += GetCube();
 	autonfile += std::string(".xml");
-	Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("auton file"), std::string("determined name"), autonfile);
+
+	auto table = nt::NetworkTableInstance::GetDefault().GetTable("auton file");
+
+	table.get()->PutString("determined name", autonfile);
 
 	if (!FileExists(autonfile))
 	{
@@ -65,13 +69,16 @@ string AutonSelector::GetSelectedAutoFile()
 		autonfile += std::string("/auton/");
 		autonfile += GetAlianceColor();
 		autonfile += ("COOPThreeP.xml");
-		Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("auton file"), std::string("File Exists"), false);
+
+		table.get()->PutBoolean("File Exists", false);
 	}
 	else
 	{
-		Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("auton file"), std::string("File Exists"), true);
+		table.get()->PutBoolean("File Exists", true);
 	}
-	Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("auton file"), std::string("actual file"), autonfile);
+
+	table.get()->PutString("actual file", autonfile);
+
 	return autonfile;
 }
 
@@ -114,6 +121,11 @@ string AutonSelector::GetNumofPiecesinauton()
 	return m_numofgamepiecechooser.GetSelected();
 }
 
+string AutonSelector::GetCube()
+{
+	return m_cubechooser.GetSelected();
+}
+
 //---------------------------------------------------------------------
 // Method: 		PutChoicesOnDashboard
 // Description: This puts the list of files in the m_csvFiles attribute
@@ -122,9 +134,6 @@ string AutonSelector::GetNumofPiecesinauton()
 //---------------------------------------------------------------------
 void AutonSelector::PutChoicesOnDashboard()
 {
-	m_chrgstatchooser.AddOption("yes", "P");
-	m_chrgstatchooser.AddOption("no", "NP");
-	frc::SmartDashboard::PutData("prkonchrgstat", &m_chrgstatchooser);
 
 	m_startposchooser.AddOption("Gridcoop", "COOP");
 	m_startposchooser.AddOption("Gridwall", "Wall");
@@ -135,5 +144,13 @@ void AutonSelector::PutChoicesOnDashboard()
 	m_numofgamepiecechooser.AddOption("2", "Two");
 	m_numofgamepiecechooser.AddOption("3", "Three");
 	m_numofgamepiecechooser.AddOption("4", "Four");
-	frc::SmartDashboard::PutData("NumOfpcs", &m_numofgamepiecechooser);
+	frc::SmartDashboard::PutData("Numofpcs", &m_numofgamepiecechooser);
+
+	m_chrgstatchooser.AddOption("yes", "P");
+	m_chrgstatchooser.AddOption("no", "NP");
+	frc::SmartDashboard::PutData("park on charg station", &m_chrgstatchooser);
+
+	m_cubechooser.AddOption("Yes", "Cube");
+	m_cubechooser.AddOption("No", "");
+	frc::SmartDashboard::PutData("get cube", &m_cubechooser);
 }

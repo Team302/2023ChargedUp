@@ -1,4 +1,3 @@
-
 //====================================================================================================================================================
 // Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
@@ -13,39 +12,49 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
+// C++ Includes
+#include <map>
+#include <memory>
+#include <string>
 
-#pragma once
-#include <frc/AddressableLED.h>
+// FRC includes
 
-class LED
+// Team 302 includes
+#include <DragonVision/LimelightUsages.h>
+#include <utils/logging/Logger.h>
+
+// Third Party Includes
+
+using namespace std;
+
+LimelightUsages *LimelightUsages::m_instance = nullptr;
+LimelightUsages *LimelightUsages::GetInstance()
 {
-public:
-        LED(int PWMport);
+    if (m_instance == nullptr)
+    {
+        m_instance = new LimelightUsages();
+    }
+    return m_instance;
+}
 
-        enum Colors
-        {
-                RED,
-                GREEN,
-                BLUE,
-                PURPLE,
-                YELLOW,
-                AZUL,
-                BLACK,
-                WHITE,
-                MAX_STATE
-        };
+LimelightUsages::LimelightUsages()
+{
+    m_usageMap["MAINLIMELIGHT"] = LIMELIGHT_USAGE::PRIMARY;
+    m_usageMap["SECONDARYLIMELIGHT"] = LIMELIGHT_USAGE::SECONDARY;
+}
 
-        static constexpr int kLength = 15;
+LimelightUsages::~LimelightUsages()
+{
+    m_usageMap.clear();
+}
 
-        frc::AddressableLED *m_led;
-        std::array<frc::AddressableLED::LEDData, kLength> m_ledBuffer;
-
-        std::array<int, 3> getColorValues(Colors c);
-        ~LED();
-        LED() = delete;
-
-        static LED *GetInstance();
-
-private:
-        static LED *m_instance;
-};
+LimelightUsages::LIMELIGHT_USAGE LimelightUsages::GetUsage(string usageString)
+{
+    auto it = m_usageMap.find(usageString);
+    if (it != m_usageMap.end())
+    {
+        return it->second;
+    }
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("LimelightUsages::GetUsage"), string("unknown usage"), usageString);
+    return LimelightUsages::LIMELIGHT_USAGE::UNKNOWN_USAGE;
+}

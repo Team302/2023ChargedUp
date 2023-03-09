@@ -16,6 +16,9 @@
 // Team 302 Includes
 #include <mechanisms/arm/ArmHoldPosHelper.h>
 
+/// DEBUGGING
+#include <utils/logging/Logger.h>
+
 ArmHoldPosHelper::ArmHoldPosHelper()
 {
 }
@@ -25,7 +28,12 @@ double ArmHoldPosHelper::CalculateHoldPositionTarget(double armAngle,
                                                      RobotStateChanges::GamePiece gamepieceMode,
                                                      GrabberStateMgr::GRABBER_STATE grabberState)
 {
-    if (armAngle > m_fTermAngleThreshold)
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ArmHoldPos", "ArmAngle", armAngle);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ArmHoldPos", "ExtenderPos", extenderPos);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ArmHoldPos", "GamepieceMode", static_cast<int>(gamepieceMode));
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ArmHoldPos", "GrabberState", static_cast<int>(grabberState));
+
+    if (armAngle > m_fTermAngleThreshold && armAngle < m_maxArmAngle)
     {
         if (extenderPos > m_fullExtensionExtenderPos && armAngle > m_fullExtensionArmAngle)
         {
@@ -35,11 +43,13 @@ double ArmHoldPosHelper::CalculateHoldPositionTarget(double armAngle,
         else if (gamepieceMode == RobotStateChanges::GamePiece::Cube || grabberState == GrabberStateMgr::GRABBER_STATE::OPEN)
         {
             // f term function for cube
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ArmHoldPos", "ArrivedAt", "Game mode cube || grabber open");
             return (m_cubeOffset + m_cubeArmComponent * armAngle + m_cubeExtenderComponent * extenderPos + m_cubeArmSquaredComponent * pow(armAngle, 2) + m_cubeExtenderSquaredComponent * pow(extenderPos, 2));
         }
         else if (gamepieceMode == RobotStateChanges::GamePiece::Cone && grabberState == GrabberStateMgr::GRABBER_STATE::GRAB)
         {
             // f term function for cone
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ArmHoldPos", "ArrivedAt", "Game mode cone && grabber closed");
             return (m_coneOffset + m_coneArmComponent * armAngle + m_coneExtenderComponent * extenderPos + m_coneArmSquaredComponent * pow(armAngle, 2) + m_coneExtenderSquaredComponent * pow(extenderPos, 2));
         }
     }

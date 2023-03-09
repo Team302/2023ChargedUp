@@ -19,7 +19,7 @@
 #include <string>
 
 #include <State.h>
-#include <hw/DragonLimelight.h>
+#include <DragonVision/DragonLimelight.h>
 #include <DragonVision/DragonVisionTarget.h>
 
 using std::map;
