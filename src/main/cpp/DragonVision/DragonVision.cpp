@@ -79,6 +79,7 @@ std::shared_ptr<DragonVisionTarget> DragonVision::getTargetInfo(LIMELIGHT_POSITI
 				dll->GetTargetVerticalOffset(),
 				dll->EstimateTargetXdistance_RelToRobotCoords(),
 				dll->EstimateTargetYdistance_RelToRobotCoords(),
+				dll->getAprilTagID(),
 				dll->GetPipelineLatency());
 		return dvt;
 	}
