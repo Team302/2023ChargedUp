@@ -22,6 +22,7 @@
 #include <State.h>
 #include <chassis/swerve/driveStates/DragonTrajectoryGenerator.h>
 #include <utils/DragonField.h>
+#include <chassis/swerve/driveStates/VisionDrive.h>
 
 class IChassis;
 class MecanumChassis;
@@ -39,6 +40,10 @@ public:
     bool AtTarget() const override;
 
 private:
+    std::pair<VisionDrive::RELATIVE_POSITION, VisionDrive::RELATIVE_POSITION> GetAutoAlignDestination();
+
+    bool IsAutoAligning();
+
     IChassis *m_chassis;
     SwerveChassis *m_swerve;
     MecanumChassis *m_mecanum;
