@@ -68,6 +68,11 @@ std::array<frc::SwerveModuleState, 4> VisionDrive::UpdateSwerveModuleStates(
         {
             // switch pipeline to Cone_Node or Cube_Node
             // override yError and xError to data from pipeline
+            // set m_kp_Y to be visionP;
+        }
+        else
+        {
+            // set m_kp_Y to be autoAlignP;
         }
 
         if (!AtTargetY())
