@@ -22,7 +22,6 @@
 #include <units/angle.h>
 
 // Team302 Includes
-#include <chassis/swerve/drivestates/VisionDrive.h>
 #include <utils/Point2d.h>
 #include <chassis/ChassisOptionEnums.h>
 
@@ -41,6 +40,6 @@ struct ChassisMovement
     bool checkTipping = false;
     units::angle::degree_t tippingTolerance = units::angle::degree_t(30.0);
     double tippingCorrection = 0.1;
-    VisionDrive::RELATIVE_POSITION gridPosition = VisionDrive::RELATIVE_POSITION::CENTER;
-    VisionDrive::RELATIVE_POSITION nodePosition = VisionDrive::RELATIVE_POSITION::CENTER;
+    ChassisOptionEnums::RELATIVE_POSITION gridPosition = ChassisOptionEnums::RELATIVE_POSITION::CENTER;
+    ChassisOptionEnums::RELATIVE_POSITION nodePosition = ChassisOptionEnums::RELATIVE_POSITION::CENTER;
 };

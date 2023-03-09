@@ -40,7 +40,7 @@ public:
     bool AtTarget() const override;
 
 private:
-    std::pair<VisionDrive::RELATIVE_POSITION, VisionDrive::RELATIVE_POSITION> GetAutoAlignDestination();
+    std::pair<ChassisOptionEnums::RELATIVE_POSITION, ChassisOptionEnums::RELATIVE_POSITION> GetAutoAlignDestination();
 
     bool IsAutoAligning();
 

@@ -21,6 +21,7 @@
 
 // Team302 Includes
 #include <chassis/swerve/driveStates/RobotDrive.h>
+#include <DragonVision/DragonVision.h>
 
 class VisionDrive : public RobotDrive
 {
@@ -38,28 +39,27 @@ public:
 
     void ResetVisionDrive();
 
-    enum RELATIVE_POSITION
-    {
-        LEFT = 1,
-        CENTER = 2,
-        RIGHT = 3
-    };
-
 private:
     RobotDrive *m_robotDrive;
 
-    const double m_kP_X = 0.1;
-    const double m_kP_Y = 0.075;
+    double m_kP_X = 0.1;
+    double m_kP_Y = 0.075;
+
+    const double m_autoAlignKP = 0.075;
+    const double m_visionKP = 0.1;
 
     const double m_tolerance = 1.0;          // tolerance in inches
     const double m_autoAlignTolerance = 5.0; // tolerance in inches
 
     bool m_wantReset = false;
+    bool m_inRawVisionMode = false;
 
     units::length::inch_t m_autoAlignYPos = units::length::inch_t(0.0);
     units::length::inch_t m_autoAlignXPos = units::length::inch_t(0.0);
 
     SwerveChassis *m_chassis;
 
-    double getOffsetToTarget(RELATIVE_POSITION targetGrid, RELATIVE_POSITION targetNode, uint8_t AprilTagId);
+    DragonVision *m_vision;
+
+    double getOffsetToTarget(ChassisOptionEnums::RELATIVE_POSITION targetGrid, ChassisOptionEnums::RELATIVE_POSITION targetNode, uint8_t AprilTagId);
 };

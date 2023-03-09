@@ -109,7 +109,7 @@ void HolonomicDrive::Run()
             m_inVisionDrive = true;
 
             // get destination for alignment
-            std::pair<VisionDrive::RELATIVE_POSITION, VisionDrive::RELATIVE_POSITION> destination = GetAutoAlignDestination();
+            std::pair<ChassisOptionEnums::RELATIVE_POSITION, ChassisOptionEnums::RELATIVE_POSITION> destination = GetAutoAlignDestination();
 
             moveInfo.gridPosition = destination.first;
             moveInfo.nodePosition = destination.second;
@@ -125,6 +125,9 @@ void HolonomicDrive::Run()
             {
                 moveInfo.yawAngle = units::angle::degree_t(0.0);
             }
+
+            // set pipeline to discover april tags
+            DragonVision::GetDragonVision()->setPipeline(DragonLimelight::PIPELINE_MODE::APRIL_TAG);
 
             // set drive and heading mode
             moveInfo.driveOption = ChassisOptionEnums::DriveStateType::VISION_DRIVE;
@@ -245,40 +248,40 @@ bool HolonomicDrive::IsAutoAligning()
     return isAutoAligning;
 }
 
-std::pair<VisionDrive::RELATIVE_POSITION, VisionDrive::RELATIVE_POSITION> HolonomicDrive::GetAutoAlignDestination()
+std::pair<ChassisOptionEnums::RELATIVE_POSITION, ChassisOptionEnums::RELATIVE_POSITION> HolonomicDrive::GetAutoAlignDestination()
 {
     // create default destination
-    std::pair<VisionDrive::RELATIVE_POSITION, VisionDrive::RELATIVE_POSITION> destination = {VisionDrive::RELATIVE_POSITION::CENTER,
-                                                                                             VisionDrive::RELATIVE_POSITION::CENTER};
+    std::pair<ChassisOptionEnums::RELATIVE_POSITION, ChassisOptionEnums::RELATIVE_POSITION> destination = {ChassisOptionEnums::RELATIVE_POSITION::CENTER,
+                                                                                                           ChassisOptionEnums::RELATIVE_POSITION::CENTER};
 
     auto controller = TeleopControl::GetInstance();
 
     // check for desired grid first
     if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_LEFT_GRID))
     {
-        destination.first = VisionDrive::RELATIVE_POSITION::LEFT;
+        destination.first = ChassisOptionEnums::RELATIVE_POSITION::LEFT;
     }
     else if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_CENTER_GRID))
     {
-        destination.first = VisionDrive::RELATIVE_POSITION::CENTER;
+        destination.first = ChassisOptionEnums::RELATIVE_POSITION::CENTER;
     }
     else if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_RIGHT_GRID))
     {
-        destination.first = VisionDrive::RELATIVE_POSITION::RIGHT;
+        destination.first = ChassisOptionEnums::RELATIVE_POSITION::RIGHT;
     }
 
     // next, check for desired column/node
     if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_LEFT_NODE))
     {
-        destination.second = VisionDrive::RELATIVE_POSITION::LEFT;
+        destination.second = ChassisOptionEnums::RELATIVE_POSITION::LEFT;
     }
     else if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_RIGHT_NODE))
     {
-        destination.second = VisionDrive::RELATIVE_POSITION::RIGHT;
+        destination.second = ChassisOptionEnums::RELATIVE_POSITION::RIGHT;
     }
     else
     {
-        destination.second = VisionDrive::RELATIVE_POSITION::CENTER;
+        destination.second = ChassisOptionEnums::RELATIVE_POSITION::CENTER;
     }
 
     // finally, return desired destination

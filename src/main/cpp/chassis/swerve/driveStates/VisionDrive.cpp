@@ -19,16 +19,17 @@
 // Team302 Includes
 #include <chassis/swerve/driveStates/VisionDrive.h>
 #include <chassis/ChassisFactory.h>
-#include <DragonVision/DragonVision.h>
+#include <utils/FMSData.h>
+#include <robotstate/RobotState.h>
 #include <utils/FMSData.h>
 
 /// DEBUGGING
 #include <utils/logging/Logger.h>
-#include <utils/FMSData.h>
 
 VisionDrive::VisionDrive(RobotDrive *robotDrive) : RobotDrive(),
                                                    m_robotDrive(robotDrive),
-                                                   m_chassis(ChassisFactory::GetChassisFactory()->GetSwerveChassis())
+                                                   m_chassis(ChassisFactory::GetChassisFactory()->GetSwerveChassis()),
+                                                   m_vision(DragonVision::GetDragonVision())
 {
 }
 
@@ -67,12 +68,26 @@ std::array<frc::SwerveModuleState, 4> VisionDrive::UpdateSwerveModuleStates(
         if (abs(yError.to<double>()) < m_autoAlignTolerance && abs(xError.to<double>()) < m_autoAlignTolerance)
         {
             // switch pipeline to Cone_Node or Cube_Node
+            if (chassisMovement.nodePosition == ChassisOptionEnums::RELATIVE_POSITION::LEFT || chassisMovement.nodePosition == ChassisOptionEnums::RELATIVE_POSITION::RIGHT)
+            {
+                m_vision->setPipeline(DragonLimelight::PIPELINE_MODE::CONE_NODE);
+            }
+            else
+            {
+                m_vision->setPipeline(DragonLimelight::PIPELINE_MODE::APRIL_TAG);
+            }
+
             // override yError and xError to data from pipeline
-            // set m_kp_Y to be visionP;
+            yError = targetData->getYdistanceToTargetRobotFrame();
+            xError = targetData->getXdistanceToTargetRobotFrame();
+
+            m_kP_Y = m_visionKP;
+            m_inRawVisionMode = true;
         }
         else
         {
-            // set m_kp_Y to be autoAlignP;
+            m_kP_Y = m_autoAlignKP;
+            m_inRawVisionMode = false;
         }
 
         if (!AtTargetY())
@@ -152,7 +167,7 @@ bool VisionDrive::AtTargetY()
 /// @param node
 /// @param AprilTagId
 /// @return The y offset (in inches) to the target in robot coords
-double VisionDrive::getOffsetToTarget(RELATIVE_POSITION targetGrid, RELATIVE_POSITION targetNode, uint8_t AprilTagId)
+double VisionDrive::getOffsetToTarget(ChassisOptionEnums::RELATIVE_POSITION targetGrid, ChassisOptionEnums::RELATIVE_POSITION targetNode, uint8_t AprilTagId)
 {
     //         TAG      ID    Index
     // on Red   |        |      |
