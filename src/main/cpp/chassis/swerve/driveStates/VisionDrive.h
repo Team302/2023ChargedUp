@@ -18,7 +18,6 @@
 // FRC Includes
 #include <frc/kinematics/SwerveModuleState.h>
 #include <frc/kinematics/ChassisSpeeds.h>
-#include <frc/geometry/Transform2d.h>
 
 // Team302 Includes
 #include <chassis/swerve/driveStates/RobotDrive.h>
@@ -37,6 +36,8 @@ public:
     bool AtTargetX();
     bool AtTargetY();
 
+    void ResetVisionDrive();
+
     enum RELATIVE_POSITION
     {
         LEFT,
@@ -50,7 +51,15 @@ private:
     const double m_kP_X = 0.1;
     const double m_kP_Y = 0.075;
 
-    const double m_tolerance = 1.0; // tolerance in inches
+    const double m_tolerance = 1.0;          // tolerance in inches
+    const double m_autoAlignTolerance = 5.0; // tolerance in inches
+
+    bool m_wantReset = false;
+
+    units::length::inch_t m_autoAlignYPos = units::length::inch_t(0.0);
+    units::length::inch_t m_autoAlignXPos = units::length::inch_t(0.0);
+
+    SwerveChassis *m_chassis;
 
     double getOffsetToTarget(RELATIVE_POSITION grid, RELATIVE_POSITION node, uint32_t AprilTagId);
 };

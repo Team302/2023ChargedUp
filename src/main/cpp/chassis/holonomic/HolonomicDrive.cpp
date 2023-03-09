@@ -130,6 +130,14 @@ void HolonomicDrive::Run()
             moveInfo.driveOption = ChassisOptionEnums::DriveStateType::VISION_DRIVE;
             moveInfo.headingOption = ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE;
         }
+        else
+        {
+            // no longer in vision drive, set boolean and reset offsets in VisionDrive
+            m_inVisionDrive = false;
+            auto visionDrive = dynamic_cast<VisionDrive *>(m_swerve->GetSpecifiedDriveState(ChassisOptionEnums::DriveStateType::VISION_DRIVE));
+
+            visionDrive->ResetVisionDrive();
+        }
 
         // add button to align with substation
 

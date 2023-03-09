@@ -20,12 +20,14 @@
 #include <chassis/swerve/driveStates/VisionDrive.h>
 #include <chassis/ChassisFactory.h>
 #include <DragonVision/DragonVision.h>
+#include <utils/FMSData.h>
 
 /// DEBUGGING
 #include <utils/logging/Logger.h>
 
 VisionDrive::VisionDrive(RobotDrive *robotDrive) : RobotDrive(),
-                                                   m_robotDrive(robotDrive)
+                                                   m_robotDrive(robotDrive),
+                                                   m_chassis(ChassisFactory::GetChassisFactory()->GetSwerveChassis())
 {
 }
 
@@ -36,22 +38,47 @@ std::array<frc::SwerveModuleState, 4> VisionDrive::UpdateSwerveModuleStates(
 
     if (targetData != nullptr)
     {
-        units::length::inch_t yDistance = targetData->getYdistanceToTargetRobotFrame();
-        units::length::inch_t xDistance = targetData->getXdistanceToTargetRobotFrame();
 
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "YDistance", yDistance.to<double>());
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "XDistance", xDistance.to<double>());
+        // store offsets from function
+        if (m_wantReset)
+        {
+            m_autoAlignYPos = units::length::inch_t(getOffsetToTarget(chassisMovement.gridPosition, chassisMovement.nodePosition, targetData->getApriltagID()));
+
+            frc::DriverStation::Alliance alliance = FMSData::GetInstance()->GetAllianceColor();
+
+            if (alliance == frc::DriverStation::Alliance::kBlue)
+            {
+                m_autoAlignXPos = m_chassis->GetPose().X() - targetData->getXdistanceToTargetRobotFrame();
+            }
+            else
+            {
+                m_autoAlignXPos = m_chassis->GetPose().X() + targetData->getXdistanceToTargetRobotFrame();
+            }
+        }
+
+        units::length::inch_t yError = m_autoAlignYPos - m_chassis->GetPose().Y();
+        units::length::inch_t xError = m_autoAlignXPos - m_chassis->GetPose().X();
+
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "YError", yError.to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "XError", xError.to<double>());
+
+        // once we get within threshold, switch to logic similar to below
+        if (abs(yError.to<double>()) < m_autoAlignTolerance && abs(xError.to<double>()) < m_autoAlignTolerance)
+        {
+            // switch pipeline to Cone_Node or Cube_Node
+            // override yError and xError to data from pipeline
+        }
 
         if (!AtTargetY())
         {
-            chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(m_kP_Y * yDistance.to<double>() * -1.0); // negating for robot drive
+            chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(m_kP_Y * yError.to<double>() * -1.0); // negating for robot drive
         }
         else
         {
             chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(0.0);
         }
 
-        // chassisMovement.chassisSpeeds.vx = units::velocity::meters_per_second_t(m_kP_X * xDistance.to<double>());
+        // chassisMovement.chassisSpeeds.vx = units::velocity::meters_per_second_t(m_kP_X * xError.to<double>());
 
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "VY", chassisMovement.chassisSpeeds.vy.to<double>());
     }
@@ -117,4 +144,9 @@ bool VisionDrive::AtTargetY()
 double VisionDrive::getOffsetToTarget(RELATIVE_POSITION grid, RELATIVE_POSITION node, uint32_t AprilTagId)
 {
     return 0;
+}
+
+void VisionDrive::ResetVisionDrive()
+{
+    m_wantReset = true;
 }
