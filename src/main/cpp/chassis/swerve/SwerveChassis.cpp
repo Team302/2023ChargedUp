@@ -60,6 +60,7 @@
 #include <utils/AngleUtils.h>
 #include <utils/ConversionUtils.h>
 #include <utils/logging/Logger.h>
+#include <hw/factories/CompressorFactory.h>
 
 // Third Party Includes
 #include <ctre/phoenix/sensors/CANCoder.h>
@@ -403,4 +404,11 @@ ChassisSpeeds SwerveChassis::GetFieldRelativeSpeeds(
 void SwerveChassis::SetTargetHeading(units::angle::degree_t targetYaw)
 {
     m_targetHeading = targetYaw;
+}
+
+void SwerveChassis::CompressorSpeedLimit()
+{
+    if ()
+    {
+    }
 }
