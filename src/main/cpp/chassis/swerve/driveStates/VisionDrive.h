@@ -38,10 +38,19 @@ public:
     bool AtTargetY();
 
 private:
+    enum RELATIVE_POSITION
+    {
+        LEFT,
+        CENTER,
+        RIGHT
+    };
+
     RobotDrive *m_robotDrive;
 
     const double m_kP_X = 0.1;
     const double m_kP_Y = 0.075;
 
     const double m_tolerance = 1.0; // tolerance in inches
+
+    double getOffsetToTarget(RELATIVE_POSITION grid, RELATIVE_POSITION node, uint32_t AprilTagId);
 };

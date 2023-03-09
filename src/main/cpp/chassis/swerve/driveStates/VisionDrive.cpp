@@ -113,3 +113,8 @@ bool VisionDrive::AtTargetY()
     }
     return false;
 }
+
+double VisionDrive::getOffsetToTarget(RELATIVE_POSITION grid, RELATIVE_POSITION node, uint32_t AprilTagId)
+{
+    return 0;
+}
