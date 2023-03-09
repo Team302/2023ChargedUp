@@ -16,76 +16,39 @@
 
 #pragma once
 
-class RobotStateChanges
+// FRC includes
+#include <frc/Compressor.h>
+#include <units/pressure.h>
+#include <frc/PneumaticHub.h>
+#include <frc/PneumaticsControlModule.h>
+
+class CompressorFactory
 {
 public:
-    enum StateChange
-    {
-        DesiredGamePiece,
-        HoldingGamePiece,
-        ArmExtenderState,
-        ArmRotateState,
-        GrabberState,
-        DesiredPlacementLocation,
-        DesiredPlacementDepth,
-        ChassisTipStatus,
-        DriveAssistMode,
-        GameState,
-        CompressorChange,
-        LoopCounter
-    };
+    static CompressorFactory *GetFactory();
 
-    enum GamePiece
-    {
-        Cone,
-        Cube,
-        None
-    };
+    frc::Compressor *GetCompressor() const { return m_compressor; };
+    frc::Compressor *CreateCompressor(int canID, frc::PneumaticsModuleType type, units::pressure::pounds_per_square_inch_t minPressure, units::pressure::pounds_per_square_inch_t maxPressure);
 
-    enum PlacementLocation
-    {
-        HPGridLeftPole,
-        HPGridRightPole,
-        CoopGridLeftPole,
-        CoopGridRightPole,
-        WallGridLeftPole,
-        WallGridRightPole,
-        PoleShelfTransition,
-        HPGridCenterShelf,
-        CoopGridCenterShelf,
-        WallGridCenterShelf,
-        MaxLocations
-    };
+    void ToggleEnableCompressor();
 
-    enum PlacementDepth
-    {
-        Floor,
-        MiddleRow,
-        BackRow
-    };
+    units::pounds_per_square_inch_t GetMinPressure() const { return m_minPressure; }
+    units::pounds_per_square_inch_t GetMaxPressure() const { return m_maxPressure; }
+    units::pounds_per_square_inch_t GetCurrentPressure() const;
 
-    enum ChassisTilt
-    {
-        NotTilted,
-        Tilted
-    };
+private:
+    void EnableCompressor();
+    void DisableCompressor();
 
-    enum DriveAssist
-    {
-        DriveAssistOff,
-        DriveAssistOn
-    };
+    void ClearStickyFaults();
+    CompressorFactory();
+    virtual ~CompressorFactory() = default;
 
-    enum GamePeriod
-    {
-        Auton,
-        Teleop,
-        Disabled
-    };
+    frc::Compressor *m_compressor;
+    units::pressure::pounds_per_square_inch_t m_minPressure;
+    units::pressure::pounds_per_square_inch_t m_maxPressure;
+    frc::PneumaticHub *m_hub;
+    frc::PneumaticsControlModule *m_pcm;
 
-    enum CompressorState
-    {
-        CompressorOff,
-        CompressorOn
-    };
+    static CompressorFactory *m_factory;
 };
