@@ -40,9 +40,9 @@ public:
 private:
     enum RELATIVE_POSITION
     {
-        LEFT,
-        CENTER,
-        RIGHT
+        LEFT = 1,
+        CENTER = 2,
+        RIGHT = 3
     };
 
     RobotDrive *m_robotDrive;
@@ -52,5 +52,5 @@ private:
 
     const double m_tolerance = 1.0; // tolerance in inches
 
-    double getOffsetToTarget(RELATIVE_POSITION grid, RELATIVE_POSITION node, uint32_t AprilTagId);
+    double getOffsetToTarget(RELATIVE_POSITION targetGrid, RELATIVE_POSITION targetNode, uint8_t AprilTagId);
 };

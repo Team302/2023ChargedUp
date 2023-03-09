@@ -23,6 +23,7 @@
 
 /// DEBUGGING
 #include <utils/logging/Logger.h>
+#include <utils/FMSData.h>
 
 VisionDrive::VisionDrive(RobotDrive *robotDrive) : RobotDrive(),
                                                    m_robotDrive(robotDrive)
@@ -114,7 +115,45 @@ bool VisionDrive::AtTargetY()
     return false;
 }
 
-double VisionDrive::getOffsetToTarget(RELATIVE_POSITION grid, RELATIVE_POSITION node, uint32_t AprilTagId)
+/// @brief Assumes that the function is only called with a valid APril tag ID
+/// @param grid
+/// @param node
+/// @param AprilTagId
+/// @return The y offset (in inches) to the target in robot coords
+double VisionDrive::getOffsetToTarget(RELATIVE_POSITION targetGrid, RELATIVE_POSITION targetNode, uint8_t AprilTagId)
 {
+    //         TAG      ID    Index
+    // on Red   |        |      |
+    //         Left      1      2
+    //         Center    2      5
+    //         Right     3      8
+    // on Blue  |        |      |
+    //         Left      6      2
+    //         Center    7      5
+    //         Right     8      8
+
+    frc::DriverStation::Alliance alliance = FMSData::GetInstance()->GetAllianceColor();
+
+    int32_t NormalizedAprilTagId = AprilTagId;
+    if (alliance == frc::DriverStation::Alliance::kBlue)
+    {
+        NormalizedAprilTagId -= 5;
+    }
+    else if (alliance == frc::DriverStation::Alliance::kRed)
+    {
+    }
+
+    if ((NormalizedAprilTagId >= 1) && (NormalizedAprilTagId <= 3))
+    {
+        uint8_t currentPositionIndex = 0; // Cone node closest to Human player is index 0
+        currentPositionIndex = 2 + (NormalizedAprilTagId - 1) * 3;
+
+        uint8_t targetPositionIndex = 0; // Cone node closest to Human player is index 0
+        targetPositionIndex = 2 + (targetGrid - 1) * 3;
+        targetPositionIndex += targetNode - 2;
+
+        return (currentPositionIndex - targetPositionIndex) * 22;
+    }
+
     return 0;
 }
