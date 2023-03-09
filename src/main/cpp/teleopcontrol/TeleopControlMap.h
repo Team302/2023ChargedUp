@@ -167,12 +167,8 @@ robin_hood::unordered_map<TeleopControlFunctions::FUNCTION, const TeleopControlB
     {TeleopControlFunctions::HOLD_POSITION, driverLBumper},
     {TeleopControlFunctions::SLOW_MODE, driverRBumper},
 
-    //{TeleopControlFunctions::TOGGLE_COMPRESSER, driverLStickPressed},
-    {TeleopControlFunctions::TOGGLE_COMPRESSER, driverYButton},
-
     {TeleopControlFunctions::AUTO_TURN_FORWARD, driverLStickPressed},
     {TeleopControlFunctions::AUTO_TURN_BACKWARD, driverRStickPressed},
-
 
     {TeleopControlFunctions::STARTING_POSITION, copilotStartButton},
     {TeleopControlFunctions::CYCLE_GRABBER, copilotSelectButton},
