@@ -104,15 +104,17 @@ void HolonomicDrive::Run()
         }
 
         // Auto alignment to grid nodes
-        if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_CONE_NODE))
+        if (IsAutoAligning())
         {
-            DragonVision::GetDragonVision()->setPipeline(DragonLimelight::PIPELINE_MODE::CONE_NODE);
-
-            moveInfo.driveOption = ChassisOptionEnums::DriveStateType::VISION_DRIVE;
-            moveInfo.headingOption = ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE;
-
             m_inVisionDrive = true;
 
+            // get destination for alignment
+            std::pair<VisionDrive::RELATIVE_POSITION, VisionDrive::RELATIVE_POSITION> destination = GetAutoAlignDestination();
+
+            moveInfo.gridPosition = destination.first;
+            moveInfo.nodePosition = destination.second;
+
+            // determine target heading
             frc::DriverStation::Alliance alliance = FMSData::GetInstance()->GetAllianceColor();
 
             if (alliance == frc::DriverStation::Alliance::kBlue)
@@ -123,32 +125,10 @@ void HolonomicDrive::Run()
             {
                 moveInfo.yawAngle = units::angle::degree_t(0.0);
             }
-        }
-        else if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_CUBE_NODE))
-        {
-            DragonVision::GetDragonVision()->setPipeline(DragonLimelight::PIPELINE_MODE::APRIL_TAG);
 
+            // set drive and heading mode
             moveInfo.driveOption = ChassisOptionEnums::DriveStateType::VISION_DRIVE;
             moveInfo.headingOption = ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE;
-
-            m_inVisionDrive = true;
-
-            frc::DriverStation::Alliance alliance = FMSData::GetInstance()->GetAllianceColor();
-
-            if (alliance == frc::DriverStation::Alliance::kBlue)
-            {
-                moveInfo.yawAngle = units::angle::degree_t(180.0);
-            }
-            else if (alliance == frc::DriverStation::Alliance::kRed)
-            {
-                moveInfo.yawAngle = units::angle::degree_t(0.0);
-            }
-        }
-        else
-        {
-            DragonVision::GetDragonVision()->setPipeline(DragonLimelight::PIPELINE_MODE::OFF);
-
-            m_inVisionDrive = false;
         }
 
         // add button to align with substation
@@ -241,4 +221,58 @@ void HolonomicDrive::Exit()
 bool HolonomicDrive::AtTarget() const
 {
     return false;
+}
+
+bool HolonomicDrive::IsAutoAligning()
+{
+    bool isAutoAligning = false;
+
+    auto controller = TeleopControl::GetInstance();
+
+    // Check if we are trying to align to any of the grids
+    isAutoAligning = controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_LEFT_GRID) ||
+                     controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_CENTER_GRID) ||
+                     controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_RIGHT_GRID);
+
+    return isAutoAligning;
+}
+
+std::pair<VisionDrive::RELATIVE_POSITION, VisionDrive::RELATIVE_POSITION> HolonomicDrive::GetAutoAlignDestination()
+{
+    // create default destination
+    std::pair<VisionDrive::RELATIVE_POSITION, VisionDrive::RELATIVE_POSITION> destination = {VisionDrive::RELATIVE_POSITION::CENTER,
+                                                                                             VisionDrive::RELATIVE_POSITION::CENTER};
+
+    auto controller = TeleopControl::GetInstance();
+
+    // check for desired grid first
+    if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_LEFT_GRID))
+    {
+        destination.first = VisionDrive::RELATIVE_POSITION::LEFT;
+    }
+    else if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_CENTER_GRID))
+    {
+        destination.first = VisionDrive::RELATIVE_POSITION::CENTER;
+    }
+    else if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_RIGHT_GRID))
+    {
+        destination.first = VisionDrive::RELATIVE_POSITION::RIGHT;
+    }
+
+    // next, check for desired column/node
+    if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_LEFT_NODE))
+    {
+        destination.second = VisionDrive::RELATIVE_POSITION::LEFT;
+    }
+    else if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_RIGHT_NODE))
+    {
+        destination.second = VisionDrive::RELATIVE_POSITION::RIGHT;
+    }
+    else
+    {
+        destination.second = VisionDrive::RELATIVE_POSITION::CENTER;
+    }
+
+    // finally, return desired destination
+    return destination;
 }

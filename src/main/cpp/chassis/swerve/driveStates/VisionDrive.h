@@ -37,7 +37,6 @@ public:
     bool AtTargetX();
     bool AtTargetY();
 
-private:
     enum RELATIVE_POSITION
     {
         LEFT = 1,
@@ -45,6 +44,7 @@ private:
         RIGHT = 3
     };
 
+private:
     RobotDrive *m_robotDrive;
 
     const double m_kP_X = 0.1;
