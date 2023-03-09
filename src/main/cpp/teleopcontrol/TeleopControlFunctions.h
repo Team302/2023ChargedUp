@@ -89,9 +89,9 @@ public:
         // Active intake controls?
         INTAKE,
         EXPEL,
-        MAX_FUNCTIONS,
         // Compressor ON/Off controls
-        TOGGLE_COMPRESSER
+        TOGGLE_COMPRESSER,
+        MAX_FUNCTIONS,
 
     };
 };
