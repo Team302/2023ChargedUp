@@ -15,7 +15,7 @@
 
 // Team302 Includes
 #include <chassis/swerve/headingStates/FaceGoalHeading.h>
-#include <hw/factories/LimelightFactory.h>
+#include <DragonVision/LimelightFactory.h>
 
 FaceGoalHeading::FaceGoalHeading() : ISwerveDriveOrientation(ChassisOptionEnums::HeadingOption::TOWARD_GOAL),
                                      m_limelight(LimelightFactory::GetLimelightFactory()->GetLimelight())

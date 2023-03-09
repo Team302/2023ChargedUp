@@ -47,14 +47,15 @@
 #include <chassis/swerve/driveStates/RobotDrive.h>
 #include <chassis/swerve/driveStates/StopDrive.h>
 #include <chassis/swerve/driveStates/TrajectoryDrive.h>
+#include <chassis/swerve/driveStates/VisionDrive.h>
 
 #include <chassis/swerve/headingStates/FaceGoalHeading.h>
 #include <chassis/swerve/headingStates/ISwerveDriveOrientation.h>
 #include <chassis/swerve/headingStates/MaintainHeading.h>
 #include <chassis/swerve/headingStates/SpecifiedHeading.h>
 
-#include <hw/DragonLimelight.h>
-#include <hw/factories/LimelightFactory.h>
+#include <DragonVision/DragonLimelight.h>
+#include <DragonVision/LimelightFactory.h>
 #include <utils/FMSData.h>
 #include <utils/AngleUtils.h>
 #include <utils/ConversionUtils.h>
@@ -163,6 +164,7 @@ void SwerveChassis::InitStates()
     m_driveStateMap[ChassisOptionEnums::ROBOT_DRIVE] = m_robotDrive;
     m_driveStateMap[ChassisOptionEnums::STOP_DRIVE] = new StopDrive();
     m_driveStateMap[ChassisOptionEnums::TRAJECTORY_DRIVE] = new TrajectoryDrive(m_robotDrive);
+    m_driveStateMap[ChassisOptionEnums::VISION_DRIVE] = new VisionDrive(m_robotDrive);
     m_driveStateMap[ChassisOptionEnums::AUTO_BALANCE] = new AutoBalanceDrive(m_robotDrive);
 
     m_headingStateMap[ChassisOptionEnums::HeadingOption::MAINTAIN] = new MaintainHeading();
@@ -365,27 +367,23 @@ void SwerveChassis::ResetPose(const Pose2d &pose)
     m_poseEstimator.ResetPosition(rot2d, wpi::array<frc::SwerveModulePosition, 4>{m_frontLeft.get()->GetPosition(), m_frontRight.get()->GetPosition(), m_backLeft.get()->GetPosition(), m_backRight.get()->GetPosition()}, pose);
 }
 
-void SwerveChassis::ResetPoseToVision()
+void SwerveChassis::ResetYaw()
 {
     units::degree_t yaw{m_pigeon->GetYaw()};
     Rotation2d rot2d{yaw};
 
-    /*auto targetInfo = m_vision->getTargetInfo();
-    if (targetInfo != nullptr)
-    {
-        frc::Pose2d pose = m_vision->GetRobotPosition();
+    frc::DriverStation::Alliance alliance = FMSData::GetInstance()->GetAllianceColor();
 
-        if (pose.X().to<double>() > 0 && pose.Y().to<double>() > 0) // Need to add low pass filter for all 3 conditions
-        {
-            m_poseEstimator.ResetPosition(rot2d, wpi::array<frc::SwerveModulePosition, 4>{m_frontLeft.get()->GetPosition(), m_frontRight.get()->GetPosition(), m_backLeft.get()->GetPosition(), m_backRight.get()->GetPosition()}, pose);
-        }
+    if (alliance == frc::DriverStation::Alliance::kBlue)
+    {
+        m_pigeon->ReZeroPigeon(0.0, 0.0);
     }
-    else // if we don't have a target, just reset yaw to 0 (we do this in case field orientation breaks)
-    {*/
-    m_pigeon->ReZeroPigeon(0.0, 0.0);
+    else
+    {
+        m_pigeon->ReZeroPigeon(180.0, 0.0);
+    }
 
     ZeroAlignSwerveModules();
-    //}
 }
 
 ChassisSpeeds SwerveChassis::GetFieldRelativeSpeeds(

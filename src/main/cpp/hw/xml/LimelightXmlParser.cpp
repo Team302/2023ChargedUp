@@ -16,9 +16,9 @@
 
 #include <string>
 
-#include <hw/DragonLimelight.h>
-#include <hw/factories/LimelightFactory.h>
-#include <hw/usages/LimelightUsages.h>
+#include <DragonVision/DragonLimelight.h>
+#include <DragonVision/LimelightFactory.h>
+#include <DragonVision/LimelightUsages.h>
 #include <hw/xml/LimelightXmlParser.h>
 #include <utils/logging/Logger.h>
 
