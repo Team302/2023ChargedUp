@@ -61,6 +61,16 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
 
     xml_document doc;
     xml_parse_result result = doc.load_file(fulldirfile.c_str());
+    if (!result)
+    {
+        auto deployDir = frc::filesystem::GetDeployDirectory();
+        auto autonDir = deployDir + "/auton/";
+
+        string updfulldirfile = autonDir;
+        updfulldirfile += fulldirfile;
+
+        result = doc.load_file(updfulldirfile.c_str());
+    }
 
     if (result)
     {
