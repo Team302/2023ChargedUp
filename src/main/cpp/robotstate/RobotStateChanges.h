@@ -32,6 +32,7 @@ public:
         ChassisTipStatus,
         DriveAssistMode,
         GameState,
+        CompressorChange,
         LoopCounter
     };
 
@@ -72,8 +73,8 @@ public:
 
     enum DriveAssist
     {
-        Off,
-        On
+        DriveAssistOff,
+        DriveAssistOn
     };
 
     enum GamePeriod
@@ -81,5 +82,11 @@ public:
         Auton,
         Teleop,
         Disabled
+    };
+
+    enum CompressorState
+    {
+        CompressorOff,
+        CompressorOn
     };
 };

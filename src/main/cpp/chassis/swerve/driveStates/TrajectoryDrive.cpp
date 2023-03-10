@@ -27,8 +27,8 @@ using frc::Pose2d;
 TrajectoryDrive::TrajectoryDrive(RobotDrive *robotDrive) : RobotDrive(),
                                                            m_trajectory(),
                                                            m_robotDrive(robotDrive),
-                                                           m_holonomicController(frc2::PIDController{1.0, 0.0, 0},
-                                                                                 frc2::PIDController{1.0, 0.0, 0},
+                                                           m_holonomicController(frc2::PIDController{1.15, 0.0, 0},
+                                                                                 frc2::PIDController{1.15, 0.0, 0},
                                                                                  frc::ProfiledPIDController<units::radian>{0.0, 0.0, 0,
                                                                                                                            frc::TrapezoidProfile<units::radian>::Constraints{0_rad_per_s, 0_rad_per_s / 1_s}}),
                                                            m_desiredState(),
@@ -90,7 +90,6 @@ std::array<frc::SwerveModuleState, 4> TrajectoryDrive::UpdateSwerveModuleStates(
         {
             auto specifedHeading = dynamic_cast<SpecifiedHeading *>(swerveChassis->GetHeadingState(chassisMovement));
             chassisMovement.chassisSpeeds.omega = units::angular_velocity::radians_per_second_t(0);
-            specifedHeading->SetTargetHeading(chassisMovement.yawAngle);
             specifedHeading->UpdateChassisSpeeds(chassisMovement);
         }
 

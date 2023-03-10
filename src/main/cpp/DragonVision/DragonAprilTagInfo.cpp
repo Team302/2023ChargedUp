@@ -13,23 +13,31 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#pragma once
+#include <optional>
 
-// Team302 Includes
-#include <chassis/swerve/headingStates/ISwerveDriveOrientation.h>
-#include <chassis/DragonTargetFinder.h>
-#include <DragonVision/DragonLimelight.h>
+#include <frc/apriltag/AprilTagFieldLayout.h>
+#include <frc/apriltag/AprilTagFields.h>
 
-class FaceGoalHeading : public ISwerveDriveOrientation
+#include <DragonVision/DragonAprilTagInfo.h>
+
+using frc::AprilTagFieldLayout;
+using frc::Pose3d;
+
+DragonAprilTagInfo::DragonAprilTagInfo() : m_layout(frc::LoadAprilTagLayoutField(frc::AprilTagField::k2023ChargedUp))
 {
-public:
-    FaceGoalHeading();
-    ~FaceGoalHeading();
+}
 
-    void UpdateChassisSpeeds(ChassisMovement &chassisMovement) override;
+std::optional<Pose3d> DragonAprilTagInfo::Get3DPose(int tagid) const
+{
+    return m_layout.GetTagPose(tagid);
+}
 
-private:
-    DragonTargetFinder m_targetFinder;
-
-    DragonLimelight *m_limelight;
-};
+std::optional<units::length::inch_t> DragonAprilTagInfo::GetHeight(int tagid) const
+{
+    auto pose = Get3DPose(tagid);
+    if (pose.has_value())
+    {
+        return pose->Z();
+    }
+    return {};
+}

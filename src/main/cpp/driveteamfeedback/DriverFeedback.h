@@ -27,10 +27,13 @@ public:
 
     void UpdateLEDStates();
 
+    void UpdateCompressorState();
+
     void Update(RobotStateChanges::StateChange change, int value) override;
 
 private:
     void CheckControllers();
+    void DisplayPressure();
     DriverFeedback();
     ~DriverFeedback() = default;
 
@@ -45,6 +48,8 @@ private:
         WANT_CUBE,
         WANT_CONE,
         GAME_PIECE_READY_TO_PICK_UP,
+        COMPRESSOR_ON,
+        COMPRESSOR_OFF,
         NONE
     };
 
@@ -57,10 +62,12 @@ private:
     bool m_AlignedWithConeNode = false;
     bool m_AlignedWithCubeNode = false;
     int m_controllerCounter = 0;
+    bool m_compressorOn = true;
 
     static DriverFeedback *m_instance;
 
-    DriverFeedbackStates currentState = DriverFeedbackStates::NONE;
+    DriverFeedbackStates m_gamePieceState = DriverFeedbackStates::NONE;
+    DriverFeedbackStates m_compressorState = DriverFeedbackStates::NONE;
     bool m_grabberStateChanged = true;
 
     void resetRequests(void);
