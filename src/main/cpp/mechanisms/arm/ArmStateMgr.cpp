@@ -114,6 +114,9 @@ int ArmStateMgr::GetCurrentStateParam(PrimitiveParams *currentParams)
 void ArmStateMgr::CheckForStateTransition()
 {
     //========= Hand modified code start section 3 ========
+    m_currentState = static_cast<ARM_STATE>(GetCurrentState());
+    m_targetState = m_currentState;
+
     if (m_gamepieceMode == RobotStateChanges::None)
     {
         m_gamepieceMode = RobotStateChanges::Cone;
@@ -147,9 +150,6 @@ void ArmStateMgr::CheckForGamepadTransitions()
     auto controller = TeleopControl::GetInstance();
     if (controller != nullptr)
     {
-        m_currentState = static_cast<ARM_STATE>(GetCurrentState());
-        m_targetState = m_currentState;
-
         if (abs(controller->GetAxisValue(TeleopControlFunctions::MANUAL_ROTATE)) > 0.05)
         {
             m_targetState = ARM_STATE::MANUAL_ROTATE;
@@ -173,7 +173,7 @@ void ArmStateMgr::CheckForConeGamepadTransitions(TeleopControl *controller)
     }
     else if (controller->IsButtonPressed(TeleopControlFunctions::MIDROW))
     {
-        if (m_arm->GetPositionDegrees().to<double>() > dynamic_cast<ArmState *>(GetSpecifiedState(ARM_STATE::CONE_MIDROW_ROTATE_DOWN))->GetCurrentTarget())
+        if (m_arm != nullptr && m_arm->GetPositionDegrees().to<double>() > dynamic_cast<ArmState *>(GetSpecifiedState(ARM_STATE::CONE_MIDROW_ROTATE_DOWN))->GetCurrentTarget())
         {
             m_targetState = ARM_STATE::CONE_MIDROW_ROTATE_DOWN;
         }
@@ -204,7 +204,7 @@ void ArmStateMgr::CheckForCubeGamepadTransitions(TeleopControl *controller)
     }
     else if (controller->IsButtonPressed(TeleopControlFunctions::MIDROW))
     {
-        if (m_arm->GetPositionDegrees().to<double>() > dynamic_cast<ArmState *>(GetSpecifiedState(ARM_STATE::CUBE_MIDROW_ROTATE_DOWN))->GetCurrentTarget())
+        if (m_arm != nullptr && m_arm->GetPositionDegrees().to<double>() > dynamic_cast<ArmState *>(GetSpecifiedState(ARM_STATE::CUBE_MIDROW_ROTATE_DOWN))->GetCurrentTarget())
         {
             m_targetState = ARM_STATE::CUBE_MIDROW_ROTATE_DOWN;
         }
@@ -232,15 +232,14 @@ void ArmStateMgr::CheckForSensorTransitions()
 {
     if (m_arm != nullptr)
     {
-        m_currentState = static_cast<ARM_STATE>(GetCurrentState());
-        m_targetState = m_currentState;
-
         // If we are hitting limit switch, reset position
-        m_arm->ResetIfArmDown();
-
-        // If arm is at target and the prev state hasn't changed then stay in hold
-        if (abs(m_arm->GetPositionDegrees().to<double>() - m_arm->GetTarget()) < 5.0 && m_arm->GetPositionDegrees().to<double>() > 1.0)
+        auto isArmDown = m_arm->IsArmDown();
+        if (m_arm->IsArmDown())
         {
+            m_targetState = ARM_STATE::STARTING_POSITION_ROTATE;
+        }
+        else if (abs(m_arm->GetPositionDegrees().to<double>() - m_arm->GetTarget()) < 5.0 && m_arm->GetPositionDegrees().to<double>() > 1.0)
+        { // If arm is at target and the prev state hasn't changed then stay in hold
             m_targetState = ARM_STATE::HOLD_POSITION_ROTATE;
         }
     }
