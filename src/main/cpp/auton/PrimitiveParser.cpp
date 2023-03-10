@@ -61,6 +61,7 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
 
     xml_document doc;
     xml_parse_result result = doc.load_file(fulldirfile.c_str());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "PrimitiveParser", "Original File", fulldirfile.c_str());
     if (!result)
     {
         auto deployDir = frc::filesystem::GetDeployDirectory();
@@ -70,6 +71,7 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
         updfulldirfile += fulldirfile;
 
         result = doc.load_file(updfulldirfile.c_str());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "PrimitiveParser", "updated File", updfulldirfile.c_str());
     }
 
     if (result)
