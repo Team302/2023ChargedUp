@@ -1,0 +1,137 @@
+[
+{
+"acceleration": 2.0000000000000004,
+"curvature": 0.0,
+"pose": {
+"rotation": {
+"radians": 0.0
+},
+"translation": {
+"x": 5.8,
+"y": 0.9669999999999996
+}
+},
+"time": 0.0,
+"velocity": 0.0
+},
+{
+"acceleration": 2.0000000000000004,
+"curvature": 0.0,
+"pose": {
+"rotation": {
+"radians": 0.0
+},
+"translation": {
+"x": 5.924598693847656,
+"y": 0.9669999999999996
+}
+},
+"time": 0.3529854017486508,
+"velocity": 0.7059708034973017
+},
+{
+"acceleration": 1.9999999999999996,
+"curvature": 0.0,
+"pose": {
+"rotation": {
+"radians": 0.0
+},
+"translation": {
+"x": 6.047412109375,
+"y": 0.9669999999999996
+}
+},
+"time": 0.49740537730808687,
+"velocity": 0.994810754616174
+},
+{
+"acceleration": 2.0,
+"curvature": 0.0,
+"pose": {
+"rotation": {
+"radians": 0.0
+},
+"translation": {
+"x": 6.168119812011719,
+"y": 0.9669999999999996
+}
+},
+"time": 0.6067287796138561,
+"velocity": 1.2134575592277124
+},
+{
+"acceleration": -1.9999999999998512,
+"curvature": 0.0,
+"pose": {
+"rotation": {
+"radians": 0.0
+},
+"translation": {
+"x": 6.2875,
+"y": 0.9669999999999996
+}
+},
+"time": 0.6982120021884468,
+"velocity": 1.3964240043768938
+},
+{
+"acceleration": -2.0000000000000004,
+"curvature": 0.0,
+"pose": {
+"rotation": {
+"radians": 0.0
+},
+"translation": {
+"x": 6.406880187988282,
+"y": 0.9669999999999996
+}
+},
+"time": 0.7896952247630384,
+"velocity": 1.2134575592277241
+},
+{
+"acceleration": -1.9999999999999998,
+"curvature": 0.0,
+"pose": {
+"rotation": {
+"radians": 0.0
+},
+"translation": {
+"x": 6.527587890625002,
+"y": 0.9669999999999996
+}
+},
+"time": 0.8990186270688073,
+"velocity": 0.9948107546161864
+},
+{
+"acceleration": -1.9999999999999998,
+"curvature": 0.0,
+"pose": {
+"rotation": {
+"radians": 0.0
+},
+"translation": {
+"x": 6.650401306152348,
+"y": 0.9669999999999996
+}
+},
+"time": 1.0434386026282447,
+"velocity": 0.7059708034973117
+},
+{
+"acceleration": -1.9999999999999998,
+"curvature": 0.0,
+"pose": {
+"rotation": {
+"radians": 0.0
+},
+"translation": {
+"x": 6.775000000000008,
+"y": 0.9669999999999996
+}
+},
+"time": 1.3964240043769007,
+"velocity": 0.0
+}
+]
