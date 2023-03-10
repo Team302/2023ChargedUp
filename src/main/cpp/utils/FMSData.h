@@ -17,8 +17,9 @@
 // FRC Includes
 #include <frc/SmartDashboard/SendableChooser.h>
 #include <frc/DriverStation.h>
-
+#include <robotstate\RobotState.h>
 class FMSData
+
 {
 public:
     enum ALLIANCE_COLOR
@@ -36,7 +37,7 @@ public:
     frc::DriverStation::Alliance GetAllianceColor();
 
     /// @brief Check if we are connected to FMS
-    void CheckForFMS();
+    bool CheckForFMS();
 
     /// @brief get the singeleton of FMSData
     static FMSData *GetInstance();
@@ -44,6 +45,7 @@ public:
 private:
     static FMSData *m_instance;
 
+    RobotStateChanges::hasFMS m_FMStruefalse;
     frc::SendableChooser<std::string> m_allianceColorChooser;
     std::unordered_map<frc::DriverStation::Alliance, ALLIANCE_COLOR> m_colorMap;
     bool m_hasFMS;

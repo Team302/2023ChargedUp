@@ -16,10 +16,10 @@
 // FRC Includes
 #include <frc/SmartDashboard/SmartDashboard.h>
 #include <frc/DriverStation.h>
-
 // Team 302 Includes
 #include <utils/FMSData.h>
 
+using namespace std;
 FMSData *FMSData::m_instance = nullptr;
 
 FMSData *FMSData::GetInstance()
@@ -70,10 +70,16 @@ frc::DriverStation::Alliance FMSData::GetAllianceColor()
     return m_color;
 }
 
-void FMSData::CheckForFMS()
+bool FMSData::CheckForFMS()
 {
     if (frc::DriverStation::IsFMSAttached() && !m_hasFMS)
     {
         m_hasFMS = true;
     }
+    if (m_hasFMS = true)
+    {
+        RobotState::GetInstance()->PublishStateChange(RobotStateChanges::FMSConection, m_FMStruefalse);
+    }
+
+    return m_hasFMS;
 }

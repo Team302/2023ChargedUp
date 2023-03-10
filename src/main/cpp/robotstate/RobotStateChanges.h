@@ -33,6 +33,7 @@ public:
         DriveAssistMode,
         GameState,
         CompressorChange,
+        FMSConection,
         LoopCounter
     };
 
@@ -88,5 +89,11 @@ public:
     {
         CompressorOff,
         CompressorOn
+    };
+
+    enum hasFMS
+    {
+        False,
+        True
     };
 };

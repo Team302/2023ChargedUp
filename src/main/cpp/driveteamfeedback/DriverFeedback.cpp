@@ -23,8 +23,12 @@
 #include <networktables/NetworkTableInstance.h>
 #include <networktables/NetworkTable.h>
 #include <networktables/NetworkTableEntry.h>
+#include <utils/logging/LoggerData.h>
+#include <string>
+#include <utils/logging/Logger.h>
 
 using frc::DriverStation;
+using namespace std;
 
 DriverFeedback *DriverFeedback::m_instance = nullptr;
 
@@ -158,6 +162,7 @@ DriverFeedback::DriverFeedback() : IRobotStateChangeSubscriber()
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::DesiredGamePiece);
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::GameState);
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::CompressorChange);
+    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::FMSConection);
 }
 void DriverFeedback::Update(RobotStateChanges::StateChange change, int value)
 {
@@ -190,6 +195,11 @@ void DriverFeedback::Update(RobotStateChanges::StateChange change, int value)
     {
         auto compressor = static_cast<RobotStateChanges::CompressorState>(value);
         m_compressorOn = compressor == RobotStateChanges::CompressorOn;
+    }
+
+    else if (change == RobotStateChanges::StateChange::FMSConection)
+    {
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("AutonomousInit"), string("FMS Connected"));
     }
 }
 
