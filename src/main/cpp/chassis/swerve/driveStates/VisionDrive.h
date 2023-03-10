@@ -51,11 +51,16 @@ private:
     const double m_tolerance = 1.0;          // tolerance in inches
     const double m_autoAlignTolerance = 5.0; // tolerance in inches
 
+    const double m_robotFrameXDistCorrection = 30.0;
+
     bool m_wantReset = false;
     bool m_inRawVisionMode = false;
 
     units::length::inch_t m_autoAlignYPos = units::length::inch_t(0.0);
     units::length::inch_t m_autoAlignXPos = units::length::inch_t(0.0);
+
+    ChassisOptionEnums::RELATIVE_POSITION m_storedGridPos = ChassisOptionEnums::RELATIVE_POSITION::CENTER;
+    ChassisOptionEnums::RELATIVE_POSITION m_storedNodePos = ChassisOptionEnums::RELATIVE_POSITION::CENTER;
 
     SwerveChassis *m_chassis;
 
