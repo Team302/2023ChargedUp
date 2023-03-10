@@ -81,6 +81,8 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
         {
             for (xml_node primitiveNode = node.first_child(); primitiveNode; primitiveNode = primitiveNode.next_sibling())
             {
+                Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "PrimitiveParser", "node", primitiveNode.name());
+
                 if (strcmp(primitiveNode.name(), "snippet") == 0)
                 {
                     for (xml_attribute attr = primitiveNode.first_attribute(); attr; attr = attr.next_attribute())
@@ -95,9 +97,14 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                             }
                             else
                             {
-                                Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("PrimitiveParser"), string("snipped had no params"), attr.value());
+                                Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("PrimitiveParser"), string("snippet had no params"), attr.value());
                                 hasError = true;
                             }
+                        }
+                        else
+                        {
+                            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("PrimitiveParser"), string("snippet unknown attr"), attr.name());
+                            hasError = true;
                         }
                     }
                 }
