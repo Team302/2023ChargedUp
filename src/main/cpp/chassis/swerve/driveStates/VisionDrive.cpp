@@ -63,9 +63,6 @@ std::array<frc::SwerveModuleState, 4> VisionDrive::UpdateSwerveModuleStates(
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "PreviousState", m_previousState);
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "VY", chassisMovement.chassisSpeeds.vy.to<double>());
 
-    // temporary to disable driving
-    chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(0.0);
-
     return m_robotDrive->UpdateSwerveModuleStates(chassisMovement);
 }
 
@@ -117,8 +114,6 @@ void VisionDrive::FoundTag(ChassisMovement &chassisMovement)
     }
 
     // Cyclic
-    frc::DriverStation::Alliance alliance = FMSData::GetInstance()->GetAllianceColor();
-
     m_storedGridPos = chassisMovement.gridPosition;
     m_storedNodePos = chassisMovement.nodePosition;
 
@@ -126,24 +121,12 @@ void VisionDrive::FoundTag(ChassisMovement &chassisMovement)
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "YOffset", yOffset.to<double>());
 
-    if (alliance == frc::DriverStation::Alliance::kBlue)
-    {
-        units::length::inch_t xOffset = m_xDistanceToTag - units::length::inch_t(m_robotFrameXDistCorrection);
+    units::length::inch_t xOffset = m_xDistanceToTag + units::length::inch_t(m_robotFrameXDistCorrection);
 
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "XOffset", xOffset.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "XOffset", xOffset.to<double>());
 
-        m_yTargetPos = yOffset - m_chassis->GetPose().Y();
-        m_xTargetPos = xOffset - m_chassis->GetPose().X();
-    }
-    else
-    {
-        units::length::inch_t xOffset = m_xDistanceToTag + units::length::inch_t(m_robotFrameXDistCorrection);
-
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "XOffset", xOffset.to<double>());
-
-        m_yTargetPos = yOffset + m_chassis->GetPose().Y();
-        m_xTargetPos = xOffset + m_chassis->GetPose().X();
-    }
+    m_yTargetPos = yOffset + m_chassis->GetPose().Y();
+    m_xTargetPos = xOffset + m_chassis->GetPose().X();
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "YTargetPos", m_yTargetPos.to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "XTargetPos", m_xTargetPos.to<double>());
@@ -178,7 +161,7 @@ void VisionDrive::DriveToTarget(ChassisMovement &chassisMovement)
         exit = true;
     }
 
-    chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(m_autoAlignKP * yError.to<double>());
+    chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(m_autoAlignKP * yError.to<double>() * -1.0);
     // need to set chassisSpeeds vx
 
     // Exit
@@ -224,7 +207,7 @@ void VisionDrive::AlignRawVision(ChassisMovement &chassisMovement)
         exit = AtTargetY(targetData);
     }
 
-    chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(m_visionKP * yError.to<double>());
+    chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(m_visionKP * yError.to<double>() * -1.0);
 
     // Exit
     if (exit)
