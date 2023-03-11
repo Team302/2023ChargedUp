@@ -131,11 +131,6 @@ void ArmStateMgr::CheckForStateTransition()
 
     if (m_targetState != m_currentState)
     {
-        if (m_targetState == ARM_STATE::HOLD_POSITION_ROTATE)
-        {
-            m_targetState == m_gamepieceMode == RobotStateChanges::Cone ? CONE_HOLD_POSITION_ROTATE : CUBE_HOLD_POSITION_ROTATE;
-        }
-
         SetCurrentState(m_targetState, true);
         m_prevState = m_targetState;
         RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmRotateState, m_targetState);

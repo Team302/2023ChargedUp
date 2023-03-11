@@ -16,24 +16,41 @@
 #include <string>
 
 #include <mechanisms/base/Mech1IndMotorState.h>
+#include <robotstate/IRobotStateChangeSubscriber.h>
+#include <robotstate/RobotStateChanges.h>
 
 class Arm;
+class Extender;
 class ControlData;
 class TeleopControl;
 
-class ArmStateHoldCone : public Mech1IndMotorState
+class ArmHoldState : public Mech1IndMotorState, public IRobotStateChangeSubscriber
 {
 public:
-    ArmStateHoldCone() = delete;
-    ArmStateHoldCone(std::string stateName, int stateId, ControlData *control, double target);
-    ~ArmStateHoldCone() = default;
+    ArmHoldState() = delete;
+    ArmHoldState(std::string stateName, int stateId, ControlData *control, double target);
+    ~ArmHoldState() = default;
 
     void Init() override;
     void Run() override;
     bool AtTarget() const override;
+    void Update(RobotStateChanges::StateChange change, int value) override;
 
 private:
     Arm *m_arm;
+    Extender *m_extender;
     TeleopControl *m_controller;
     ControlData *m_controlData;
+    bool m_coneMode;
+
+    static constexpr double m_offset[2] = {0.0412269,
+                                           0.0446119};
+    static constexpr double m_armComponent[2] = {0.000421601,
+                                                 -0.00010589};
+    static constexpr double m_extenderComponent[2] = {0.000703398,
+                                                      0.000633812};
+    static constexpr double m_armSquaredComponent[2] = {-0.00000267649,
+                                                        0.00000489504};
+    static constexpr double m_extenderSquaredComponent[2] = {-0.0000138281,
+                                                             0.00000226623};
 };

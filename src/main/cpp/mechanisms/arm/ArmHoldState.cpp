@@ -27,9 +27,11 @@
 // FRC includes
 
 // Team 302 includes
+#include <mechanisms/arm/Arm.h>
+#include <mechanisms/arm/ArmHoldState.h>
 #include <mechanisms/base/Mech1IndMotorState.h>
 #include <mechanisms/controllers/ControlData.h>
-#include <mechanisms/arm/ArmStateHoldCone.h>
+#include <mechanisms/extender/Extender.h>
 #include <mechanisms/MechanismFactory.h>
 #include <teleopcontrol/TeleopControl.h>
 
@@ -37,18 +39,21 @@
 
 using std::string;
 
-ArmStateHoldCone::ArmStateHoldCone(string stateName, int stateId, ControlData *control, double target) : Mech1IndMotorState(MechanismFactory::GetMechanismFactory()->GetArm(), stateName, stateId, control, target),
-                                                                                                         m_arm(MechanismFactory::GetMechanismFactory()->GetArm()),
-                                                                                                         m_controller(TeleopControl::GetInstance())
+ArmHoldState::ArmHoldState(string stateName, int stateId, ControlData *control, double target) : Mech1IndMotorState(MechanismFactory::GetMechanismFactory()->GetArm(), stateName, stateId, control, target),
+                                                                                                 m_arm(MechanismFactory::GetMechanismFactory()->GetArm()),
+                                                                                                 m_extender(MechanismFactory::GetMechanismFactory()->GetExtender()),
+                                                                                                 m_controller(TeleopControl::GetInstance()),
+                                                                                                 m_coneMode(true)
 {
 }
 
-void ArmStateHoldCone::Init()
+void ArmHoldState::Init()
 {
 }
 
-void ArmStateHoldCone::Run()
+void ArmHoldState::Run()
 {
+    auto percent = 0.0;
     if (m_controller != nullptr && m_arm != nullptr)
     {
         auto percent = m_controller->GetAxisValue(TeleopControlFunctions::MANUAL_ROTATE);
@@ -57,18 +62,33 @@ void ArmStateHoldCone::Run()
             percent *= GetCurrentTarget(); // if we want to change downward speed change,
                                            // update target in xml
         }
+        auto armAngle = m_arm->GetPositionDegrees().to<double>();
+        auto extenderPos = m_extender != nullptr ? m_extender->GetPositionInches().to<double>() : 0.0;
 
-        auto target = percent + ArmHoldPosHelper::CalculateHoldPositionTarget(m_arm->GetPositionDegrees().to<double>(),
-                                                                              MechanismFactory::GetMechanismFactory()->GetExtender()->GetPositionInches().to<double>(),
-                                                                              m_gamepieceMode,
-                                                                              m_grabberState);
+        auto slot = m_coneMode ? 0 : 1;
+
+        auto target = percent +
+                      m_offset[slot] +
+                      m_armComponent[slot] * armAngle +
+                      m_extenderComponent[slot] * extenderPos +
+                      m_armSquaredComponent[slot] * pow(armAngle, 2) +
+                      m_extenderSquaredComponent[slot] * pow(extenderPos, 2);
         m_arm->SetControlConstants(0, m_controlData);
         m_arm->UpdateTarget(target);
         m_arm->Update();
     }
 }
 
-bool ArmStateHoldCone::AtTarget() const
+bool ArmHoldState::AtTarget() const
 {
     return true;
+}
+
+void ArmHoldState::Update(RobotStateChanges::StateChange change, int value)
+{
+    if (change == RobotStateChanges::DesiredGamePiece || change == RobotStateChanges::HoldingGamePiece)
+    {
+        auto gamepiece = static_cast<RobotStateChanges::GamePiece>(value);
+        m_coneMode = gamepiece == RobotStateChanges::Cone;
+    }
 }
