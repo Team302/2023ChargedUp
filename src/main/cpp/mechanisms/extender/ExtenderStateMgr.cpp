@@ -176,17 +176,13 @@ void ExtenderStateMgr::CheckForGamepadTransitions()
                 m_targetState = EXTENDER_STATE::FLOOR_EXTEND;
                 m_prevState = m_targetState;
             }
-            else if (m_gamepieceMode != RobotStateChanges::Cube) // if we want cone or the gamepiece mode hasn't been updated
+            else if (m_gamepieceMode == RobotStateChanges::Cone) // if we want cone or the gamepiece mode hasn't been updated
             {
                 CheckForConeGamepadTransitions(controller);
             }
-            else if (m_gamepieceMode == RobotStateChanges::Cube)
+            else
             {
                 CheckForCubeGamepadTransitions(controller);
-            }
-            else if (m_targetState != EXTENDER_STATE::STARTING_POSITION_EXTEND)
-            {
-                m_targetState = EXTENDER_STATE::HOLD_POSITION_EXTEND;
             }
         }
     }

@@ -14,28 +14,23 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
+#include <algorithm>
 #include <vector>
 #include <robotstate/RobotStateChanges.h>
 #include <robotstate/RobotStateChangeBroker.h>
 #include <robotstate/IRobotStateChangeSubscriber.h>
 
-RobotStateChangeBroker::RobotStateChangeBroker(
-    RobotStateChanges::StateChange change) : m_change(change),
-                                             m_subscribers()
+RobotStateChangeBroker::RobotStateChangeBroker(RobotStateChanges::StateChange change) : m_change(change),
+                                                                                        m_subscribers()
 {
 }
 
-void RobotStateChangeBroker::AddSubscriber(
-    IRobotStateChangeSubscriber *item)
+void RobotStateChangeBroker::AddSubscriber(IRobotStateChangeSubscriber *item)
 {
-    for (auto subscriber : m_subscribers)
+    if (std::find(m_subscribers.begin(), m_subscribers.end(), item) == m_subscribers.end())
     {
-        if (subscriber == item)
-        {
-            return;
-        }
+        m_subscribers.emplace_back(item);
     }
-    m_subscribers.emplace_back(item);
 }
 
 void RobotStateChangeBroker::Notify(int value)

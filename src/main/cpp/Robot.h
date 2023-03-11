@@ -34,6 +34,9 @@ class RobotState;
 class Robot : public frc::TimedRobot
 {
 public:
+    Robot() = default;
+    ~Robot() = default;
+
     void RobotInit() override;
     void RobotPeriodic() override;
     void AutonomousInit() override;
