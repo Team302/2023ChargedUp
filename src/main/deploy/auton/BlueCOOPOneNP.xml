@@ -2,7 +2,7 @@
 <!DOCTYPE auton SYSTEM "auton.dtd">
 <auton>
 <primitive id="RESET_POSITION"
-	           pathname="BlueCOOPOne1Slow.wpilib.json"
+	           pathname="BlueCOOPOne1CubeSlow.wpilib.json"
                grabber="GRAB"/>
     <!--score preloaded cone-->
     <primitive id="DO_NOTHING"
@@ -26,14 +26,24 @@
     <primitive id="DO_NOTHING"
                arm="CONE_BACKROW_ROTATE"
                extender="STARTING_POSITION_EXTEND"
-               grabber="GRAB"
+               grabber="OPEN"
                time="0.5"
                />
-    <!--do nothing!-->
-    <primitive id="DO_NOTHING"
+    <!--drive over charging station-->
+    <primitive id="DRIVE_PATH"
+               pathname="BlueCOOPOne1CubeSlow.wpilib.json"
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
-               grabber="GRAB"
+               grabber="OPEN"
+               time="9.0"
+               />
+    <!--do nothing-->
+    <primitive id="DO_NOTHING"
+               headingOption="SPECIFIED_ANGLE"
+               heading="0"
+               arm="STARTING_POSITION_ROTATE"
+               extender="STARTING_POSITION_EXTEND"
+               grabber="OPEN"
                time="10.0"
                />
 </auton>
