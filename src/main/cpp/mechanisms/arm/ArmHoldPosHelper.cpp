@@ -44,13 +44,13 @@ double ArmHoldPosHelper::CalculateHoldPositionTarget(double armAngle,
         {
             // f term function for cube
             Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ArmHoldPos", "ArrivedAt", "Game mode cube || grabber open");
-            return (m_cubeOffset + m_cubeArmComponent * armAngle + m_cubeExtenderComponent * extenderPos + m_cubeArmSquaredComponent * pow(armAngle, 2) + m_cubeExtenderSquaredComponent * pow(extenderPos, 2));
+            return (1.03 * (m_cubeOffset + m_cubeArmComponent * armAngle + m_cubeExtenderComponent * extenderPos + m_cubeArmSquaredComponent * pow(armAngle, 2) + m_cubeExtenderSquaredComponent * pow(extenderPos, 2)));
         }
         else if (gamepieceMode == RobotStateChanges::GamePiece::Cone && grabberState == GrabberStateMgr::GRABBER_STATE::GRAB)
         {
             // f term function for cone
             Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ArmHoldPos", "ArrivedAt", "Game mode cone && grabber closed");
-            return (m_coneOffset + m_coneArmComponent * armAngle + m_coneExtenderComponent * extenderPos + m_coneArmSquaredComponent * pow(armAngle, 2) + m_coneExtenderSquaredComponent * pow(extenderPos, 2));
+            return (1.03 * (m_coneOffset + m_coneArmComponent * armAngle + m_coneExtenderComponent * extenderPos + m_coneArmSquaredComponent * pow(armAngle, 2) + m_coneExtenderSquaredComponent * pow(extenderPos, 2)));
         }
     }
 
