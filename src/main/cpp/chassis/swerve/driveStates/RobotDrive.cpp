@@ -19,12 +19,14 @@
 #include <frc/filter/SlewRateLimiter.h>
 #include <units/velocity.h>
 #include <units/angle.h>
+#include <frc/Compressor.h>
 
 // Team302 Includes
 
 #include <chassis/swerve/driveStates/RobotDrive.h>
 #include <chassis/ChassisFactory.h>
 #include <chassis/ChassisMovement.h>
+#include <hw/factories/CompressorFactory.h>
 #include <utils/logging/Logger.h>
 
 using std::string;
@@ -93,7 +95,8 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates(Chass
 
     auto a = vx - omegaL;
     auto b = vx + omegaL;
-    auto c = vy - omegaW;
+    auto c = vy -
+             omegaW;
     auto d = vy + omegaW;
 
     // here we'll negate the angle to conform to the positive CCW convention
@@ -101,6 +104,18 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates(Chass
     m_flState.angle = -1.0 * m_flState.angle.Degrees();
     m_flState.speed = units::velocity::meters_per_second_t(sqrt(pow(b.to<double>(), 2) + pow(d.to<double>(), 2)));
     double maxCalcSpeed = abs(m_flState.speed.to<double>());
+
+    bool CompressorSpeedLimit(ChassisMovement maxCalcSpeed);
+    {
+        if (maxCalcSpeed > 85)
+        {
+            m_compressor->Disable();
+        }
+        else if (maxCalcSpeed < 75)
+        {
+            m_compressor->EnableAnalog(m_minPressure, m_maxPressure);
+        }
+    }
 
     m_frState.angle = units::angle::radian_t(atan2(b.to<double>(), c.to<double>()));
     m_frState.angle = -1.0 * m_frState.angle.Degrees();

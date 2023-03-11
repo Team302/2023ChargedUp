@@ -110,9 +110,6 @@ public:
     /// @brief Reset yaw to 0 or 180 degrees depending on alliance
     void ResetYaw();
 
-    // Compressor Limit
-    void CompressorSpeedLimit();
-
     // static constexpr auto MaxSpeed = 3.0_mps;
     // static constexpr units::angular_velocity::radians_per_second_t MaxAngularSpeed{wpi::numbers::pi};
 

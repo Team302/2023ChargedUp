@@ -19,6 +19,8 @@
 #include <units/length.h>
 #include <units/time.h>
 #include <units/velocity.h>
+#include <units/pressure.h>
+#include <frc/Compressor.h>
 
 // Team302 Includes
 #include <chassis/swerve/SwerveChassis.h>
@@ -36,6 +38,9 @@ public:
 
     void Init(ChassisMovement &chassisMovement) override;
 
+    // Compressor Limit
+    bool CompressorSpeedLimit(ChassisMovement, double);
+
 protected:
     frc::SwerveModuleState m_flState;
     frc::SwerveModuleState m_frState;
@@ -48,4 +53,7 @@ protected:
 
 private:
     void CorrectForTipping(ChassisMovement &chassisMovement);
+    frc::Compressor *m_compressor;
+    units::pressure::pounds_per_square_inch_t m_minPressure;
+    units::pressure::pounds_per_square_inch_t m_maxPressure;
 };

@@ -405,10 +405,3 @@ void SwerveChassis::SetTargetHeading(units::angle::degree_t targetYaw)
 {
     m_targetHeading = targetYaw;
 }
-
-void SwerveChassis::CompressorSpeedLimit()
-{
-    if ()
-    {
-    }
-}
