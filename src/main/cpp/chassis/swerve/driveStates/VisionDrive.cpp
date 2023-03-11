@@ -27,6 +27,8 @@
 #include <utils/logging/Logger.h>
 
 VisionDrive::VisionDrive(RobotDrive *robotDrive) : RobotDrive(),
+                                                   m_currentState(VISION_STATE::LOOKING_FOR_APRIL_TAG),
+                                                   m_previousState(VISION_STATE::NORMAL_DRIVE),
                                                    m_robotDrive(robotDrive),
                                                    m_chassis(ChassisFactory::GetChassisFactory()->GetSwerveChassis()),
                                                    m_vision(DragonVision::GetDragonVision())
@@ -36,104 +38,33 @@ VisionDrive::VisionDrive(RobotDrive *robotDrive) : RobotDrive(),
 std::array<frc::SwerveModuleState, 4> VisionDrive::UpdateSwerveModuleStates(
     ChassisMovement &chassisMovement)
 {
-    auto targetData = DragonVision::GetDragonVision()->getTargetInfo();
-
-    if (targetData != nullptr)
+    switch (m_currentState)
     {
-        static units::length::inch_t yTarget = units::length::inch_t(0.0);
-        static units::length::inch_t xTarget = units::length::inch_t(0.0);
-
-        frc::DriverStation::Alliance alliance = FMSData::GetInstance()->GetAllianceColor();
-
-        // store offsets from function
-        if (m_wantReset || (m_storedGridPos != chassisMovement.gridPosition || m_storedNodePos != chassisMovement.nodePosition))
-        {
-            m_wantReset = false;
-
-            m_storedGridPos = chassisMovement.gridPosition;
-            m_storedNodePos = chassisMovement.nodePosition;
-
-            m_autoAlignYPos = units::length::inch_t(getOffsetToTarget(chassisMovement.gridPosition, chassisMovement.nodePosition, targetData->getApriltagID()) + targetData->getYdistanceToTargetRobotFrame().to<double>());
-
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "AutoAlignYPos", m_autoAlignYPos.to<double>());
-
-            if (alliance == frc::DriverStation::Alliance::kBlue)
-            {
-                m_autoAlignXPos = targetData->getXdistanceToTargetRobotFrame() - units::length::inch_t(m_robotFrameXDistCorrection);
-                yTarget = m_autoAlignYPos - m_chassis->GetPose().Y();
-                xTarget = m_autoAlignXPos - m_chassis->GetPose().X();
-            }
-            else
-            {
-                m_autoAlignXPos = targetData->getXdistanceToTargetRobotFrame() + units::length::inch_t(m_robotFrameXDistCorrection);
-                yTarget = m_autoAlignYPos + m_chassis->GetPose().Y();
-                xTarget = m_autoAlignXPos + m_chassis->GetPose().X();
-            }
-
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "AutoAlignXPos", m_autoAlignXPos.to<double>());
-        }
-
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "YTarget", yTarget.to<double>());
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "XTarget", xTarget.to<double>());
-
-        units::length::inch_t yError = units::length::inch_t(0.0);
-        units::length::inch_t xError = units::length::inch_t(0.0);
-
-        if (alliance == frc::DriverStation::Alliance::kBlue)
-        {
-            yError = yTarget - m_chassis->GetPose().Y();
-            xError = xTarget - m_chassis->GetPose().X();
-        }
-        else
-        {
-            xError = xTarget + m_chassis->GetPose().X();
-            yError = yTarget + m_chassis->GetPose().Y();
-        }
-
-        // once we get within threshold, switch to logic similar to below
-        if (abs(yError.to<double>()) < m_autoAlignTolerance && abs(xError.to<double>()) < m_autoAlignTolerance)
-        {
-            // switch pipeline to Cone_Node or Cube_Node
-            if (chassisMovement.nodePosition == ChassisOptionEnums::RELATIVE_POSITION::LEFT || chassisMovement.nodePosition == ChassisOptionEnums::RELATIVE_POSITION::RIGHT)
-            {
-                m_vision->setPipeline(DragonLimelight::PIPELINE_MODE::CONE_NODE);
-            }
-            else
-            {
-                m_vision->setPipeline(DragonLimelight::PIPELINE_MODE::APRIL_TAG);
-            }
-
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "InRawVision?", true);
-
-            // override yError and xError to data from pipeline
-            yError = targetData->getYdistanceToTargetRobotFrame();
-            xError = targetData->getXdistanceToTargetRobotFrame();
-
-            m_kP_Y = m_visionKP;
-            m_inRawVisionMode = true;
-        }
-        else
-        {
-            m_kP_Y = m_autoAlignKP;
-            m_inRawVisionMode = false;
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "InRawVision?", false);
-        }
-
-        if (!AtTargetY())
-        {
-            chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(m_kP_Y * yError.to<double>());
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "AtTarget?", false);
-        }
-        else
-        {
-            chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(0.0);
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "AtTarget?", true);
-        }
-
-        // chassisMovement.chassisSpeeds.vx = units::velocity::meters_per_second_t(m_kP_X * xError.to<double>());
-
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "VY", chassisMovement.chassisSpeeds.vy.to<double>());
+    case VISION_STATE::NORMAL_DRIVE:
+        break;
+    case VISION_STATE::LOOKING_FOR_APRIL_TAG:
+        LookingForTag();
+        break;
+    case VISION_STATE::FOUND_APRIL_TAG:
+        FoundTag(chassisMovement);
+        break;
+    case VISION_STATE::DRIVE_TO_TARGET:
+        DriveToTarget(chassisMovement);
+        break;
+    case VISION_STATE::ALIGN_RAW_VISION:
+        AlignRawVision(chassisMovement);
+        break;
+    case VISION_STATE::ALIGNED:
+        Aligned(chassisMovement);
+        break;
     }
+
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "CurrentState", m_currentState);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "PreviousState", m_previousState);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "VY", chassisMovement.chassisSpeeds.vy.to<double>());
+
+    // temporary to disable driving
+    chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(0.0);
 
     return m_robotDrive->UpdateSwerveModuleStates(chassisMovement);
 }
@@ -141,6 +72,187 @@ std::array<frc::SwerveModuleState, 4> VisionDrive::UpdateSwerveModuleStates(
 void VisionDrive::Init(
     ChassisMovement &chassisMovement)
 {
+}
+
+void VisionDrive::LookingForTag()
+{
+    bool exit = false;
+
+    // Entry
+    if (m_currentState != m_previousState)
+    {
+        m_vision->setPipeline(DragonLimelight::PIPELINE_MODE::APRIL_TAG);
+    }
+
+    // Cyclic
+    auto targetData = DragonVision::GetDragonVision()->getTargetInfo();
+
+    if (targetData != nullptr)
+    {
+        m_aprilTagID = targetData->getApriltagID();
+        m_yDistanceToTag = targetData->getYdistanceToTargetRobotFrame();
+        m_xDistanceToTag = targetData->getXdistanceToTargetRobotFrame();
+        exit = true;
+    }
+    else
+    {
+        // LATER, add in timer for 0.2 seconds, if no april tag switch to align with raw vision
+    }
+
+    // Exit
+    if (exit)
+    {
+        m_currentState = VISION_STATE::FOUND_APRIL_TAG;
+        m_previousState = VISION_STATE::LOOKING_FOR_APRIL_TAG;
+    }
+}
+
+void VisionDrive::FoundTag(ChassisMovement &chassisMovement)
+{
+    bool exit = false;
+
+    // Entry
+    if (m_currentState != m_previousState)
+    {
+    }
+
+    // Cyclic
+    frc::DriverStation::Alliance alliance = FMSData::GetInstance()->GetAllianceColor();
+
+    m_storedGridPos = chassisMovement.gridPosition;
+    m_storedNodePos = chassisMovement.nodePosition;
+
+    units::length::inch_t yOffset = units::length::inch_t(getOffsetToTarget(chassisMovement.gridPosition, chassisMovement.nodePosition, m_aprilTagID)) + m_yDistanceToTag;
+
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "YOffset", yOffset.to<double>());
+
+    if (alliance == frc::DriverStation::Alliance::kBlue)
+    {
+        units::length::inch_t xOffset = m_xDistanceToTag - units::length::inch_t(m_robotFrameXDistCorrection);
+
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "XOffset", xOffset.to<double>());
+
+        m_yTargetPos = yOffset - m_chassis->GetPose().Y();
+        m_xTargetPos = xOffset - m_chassis->GetPose().X();
+    }
+    else
+    {
+        units::length::inch_t xOffset = m_xDistanceToTag + units::length::inch_t(m_robotFrameXDistCorrection);
+
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "XOffset", xOffset.to<double>());
+
+        m_yTargetPos = yOffset + m_chassis->GetPose().Y();
+        m_xTargetPos = xOffset + m_chassis->GetPose().X();
+    }
+
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "YTargetPos", m_yTargetPos.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "XTargetPos", m_xTargetPos.to<double>());
+
+    // Only run once
+    exit = true;
+
+    // Exit
+    if (exit)
+    {
+        m_currentState = VISION_STATE::DRIVE_TO_TARGET;
+        m_previousState = VISION_STATE::FOUND_APRIL_TAG;
+    }
+}
+
+void VisionDrive::DriveToTarget(ChassisMovement &chassisMovement)
+{
+    bool exit = false;
+
+    // Entry
+    if (m_currentState != m_previousState)
+    {
+    }
+
+    // Cyclic
+    units::length::inch_t yError = units::length::inch_t(0.0);
+    units::length::inch_t xError = units::length::inch_t(0.0);
+
+    // once we get within threshold, switch to logic similar to below
+    if (abs(yError.to<double>()) < m_autoAlignTolerance && abs(xError.to<double>()) < m_autoAlignTolerance)
+    {
+        exit = true;
+    }
+
+    chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(m_autoAlignKP * yError.to<double>());
+    // need to set chassisSpeeds vx
+
+    // Exit
+    if (exit)
+    {
+        m_currentState = VISION_STATE::ALIGN_RAW_VISION;
+        m_previousState = VISION_STATE::DRIVE_TO_TARGET;
+    }
+}
+
+void VisionDrive::AlignRawVision(ChassisMovement &chassisMovement)
+{
+    bool exit = false;
+
+    // Entry
+    if (m_currentState != m_previousState)
+    {
+    }
+
+    // Cyclic
+    units::length::inch_t yError = units::length::inch_t(0.0);
+    units::length::inch_t xError = units::length::inch_t(0.0);
+
+    // switch pipeline to Cone_Node or Cube_Node
+    if (chassisMovement.nodePosition == ChassisOptionEnums::RELATIVE_POSITION::LEFT || chassisMovement.nodePosition == ChassisOptionEnums::RELATIVE_POSITION::RIGHT)
+    {
+        m_vision->setPipeline(DragonLimelight::PIPELINE_MODE::CONE_NODE);
+    }
+    else
+    {
+        m_vision->setPipeline(DragonLimelight::PIPELINE_MODE::APRIL_TAG);
+    }
+
+    // get targetdata
+    auto targetData = DragonVision::GetDragonVision()->getTargetInfo();
+
+    if (targetData != nullptr)
+    {
+        // override yError and xError to data from pipeline
+        yError = targetData->getYdistanceToTargetRobotFrame();
+        xError = targetData->getXdistanceToTargetRobotFrame();
+
+        exit = AtTargetY(targetData);
+    }
+
+    chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(m_visionKP * yError.to<double>());
+
+    // Exit
+    if (exit)
+    {
+        m_currentState = VISION_STATE::ALIGNED;
+        m_previousState = VISION_STATE::ALIGN_RAW_VISION;
+    }
+}
+
+void VisionDrive::Aligned(ChassisMovement &chassisMovement)
+{
+    bool exit = false;
+
+    // Entry
+    if (m_currentState != m_previousState)
+    {
+    }
+
+    // Cyclic
+
+    // set arm and extender state to automatically score
+
+    chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(0.0);
+
+    // Exit
+    if (exit)
+    {
+    }
 }
 
 bool VisionDrive::AtTargetX()
@@ -177,11 +289,8 @@ bool VisionDrive::AtTargetX()
     return false;
 }
 
-bool VisionDrive::AtTargetY()
+bool VisionDrive::AtTargetY(std::shared_ptr<DragonVisionTarget> targetData)
 {
-    /*
-    auto targetData = DragonVision::GetDragonVision()->getTargetInfo();
-
     if (targetData != nullptr)
     {
         units::length::inch_t yError = targetData->getYdistanceToTargetRobotFrame();
@@ -191,7 +300,6 @@ bool VisionDrive::AtTargetY()
             return true;
         }
     }
-    */
     return false;
 }
 
@@ -240,5 +348,6 @@ double VisionDrive::getOffsetToTarget(ChassisOptionEnums::RELATIVE_POSITION targ
 
 void VisionDrive::ResetVisionDrive()
 {
-    m_wantReset = true;
+    m_previousState = m_currentState;
+    m_currentState = VISION_STATE::LOOKING_FOR_APRIL_TAG;
 }

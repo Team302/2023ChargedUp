@@ -97,12 +97,6 @@ void HolonomicDrive::Run()
             m_hasResetPosition = false;
         }
 
-        if (m_swerve != nullptr)
-        {
-            auto wheelbase = m_swerve->GetWheelBase();
-            auto track = m_swerve->GetTrack();
-        }
-
         // Auto alignment to grid nodes
         if (IsAutoAligning())
         {

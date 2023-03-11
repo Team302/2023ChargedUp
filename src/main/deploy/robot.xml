@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <robot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-   <pdp
+  <pdp
     canId="1"
     type="REV" />
-   <pcm
+  <pcm
     canId="1"
     type="REV"
      minPSI="95.0"
@@ -21,7 +21,7 @@
     mountingheight="37.325"
     horizontaloffset="-7.689"
     forwardOffset="-7.24"
-    yaw="17.7"
+    yaw="14.96"
     roll="90"
     pitch="0.0"
     targetheight="24.125"
@@ -33,7 +33,7 @@
     crosshairx=""
     crosshairy=""
     secondcrosshairx=""
-    secondcrosshairy="" />
+    secondcrosshairy=""/>
   <limelight
     usage="SECONDARYLIMELIGHT"
     tablename="limelight-back"
@@ -41,7 +41,7 @@
     horizontaloffset="0.0"
     forwardOffset="-8.405"
     yaw="0"
-    roll="0.0"
+    roll="180"
     pitch="0.0"
     targetheight=""
     targetheight2=""
@@ -53,9 +53,9 @@
     crosshairy=""
     secondcrosshairx=""
     secondcrosshairy="" />
-  <!-- led
+  <led
     pwmId="8"
-    number="144" / -->
+    number="122"/>
   <chassis
     type="SWERVE"
     wheelDiameter="4.0"
@@ -121,7 +121,7 @@
       <cancoder
         canId="1"
         canBusName="canivore"
-        offset="123.311"
+        offset="-118.301"
         reverse = "false"
         />
     </swervemodule>
@@ -179,7 +179,7 @@
       <cancoder
         canId="19"
         canBusName="canivore"
-        offset="-4.307"
+        offset="-146.953"
         reverse="false" />
     </swervemodule>
     <swervemodule
@@ -236,7 +236,7 @@
       <cancoder
         canId="3"
         canBusName="canivore"
-        offset="-136.143"
+        offset="-102.041"
         reverse="false" />
     </swervemodule>
     <swervemodule
@@ -294,19 +294,20 @@
       <cancoder
         canId="17"
         canBusName="canivore"
-        offset="-68.467"
+        offset="-23.643"
         reverse="false" />
     </swervemodule>
   </chassis>
+
   <mechanism
     type="ARM"
     networkTable="armNT"
     controlFile="arm.xml">
     <motor
       usage="ARM"
-      canId="5"
+      canId="4"
       canBusName="rio"
-      pdpID="5"
+      pdpID="4"
       type="FALCON"
       inverted="false"
       sensorInverted="false"
@@ -323,7 +324,7 @@
       voltageCompensationEnable="true"
       countsPerDegree="455.15" />
     <cancoder
-      canId="5"
+      canId="4"
       canBusName="rio"
       offset="0.0"
       reverse="false" />
@@ -334,9 +335,9 @@
     controlFile="extender.xml">
     <motor
       usage="Extender"
-      canId="4"
+      canId="15"
       canBusName="rio"
-      pdpID="4"
+      pdpID="15"
       type="FALCON"
       inverted="false"
       sensorInverted="false"
@@ -367,7 +368,6 @@
       digitalId="9" 
       reversed="true"/> 
   </mechanism>
-
   <roborio
     orientation="X_LEFT_Y_UP" />
 </robot>

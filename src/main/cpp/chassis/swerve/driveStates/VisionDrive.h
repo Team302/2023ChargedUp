@@ -34,16 +34,41 @@ public:
     void Init(
         ChassisMovement &chassisMovement) override;
 
-    bool AtTargetX();
-    bool AtTargetY();
-
     void ResetVisionDrive();
 
 private:
+    enum VISION_STATE
+    {
+        NORMAL_DRIVE,
+        LOOKING_FOR_APRIL_TAG,
+        FOUND_APRIL_TAG,
+        DRIVE_TO_TARGET,
+        ALIGN_RAW_VISION,
+        ALIGNED
+    };
+
+    // state functions
+    void LookingForTag();
+    void FoundTag(ChassisMovement &chassisMovement);
+    void DriveToTarget(ChassisMovement &chassisMovement);
+    void AlignRawVision(ChassisMovement &chassisMovement);
+    void Aligned(ChassisMovement &chassisMovement);
+    void CalcWheelSpeeds(ChassisMovement &chassisMovement);
+
+    bool AtTargetX();
+    bool AtTargetY(std::shared_ptr<DragonVisionTarget> targetData);
+
+    VISION_STATE m_currentState;
+    VISION_STATE m_previousState;
+
     RobotDrive *m_robotDrive;
 
     double m_kP_X = 0.1;
     double m_kP_Y = 0.075;
+
+    int m_aprilTagID = -1;
+    units::length::inch_t m_yDistanceToTag = units::length::inch_t(0.0);
+    units::length::inch_t m_xDistanceToTag = units::length::inch_t(0.0);
 
     const double m_autoAlignKP = 0.075;
     const double m_visionKP = 0.1;
@@ -53,11 +78,8 @@ private:
 
     const double m_robotFrameXDistCorrection = 30.0;
 
-    bool m_wantReset = false;
-    bool m_inRawVisionMode = false;
-
-    units::length::inch_t m_autoAlignYPos = units::length::inch_t(0.0);
-    units::length::inch_t m_autoAlignXPos = units::length::inch_t(0.0);
+    units::length::inch_t m_yTargetPos = units::length::inch_t(0.0);
+    units::length::inch_t m_xTargetPos = units::length::inch_t(0.0);
 
     ChassisOptionEnums::RELATIVE_POSITION m_storedGridPos = ChassisOptionEnums::RELATIVE_POSITION::CENTER;
     ChassisOptionEnums::RELATIVE_POSITION m_storedNodePos = ChassisOptionEnums::RELATIVE_POSITION::CENTER;
