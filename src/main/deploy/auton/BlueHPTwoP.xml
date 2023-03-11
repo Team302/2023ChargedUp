@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE auton SYSTEM "auton.dtd">
+<auton>
+<primitive id="RESET_POSITION"
+	   pathname="BlueHPOne1.wpilib.json"
+       grabber="GRAB"/>
+    <!--score preloaded cone-->
+    <!--drive to charing station-->
+    <primitive id="DRIVE_PATH"
+               pathname="BlueHPOne1.wpilib.json"
+               headingOption="SPECIFIED_ANGLE"
+               heading="180"
+               arm="STARTING_POSITION_ROTATE"
+               grabber="OPEN"
+               time="0.5"
+               />
+    <primitive id="DRIVE_PATH"
+               pathname="BlueHPOne4.wpilib.json"
+               headingOption="SPECIFIED_ANGLE"
+               heading="180"
+               arm="STARTING_POSITION_ROTATE"
+               grabber="OPEN"
+               time="0.75"
+               />
+    <primitive id="DRIVE_PATH"
+               pathname="BlueHPOne2.wpilib.json"
+               headingOption="SPECIFIED_ANGLE"
+               heading="0"
+               grabber="OPEN"
+               time="8.0"
+               />
+</auton>

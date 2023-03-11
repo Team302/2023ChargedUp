@@ -25,5 +25,5 @@ SpecifiedHeading::SpecifiedHeading() : ISwerveDriveOrientation(ChassisOptionEnum
 void SpecifiedHeading::UpdateChassisSpeeds(ChassisMovement &chassisMovement)
 {
     m_targetAngle = chassisMovement.yawAngle;
-    chassisMovement.chassisSpeeds.omega -= CalcHeadingCorrection(m_targetAngle, m_kPMaintainHeadingControl);
+    chassisMovement.chassisSpeeds.omega -= CalcHeadingCorrection(m_targetAngle, m_kPGoalHeadingControl);
 }

@@ -27,8 +27,8 @@ using frc::Pose2d;
 TrajectoryDrive::TrajectoryDrive(RobotDrive *robotDrive) : RobotDrive(),
                                                            m_trajectory(),
                                                            m_robotDrive(robotDrive),
-                                                           m_holonomicController(frc2::PIDController{1.15, 0.0, 0},
-                                                                                 frc2::PIDController{1.15, 0.0, 0},
+                                                           m_holonomicController(frc2::PIDController{1.0, 0.0, 0},
+                                                                                 frc2::PIDController{1.0, 0.0, 0},
                                                                                  frc::ProfiledPIDController<units::radian>{0.0, 0.0, 0,
                                                                                                                            frc::TrapezoidProfile<units::radian>::Constraints{0_rad_per_s, 0_rad_per_s / 1_s}}),
                                                            m_desiredState(),
@@ -130,7 +130,7 @@ bool TrajectoryDrive::IsDone()
 
         // Check if the current pose and the trajectory's final pose are the same
 
-        if (IsSamePose(curPos, m_finalState.pose, 10.0))
+        if (IsSamePose(curPos, m_finalState.pose, 7.5))
         {
             isDone = true;
             m_whyDone = "Current Pose = Trajectory final pose";
