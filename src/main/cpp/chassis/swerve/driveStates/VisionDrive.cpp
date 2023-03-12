@@ -264,8 +264,8 @@ void VisionDrive::Aligned(ChassisMovement &chassisMovement)
 
     // set arm and extender state to automatically score
 
-    // temporary
-    //  chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(0.0);
+    chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(0.0);
+    chassisMovement.chassisSpeeds.vx = units::velocity::meters_per_second_t(0.0);
 
     // Exit
     if (exit)
