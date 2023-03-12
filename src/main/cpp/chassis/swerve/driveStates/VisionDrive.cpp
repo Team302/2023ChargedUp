@@ -27,6 +27,8 @@
 #include <utils/logging/Logger.h>
 
 VisionDrive::VisionDrive(RobotDrive *robotDrive) : RobotDrive(),
+                                                   m_visionVYPID(frc::PIDController(1.0, 0.05, 0.0)), // kP, kI, kD
+                                                   m_visionVXPID(frc::PIDController(1.0, 0.05, 0.0)), // kP, kI, kD
                                                    m_currentState(VISION_STATE::LOOKING_FOR_APRIL_TAG),
                                                    m_previousState(VISION_STATE::NORMAL_DRIVE),
                                                    m_robotDrive(robotDrive),
@@ -83,14 +85,13 @@ void VisionDrive::LookingForTag(ChassisMovement &chassisMovement)
     if (m_currentState != m_previousState)
     {
         m_vision->setPipeline(DragonLimelight::PIPELINE_MODE::APRIL_TAG);
+        m_previousState = VISION_STATE::LOOKING_FOR_APRIL_TAG;
     }
 
     // Cyclic
     auto targetData = DragonVision::GetDragonVision()->getTargetInfo();
 
-    auto yaw = PigeonFactory::GetFactory()->GetCenterPigeon()->GetYaw();
-
-    if ((targetData != nullptr) /*&& (abs(yaw - chassisMovement.yawAngle.to<double>()) < m_findTagAngleTolerance)*/)
+    if (targetData != nullptr)
     {
         m_aprilTagID = targetData->getApriltagID();
         m_yDistanceToTag = targetData->getYdistanceToTargetRobotFrame();
@@ -106,7 +107,6 @@ void VisionDrive::LookingForTag(ChassisMovement &chassisMovement)
     if (exit)
     {
         m_currentState = VISION_STATE::FOUND_APRIL_TAG;
-        m_previousState = VISION_STATE::LOOKING_FOR_APRIL_TAG;
     }
 }
 
@@ -117,6 +117,7 @@ void VisionDrive::FoundTag(ChassisMovement &chassisMovement)
     // Entry
     if (m_currentState != m_previousState)
     {
+        m_previousState = VISION_STATE::FOUND_APRIL_TAG;
     }
 
     // Cyclic
@@ -145,7 +146,6 @@ void VisionDrive::FoundTag(ChassisMovement &chassisMovement)
     if (exit)
     {
         m_currentState = VISION_STATE::DRIVE_TO_TARGET;
-        m_previousState = VISION_STATE::FOUND_APRIL_TAG;
     }
 }
 
@@ -156,6 +156,7 @@ void VisionDrive::DriveToTarget(ChassisMovement &chassisMovement)
     // Entry
     if (m_currentState != m_previousState)
     {
+        m_previousState = VISION_STATE::DRIVE_TO_TARGET;
     }
 
     // Cyclic
@@ -172,12 +173,25 @@ void VisionDrive::DriveToTarget(ChassisMovement &chassisMovement)
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "XError", xError.to<double>());
 
     // If we are past charging station, only drive on x axis
-    // if (abs(xError.to<double>()) < m_driveXTolerance) // this should be alliance dependent
+    if (abs(xError.to<double>()) < m_driveXTolerance)
     {
-        chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(m_autoAlignKP_Y * yError.to<double>());
+        // chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(m_autoAlignKP_Y * yError.to<double>());
+        if (yError.to<double>() < 0.0)
+        {
+            chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(-1.0);
+        }
+        else
+        {
+            chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(1.0);
+        }
     }
 
-    //    chassisMovement.chassisSpeeds.vx = units::velocity::meters_per_second_t(m_autoAlignKP_X * xError.to<double>());
+    // chassisMovement.chassisSpeeds.vx = units::velocity::meters_per_second_t(m_autoAlignKP_X * xError.to<double>());
+
+    if (abs(xError.to<double>()) > m_autoAlignXTolerance)
+    {
+        chassisMovement.chassisSpeeds.vx = units::velocity::meters_per_second_t(1.0);
+    }
 
     // once we get within threshold, switch to logic similar to below
     if ((abs(yError.to<double>()) < m_autoAlignYTolerance) && (abs(xError.to<double>()) < m_autoAlignXTolerance))
@@ -188,12 +202,7 @@ void VisionDrive::DriveToTarget(ChassisMovement &chassisMovement)
     // Exit
     if (exit)
     {
-        // m_currentState = VISION_STATE::ALIGN_RAW_VISION;
-
-        // temporary
-        m_currentState = VISION_STATE::ALIGNED;
-
-        m_previousState = VISION_STATE::DRIVE_TO_TARGET;
+        m_currentState = VISION_STATE::ALIGN_RAW_VISION;
     }
 }
 
@@ -202,8 +211,13 @@ void VisionDrive::AlignRawVision(ChassisMovement &chassisMovement)
     bool exit = false;
 
     // Entry
+    DragonLimelight::PIPELINE_MODE pipelineMode = DragonLimelight::APRIL_TAG;
+
     if (m_currentState != m_previousState)
     {
+        m_previousState = VISION_STATE::ALIGN_RAW_VISION;
+        m_visionVYPID.SetSetpoint(0.0);
+        m_visionVXPID.SetSetpoint(0.0);
     }
 
     // Cyclic
@@ -214,10 +228,12 @@ void VisionDrive::AlignRawVision(ChassisMovement &chassisMovement)
     if (chassisMovement.nodePosition == ChassisOptionEnums::RELATIVE_POSITION::LEFT || chassisMovement.nodePosition == ChassisOptionEnums::RELATIVE_POSITION::RIGHT)
     {
         m_vision->setPipeline(DragonLimelight::PIPELINE_MODE::CONE_NODE);
+        pipelineMode = DragonLimelight::PIPELINE_MODE::CONE_NODE;
     }
     else
     {
         m_vision->setPipeline(DragonLimelight::PIPELINE_MODE::APRIL_TAG);
+        pipelineMode = DragonLimelight::PIPELINE_MODE::APRIL_TAG;
     }
 
     // get targetdata
@@ -227,22 +243,37 @@ void VisionDrive::AlignRawVision(ChassisMovement &chassisMovement)
     {
         // override yError and xError to data from pipeline
         yError = targetData->getYdistanceToTargetRobotFrame();
-        xError = targetData->getXdistanceToTargetRobotFrame();
+        xError = targetData->getXdistanceToTargetRobotFrame() - units::length::inch_t(m_robotFrameXDistCorrection);
 
-        exit = AtTargetY(targetData);
+        exit = (AtTargetY(targetData) && AtTargetX(targetData));
     }
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "YError", yError.to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "XError", xError.to<double>());
 
-    // temporary
-    chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(m_visionKP * yError.to<double>());
+    units::velocity::meters_per_second_t ySpeed = units::velocity::meters_per_second_t(0.0);
+    units::velocity::meters_per_second_t xSpeed = units::velocity::meters_per_second_t(0.0);
+
+    if (pipelineMode == targetData->getTargetType())
+    {
+        ySpeed = units::length::meter_t(m_visionVYPID.Calculate(units::length::meter_t(yError).to<double>())) / 1_s;
+
+        if (abs(yError.to<double>()) < m_tolerance)
+        {
+            xSpeed = units::length::meter_t(m_visionVXPID.Calculate(units::length::meter_t(xError).to<double>())) / 1_s;
+        }
+    }
+
+    chassisMovement.chassisSpeeds.vy = ySpeed;
+    chassisMovement.chassisSpeeds.vx = xSpeed;
+
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "YSpeed", ySpeed.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "XSpeed", xSpeed.to<double>());
 
     // Exit
     if (exit)
     {
         m_currentState = VISION_STATE::ALIGNED;
-        m_previousState = VISION_STATE::ALIGN_RAW_VISION;
     }
 }
 
@@ -259,8 +290,8 @@ void VisionDrive::Aligned(ChassisMovement &chassisMovement)
 
     // set arm and extender state to automatically score
 
-    // temporary
-    //  chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(0.0);
+    chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(0.0);
+    chassisMovement.chassisSpeeds.vx = units::velocity::meters_per_second_t(0.0);
 
     // Exit
     if (exit)
@@ -268,37 +299,30 @@ void VisionDrive::Aligned(ChassisMovement &chassisMovement)
     }
 }
 
-bool VisionDrive::AtTargetX()
-{ /*
-     if (DragonVision::GetDragonVision()->getTargetInfo() != nullptr)
-     {
-         auto targetData = DragonVision::GetDragonVision()->getTargetInfo();
-         units::angle::degree_t verticalAngle = targetData->getVerticalAngleToTarget();
+bool VisionDrive::AtTargetX(std::shared_ptr<DragonVisionTarget> targetData)
+{
+    if (targetData != nullptr)
+    {
+        units::length::inch_t xError = targetData->getXdistanceToTargetRobotFrame();
 
-         if(targetData->getTargetType() == DragonLimelight::PIPELINE_MODE::RETRO_REFLECTIVE)
-         {
+        units::angle::degree_t verticalAngle = targetData->getVerticalAngleToTarget();
 
-         }
-
-         if (verticalAngle.to<double>() > 0.0) // looking at upper cone node, need to use a farther distance for at target
-         {
-             if (abs(verticalAngle.to<double>() - m_highConeDistance) < m_tolerance)
-             {
-                 return true;
-             }
-         }
-         else if (verticalAngle.to<double>() < 0.0) // looking at lower cone node, need to use closer distance for at target
-         {
-             if (abs(verticalAngle.to<double>() - m_lowConeDistance) < m_tolerance)
-             {
-                 return true;
-             }
-         }
-         else
-         {
-             return false;
-         }
-     }*/
+        // vertical angle is positive, so we are looking at high cone
+        if (verticalAngle.to<double>() > 0.0)
+        {
+            if ((abs(xError.to<double>()) - m_highConeDistance) < m_tolerance)
+            {
+                return true;
+            }
+        }
+        else // vert angle is negative, so we're looking at low cone
+        {
+            if ((abs(xError.to<double>()) - m_lowConeDistance) < m_tolerance)
+            {
+                return true;
+            }
+        }
+    }
     return false;
 }
 

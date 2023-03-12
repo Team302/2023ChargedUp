@@ -132,9 +132,6 @@ void HolonomicDrive::Run()
                 moveInfo.headingOption = ChassisOptionEnums::HeadingOption::MAINTAIN;
             }
 
-            // set pipeline to discover april tags
-            DragonVision::GetDragonVision()->setPipeline(DragonLimelight::PIPELINE_MODE::APRIL_TAG);
-
             // set drive and heading mode
             moveInfo.driveOption = ChassisOptionEnums::DriveStateType::VISION_DRIVE;
         }
@@ -143,8 +140,10 @@ void HolonomicDrive::Run()
             // no longer in vision drive, set boolean and reset offsets in VisionDrive
             m_inVisionDrive = false;
             auto visionDrive = dynamic_cast<VisionDrive *>(m_swerve->GetSpecifiedDriveState(ChassisOptionEnums::DriveStateType::VISION_DRIVE));
-
             visionDrive->ResetVisionDrive();
+
+            // set pipeline to discover april tags
+            DragonVision::GetDragonVision()->setPipeline(DragonLimelight::PIPELINE_MODE::APRIL_TAG);
         }
 
         // add button to align with substation
