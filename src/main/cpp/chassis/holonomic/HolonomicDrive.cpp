@@ -102,6 +102,8 @@ void HolonomicDrive::Run()
         {
             m_inVisionDrive = true;
 
+            double yawAngle = 0.0;
+
             // get destination for alignment
             std::pair<ChassisOptionEnums::RELATIVE_POSITION, ChassisOptionEnums::RELATIVE_POSITION> destination = GetAutoAlignDestination();
 
@@ -113,11 +115,21 @@ void HolonomicDrive::Run()
 
             if (alliance == frc::DriverStation::Alliance::kBlue)
             {
-                moveInfo.yawAngle = units::angle::degree_t(180.0);
+                yawAngle = 180.0;
+                moveInfo.yawAngle = units::angle::degree_t(yawAngle);
             }
             else if (alliance == frc::DriverStation::Alliance::kRed)
             {
-                moveInfo.yawAngle = units::angle::degree_t(0.0);
+                moveInfo.yawAngle = units::angle::degree_t(yawAngle);
+            }
+
+            if (abs(PigeonFactory::GetFactory()->GetPigeon(DragonPigeon::PIGEON_USAGE::CENTER_OF_ROBOT)->GetYaw() - yawAngle) > m_autoAlignAngleTolerance)
+            {
+                moveInfo.headingOption = ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE;
+            }
+            else
+            {
+                moveInfo.headingOption = ChassisOptionEnums::HeadingOption::MAINTAIN;
             }
 
             // set pipeline to discover april tags
@@ -125,7 +137,6 @@ void HolonomicDrive::Run()
 
             // set drive and heading mode
             moveInfo.driveOption = ChassisOptionEnums::DriveStateType::VISION_DRIVE;
-            moveInfo.headingOption = ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE;
         }
         else
         {

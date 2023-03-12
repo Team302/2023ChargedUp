@@ -48,7 +48,7 @@ private:
     };
 
     // state functions
-    void LookingForTag();
+    void LookingForTag(ChassisMovement &chassisMovement);
     void FoundTag(ChassisMovement &chassisMovement);
     void DriveToTarget(ChassisMovement &chassisMovement);
     void AlignRawVision(ChassisMovement &chassisMovement);
@@ -70,13 +70,19 @@ private:
     units::length::inch_t m_yDistanceToTag = units::length::inch_t(0.0);
     units::length::inch_t m_xDistanceToTag = units::length::inch_t(0.0);
 
-    const double m_autoAlignKP = 0.075;
+    // const double m_autoAlignKP = 0.075; //original
+    const double m_autoAlignKP_Y = 0.035; // temporary for testing
+    const double m_autoAlignKP_X = 0.035; // temporary for testing
     const double m_visionKP = 0.1;
 
-    const double m_tolerance = 1.0;          // tolerance in inches
-    const double m_autoAlignTolerance = 5.0; // tolerance in inches
+    const double m_tolerance = 1.0;             // tolerance in inches
+    const double m_findTagAngleTolerance = 5.0; // tolerance in angle
+    const double m_autoAlignYTolerance = 5.0;   // tolerance in inches
+    const double m_autoAlignXTolerance = 30.0;  // tolerance in inches
+    const double m_driveXTolerance = 19.5;      // tolerance in inches
 
-    const double m_robotFrameXDistCorrection = 30.0;
+    const double m_robotFrameXDistCorrection = 30.0; // Corrects for physical barrier to april tag, can never get closer than 30 inches
+    const double m_robotFrameGapToTag = 7.0;         // This 6 inches  is so we don't scrape while driving in y direction
 
     units::length::inch_t m_yTargetPos = units::length::inch_t(0.0);
     units::length::inch_t m_xTargetPos = units::length::inch_t(0.0);

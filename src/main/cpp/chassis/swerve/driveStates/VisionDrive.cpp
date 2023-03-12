@@ -43,7 +43,7 @@ std::array<frc::SwerveModuleState, 4> VisionDrive::UpdateSwerveModuleStates(
     case VISION_STATE::NORMAL_DRIVE:
         break;
     case VISION_STATE::LOOKING_FOR_APRIL_TAG:
-        LookingForTag();
+        LookingForTag(chassisMovement);
         break;
     case VISION_STATE::FOUND_APRIL_TAG:
         FoundTag(chassisMovement);
@@ -62,6 +62,10 @@ std::array<frc::SwerveModuleState, 4> VisionDrive::UpdateSwerveModuleStates(
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "CurrentState", m_currentState);
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "PreviousState", m_previousState);
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "VY", chassisMovement.chassisSpeeds.vy.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "VX", chassisMovement.chassisSpeeds.vx.to<double>());
+
+    // temporary disable driving
+    // chassisMovement.chassisSpeeds.vy = units::meters_per_second_t(0.0);
 
     return m_robotDrive->UpdateSwerveModuleStates(chassisMovement);
 }
@@ -71,7 +75,7 @@ void VisionDrive::Init(
 {
 }
 
-void VisionDrive::LookingForTag()
+void VisionDrive::LookingForTag(ChassisMovement &chassisMovement)
 {
     bool exit = false;
 
@@ -84,7 +88,9 @@ void VisionDrive::LookingForTag()
     // Cyclic
     auto targetData = DragonVision::GetDragonVision()->getTargetInfo();
 
-    if (targetData != nullptr)
+    auto yaw = PigeonFactory::GetFactory()->GetCenterPigeon()->GetYaw();
+
+    if ((targetData != nullptr) /*&& (abs(yaw - chassisMovement.yawAngle.to<double>()) < m_findTagAngleTolerance)*/)
     {
         m_aprilTagID = targetData->getApriltagID();
         m_yDistanceToTag = targetData->getYdistanceToTargetRobotFrame();
@@ -119,14 +125,15 @@ void VisionDrive::FoundTag(ChassisMovement &chassisMovement)
 
     units::length::inch_t yOffset = units::length::inch_t(getOffsetToTarget(chassisMovement.gridPosition, chassisMovement.nodePosition, m_aprilTagID)) + m_yDistanceToTag;
 
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "YOffsetFromFunc", getOffsetToTarget(chassisMovement.gridPosition, chassisMovement.nodePosition, m_aprilTagID));
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "YOffset", yOffset.to<double>());
 
-    units::length::inch_t xOffset = m_xDistanceToTag + units::length::inch_t(m_robotFrameXDistCorrection);
+    units::length::inch_t xOffset = m_xDistanceToTag - units::length::inch_t(m_robotFrameXDistCorrection);
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "XOffset", xOffset.to<double>());
 
     m_yTargetPos = yOffset + m_chassis->GetPose().Y();
-    m_xTargetPos = xOffset + m_chassis->GetPose().X();
+    m_xTargetPos = xOffset + m_chassis->GetPose().X() - units::length::inch_t(m_robotFrameGapToTag);
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "YTargetPos", m_yTargetPos.to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "XTargetPos", m_xTargetPos.to<double>());
@@ -155,19 +162,37 @@ void VisionDrive::DriveToTarget(ChassisMovement &chassisMovement)
     units::length::inch_t yError = units::length::inch_t(0.0);
     units::length::inch_t xError = units::length::inch_t(0.0);
 
+    units::length::inch_t getPos_y = m_chassis->GetPose().Y();
+
+    yError = m_yTargetPos - m_chassis->GetPose().Y();
+    xError = m_xTargetPos - m_chassis->GetPose().X();
+
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "getPose_Y", getPos_y.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "YError", yError.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "XError", xError.to<double>());
+
+    // If we are past charging station, only drive on x axis
+    // if (abs(xError.to<double>()) < m_driveXTolerance) // this should be alliance dependent
+    {
+        chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(m_autoAlignKP_Y * yError.to<double>());
+    }
+
+    //    chassisMovement.chassisSpeeds.vx = units::velocity::meters_per_second_t(m_autoAlignKP_X * xError.to<double>());
+
     // once we get within threshold, switch to logic similar to below
-    if (abs(yError.to<double>()) < m_autoAlignTolerance && abs(xError.to<double>()) < m_autoAlignTolerance)
+    if ((abs(yError.to<double>()) < m_autoAlignYTolerance) && (abs(xError.to<double>()) < m_autoAlignXTolerance))
     {
         exit = true;
     }
 
-    chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(m_autoAlignKP * yError.to<double>() * -1.0);
-    // need to set chassisSpeeds vx
-
     // Exit
     if (exit)
     {
-        m_currentState = VISION_STATE::ALIGN_RAW_VISION;
+        // m_currentState = VISION_STATE::ALIGN_RAW_VISION;
+
+        // temporary
+        m_currentState = VISION_STATE::ALIGNED;
+
         m_previousState = VISION_STATE::DRIVE_TO_TARGET;
     }
 }
@@ -207,7 +232,11 @@ void VisionDrive::AlignRawVision(ChassisMovement &chassisMovement)
         exit = AtTargetY(targetData);
     }
 
-    chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(m_visionKP * yError.to<double>() * -1.0);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "YError", yError.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "XError", xError.to<double>());
+
+    // temporary
+    chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(m_visionKP * yError.to<double>());
 
     // Exit
     if (exit)
@@ -230,7 +259,8 @@ void VisionDrive::Aligned(ChassisMovement &chassisMovement)
 
     // set arm and extender state to automatically score
 
-    chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(0.0);
+    // temporary
+    //  chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(0.0);
 
     // Exit
     if (exit)
