@@ -22,7 +22,7 @@
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                grabber="OPEN"
-               time="1.5"
+               time="1.25"
                />
     <primitive id="DRIVE_PATH"
                pathname="BlueWallOne2Slow.wpilib.json"
@@ -31,7 +31,7 @@
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                grabber="OPEN"
-               time="5.0"
+               time="3.5"
                />
     <primitive id="DRIVE_PATH"
                pathname="BlueWallTwo1.wpilib.json"
@@ -40,7 +40,7 @@
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                grabber="OPEN"
-               time="3.0"
+               time="1.5"
                />
     <!--pick up cube-->
     <primitive id="DO_NOTHING"
@@ -55,7 +55,7 @@
     <primitive id="DRIVE_PATH"
                pathname="BlueWallTwo4.wpilib.json"
                headingOption="SPECIFIED_ANGLE"
-               heading="180"
+               heading="0"
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                grabber="OPEN"
