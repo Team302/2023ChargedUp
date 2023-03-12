@@ -36,7 +36,7 @@
                heading="180"
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
-               grabber="GRAB"
+               grabber="OPEN"
                time="0.8"
                />
     <primitive id="DRIVE_PATH"
@@ -45,7 +45,7 @@
                heading="180"
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
-               grabber="GRAB"
+               grabber="OPEN"
                time="4.0"
                />
     <primitive id="DRIVE_PATH"
@@ -54,7 +54,7 @@
                heading="180"
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
-               grabber="GRAB"
+               grabber="OPEN"
                time="5.0"
                />
     <primitive id="DRIVE_PATH"
@@ -63,7 +63,7 @@
                heading="0"
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
-               grabber="GRAB"
+               grabber="OPEN"
                time="2.0"
                />
     <!--drive onto charging station-->
@@ -73,14 +73,16 @@
                heading="0"
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
-               grabber="GRAB"
+               grabber="OPEN"
                time="3.0"
                />
     <!--auto balance-->
     <primitive id="AUTO_BALANCE"
+               headingOption="SPECIFIED_ANGLE"
+               heading="0"
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
-               grabber="GRAB"
+               grabber="OPEN"
                time="10.0"
                />
 </auton>
