@@ -323,7 +323,7 @@
       voltageCompensationEnable="true"
       countsPerDegree="455.15" />
     <cancoder
-      canId="5"
+      canId="4"
       canBusName="rio"
       offset="0.0"
       reverse="false" />
