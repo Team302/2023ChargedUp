@@ -32,6 +32,7 @@ PrimitiveParams::PrimitiveParams(
 	float startDriveSpeed,
 	float endDriveSpeed,
 	std::string pathName,
+	std::string pathUsage,
 	// @ADDMECH mechanism state for mech as parameter
 	ArmStateMgr::ARM_STATE armState,
 	ExtenderStateMgr::EXTENDER_STATE extenderState,
@@ -46,6 +47,7 @@ PrimitiveParams::PrimitiveParams(
 												   m_startDriveSpeed(startDriveSpeed),
 												   m_endDriveSpeed(endDriveSpeed),
 												   m_pathName(pathName),
+												   m_pathUsage(pathUsage),
 												   // @ADDMECH initilize state mgr attribute
 												   m_armState(armState),
 												   m_extenderState(extenderState),

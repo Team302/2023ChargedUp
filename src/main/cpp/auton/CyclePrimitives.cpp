@@ -134,6 +134,7 @@ void CyclePrimitives::RunDriveStop()
 										  0.0, // start drive speed
 										  0.0, // end drive speed
 										  string(),
+										  string(),
 										  // @ADDMECH mechanism state
 										  ArmStateMgr::ARM_STATE::HOLD_POSITION_ROTATE,
 										  ExtenderStateMgr::EXTENDER_STATE::HOLD_POSITION_EXTEND,

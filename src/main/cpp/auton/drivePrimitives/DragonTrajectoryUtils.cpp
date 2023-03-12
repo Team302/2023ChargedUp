@@ -46,5 +46,6 @@ Trajectory DragonTrajectoryUtils::GetTrajectory(PrimitiveParams *params)
         {
             return TrajectoryUtil::FromPathweaverJson(deployDir); // Creates a trajectory or path that can be used in the code, parsed from pathweaver json
         }
-        return Trajectory();
     }
+    return Trajectory();
+}
