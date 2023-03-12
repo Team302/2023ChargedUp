@@ -39,4 +39,13 @@
                grabber="OPEN"
                time="9.0"
                />
+    <!--do nothing-->
+    <primitive id="DO_NOTHING"
+               headingOption="SPECIFIED_ANGLE"
+               heading="180"
+               arm="STARTING_POSITION_ROTATE"
+               extender="STARTING_POSITION_EXTEND"
+               grabber="OPEN"
+               time="10.0"
+               />
 </auton>

@@ -32,6 +32,8 @@
     <!--drive over charging station-->
     <primitive id="DRIVE_PATH"
                pathname="BlueCOOPOne1CubeSlow.wpilib.json"
+               headingOption="SPECIFIED_ANGLE"
+               heading="180"
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                grabber="OPEN"
