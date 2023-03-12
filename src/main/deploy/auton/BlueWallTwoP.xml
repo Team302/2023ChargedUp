@@ -3,12 +3,13 @@
 <auton>
 <primitive id="RESET_POSITION"
 	   pathname="BlueWall2Park.wpilib.json"
-       grabber="OPEN"/>
+                />
    
     <!--drive onto charging station-->
     <primitive id="DRIVE_PATH"
                pathname="BlueWall2Park.wpilib.json"
-               time="3.0"
+               pathusage="PLANNER"
+               time="10.0"
                />
     <!--auto balance-->
     <primitive id="AUTO_BALANCE"

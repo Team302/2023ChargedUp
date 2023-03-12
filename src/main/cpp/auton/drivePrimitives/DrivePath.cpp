@@ -60,6 +60,9 @@ void DrivePath::Init(PrimitiveParams *params)
     m_heading = params->GetHeading();
     m_maxTime = params->GetTime();
 
+    // Debugging check if path usage is working
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "Path Usage", params->GetPathUsage());
+
     m_trajectory = DragonTrajectoryUtils::GetTrajectory(params);
 
     // Start timeout timer for path

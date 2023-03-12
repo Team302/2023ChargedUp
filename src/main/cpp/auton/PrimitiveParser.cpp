@@ -81,6 +81,7 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                     auto xloc = 0.0;
                     auto yloc = 0.0;
                     std::string pathName;
+                    std::string pathUsage = "";
                     auto armstate = ArmStateMgr::ARM_STATE::HOLD_POSITION_ROTATE;
                     auto extenderstate = ExtenderStateMgr::EXTENDER_STATE::HOLD_POSITION_EXTEND;
                     auto grabberstate = GrabberStateMgr::GRABBER_STATE::OPEN;
@@ -145,6 +146,10 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                         {
                             pathName = attr.value();
                         }
+                        else if (strcmp(attr.name(), "pathusage") == 0)
+                        {
+                            pathUsage = attr.value();
+                        }
                         else if (strcmp(attr.name(), "arm") == 0)
                         {
                             auto armItr = ArmStateMgr::GetInstance()->m_armXmlStringToStateEnumMap.find(attr.value());
@@ -204,6 +209,7 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                                                                      startDriveSpeed,
                                                                      endDriveSpeed,
                                                                      pathName,
+                                                                     pathUsage,
                                                                      // @ADDMECH add parameter for your mechanism state
                                                                      armstate,
                                                                      extenderstate,
@@ -222,6 +228,8 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                         logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("Drive Speed"), param->GetDriveSpeed());
                         logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("End Drive Speed"), param->GetEndDriveSpeed());
                         logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("Path Name"), param->GetPathName());
+                        logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("Path Usage"), param->GetPathUsage());
+
                         // @ADDMECH Log state data
                     }
                     else

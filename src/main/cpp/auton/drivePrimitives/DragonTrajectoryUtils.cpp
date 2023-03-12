@@ -30,16 +30,21 @@ using frc::TrajectoryUtil;
 Trajectory DragonTrajectoryUtils::GetTrajectory(PrimitiveParams *params)
 {
     auto path = params->GetPathName();
+    auto usage = params->GetPathUsage();
     if (!path.empty()) // only go if path name found
     {
         // Read path into trajectory for deploy directory.  JSON File ex. Bounce1.wpilib.json
         auto deployDir = frc::filesystem::GetDeployDirectory();
         deployDir += "/paths/output/" + path;
 
-        PathPlannerTrajectory pathTrajectory = PathPlanner::loadPath(deployDir, PathPlanner::getConstraintsFromPath(deployDir));
-
-        return pathTrajectory.asWPILibTrajectory();
-        // TrajectoryUtil::FromPathweaverJson(deployDir); // Creates a trajectory or path that can be used in the code, parsed from pathweaver json
+        if (usage == "PLANNER")
+        {
+            PathPlannerTrajectory pathTrajectory = PathPlanner::loadPath(deployDir, PathPlanner::getConstraintsFromPath(deployDir));
+            return pathTrajectory.asWPILibTrajectory();
+        }
+        else
+        {
+            return TrajectoryUtil::FromPathweaverJson(deployDir); // Creates a trajectory or path that can be used in the code, parsed from pathweaver json
+        }
+        return Trajectory();
     }
-    return Trajectory();
-}

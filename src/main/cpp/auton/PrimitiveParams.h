@@ -49,6 +49,7 @@ public:
         float startDriveSpeed,
         float endDriveSpeed,
         std::string pathName,
+        std::string pathUsage,
         // @ADDMECH add parameter for your mechanism state
         ArmStateMgr::ARM_STATE armState,
         ExtenderStateMgr::EXTENDER_STATE extenderState,
@@ -70,6 +71,7 @@ public:
     float GetDriveSpeed() const { return m_startDriveSpeed; };
     float GetEndDriveSpeed() const { return m_endDriveSpeed; };
     std::string GetPathName() const { return m_pathName; };
+    std::string GetPathUsage() const { return m_pathUsage; };
     ArmStateMgr::ARM_STATE GetArmState() const { return m_armState; };
     ExtenderStateMgr::EXTENDER_STATE GetExtenderState() const { return m_extenderState; };
     GrabberStateMgr::GRABBER_STATE GetGrabberState() const { return m_grabberState; };
@@ -91,6 +93,7 @@ private:
     float m_startDriveSpeed;
     float m_endDriveSpeed;
     std::string m_pathName;
+    std::string m_pathUsage;
     // @ADDMECH add attribute for your mechanism state
     ArmStateMgr::ARM_STATE m_armState;
     ExtenderStateMgr::EXTENDER_STATE m_extenderState;
