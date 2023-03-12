@@ -304,7 +304,7 @@
     controlFile="arm.xml">
     <motor
       usage="ARM"
-      canId="5"
+      canId="4"
       canBusName="rio"
       pdpID="5"
       type="FALCON"
@@ -334,7 +334,7 @@
     controlFile="extender.xml">
     <motor
       usage="Extender"
-      canId="4"
+      canId="15"
       canBusName="rio"
       pdpID="4"
       type="FALCON"
@@ -353,7 +353,7 @@
       voltageCompensationEnable="false"
       countsPerInch="3811.0878"/>
   </mechanism>
-  <mechanism
+  <!--mechanism
     type="GRABBER"
     networkTable="grabberNT"
     controlFile="grabber.xml">
@@ -366,7 +366,42 @@
       usage="GRABBER_SENSOR" 
       digitalId="9" 
       reversed="true"/> 
+  </mechanism-->
+  <!-- mechanism
+    type="INTAKE"
+    networkTable="intakeNT"
+    controlFile="intake.xml">
+    <motor
+      usage="INTAKE"
+      canId="8"
+      canBusName="rio"
+      pdpID="8"
+      type="TALONSRX"
+      inverted="false"
+      sensorInverted="false"
+      feedbackDevice="NONE"
+      countsPerRev="2048"
+      gearRatio="1"
+      brakeMode="true"
+      follow="-1"
+      forwardlimitswitch="false"
+      forwardlimitswitchopen="true"
+      reverselimitswitch="false"
+      reverselimitswitchopen="true"
+      voltageCompensationSaturation="10.5"
+      voltageCompensationEnable="false"
+      countsPerInch="1"/>
   </mechanism>
+  <solenoid
+      usage="INTAKE_SOLENOID"
+      canId="1"
+      channel="0"
+      reversed="false" />
+    <digitalInput  
+      usage="GAME_PIECE_PRESENT_SENSOR" 
+      digitalId="9" 
+      reversed="true"/> 
+  </mechanism -->
 
   <roborio
     orientation="X_LEFT_Y_UP" />
