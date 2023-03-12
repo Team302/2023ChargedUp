@@ -192,7 +192,6 @@ void SwerveChassis::Drive(ChassisMovement moveInfo)
     {
         m_currentOrientationState->UpdateChassisSpeeds(moveInfo);
     }
-
     m_currentDriveState = GetDriveState(moveInfo);
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("swerve"), string("m_currentDriveState "), m_currentDriveState != nullptr ? string("not nullptr ") : string("nullptr"));
