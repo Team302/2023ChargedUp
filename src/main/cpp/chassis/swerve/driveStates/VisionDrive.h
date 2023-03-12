@@ -55,7 +55,7 @@ private:
     void Aligned(ChassisMovement &chassisMovement);
     void CalcWheelSpeeds(ChassisMovement &chassisMovement);
 
-    bool AtTargetX();
+    bool AtTargetX(std::shared_ptr<DragonVisionTarget> targetData);
     bool AtTargetY(std::shared_ptr<DragonVisionTarget> targetData);
 
     VISION_STATE m_currentState;
@@ -77,12 +77,15 @@ private:
 
     const double m_tolerance = 1.0;             // tolerance in inches
     const double m_findTagAngleTolerance = 5.0; // tolerance in angle
-    const double m_autoAlignYTolerance = 5.0;   // tolerance in inches
-    const double m_autoAlignXTolerance = 30.0;  // tolerance in inches
+    const double m_autoAlignYTolerance = 2.5;   // tolerance in inches
+    const double m_autoAlignXTolerance = 10.0;  // tolerance in inches
     const double m_driveXTolerance = 19.5;      // tolerance in inches
 
-    const double m_robotFrameXDistCorrection = 30.0; // Corrects for physical barrier to april tag, can never get closer than 30 inches
+    const double m_robotFrameXDistCorrection = 31.0; // Corrects for physical barrier to april tag, can never get closer than 30 inches
     const double m_robotFrameGapToTag = 7.0;         // This 6 inches  is so we don't scrape while driving in y direction
+
+    const double m_highConeDistance = 45.0;
+    const double m_lowConeDistance = 40.0;
 
     units::length::inch_t m_yTargetPos = units::length::inch_t(0.0);
     units::length::inch_t m_xTargetPos = units::length::inch_t(0.0);
