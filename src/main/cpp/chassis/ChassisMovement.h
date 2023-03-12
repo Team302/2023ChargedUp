@@ -20,6 +20,7 @@
 #include <frc/trajectory/TrajectoryUtil.h>
 
 #include <units/angle.h>
+#include <units/length.h>
 
 // Team302 Includes
 #include <utils/Point2d.h>
@@ -32,7 +33,7 @@ struct ChassisMovement
     ChassisOptionEnums::DriveStateType driveOption = ChassisOptionEnums::DriveStateType::ROBOT_DRIVE;
     frc::ChassisSpeeds chassisSpeeds = frc::ChassisSpeeds();
     frc::Trajectory trajectory = frc::Trajectory();
-    Point2d centerOfRotationOffset = Point2d();
+    Point2d centerOfRotationOffset = Point2d(units::length::inch_t(-5.0), units::length::inch_t(0.0));
     ChassisOptionEnums::HeadingOption headingOption = ChassisOptionEnums::HeadingOption::MAINTAIN;
     ChassisOptionEnums::NoMovementOption noMovementOption = ChassisOptionEnums::NoMovementOption::STOP;
     ChassisOptionEnums::AutonControllerType controllerType = ChassisOptionEnums::AutonControllerType::RAMSETE;

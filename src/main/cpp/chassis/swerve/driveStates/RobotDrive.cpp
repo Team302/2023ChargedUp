@@ -91,6 +91,18 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates(Chass
     units::velocity::meters_per_second_t omegaW = omega.to<double>() * centerOfRotationW / 1_s;
     units::velocity::meters_per_second_t omegaL = omega.to<double>() * centerOfRotationL / 1_s;
 
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "RobotDriveChassisMovement", "vx", vx.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "RobotDriveChassisMovement", "vy", vy.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "RobotDriveChassisMovement", "omega", omega.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "RobotDriveChassisMovement", "l", l.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "RobotDriveChassisMovement", "w", w.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "RobotDriveChassisMovement", "centerOfRotationW", centerOfRotationW.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "RobotDriveChassisMovement", "centerOfRotationL", centerOfRotationL.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "RobotDriveChassisMovement", "chassisMovement.centerOfRotationOffset.X", chassisMovement.centerOfRotationOffset.X.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "RobotDriveChassisMovement", "chassisMovement.centerOfRotationOffset.Y", chassisMovement.centerOfRotationOffset.Y.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "RobotDriveChassisMovement", "omegaL", omegaL.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "RobotDriveChassisMovement", "omegaW", omegaW.to<double>());
+
     auto a = vx - omegaL;
     auto b = vx + omegaL;
     auto c = vy - omegaW;
