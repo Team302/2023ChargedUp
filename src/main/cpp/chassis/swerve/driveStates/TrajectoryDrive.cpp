@@ -81,7 +81,7 @@ std::array<frc::SwerveModuleState, 4> TrajectoryDrive::UpdateSwerveModuleStates(
 
         refChassisSpeeds = m_holonomicController.Calculate(m_chassis->GetPose(),
                                                            m_desiredState,
-                                                           frc::Rotation2d(chassisMovement.yawAngle));
+                                                           m_desiredState.pose.Rotation());
         chassisMovement.chassisSpeeds = refChassisSpeeds;
 
         auto swerveChassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();

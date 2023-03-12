@@ -28,6 +28,7 @@
 #include <hw/factories/PigeonFactory.h>
 #include <utils/logging/Logger.h>
 #include <DragonVision/DragonVision.h>
+#include <utils/FMSData.h>
 
 using namespace std;
 using namespace frc;
@@ -40,14 +41,26 @@ void ResetPosition::Init(PrimitiveParams *params)
 {
 
     m_trajectory = DragonTrajectoryUtils::GetTrajectory(params);
-    if (DragonVision::GetDragonVision()->getTargetInfo() != nullptr)
+    frc::DriverStation::Alliance alliance = FMSData::GetInstance()->GetAllianceColor();
+    auto initialRot = frc::Rotation2d();
+
+    if (alliance == frc::DriverStation::Alliance::kBlue)
     {
-        // dynamic_cast<SwerveChassis *>(m_chassis.get())->ResetPoseToVision();
-        m_chassis->ResetPose(m_trajectory.InitialPose());
+        initialRot = frc::Rotation2d(units::degree_t(180));
     }
     else
     {
-        m_chassis->ResetPose(m_trajectory.InitialPose());
+        initialRot = frc::Rotation2d(units::degree_t(0));
+    }
+
+    if (DragonVision::GetDragonVision()->getTargetInfo() != nullptr)
+    {
+        // dynamic_cast<SwerveChassis *>(m_chassis.get())->ResetPoseToVision();
+        m_chassis->ResetPose(frc::Pose2d(m_trajectory.InitialPose().X(), m_trajectory.InitialPose().Y(), initialRot));
+    }
+    else
+    {
+        m_chassis->ResetPose(frc::Pose2d(m_trajectory.InitialPose().X(), m_trajectory.InitialPose().Y(), initialRot));
     }
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Reset Position"), string("Auton Info: ResetPosX"), m_chassis.get()->GetPose().X().to<double>());

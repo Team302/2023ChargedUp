@@ -8,7 +8,6 @@
     <!--drive onto charging station-->
     <primitive id="DRIVE_PATH"
                pathname="BlueWall2Park.wpilib.json"
-               pathusage="PLANNER"
                time="10.0"
                />
     <!--auto balance-->
