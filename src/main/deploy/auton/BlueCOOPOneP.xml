@@ -5,7 +5,7 @@
 	           pathname="BlueCOOPOne1CubeSlow.wpilib.json"
                grabber="GRAB"/>
     <!--score preloaded cone-->
-    <!--<snippet file="ScoreCone.xml"/> -->
+    <snippet file="ScoreCone.xml"/> 
     <!--drive over charging station-->
     <primitive id="DRIVE_PATH"
                pathname="BlueCOOPOne1CubeSlow.wpilib.json"

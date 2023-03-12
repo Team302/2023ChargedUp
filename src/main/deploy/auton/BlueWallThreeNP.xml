@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE auton SYSTEM "auton.dtd">
 <auton>
+<!--testing-->
 <primitive id="RESET_POSITION"
 	           pathname="BlueWall1.wpilib.json"
                grabber="GRAB"/>
