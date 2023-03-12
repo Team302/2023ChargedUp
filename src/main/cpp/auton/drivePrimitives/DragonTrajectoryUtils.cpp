@@ -17,10 +17,13 @@
 #include <frc/Filesystem.h>
 #include <frc/trajectory/Trajectory.h>
 #include <frc/trajectory/TrajectoryUtil.h>
+#include <pathplanner/lib/PathPlannerTrajectory.h>
+#include <pathplanner/lib/PathPlanner.h>
 
 #include <auton/drivePrimitives/DragonTrajectoryUtils.h>
 #include <auton/PrimitiveParams.h>
 
+using namespace pathplanner;
 using frc::Trajectory;
 using frc::TrajectoryUtil;
 
@@ -33,7 +36,10 @@ Trajectory DragonTrajectoryUtils::GetTrajectory(PrimitiveParams *params)
         auto deployDir = frc::filesystem::GetDeployDirectory();
         deployDir += "/paths/output/" + path;
 
-        return TrajectoryUtil::FromPathweaverJson(deployDir); // Creates a trajectory or path that can be used in the code, parsed from pathweaver json
+        PathPlannerTrajectory testPath = PathPlanner::loadPath(deployDir, PathPlanner::getConstraintsFromPath(deployDir));
+
+        return testPath.asWPILibTrajectory();
+        // TrajectoryUtil::FromPathweaverJson(deployDir); // Creates a trajectory or path that can be used in the code, parsed from pathweaver json
     }
     return Trajectory();
 }
