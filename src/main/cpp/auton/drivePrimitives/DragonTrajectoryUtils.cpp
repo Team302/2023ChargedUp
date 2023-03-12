@@ -42,10 +42,7 @@ Trajectory DragonTrajectoryUtils::GetTrajectory(PrimitiveParams *params)
             PathPlannerTrajectory pathTrajectory = PathPlanner::loadPath(deployDir, PathPlanner::getConstraintsFromPath(deployDir));
             return pathTrajectory.asWPILibTrajectory();
         }
-        else
-        {
-            return TrajectoryUtil::FromPathweaverJson(deployDir); // Creates a trajectory or path that can be used in the code, parsed from pathweaver json
-        }
+        return TrajectoryUtil::FromPathweaverJson(deployDir); // Creates a trajectory or path that can be used in the code, parsed from pathweaver json
     }
     return Trajectory();
 }
