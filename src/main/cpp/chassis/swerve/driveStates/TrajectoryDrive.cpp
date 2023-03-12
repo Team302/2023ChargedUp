@@ -21,15 +21,18 @@
 #include <chassis/ChassisFactory.h>
 #include <utils/logging/Logger.h>
 #include <chassis/swerve/headingStates/SpecifiedHeading.h>
+#include <pathplanner/lib/PathPlannerTrajectory.h>
+#include <pathplanner/lib/PathPlanner.h>
 
+using namespace pathplanner;
 using frc::Pose2d;
 
 TrajectoryDrive::TrajectoryDrive(RobotDrive *robotDrive) : RobotDrive(),
                                                            m_trajectory(),
                                                            m_robotDrive(robotDrive),
-                                                           m_holonomicController(frc2::PIDController{0.5, 0.0, 0},
-                                                                                 frc2::PIDController{0.5, 0.0, 0},
-                                                                                 frc::ProfiledPIDController<units::radian>{0.5, 0.0, 0,
+                                                           m_holonomicController(frc2::PIDController{0.25, 0.0, 0},
+                                                                                 frc2::PIDController{0.25, 0.0, 0},
+                                                                                 frc::ProfiledPIDController<units::radian>{0.25, 0.0, 0,
                                                                                                                            frc::TrapezoidProfile<units::radian>::Constraints{0_rad_per_s, 0_rad_per_s / 1_s}}),
                                                            m_desiredState(),
                                                            m_trajectoryStates(),
@@ -59,6 +62,8 @@ void TrajectoryDrive::Init(ChassisMovement &chassisMovement)
 
         m_timer.get()->Reset(); // Restarts and starts timer
         m_timer.get()->Start();
+        m_pathTimer.Reset();
+        m_pathTimer.Start();
     }
 
     m_delta = m_finalState.pose - ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose();
@@ -79,9 +84,15 @@ std::array<frc::SwerveModuleState, 4> TrajectoryDrive::UpdateSwerveModuleStates(
         // Use the controller to calculate the chassis speeds for getting there
         frc::ChassisSpeeds refChassisSpeeds;
 
+        auto pathTrajectory = PathPlanner::loadPath("BlueWall2Park", pathplanner::PathConstraints(4_mps, 2_mps_sq));
+
+        auto rot = pathTrajectory.sample(m_pathTimer.Get()).holonomicRotation;
+
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "trajectory drive", "rotation", rot.Degrees().to<double>());
+
         refChassisSpeeds = m_holonomicController.Calculate(m_chassis->GetPose(),
                                                            m_desiredState,
-                                                           m_desiredState.pose.Rotation());
+                                                           rot);
         chassisMovement.chassisSpeeds = refChassisSpeeds;
 
         auto swerveChassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
