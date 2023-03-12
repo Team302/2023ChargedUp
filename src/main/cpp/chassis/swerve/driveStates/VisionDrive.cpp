@@ -27,6 +27,8 @@
 #include <utils/logging/Logger.h>
 
 VisionDrive::VisionDrive(RobotDrive *robotDrive) : RobotDrive(),
+                                                   // m_visionVYPID(1.0, 0.05, 0.0), // kP, kI, kD
+                                                   // m_visionVXPID(1.0, 0.05, 0.0), // kP, kI, kD
                                                    m_currentState(VISION_STATE::LOOKING_FOR_APRIL_TAG),
                                                    m_previousState(VISION_STATE::NORMAL_DRIVE),
                                                    m_robotDrive(robotDrive),
@@ -207,6 +209,8 @@ void VisionDrive::AlignRawVision(ChassisMovement &chassisMovement)
     bool exit = false;
 
     // Entry
+    DragonLimelight::PIPELINE_MODE pipelineMode = DragonLimelight::APRIL_TAG;
+
     if (m_currentState != m_previousState)
     {
         m_previousState = VISION_STATE::ALIGN_RAW_VISION;
@@ -216,14 +220,15 @@ void VisionDrive::AlignRawVision(ChassisMovement &chassisMovement)
     units::length::inch_t yError = units::length::inch_t(0.0);
     units::length::inch_t xError = units::length::inch_t(0.0);
 
-    // switch pipeline to Cone_Node or Cube_Node
     if (chassisMovement.nodePosition == ChassisOptionEnums::RELATIVE_POSITION::LEFT || chassisMovement.nodePosition == ChassisOptionEnums::RELATIVE_POSITION::RIGHT)
     {
         m_vision->setPipeline(DragonLimelight::PIPELINE_MODE::CONE_NODE);
+        pipelineMode = DragonLimelight::PIPELINE_MODE::CONE_NODE;
     }
     else
     {
         m_vision->setPipeline(DragonLimelight::PIPELINE_MODE::APRIL_TAG);
+        pipelineMode = DragonLimelight::PIPELINE_MODE::APRIL_TAG;
     }
 
     // get targetdata
@@ -233,16 +238,44 @@ void VisionDrive::AlignRawVision(ChassisMovement &chassisMovement)
     {
         // override yError and xError to data from pipeline
         yError = targetData->getYdistanceToTargetRobotFrame();
-        xError = targetData->getXdistanceToTargetRobotFrame();
+        xError = targetData->getXdistanceToTargetRobotFrame() - units::length::inch_t(m_robotFrameXDistCorrection);
 
-        exit = AtTargetY(targetData);
+        exit = (AtTargetY(targetData) && AtTargetX(targetData));
     }
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "YError", yError.to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "XError", xError.to<double>());
 
-    // temporary
-    chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(m_visionKP * yError.to<double>());
+    units::velocity::meters_per_second_t ySpeed = units::velocity::meters_per_second_t(0.0);
+    units::velocity::meters_per_second_t xSpeed = units::velocity::meters_per_second_t(0.0);
+
+    if ((targetData != nullptr) && (pipelineMode == targetData->getTargetType()))
+    {
+        ySpeed = units::length::meter_t(yError * m_visionKP) / 1_s;
+
+        if (abs(yError.to<double>()) < m_autoAlignYTolerance)
+        {
+            xSpeed = units::length::meter_t(xError * m_visionKP) / 1_s;
+        }
+    }
+
+    if (abs(ySpeed.to<double>()) < m_minimumSpeed)
+    {
+        if (ySpeed.to<double>() < 0.0)
+        {
+            ySpeed = units::velocity::meters_per_second_t(m_minimumSpeed * -1.0);
+        }
+        else
+        {
+            ySpeed = units::velocity::meters_per_second_t(m_minimumSpeed);
+        }
+    }
+
+    chassisMovement.chassisSpeeds.vy = ySpeed;
+    chassisMovement.chassisSpeeds.vx = xSpeed;
+
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "YSpeed", ySpeed.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "XSpeed", xSpeed.to<double>());
 
     // Exit
     if (exit)

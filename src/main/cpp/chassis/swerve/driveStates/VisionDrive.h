@@ -53,7 +53,6 @@ private:
     void DriveToTarget(ChassisMovement &chassisMovement);
     void AlignRawVision(ChassisMovement &chassisMovement);
     void Aligned(ChassisMovement &chassisMovement);
-    void CalcWheelSpeeds(ChassisMovement &chassisMovement);
 
     bool AtTargetX(std::shared_ptr<DragonVisionTarget> targetData);
     bool AtTargetY(std::shared_ptr<DragonVisionTarget> targetData);
@@ -73,7 +72,10 @@ private:
     // const double m_autoAlignKP = 0.075; //original
     const double m_autoAlignKP_Y = 0.035; // temporary for testing
     const double m_autoAlignKP_X = 0.035; // temporary for testing
-    const double m_visionKP = 0.1;
+    const double m_visionKP = 1.5;
+
+    const double m_speedTolerance = 0.2;
+    const double m_minimumSpeed = 0.3;
 
     const double m_tolerance = 1.0;             // tolerance in inches
     const double m_findTagAngleTolerance = 5.0; // tolerance in angle

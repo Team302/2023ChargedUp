@@ -123,14 +123,14 @@ void HolonomicDrive::Run()
                 moveInfo.yawAngle = units::angle::degree_t(yawAngle);
             }
 
-            if (abs(PigeonFactory::GetFactory()->GetPigeon(DragonPigeon::PIGEON_USAGE::CENTER_OF_ROBOT)->GetYaw() - yawAngle) > m_autoAlignAngleTolerance)
-            {
-                moveInfo.headingOption = ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE;
-            }
-            else
-            {
-                moveInfo.headingOption = ChassisOptionEnums::HeadingOption::MAINTAIN;
-            }
+            // if (abs(PigeonFactory::GetFactory()->GetPigeon(DragonPigeon::PIGEON_USAGE::CENTER_OF_ROBOT)->GetYaw() - yawAngle) > m_autoAlignAngleTolerance)
+            // {
+            moveInfo.headingOption = ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE;
+            // }
+            // else
+            // {
+            //     moveInfo.headingOption = ChassisOptionEnums::HeadingOption::MAINTAIN;
+            // }
 
             // set drive and heading mode
             moveInfo.driveOption = ChassisOptionEnums::DriveStateType::VISION_DRIVE;
