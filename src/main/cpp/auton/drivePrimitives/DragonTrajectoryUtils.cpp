@@ -36,9 +36,9 @@ Trajectory DragonTrajectoryUtils::GetTrajectory(PrimitiveParams *params)
         auto deployDir = frc::filesystem::GetDeployDirectory();
         deployDir += "/paths/output/" + path;
 
-        PathPlannerTrajectory testPath = PathPlanner::loadPath(deployDir, PathPlanner::getConstraintsFromPath(deployDir));
+        PathPlannerTrajectory pathTrajectory = PathPlanner::loadPath(deployDir, PathPlanner::getConstraintsFromPath(deployDir));
 
-        return testPath.asWPILibTrajectory();
+        return pathTrajectory.asWPILibTrajectory();
         // TrajectoryUtil::FromPathweaverJson(deployDir); // Creates a trajectory or path that can be used in the code, parsed from pathweaver json
     }
     return Trajectory();
