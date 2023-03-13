@@ -187,11 +187,11 @@ void SwerveChassis::Drive(ChassisMovement moveInfo)
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("swerve"), string("Vy"), moveInfo.chassisSpeeds.vy.to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("swerve"), string("Omega"), moveInfo.chassisSpeeds.omega.to<double>());
 
-    /* m_currentOrientationState = GetHeadingState(moveInfo);
-     if (m_currentOrientationState != nullptr)
-     {
-         m_currentOrientationState->UpdateChassisSpeeds(moveInfo);
-     }*/
+    m_currentOrientationState = GetHeadingState(moveInfo);
+    if (m_currentOrientationState != nullptr)
+    {
+        m_currentOrientationState->UpdateChassisSpeeds(moveInfo);
+    }
 
     m_currentDriveState = GetDriveState(moveInfo);
 
