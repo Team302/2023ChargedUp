@@ -251,11 +251,11 @@ void VisionDrive::AlignRawVision(ChassisMovement &chassisMovement)
 
     if ((targetData != nullptr) && (pipelineMode == targetData->getTargetType()))
     {
-        ySpeed = units::length::meter_t(yError * m_visionKP) / 1_s;
+        ySpeed = units::length::meter_t(yError * m_visionKP_Y) / 1_s;
 
         if (abs(yError.to<double>()) < m_autoAlignYTolerance)
         {
-            xSpeed = units::length::meter_t(xError * m_visionKP) / 1_s;
+            xSpeed = units::length::meter_t(xError * m_visionKP_X) / 1_s;
         }
     }
 
@@ -271,6 +271,8 @@ void VisionDrive::AlignRawVision(ChassisMovement &chassisMovement)
         }
     }
 
+    // xSpeed = units::velocity::meters_per_second_t(0);
+    // ySpeed = units::velocity::meters_per_second_t(0);
     chassisMovement.chassisSpeeds.vy = ySpeed;
     chassisMovement.chassisSpeeds.vx = xSpeed;
 

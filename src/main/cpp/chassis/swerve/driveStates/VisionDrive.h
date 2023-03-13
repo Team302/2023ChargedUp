@@ -72,10 +72,11 @@ private:
     // const double m_autoAlignKP = 0.075; //original
     const double m_autoAlignKP_Y = 0.035; // temporary for testing
     const double m_autoAlignKP_X = 0.035; // temporary for testing
-    const double m_visionKP = 1.5;
+    const double m_visionKP_X = 1.5;
+    const double m_visionKP_Y = 0.75;
 
     const double m_speedTolerance = 0.2;
-    const double m_minimumSpeed = 0.3;
+    const double m_minimumSpeed = 0.25;
 
     const double m_tolerance = 1.0;             // tolerance in inches
     const double m_findTagAngleTolerance = 5.0; // tolerance in angle
