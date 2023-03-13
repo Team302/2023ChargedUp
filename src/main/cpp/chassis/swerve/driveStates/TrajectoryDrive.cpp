@@ -62,8 +62,6 @@ void TrajectoryDrive::Init(ChassisMovement &chassisMovement)
 
         m_timer.get()->Reset(); // Restarts and starts timer
         m_timer.get()->Start();
-        m_pathTimer.Reset();
-        m_pathTimer.Start();
     }
 
     m_delta = m_finalState.pose - ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose();
@@ -86,9 +84,14 @@ std::array<frc::SwerveModuleState, 4> TrajectoryDrive::UpdateSwerveModuleStates(
 
         auto pathTrajectory = PathPlanner::loadPath("BlueWall2Park", pathplanner::PathConstraints(4_mps, 2_mps_sq));
 
-        auto rot = pathTrajectory.sample(m_pathTimer.Get()).holonomicRotation;
+        // auto pathPlannerState = dynamic_cast<PathPlannerTrajectory *>(pathTrajectory.getStates());
 
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "trajectory drive", "rotation", rot.Degrees().to<double>());
+        auto pathPlannerState = pathTrajectory.getStates();
+        auto rot = pathPlannerState.data()->holonomicRotation();
+        // auto rot =  pathTrajectory.samplpathTrajectory.getStates()e((m_timer.get()->Get())).holonomicRotation;
+
+        Logger::GetLogger()
+            ->LogData(LOGGER_LEVEL::PRINT, "trajectory drive", "rotation", rot.Degrees().to<double>());
 
         refChassisSpeeds = m_holonomicController.Calculate(m_chassis->GetPose(),
                                                            m_desiredState,

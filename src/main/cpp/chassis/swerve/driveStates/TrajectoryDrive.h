@@ -54,8 +54,6 @@ private:
     frc::Transform2d m_delta;
     std::unique_ptr<frc::Timer> m_timer;
 
-    frc::Timer m_pathTimer;
-
     SwerveChassis *m_chassis;
     std::string m_whyDone;
 };
