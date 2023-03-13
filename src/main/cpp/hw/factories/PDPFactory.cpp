@@ -61,4 +61,6 @@ PowerDistribution *PDPFactory::CreatePDP(
         m_pdp = new PowerDistribution(canID, type);
     }
     return m_pdp;
+
+    void ClearStickyFaults();
 }

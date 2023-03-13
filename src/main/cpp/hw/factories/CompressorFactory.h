@@ -49,6 +49,7 @@ private:
     units::pressure::pounds_per_square_inch_t m_maxPressure;
     frc::PneumaticHub *m_hub;
     frc::PneumaticsControlModule *m_pcm;
+    units::pounds_per_square_inch_t GetPressure() const;
 
     static CompressorFactory *m_factory;
 };

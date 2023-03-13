@@ -87,7 +87,11 @@ void CompressorFactory::EnableCompressor()
 
 void CompressorFactory::DisableCompressor()
 {
-    m_compressor->Disable();
+    auto pressure = m_compressor->GetPressure();
+    if (pressure.to<double>() > 70.0)
+    {
+        m_compressor->Disable();
+    }
 }
 
 void CompressorFactory::ClearStickyFaults()
