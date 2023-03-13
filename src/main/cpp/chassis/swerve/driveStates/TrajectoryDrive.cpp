@@ -84,11 +84,8 @@ std::array<frc::SwerveModuleState, 4> TrajectoryDrive::UpdateSwerveModuleStates(
 
         auto pathTrajectory = PathPlanner::loadPath("BlueWall2Park", pathplanner::PathConstraints(4_mps, 2_mps_sq));
 
-        // auto pathPlannerState = dynamic_cast<PathPlannerTrajectory *>(pathTrajectory.getStates());
-
-        auto pathPlannerState = pathTrajectory.getStates();
-        auto rot = pathPlannerState.data()->holonomicRotation();
-        // auto rot =  pathTrajectory.samplpathTrajectory.getStates()e((m_timer.get()->Get())).holonomicRotation;
+        auto rot = dynamic_cast<pathplanner::PathPlannerTrajectory *>(pathTrajectory.sample(m_timer.get()->Get())); // NEED HELP Dynamically casting
+        // auto rot = pathTrajectory.sample(m_timer.get()->Get()).holonomicRotation;
 
         Logger::GetLogger()
             ->LogData(LOGGER_LEVEL::PRINT, "trajectory drive", "rotation", rot.Degrees().to<double>());
