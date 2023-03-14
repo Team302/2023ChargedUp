@@ -175,14 +175,17 @@ void VisionDrive::DriveToTarget(ChassisMovement &chassisMovement)
     if (abs(xError.to<double>()) < m_driveXTolerance)
     {
         chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(m_autoAlignKP_Y * yError.to<double>());
-        // chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(m_autoAlignKP_Y * yError.to<double>());
-        if (yError.to<double>() < 0.0)
+
+        if (abs(chassisMovement.chassisSpeeds.vy.to<double>()) > m_maximumSpeed)
         {
-            chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(-1.0);
-        }
-        else
-        {
-            chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(1.0);
+            if (chassisMovement.chassisSpeeds.vy.to<double>() < 0.0)
+            {
+                chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(-m_maximumSpeed);
+            }
+            else
+            {
+                chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(m_maximumSpeed);
+            }
         }
     }
 
@@ -243,7 +246,7 @@ void VisionDrive::AlignRawVision(ChassisMovement &chassisMovement)
         exit = (AtTargetY(targetData) && AtTargetX(targetData));
     }
 
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "YError", yError.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "YError", yError.to<double>() + 100);
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "XError", xError.to<double>());
 
     units::velocity::meters_per_second_t ySpeed = units::velocity::meters_per_second_t(0.0);
@@ -341,7 +344,7 @@ bool VisionDrive::AtTargetY(std::shared_ptr<DragonVisionTarget> targetData)
     {
         units::length::inch_t yError = targetData->getYdistanceToTargetRobotFrame();
 
-        if (abs(yError.to<double>()) < m_tolerance)
+        if (abs(yError.to<double>()) < m_autoAlignYTolerance)
         {
             return true;
         }
