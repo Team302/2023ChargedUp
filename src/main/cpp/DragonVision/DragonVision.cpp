@@ -20,7 +20,7 @@
 // Team 302 includes
 
 #include <DragonVision/DragonVision.h>
-#include <hw/factories/LimelightFactory.h>
+#include <DragonVision/LimelightFactory.h>
 #include <utils/FMSData.h>
 
 #include <string>
@@ -71,32 +71,10 @@ std::shared_ptr<DragonVisionTarget> DragonVision::getTargetInfo(LIMELIGHT_POSITI
 
 	if ((dll != nullptr) && (dll->HasTarget()))
 	{
-		// units::length::inch_t distance;
-
-		// In place until we can get the field position of an april tag
-		units::length::inch_t xDistance = dll->EstimateTargetXdistance();
-		units::length::inch_t yDistance = dll->EstimateTargetYdistance();
-		units::length::inch_t distance = units::length::inch_t(sqrt(pow(xDistance.to<double>(), 2) + pow(yDistance.to<double>(), 2)));
-
-		/*if (dll->getPipeline() != DragonLimelight::PIPELINE_MODE::APRIL_TAG)
-		{
-			distance = dll->EstimateTargetXdistance();
-		}
-		else
-		{
-
-
-			frc::Translation2d robotTranslation = GetRobotPosition(position).Translation();
-			frc::Translation2d aprilTagTranslation = GetAprilTagPosition(tagId).Translation();
-
-			distance = robotTranslation.Distance(aprilTagTranslation);
-
-		}*/
-
 		std::shared_ptr<DragonVisionTarget>
 			dvt = make_shared<DragonVisionTarget>(
 				dll->getPipeline(),
-				distance,
+				dll->EstimateTargetXdistance(),
 				dll->GetTargetHorizontalOffset(),
 				dll->GetTargetVerticalOffset(),
 				dll->EstimateTargetXdistance_RelToRobotCoords(),

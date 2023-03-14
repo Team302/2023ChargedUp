@@ -15,7 +15,7 @@
                arm="CONE_BACKROW_ROTATE"
                extender="CONE_BACKROW_EXTEND"
                grabber="GRAB"
-               time="0.5"
+               time="0.6"
                />
     <primitive id="DO_NOTHING"
                arm="CONE_BACKROW_ROTATE"
@@ -27,7 +27,7 @@
                arm="CONE_BACKROW_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                grabber="OPEN"
-               time="0.5"
+               time="0.6"
                />
     <!--drive to charing station-->
     <primitive id="DRIVE_PATH"
@@ -58,7 +58,7 @@
                headingOption="SPECIFIED_ANGLE"
                heading="0"
                grabber="GRAB"
-               time="3.0"
+               time="2.0"
                />
     <!--drive onto charging station-->
     <primitive id="DRIVE_PATH"
@@ -69,8 +69,10 @@
                time="6.0"
                />
     <!--auto balance-->
-    <primitive id="DO_NOTHING"
+    <primitive id="AUTO_BALANCE"
+               arm="STARTING_POSITION_ROTATE"
+               extender="STARTING_POSITION_EXTEND"
                grabber="GRAB"
                time="10.0"
-               /> 
+               />
 </auton>

@@ -12,10 +12,10 @@
 #include <auton/CyclePrimitives.h>
 #include <chassis/ChassisFactory.h>
 #include <chassis/holonomic/HolonomicDrive.h>
-#include <chassis/IChassis.h>
+#include <chassis/swerve/SwerveChassis.h>
 #include <chassis/mecanum/MecanumChassis.h>
 #include <driveteamfeedback/DriverFeedback.h>
-#include <hw/factories/LimelightFactory.h>
+#include <DragonVision/LimelightFactory.h>
 #include <mechanisms/StateMgrHelper.h>
 #include <Robot.h>
 #include <robotstate/RobotState.h>
@@ -88,6 +88,12 @@ void Robot::RobotPeriodic()
     LoggableItemMgr::GetInstance()->LogData();
     Logger::GetLogger()->PeriodicLog();
 
+    if (m_chassis != nullptr)
+    {
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "balance info", "yaw", m_chassis->GetYaw().to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "balance info", "pitch", m_chassis->GetPitch().to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "balance info", "roll", m_chassis->GetRoll().to<double>());
+    }
     if (m_tuner != nullptr)
     {
         m_tuner->ListenForUpdates();
@@ -113,7 +119,7 @@ void Robot::RobotPeriodic()
         LoggerStringValue status = {string("HW connection Status"), "Dragon vision is not null"};
 
         // Set the pipeline. You do not need to call this function repeatedly
-        vision->setPipeline(DragonLimelight::APRIL_TAG);
+        // vision->setPipeline(DragonLimelight::APRIL_TAG);
 
         // Next get a pointer
         std::shared_ptr<DragonVisionTarget> dvt = vision->getTargetInfo();
@@ -149,7 +155,7 @@ void Robot::RobotPeriodic()
     {
         m_previewer->CheckCurrentAuton();
     }
-    if (m_field != nullptr)
+    if (m_field != nullptr && m_chassis != nullptr)
     {
         m_field->UpdateRobotPosition(m_chassis->GetPose()); // ToDo:: Move to DriveTeamFeedback (also don't assume m_field isn't a nullptr)
     }
@@ -222,6 +228,13 @@ void Robot::TeleopInit()
         {
             m_holonomic->Init();
         }
+
+        // Create chassismovement to flush out any drive options from auton
+        ChassisMovement resetMoveInfo;
+        resetMoveInfo.driveOption = ChassisOptionEnums::DriveStateType::FIELD_DRIVE;
+        resetMoveInfo.headingOption = ChassisOptionEnums::HeadingOption::MAINTAIN;
+
+        m_chassis->Drive();
     }
     StateMgrHelper::RunCurrentMechanismStates();
 

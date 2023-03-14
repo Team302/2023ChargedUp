@@ -47,6 +47,7 @@ private:
     static constexpr double m_fullExtensionFTerm = 0.115;
 
     static constexpr double m_fTermAngleThreshold = 10.0;
+    static constexpr double m_maxArmAngle = 75.0;
     static constexpr double m_fullExtensionExtenderPos = 21.0;
     static constexpr double m_fullExtensionArmAngle = 40.0;
 };

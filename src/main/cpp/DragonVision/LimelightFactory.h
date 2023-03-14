@@ -16,8 +16,8 @@
 
 #pragma once
 
-#include <hw/DragonLimelight.h>
-#include <hw/usages/LimelightUsages.h>
+#include <DragonVision/DragonLimelight.h>
+#include <DragonVision/LimelightUsages.h>
 
 class LimelightFactory
 {

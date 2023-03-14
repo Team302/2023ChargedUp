@@ -24,6 +24,7 @@
 // FRC includes
 
 // Team 302 includes
+#include <hw/factories/CompressorFactory.h>
 #include <utils/HardwareIDValidation.h>
 #include <utils/logging/Logger.h>
 #include <hw/xml/PCMXmlParser.h>
@@ -45,9 +46,6 @@ Compressor *PCMXmlParser::ParseXML(
     pugi::xml_node PCMNode /// <I> - PCM node in the XML file
 )
 {
-    // initialize output
-    Compressor *pcm = nullptr;
-
     // initialize attributes to default values
 
     int canID = 1;
@@ -99,8 +97,7 @@ Compressor *PCMXmlParser::ParseXML(
     // If no errors, create the object
     if (!hasError)
     {
-        pcm = new Compressor(canID, type);
-        pcm->EnableAnalog(units::pressure::pounds_per_square_inch_t(minPressure), units::pressure::pounds_per_square_inch_t(maxPressure));
+        return CompressorFactory::GetFactory()->CreateCompressor(canID, type, units::pressure::pounds_per_square_inch_t(minPressure), units::pressure::pounds_per_square_inch_t(maxPressure));
     }
-    return pcm;
+    return nullptr;
 }

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE auton SYSTEM "auton.dtd">
+<auton>
+<primitive id="RESET_POSITION"
+	           pathname="RedCOOPOne1Slow.wpilib.json"
+               grabber="GRAB"/>
+    <!--score preloaded cone-->
+        <primitive id="DO_NOTHING"
+               arm="CONE_BACKROW_ROTATE"
+               extender="STARTING_POSITION_EXTEND"
+               grabber="GRAB"
+               time="0.35"
+               />
+    <primitive id="DO_NOTHING"
+               arm="CONE_BACKROW_ROTATE"
+               extender="CONE_BACKROW_EXTEND"
+               grabber="GRAB"
+               time="0.6"
+               />
+    <primitive id="DO_NOTHING"
+               arm="CONE_BACKROW_ROTATE"
+               extender="CONE_BACKROW_EXTEND"
+               grabber="OPEN"
+               time="0.35"
+               />
+    <primitive id="DO_NOTHING"
+               arm="CONE_BACKROW_ROTATE"
+               extender="STARTING_POSITION_EXTEND"
+               grabber="OPEN"
+               time="0.5"
+               />
+    <!--do nothing!-->
+    <primitive id="DO_NOTHING"
+               time="10.0"
+               />
+</auton>

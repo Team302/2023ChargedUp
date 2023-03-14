@@ -1,3 +1,4 @@
+
 //====================================================================================================================================================
 // Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
@@ -12,49 +13,42 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
-// C++ Includes
-#include <map>
-#include <memory>
-#include <string>
+
+#pragma once
 
 // FRC includes
+#include <frc/Compressor.h>
+#include <units/pressure.h>
+#include <frc/PneumaticHub.h>
+#include <frc/PneumaticsControlModule.h>
 
-// Team 302 includes
-#include <hw/usages/LimelightUsages.h>
-#include <utils/logging/Logger.h>
-
-// Third Party Includes
-
-using namespace std;
-
-LimelightUsages *LimelightUsages::m_instance = nullptr;
-LimelightUsages *LimelightUsages::GetInstance()
+class CompressorFactory
 {
-    if (m_instance == nullptr)
-    {
-        m_instance = new LimelightUsages();
-    }
-    return m_instance;
-}
+public:
+    static CompressorFactory *GetFactory();
 
-LimelightUsages::LimelightUsages()
-{
-    m_usageMap["MAINLIMELIGHT"] = LIMELIGHT_USAGE::PRIMARY;
-    m_usageMap["SECONDARYLIMELIGHT"] = LIMELIGHT_USAGE::SECONDARY;
-}
+    frc::Compressor *GetCompressor() const { return m_compressor; };
+    frc::Compressor *CreateCompressor(int canID, frc::PneumaticsModuleType type, units::pressure::pounds_per_square_inch_t minPressure, units::pressure::pounds_per_square_inch_t maxPressure);
 
-LimelightUsages::~LimelightUsages()
-{
-    m_usageMap.clear();
-}
+    void ToggleEnableCompressor();
 
-LimelightUsages::LIMELIGHT_USAGE LimelightUsages::GetUsage(string usageString)
-{
-    auto it = m_usageMap.find(usageString);
-    if (it != m_usageMap.end())
-    {
-        return it->second;
-    }
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("LimelightUsages::GetUsage"), string("unknown usage"), usageString);
-    return LimelightUsages::LIMELIGHT_USAGE::UNKNOWN_USAGE;
-}
+    units::pounds_per_square_inch_t GetMinPressure() const { return m_minPressure; }
+    units::pounds_per_square_inch_t GetMaxPressure() const { return m_maxPressure; }
+    units::pounds_per_square_inch_t GetCurrentPressure() const;
+
+private:
+    void EnableCompressor();
+    void DisableCompressor();
+
+    void ClearStickyFaults();
+    CompressorFactory();
+    virtual ~CompressorFactory() = default;
+
+    frc::Compressor *m_compressor;
+    units::pressure::pounds_per_square_inch_t m_minPressure;
+    units::pressure::pounds_per_square_inch_t m_maxPressure;
+    frc::PneumaticHub *m_hub;
+    frc::PneumaticsControlModule *m_pcm;
+
+    static CompressorFactory *m_factory;
+};

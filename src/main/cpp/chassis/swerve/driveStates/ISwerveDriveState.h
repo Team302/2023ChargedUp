@@ -28,11 +28,9 @@ public:
     ISwerveDriveState() = default;
 
     /// @brief Initialize the state
-    void virtual Init(
-        ChassisMovement &chassisMovement) = 0;
+    void virtual Init(ChassisMovement &chassisMovement) = 0;
 
     /// @brief Calculate the swerve module states based on chassis movement and orientation option
     /// @return std::array<frc::SwerveModuleState*, 4> - 4 calculated swerve module states
-    virtual std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates(
-        ChassisMovement &chassisMovement) = 0;
+    virtual std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates(ChassisMovement &chassisMovement) = 0;
 };

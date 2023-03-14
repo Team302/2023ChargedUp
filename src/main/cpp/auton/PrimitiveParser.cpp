@@ -24,7 +24,6 @@
 #include <auton/PrimitiveParser.h>
 #include <auton/drivePrimitives/IPrimitive.h>
 #include <utils/logging/Logger.h>
-// @ADDMECH include for your mechanism state
 
 #include <pugixml/pugixml.hpp>
 
@@ -53,6 +52,7 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
     primStringToEnumMap["TURN_ANGLE_REL"] = TURN_ANGLE_REL;
     primStringToEnumMap["DRIVE_PATH"] = DRIVE_PATH;
     primStringToEnumMap["RESET_POSITION"] = RESET_POSITION;
+    primStringToEnumMap["AUTO_BALANCE"] = AUTO_BALANCE;
 
     map<string, ChassisOptionEnums::HeadingOption> headingOptionMap;
     headingOptionMap["MAINTAIN"] = ChassisOptionEnums::HeadingOption::MAINTAIN;

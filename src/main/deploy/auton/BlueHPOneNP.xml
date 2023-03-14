@@ -15,7 +15,7 @@
                arm="CONE_BACKROW_ROTATE"
                extender="CONE_BACKROW_EXTEND"
                grabber="GRAB"
-               time="0.5"
+               time="0.6"
                />
     <primitive id="DO_NOTHING"
                arm="CONE_BACKROW_ROTATE"
@@ -53,7 +53,7 @@
                grabber="GRAB"
                time="5.0"
                />
-    <!--auto balance-->
+    <!--do nothing!-->
     <primitive id="DO_NOTHING"
                grabber="GRAB"
                headingOption="SPECIFIED_ANGLE"
