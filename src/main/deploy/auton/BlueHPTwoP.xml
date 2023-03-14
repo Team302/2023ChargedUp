@@ -5,6 +5,7 @@
 	   pathname="BlueHPOne1.wpilib.json"
        grabber="GRAB"/>
     <!--score preloaded cone-->
+    <snippet file="ScoreCone.xml"/>
     <!--drive to charing station-->
     <primitive id="DRIVE_PATH"
                pathname="BlueHPOne1.wpilib.json"
