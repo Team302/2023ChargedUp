@@ -130,9 +130,13 @@ void DriverFeedback::UpdateLEDStates()
     }
     else
     {
-        if (m_gamePieceState != DriverFeedbackStates::NONE)
+        if (m_TeleopEnabled)
         {
-            m_LEDStates->ResetVariables();
+            m_WantCone = true;
+            m_gamePieceState = DriverFeedbackStates::NONE;
+        }
+        else
+        {
             m_LEDStates->SolidColorPattern(DragonLeds::GREEN);
             m_gamePieceState = DriverFeedbackStates::NONE;
         }
