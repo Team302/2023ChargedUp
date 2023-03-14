@@ -35,8 +35,7 @@ using namespace pugi;
 /// @brief      Parse MechanismTargetData XML element
 /// @param [in] pugi::xml_node  mechanism data node
 /// @return     MechanismTargetData*       mechanism data
-MechanismTargetData *MechanismTargetXmlParser::ParseXML(
-    xml_node MechanismDataNode)
+MechanismTargetData *MechanismTargetXmlParser::ParseXML(xml_node MechanismDataNode)
 {
     // initialize output
     MechanismTargetData *mechData = nullptr;
