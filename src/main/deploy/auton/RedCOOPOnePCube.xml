@@ -6,25 +6,25 @@
        grabber="GRAB"/>
     <!--score preloaded cone-->
     <primitive id="DO_NOTHING"
-               arm="CONE_BACKROW_ROTATE"
+               arm="CUBE_BACKROW_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                grabber="GRAB"
                time="0.35"
                />
     <primitive id="DO_NOTHING"
-               arm="CONE_BACKROW_ROTATE"
-               extender="CONE_BACKROW_EXTEND"
+               arm="CUBE_BACKROW_ROTATE"
+               extender="CUBE_BACKROW_EXTEND"
                grabber="GRAB"
                time="0.6"
                />
     <primitive id="DO_NOTHING"
-               arm="CONE_BACKROW_ROTATE"
-               extender="CONE_BACKROW_EXTEND"
+               arm="CUBE_BACKROW_ROTATE"
+               extender="CUBE_BACKROW_EXTEND"
                grabber="OPEN"
                time="0.35"
                />
     <primitive id="DO_NOTHING"
-               arm="CONE_BACKROW_ROTATE"
+               arm="CUBE_BACKROW_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                grabber="OPEN"
                time="0.5"
@@ -32,14 +32,12 @@
     <!--drive over charging station-->
     <primitive id="DRIVE_PATH"
                pathname="RedCOOPOne1CubeSlow.wpilib.json"
-               headingOption="SPECIFIED_ANGLE"
-               heading="0.0"
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                grabber="OPEN"
                time="15.0"
                />
-   <!--drive over charging station-->
+    <!--drive onto charging station-->
     <primitive id="DRIVE_PATH"
                pathname="RedCOOPOne2CubeSlow.wpilib.json"
                headingOption="SPECIFIED_ANGLE"
@@ -51,9 +49,9 @@
                />
     <!--auto balance-->
     <primitive id="AUTO_BALANCE"
-               arm="STARTING_POSITION_ROTATE"
                headingOption="SPECIFIED_ANGLE"
                heading="179.5"
+               arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                grabber="OPEN"
                time="10.0"

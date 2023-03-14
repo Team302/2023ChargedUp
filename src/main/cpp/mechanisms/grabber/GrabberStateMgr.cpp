@@ -136,10 +136,6 @@ void GrabberStateMgr::CheckForSensorTransitions()
         {
             m_targetState = GRABBER_STATE::GRAB;
         }
-        if (MechanismFactory::GetMechanismFactory()->GetArm()->GetPositionDegrees().to<double>() < m_protectThreshold)
-        {
-            m_targetState = GRABBER_STATE::GRAB;
-        }
     }
     else
     {
