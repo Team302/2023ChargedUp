@@ -27,7 +27,7 @@
 class AutonPreviewer
 {
 public:
-    AutonPreviewer(CyclePrimitives *cyclePrims);
+    explicit AutonPreviewer(CyclePrimitives *cyclePrims);
     ~AutonPreviewer() = default;
 
     void CheckCurrentAuton();

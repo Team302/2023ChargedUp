@@ -13,7 +13,7 @@ Encoder *ThroughBoreEncoderXmlParser::ParseXML(
     string networkTableName,
     pugi::xml_node throughBoreEncoderNode)
 {
-    string usage;
+    // string usage;
     int DIOA = 0;
     int DIOB = 0;
     int PWMID = 0;
@@ -23,7 +23,7 @@ Encoder *ThroughBoreEncoderXmlParser::ParseXML(
     {
         if (strcmp(attr.name(), "usage") == 0)
         {
-            usage = attr.value();
+            // usage = attr.value();
         }
         else if (strcmp(attr.name(), "DIOA") == 0)
         {

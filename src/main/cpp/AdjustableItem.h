@@ -41,7 +41,4 @@ public:
 
     /// @brief Add adjustable values onto networktable (under the name from xml plus "-Tuner")
     virtual void PopulateNetworkTable() = 0;
-
-protected:
-    std::shared_ptr<nt::NetworkTable> GetShuffleboardTable();
 };

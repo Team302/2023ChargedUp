@@ -34,7 +34,11 @@ AdjustableItemMgr *AdjustableItemMgr::GetInstance()
 }
 
 /// @brief
-AdjustableItemMgr::AdjustableItemMgr() : m_adjustableItems()
+AdjustableItemMgr::AdjustableItemMgr() : m_adjustableItems(),
+                                         m_enableButton(frc::Shuffleboard::GetTab("Tuning").Add("Enable Live Tuning", false).WithWidget(frc::BuiltInWidgets::kToggleButton).GetEntry()),
+                                         m_submitButton(frc::Shuffleboard::GetTab("Tuning").Add("Submit Changes", false).WithWidget(frc::BuiltInWidgets::kToggleButton).GetEntry()),
+                                         m_resetButton(frc::Shuffleboard::GetTab("Tuning").Add("Reset Changes", false).WithWidget(frc::BuiltInWidgets::kToggleButton).GetEntry()),
+                                         m_getDiffsButton(frc::Shuffleboard::GetTab("Tuning").Add("Show Differences", false).WithWidget(frc::BuiltInWidgets::kToggleButton).GetEntry())
 {
     m_enableButton = frc::Shuffleboard::GetTab("Tuning").Add("Enable Live Tuning", false).WithWidget(frc::BuiltInWidgets::kToggleButton).GetEntry();
 }

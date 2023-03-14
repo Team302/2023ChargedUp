@@ -22,8 +22,3 @@ AdjustableItem::AdjustableItem()
 {
     AdjustableItemMgr::GetInstance()->RegisterAdjustableItem(this);
 }
-
-std::shared_ptr<nt::NetworkTable> AdjustableItem::GetShuffleboardTable()
-{
-    return nt::NetworkTableInstance::GetDefault().GetTable("Shuffleboard");
-}

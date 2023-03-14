@@ -144,7 +144,7 @@ void RobotState::PublishGameStateChanges()
             gameState = RobotStateChanges::Teleop;
         }
     }
-    else if (gameState != RobotStateChanges::Disabled)
+    else
     {
         gameState = RobotStateChanges::Disabled;
     }

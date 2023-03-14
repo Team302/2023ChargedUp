@@ -34,6 +34,9 @@ public:
     static LEDStates *GetInstance();
 
 private:
+    LEDStates() = default;
+    ~LEDStates() = default;
+
     int loopThroughIndividualLEDs = -1;
     int colorLoop = 0;
     int timer;
