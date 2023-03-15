@@ -22,6 +22,7 @@
 #include <utils/FMSData.h>
 #include <robotstate/RobotState.h>
 #include <utils/FMSData.h>
+#include <teleopcontrol/TeleopControl.h>
 
 /// DEBUGGING
 #include <utils/logging/Logger.h>
@@ -40,6 +41,53 @@ VisionDrive::VisionDrive(RobotDrive *robotDrive) : RobotDrive(),
 std::array<frc::SwerveModuleState, 4> VisionDrive::UpdateSwerveModuleStates(
     ChassisMovement &chassisMovement)
 {
+
+    static int pCounter = 0;
+    static int iCounter = 0;
+
+    TeleopControl *tc = TeleopControl::GetInstance();
+    if (tc->IsButtonPressed(TeleopControlFunctions::DEBUG_INC_P))
+    {
+        pCounter++;
+        if (pCounter == 1000 / 20)
+        {
+            pCounter = 0;
+            m_visionKP_Y += 0.01;
+        }
+    }
+    else if (tc->IsButtonPressed(TeleopControlFunctions::DEBUG_DEC_P))
+    {
+        pCounter++;
+        if (pCounter == 1000 / 20)
+        {
+            pCounter = 0;
+            m_visionKP_Y -= 0.01;
+        }
+    }
+    else
+        pCounter = 0;
+
+    if (tc->IsButtonPressed(TeleopControlFunctions::DEBUG_INC_I))
+    {
+        iCounter++;
+        if (iCounter == 1000 / 20)
+        {
+            iCounter = 0;
+            m_visionKI_Y += 0.01;
+        }
+    }
+    else if (tc->IsButtonPressed(TeleopControlFunctions::DEBUG_DEC_I))
+    {
+        iCounter++;
+        if (iCounter == 1000 / 20)
+        {
+            iCounter = 0;
+            m_visionKI_Y -= 0.01;
+        }
+    }
+    else
+        iCounter = 0;
+
     switch (m_currentState)
     {
     case VISION_STATE::NORMAL_DRIVE:
@@ -64,6 +112,8 @@ std::array<frc::SwerveModuleState, 4> VisionDrive::UpdateSwerveModuleStates(
         break;
     }
 
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "m_autoAlignKI_Y", m_autoAlignKI_Y);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "m_autoAlignKP_Y", m_autoAlignKP_Y);
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "CurrentState", m_currentState);
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "PreviousState", m_previousState);
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "VY", chassisMovement.chassisSpeeds.vy.to<double>());
@@ -141,7 +191,11 @@ void VisionDrive::FoundTag(ChassisMovement &chassisMovement)
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "XOffset", xOffset.to<double>());
 
-    m_yTargetPos = yOffset + m_chassis->GetPose().Y();
+    if (FMSData::GetInstance()->GetAllianceColor() == frc::DriverStation::Alliance::kRed)
+        m_yTargetPos = yOffset + m_chassis->GetPose().Y();
+    else
+        m_yTargetPos = m_chassis->GetPose().Y() - yOffset;
+
     m_xTargetPos = xOffset + m_chassis->GetPose().X() - units::length::inch_t(m_robotFrameGapToTag);
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "YTargetPos", m_yTargetPos.to<double>());
@@ -202,8 +256,10 @@ void VisionDrive::DriveToTarget(ChassisMovement &chassisMovement)
         chassisMovement.chassisSpeeds.vx = units::velocity::meters_per_second_t(1.0);
     }
 
+    chassisMovement.chassisSpeeds.vx = units::velocity::meters_per_second_t(0.0);
+
     // once we get within threshold, switch to logic similar to below
-    if ((abs(yError.to<double>()) < m_autoAlignYTolerance) && (abs(xError.to<double>()) < m_autoAlignXTolerance))
+    if ((abs(yError.to<double>()) < m_autoAlignYTolerance)) //&& (abs(xError.to<double>()) < m_autoAlignXTolerance))
     {
         exit = true;
     }
@@ -211,7 +267,8 @@ void VisionDrive::DriveToTarget(ChassisMovement &chassisMovement)
     // Exit
     if (exit)
     {
-        m_currentState = VISION_STATE::ALIGN_RAW_VISION;
+        m_currentState = VISION_STATE::ALIGNED;
+        // m_currentState = VISION_STATE::ALIGN_RAW_VISION;
     }
 }
 
@@ -224,6 +281,7 @@ void VisionDrive::AlignRawVision(ChassisMovement &chassisMovement)
 
     if (m_currentState != m_previousState)
     {
+        yErrorIntegral = units::length::inch_t(0);
         m_previousState = VISION_STATE::ALIGN_RAW_VISION;
     }
 
@@ -249,6 +307,8 @@ void VisionDrive::AlignRawVision(ChassisMovement &chassisMovement)
     {
         // override yError and xError to data from pipeline
         yError = targetData->getYdistanceToTargetRobotFrame();
+        yErrorIntegral += yError;
+
         xError = targetData->getXdistanceToTargetRobotFrame() - units::length::inch_t(m_robotFrameXDistCorrection);
 
         exit = (AtTargetY(targetData) && AtTargetX(targetData));
@@ -262,28 +322,26 @@ void VisionDrive::AlignRawVision(ChassisMovement &chassisMovement)
 
     if ((targetData != nullptr) && (pipelineMode == targetData->getTargetType()))
     {
-        ySpeed = units::length::meter_t(yError * m_visionKP_Y) / 1_s;
+        ySpeed = units::length::meter_t((yError * m_visionKP_Y) + (yErrorIntegral * m_visionKI_Y)) / 1_s;
 
         if (abs(yError.to<double>()) < m_autoAlignYTolerance)
         {
-            xSpeed = units::length::meter_t(xError * m_visionKP_X) / 1_s;
+            xSpeed = units::length::meter_t(xError * m_visionKP_X * 0) / 1_s;
         }
     }
-
-    if (abs(ySpeed.to<double>()) < m_minimumSpeed)
-    {
-        if (ySpeed.to<double>() < 0.0)
+    /*
+        if (abs(ySpeed.to<double>()) < m_minimumSpeed)
         {
-            ySpeed = units::velocity::meters_per_second_t(m_minimumSpeed * -1.0);
+            if (ySpeed.to<double>() < 0.0)
+            {
+                ySpeed = units::velocity::meters_per_second_t(m_minimumSpeed * -1.0);
+            }
+            else
+            {
+                ySpeed = units::velocity::meters_per_second_t(m_minimumSpeed);
+            }
         }
-        else
-        {
-            ySpeed = units::velocity::meters_per_second_t(m_minimumSpeed);
-        }
-    }
-
-    // xSpeed = units::velocity::meters_per_second_t(0);
-    // ySpeed = units::velocity::meters_per_second_t(0);
+    */
     chassisMovement.chassisSpeeds.vy = ySpeed;
     chassisMovement.chassisSpeeds.vx = xSpeed;
 

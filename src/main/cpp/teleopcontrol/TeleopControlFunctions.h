@@ -52,6 +52,10 @@ public:
         ALIGN_CONE,
         ALIGN_CUBE,
         // Scoring states
+        DEBUG_INC_P,
+        DEBUG_DEC_P,
+        DEBUG_INC_I,
+        DEBUG_DEC_I, // Scoring states
         // HOLD_POSITION, // may not need this state
         BACKROW,
         MIDROW,
