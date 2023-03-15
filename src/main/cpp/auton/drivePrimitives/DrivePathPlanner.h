@@ -1,4 +1,3 @@
-
 //====================================================================================================================================================
 // Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
@@ -13,34 +12,38 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
-
 #pragma once
 
 // C++ Includes
+#include <memory>
 
-// FRC includes
+// Team302 Includes
+#include <auton/PrimitiveParams.h>
+#include <auton/drivePrimitives/IPrimitive.h>
+#include <chassis/swerve/SwerveChassis.h>
 
-// Team 302 includes
+// FRC,WPI Includes
+#include <frc/Timer.h>
 
-// Third Party Includes
+// third party includes
+#include <pathplanner/lib/PathPlanner.h>
 
-#include <auton/drivePrimitives/SuperDrive.h>
-
-class PrimitiveParams;
-
-class DriveToWall : public SuperDrive
+class DrivePathPlanner : public IPrimitive
 {
 public:
-	bool IsDone() override;
-	void Init(PrimitiveParams *params) override;
-	void Run() override;
-	DriveToWall();
-	virtual ~DriveToWall() = default;
+    DrivePathPlanner();
+
+    virtual ~DrivePathPlanner() = default;
+
+    void Init(PrimitiveParams *params) override;
+    void Run() override;
+    bool IsDone() override;
 
 private:
-	float m_minimumTime;
-	float m_timeRemaining;
-	int m_underSpeedCounts;
-	const float SPEED_THRESHOLD = 3;
-	const int UNDER_SPEED_COUNT_THRESHOLD = 2;
+    SwerveChassis *m_chassis;
+    std::unique_ptr<frc::Timer> m_timer;
+    pathplanner::PathPlannerTrajectory m_trajectory;
+    std::string m_pathname;
+    double m_maxTime;
+    std::string m_ntName;
 };

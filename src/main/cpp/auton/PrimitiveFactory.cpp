@@ -20,15 +20,11 @@
 #include <auton/PrimitiveParser.h>
 #include <auton/drivePrimitives/AutoBalance.h>
 #include <auton/drivePrimitives/DriveStop.h>
-#include <auton/drivePrimitives/DriveDistance.h>
 #include <auton/drivePrimitives/DrivePath.h>
-#include <auton/drivePrimitives/DriveTime.h>
-#include <auton/drivePrimitives/DriveToTarget.h>
-#include <auton/drivePrimitives/DriveToWall.h>
+#include <auton/drivePrimitives/DrivePathPlanner.h>
 #include <auton/drivePrimitives/DriveHoldPosition.h>
 #include <auton/drivePrimitives/IPrimitive.h>
 #include <auton/drivePrimitives/ResetPosition.h>
-#include <auton/drivePrimitives/TurnAngle.h>
 
 PrimitiveFactory *PrimitiveFactory::m_instance = nullptr;
 
@@ -42,15 +38,11 @@ PrimitiveFactory *PrimitiveFactory::GetInstance()
 }
 
 PrimitiveFactory::PrimitiveFactory() : m_DriveStop(nullptr),
-									   m_driveTime(nullptr),
-									   m_driveDistance(nullptr),
-									   m_turnAngle(nullptr),
 									   m_DriveHoldPosition(nullptr),
-									   m_driveToWall(nullptr),
-									   m_driveLidarDistance(nullptr),
 									   m_resetPosition(nullptr),
 									   m_autoBalance(nullptr),
-									   m_drivePath(nullptr)
+									   m_drivePath(nullptr),
+									   m_drivePathPlanner(nullptr)
 {
 }
 
@@ -72,39 +64,6 @@ IPrimitive *PrimitiveFactory::GetIPrimitive(PrimitiveParams *primitivePasser)
 		primitive = m_DriveStop;
 		break;
 
-	case DRIVE_TIME:
-		if (m_driveTime == nullptr)
-		{
-			m_driveTime = new DriveTime();
-		}
-		primitive = m_driveTime;
-		break;
-
-	case DRIVE_DISTANCE:
-		if (m_driveDistance == nullptr)
-		{
-			m_driveDistance = new DriveDistance();
-		}
-		primitive = m_driveDistance;
-		break;
-
-	case TURN_ANGLE_ABS:
-		if (m_turnAngle == nullptr)
-		{
-			m_turnAngle = new TurnAngle();
-		}
-		primitive = m_turnAngle;
-		break;
-
-	case TURN_ANGLE_REL:
-		// TODO: need new primitive
-		if (m_turnAngle == nullptr)
-		{
-			m_turnAngle = new TurnAngle();
-		}
-		primitive = m_turnAngle;
-		break;
-
 	case HOLD_POSITION:
 		if (m_DriveHoldPosition == nullptr)
 		{
@@ -113,13 +72,6 @@ IPrimitive *PrimitiveFactory::GetIPrimitive(PrimitiveParams *primitivePasser)
 		primitive = m_DriveHoldPosition;
 		break;
 
-	case DRIVE_TO_WALL:
-		if (m_driveToWall == nullptr)
-		{
-			m_driveToWall = new DriveToWall();
-		}
-		primitive = m_driveToWall;
-		break;
 	case RESET_POSITION:
 		if (m_resetPosition == nullptr)
 		{
@@ -132,6 +84,14 @@ IPrimitive *PrimitiveFactory::GetIPrimitive(PrimitiveParams *primitivePasser)
 		if (m_drivePath == nullptr)
 		{
 			m_drivePath = new DrivePath();
+		}
+		primitive = m_drivePath;
+		break;
+
+	case DRIVE_PATH_PLANNER:
+		if (m_drivePath == nullptr)
+		{
+			m_drivePath = new DrivePathPlanner();
 		}
 		primitive = m_drivePath;
 		break;
