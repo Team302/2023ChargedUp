@@ -69,11 +69,14 @@ private:
     units::length::inch_t m_yDistanceToTag = units::length::inch_t(0.0);
     units::length::inch_t m_xDistanceToTag = units::length::inch_t(0.0);
 
+    units::length::inch_t yErrorIntegral;
+
     // const double m_autoAlignKP = 0.075; //original
-    const double m_autoAlignKP_Y = 0.05;  // temporary for testing
-    const double m_autoAlignKP_X = 0.035; // temporary for testing
-    const double m_visionKP_X = 1.5;
-    const double m_visionKP_Y = 0.75;
+    const double m_autoAlignKP_Y = 0.05;  // used for driving to target
+    const double m_autoAlignKP_X = 0.035; // used for driving to target
+    const double m_visionKP_X = 1.5;      // used for vision based alignment
+    double m_visionKP_Y = 0.75;           // used for vision based alignment
+    double m_visionKI_Y = 0.0;            // used for vision based alignment
 
     const double m_speedTolerance = 0.2;
     const double m_minimumSpeed = 0.25;

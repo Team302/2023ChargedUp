@@ -48,7 +48,10 @@ public:
         SLOW_MODE,
         AUTO_TURN_FORWARD,
         AUTO_TURN_BACKWARD,
-        // Scoring states
+        DEBUG_INC_P,
+        DEBUG_DEC_P,
+        DEBUG_INC_I,
+        DEBUG_DEC_I, // Scoring states
         // HOLD_POSITION, // may not need this state
         BACKROW,
         MIDROW,
