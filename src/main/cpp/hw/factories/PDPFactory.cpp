@@ -55,6 +55,7 @@ PDPFactory::PDPFactory()
 PowerDistribution *PDPFactory::CreatePDP(
     int canID,
     PowerDistribution::ModuleType type)
+
 {
     if (m_pdp == nullptr)
     {

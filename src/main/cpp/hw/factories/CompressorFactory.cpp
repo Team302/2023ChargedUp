@@ -19,6 +19,7 @@
 // FRC includes
 #include <frc/Compressor.h>
 #include <units/pressure.h>
+#include <utils/logging/Logger.h>
 
 // Team 302 includes
 #include <hw/factories/CompressorFactory.h>
@@ -109,4 +110,13 @@ units::pounds_per_square_inch_t CompressorFactory::GetCurrentPressure() const
         return m_compressor->GetPressure();
     }
     return units::pounds_per_square_inch_t(0.0);
+}
+
+bool CompressorFactory::GetStickyFaults()
+{
+    if (m_hub != nullptr)
+    {
+        m_hub->GetStickyFaults();
+        auto StickyFaultsValue = GetStickyFaults();
+    }
 }
