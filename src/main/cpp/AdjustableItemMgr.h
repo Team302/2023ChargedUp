@@ -49,12 +49,11 @@ private:
 
     std::vector<AdjustableItem *> m_adjustableItems;
 
-    static AdjustableItemMgr *m_instance;
-
-    bool m_enabled = false;
-
     nt::GenericEntry *m_enableButton;
     nt::GenericEntry *m_submitButton;
     nt::GenericEntry *m_resetButton;
     nt::GenericEntry *m_getDiffsButton;
+
+    bool m_enabled = false;
+    static AdjustableItemMgr *m_instance;
 };

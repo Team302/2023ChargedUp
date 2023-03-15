@@ -15,33 +15,40 @@
 //====================================================================================================================================================
 
 #pragma once
-#include <hw/DragonLeds.h>
-#include <vector>
 
-class LEDStates
+// FRC includes
+#include <frc/Compressor.h>
+#include <units/pressure.h>
+#include <frc/PneumaticHub.h>
+#include <frc/PneumaticsControlModule.h>
+
+class CompressorFactory
 {
 public:
-    void setLEDsOn();
-    void setLEDsOff();
-    void ResetVariables();
-    void ChaserPattern(DragonLeds::Colors c);
-    void BlinkingPattern(DragonLeds::Colors c);
-    void SolidColorPattern(DragonLeds::Colors c);
-    void AlternatingColorBlinkingPattern(DragonLeds::Colors c);
-    void AlternatingColorBlinkingPattern(DragonLeds::Colors c1, DragonLeds::Colors c2);
-    void ClosingInChaserPattern(DragonLeds::Colors c);
-    DragonLeds *m_LEDstring = DragonLeds::GetInstance();
-    static LEDStates *GetInstance();
+    static CompressorFactory *GetFactory();
+
+    frc::Compressor *GetCompressor() const { return m_compressor; };
+    frc::Compressor *CreateCompressor(int canID, frc::PneumaticsModuleType type, units::pressure::pounds_per_square_inch_t minPressure, units::pressure::pounds_per_square_inch_t maxPressure);
+
+    void ToggleEnableCompressor();
+
+    units::pounds_per_square_inch_t GetMinPressure() const { return m_minPressure; }
+    units::pounds_per_square_inch_t GetMaxPressure() const { return m_maxPressure; }
+    units::pounds_per_square_inch_t GetCurrentPressure() const;
 
 private:
-    LEDStates() = default;
-    ~LEDStates() = default;
+    void EnableCompressor();
+    void DisableCompressor();
 
-    int loopThroughIndividualLEDs = -1;
-    int colorLoop = 0;
-    int timer;
-    static LEDStates *m_instance;
+    void ClearStickyFaults();
+    CompressorFactory();
+    virtual ~CompressorFactory() = default;
 
-    const int blinkPatternPeriod = 10;
-    const int alternatingColorBlinkPatternPeriod = 10;
+    frc::Compressor *m_compressor;
+    units::pressure::pounds_per_square_inch_t m_minPressure;
+    units::pressure::pounds_per_square_inch_t m_maxPressure;
+    frc::PneumaticHub *m_hub;
+    frc::PneumaticsControlModule *m_pcm;
+
+    static CompressorFactory *m_factory;
 };
