@@ -17,6 +17,7 @@
 #pragma once
 #include <driveteamfeedback/LEDStates.h>
 #include <robotstate/IRobotStateChangeSubscriber.h>
+#include <TeleopControl/TeleopControl.h>
 
 class DriverFeedback : public IRobotStateChangeSubscriber
 {
@@ -65,7 +66,7 @@ private:
     bool m_compressorOn = true;
 
     static DriverFeedback *m_instance;
-
+    TeleopControl *XBoxController;
     DriverFeedbackStates m_gamePieceState = DriverFeedbackStates::NONE;
     DriverFeedbackStates m_compressorState = DriverFeedbackStates::NONE;
     bool m_grabberStateChanged = true;

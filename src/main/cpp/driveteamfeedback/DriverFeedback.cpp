@@ -23,6 +23,7 @@
 #include <networktables/NetworkTableInstance.h>
 #include <networktables/NetworkTable.h>
 #include <networktables/NetworkTableEntry.h>
+#include <TeleopControl/TeleopControl.h>
 
 using frc::DriverStation;
 
@@ -59,6 +60,7 @@ void DriverFeedback::DisplayPressure()
 }
 void DriverFeedback::UpdateLEDStates()
 {
+    XBoxController = TeleopControl::GetInstance();
     if (DriverFeedback::m_AlignedWithConeNode)
     {
         if (m_gamePieceState != DriverFeedbackStates::ALIGNED_WITH_CONE_NODE)
@@ -86,6 +88,8 @@ void DriverFeedback::UpdateLEDStates()
         }
         m_LEDStates->AlternatingColorBlinkingPattern(DragonLeds::YELLOW, DragonLeds::PURPLE);
         m_gamePieceState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
+        XBoxController->SetRumble(0, true, true);
+        XBoxController->SetRumble(1, true, true);
     }
     else if (DriverFeedback::m_WantCube)
     {
