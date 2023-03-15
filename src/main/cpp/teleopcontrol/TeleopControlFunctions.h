@@ -48,6 +48,9 @@ public:
         SLOW_MODE,
         AUTO_TURN_FORWARD,
         AUTO_TURN_BACKWARD,
+        // Standish raw vision
+        ALIGN_CONE,
+        ALIGN_CUBE,
         // Scoring states
         // HOLD_POSITION, // may not need this state
         BACKROW,

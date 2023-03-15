@@ -97,8 +97,57 @@ void HolonomicDrive::Run()
             m_hasResetPosition = false;
         }
 
+        if (controller->IsButtonPressed(TeleopControlFunctions::ALIGN_CONE) || controller->IsButtonPressed(TeleopControlFunctions::ALIGN_CUBE))
+        {
+            m_inVisionDrive = true;
+
+            double yawAngle = 0.0;
+
+            // determine target heading
+            frc::DriverStation::Alliance alliance = FMSData::GetInstance()->GetAllianceColor();
+
+            if (alliance == frc::DriverStation::Alliance::kBlue)
+            {
+                yawAngle = 180.0;
+                moveInfo.yawAngle = units::angle::degree_t(yawAngle);
+            }
+            else if (alliance == frc::DriverStation::Alliance::kRed)
+            {
+                moveInfo.yawAngle = units::angle::degree_t(yawAngle);
+            }
+
+            if (controller->IsButtonPressed(TeleopControlFunctions::ALIGN_CONE))
+            {
+                moveInfo.nodePosition = ChassisOptionEnums::RELATIVE_POSITION::LEFT; // represents cone
+
+                // set pipeline to discover retroreflective
+                DragonVision::GetDragonVision()->setPipeline(DragonLimelight::PIPELINE_MODE::CONE_NODE);
+            }
+
+            if (controller->IsButtonPressed(TeleopControlFunctions::ALIGN_CUBE))
+            {
+                moveInfo.nodePosition = ChassisOptionEnums::RELATIVE_POSITION::CENTER; // represents cube
+
+                // set pipeline to discover april tags
+                DragonVision::GetDragonVision()->setPipeline(DragonLimelight::PIPELINE_MODE::APRIL_TAG);
+            }
+
+            moveInfo.headingOption = ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE;
+
+            // set drive and heading mode
+            moveInfo.driveOption = ChassisOptionEnums::DriveStateType::VISION_DRIVE;
+        }
+        else
+        {
+            // no longer in vision drive, set boolean and reset offsets in VisionDrive
+            m_inVisionDrive = false;
+            auto visionDrive = dynamic_cast<VisionDrive *>(m_swerve->GetSpecifiedDriveState(ChassisOptionEnums::DriveStateType::VISION_DRIVE));
+
+            visionDrive->ResetVisionDrive();
+        }
+
         // Auto alignment to grid nodes
-        if (IsAutoAligning())
+        /*if (IsAutoAligning())
         {
             m_inVisionDrive = true;
 
@@ -145,7 +194,7 @@ void HolonomicDrive::Run()
 
             // set pipeline to discover april tags
             DragonVision::GetDragonVision()->setPipeline(DragonLimelight::PIPELINE_MODE::APRIL_TAG);
-        }
+        }*/
 
         // add button to align with substation
 

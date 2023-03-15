@@ -155,11 +155,14 @@ const TeleopControlButton extra4DPad270 = {TeleopControlMappingEnums::EXTRA4, Te
 const TeleopControlButton extra4DPad315 = {TeleopControlMappingEnums::EXTRA4, TeleopControlMappingEnums::POV_315, TeleopControlMappingEnums::STANDARD};
 
 robin_hood::unordered_map<TeleopControlFunctions::FUNCTION, const TeleopControlButton> teleopControlMapButtonMap{
-    {TeleopControlFunctions::DRIVE_TO_LEFT_GRID, driverXButton},
+    /*{TeleopControlFunctions::DRIVE_TO_LEFT_GRID, driverXButton},
     {TeleopControlFunctions::DRIVE_TO_CENTER_GRID, driverYButton},
     {TeleopControlFunctions::DRIVE_TO_RIGHT_GRID, driverBButton},
     {TeleopControlFunctions::DRIVE_TO_LEFT_NODE, driverSelectButton},
-    {TeleopControlFunctions::DRIVE_TO_RIGHT_NODE, driverStartButton},
+    {TeleopControlFunctions::DRIVE_TO_RIGHT_NODE, driverStartButton},*/
+    {TeleopControlFunctions::ALIGN_CONE, driverXButton},
+    {TeleopControlFunctions::ALIGN_CUBE, driverYButton},
+
     {TeleopControlFunctions::RESET_POSITION, driverAButton},
     {TeleopControlFunctions::HOLD_POSITION, driverLBumper},
     {TeleopControlFunctions::SLOW_MODE, driverRBumper},
