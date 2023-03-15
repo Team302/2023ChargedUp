@@ -45,11 +45,6 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
     map<string, PRIMITIVE_IDENTIFIER> primStringToEnumMap;
     primStringToEnumMap["DO_NOTHING"] = DO_NOTHING;
     primStringToEnumMap["HOLD_POSITION"] = HOLD_POSITION;
-    primStringToEnumMap["DRIVE_DISTANCE"] = DRIVE_DISTANCE;
-    primStringToEnumMap["DRIVE_TIME"] = DRIVE_TIME;
-    primStringToEnumMap["DRIVE_TO_WALL"] = DRIVE_TO_WALL;
-    primStringToEnumMap["TURN_ANGLE_ABS"] = TURN_ANGLE_ABS;
-    primStringToEnumMap["TURN_ANGLE_REL"] = TURN_ANGLE_REL;
     primStringToEnumMap["DRIVE_PATH"] = DRIVE_PATH;
     primStringToEnumMap["RESET_POSITION"] = RESET_POSITION;
     primStringToEnumMap["AUTO_BALANCE"] = AUTO_BALANCE;
