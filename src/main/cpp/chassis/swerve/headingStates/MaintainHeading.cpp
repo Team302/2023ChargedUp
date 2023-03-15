@@ -30,10 +30,10 @@ void MaintainHeading::UpdateChassisSpeeds(ChassisMovement &chassisMovement)
     units::meters_per_second_t yspeed = chassisMovement.chassisSpeeds.vy;
     units::radians_per_second_t rot = chassisMovement.chassisSpeeds.omega;
 
-    if (abs(rot.to<double>()) == 0.0)
+    if (abs(chassisMovement.chassisSpeeds.omega.to<double>()) == 0.0)
     {
-        rot = units::radians_per_second_t(0.0);
-        if (abs(xspeed.to<double>()) > 0.0 || abs(yspeed.to<double>() > 0.0))
+        chassisMovement.chassisSpeeds.omega = units::radians_per_second_t(0.0);
+        if (abs(chassisMovement.chassisSpeeds.vx.to<double>()) > 0.0 || abs(chassisMovement.chassisSpeeds.vy.to<double>() > 0.0))
         {
             correction = CalcHeadingCorrection(m_storedYaw, m_kPMaintainHeadingControl);
         }
@@ -43,5 +43,5 @@ void MaintainHeading::UpdateChassisSpeeds(ChassisMovement &chassisMovement)
         SetStoredHeading(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose().Rotation().Degrees());
     }
 
-    rot -= correction;
+    chassisMovement.chassisSpeeds.omega -= correction;
 }
