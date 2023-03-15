@@ -45,13 +45,16 @@ std::array<frc::SwerveModuleState, 4> VisionDrive::UpdateSwerveModuleStates(
     case VISION_STATE::NORMAL_DRIVE:
         break;
     case VISION_STATE::LOOKING_FOR_APRIL_TAG:
-        LookingForTag(chassisMovement);
+        // LookingForTag(chassisMovement);
+        STANDISH();
         break;
     case VISION_STATE::FOUND_APRIL_TAG:
-        FoundTag(chassisMovement);
+        // FoundTag(chassisMovement);
+        STANDISH();
         break;
     case VISION_STATE::DRIVE_TO_TARGET:
-        DriveToTarget(chassisMovement);
+        // DriveToTarget(chassisMovement);
+        STANDISH();
         break;
     case VISION_STATE::ALIGN_RAW_VISION:
         AlignRawVision(chassisMovement);
@@ -70,6 +73,11 @@ std::array<frc::SwerveModuleState, 4> VisionDrive::UpdateSwerveModuleStates(
     // chassisMovement.chassisSpeeds.vy = units::meters_per_second_t(0.0);
 
     return m_robotDrive->UpdateSwerveModuleStates(chassisMovement);
+}
+
+void VisionDrive::STANDISH()
+{
+    m_currentState = ALIGN_RAW_VISION;
 }
 
 void VisionDrive::Init(

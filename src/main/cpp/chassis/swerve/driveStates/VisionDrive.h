@@ -51,6 +51,9 @@ private:
     void LookingForTag(ChassisMovement &chassisMovement);
     void FoundTag(ChassisMovement &chassisMovement);
     void DriveToTarget(ChassisMovement &chassisMovement);
+
+    void STANDISH();
+
     void AlignRawVision(ChassisMovement &chassisMovement);
     void Aligned(ChassisMovement &chassisMovement);
 
