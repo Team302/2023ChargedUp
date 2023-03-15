@@ -112,8 +112,8 @@ std::array<frc::SwerveModuleState, 4> VisionDrive::UpdateSwerveModuleStates(
         break;
     }
 
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "m_autoAlignKI_Y", m_autoAlignKI_Y);
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "m_autoAlignKP_Y", m_autoAlignKP_Y);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "m_visionKI_Y", m_visionKI_Y);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "m_visionKP_Y", m_visionKP_Y);
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "CurrentState", m_currentState);
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "PreviousState", m_previousState);
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "VY", chassisMovement.chassisSpeeds.vy.to<double>());
@@ -311,7 +311,7 @@ void VisionDrive::AlignRawVision(ChassisMovement &chassisMovement)
 
         xError = targetData->getXdistanceToTargetRobotFrame() - units::length::inch_t(m_robotFrameXDistCorrection);
 
-        exit = (AtTargetY(targetData) && AtTargetX(targetData));
+        exit = (AtTargetY(targetData) /*&& AtTargetX(targetData)*/);
     }
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "YError", yError.to<double>() + 100);
@@ -410,7 +410,7 @@ bool VisionDrive::AtTargetY(std::shared_ptr<DragonVisionTarget> targetData)
     {
         units::length::inch_t yError = targetData->getYdistanceToTargetRobotFrame();
 
-        if (abs(yError.to<double>()) < m_autoAlignYTolerance)
+        if (abs(yError.to<double>()) < m_tolerance)
         {
             return true;
         }
