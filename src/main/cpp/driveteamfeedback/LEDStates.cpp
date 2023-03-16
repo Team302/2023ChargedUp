@@ -95,6 +95,20 @@ void LEDStates::ChaserPattern(DragonLeds::Colors c)
     timer = 0;
 }
 
+void LEDStates::NumberOfLedsOnPattern(DragonLeds::Colors c, int number)
+{
+    auto color = m_LEDstring->getColorValues(c);
+    for (int i = 0; i > m_LEDstring->m_ledBuffer.size(); i++)
+    {
+        m_LEDstring->m_ledBuffer[i].SetRGB(0, 0, 0);
+    }
+    for (int i = 0; i > number; i++)
+    {
+        m_LEDstring->m_ledBuffer[i].SetRGB(color[0], color[1], color[2]);
+    }
+    m_LEDstring->commitLedData();
+}
+
 void LEDStates::ResetVariables()
 {
     loopThroughIndividualLEDs = -1;
