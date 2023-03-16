@@ -117,5 +117,5 @@ bool CompressorFactory::HasStickyFaults()
     if (m_hub != nullptr)
     {
         frc::PneumaticHub::StickyFaults m_StickyFaultsValue = m_hub->GetStickyFaults();
-    }
+        }
 }
