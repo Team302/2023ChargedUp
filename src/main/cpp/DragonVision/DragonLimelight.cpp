@@ -461,7 +461,7 @@ units::length::inch_t DragonLimelight::EstimateTargetYdistance() const
 
     units::length::inch_t targetXdistance = EstimateTargetXdistance();
 
-    units::length::inch_t targetYoffset = -1 * targetXdistance * tan(limelightFrameHorizAngleRad.to<double>()); // * -1 beacuse if the angle is positve, the distance is in the neg y direction
+    units::length::inch_t targetYoffset = targetXdistance * tan(limelightFrameHorizAngleRad.to<double>()); // * -1 beacuse if the angle is positve, the distance is in the neg y direction
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("targetYoffset_LL_inch "), targetYoffset.to<double>());
 

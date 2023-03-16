@@ -22,6 +22,7 @@
 #include <State.h>
 #include <chassis/swerve/driveStates/DragonTrajectoryGenerator.h>
 #include <utils/DragonField.h>
+#include <chassis/swerve/driveStates/VisionDrive.h>
 
 class IChassis;
 class MecanumChassis;
@@ -39,6 +40,10 @@ public:
     bool AtTarget() const override;
 
 private:
+    std::pair<ChassisOptionEnums::RELATIVE_POSITION, ChassisOptionEnums::RELATIVE_POSITION> GetAutoAlignDestination();
+
+    bool IsAutoAligning();
+
     IChassis *m_chassis;
     SwerveChassis *m_swerve;
     MecanumChassis *m_mecanum;
@@ -46,7 +51,8 @@ private:
     ChassisOptionEnums::DriveStateType m_previousDriveState;
     frc::Trajectory m_generatedTrajectory;
     DragonField *m_field;
-    double m_slowModeMultiplier = 0.3;
+    const double m_slowModeMultiplier = 0.3;
+    const double m_autoAlignAngleTolerance = 5.0;
     bool m_hasResetPosition = false;
     bool m_inVisionDrive = false;
 };

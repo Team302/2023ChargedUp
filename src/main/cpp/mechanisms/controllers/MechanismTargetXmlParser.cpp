@@ -35,8 +35,7 @@ using namespace pugi;
 /// @brief      Parse MechanismTargetData XML element
 /// @param [in] pugi::xml_node  mechanism data node
 /// @return     MechanismTargetData*       mechanism data
-MechanismTargetData *MechanismTargetXmlParser::ParseXML(
-    xml_node MechanismDataNode)
+MechanismTargetData *MechanismTargetXmlParser::ParseXML(xml_node MechanismDataNode)
 {
     // initialize output
     MechanismTargetData *mechData = nullptr;
@@ -49,12 +48,6 @@ MechanismTargetData *MechanismTargetXmlParser::ParseXML(
     double target = 0.0;
     double secondTarget = 0.0;
     double robotPitch = 0.0;
-    double lessThanTransitiionTarget = 0.0;
-    std::string lessThanTransitionState("N/A");
-    double equalTransitiionTarget = 0.0;
-    std::string equalTransitionState("N?A");
-    double greaterThanTransitiionTarget = 0.0;
-    std::string greaterThanTransitionState("N/A");
     MechanismTargetData::SOLENOID solenoid = MechanismTargetData::SOLENOID::NONE;
     MechanismTargetData::SOLENOID solenoid2 = MechanismTargetData::SOLENOID::NONE;
     array<double, 3> function1Coeff = {0.0, 0.0, 0.0};
@@ -162,6 +155,12 @@ MechanismTargetData *MechanismTargetXmlParser::ParseXML(
 
     if (!hasError && !stateName.empty() && !controllerIdentifier.empty())
     {
+        double lessThanTransitiionTarget = 0.0;
+        std::string lessThanTransitionState("N/A");
+        double equalTransitiionTarget = 0.0;
+        std::string equalTransitionState("N?A");
+        double greaterThanTransitiionTarget = 0.0;
+        std::string greaterThanTransitionState("N/A");
         mechData = new MechanismTargetData(stateName,
                                            controllerIdentifier,
                                            controllerIdentifier2,
