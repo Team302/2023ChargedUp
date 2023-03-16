@@ -1,37 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE auton SYSTEM "auton.dtd">
 <auton>
-<!--testing-->
 <primitive id="RESET_POSITION"
-	           pathname="BlueWall1.wpilib.json"
-               grabber="GRAB"/>
-<!--score preloaded cone-->
+	   pathname="BlueWallOne1.wpilib.json"/>
+    <!--score preloaded cone-->
+    <!--drive to charing station-->
+    <primitive id="DRIVE_PATH"
+               pathname="BlueWallOne1.wpilib.json"
+               headingOption="SPECIFIED_ANGLE"
+               heading="180"
+               time="0.8"
+               />
+    <primitive id="DRIVE_PATH"
+               pathname="BlueWallOne4.wpilib.json"
+               headingOption="SPECIFIED_ANGLE"
+               heading="0"
+
+               time="1.0"
+               />
+    <primitive id="DRIVE_PATH"
+               pathname="BlueWallOne2Slow.wpilib.json"
+               headingOption="SPECIFIED_ANGLE"
+               heading="0"
+
+               time="3.5"
+               />
+    <primitive id="DRIVE_PATH"
+               pathname="BlueWallTwo1.wpilib.json"
+               headingOption="SPECIFIED_ANGLE"
+               heading="0"
+
+               time="1.5"
+               />
+    <!--pick up cube-->
     <primitive id="DO_NOTHING"
-               arm="CONE_BACKROW_ROTATE"
-               extender="STARTING_POSITION_EXTEND"
-               grabber="GRAB"
-               time="0.35"
+               headingOption="SPECIFIED_ANGLE"
+               heading="0"
+
+               time="1.0"
                />
     <primitive id="DO_NOTHING"
-               arm="CONE_BACKROW_ROTATE"
-               extender="CONE_BACKROW_EXTEND"
-               grabber="GRAB"
+               headingOption="SPECIFIED_ANGLE"
+               heading="0"
+
+               time="0.4"
+               />
+    <primitive id="DO_NOTHING"
+               headingOption="SPECIFIED_ANGLE"
+               heading="0"
+
+               time="0.4"
+               />
+   <!--drive to scoring station-->
+    <primitive id="DRIVE_PATH"
+               pathname="BlueWallTwo4.wpilib.json"
+               headingOption="SPECIFIED_ANGLE"
+               heading="180"
+               time="6.0"
+               />
+   <!--score cube-->
+    <primitive id="DO_NOTHING"
+              
                time="0.6"
                />
     <primitive id="DO_NOTHING"
-               arm="CONE_BACKROW_ROTATE"
-               extender="CONE_BACKROW_EXTEND"
-               grabber="OPEN"
+
                time="0.35"
                />
-<!--drive to gamepiece-->
-<primitive id="DRIVE_PATH"
-               pathname="BlueWall1.wpilib.json"
-               headingOption="SPECIFIED_ANGLE"
-               heading="0"
-               arm="STARTING_POSITION_ROTATE"
-               extender="STARTING_POSITION_EXTEND"
-               grabber="GRAB"
-               time="20.0"
+    <primitive id="DO_NOTHING"
+
+               time="0.5"
+               />
+    <primitive id="DO_NOTHING"
+
+               time="0.5"
+               />
+   <primitive id="DO_NOTHING"
+
+               time="0.5"
                />
 </auton>
