@@ -17,6 +17,7 @@
 #pragma once
 #include <driveteamfeedback/LEDStates.h>
 #include <robotstate/IRobotStateChangeSubscriber.h>
+#include <hw/factories/CompressorFactory.h>
 
 class DriverFeedback : public IRobotStateChangeSubscriber
 {
@@ -32,6 +33,7 @@ public:
     void Update(RobotStateChanges::StateChange change, int value) override;
 
 private:
+    void UpdateStickyFaultStates();
     void CheckControllers();
     void DisplayPressure();
     DriverFeedback();
@@ -62,6 +64,7 @@ private:
     bool m_AlignedWithConeNode = false;
     bool m_AlignedWithCubeNode = false;
     int m_controllerCounter = 0;
+    int m_stickyFaultsCounter = 0;
     bool m_compressorOn = true;
 
     static DriverFeedback *m_instance;

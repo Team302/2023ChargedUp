@@ -194,10 +194,16 @@ void DriverFeedback::Update(RobotStateChanges::StateChange change, int value)
     }
 }
 
-void DriverFeedback::PublishStickyFaultStates()
+void DriverFeedback::UpdateStickyFaultStates()
 {
-    auto table = nt::NetworkTableInstance::GetDefault().GetTable("Sticky Faults");
-    table.get()->PutBoolean(std::string("Compressor Sticky Fault Value") m_StickyFaultsValue)
+    if (m_controllerCounter == 0)
+    {
+        auto table = nt::NetworkTableInstance::GetDefault().GetTable("Sticky Faults");
+        for (auto i = 0; i < CompressorFactory::GetFactory()->GetStickyFaults(); ++i)
+        {
+            table.get()->PutBoolean(std::string("Compressor Sticky Fault Value") + std::to_string(i), );
+        }
+    }
 }
 
 void DriverFeedback::CheckControllers()

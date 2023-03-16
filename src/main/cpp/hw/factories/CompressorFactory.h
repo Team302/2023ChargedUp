@@ -36,7 +36,7 @@ public:
     units::pounds_per_square_inch_t GetMaxPressure() const { return m_maxPressure; }
     units::pounds_per_square_inch_t GetCurrentPressure() const;
 
-    bool GetStickyFaults();
+    bool HasStickyFaults();
 
 private:
     void EnableCompressor();
