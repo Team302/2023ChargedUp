@@ -35,10 +35,11 @@ std::array<frc::SwerveModuleState, 4> AutoBalanceDrive::UpdateSwerveModuleStates
 
     auto pitch = m_chassis != nullptr ? m_chassis->GetPitch().to<double>() : 0.0;
     auto roll = m_chassis != nullptr ? m_chassis->GetRoll().to<double>() : 0.0;
-
+    m_rollIntegral += roll;
+    m_pitchIntegral += pitch;
     // need to drive toware the lifted side
-    chassisMovement.chassisSpeeds.vx = -1.0 * pitch * m_pitchConstant;
-    chassisMovement.chassisSpeeds.vy = -1.0 * roll * m_rollConstant;
+    chassisMovement.chassisSpeeds.vx = -1.0 * (pitch * m_pitchConstant + m_pitchIntegral * m_pitchIgain);
+    chassisMovement.chassisSpeeds.vy = -1.0 * (roll * m_rollConstant + m_rollIntegral * m_rollIgain);
     chassisMovement.chassisSpeeds.omega = units::radians_per_second_t(0.0);
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Auto Balance Drive", "pitch", pitch);
