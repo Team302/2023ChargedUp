@@ -137,7 +137,10 @@ void DriverFeedback::UpdateLEDStates()
         }
         else
         {
+
+            auto pitch = m_chassis != nullptr ? m_chassis->GetPitch().to<double>() : 0.0;
             m_LEDStates->SolidColorPattern(DragonLeds::GREEN);
+
             m_gamePieceState = DriverFeedbackStates::NONE;
         }
     }

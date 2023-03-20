@@ -18,6 +18,8 @@
 #include <driveteamfeedback/LEDStates.h>
 #include <robotstate/IRobotStateChangeSubscriber.h>
 
+#include <chassis/swerve/driveStates/RobotDrive.h>
+
 class DriverFeedback : public IRobotStateChangeSubscriber
 {
 public:
@@ -36,6 +38,10 @@ private:
     void DisplayPressure();
     DriverFeedback();
     ~DriverFeedback() = default;
+
+    SwerveChassis *m_chassis;
+
+    double MaxChargeStationAngle = 17.0;
 
     bool m_AutonomousEnabled = false;
     bool m_TeleopEnabled = false;
