@@ -74,6 +74,10 @@ void DrivePathPlanner::Run()
 
     PathPlannerTrajectory::PathPlannerState targetState = m_trajectory.sample(m_timer.get()->Get());
 
+    frc::Pose2d targetPose = {targetState.pose.X(),
+                              targetState.pose.Y(),
+                              targetState.holonomicRotation};
+
     /**
         // Use the controller to calculate the chassis speeds for getting there
         if (m_runHoloController)
