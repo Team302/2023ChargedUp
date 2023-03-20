@@ -90,37 +90,31 @@ void DragonControlToCTREAdapter::InitializeDefaults()
 		if (error != ErrorCode::OKAY)
 		{
 			Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, GetErrorPrompt(), string("ConfigNeutralDeadband"), string("error"));
-			error = ErrorCode::OKAY;
 		}
 		error = m_controller->ConfigNominalOutputForward(0.0, 0);
 		if (error != ErrorCode::OKAY)
 		{
 			Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, GetErrorPrompt(), string("ConfigNominalOutputForward"), string("error"));
-			error = ErrorCode::OKAY;
 		}
 		error = m_controller->ConfigNominalOutputReverse(0.0, 0);
 		if (error != ErrorCode::OKAY)
 		{
 			Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, GetErrorPrompt(), string("ConfigNominalOutputReverse"), string("error"));
-			error = ErrorCode::OKAY;
 		}
 		error = m_controller->ConfigOpenloopRamp(0.0, 0);
 		if (error != ErrorCode::OKAY)
 		{
 			Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, GetErrorPrompt(), string("ConfigOpenloopRamp"), string("error"));
-			error = ErrorCode::OKAY;
 		}
 		error = m_controller->ConfigPeakOutputForward(1.0, 0);
 		if (error != ErrorCode::OKAY)
 		{
 			Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, GetErrorPrompt(), string("ConfigPeakOutputForward"), string("error"));
-			error = ErrorCode::OKAY;
 		}
 		error = m_controller->ConfigPeakOutputReverse(-1.0, 0);
 		if (error != ErrorCode::OKAY)
 		{
 			Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, GetErrorPrompt(), string("ConfigPeakOutputReverse"), string("error"));
-			error = ErrorCode::OKAY;
 		}
 	}
 }

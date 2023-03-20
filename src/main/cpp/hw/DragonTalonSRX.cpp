@@ -84,87 +84,74 @@ DragonTalonSRX::DragonTalonSRX(
 	if (error != ErrorCode::OKAY)
 	{
 		Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, prompt, string("ConfigSupplyCurrentLimit"), string("error"));
-		error = ErrorCode::OKAY;
 	}
 
 	error = m_talon.get()->ConfigVoltageCompSaturation(12.0, 0);
 	if (error != ErrorCode::OKAY)
 	{
 		Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, prompt, string("ConfigVoltageCompSaturation"), string("error"));
-		error = ErrorCode::OKAY;
 	}
 
 	error = m_talon.get()->ConfigForwardLimitSwitchSource(LimitSwitchSource::LimitSwitchSource_Deactivated, LimitSwitchNormal::LimitSwitchNormal_Disabled, 0);
 	if (error != ErrorCode::OKAY)
 	{
 		Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, prompt, string("ConfigForwardLimitSwitchSource"), string("error"));
-		error = ErrorCode::OKAY;
 	}
 	error = m_talon.get()->ConfigReverseLimitSwitchSource(LimitSwitchSource::LimitSwitchSource_Deactivated, LimitSwitchNormal::LimitSwitchNormal_Disabled, 0);
 	if (error != ErrorCode::OKAY)
 	{
 		Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, prompt, string("ConfigReverseLimitSwitchSource"), string("error"));
-		error = ErrorCode::OKAY;
 	}
 
 	error = m_talon.get()->ConfigForwardSoftLimitEnable(false, 0);
 	if (error != ErrorCode::OKAY)
 	{
 		Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, prompt, string("ConfigForwardSoftLimitEnable"), string("error"));
-		error = ErrorCode::OKAY;
 	}
 	error = m_talon.get()->ConfigForwardSoftLimitThreshold(0.0, 0);
 	if (error != ErrorCode::OKAY)
 	{
 		Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, prompt, string("ConfigForwardSoftLimitThreshold"), string("error"));
-		error = ErrorCode::OKAY;
 	}
 
 	error = m_talon.get()->ConfigReverseSoftLimitEnable(false, 0);
 	if (error != ErrorCode::OKAY)
 	{
 		Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, prompt, string("ConfigReverseSoftLimitEnable"), string("error"));
-		error = ErrorCode::OKAY;
 	}
 	error = m_talon.get()->ConfigReverseSoftLimitThreshold(0.0, 0);
 	if (error != ErrorCode::OKAY)
 	{
 		Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, prompt, string("ConfigReverseSoftLimitThreshold"), string("error"));
-		error = ErrorCode::OKAY;
 	}
 
 	error = m_talon.get()->ConfigMotionSCurveStrength(0, 0);
 	if (error != ErrorCode::OKAY)
 	{
 		Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, prompt, string("ConfigMotionSCurveStrength"), string("error"));
-		error = ErrorCode::OKAY;
 	}
 
 	error = m_talon.get()->ConfigMotionProfileTrajectoryPeriod(0, 0);
 	if (error != ErrorCode::OKAY)
 	{
 		Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, prompt, string("ConfigMotionProfileTrajectoryPeriod"), string("error"));
-		error = ErrorCode::OKAY;
 	}
 	error = m_talon.get()->ConfigMotionProfileTrajectoryInterpolationEnable(true, 0);
 	if (error != ErrorCode::OKAY)
 	{
 		Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, prompt, string("ConfigMotionProfileTrajectoryInterpolationEnable"), string("error"));
-		error = ErrorCode::OKAY;
 	}
 
 	m_talon.get()->ConfigAllowableClosedloopError(0.0, 0);
 	if (error != ErrorCode::OKAY)
 	{
 		Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, prompt, string("ConfigAllowableClosedloopError"), string("error"));
-		error = ErrorCode::OKAY;
 	}
 
 	error = m_talon.get()->ConfigRemoteFeedbackFilter(60, RemoteSensorSource::RemoteSensorSource_Off, 0, 0);
 	if (error != ErrorCode::OKAY)
 	{
 		Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, prompt, string("ConfigRemoteFeedbackFilter"), string("error"));
-		error = ErrorCode::OKAY;
 	}
 	error = m_talon.get()->ConfigRemoteFeedbackFilter(60, RemoteSensorSource::RemoteSensorSource_Off, 1, 0);
 	if (error != ErrorCode::OKAY)

@@ -79,6 +79,7 @@ std::shared_ptr<DragonVisionTarget> DragonVision::getTargetInfo(LIMELIGHT_POSITI
 				dll->GetTargetVerticalOffset(),
 				dll->EstimateTargetXdistance_RelToRobotCoords(),
 				dll->EstimateTargetYdistance_RelToRobotCoords(),
+				dll->getAprilTagID(),
 				dll->GetPipelineLatency());
 		return dvt;
 	}
@@ -93,7 +94,7 @@ std::shared_ptr<DragonVisionTarget> DragonVision::getTargetInfo() const
 
 frc::Pose2d DragonVision::GetRobotPosition() const
 {
-	frc::DriverStation::Alliance alliance = FMSData::GetInstance()->GetAllianceColor();
+	// frc::DriverStation::Alliance alliance = FMSData::GetInstance()->GetAllianceColor();
 	DragonLimelight *dllFront = getLimelight(LIMELIGHT_POSITION::FRONT);
 	DragonLimelight *dllBack = getLimelight(LIMELIGHT_POSITION::BACK);
 
@@ -116,7 +117,7 @@ frc::Pose2d DragonVision::GetRobotPosition() const
 frc::Pose2d DragonVision::GetRobotPosition(LIMELIGHT_POSITION position) const
 {
 	DragonLimelight *limelight = getLimelight(position);
-	frc::DriverStation::Alliance alliance = FMSData::GetInstance()->GetAllianceColor();
+	// frc::DriverStation::Alliance alliance = FMSData::GetInstance()->GetAllianceColor();
 
 	if ((limelight != nullptr) && (limelight->HasTarget()))
 	{
