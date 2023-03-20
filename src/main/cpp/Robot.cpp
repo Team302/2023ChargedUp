@@ -128,13 +128,13 @@ void Robot::RobotPeriodic()
 
         if (dvt == nullptr)
         {
-            LoggerStringValue status = {string("Status"), "No target found or missing limelight"};
+            status = {string("Status"), "No target found or missing limelight"};
             LoggerData data = {LOGGER_LEVEL::PRINT, string("DragonLimelight"), {}, {}, {count}, {status}};
             Logger::GetLogger()->LogData(data);
         }
         else
         {
-            LoggerStringValue status = {string("Status"), "Target found"};
+            status = {string("Status"), "Target found"};
             LoggerDoubleValue vertAngle = {string("VertAngle"), dvt.get()->getVerticalAngleToTarget().to<double>()};
             LoggerDoubleValue horAngle = {string("HorizAngle"), dvt.get()->getHorizontalAngleToTarget().to<double>()};
             LoggerDoubleValue xDistance = {string("x distance RF "), dvt.get()->getXdistanceToTargetRobotFrame().to<double>()};

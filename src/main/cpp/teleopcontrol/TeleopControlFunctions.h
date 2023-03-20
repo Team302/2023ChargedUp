@@ -36,8 +36,11 @@ public:
         HOLD_POSITION,
         ARCADE_THROTTLE,
         ARCADE_STEER,
-        DRIVE_TO_CUBE_NODE,
-        DRIVE_TO_CONE_NODE,
+        DRIVE_TO_LEFT_GRID,
+        DRIVE_TO_CENTER_GRID,
+        DRIVE_TO_RIGHT_GRID,
+        DRIVE_TO_LEFT_NODE,
+        DRIVE_TO_RIGHT_NODE,
         DRIVE_TO_HUMAN_PLAYER_RIGHT,
         DRIVE_TO_HUMAN_PLAYER_LEFT,
         BALANCE_MODE,
@@ -45,7 +48,14 @@ public:
         SLOW_MODE,
         AUTO_TURN_FORWARD,
         AUTO_TURN_BACKWARD,
+        // Standish raw vision
+        ALIGN_CONE,
+        ALIGN_CUBE,
         // Scoring states
+        DEBUG_INC_P,
+        DEBUG_DEC_P,
+        DEBUG_INC_I,
+        DEBUG_DEC_I, // Scoring states
         // HOLD_POSITION, // may not need this state
         BACKROW,
         MIDROW,
