@@ -29,7 +29,7 @@
 // Team 302 includes
 #include <mechanisms/base/Mech1SolenoidState.h>
 #include <mechanisms/controllers/ControlData.h>
-#include <mechanisms/Intaake/IntakeState.h>
+#include <mechanisms/Intake/IntakeState.h>
 #include <mechanisms/MechanismFactory.h>
 
 // Third Party Includes

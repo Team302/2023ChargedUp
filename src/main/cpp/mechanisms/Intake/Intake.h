@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include <mechanisms/base/Mech2IndMotors1Solenoid.h>
+#include <mechanisms/base/Mech2IndMotor1Solenoid.h>
 #include <hw/DragonDigitalInput.h>
 
 class Intake
