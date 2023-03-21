@@ -51,8 +51,7 @@ Mech1Solenoid::Mech1Solenoid(
 /// @brief      Activate/deactivate pneumatic solenoid
 /// @param [in] bool - true == extend, false == retract
 /// @return     void
-void Mech1Solenoid::ActivateSolenoid(
-    bool activate)
+void Mech1Solenoid::ActivateSolenoid(bool activate)
 {
     if (m_solenoid.get() != nullptr)
     {
