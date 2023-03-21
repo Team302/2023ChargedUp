@@ -30,7 +30,7 @@ TrajectoryDrivePathPlanner::TrajectoryDrivePathPlanner(RobotDrive *robotDrive) :
                                                                                  m_holonomicController(frc2::PIDController{0.25, 0.0, 0},
                                                                                                        frc2::PIDController{0.25, 0.0, 0},
                                                                                                        frc::ProfiledPIDController<units::radian>{0.05, 0.0, 0,
-                                                                                                                                                 frc::TrapezoidProfile<units::radian>::Constraints{3.14_rad_per_s, 1.57_rad_per_s / 1_s}}),
+                                                                                                                                                 frc::TrapezoidProfile<units::radian>::Constraints{6.28_rad_per_s, 1.57_rad_per_s / 1_s}}),
                                                                                  m_desiredState(),
                                                                                  m_trajectoryStates(),
                                                                                  m_prevPose(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose()),
@@ -61,7 +61,7 @@ void TrajectoryDrivePathPlanner::Init(ChassisMovement &chassisMovement)
         m_timer.get()->Start();
     }
 
-    m_delta = m_finalState.pose - ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose();
+    m_delta = m_finalState.pose - m_chassis->GetPose();
 }
 
 std::array<frc::SwerveModuleState, 4> TrajectoryDrivePathPlanner::UpdateSwerveModuleStates(ChassisMovement &chassisMovement)
@@ -83,15 +83,6 @@ std::array<frc::SwerveModuleState, 4> TrajectoryDrivePathPlanner::UpdateSwerveMo
                                                            m_desiredState.asWPILibState(),
                                                            m_desiredState.holonomicRotation);
         chassisMovement.chassisSpeeds = refChassisSpeeds;
-
-        auto swerveChassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
-
-        if (chassisMovement.headingOption == ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE)
-        {
-            auto specifedHeading = dynamic_cast<SpecifiedHeading *>(swerveChassis->GetHeadingState(chassisMovement));
-            chassisMovement.chassisSpeeds.omega = units::angular_velocity::radians_per_second_t(0);
-            specifedHeading->UpdateChassisSpeeds(chassisMovement);
-        }
 
         // Set chassisMovement speeds that will be used by RobotDrive
         return m_robotDrive->UpdateSwerveModuleStates(chassisMovement);
@@ -126,7 +117,7 @@ bool TrajectoryDrivePathPlanner::IsDone()
 
     if (!m_trajectoryStates.empty()) // If we have states...
     {
-        auto curPos = ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose();
+        auto curPos = m_chassis->GetPose();
 
         // Check if the current pose and the trajectory's final pose are the same
 
