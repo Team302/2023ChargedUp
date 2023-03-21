@@ -19,7 +19,7 @@
 #include <mechanisms/base/Mech2Motors1Solenoid.h>
 #include <hw/DragonDigitalInput.h>
 
-class Intake : public Mech2Motor1Solenoid
+class Intake : public Mech2Motors1Solenoid
 {
 private:
     std::shared_ptr<DragonDigitalInput> m_bannerSensor;
