@@ -42,6 +42,7 @@ private:
     IPrimitive *m_DriveStop;
     IPrimitive *m_DriveHoldPosition;
     IPrimitive *m_resetPosition;
+    IPrimitive *m_resetPositionPathPlanner;
     IPrimitive *m_autoBalance;
     IPrimitive *m_drivePath;
     IPrimitive *m_drivePathPlanner;

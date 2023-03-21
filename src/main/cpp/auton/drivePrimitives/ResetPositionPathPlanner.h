@@ -15,49 +15,33 @@
 
 #pragma once
 
-class ChassisOptionEnums
+// C++ Includes
+#include <memory>
+
+// Third party includes
+#include <pathplanner/lib/PathPlanner.h>
+
+// Team 302 Includes
+#include <auton/drivePrimitives/IPrimitive.h>
+
+// Forward Declares
+class IChassis;
+class PrimitiveParams;
+
+class ResetPositionPathPlanner : public IPrimitive
 {
 public:
-    enum HeadingOption
-    {
-        MAINTAIN,
-        TOWARD_GOAL,
-        SPECIFIED_ANGLE,
-        IGNORE
-    };
+    ResetPositionPathPlanner();
 
-    enum DriveStateType
-    {
-        ROBOT_DRIVE,
-        FIELD_DRIVE,
-        TRAJECTORY_DRIVE,
-        TRAJECTORY_DRIVE_PLANNER,
-        POLAR_DRIVE,
-        HOLD_DRIVE,
-        STOP_DRIVE,
-        AUTO_BALANCE,
-        VISION_DRIVE
-    };
+    virtual ~ResetPositionPathPlanner() = default;
 
-    enum RELATIVE_POSITION
-    {
-        LEFT = 1,
-        CENTER = 2,
-        RIGHT = 3
-    };
+    void Init(PrimitiveParams *params) override;
 
-    enum NoMovementOption
-    {
-        STOP,
-        HOLD_POSITION
-    };
+    void Run() override;
 
-    enum AutonControllerType
-    {
-        RAMSETE,
-        HOLONOMIC
-    };
+    bool IsDone() override;
 
-    ChassisOptionEnums() = delete;
-    ~ChassisOptionEnums() = delete;
+private:
+    std::shared_ptr<IChassis> m_chassis;
+    pathplanner::PathPlannerTrajectory m_trajectory;
 };

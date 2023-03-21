@@ -13,37 +13,18 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#pragma once
-
-// FRC Includes
-#include <frc/kinematics/ChassisSpeeds.h>
-#include <frc/trajectory/TrajectoryUtil.h>
-
-#include <units/angle.h>
-
 // Team302 Includes
-#include <utils/Point2d.h>
 #include <chassis/ChassisOptionEnums.h>
+#include <chassis/swerve/headingStates/IgnoreHeading.h>
+#include <chassis/ChassisFactory.h>
 
-// Third party includes
-#include <pathplanner/lib/PathPlannerTrajectory.h>
+// Standish Quick Fix
+#include <frc/DriverStation.h>
 
-/// @brief This is used to give all neccessary data to ISwerveDriveStates
-
-struct ChassisMovement
+IgnoreHeading::IgnoreHeading() : ISwerveDriveOrientation(ChassisOptionEnums::HeadingOption::IGNORE)
 {
-    ChassisOptionEnums::DriveStateType driveOption = ChassisOptionEnums::DriveStateType::ROBOT_DRIVE;
-    frc::ChassisSpeeds chassisSpeeds = frc::ChassisSpeeds();
-    frc::Trajectory trajectory = frc::Trajectory();
-    pathplanner::PathPlannerTrajectory pathplannerTrajectory = pathplanner::PathPlannerTrajectory();
-    Point2d centerOfRotationOffset = Point2d();
-    ChassisOptionEnums::HeadingOption headingOption = ChassisOptionEnums::HeadingOption::MAINTAIN;
-    ChassisOptionEnums::NoMovementOption noMovementOption = ChassisOptionEnums::NoMovementOption::STOP;
-    ChassisOptionEnums::AutonControllerType controllerType = ChassisOptionEnums::AutonControllerType::RAMSETE;
-    units::angle::degree_t yawAngle = units::angle::degree_t(0.0);
-    bool checkTipping = false;
-    units::angle::degree_t tippingTolerance = units::angle::degree_t(30.0);
-    double tippingCorrection = 0.1;
-    ChassisOptionEnums::RELATIVE_POSITION gridPosition = ChassisOptionEnums::RELATIVE_POSITION::CENTER;
-    ChassisOptionEnums::RELATIVE_POSITION nodePosition = ChassisOptionEnums::RELATIVE_POSITION::CENTER;
-};
+}
+
+void IgnoreHeading::UpdateChassisSpeeds(ChassisMovement &chassisMovement)
+{
+}
