@@ -30,6 +30,7 @@ DragonVisionTarget::DragonVisionTarget(DragonLimelight::PIPELINE_MODE targetType
 									   units::angle::degree_t verticalAngleFromTarget,
 									   units::length::inch_t xDistanceToTargetRobotFrame,
 									   units::length::inch_t yDistanceToTargetRobotFrame,
+									   int apriltagID,
 									   units::time::millisecond_t latency)
 {
 	m_targetType = targetType;
@@ -38,6 +39,7 @@ DragonVisionTarget::DragonVisionTarget(DragonLimelight::PIPELINE_MODE targetType
 	m_verticalAngleToTarget = verticalAngleFromTarget;
 	m_xDistanceToTargetRobotFrame = xDistanceToTargetRobotFrame;
 	m_yDistanceToTargetRobotFrame = yDistanceToTargetRobotFrame;
+	m_tagID = apriltagID;
 	m_latency = latency;
 }
 
@@ -70,6 +72,12 @@ DragonLimelight::PIPELINE_MODE DragonVisionTarget::getTargetType()
 {
 	return m_targetType;
 }
+
+int DragonVisionTarget::getApriltagID()
+{
+	return m_tagID;
+}
+
 units::time::millisecond_t DragonVisionTarget::getLatency()
 {
 	return m_latency;

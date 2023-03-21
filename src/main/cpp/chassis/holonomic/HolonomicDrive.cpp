@@ -97,59 +97,104 @@ void HolonomicDrive::Run()
             m_hasResetPosition = false;
         }
 
-        if (m_swerve != nullptr)
+        if (controller->IsButtonPressed(TeleopControlFunctions::ALIGN_CONE) || controller->IsButtonPressed(TeleopControlFunctions::ALIGN_CUBE))
         {
-            auto wheelbase = m_swerve->GetWheelBase();
-            auto track = m_swerve->GetTrack();
-        }
-
-        // Auto alignment to grid nodes
-        if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_CONE_NODE))
-        {
-            DragonVision::GetDragonVision()->setPipeline(DragonLimelight::PIPELINE_MODE::CONE_NODE);
-
-            moveInfo.driveOption = ChassisOptionEnums::DriveStateType::VISION_DRIVE;
-            moveInfo.headingOption = ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE;
-
             m_inVisionDrive = true;
 
+            double yawAngle = 0.0;
+
+            // determine target heading
             frc::DriverStation::Alliance alliance = FMSData::GetInstance()->GetAllianceColor();
 
             if (alliance == frc::DriverStation::Alliance::kBlue)
             {
-                moveInfo.yawAngle = units::angle::degree_t(180.0);
+                yawAngle = 180.0;
+                moveInfo.yawAngle = units::angle::degree_t(yawAngle);
             }
             else if (alliance == frc::DriverStation::Alliance::kRed)
             {
-                moveInfo.yawAngle = units::angle::degree_t(0.0);
+                moveInfo.yawAngle = units::angle::degree_t(yawAngle);
             }
-        }
-        else if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_CUBE_NODE))
-        {
-            DragonVision::GetDragonVision()->setPipeline(DragonLimelight::PIPELINE_MODE::APRIL_TAG);
 
-            moveInfo.driveOption = ChassisOptionEnums::DriveStateType::VISION_DRIVE;
+            if (controller->IsButtonPressed(TeleopControlFunctions::ALIGN_CONE))
+            {
+                moveInfo.nodePosition = ChassisOptionEnums::RELATIVE_POSITION::LEFT; // represents cone
+
+                // set pipeline to discover retroreflective
+                DragonVision::GetDragonVision()->setPipeline(DragonLimelight::PIPELINE_MODE::CONE_NODE);
+            }
+
+            if (controller->IsButtonPressed(TeleopControlFunctions::ALIGN_CUBE))
+            {
+                moveInfo.nodePosition = ChassisOptionEnums::RELATIVE_POSITION::CENTER; // represents cube
+
+                // set pipeline to discover april tags
+                DragonVision::GetDragonVision()->setPipeline(DragonLimelight::PIPELINE_MODE::APRIL_TAG);
+            }
+
             moveInfo.headingOption = ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE;
 
-            m_inVisionDrive = true;
-
-            frc::DriverStation::Alliance alliance = FMSData::GetInstance()->GetAllianceColor();
-
-            if (alliance == frc::DriverStation::Alliance::kBlue)
-            {
-                moveInfo.yawAngle = units::angle::degree_t(180.0);
-            }
-            else if (alliance == frc::DriverStation::Alliance::kRed)
-            {
-                moveInfo.yawAngle = units::angle::degree_t(0.0);
-            }
+            // set drive and heading mode
+            moveInfo.driveOption = ChassisOptionEnums::DriveStateType::VISION_DRIVE;
         }
         else
         {
-            DragonVision::GetDragonVision()->setPipeline(DragonLimelight::PIPELINE_MODE::OFF);
-
+            // no longer in vision drive, set boolean and reset offsets in VisionDrive
             m_inVisionDrive = false;
+            auto visionDrive = dynamic_cast<VisionDrive *>(m_swerve->GetSpecifiedDriveState(ChassisOptionEnums::DriveStateType::VISION_DRIVE));
+
+            visionDrive->ResetVisionDrive();
         }
+
+        // Auto alignment to grid nodes
+        /*if (IsAutoAligning())
+        {
+            m_inVisionDrive = true;
+
+            double yawAngle = 0.0;
+
+            // get destination for alignment
+            std::pair<ChassisOptionEnums::RELATIVE_POSITION, ChassisOptionEnums::RELATIVE_POSITION> destination = GetAutoAlignDestination();
+
+            moveInfo.gridPosition = destination.first;
+            moveInfo.nodePosition = destination.second;
+
+            // determine target heading
+            frc::DriverStation::Alliance alliance = FMSData::GetInstance()->GetAllianceColor();
+
+            if (alliance == frc::DriverStation::Alliance::kBlue)
+            {
+                yawAngle = 180.0;
+                moveInfo.yawAngle = units::angle::degree_t(yawAngle);
+            }
+            else if (alliance == frc::DriverStation::Alliance::kRed)
+            {
+                moveInfo.yawAngle = units::angle::degree_t(yawAngle);
+            }
+
+            // if (abs(PigeonFactory::GetFactory()->GetPigeon(DragonPigeon::PIGEON_USAGE::CENTER_OF_ROBOT)->GetYaw() - yawAngle) > m_autoAlignAngleTolerance)
+            // {
+            moveInfo.headingOption = ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE;
+            // }
+            // else
+            // {
+            //     moveInfo.headingOption = ChassisOptionEnums::HeadingOption::MAINTAIN;
+            // }
+
+            // set drive and heading mode
+            moveInfo.driveOption = ChassisOptionEnums::DriveStateType::VISION_DRIVE;
+        }
+        else
+        {
+            // no longer in vision drive, set boolean and reset offsets in VisionDrive
+            m_inVisionDrive = false;
+            auto visionDrive = dynamic_cast<VisionDrive *>(m_swerve->GetSpecifiedDriveState(ChassisOptionEnums::DriveStateType::VISION_DRIVE));
+
+            visionDrive->ResetVisionDrive();
+
+            // set pipeline to discover april tags
+            DragonVision::GetDragonVision()->setPipeline(DragonLimelight::PIPELINE_MODE::APRIL_TAG);
+        }*/
 
         // add button to align with substation
 
@@ -241,4 +286,58 @@ void HolonomicDrive::Exit()
 bool HolonomicDrive::AtTarget() const
 {
     return false;
+}
+
+bool HolonomicDrive::IsAutoAligning()
+{
+    bool isAutoAligning = false;
+
+    auto controller = TeleopControl::GetInstance();
+
+    // Check if we are trying to align to any of the grids
+    isAutoAligning = controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_LEFT_GRID) ||
+                     controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_CENTER_GRID) ||
+                     controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_RIGHT_GRID);
+
+    return isAutoAligning;
+}
+
+std::pair<ChassisOptionEnums::RELATIVE_POSITION, ChassisOptionEnums::RELATIVE_POSITION> HolonomicDrive::GetAutoAlignDestination()
+{
+    // create default destination
+    std::pair<ChassisOptionEnums::RELATIVE_POSITION, ChassisOptionEnums::RELATIVE_POSITION> destination = {ChassisOptionEnums::RELATIVE_POSITION::CENTER,
+                                                                                                           ChassisOptionEnums::RELATIVE_POSITION::CENTER};
+
+    auto controller = TeleopControl::GetInstance();
+
+    // check for desired grid first
+    if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_LEFT_GRID))
+    {
+        destination.first = ChassisOptionEnums::RELATIVE_POSITION::LEFT;
+    }
+    else if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_CENTER_GRID))
+    {
+        destination.first = ChassisOptionEnums::RELATIVE_POSITION::CENTER;
+    }
+    else if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_RIGHT_GRID))
+    {
+        destination.first = ChassisOptionEnums::RELATIVE_POSITION::RIGHT;
+    }
+
+    // next, check for desired column/node
+    if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_LEFT_NODE))
+    {
+        destination.second = ChassisOptionEnums::RELATIVE_POSITION::LEFT;
+    }
+    else if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_RIGHT_NODE))
+    {
+        destination.second = ChassisOptionEnums::RELATIVE_POSITION::RIGHT;
+    }
+    else
+    {
+        destination.second = ChassisOptionEnums::RELATIVE_POSITION::CENTER;
+    }
+
+    // finally, return desired destination
+    return destination;
 }
