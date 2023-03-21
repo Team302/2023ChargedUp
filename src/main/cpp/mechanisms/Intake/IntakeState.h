@@ -23,9 +23,9 @@
 
 #pragma once
 #include <string>
-
-#include <mechanisms/base/Mech1SolenoidState.h>
-
+#include <mechanisms/base/Mech2Motors1Solenoid.h>
+#include <mechanisms/base/Mech2Motors1SolenoidState.h>
+#include <mechanisms/Intake/Intake.h>
 class ControlData;
 class Intake;
 
@@ -33,15 +33,20 @@ class IntakeState : public Mech2Motors1SolenoidState
 {
 public:
     IntakeState() = delete;
-    IntakeState(
-        std::string stateName,
-        int stateId,
-        MechanismTargetData::SOLENOID solState0);
+    IntakeState(Mech2Motors1Solenoid *m_mechanism,
+                string stateName,
+                int stateId,
+                ControlData *control,
+                ControlData *control2,
+                double primaryTarget,
+                double secondaryTarget,
+                MechanismTargetData::SOLENOID solState);
     ~IntakeState() = default;
 
     bool AtTarget() const override;
-    Grabber *GetIntake() const { return m_intake; }
+    Grabber *GetIntake() const;
 
 private:
     Intake *m_intake;
+    Mech2Motors1Solenoid *m_mechanism;
 };

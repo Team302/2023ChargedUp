@@ -41,7 +41,7 @@
 #include <mechanisms/arm/Arm.h>
 #include <mechanisms/extender/Extender.h>
 #include <mechanisms/grabber/Grabber.h>
-
+#include <mechanisms/Intake/Intake.h>
 // Third Party Includes
 #include <ctre/phoenix/sensors/CANCoder.h>
 
@@ -65,7 +65,8 @@ MechanismFactory *MechanismFactory::GetMechanismFactory()
 
 MechanismFactory::MechanismFactory() : m_arm(nullptr),
 									   m_extender(nullptr),
-									   m_grabber(nullptr)
+									   m_grabber(nullptr),
+									   m_intake(nullptr)
 // @ADDMECH Initialize mechanism to NULLPTR
 {
 }
@@ -157,6 +158,9 @@ Mech *MechanismFactory::GetMechanism(
 		return m_grabber;
 		break;
 
+	case MechanismTypes::INTAKE:
+		return m_intake;
+		break;
 	default:
 		return nullptr;
 		break;

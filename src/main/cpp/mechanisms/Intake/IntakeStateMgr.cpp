@@ -106,14 +106,14 @@ void IntakeStateMgr::CheckForSensorTransitions()
     if (m_intake != nullptr)
     {
         auto hasGamePiece = m_intake->IsGamePiecePresent();
-        if (m_coneMode && hasGamePiece)
+        if (hasGamePiece)
         {
-            m_targetState = INTAKE_STATE::HOLD_CONE;
+            m_targetState = INTAKE_STATE::HOLD;
             RobotState::GetInstance()->PublishStateChange(RobotStateChanges::HoldingGamePiece, RobotStateChanges::Cone);
         }
         else if (hasGamePiece)
         {
-            m_targetState = INTAKE_STATE::HOLD_CUBE;
+            m_targetState = INTAKE_STATE::HOLD;
             RobotState::GetInstance()->PublishStateChange(RobotStateChanges::HoldingGamePiece, RobotStateChanges::Cube);
         }
         else if (!hasGamePiece)

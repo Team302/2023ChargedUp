@@ -27,24 +27,29 @@
 // FRC includes
 
 // Team 302 includes
-#include <mechanisms/base/Mech1SolenoidState.h>
+#include <mechanisms/base/Mech2Motors1SolenoidState.h>
 #include <mechanisms/controllers/ControlData.h>
 #include <mechanisms/Intake/IntakeState.h>
 #include <mechanisms/MechanismFactory.h>
-
+#include <mechanisms/base/Mech2Motors1Solenoid.h>
 // Third Party Includes
 
 using namespace std;
 
 IntakeState::IntakeState(
+    Mech2Motors1Solenoid *m_mechanism,
     string stateName,
     int stateId,
-    MechanismTargetData::SOLENOID solState0) : Mech1SolenoidState(MechanismFactory::GetMechanismFactory()->GetGrabber(), stateName, stateId, solState0),
-                                               m_grabber(MechanismFactory::GetMechanismFactory()->GetGrabber())
+    ControlData *control,
+    ControlData *control2,
+    double primaryTarget,
+    double secondaryTarget,
+    MechanismTargetData::SOLENOID solState) : Mech2Motors1SolenoidState(MechanismFactory::GetMechanismFactory()->GetIntake(), stateName, stateId, control, control2, primaryTarget, secondaryTarget, solState)
+
 {
 }
 
-bool GrabberState::AtTarget() const
+bool IntakeState::AtTarget() const
 {
     //========= Hand modified code start section 0 ========
     //========= Hand modified code end section 0 ========
