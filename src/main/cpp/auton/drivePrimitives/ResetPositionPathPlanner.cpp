@@ -17,11 +17,9 @@
 #include <memory>
 #include <string>
 
-#include <frc/Filesystem.h>
-
 // Team 302 includes
 #include <auton/drivePrimitives/DragonTrajectoryUtils.h>
-#include <auton/drivePrimitives/ResetPosition.h>
+#include <auton/drivePrimitives/ResetPositionPathPlanner.h>
 #include <auton/PrimitiveParams.h>
 #include <auton/drivePrimitives/IPrimitive.h>
 #include <chassis/ChassisFactory.h>
@@ -32,32 +30,33 @@
 using namespace std;
 using namespace frc;
 
-ResetPosition::ResetPosition() : m_chassis(ChassisFactory::GetChassisFactory()->GetIChassis())
+ResetPositionPathPlanner::ResetPositionPathPlanner() : m_chassis(ChassisFactory::GetChassisFactory()->GetIChassis())
 {
 }
 
-void ResetPosition::Init(PrimitiveParams *params)
+void ResetPositionPathPlanner::Init(PrimitiveParams *params)
 {
 
-    m_trajectory = DragonTrajectoryUtils::GetTrajectory(params);
+    // m_trajectory = pathplanner::PathPlanner::loadPath(params->GetPathName(), pathplanner::PathPlanner::getConstraintsFromPath(params->GetPathName()));
+    m_trajectory = pathplanner::PathPlanner::loadPath(params->GetPathName(), pathplanner::PathConstraints(4.0_mps, 2.0_mps_sq));
 
     auto pigeon = PigeonFactory::GetFactory()->GetCenterPigeon();
-    pigeon->ReZeroPigeon(m_trajectory.InitialPose().Rotation().Degrees().to<double>());
+    pigeon->ReZeroPigeon(m_trajectory.getInitialPose().Rotation().Degrees().to<double>());
 
-    m_chassis->ResetPose(m_trajectory.InitialPose());
+    m_chassis->ResetPose(m_trajectory.getInitialPose());
 
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Reset Position"), string("Auton Info: ResetPosX"), m_chassis.get()->GetPose().X().to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Reset Position"), string("Auton Info: ResetPosY"), m_chassis.get()->GetPose().Y().to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Reset Position"), string("Auton Info: InitialPoseX"), m_trajectory.InitialPose().X().to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Reset Position"), string("Auton Info: InitialPoseY"), m_trajectory.InitialPose().Y().to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Reset Position"), string("Auton Info: InitialPoseOmega"), m_trajectory.InitialPose().Rotation().Degrees().to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Reset Position PathPlanner"), string("Auton Info: ResetPosX"), m_chassis.get()->GetPose().X().to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Reset Position PathPlanner"), string("Auton Info: ResetPosY"), m_chassis.get()->GetPose().Y().to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Reset Position PathPlanner"), string("Auton Info: InitialPoseX"), m_trajectory.getInitialPose().X().to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Reset Position PathPlanner"), string("Auton Info: InitialPoseY"), m_trajectory.getInitialPose().Y().to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Reset Position PathPlanner"), string("Auton Info: InitialPoseOmega"), m_trajectory.getInitialPose().Rotation().Degrees().to<double>());
 }
 
-void ResetPosition::Run()
+void ResetPositionPathPlanner::Run()
 {
 }
 
-bool ResetPosition::IsDone()
+bool ResetPositionPathPlanner::IsDone()
 {
     return true;
 }

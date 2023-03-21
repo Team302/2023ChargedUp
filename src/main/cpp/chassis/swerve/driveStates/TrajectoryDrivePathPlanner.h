@@ -16,34 +16,46 @@
 #pragma once
 
 // FRC Includes
-#include <frc/kinematics/ChassisSpeeds.h>
-#include <frc/trajectory/TrajectoryUtil.h>
-
-#include <units/angle.h>
+#include <frc/controller/HolonomicDriveController.h>
+#include <frc/Timer.h>
 
 // Team302 Includes
-#include <utils/Point2d.h>
-#include <chassis/ChassisOptionEnums.h>
+#include <chassis/swerve/driveStates/RobotDrive.h>
+#include <chassis/swerve/SwerveChassis.h>
 
 // Third party includes
 #include <pathplanner/lib/PathPlannerTrajectory.h>
 
-/// @brief This is used to give all neccessary data to ISwerveDriveStates
-
-struct ChassisMovement
+class TrajectoryDrivePathPlanner : public RobotDrive
 {
-    ChassisOptionEnums::DriveStateType driveOption = ChassisOptionEnums::DriveStateType::ROBOT_DRIVE;
-    frc::ChassisSpeeds chassisSpeeds = frc::ChassisSpeeds();
-    frc::Trajectory trajectory = frc::Trajectory();
-    pathplanner::PathPlannerTrajectory pathplannerTrajectory = pathplanner::PathPlannerTrajectory();
-    Point2d centerOfRotationOffset = Point2d();
-    ChassisOptionEnums::HeadingOption headingOption = ChassisOptionEnums::HeadingOption::MAINTAIN;
-    ChassisOptionEnums::NoMovementOption noMovementOption = ChassisOptionEnums::NoMovementOption::STOP;
-    ChassisOptionEnums::AutonControllerType controllerType = ChassisOptionEnums::AutonControllerType::RAMSETE;
-    units::angle::degree_t yawAngle = units::angle::degree_t(0.0);
-    bool checkTipping = false;
-    units::angle::degree_t tippingTolerance = units::angle::degree_t(30.0);
-    double tippingCorrection = 0.1;
-    ChassisOptionEnums::RELATIVE_POSITION gridPosition = ChassisOptionEnums::RELATIVE_POSITION::CENTER;
-    ChassisOptionEnums::RELATIVE_POSITION nodePosition = ChassisOptionEnums::RELATIVE_POSITION::CENTER;
+public:
+    TrajectoryDrivePathPlanner(RobotDrive *robotDrive);
+
+    std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates(
+        ChassisMovement &chassisMovement) override;
+
+    void Init(
+        ChassisMovement &chassisMovement) override;
+
+    std::string WhyDone() const { return m_whyDone; };
+    bool IsDone();
+
+private:
+    void CalcCurrentAndDesiredStates();
+
+    bool IsSamePose(frc::Pose2d currentPose, frc::Pose2d previousPose, double tolerance);
+
+    pathplanner::PathPlannerTrajectory m_trajectory;
+    RobotDrive *m_robotDrive;
+    frc::HolonomicDriveController m_holonomicController;
+    pathplanner::PathPlannerTrajectory::PathPlannerState m_desiredState;
+    std::vector<pathplanner::PathPlannerTrajectory::PathPlannerState> m_trajectoryStates;
+    pathplanner::PathPlannerTrajectory::PathPlannerState m_finalState;
+    frc::Pose2d m_prevPose;
+    bool m_wasMoving;
+    frc::Transform2d m_delta;
+    std::unique_ptr<frc::Timer> m_timer;
+
+    SwerveChassis *m_chassis;
+    std::string m_whyDone;
 };

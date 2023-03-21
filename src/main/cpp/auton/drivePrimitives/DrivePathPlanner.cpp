@@ -30,7 +30,7 @@
 #include <chassis/ChassisFactory.h>
 #include <chassis/IChassis.h>
 #include <utils/logging/Logger.h>
-#include <chassis/swerve/driveStates/TrajectoryDrive.h>
+#include <chassis/swerve/driveStates/TrajectoryDrivePathPlanner.h>
 
 // third party includes
 #include <pathplanner/lib/PathPlanner.h>
@@ -58,7 +58,7 @@ void DrivePathPlanner::Init(PrimitiveParams *params)
     m_ntName = string("DrivePathPlanner: ") + m_pathname;
     m_maxTime = params->GetTime();
 
-    m_trajectory = PathPlanner::loadPath(m_pathname, PathConstraints(4_mps, 3_mps_sq));
+    m_trajectory = PathPlanner::loadPath(m_pathname, PathConstraints(4.0_mps, 2.0_mps_sq));
 
     // Start timeout timer for path
     m_timer.get()->Reset();
@@ -68,47 +68,12 @@ void DrivePathPlanner::Run()
 {
 
     ChassisMovement moveInfo;
-    moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE;
+    moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE_PLANNER;
     moveInfo.controllerType = ChassisOptionEnums::AutonControllerType::HOLONOMIC;
-    moveInfo.headingOption = ChassisOptionEnums::HeadingOption::MAINTAIN;
+    moveInfo.headingOption = ChassisOptionEnums::HeadingOption::IGNORE;
 
-    PathPlannerTrajectory::PathPlannerState targetState = m_trajectory.sample(m_timer.get()->Get());
-
-    frc::Pose2d targetPose = {targetState.pose.X(),
-                              targetState.pose.Y(),
-                              targetState.holonomicRotation};
-
-    /**
-        // Use the controller to calculate the chassis speeds for getting there
-        if (m_runHoloController)
-        {
-            switch (m_headingOption)
-            {
-            case ChassisOptionEnums::HeadingOption::MAINTAIN:
-                break;
-
-            case ChassisOptionEnums::HeadingOption::TOWARD_GOAL:
-                moveInfo.headingOption = ChassisOptionEnums::HeadingOption::TOWARD_GOAL;
-                break;
-
-            case ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE:
-                moveInfo.headingOption = ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE;
-                moveInfo.yawAngle = units::angle::degree_t(m_heading);
-
-                break;
-
-            default:
-                break;
-            }
-        }
-        else
-        {
-            moveInfo.controllerType = ChassisOptionEnums::AutonControllerType::RAMSETE;
-        }
-
-        moveInfo.trajectory = m_trajectory;
-        m_chassis.get()->Drive(moveInfo);
-        **/
+    moveInfo.pathplannerTrajectory = m_trajectory;
+    m_chassis->Drive(moveInfo);
 }
 
 bool DrivePathPlanner::IsDone()
@@ -120,7 +85,7 @@ bool DrivePathPlanner::IsDone()
     }
     else
     {
-        TrajectoryDrive *trajectoryDrive = dynamic_cast<TrajectoryDrive *>(m_chassis->GetSpecifiedDriveState(ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE));
+        TrajectoryDrivePathPlanner *trajectoryDrive = dynamic_cast<TrajectoryDrivePathPlanner *>(m_chassis->GetSpecifiedDriveState(ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE_PLANNER));
 
         if (trajectoryDrive->IsDone()) // TrajectoryDrive is done -> log the reason why and end drive path primitive
         {

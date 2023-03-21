@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <robot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <pdp
+   <pdp
     canId="1"
     type="REV" />
-  <pcm
+   <pcm
     canId="1"
     type="REV"
      minPSI="95.0"
@@ -21,7 +21,7 @@
     mountingheight="37.325"
     horizontaloffset="7.689"
     forwardOffset="-7.24"
-    yaw="14.96"
+    yaw="17.7"
     roll="90"
     pitch="0.0"
     targetheight="24.125"
@@ -33,7 +33,7 @@
     crosshairx=""
     crosshairy=""
     secondcrosshairx=""
-    secondcrosshairy=""/>
+    secondcrosshairy="" />
   <limelight
     usage="SECONDARYLIMELIGHT"
     tablename="limelight-back"
@@ -41,7 +41,7 @@
     horizontaloffset="0.0"
     forwardOffset="-8.405"
     yaw="0"
-    roll="180"
+    roll="0.0"
     pitch="0.0"
     targetheight=""
     targetheight2=""
@@ -53,16 +53,16 @@
     crosshairy=""
     secondcrosshairx=""
     secondcrosshairy="" />
-  <led
+  <!-- led
     pwmId="8"
-    number="122"/>
+    number="144" / -->
   <chassis
     type="SWERVE"
     wheelDiameter="4.0"
     wheelBase="20.75"
     track="20.75"
     maxVelocity="162.0"
-    maxAngularVelocity="360.0"
+    maxAngularVelocity="360"
     maxAcceleration="81"
     maxAngularAcceleration="24"
     networkTable="ChassisNT"
@@ -121,7 +121,7 @@
       <cancoder
         canId="1"
         canBusName="canivore"
-        offset="-118.301"
+        offset="123.311"
         reverse = "false"
         />
     </swervemodule>
@@ -179,7 +179,7 @@
       <cancoder
         canId="19"
         canBusName="canivore"
-        offset="-146.953"
+        offset="-4.307"
         reverse="false" />
     </swervemodule>
     <swervemodule
@@ -236,7 +236,7 @@
       <cancoder
         canId="3"
         canBusName="canivore"
-        offset="-102.041"
+        offset="-136.143"
         reverse="false" />
     </swervemodule>
     <swervemodule
@@ -294,11 +294,10 @@
       <cancoder
         canId="17"
         canBusName="canivore"
-        offset="-23.643"
+        offset="-68.467"
         reverse="false" />
     </swervemodule>
   </chassis>
-
   <mechanism
     type="ARM"
     networkTable="armNT"
@@ -307,7 +306,7 @@
       usage="ARM"
       canId="4"
       canBusName="rio"
-      pdpID="4"
+      pdpID="5"
       type="FALCON"
       inverted="false"
       sensorInverted="false"
@@ -337,7 +336,7 @@
       usage="Extender"
       canId="15"
       canBusName="rio"
-      pdpID="15"
+      pdpID="4"
       type="FALCON"
       inverted="false"
       sensorInverted="false"
@@ -354,7 +353,7 @@
       voltageCompensationEnable="false"
       countsPerInch="3811.0878"/>
   </mechanism>
-  <mechanism
+  <!--mechanism
     type="GRABBER"
     networkTable="grabberNT"
     controlFile="grabber.xml">
@@ -367,7 +366,43 @@
       usage="GRABBER_SENSOR" 
       digitalId="9" 
       reversed="true"/> 
+  </mechanism-->
+  <!-- mechanism
+    type="INTAKE"
+    networkTable="intakeNT"
+    controlFile="intake.xml">
+    <motor
+      usage="INTAKE"
+      canId="8"
+      canBusName="rio"
+      pdpID="8"
+      type="TALONSRX"
+      inverted="false"
+      sensorInverted="false"
+      feedbackDevice="NONE"
+      countsPerRev="2048"
+      gearRatio="1"
+      brakeMode="true"
+      follow="-1"
+      forwardlimitswitch="false"
+      forwardlimitswitchopen="true"
+      reverselimitswitch="false"
+      reverselimitswitchopen="true"
+      voltageCompensationSaturation="10.5"
+      voltageCompensationEnable="false"
+      countsPerInch="1"/>
   </mechanism>
+  <solenoid
+      usage="INTAKE_SOLENOID"
+      canId="1"
+      channel="0"
+      reversed="false" />
+    <digitalInput  
+      usage="GAME_PIECE_PRESENT_SENSOR" 
+      digitalId="9" 
+      reversed="true"/> 
+  </mechanism -->
+
   <roborio
     orientation="X_LEFT_Y_UP" />
 </robot>
