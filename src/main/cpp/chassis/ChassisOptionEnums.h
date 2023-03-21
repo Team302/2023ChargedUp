@@ -37,6 +37,13 @@ public:
         VISION_DRIVE
     };
 
+    enum RELATIVE_POSITION
+    {
+        LEFT = 1,
+        CENTER = 2,
+        RIGHT = 3
+    };
+
     enum NoMovementOption
     {
         STOP,

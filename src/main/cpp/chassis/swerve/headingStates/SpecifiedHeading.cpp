@@ -16,6 +16,10 @@
 // Team302 Includes
 #include <chassis/ChassisOptionEnums.h>
 #include <chassis/swerve/headingStates/SpecifiedHeading.h>
+#include <chassis/ChassisFactory.h>
+
+// Standish Quick Fix
+#include <frc/DriverStation.h>
 
 SpecifiedHeading::SpecifiedHeading() : ISwerveDriveOrientation(ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE),
                                        m_targetAngle(units::angle::degree_t(0.0))
@@ -25,5 +29,15 @@ SpecifiedHeading::SpecifiedHeading() : ISwerveDriveOrientation(ChassisOptionEnum
 void SpecifiedHeading::UpdateChassisSpeeds(ChassisMovement &chassisMovement)
 {
     m_targetAngle = chassisMovement.yawAngle;
-    chassisMovement.chassisSpeeds.omega -= CalcHeadingCorrection(m_targetAngle, m_kPGoalHeadingControl);
+    if (frc::DriverStation::IsAutonomous())
+    {
+        chassisMovement.chassisSpeeds.omega -= CalcHeadingCorrection(m_targetAngle, m_kPGoalHeadingControl);
+    }
+    else
+    {
+        chassisMovement.chassisSpeeds.omega -= CalcHeadingCorrection(m_targetAngle, m_kPGoalHeadingControl_STANDISH);
+    }
+
+    auto chassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
+    chassis->SetStoredHeading(chassis->GetPose().Rotation().Degrees());
 }

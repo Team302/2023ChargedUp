@@ -135,6 +135,9 @@ public:
 
     void SetTargetHeading(units::angle::degree_t targetYaw) override;
 
+    void SetStoredHeading(units::angle::degree_t heading);
+    units::angle::degree_t GetStoredHeading() { return m_storedYaw; };
+
     ISwerveDriveOrientation *GetSpecifiedHeadingState(ChassisOptionEnums::HeadingOption headingOption);
     ISwerveDriveState *GetSpecifiedDriveState(ChassisOptionEnums::DriveStateType driveOption);
 

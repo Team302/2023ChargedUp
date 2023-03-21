@@ -192,6 +192,11 @@ void SwerveChassis::Drive(ChassisMovement moveInfo)
     {
         m_currentOrientationState->UpdateChassisSpeeds(moveInfo);
     }
+
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("swerve"), string("VxAfterHeading"), moveInfo.chassisSpeeds.vx.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("swerve"), string("VyAfterHeading"), moveInfo.chassisSpeeds.vy.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("swerve"), string("OmegaAfterHeading"), moveInfo.chassisSpeeds.omega.to<double>());
+
     m_currentDriveState = GetDriveState(moveInfo);
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("swerve"), string("m_currentDriveState "), m_currentDriveState != nullptr ? string("not nullptr ") : string("nullptr"));
@@ -397,6 +402,11 @@ ChassisSpeeds SwerveChassis::GetFieldRelativeSpeeds(
 
     ChassisSpeeds output{forward, strafe, rot};
     return output;
+}
+
+void SwerveChassis::SetStoredHeading(units::angle::degree_t heading)
+{
+    m_storedYaw = heading;
 }
 
 void SwerveChassis::SetTargetHeading(units::angle::degree_t targetYaw)

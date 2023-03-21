@@ -49,4 +49,5 @@ protected:
 
     double m_kPMaintainHeadingControl = 1.5;
     double m_kPGoalHeadingControl = 1.75;
+    double m_kPGoalHeadingControl_STANDISH = 3.5;
 };
