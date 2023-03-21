@@ -21,26 +21,32 @@
 //	//========= Hand modified code end section x ========
 //==============================================================
 
-#pragma once
+// C++ Includes
 #include <string>
 
-enum StateType
-{
-    ARM_STATE,
-    EXTENDER_STATE,
-    GRABBER_STATE,
-    INTAKE_STATE,
-    //========= Hand modified code start section 0 ========
-    MANUAL_ARM_STATE,
-    MANUAL_EXTENDER_STATE,
-    //========= Hand modified code end section 0 ========
-    MAX_STATE_TYPES
-};
+// FRC includes
 
-struct StateStruc
+// Team 302 includes
+#include <mechanisms/base/Mech1SolenoidState.h>
+#include <mechanisms/controllers/ControlData.h>
+#include <mechanisms/Intaake/IntakeState.h>
+#include <mechanisms/MechanismFactory.h>
+
+// Third Party Includes
+
+using namespace std;
+
+IntakeState::IntakeState(
+    string stateName,
+    int stateId,
+    MechanismTargetData::SOLENOID solState0) : Mech1SolenoidState(MechanismFactory::GetMechanismFactory()->GetGrabber(), stateName, stateId, solState0),
+                                               m_grabber(MechanismFactory::GetMechanismFactory()->GetGrabber())
 {
-    int id;
-    std::string xmlIdentifier;
-    StateType type;
-    bool isDefault;
-};
+}
+
+bool GrabberState::AtTarget() const
+{
+    //========= Hand modified code start section 0 ========
+    //========= Hand modified code end section 0 ========
+    return true;
+}

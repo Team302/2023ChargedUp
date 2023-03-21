@@ -21,26 +21,13 @@
 //	//========= Hand modified code end section x ========
 //==============================================================
 
-#pragma once
-#include <string>
+#include <mechanisms/Intake/Intake.h>
 
-enum StateType
+Intake::Intake()
 {
-    ARM_STATE,
-    EXTENDER_STATE,
-    GRABBER_STATE,
-    INTAKE_STATE,
-    //========= Hand modified code start section 0 ========
-    MANUAL_ARM_STATE,
-    MANUAL_EXTENDER_STATE,
-    //========= Hand modified code end section 0 ========
-    MAX_STATE_TYPES
-};
+}
 
-struct StateStruc
+bool Intake::IsGamePiecePresent()
 {
-    int id;
-    std::string xmlIdentifier;
-    StateType type;
-    bool isDefault;
-};
+    return (m_bannerSensor.get() != nullptr) ? m_bannerSensor->Get() : false;
+}

@@ -24,23 +24,24 @@
 #pragma once
 #include <string>
 
-enum StateType
-{
-    ARM_STATE,
-    EXTENDER_STATE,
-    GRABBER_STATE,
-    INTAKE_STATE,
-    //========= Hand modified code start section 0 ========
-    MANUAL_ARM_STATE,
-    MANUAL_EXTENDER_STATE,
-    //========= Hand modified code end section 0 ========
-    MAX_STATE_TYPES
-};
+#include <mechanisms/base/Mech1SolenoidState.h>
 
-struct StateStruc
+class ControlData;
+class Grabber;
+
+class IntakeState : public Mech2Motors1SolenoidState
 {
-    int id;
-    std::string xmlIdentifier;
-    StateType type;
-    bool isDefault;
+public:
+    IntakeState() = delete;
+    IntakeState(
+        std::string stateName,
+        int stateId,
+        MechanismTargetData::SOLENOID solState0);
+    ~IntakeState() = default;
+
+    bool AtTarget() const override;
+    Grabber *GetIntake() const { return m_grabber; }
+
+private:
+    Intake *m_intake;
 };
