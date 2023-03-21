@@ -30,7 +30,7 @@
 class ControlData;
 class IDragonMotorController;
 
-class Mech2Motor1Solenoid : public Mech
+class Mech2Motors1Solenoid : public Mech
 {
 public:
     /// @brief Create a generic mechanism wiht 2 independent motors
@@ -39,15 +39,15 @@ public:
     /// @param [in] std::string the name of the network table for logging information
     /// @param [in] std::shared_ptr<IDragonMotorController> primary motor used by this mechanism
     /// @param [in] std::shared_ptr<IDragonMotorController> secondary motor used by this mechanism
-    Mech2Motor1Solenoid(
+    Mech2Motors1Solenoid(
         MechanismTypes::MECHANISM_TYPE type,
         std::string controlFileName,
         std::string networkTableName,
         std::shared_ptr<IDragonMotorController> primaryMotor,
         std::shared_ptr<IDragonMotorController> secondaryMotor,
         std::shared_ptr<DragonSolenoid> solenoid);
-    Mech2Motor1Solenoid() = delete;
-    ~Mech2Motor1Solenoid() = default;
+    Mech2Motors1Solenoid() = delete;
+    ~Mech2Motors1Solenoid() = default;
 
     /// @brief log data to the network table if it is activated and time period has past
     void LogInformation() const override;
@@ -88,6 +88,9 @@ public:
     /// @brief      Check if the pneumatic solenoid is activated
     /// @return     bool - true == extended, false == retracted
     bool IsSolenoidActivated() const;
+
+    Mech2IndMotors *GetMotorMech() const { return m_motorMech; }
+    Mech1Solenoid *GetSolenoidMech() const { return m_solenoidMech; }
 
 private:
     Mech2IndMotors *m_motorMech;

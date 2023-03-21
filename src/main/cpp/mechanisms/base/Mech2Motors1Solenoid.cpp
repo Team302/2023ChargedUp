@@ -26,7 +26,7 @@
 // Team 302 includes
 #include <mechanisms/base/Mech.h>
 #include <mechanisms/base/Mech1IndMotor.h>
-#include <mechanisms/base/Mech2Motor1Solenoid.h>
+#include <mechanisms/base/Mech2Motors1Solenoid.h>
 #include <mechanisms/controllers/ControlData.h>
 #include <hw/interfaces/IDragonMotorController.h>
 #include <utils/logging/Logger.h>
@@ -42,7 +42,7 @@ using namespace std;
 /// @param [in] std::string the name of the network table for logging information
 /// @param [in] std::shared_ptr<IDragonMotorController> primary motor used by this mechanism
 /// @param [in] std::shared_ptr<IDragonMotorController> secondary motor used by this mechanism
-Mech2Motor1Solenoid::Mech2Motor1Solenoid(
+Mech2Motors1Solenoid::Mech2Motors1Solenoid(
     MechanismTypes::MECHANISM_TYPE type,
     std::string controlFileName,
     std::string networkTableName,
@@ -56,7 +56,7 @@ Mech2Motor1Solenoid::Mech2Motor1Solenoid(
 
 /// @brief update the output to the mechanism using the current controller and target value(s)
 /// @return void
-void Mech2Motor1Solenoid::Update()
+void Mech2Motors1Solenoid::Update()
 {
     if (m_motorMech != nullptr)
     {
@@ -64,7 +64,7 @@ void Mech2Motor1Solenoid::Update()
     }
 }
 
-void Mech2Motor1Solenoid::UpdateTargets(double primary, double secondary)
+void Mech2Motors1Solenoid::UpdateTargets(double primary, double secondary)
 {
     if (m_motorMech != nullptr)
     {
@@ -74,28 +74,28 @@ void Mech2Motor1Solenoid::UpdateTargets(double primary, double secondary)
 
 /// @brief  Return the current position of the primary motor in the mechanism.  The value is in inches or degrees.
 /// @return double	position in inches (translating mechanisms) or degrees (rotating mechanisms)
-double Mech2Motor1Solenoid::GetPrimaryPosition() const
+double Mech2Motors1Solenoid::GetPrimaryPosition() const
 {
     return m_motorMech != nullptr ? m_motorMech->GetPrimaryPosition() : 0.0;
 }
 
 /// @brief  Return the current position of the secondary motor in the mechanism.  The value is in inches or degrees.
 /// @return double	position in inches (translating mechanisms) or degrees (rotating mechanisms)
-double Mech2Motor1Solenoid::GetSecondaryPosition() const
+double Mech2Motors1Solenoid::GetSecondaryPosition() const
 {
     return m_motorMech != nullptr ? m_motorMech->GetSecondaryPosition() : 0.0;
 }
 
 /// @brief  Get the current speed of the primary motor in the mechanism.  The value is in inches per second or degrees per second.
 /// @return double	speed in inches/second (translating mechanisms) or degrees/second (rotating mechanisms)
-double Mech2Motor1Solenoid::GetPrimarySpeed() const
+double Mech2Motors1Solenoid::GetPrimarySpeed() const
 {
     return m_motorMech != nullptr ? m_motorMech->GetPrimarySpeed() : 0.0;
 }
 
 /// @brief  Get the current speed of the secondary motor in the mechanism.  The value is in inches per second or degrees per second.
 /// @return double	speed in inches/second (translating mechanisms) or degrees/second (rotating mechanisms)
-double Mech2Motor1Solenoid::GetSecondarySpeed() const
+double Mech2Motors1Solenoid::GetSecondarySpeed() const
 {
     return m_motorMech != nullptr ? m_motorMech->GetSecondarySpeed() : 0.0;
 }
@@ -103,14 +103,14 @@ double Mech2Motor1Solenoid::GetSecondarySpeed() const
 /// @brief  Set the control constants (e.g. PIDF values).
 /// @param [in] ControlData*                                   pid:  the control constants
 /// @return void
-void Mech2Motor1Solenoid::SetControlConstants(int slot, ControlData *pid)
+void Mech2Motors1Solenoid::SetControlConstants(int slot, ControlData *pid)
 {
     if (m_motorMech != nullptr)
     {
         m_motorMech->SetControlConstants(slot, pid);
     }
 }
-void Mech2Motor1Solenoid::SetSecondaryControlConstants(int slot, ControlData *pid)
+void Mech2Motors1Solenoid::SetSecondaryControlConstants(int slot, ControlData *pid)
 {
     if (m_motorMech != nullptr)
     {
@@ -121,7 +121,7 @@ void Mech2Motor1Solenoid::SetSecondaryControlConstants(int slot, ControlData *pi
 /// @brief      Activate/deactivate pneumatic solenoid
 /// @param [in] bool - true == extend, false == retract
 /// @return     void
-void Mech2Motor1Solenoid::ActivateSolenoid(bool activate)
+void Mech2Motors1Solenoid::ActivateSolenoid(bool activate)
 {
     if (m_solenoidMech != nullptr)
     {
@@ -131,7 +131,7 @@ void Mech2Motor1Solenoid::ActivateSolenoid(bool activate)
 
 /// @brief      Check if the pneumatic solenoid is activated
 /// @return     bool - true == extended, false == retracted
-bool Mech2Motor1Solenoid::IsSolenoidActivated() const
+bool Mech2Motors1Solenoid::IsSolenoidActivated() const
 {
     if (m_solenoidMech != nullptr)
     {
@@ -141,7 +141,7 @@ bool Mech2Motor1Solenoid::IsSolenoidActivated() const
 }
 
 /// @brief log data to the network table if it is activated and time period has past
-void Mech2Motor1Solenoid::LogInformation() const
+void Mech2Motors1Solenoid::LogInformation() const
 {
     if (m_motorMech != nullptr)
     {

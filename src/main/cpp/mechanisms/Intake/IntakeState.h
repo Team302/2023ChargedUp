@@ -27,7 +27,7 @@
 #include <mechanisms/base/Mech1SolenoidState.h>
 
 class ControlData;
-class Grabber;
+class Intake;
 
 class IntakeState : public Mech2Motors1SolenoidState
 {
@@ -40,7 +40,7 @@ public:
     ~IntakeState() = default;
 
     bool AtTarget() const override;
-    Grabber *GetIntake() const { return m_grabber; }
+    Grabber *GetIntake() const { return m_intake; }
 
 private:
     Intake *m_intake;
