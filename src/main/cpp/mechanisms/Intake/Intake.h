@@ -25,7 +25,12 @@ private:
     std::shared_ptr<DragonDigitalInput> m_bannerSensor;
 
 public:
-    Intake();
+    Intake(MechanismTypes::MECHANISM_TYPE type,
+           std::string controlFileName,
+           std::string networkTableName,
+           std::shared_ptr<IDragonMotorController> primaryMotor,
+           std::shared_ptr<IDragonMotorController> secondaryMotor,
+           std::shared_ptr<DragonSolenoid> solenoid);
     Intake() = delete;
     ~Intake() = default;
 
