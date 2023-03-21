@@ -19,13 +19,19 @@
 #include <mechanisms/base/Mech2Motors1Solenoid.h>
 #include <hw/DragonDigitalInput.h>
 
-class Intake
+class Intake : public Mech2Motor1Solenoid
 {
 private:
     std::shared_ptr<DragonDigitalInput> m_bannerSensor;
 
 public:
-    Intake(/* args */);
+    Intake(MechanismTypes::MECHANISM_TYPE type,
+           std::string controlFileName,
+           std::string networkTableName,
+           std::shared_ptr<IDragonMotorController> primaryMotor,
+           std::shared_ptr<IDragonMotorController> secondaryMotor,
+           std::shared_ptr<DragonSolenoid> solenoid);
+    Intake() = delete;
     ~Intake() = default;
 
     bool IsGamePiecePresent();
