@@ -28,7 +28,7 @@
 #include <robotstate/RobotState.h>
 #include <robotstate/RobotStateChanges.h>
 #include <utils/logging/Logger.h>
-
+#include <driveteamfeedback\DriverFeedback.cpp>
 // Third Party Includes
 
 using namespace std;
@@ -106,12 +106,12 @@ void IntakeStateMgr::CheckForSensorTransitions()
     if (m_intake != nullptr)
     {
         auto hasGamePiece = m_intake->IsGamePiecePresent();
-        if (hasGamePiece)
+        if (m_WantCone)
         {
             m_targetState = INTAKE_STATE::HOLD;
             RobotState::GetInstance()->PublishStateChange(RobotStateChanges::HoldingGamePiece, RobotStateChanges::Cone);
         }
-        else if (hasGamePiece)
+        else if (m_WantCube)
         {
             m_targetState = INTAKE_STATE::HOLD;
             RobotState::GetInstance()->PublishStateChange(RobotStateChanges::HoldingGamePiece, RobotStateChanges::Cube);
@@ -136,11 +136,11 @@ void IntakeStateMgr::CheckForGamepadTransitions()
         {
             if (controller->IsButtonPressed(TeleopControlFunctions::OPEN))
             {
-                m_targetState = m_coneMode ? INTAKE_STATE::DROP_CONE : INTAKE_STATE::EXPEL_CUBE;
+                m_targetState = m_coneMode ? INTAKE_STATE::RELEASE : INTAKE_STATE::EXPEL;
             }
-            else if (controller->IsButtonPressed(TeleopControlFunctions::GRAB) && (m_currentState != INTAKE_STATE::HOLD_CONE || m_currentState != HOLD_CUBE))
+            else if (controller->IsButtonPressed(TeleopControlFunctions::GRAB) && (m_currentState != INTAKE_STATE::HOLD || m_currentState != HOLD))
             {
-                m_targetState = m_coneMode ? INTAKE_STATE::INTAKE_CONE : INTAKE_STATE::INTAKE_CUBE;
+                m_targetState = m_coneMode ? INTAKE_STATE::INTAKE : INTAKE_STATE::INTAKE;
             }
         }
     }
@@ -148,4 +148,10 @@ void IntakeStateMgr::CheckForGamepadTransitions()
 
 void IntakeStateMgr::Update(RobotStateChanges::StateChange change, int value)
 {
+    if (change == RobotStateChanges::DesiredGamePiece)
+    {
+        auto gamepiece = static_cast<RobotStateChanges::GamePiece>(value);
+        m_WantCube = gamepiece == RobotStateChanges::Cube;
+        m_WantCone = gamepiece == RobotStateChanges::Cone;
+    }
 }

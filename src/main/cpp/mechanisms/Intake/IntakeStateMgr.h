@@ -78,7 +78,8 @@ private:
     INTAKE_STATE m_prevState;
 
     bool m_coneMode;
-
+    bool m_WantCube = false;
+    bool m_WantCone = false;
     static IntakeStateMgr *m_instance;
 
     const StateStruc m_offState = {INTAKE_STATE::OFF, m_intakeOffXMLString, StateType::INTAKE_STATE, true};
