@@ -23,7 +23,15 @@
 
 #include <mechanisms/Intake/Intake.h>
 
-Intake::Intake()
+Intake::Intake(MechanismTypes::MECHANISM_TYPE type,
+               std::shared_ptr<IDragonMotorController> primaryMotor,
+               std::shared_ptr<IDragonMotorController> secondaryMotor,
+               std::shared_ptr<DragonSolenoid> solenoid) : Mech2Motor1Solenoid(type,
+                                                                               controlFileName,
+                                                                               networkTableName,
+                                                                               primaryMotor,
+                                                                               secondaryMotor,
+                                                                               solenoid)
 {
 }
 
