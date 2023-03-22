@@ -40,12 +40,23 @@ using namespace std;
 ArmState::ArmState(
 	string stateName,
 	int stateId,
-	ControlData *control0,
-	double target0) : Mech1IndMotorState(MechanismFactory::GetMechanismFactory()->GetArm(), stateName, stateId, control0, target0),
-					  m_arm(MechanismFactory::GetMechanismFactory()->GetArm())
+	ControlData *control,
+	double target0) : Mech1IndMotorState(MechanismFactory::GetMechanismFactory()->GetArm(), stateName, stateId, control, target0),
+					  m_arm(MechanismFactory::GetMechanismFactory()->GetArm()),
+					  m_control(new ControlData(ControlModes::CONTROL_TYPE::POSITION_ABSOLUTE,
+												ControlModes::CONTROL_RUN_LOCS::MOTOR_CONTROLLER,
+												control->GetIdentifier(),
+												control->GetP(),
+												control->GetI(),
+												control->GetD(),
+												control->GetF(),
+												control->GetIZone(),
+												control->GetMaxAcceleration(),
+												control->GetCruiseVelocity(),
+												control->GetPeakValue(),
+												control->GetNominalValue()))
 {
 }
-
 bool ArmState::AtTarget() const
 {
 	//========= Hand modified code start section 0 ========
@@ -68,18 +79,14 @@ void ArmState::Init()
 		auto targetAngle = units::angle::degree_t(GetCurrentTarget());
 		auto currAngle = m_arm->GetPositionDegrees();
 		auto deltaAngle = AngleUtils::GetDeltaAngle(currAngle, targetAngle);
-	}
-	if (m_mechanism != nullptr && m_control != nullptr)
-	{
-		m_mechanism->SetControlConstants(0, m_control);
-		m_mechanism->UpdateTarget(m_target);
-	}
-}
-
-void ArmState::Run()
-{
-	if (m_mechanism != nullptr)
-	{
-		m_mechanism->Update();
+		double targetCounts = 0.0;
+		auto motor = m_arm->GetMotor().get();
+		if (motor != nullptr)
+		{
+			auto currentCounts = motor->GetCounts();
+			targetCounts = currentCounts + deltaAngle.to<double>() * motor->GetCountsPerDegree();
+		}
+		m_arm->SetControlConstants(0, m_control);
+		m_arm->UpdateTarget(targetCounts);
 	}
 }
