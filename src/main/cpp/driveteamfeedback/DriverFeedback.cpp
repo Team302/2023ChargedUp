@@ -139,7 +139,11 @@ void DriverFeedback::UpdateLEDStates()
         {
 
             auto pitch = m_chassis != nullptr ? m_chassis->GetPitch().to<double>() : 0.0;
-            m_LEDStates->SolidColorPattern(DragonLeds::GREEN);
+            int ledSize = m_LEDStates->m_LEDstring->m_ledBuffer.size();
+
+            int NumberOfLedsOn = (ledSize - (pitch * (ledSize / MaxChargeStationAngle)));
+
+            m_LEDStates->NumberOfLedsOnPattern(DragonLeds::GREEN, NumberOfLedsOn);
 
             m_gamePieceState = DriverFeedbackStates::NONE;
         }
