@@ -49,7 +49,10 @@ public:
 
 	//========= Hand modified code start section 0 ========
 	void ResetIfArmDown();
-	units::angle::degree_t GetCurrentAngle() const;
+
+	/// @brief  Return the current position of the mechanism in degrees
+	/// @return units::angle::degree_t	position in degrees
+	units::angle::degree_t GetPositionDegrees() const override;
 
 private:
 	DragonCanCoder *m_cancoder;
