@@ -41,15 +41,18 @@ void ResetPositionPathPlanner::Init(PrimitiveParams *params)
     m_trajectory = pathplanner::PathPlanner::loadPath(params->GetPathName(), pathplanner::PathConstraints(4.0_mps, 2.0_mps_sq));
 
     auto pigeon = PigeonFactory::GetFactory()->GetCenterPigeon();
-    pigeon->ReZeroPigeon(m_trajectory.getInitialPose().Rotation().Degrees().to<double>());
+    // pigeon->ReZeroPigeon(m_trajectory.getInitialPose().Rotation().Degrees().to<double>());
+    // pigeon->ReZeroPigeon(m_trajectory.getInitialState().holonomicRotation.Degrees().to<double>());
 
-    m_chassis->ResetPose(m_trajectory.getInitialPose());
+    m_chassis->ResetPose(m_trajectory.getInitialHolonomicPose());
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Reset Position PathPlanner"), string("Auton Info: ResetPosX"), m_chassis.get()->GetPose().X().to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Reset Position PathPlanner"), string("Auton Info: ResetPosY"), m_chassis.get()->GetPose().Y().to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Reset Position PathPlanner"), string("Auton Info: InitialPoseX"), m_trajectory.getInitialPose().X().to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Reset Position PathPlanner"), string("Auton Info: InitialPoseY"), m_trajectory.getInitialPose().Y().to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Reset Position PathPlanner"), string("Auton Info: InitialPoseOmega"), m_trajectory.getInitialPose().Rotation().Degrees().to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Reset Position PathPlanner"), string("Auton Info: ResetPosRot"), m_chassis.get()->GetPose().Rotation().Degrees().to<double>());
+
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Reset Position PathPlanner"), string("Auton Info: InitialPoseX"), m_trajectory.getInitialHolonomicPose().X().to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Reset Position PathPlanner"), string("Auton Info: InitialPoseY"), m_trajectory.getInitialHolonomicPose().Y().to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Reset Position PathPlanner"), string("Auton Info: InitialPoseOmega"), m_trajectory.getInitialHolonomicPose().Rotation().Degrees().to<double>());
 }
 
 void ResetPositionPathPlanner::Run()
