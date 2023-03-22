@@ -100,7 +100,7 @@ void MechanismFactory::CreateMechanism(
 		auto motor = GetMotorController(motorControllers, MotorControllerUsage::ARM);
 		if (motor.get() != nullptr)
 		{
-			m_arm = new Arm(controlFileName, networkTableName, motor);
+			m_arm = new Arm(controlFileName, networkTableName, motor, canCoder);
 		}
 	}
 	break;

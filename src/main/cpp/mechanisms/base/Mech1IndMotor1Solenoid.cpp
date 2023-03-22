@@ -67,8 +67,7 @@ void Mech1IndMotor1Solenoid::Update()
     }
 }
 
-void Mech1IndMotor1Solenoid::UpdateTarget(
-    double target)
+void Mech1IndMotor1Solenoid::UpdateTarget(double target)
 {
     if (m_motorMech != nullptr)
     {
@@ -99,9 +98,7 @@ double Mech1IndMotor1Solenoid::GetSpeed() const
 /// @brief  Set the control constants (e.g. PIDF values).
 /// @param [in] ControlData* pid:  the control constants
 /// @return void
-void Mech1IndMotor1Solenoid::SetControlConstants(
-    int slot,
-    ControlData *pid)
+void Mech1IndMotor1Solenoid::SetControlConstants(int slot, ControlData *pid)
 {
     if (m_motorMech != nullptr)
     {
@@ -112,8 +109,7 @@ void Mech1IndMotor1Solenoid::SetControlConstants(
 /// @brief      Activate/deactivate pneumatic solenoid
 /// @param [in] bool - true == extend, false == retract
 /// @return     void
-void Mech1IndMotor1Solenoid::ActivateSolenoid(
-    bool activate)
+void Mech1IndMotor1Solenoid::ActivateSolenoid(bool activate)
 {
     if (m_solenoidMech != nullptr)
     {

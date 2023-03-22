@@ -69,7 +69,7 @@ public:
 
     /// @brief  Return the current position of the mechanism in degrees
     /// @return units::angle::degree_t	position in degrees
-    units::angle::degree_t GetPositionDegrees() const;
+    virtual units::angle::degree_t GetPositionDegrees() const;
 
     /// @brief  Get the current speed of the mechanism.  The value is in inches per second or degrees per second.
     /// @return double	speed in inches/second (translating mechanisms) or degrees/second (rotating mechanisms)

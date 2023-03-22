@@ -28,8 +28,10 @@
 #include <string>
 
 // Team 302 includes
+#include <hw/DragonCanCoder.h>
 #include <mechanisms/base/Mech1IndMotor.h>
 
+#include <units/angle.h>
 class Arm : public Mech1IndMotor
 {
 public:
@@ -38,14 +40,19 @@ public:
 	/// @param [in] std::string the name of the network table for logging information
 	/// @param [in] std::shared_ptr<IDragonMotorController>
 
-	Arm(
-		std::string controlFileName,
+	Arm(std::string controlFileName,
 		std::string networkTableName,
-		std::shared_ptr<IDragonMotorController> motorController0);
+		std::shared_ptr<IDragonMotorController> motorController,
+		DragonCanCoder *canCoder);
 	Arm() = delete;
 	~Arm() override = default;
 
 	//========= Hand modified code start section 0 ========
 	void ResetIfArmDown();
+	units::angle::degree_t GetCurrentAngle() const;
+
+private:
+	DragonCanCoder *m_cancoder;
+
 	//========= Hand modified code end section 0 ========
 };

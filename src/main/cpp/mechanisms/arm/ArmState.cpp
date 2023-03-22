@@ -31,6 +31,7 @@
 #include <mechanisms/controllers/ControlData.h>
 #include <mechanisms/arm/ArmState.h>
 #include <mechanisms/MechanismFactory.h>
+#include <utils/AngleUtils.h>
 
 // Third Party Includes
 
@@ -58,4 +59,27 @@ bool ArmState::AtTarget() const
 	}*/
 	//========= Hand modified code end section 0 ========
 	return true;
+}
+
+void ArmState::Init()
+{
+	if (m_arm != nullptr)
+	{
+		auto targetAngle = units::angle::degree_t(GetCurrentTarget());
+		auto currAngle = m_arm->GetPositionDegrees();
+		auto deltaAngle = AngleUtils::GetDeltaAngle(currAngle, targetAngle);
+	}
+	if (m_mechanism != nullptr && m_control != nullptr)
+	{
+		m_mechanism->SetControlConstants(0, m_control);
+		m_mechanism->UpdateTarget(m_target);
+	}
+}
+
+void ArmState::Run()
+{
+	if (m_mechanism != nullptr)
+	{
+		m_mechanism->Update();
+	}
 }
