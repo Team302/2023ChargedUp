@@ -43,7 +43,7 @@ public:
 private:
     void CalcCurrentAndDesiredStates();
 
-    bool IsSamePose(frc::Pose2d currentPose, frc::Pose2d previousPose, double tolerance);
+    bool IsSamePose(frc::Pose2d currentPose, frc::Pose2d previousPose, double xyTolerance, double rotTolerance);
 
     pathplanner::PathPlannerTrajectory m_trajectory;
     RobotDrive *m_robotDrive;

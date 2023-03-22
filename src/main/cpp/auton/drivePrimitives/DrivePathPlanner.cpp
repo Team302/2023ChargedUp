@@ -70,7 +70,8 @@ void DrivePathPlanner::Run()
     ChassisMovement moveInfo;
     moveInfo.driveOption = ChassisOptionEnums::DriveStateType::TRAJECTORY_DRIVE_PLANNER;
     moveInfo.controllerType = ChassisOptionEnums::AutonControllerType::HOLONOMIC;
-    moveInfo.headingOption = ChassisOptionEnums::HeadingOption::IGNORE;
+    moveInfo.headingOption = ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE;
+    moveInfo.yawAngle = m_trajectory.getInitialState().holonomicRotation.Degrees();
 
     moveInfo.pathplannerTrajectory = m_trajectory;
     m_chassis->Drive(moveInfo);

@@ -41,7 +41,6 @@ void ResetPositionPathPlanner::Init(PrimitiveParams *params)
     m_trajectory = pathplanner::PathPlanner::loadPath(params->GetPathName(), pathplanner::PathConstraints(4.0_mps, 2.0_mps_sq));
 
     auto pigeon = PigeonFactory::GetFactory()->GetCenterPigeon();
-    // pigeon->ReZeroPigeon(m_trajectory.getInitialPose().Rotation().Degrees().to<double>());
     // pigeon->ReZeroPigeon(m_trajectory.getInitialState().holonomicRotation.Degrees().to<double>());
 
     m_chassis->ResetPose(m_trajectory.getInitialHolonomicPose());

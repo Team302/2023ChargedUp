@@ -2,7 +2,9 @@
 <!DOCTYPE auton SYSTEM "auton.dtd">
 <auton>
 <primitive id="RESET_POSITION_PATH_PLANNER"
-	           pathname="BlueWallTest"/>
+	           pathname="BlueHP1"/>
 <primitive id="DRIVE_PATH_PLANNER"
-	           pathname="BlueWallTest"/>
+	           pathname="BlueHP1"/>
+<primitive id="DRIVE_PATH_PLANNER"
+	           pathname="BlueHP2"/>
 </auton>

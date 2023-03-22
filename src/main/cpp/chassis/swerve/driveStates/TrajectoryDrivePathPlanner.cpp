@@ -22,14 +22,16 @@
 #include <utils/logging/Logger.h>
 #include <chassis/swerve/headingStates/SpecifiedHeading.h>
 
+#include <pathplanner/lib/controllers/PPHolonomicDriveController.h>
+
 using frc::Pose2d;
 
 TrajectoryDrivePathPlanner::TrajectoryDrivePathPlanner(RobotDrive *robotDrive) : RobotDrive(),
                                                                                  m_trajectory(),
                                                                                  m_robotDrive(robotDrive),
-                                                                                 m_holonomicController(frc2::PIDController{0.0, 0.0, 0},
-                                                                                                       frc2::PIDController{0.0, 0.0, 0},
-                                                                                                       frc::ProfiledPIDController<units::radian>{0.45, 0.0, 0,
+                                                                                 m_holonomicController(frc2::PIDController{1.0, 0.0, 0},
+                                                                                                       frc2::PIDController{1.0, 0.0, 0},
+                                                                                                       frc::ProfiledPIDController<units::radian>{0.0, 0.0, 0,
                                                                                                                                                  frc::TrapezoidProfile<units::radian>::Constraints{6.28_rad_per_s, 6.28_rad_per_s / 1_s}}),
                                                                                  m_desiredState(),
                                                                                  m_trajectoryStates(),
@@ -79,12 +81,28 @@ std::array<frc::SwerveModuleState, 4> TrajectoryDrivePathPlanner::UpdateSwerveMo
         // Use the controller to calculate the chassis speeds for getting there
         frc::ChassisSpeeds refChassisSpeeds;
 
+        /*refChassisSpeeds = m_holonomicController.Calculate(m_chassis->GetPose(),
+                                                           m_desiredState.asWPILibState(),
+                                                           -m_desiredState.holonomicRotation);*/
+
+        // trying to use the last rotation of the path as the target
         refChassisSpeeds = m_holonomicController.Calculate(m_chassis->GetPose(),
                                                            m_desiredState.asWPILibState(),
-                                                           -m_desiredState.holonomicRotation);
+                                                           m_chassis->GetPose().Rotation());
         chassisMovement.chassisSpeeds = refChassisSpeeds;
 
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Trajectory Drive Path Planner", "HolonomicRotation (Degs)", -m_desiredState.holonomicRotation.Degrees().to<double>());
+        if (chassisMovement.headingOption == ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE)
+        {
+            auto specifedHeading = dynamic_cast<SpecifiedHeading *>(m_chassis->GetHeadingState(chassisMovement));
+            chassisMovement.chassisSpeeds.omega = units::angular_velocity::radians_per_second_t(0);
+            chassisMovement.yawAngle = m_desiredState.holonomicRotation.Degrees();
+            specifedHeading->UpdateChassisSpeeds(chassisMovement);
+        }
+
+        // chassisMovement.yawAngle = m_finalState.holonomicRotation;
+        // chassisMovement.headingOption = ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE;
+
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Trajectory Drive Path Planner", "HolonomicRotation (Degs)", -m_finalState.holonomicRotation.Degrees().to<double>());
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Trajectory Drive Path Planner", "Omega (Rads Per Sec)", refChassisSpeeds.omega.to<double>());
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Trajectory Drive Path Planner", "Yaw Odometry (Degs)", m_chassis->GetPose().Rotation().Degrees().to<double>());
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Trajectory Drive Path Planner", "Yaw Pigeon (Degs)", PigeonFactory::GetFactory()->GetCenterPigeon()->GetYaw());
@@ -126,24 +144,30 @@ bool TrajectoryDrivePathPlanner::IsDone()
 
         // Check if the current pose and the trajectory's final pose are the same
 
-        /*if (IsSamePose(curPos, m_finalState.pose, 10.0))
+        frc::Pose2d finalPose = {m_finalState.pose.Translation(), m_finalState.holonomicRotation};
+
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "trajectory drive path planner", "FinalPoseHoloX", finalPose.X().to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "trajectory drive path planner", "FinalPoseHoloY", finalPose.Y().to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "trajectory drive path planner", "FinalPoseHoloRot", finalPose.Rotation().Degrees().to<double>());
+
+        if (IsSamePose(curPos, finalPose, 10.0, 20.0))
         {
             isDone = true;
             m_whyDone = "Current Pose = Trajectory final pose";
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "trajectory drive", "why done", m_whyDone);
-        }*/
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "trajectory drive path planner", "why done", m_whyDone);
+        }
     }
     else
     {
         m_whyDone = "No states in trajectory";
         isDone = true;
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "trajectory drive", "why done", m_whyDone);
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "trajectory drive path planner", "why done", m_whyDone);
     }
 
     return isDone;
 }
 
-bool TrajectoryDrivePathPlanner::IsSamePose(frc::Pose2d currentPose, frc::Pose2d previousPose, double tolerance)
+bool TrajectoryDrivePathPlanner::IsSamePose(frc::Pose2d currentPose, frc::Pose2d previousPose, double xyTolerance, double rotTolerance)
 {
     // Detect if the two poses are the same within a tolerance
     double dCurPosX = currentPose.X().to<double>() * 100; // cm
@@ -151,15 +175,22 @@ bool TrajectoryDrivePathPlanner::IsSamePose(frc::Pose2d currentPose, frc::Pose2d
     double dPrevPosX = previousPose.X().to<double>() * 100;
     double dPrevPosY = previousPose.Y().to<double>() * 100;
 
+    double dCurPosRot = currentPose.Rotation().Degrees().to<double>();
+    double dPrevPosRot = previousPose.Rotation().Degrees().to<double>();
+
     double dDeltaX = abs(dPrevPosX - dCurPosX);
     double dDeltaY = abs(dPrevPosY - dCurPosY);
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "trajectory drive", "dCurPosX", dCurPosX);
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "trajectory drive", "dCurPosY", dCurPosY);
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "trajectory drive", "dPrevPosX", dPrevPosX);
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "trajectory drive", "dPrevPosY", dPrevPosY);
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "trajectory drive", "dDeltaX", dDeltaX);
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "trajectory drive", "dDeltaY", dDeltaY);
+    double dDeltaRot = abs(dPrevPosRot - dCurPosRot);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "trajectory drive path planner", "dCurPosX", dCurPosX);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "trajectory drive path planner", "dCurPosY", dCurPosY);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "trajectory drive path planner", "dCurPosRot", dCurPosRot);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "trajectory drive path planner", "dPrevPosX", dPrevPosX);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "trajectory drive path planner", "dPrevPosY", dPrevPosY);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "trajectory drive path planner", "dPrevPosRot", dPrevPosRot);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "trajectory drive path planner", "dDeltaX", dDeltaX);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "trajectory drive path planner", "dDeltaY", dDeltaY);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "trajectory drive path planner", "dDeltaRot", dDeltaRot);
 
     //  If Position of X or Y has moved since last scan..  Using Delta X/Y
-    return (dDeltaX <= tolerance && dDeltaY <= tolerance);
+    return ((dDeltaX <= xyTolerance) && (dDeltaY <= xyTolerance) && (dDeltaRot <= rotTolerance));
 }
