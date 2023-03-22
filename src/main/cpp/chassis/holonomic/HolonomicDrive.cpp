@@ -275,6 +275,16 @@ void HolonomicDrive::Run()
     {
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("Run"), string("nullptr"));
     }
+    ChassisMovement checkTipping;
+    if (controller->IsButtonPressed(TeleopControlFunctions::TOGGLE_TIPCORRECTION))
+    {
+        if (m_wastoggleButtonReleased)
+        {
+            bool checkTipping = true;
+        }
+    }
+    m_wastoggleButtonReleased = !controller->IsButtonPressed(TeleopControlFunctions::TOGGLE_TIPCORRECTION);
+    bool checkTipping = false;
 }
 
 void HolonomicDrive::Exit()
