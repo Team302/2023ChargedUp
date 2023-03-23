@@ -112,12 +112,12 @@ units::pounds_per_square_inch_t CompressorFactory::GetCurrentPressure() const
     return units::pounds_per_square_inch_t(0.0);
 }
 
-bool CompressorFactory::HasStickyFaults()
+bool CompressorFactory::CompressorHasStickyFaults()
 {
     if (m_hub != nullptr)
     {
         frc::PneumaticHub::StickyFaults StickyFaultsValue = m_hub->GetStickyFaults();
         bool AllStickyFaults = StickyFaultsValue.CompressorOverCurrent || StickyFaultsValue.CompressorOpen || StickyFaultsValue.SolenoidOverCurrent || StickyFaultsValue.Brownout || StickyFaultsValue.CanWarning || StickyFaultsValue.CanBusOff || StickyFaultsValue.HasReset;
     }
-    return CompressorFactory::HasStickyFaults();
+    return CompressorFactory::CompressorHasStickyFaults();
 }

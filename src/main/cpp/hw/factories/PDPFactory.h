@@ -31,7 +31,7 @@ public:
 	frc::PowerDistribution *GetPDP() const { return m_pdp; };
 	frc::PowerDistribution *CreatePDP(int canID, frc::PowerDistribution::ModuleType type);
 
-	bool FindStickFaults();
+	bool PDPHasStickyFaults();
 
 	void ClearStickyFaults();
 
