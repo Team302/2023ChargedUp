@@ -16,7 +16,6 @@
 #pragma once
 
 // FRC Includes
-#include <frc/controller/HolonomicDriveController.h>
 #include <frc/Timer.h>
 
 // Team302 Includes
@@ -25,6 +24,7 @@
 
 // Third party includes
 #include <pathplanner/lib/PathPlannerTrajectory.h>
+#include <pathplanner/lib/controllers/PPHolonomicDriveController.h>
 
 class TrajectoryDrivePathPlanner : public RobotDrive
 {
@@ -47,7 +47,7 @@ private:
 
     pathplanner::PathPlannerTrajectory m_trajectory;
     RobotDrive *m_robotDrive;
-    frc::HolonomicDriveController m_holonomicController;
+    pathplanner::PPHolonomicDriveController m_holonomicController;
     pathplanner::PathPlannerTrajectory::PathPlannerState m_desiredState;
     std::vector<pathplanner::PathPlannerTrajectory::PathPlannerState> m_trajectoryStates;
     pathplanner::PathPlannerTrajectory::PathPlannerState m_finalState;

@@ -372,6 +372,8 @@ void SwerveChassis::ResetPose(const Pose2d &pose)
 
     SetEncodersToZero();
 
+    ZeroAlignSwerveModules();
+
     m_poseEstimator.ResetPosition(rot2d, wpi::array<frc::SwerveModulePosition, 4>{m_frontLeft.get()->GetPosition(), m_frontRight.get()->GetPosition(), m_backLeft.get()->GetPosition(), m_backRight.get()->GetPosition()}, pose);
 }
 
