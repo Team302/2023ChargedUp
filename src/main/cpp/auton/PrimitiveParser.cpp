@@ -84,6 +84,7 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                     auto armstate = ArmStateMgr::ARM_STATE::HOLD_POSITION_ROTATE;
                     auto extenderstate = ExtenderStateMgr::EXTENDER_STATE::HOLD_POSITION_EXTEND;
                     auto grabberstate = GrabberStateMgr::GRABBER_STATE::OPEN;
+                    auto intakestate = IntakeStateMgr::INTAKE_STATE::OFF;
                     // @ADDMECH Initialize your mechanism state
                     for (xml_attribute attr = primitiveNode.first_attribute(); attr; attr = attr.next_attribute())
                     {
@@ -207,7 +208,8 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                                                                      // @ADDMECH add parameter for your mechanism state
                                                                      armstate,
                                                                      extenderstate,
-                                                                     grabberstate));
+                                                                     grabberstate,
+                                                                     intakestate));
                         string ntName = string("Primitive ") + to_string(paramVector.size());
                         int slot = paramVector.size() - 1;
                         auto logger = Logger::GetLogger();

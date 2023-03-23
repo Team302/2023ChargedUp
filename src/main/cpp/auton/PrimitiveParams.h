@@ -53,9 +53,7 @@ public:
         ArmStateMgr::ARM_STATE armState,
         ExtenderStateMgr::EXTENDER_STATE extenderState,
         GrabberStateMgr::GRABBER_STATE,
-        IntakeStateMgr::INTAKE_STATE intakeState
-
-    ); // Constructor. Takes in all parameters
+        IntakeStateMgr::INTAKE_STATE intakeState); // Constructor. Takes in all parameters
 
     PrimitiveParams() = delete;
     virtual ~PrimitiveParams() = default; // Destructor

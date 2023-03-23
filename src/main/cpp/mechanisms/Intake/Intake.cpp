@@ -22,18 +22,19 @@
 //==============================================================
 
 #include <mechanisms/Intake/Intake.h>
+#include <mechanisms/base/Mech2Motors1Solenoid.h>
 
 Intake::Intake(MechanismTypes::MECHANISM_TYPE type,
                std::string controlFileName,
                std::string networkTableName,
                std::shared_ptr<IDragonMotorController> primaryMotor,
                std::shared_ptr<IDragonMotorController> secondaryMotor,
-               std::shared_ptr<DragonSolenoid> solenoid) : Mech2Motor1Solenoid(MechanismTypes::MECHANISM_TYPE::INTAKE,
-                                                                               controlFileName,
-                                                                               networkTableName,
-                                                                               primaryMotor,
-                                                                               secondaryMotor,
-                                                                               solenoid)
+               std::shared_ptr<DragonSolenoid> solenoid) : Mech2Motors1Solenoid(MechanismTypes::MECHANISM_TYPE::INTAKE,
+                                                                                controlFileName,
+                                                                                networkTableName,
+                                                                                primaryMotor,
+                                                                                secondaryMotor,
+                                                                                solenoid)
 {
 }
 
