@@ -61,6 +61,18 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
 
     xml_document doc;
     xml_parse_result result = doc.load_file(fulldirfile.c_str());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "PrimitiveParser", "Original File", fulldirfile.c_str());
+    if (!result)
+    {
+        auto deployDir = frc::filesystem::GetDeployDirectory();
+        auto autonDir = deployDir + "/auton/";
+
+        string updfulldirfile = autonDir;
+        updfulldirfile += fulldirfile;
+
+        result = doc.load_file(updfulldirfile.c_str());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "PrimitiveParser", "updated File", updfulldirfile.c_str());
+    }
 
     if (result)
     {
@@ -69,7 +81,34 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
         {
             for (xml_node primitiveNode = node.first_child(); primitiveNode; primitiveNode = primitiveNode.next_sibling())
             {
-                if (strcmp(primitiveNode.name(), "primitive") == 0)
+                Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "PrimitiveParser", "node", primitiveNode.name());
+
+                if (strcmp(primitiveNode.name(), "snippet") == 0)
+                {
+                    for (xml_attribute attr = primitiveNode.first_attribute(); attr; attr = attr.next_attribute())
+                    {
+                        if (strcmp(attr.name(), "file") == 0)
+                        {
+                            auto filename = string(attr.value());
+                            auto snippetParams = ParseXML(filename);
+                            if (!snippetParams.empty())
+                            {
+                                paramVector.insert(paramVector.end(), snippetParams.begin(), snippetParams.end());
+                            }
+                            else
+                            {
+                                Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("PrimitiveParser"), string("snippet had no params"), attr.value());
+                                hasError = true;
+                            }
+                        }
+                        else
+                        {
+                            Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("PrimitiveParser"), string("snippet unknown attr"), attr.name());
+                            hasError = true;
+                        }
+                    }
+                }
+                else if (strcmp(primitiveNode.name(), "primitive") == 0)
                 {
                     auto primitiveType = UNKNOWN_PRIMITIVE;
                     auto time = 15.0;
@@ -236,6 +275,23 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
     {
         // Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("PrimitiveParser"), string("ParseXML error parsing file"), fileName);
         Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("PrimitiveParser"), string("ParseXML error message"), result.description());
+    }
+
+    std::string path;
+    for (auto itr = paramVector.rbegin(); itr != paramVector.rend(); ++itr)
+    {
+        auto param = *itr;
+        if (param->GetID() == PRIMITIVE_IDENTIFIER::DRIVE_PATH)
+        {
+            path = param->GetPathName();
+        }
+        else if (param->GetID() == PRIMITIVE_IDENTIFIER::RESET_POSITION)
+        {
+            if (param->GetPathName().empty())
+            {
+                param->SetPathName(path);
+            }
+        }
     }
     return paramVector;
 }
