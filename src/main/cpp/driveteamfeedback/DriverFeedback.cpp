@@ -44,6 +44,7 @@ void DriverFeedback::UpdateFeedback()
     CheckControllers();
     DisplayPressure();
 }
+
 void DriverFeedback::UpdateCompressorState()
 {
     if (m_controllerCounter == 0)
@@ -52,7 +53,7 @@ void DriverFeedback::UpdateCompressorState()
         table.get()->PutBoolean(std::string("Compressor on"), m_compressorOn);
     }
 }
-void DriverFeedback::DisplayPressure()
+void DriverFeedback::DisplayPressure() const
 {
     auto table = nt::NetworkTableInstance::GetDefault().GetTable("Compressor");
     table.get()->PutNumber(std::string("Pressure"), CompressorFactory::GetFactory()->GetCurrentPressure().to<double>());
@@ -139,7 +140,7 @@ void DriverFeedback::UpdateLEDStates()
     }
 }
 
-void DriverFeedback::resetRequests(void)
+void DriverFeedback::ResetRequests(void)
 {
     m_GrabberIsOpen = false;
     m_WantCube = false;
@@ -184,7 +185,7 @@ void DriverFeedback::Update(RobotStateChanges::StateChange change, int value)
         m_AutonomousEnabled = state == RobotStateChanges::Auton;
         m_TeleopEnabled = state == RobotStateChanges::Teleop;
 
-        resetRequests();
+        ResetRequests();
     }
     else if (change == RobotStateChanges::StateChange::CompressorChange)
     {
