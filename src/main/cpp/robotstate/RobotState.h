@@ -51,6 +51,5 @@ private:
 
     bool m_wasGamePieceButtonReleased;
     bool m_wasCompressorButtonReleased;
-
     static RobotState *m_instance;
 };

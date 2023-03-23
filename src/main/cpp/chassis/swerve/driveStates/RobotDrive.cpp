@@ -57,7 +57,6 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates(Chass
     {
         CorrectForTipping(chassisMovement);
     }
-
     // These calculations are based on Ether's Chief Delphi derivation
     // The only changes are that that derivation is based on positive angles being clockwise
     // and our codes/sensors are based on positive angles being counter clockwise.

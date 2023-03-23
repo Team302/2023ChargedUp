@@ -68,16 +68,13 @@ void HolonomicDrive::Init()
 /// @return void
 void HolonomicDrive::Run()
 {
+    auto controller = TeleopControl::GetInstance();
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("controller "), controller != nullptr ? string("not nullptr ") : string("nullptr"));
     ChassisMovement moveInfo;
     moveInfo.driveOption = ChassisOptionEnums::DriveStateType::FIELD_DRIVE;
-    moveInfo.controllerType = ChassisOptionEnums::AutonControllerType::HOLONOMIC;
-
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("DriveOptionBEGINNING"), moveInfo.driveOption);
-
-    auto controller = TeleopControl::GetInstance();
-
+    moveInfo.controllerType = ChassisOptionEnums::AutonControllerType::HOLONOMIC;
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("chassis "), m_chassis != nullptr ? string("not nullptr ") : string("nullptr"));
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("controller "), controller != nullptr ? string("not nullptr ") : string("nullptr"));
 
     if (controller != nullptr && m_chassis != nullptr)
     {
@@ -270,21 +267,34 @@ void HolonomicDrive::Run()
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("DriveOptionEND"), moveInfo.driveOption);
 
         m_chassis->Drive(moveInfo);
+
+        ChassisMovement checkTiping;
+        ChassisMovement moveInfo;
+        auto controller = TeleopControl::GetInstance();
+        moveInfo.controllerType = ChassisOptionEnums::AutonControllerType::HOLONOMIC;
+        if (controller->IsButtonPressed(TeleopControlFunctions::TOGGLE_TIPCORRECTION))
+        {
+            m_TipButtonPressed = true;
+        }
+        if (m_TipButtonPressed)
+        {
+            if (!controller->IsButtonPressed(TeleopControlFunctions::TOGGLE_TIPCORRECTION))
+            {
+                if (moveInfo.checkTipping)
+                {
+                    bool checkTipping = false;
+                }
+                {
+                    bool checkTiping = true;
+                }
+                m_TipButtonPressed = false;
+            }
+        }
     }
     else
     {
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("Run"), string("nullptr"));
     }
-    ChassisMovement checkTipping;
-    if (controller->IsButtonPressed(TeleopControlFunctions::TOGGLE_TIPCORRECTION))
-    {
-        if (m_wastoggleButtonReleased)
-        {
-            bool checkTipping = true;
-        }
-    }
-    m_wastoggleButtonReleased = !controller->IsButtonPressed(TeleopControlFunctions::TOGGLE_TIPCORRECTION);
-    bool checkTipping = false;
 }
 
 void HolonomicDrive::Exit()
