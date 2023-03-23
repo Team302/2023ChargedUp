@@ -83,6 +83,9 @@ std::array<frc::SwerveModuleState, 4> TrajectoryDrivePathPlanner::UpdateSwerveMo
         // trying to use the last rotation of the path as the target
         refChassisSpeeds = m_holonomicController.calculate(m_chassis->GetPose(), m_desiredState);
 
+        // negate speeds from holo controller when sending to chassis
+        refChassisSpeeds.omega *= -1.0;
+
         chassisMovement.chassisSpeeds = refChassisSpeeds;
 
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Trajectory Drive Path Planner", "HolonomicRotation (Degs)", m_desiredState.holonomicRotation.Degrees().to<double>());
