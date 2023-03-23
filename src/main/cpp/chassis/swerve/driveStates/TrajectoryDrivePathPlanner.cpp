@@ -22,17 +22,14 @@
 #include <utils/logging/Logger.h>
 #include <chassis/swerve/headingStates/SpecifiedHeading.h>
 
-#include <pathplanner/lib/controllers/PPHolonomicDriveController.h>
-
 using frc::Pose2d;
 
 TrajectoryDrivePathPlanner::TrajectoryDrivePathPlanner(RobotDrive *robotDrive) : RobotDrive(),
                                                                                  m_trajectory(),
                                                                                  m_robotDrive(robotDrive),
-                                                                                 m_holonomicController(frc2::PIDController{1.0, 0.0, 0},
-                                                                                                       frc2::PIDController{1.0, 0.0, 0},
-                                                                                                       frc::ProfiledPIDController<units::radian>{0.0, 0.0, 0,
-                                                                                                                                                 frc::TrapezoidProfile<units::radian>::Constraints{6.28_rad_per_s, 6.28_rad_per_s / 1_s}}),
+                                                                                 m_holonomicController(frc2::PIDController{10.0, 1.5, 0},
+                                                                                                       frc2::PIDController{10.0, 1.5, 0},
+                                                                                                       frc::PIDController{1.0, 0.5, 0}),
                                                                                  m_desiredState(),
                                                                                  m_trajectoryStates(),
                                                                                  m_prevPose(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose()),
@@ -46,6 +43,8 @@ TrajectoryDrivePathPlanner::TrajectoryDrivePathPlanner(RobotDrive *robotDrive) :
 
 void TrajectoryDrivePathPlanner::Init(ChassisMovement &chassisMovement)
 {
+    // m_holonomicController.setTolerance(frc::Pose2d{units::length::meter_t(0.1), units::length::meter_t(0.1), frc::Rotation2d(units::angle::degree_t(2.0))});
+
     // Clear m_trajectoryStates in case it holds onto a previous trajectory
     m_trajectoryStates.clear();
 
@@ -81,28 +80,12 @@ std::array<frc::SwerveModuleState, 4> TrajectoryDrivePathPlanner::UpdateSwerveMo
         // Use the controller to calculate the chassis speeds for getting there
         frc::ChassisSpeeds refChassisSpeeds;
 
-        /*refChassisSpeeds = m_holonomicController.Calculate(m_chassis->GetPose(),
-                                                           m_desiredState.asWPILibState(),
-                                                           -m_desiredState.holonomicRotation);*/
-
         // trying to use the last rotation of the path as the target
-        refChassisSpeeds = m_holonomicController.Calculate(m_chassis->GetPose(),
-                                                           m_desiredState.asWPILibState(),
-                                                           m_chassis->GetPose().Rotation());
+        refChassisSpeeds = m_holonomicController.calculate(m_chassis->GetPose(), m_desiredState);
+
         chassisMovement.chassisSpeeds = refChassisSpeeds;
 
-        if (chassisMovement.headingOption == ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE)
-        {
-            auto specifedHeading = dynamic_cast<SpecifiedHeading *>(m_chassis->GetHeadingState(chassisMovement));
-            chassisMovement.chassisSpeeds.omega = units::angular_velocity::radians_per_second_t(0);
-            chassisMovement.yawAngle = m_desiredState.holonomicRotation.Degrees();
-            specifedHeading->UpdateChassisSpeeds(chassisMovement);
-        }
-
-        // chassisMovement.yawAngle = m_finalState.holonomicRotation;
-        // chassisMovement.headingOption = ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE;
-
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Trajectory Drive Path Planner", "HolonomicRotation (Degs)", -m_finalState.holonomicRotation.Degrees().to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Trajectory Drive Path Planner", "HolonomicRotation (Degs)", m_desiredState.holonomicRotation.Degrees().to<double>());
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Trajectory Drive Path Planner", "Omega (Rads Per Sec)", refChassisSpeeds.omega.to<double>());
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Trajectory Drive Path Planner", "Yaw Odometry (Degs)", m_chassis->GetPose().Rotation().Degrees().to<double>());
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Trajectory Drive Path Planner", "Yaw Pigeon (Degs)", PigeonFactory::GetFactory()->GetCenterPigeon()->GetYaw());
@@ -140,22 +123,8 @@ bool TrajectoryDrivePathPlanner::IsDone()
 
     if (!m_trajectoryStates.empty()) // If we have states...
     {
-        auto curPos = m_chassis->GetPose();
-
-        // Check if the current pose and the trajectory's final pose are the same
-
-        frc::Pose2d finalPose = {m_finalState.pose.Translation(), m_finalState.holonomicRotation};
-
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "trajectory drive path planner", "FinalPoseHoloX", finalPose.X().to<double>());
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "trajectory drive path planner", "FinalPoseHoloY", finalPose.Y().to<double>());
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "trajectory drive path planner", "FinalPoseHoloRot", finalPose.Rotation().Degrees().to<double>());
-
-        if (IsSamePose(curPos, finalPose, 10.0, 20.0))
-        {
-            isDone = true;
-            m_whyDone = "Current Pose = Trajectory final pose";
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "trajectory drive path planner", "why done", m_whyDone);
-        }
+        // isDone = m_holonomicController.atReference();
+        isDone = IsSamePose(m_chassis->GetPose(), m_finalState.pose, 10.0, 3.0);
     }
     else
     {
