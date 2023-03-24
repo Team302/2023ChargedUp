@@ -15,21 +15,34 @@
 //====================================================================================================================================================
 
 #pragma once
+
+// Team302 Includes
 #include <driveteamfeedback/LEDStates.h>
 #include <robotstate/IRobotStateChangeSubscriber.h>
+#include <utils/DragonField.h>
+#include <auton/AutonPreviewer.h>
+#include <auton/CyclePrimitives.h>
+
+class SwerveChassis;
 
 class DriverFeedback : public IRobotStateChangeSubscriber
 {
 public:
+    DriverFeedback();
+
     void UpdateFeedback();
 
     static DriverFeedback *GetInstance();
+
+    static DriverFeedback *GetInstance(CyclePrimitives *cyclePrims);
 
     void UpdateLEDStates();
 
     void UpdateCompressorState();
 
     void Update(RobotStateChanges::StateChange change, int value) override;
+
+    DragonField *GetField() const { return m_field; }
 
 private:
     void CheckControllers();
@@ -69,6 +82,10 @@ private:
     DriverFeedbackStates m_gamePieceState = DriverFeedbackStates::NONE;
     DriverFeedbackStates m_compressorState = DriverFeedbackStates::NONE;
     bool m_grabberStateChanged = true;
+
+    DragonField *m_field;
+    AutonPreviewer *m_previewer = nullptr;
+    SwerveChassis *m_chassis;
 
     void resetRequests(void);
 };

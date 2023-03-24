@@ -23,6 +23,7 @@
 
 // Thirdparty includes
 #include <pugixml/pugixml.hpp>
+#include <pathplanner/lib/PathPlanner.h>
 
 using namespace pugi;
 
@@ -56,7 +57,7 @@ std::vector<frc::Trajectory> AutonPreviewer::GetTrajectories()
 {
     std::string filename = m_selector->GetSelectedAutoFile();
 
-    std::vector<std::string> trajectoryPaths;
+    std::vector<std::pair<std::string, bool>> trajectoryPaths;
     std::vector<frc::Trajectory> trajectories;
 
     auto autonFile = frc::filesystem::GetDeployDirectory() + "/auton/" + filename;
@@ -74,11 +75,24 @@ std::vector<frc::Trajectory> AutonPreviewer::GetTrajectories()
             {
                 if (strcmp(primitiveNode.name(), "primitive") == 0)
                 {
+                    bool isPathPlannerTrajectory = false;
+
                     for (xml_attribute attr = primitiveNode.first_attribute(); attr; attr = attr.next_attribute())
                     {
+                        if (strcmp(attr.name(), "id") == 0)
+                        {
+                            if (strcmp(attr.value(), "DRIVE_PATH") == 0)
+                            {
+                                isPathPlannerTrajectory = false;
+                            }
+                            else if (strcmp(attr.value(), "DRIVE_PATH_PLANNER") == 0)
+                            {
+                                isPathPlannerTrajectory = true;
+                            }
+                        }
                         if (strcmp(attr.name(), "pathname") == 0)
                         {
-                            trajectoryPaths.emplace_back(attr.value());
+                            trajectoryPaths.emplace_back(std::pair(attr.value(), isPathPlannerTrajectory));
                         }
                     }
                 }
@@ -86,12 +100,23 @@ std::vector<frc::Trajectory> AutonPreviewer::GetTrajectories()
         }
     }
 
-    // Now that we have the paths, convert from JSON to frc::Trajectory and
+    // Now that we have the paths, convert from JSON to frc::Trajectory
     auto pathDir = frc::filesystem::GetDeployDirectory() + "/paths/output/";
 
-    for (std::string path : trajectoryPaths)
+    for (std::pair<std::string, bool> pathPair : trajectoryPaths)
     {
-        trajectories.emplace_back(frc::TrajectoryUtil::FromPathweaverJson(pathDir + path));
+        std::string path = pathPair.first;
+        bool isPathPlanner = pathPair.second;
+
+        // if standard pathweaver trajectory
+        if (!isPathPlanner)
+        {
+            trajectories.emplace_back(frc::TrajectoryUtil::FromPathweaverJson(pathDir + path));
+        }
+        else // else we have a pathplanner trajectory
+        {
+            trajectories.emplace_back(pathplanner::PathPlanner::loadPath(path, pathplanner::PathConstraints(4.0_mps, 2.0_mps_sq)).asWPILibTrajectory());
+        }
     }
 
     return trajectories;

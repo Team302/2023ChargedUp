@@ -23,6 +23,7 @@
 #include <networktables/NetworkTableInstance.h>
 #include <networktables/NetworkTable.h>
 #include <networktables/NetworkTableEntry.h>
+#include <chassis/ChassisFactory.h>
 
 using frc::DriverStation;
 
@@ -37,12 +38,34 @@ DriverFeedback *DriverFeedback::GetInstance()
     return DriverFeedback::m_instance;
 }
 
+DriverFeedback *DriverFeedback::GetInstance(CyclePrimitives *cyclePrims)
+{
+    if (DriverFeedback::m_instance == nullptr)
+    {
+        DriverFeedback::m_instance = new DriverFeedback();
+    }
+
+    m_previewer = new AutonPreviewer(cyclePrims);
+
+    return DriverFeedback::m_instance;
+}
+
 void DriverFeedback::UpdateFeedback()
 {
     UpdateLEDStates();
     UpdateCompressorState();
     CheckControllers();
     DisplayPressure();
+
+    // ToDo:: Move to DriveTeamFeedback
+    if (m_previewer != nullptr)
+    {
+        m_previewer->CheckCurrentAuton();
+    }
+    if (m_field != nullptr && m_chassis != nullptr)
+    {
+        m_field->UpdateRobotPosition(m_chassis->GetPose()); // ToDo:: Move to DriveTeamFeedback (also don't assume m_field isn't a nullptr)
+    }
 }
 void DriverFeedback::UpdateCompressorState()
 {
@@ -150,9 +173,14 @@ void DriverFeedback::resetRequests(void)
     m_AlignedWithCubeNode = false;
 
     m_grabberStateChanged = true;
+
+    // changed game state, reset field2d
+    m_field->ResetField();
 }
 
-DriverFeedback::DriverFeedback() : IRobotStateChangeSubscriber()
+DriverFeedback::DriverFeedback() : IRobotStateChangeSubscriber(),
+                                   m_field(DragonField::GetInstance()),
+                                   m_chassis(ChassisFactory::GetChassisFactory()->GetSwerveChassis())
 {
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::GrabberState);
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::DesiredGamePiece);

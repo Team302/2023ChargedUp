@@ -66,7 +66,7 @@ void Robot::RobotInit()
 
     m_cyclePrims = new CyclePrimitives();
     m_previewer = new AutonPreviewer(m_cyclePrims); // TODO:: Move to DriveTeamFeedback
-    m_field = DragonField::GetInstance();           // TODO: move to drive team feedback
+    m_feedback = DriverFeedback::GetInstance();
 
     //    m_dragonLimeLight = LimelightFactory::GetLimelightFactory()->GetLimelight(); // ToDo:: Move to Dragon Vision
 
@@ -150,22 +150,11 @@ void Robot::RobotPeriodic()
     }
 #endif
 
-    // ToDo:: Move to DriveTeamFeedback
-    if (m_previewer != nullptr)
-    {
-        m_previewer->CheckCurrentAuton();
-    }
-    if (m_field != nullptr && m_chassis != nullptr)
-    {
-        m_field->UpdateRobotPosition(m_chassis->GetPose()); // ToDo:: Move to DriveTeamFeedback (also don't assume m_field isn't a nullptr)
-    }
-
     m_tuner->ListenForUpdates();
 
-    auto feedback = DriverFeedback::GetInstance();
-    if (feedback != nullptr)
+    if (m_feedback != nullptr)
     {
-        feedback->UpdateFeedback();
+        m_feedback->UpdateFeedback();
     }
 
     auto pigeon = PigeonFactory::GetFactory()->GetCenterPigeon();
@@ -237,12 +226,6 @@ void Robot::TeleopInit()
         m_chassis->Drive();
     }
     StateMgrHelper::RunCurrentMechanismStates();
-
-    // now in teleop, clear field of trajectories
-    if (m_field != nullptr)
-    {
-        m_field->ResetField(); // ToDo:  Move to DriveTeamFeedback
-    }
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopInit"), string("end"));
 }

@@ -27,7 +27,7 @@ class SwerveChassis;
 class TeleopControl;
 class AdjustableItemMgr;
 class FMSData;
-class DragonField;
+class DriverFeedback;
 class AutonPreviewer;
 class RobotState;
 
@@ -59,7 +59,7 @@ private:
 
     AdjustableItemMgr *m_tuner;
     FMSData *m_fmsData;
-    DragonField *m_field;
+    DriverFeedback *m_feedback;
     AutonPreviewer *m_previewer;
     RobotState *m_robotState;
 };
