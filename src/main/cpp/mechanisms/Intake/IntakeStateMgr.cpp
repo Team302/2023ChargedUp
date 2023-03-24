@@ -53,8 +53,7 @@ IntakeStateMgr::IntakeStateMgr() : StateMgr(),
                                    m_intake(MechanismFactory::GetMechanismFactory()->GetIntake()),
                                    m_currentState(INTAKE_STATE::OFF),
                                    m_targetState(INTAKE_STATE::OFF),
-                                   m_prevState(INTAKE_STATE::OFF),
-                                   m_coneMode(true)
+                                   m_prevState(INTAKE_STATE::OFF)
 
 {
     map<string, StateStruc> stateMap;

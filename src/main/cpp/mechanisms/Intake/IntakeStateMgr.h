@@ -43,7 +43,7 @@ public:
     const std::string m_intakeOffXMLString{"INTAKE_OFF"};
     const std::string m_intakeXMLString{"INTAKE"};
     const std::string m_holdXMLString{"INTAKE_HOLD"};
-    const std::string m_releaseXMLString{"INTAKE_INTAKE"};
+    const std::string m_releaseXMLString{"INTAKE_RELEASE"};
     const std::string m_expelXMLString{"INTAKE_EXPEL"};
 
     const std::map<const std::string, INTAKE_STATE> m_intakeXmlStringToStateEnumMap{

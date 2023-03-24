@@ -50,6 +50,7 @@ SolenoidUsage::SolenoidUsage()
 {
 
 	m_usageMap["GrabberSolenoid"] = SOLENOID_USAGE::GrabberSolenoid;
+	m_usageMap["IntakeSoenoid"] = SOLENOID_USAGE::IntakeSolenoid;
 }
 
 SolenoidUsage::~SolenoidUsage()
