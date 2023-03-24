@@ -36,16 +36,7 @@
 
 using namespace std;
 
-IntakeState::IntakeState(
-    Mech2Motors1Solenoid *m_mechanism,
-    string stateName,
-    int stateId,
-    ControlData *control,
-    ControlData *control2,
-    double primaryTarget,
-    double secondaryTarget,
-    MechanismTargetData::SOLENOID solState) : Mech2Motors1SolenoidState(MechanismFactory::GetMechanismFactory()->GetIntake(), stateName, stateId, control, control2, primaryTarget, secondaryTarget, solState)
-
+IntakeState::IntakeState(string stateName, int stateId, ControlData *control, ControlData *control2, double primaryTarget, double secondaryTarget, MechanismTargetData::SOLENOID solState) : Mech2Motors1SolenoidState(MechanismFactory::GetMechanismFactory()->GetIntake(), stateName, stateId, control, control2, primaryTarget, secondaryTarget, solState)
 {
 }
 

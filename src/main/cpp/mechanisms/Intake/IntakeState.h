@@ -33,14 +33,7 @@ class IntakeState : public Mech2Motors1SolenoidState
 {
 public:
     IntakeState() = delete;
-    IntakeState(Mech2Motors1Solenoid *m_mechanism,
-                string stateName,
-                int stateId,
-                ControlData *control,
-                ControlData *control2,
-                double primaryTarget,
-                double secondaryTarget,
-                MechanismTargetData::SOLENOID solState);
+    IntakeState(string stateName, int stateId, ControlData *control, ControlData *control2, double primaryTarget, double secondaryTarget, MechanismTargetData::SOLENOID solState);
     ~IntakeState() = default;
 
     bool AtTarget() const override;

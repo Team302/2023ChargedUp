@@ -35,6 +35,8 @@
 #include <mechanisms/extender/ExtenderStateMgr.h>
 #include <mechanisms/grabber/GrabberState.h>
 #include <mechanisms/grabber/GrabberStateMgr.h>
+#include <mechanisms/Intake/IntakeState.h>
+#include <mechanisms/Intake/IntakeStateMgr.h>
 
 using namespace std;
 
@@ -95,9 +97,9 @@ void StateMgrHelper::SetCheckGamepadInputsForStateTransitions(bool check)
 State *StateMgrHelper::CreateState(Mech *mech, StateStruc &stateInfo, MechanismTargetData *targetData)
 {
     auto controlData = targetData->GetController();
-    // auto controlData2 = targetData->GetController2();
+    auto controlData2 = targetData->GetController2();
     auto target = targetData->GetTarget();
-    // auto secondaryTarget = targetData->GetSecondTarget();
+    auto secondaryTarget = targetData->GetSecondTarget();
     auto solenoidState = targetData->GetSolenoidState();
     //  auto solenoid2State = targetData->GetSolenoid2State();
     //  auto robotPitch = targetData->GetRobotPitch();
@@ -133,6 +135,10 @@ State *StateMgrHelper::CreateState(Mech *mech, StateStruc &stateInfo, MechanismT
 
     case StateType::GRABBER_STATE:
         thisState = new GrabberState(xmlString, id, solenoidState);
+        break;
+
+    case StateType::INTAKE_STATE:
+        thisState = new IntakeState(xmlString, id, controlData, controlData2, target, secondaryTarget, solenoidState);
         break;
 
     default:
