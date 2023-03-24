@@ -290,7 +290,7 @@ void HolonomicDrive::Run()
             }
             m_TipButtonPressedtoggle = false;
         }
-        else
+        else if (!controller->IsButtonPressed(TeleopControlFunctions::TOGGLE_TIPCORRECTION))
         {
             m_TipButtonPressedtoggle = true;
         }
