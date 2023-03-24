@@ -57,5 +57,5 @@ private:
     bool m_inVisionDrive = false;
     bool m_wastoggleButtonReleased = false;
     bool m_TipButtonReleased = false;
-    bool m_TipButtonPressed = false;
+    bool m_TipButtonPressedtoggle = false;
 };
