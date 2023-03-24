@@ -28,6 +28,7 @@
 using frc::DriverStation;
 
 DriverFeedback *DriverFeedback::m_instance = nullptr;
+CyclePrimitives *DriverFeedback::m_cyclePrims = nullptr;
 
 DriverFeedback *DriverFeedback::GetInstance()
 {
@@ -45,7 +46,7 @@ DriverFeedback *DriverFeedback::GetInstance(CyclePrimitives *cyclePrims)
         DriverFeedback::m_instance = new DriverFeedback();
     }
 
-    m_previewer = new AutonPreviewer(cyclePrims);
+    m_cyclePrims = cyclePrims;
 
     return DriverFeedback::m_instance;
 }
@@ -57,14 +58,21 @@ void DriverFeedback::UpdateFeedback()
     CheckControllers();
     DisplayPressure();
 
-    // ToDo:: Move to DriveTeamFeedback
     if (m_previewer != nullptr)
     {
         m_previewer->CheckCurrentAuton();
     }
+    else
+    {
+        if (m_cyclePrims != nullptr && !m_hasCreatedPreviewer)
+        {
+            m_previewer = new AutonPreviewer(m_cyclePrims);
+            m_hasCreatedPreviewer = true;
+        }
+    }
     if (m_field != nullptr && m_chassis != nullptr)
     {
-        m_field->UpdateRobotPosition(m_chassis->GetPose()); // ToDo:: Move to DriveTeamFeedback (also don't assume m_field isn't a nullptr)
+        m_field->UpdateRobotPosition(m_chassis->GetPose());
     }
 }
 void DriverFeedback::UpdateCompressorState()
@@ -182,6 +190,12 @@ DriverFeedback::DriverFeedback() : IRobotStateChangeSubscriber(),
                                    m_field(DragonField::GetInstance()),
                                    m_chassis(ChassisFactory::GetChassisFactory()->GetSwerveChassis())
 {
+    if (m_cyclePrims != nullptr)
+    {
+        m_previewer = new AutonPreviewer(m_cyclePrims);
+        m_hasCreatedPreviewer = true;
+    }
+
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::GrabberState);
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::DesiredGamePiece);
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::GameState);

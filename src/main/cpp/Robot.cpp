@@ -65,8 +65,7 @@ void Robot::RobotInit()
     }
 
     m_cyclePrims = new CyclePrimitives();
-    m_previewer = new AutonPreviewer(m_cyclePrims); // TODO:: Move to DriveTeamFeedback
-    m_feedback = DriverFeedback::GetInstance();
+    m_feedback = DriverFeedback::GetInstance(m_cyclePrims);
 
     //    m_dragonLimeLight = LimelightFactory::GetLimelightFactory()->GetLimelight(); // ToDo:: Move to Dragon Vision
 

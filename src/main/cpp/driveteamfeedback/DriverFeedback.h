@@ -28,8 +28,6 @@ class SwerveChassis;
 class DriverFeedback : public IRobotStateChangeSubscriber
 {
 public:
-    DriverFeedback();
-
     void UpdateFeedback();
 
     static DriverFeedback *GetInstance();
@@ -78,6 +76,9 @@ private:
     bool m_compressorOn = true;
 
     static DriverFeedback *m_instance;
+
+    static CyclePrimitives *m_cyclePrims;
+    bool m_hasCreatedPreviewer = false;
 
     DriverFeedbackStates m_gamePieceState = DriverFeedbackStates::NONE;
     DriverFeedbackStates m_compressorState = DriverFeedbackStates::NONE;
