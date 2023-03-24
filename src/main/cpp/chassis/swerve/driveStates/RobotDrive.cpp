@@ -140,8 +140,19 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates(Chass
     }
     */
 
-    auto chassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
-    chassis->GetKinematics().desaturateWheelSpeeds({m_flState, m_frState, m_blState, m_brState}, chassis->GetMaxSpeed());
+    SwerveChassis *chassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
+    frc::SwerveDriveKinematics<4> kinematics = chassis->GetKinematics();
+
+    wpi::array<frc::SwerveModuleState, 4> states = {m_flState, m_frState, m_blState, m_brState};
+
+    chassis->GetKinematics().DesaturateWheelSpeeds(&states, chassis->GetMaxSpeed());
+
+    auto [fl, fr, bl, br] = states;
+
+    m_flState = fl;
+    m_frState = fr;
+    m_blState = bl;
+    m_brState = br;
 
     return {m_flState, m_frState, m_blState, m_brState};
 }
