@@ -34,8 +34,8 @@ RobotDrive::RobotDrive() : ISwerveDriveState::ISwerveDriveState(),
                            m_frState(),
                            m_blState(),
                            m_brState(),
-                           m_wheelbase(units::length::inch_t(20.0)),
-                           m_wheeltrack(units::length::inch_t(20.0)),
+                           m_wheelbase(units::length::inch_t(20.625)),
+                           m_wheeltrack(units::length::inch_t(20.625)),
                            m_maxspeed(units::velocity::feet_per_second_t(1.0))
 {
     auto chassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();

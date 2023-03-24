@@ -95,7 +95,7 @@ SwerveModule::SwerveModule(
                                                          m_currentSpeed(0.0_rpm),
                                                          m_currentRotations(0.0),
                                                          m_maxVelocity(1_mps),
-                                                         m_runClosedLoopDrive(false),
+                                                         m_runClosedLoopDrive(true),
                                                          m_countsOnTurnEncoderPerDegreesOnAngleSensor(countsOnTurnEncoderPerDegreesOnAngleSensor)
 {
     driveMotor.get()->SetFramePeriodPriority(IDragonMotorController::MOTOR_PRIORITY::HIGH);
@@ -181,10 +181,10 @@ void SwerveModule::Init(
     m_driveVelocityControlData = new ControlData(ControlModes::CONTROL_TYPE::VELOCITY_RPS,
                                                  ControlModes::CONTROL_RUN_LOCS::MOTOR_CONTROLLER,
                                                  string("DriveSpeed"),
-                                                 0.01, // 0.01
+                                                 0.5, // 0.01
                                                  0.0,
                                                  0.0,
-                                                 0.5, // 0.5
+                                                 0.0, // 0.5
                                                  0.0,
                                                  maxAcceleration.to<double>(),
                                                  maxVelocity.to<double>(),

@@ -35,6 +35,7 @@
 #include <units/velocity.h>
 #include <frc/kinematics/SwerveModulePosition.h>
 #include <frc/kinematics/SwerveDriveKinematics.h>
+#include <frc/kinematics/SwerveModuleState.h>
 
 // Team 302 includes
 #include <chassis/PoseEstimatorEnum.h>
@@ -208,7 +209,31 @@ void SwerveChassis::Drive(ChassisMovement moveInfo)
         m_frontRight.get()->SetDesiredState(states[RIGHT_FRONT]);
         m_backLeft.get()->SetDesiredState(states[LEFT_BACK]);
         m_backRight.get()->SetDesiredState(states[RIGHT_BACK]);
+
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DesiredWheelSpeeds"), string("Front left"), units::math::abs(states[LEFT_FRONT].speed).to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DesiredWheelSpeeds"), string("Front right"), units::math::abs(states[RIGHT_FRONT].speed).to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DesiredWheelSpeeds"), string("Back left"), units::math::abs(states[LEFT_BACK].speed).to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DesiredWheelSpeeds"), string("Back right"), units::math::abs(states[RIGHT_BACK].speed).to<double>());
     }
+
+    logWheelSpeed();
+}
+
+void SwerveChassis::logWheelSpeed()
+{
+    frc::SwerveModuleState sms;
+
+    sms = m_frontLeft.get()->GetState();
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("MeasuredWheelSpeeds"), string("Front left"), units::math::abs(sms.speed).to<double>());
+
+    sms = m_frontRight.get()->GetState();
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("MeasuredWheelSpeeds"), string("Front right"), units::math::abs(sms.speed).to<double>());
+
+    sms = m_backLeft.get()->GetState();
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("MeasuredWheelSpeeds"), string("Back left"), units::math::abs(sms.speed).to<double>());
+
+    sms = m_backRight.get()->GetState();
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("MeasuredWheelSpeeds"), string("Back right"), units::math::abs(sms.speed).to<double>());
 }
 
 void SwerveChassis::Drive()

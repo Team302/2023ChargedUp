@@ -133,6 +133,8 @@ public:
     inline IChassis::CHASSIS_TYPE GetType() const override { return IChassis::CHASSIS_TYPE::SWERVE; };
     inline void Initialize() override{};
 
+    void logWheelSpeed();
+
     void SetTargetHeading(units::angle::degree_t targetYaw) override;
 
     void SetStoredHeading(units::angle::degree_t heading);
