@@ -27,9 +27,9 @@ using frc::Pose2d;
 TrajectoryDrivePathPlanner::TrajectoryDrivePathPlanner(RobotDrive *robotDrive) : RobotDrive(),
                                                                                  m_trajectory(),
                                                                                  m_robotDrive(robotDrive),
-                                                                                 m_holonomicController(frc2::PIDController{10.0, 1.5, 0},
-                                                                                                       frc2::PIDController{10.0, 1.5, 0},
-                                                                                                       frc::PIDController{1.0, 0.5, 0}),
+                                                                                 m_holonomicController(frc2::PIDController{4.0, 1.0, 0},  // 3.725, 0.85
+                                                                                                       frc2::PIDController{4.0, 1.0, 0},  // 3.725, 0.85
+                                                                                                       frc::PIDController{0.45, 0.0, 0}), // 0.325, 0.0
                                                                                  m_desiredState(),
                                                                                  m_trajectoryStates(),
                                                                                  m_prevPose(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose()),
@@ -44,7 +44,6 @@ TrajectoryDrivePathPlanner::TrajectoryDrivePathPlanner(RobotDrive *robotDrive) :
 void TrajectoryDrivePathPlanner::Init(ChassisMovement &chassisMovement)
 {
     // m_holonomicController.setTolerance(frc::Pose2d{units::length::meter_t(0.1), units::length::meter_t(0.1), frc::Rotation2d(units::angle::degree_t(2.0))});
-
     // Clear m_trajectoryStates in case it holds onto a previous trajectory
     m_trajectoryStates.clear();
 

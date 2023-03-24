@@ -27,4 +27,7 @@ IgnoreHeading::IgnoreHeading() : ISwerveDriveOrientation(ChassisOptionEnums::Hea
 
 void IgnoreHeading::UpdateChassisSpeeds(ChassisMovement &chassisMovement)
 {
+    // update stored heading for transition to teleop from auton
+    auto chassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
+    chassis->SetStoredHeading(chassis->GetPose().Rotation().Degrees());
 }
