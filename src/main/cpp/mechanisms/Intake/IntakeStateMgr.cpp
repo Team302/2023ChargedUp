@@ -53,8 +53,7 @@ IntakeStateMgr::IntakeStateMgr() : StateMgr(),
                                    m_intake(MechanismFactory::GetMechanismFactory()->GetIntake()),
                                    m_currentState(INTAKE_STATE::OFF),
                                    m_targetState(INTAKE_STATE::OFF),
-                                   m_prevState(INTAKE_STATE::OFF),
-                                   m_coneMode(true)
+                                   m_prevState(INTAKE_STATE::OFF)
 
 {
     map<string, StateStruc> stateMap;
@@ -135,13 +134,13 @@ void IntakeStateMgr::CheckForGamepadTransitions()
         auto controller = TeleopControl::GetInstance();
         if (controller != nullptr)
         {
-            if (controller->IsButtonPressed(TeleopControlFunctions::OPEN))
+            if (controller->IsButtonPressed(TeleopControlFunctions::HOLD))
             {
-                m_targetState = m_coneMode ? INTAKE_STATE::RELEASE : INTAKE_STATE::EXPEL;
+                m_targetState = INTAKE_STATE::HOLD;
             }
-            else if (controller->IsButtonPressed(TeleopControlFunctions::GRAB) && (m_currentState != INTAKE_STATE::HOLD || m_currentState != HOLD))
+            else if (controller->IsButtonPressed(TeleopControlFunctions::INTAKE))
             {
-                m_targetState = m_coneMode ? INTAKE_STATE::INTAKE : INTAKE_STATE::INTAKE;
+                m_targetState = INTAKE_STATE::INTAKE;
             }
         }
     }
