@@ -13,6 +13,7 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 #include <map>
+#include <string>
 
 // FRC includes
 
@@ -83,6 +84,13 @@ int IntakeStateMgr::GetCurrentStateParam(PrimitiveParams *currentParams)
 /// @brief Check if driver inputs or sensors trigger a state transition
 void IntakeStateMgr::CheckForStateTransition()
 {
+    string identifier = string("CheckForStateTransition - current state");
+    string identifier2 = string("CheckForStateTransition - target state");
+    string identifier3 = string("CheckForStateTransition - have intake");
+
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "IntakeDebugging", identifier, m_targetState);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "IntakeDebugging", identifier3, m_intake != nullptr ? "true" : "false");
+
     if (m_intake != nullptr)
     {
         CheckForSensorTransitions();
@@ -97,6 +105,7 @@ void IntakeStateMgr::CheckForStateTransition()
             m_prevState = m_targetState;
             RobotState::GetInstance()->PublishStateChange(RobotStateChanges::IntakeState, m_targetState);
         }
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "IntakeDebugging", identifier, m_targetState);
     }
 }
 

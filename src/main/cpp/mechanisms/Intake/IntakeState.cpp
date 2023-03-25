@@ -27,17 +27,27 @@
 // FRC includes
 
 // Team 302 includes
+#include <mechanisms/base/Mech2Motors1Solenoid.h>
 #include <mechanisms/base/Mech2Motors1SolenoidState.h>
 #include <mechanisms/controllers/ControlData.h>
 #include <mechanisms/Intake/IntakeState.h>
 #include <mechanisms/MechanismFactory.h>
-#include <mechanisms/base/Mech2Motors1Solenoid.h>
+#include <utils/logging/Logger.h>
+
 // Third Party Includes
 
 using namespace std;
 
 IntakeState::IntakeState(string stateName, int stateId, ControlData *control, ControlData *control2, double primaryTarget, double secondaryTarget, MechanismTargetData::SOLENOID solState) : Mech2Motors1SolenoidState(MechanismFactory::GetMechanismFactory()->GetIntake(), stateName, stateId, control, control2, primaryTarget, secondaryTarget, solState)
 {
+    string identifier(stateName);
+    identifier += to_string(stateId);
+
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "IntakeDebugging", identifier, "creating");
+    identifier += string(" target");
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "IntakeDebugging", identifier, primaryTarget);
+    identifier += string(" 2");
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "IntakeDebugging", identifier, secondaryTarget);
 }
 
 bool IntakeState::AtTarget() const
