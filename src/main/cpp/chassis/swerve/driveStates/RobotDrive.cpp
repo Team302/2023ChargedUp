@@ -88,8 +88,8 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates(Chass
     auto vx = -1.0 * chassisMovement.chassisSpeeds.vy;
     auto omega = chassisMovement.chassisSpeeds.omega;
 
-    units::length::meter_t centerOfRotationW = (w / 2.0) - chassisMovement.centerOfRotationOffset.Y;
-    units::length::meter_t centerOfRotationL = (l / 2.0) - chassisMovement.centerOfRotationOffset.X;
+    units::length::meter_t centerOfRotationW = (w / 2.0) - chassisMovement.centerOfRotationOffset.Y();
+    units::length::meter_t centerOfRotationL = (l / 2.0) - chassisMovement.centerOfRotationOffset.X();
 
     units::velocity::meters_per_second_t omegaW = omega.to<double>() * centerOfRotationW / 1_s;
     units::velocity::meters_per_second_t omegaL = omega.to<double>() * centerOfRotationL / 1_s;
@@ -128,6 +128,7 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates(Chass
     {
         maxCalcSpeed = abs(m_brState.speed.to<double>());
     }
+
     /*
     // normalize speeds if necessary (maxCalcSpeed > max attainable speed)
     if (maxCalcSpeed > m_maxspeed.to<double>())
@@ -143,7 +144,7 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates(Chass
     SwerveChassis *chassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
     frc::SwerveDriveKinematics<4> kinematics = chassis->GetKinematics();
 
-    wpi::array<frc::SwerveModuleState, 4> states = {m_flState, m_frState, m_blState, m_brState};
+    wpi::array<frc::SwerveModuleState, 4> states = kinematics.ToSwerveModuleStates(chassisMovement.chassisSpeeds, chassisMovement.centerOfRotationOffset);
 
     chassis->GetKinematics().DesaturateWheelSpeeds(&states, chassis->GetMaxSpeed());
 
