@@ -18,11 +18,11 @@
 // FRC Includes
 #include <frc/kinematics/ChassisSpeeds.h>
 #include <frc/trajectory/TrajectoryUtil.h>
+#include <frc/geometry/Translation2d.h>
 
 #include <units/angle.h>
 
 // Team302 Includes
-#include <utils/Point2d.h>
 #include <chassis/ChassisOptionEnums.h>
 
 // Third party includes
@@ -36,7 +36,7 @@ struct ChassisMovement
     frc::ChassisSpeeds chassisSpeeds = frc::ChassisSpeeds();
     frc::Trajectory trajectory = frc::Trajectory();
     pathplanner::PathPlannerTrajectory pathplannerTrajectory = pathplanner::PathPlannerTrajectory();
-    Point2d centerOfRotationOffset = Point2d();
+    frc::Translation2d centerOfRotationOffset = frc::Translation2d();
     ChassisOptionEnums::HeadingOption headingOption = ChassisOptionEnums::HeadingOption::MAINTAIN;
     ChassisOptionEnums::NoMovementOption noMovementOption = ChassisOptionEnums::NoMovementOption::STOP;
     ChassisOptionEnums::AutonControllerType controllerType = ChassisOptionEnums::AutonControllerType::RAMSETE;
