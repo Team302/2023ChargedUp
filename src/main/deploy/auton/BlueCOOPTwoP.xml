@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE auton SYSTEM "auton.dtd">
+<auton>
+<primitive id="RESET_POSITION_PATH_PLANNER"
+	           pathname="BlueCOOP1"/>
+<!--score preloaded cone-->
+<primitive id="DO_NOTHING"
+	           time="1.0"/>
+<!--drive to cube-->
+<primitive id="DRIVE_PATH_PLANNER"
+	           pathname="BlueCOOP1"
+               time="4.0"/>
+<!--pickup cube-->
+<primitive id="DO_NOTHING"
+	           time="0.25"/>
+<!--park on charging station-->  
+<primitive id="DRIVE_PATH_PLANNER"
+	           pathname="BlueCOOP2"
+               time="4.0"/>
+<!--balance on charging station-->
+<primitive id="AUTO_BALANCE"
+                time="10.0"/>
+</auton>
