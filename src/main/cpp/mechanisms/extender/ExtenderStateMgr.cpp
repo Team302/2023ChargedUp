@@ -70,6 +70,7 @@ ExtenderStateMgr::ExtenderStateMgr() : StateMgr(),
                                        m_currentState(EXTENDER_STATE::INITIALIZE),
                                        m_targetState(EXTENDER_STATE::INITIALIZE),
                                        m_gamepieceMode(RobotStateChanges::None),
+                                       m_initializationTimer(new frc::Timer()),
                                        m_extendedPosition(84320.3176), // 22.25 inches in counts for extender
                                        m_armState(ArmStateMgr::ARM_STATE::HOLD_POSITION_ROTATE)
 //========= Hand modified code end section 1 ========
@@ -96,6 +97,8 @@ ExtenderStateMgr::ExtenderStateMgr() : StateMgr(),
     //========= Hand modified code start section 2 ========
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::ArmRotateState);
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::DesiredGamePiece);
+
+    m_initializationTimer->Reset();
     //========= Hand modified code end section 2 ========
 }
 
@@ -133,6 +136,13 @@ void ExtenderStateMgr::CheckForStateTransition()
         else
         {
             m_targetState = m_prevState;
+        }
+
+        // timeout initialization if we haven't hit limit switch within 1 second
+        if (m_initializationTimer->HasElapsed(units::time::second_t(1.0)))
+        {
+            m_hasInitialized = true;
+            m_initializationTimer->Stop();
         }
 
         // initalize extender
@@ -247,6 +257,9 @@ void ExtenderStateMgr::CheckForSensorTransitions()
 {
     if (m_extender != nullptr)
     {
+        // Start timeout timer for initialization state
+        m_initializationTimer->Start();
+
         // If we are hitting limit switches, reset position
         bool hittingLimitSwitch = m_extender->ResetIfFullyExtended(m_extendedPosition);
         hittingLimitSwitch = !hittingLimitSwitch ? m_extender->ResetIfFullyRetracted() : hittingLimitSwitch;

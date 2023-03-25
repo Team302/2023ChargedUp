@@ -27,6 +27,7 @@
 #include <string>
 
 // FRC includes
+#include <frc/Timer.h>
 
 // Team 302 includes
 #include <mechanisms/base/StateMgr.h>
@@ -118,6 +119,8 @@ private:
     bool m_goToStartingConfig = true;
 
     bool m_hasInitialized = false;
+
+    frc::Timer *m_initializationTimer;
 
     double m_extendedPosition;
     //========= Hand modified code end section 5 ========
