@@ -18,6 +18,7 @@
 // C++ Includes
 
 // FRC includes
+#include <utils/logging/Logger.h>
 
 // Team 302 includes
 #include <hw/ctreadapters/DragonControlToCTREAdapter.h>
@@ -41,6 +42,7 @@ void DragonPercentOutputToCTREAdapter::Set(
     double value)
 {
     m_controller->Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, value);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_networkTableName, "TargetSentToFalcon", value);
 }
 
 void DragonPercentOutputToCTREAdapter::SetControlConstants(

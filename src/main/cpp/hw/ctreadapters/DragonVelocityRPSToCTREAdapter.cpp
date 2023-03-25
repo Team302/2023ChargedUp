@@ -19,6 +19,7 @@
 #include <string>
 
 // FRC includes
+#include <utils/logging/Logger.h>
 
 // Team 302 includes
 #include <hw/DistanceAngleCalcStruc.h>
@@ -46,6 +47,8 @@ void DragonVelocityRPSToCTREAdapter::Set(
 {
     auto output = (m_calcStruc.countsPerDegree > 0.01) ? value * 360.0 * m_calcStruc.countsPerDegree * 0.1 : (ConversionUtils::RPSToCounts100ms(value, m_calcStruc.countsPerRev) * m_calcStruc.gearRatio);
     m_controller->Set(ctre::phoenix::motorcontrol::ControlMode::Velocity, output);
+
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_networkTableName, "TargetSentToFalcon", abs(output));
 }
 
 void DragonVelocityRPSToCTREAdapter::SetControlConstants(

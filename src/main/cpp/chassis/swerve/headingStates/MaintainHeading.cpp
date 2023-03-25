@@ -46,7 +46,7 @@ void MaintainHeading::UpdateChassisSpeeds(ChassisMovement &chassisMovement)
         {
             correction = CalcHeadingCorrection(chassis->GetStoredHeading(), m_kPMaintainHeadingControl);
 
-            chassisMovement.chassisSpeeds.omega -= correction;
+            chassisMovement.chassisSpeeds.omega += correction;
         }
     }
     else

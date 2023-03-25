@@ -191,7 +191,7 @@ void SwerveChassis::Drive(ChassisMovement moveInfo)
     m_currentOrientationState = GetHeadingState(moveInfo);
     if (m_currentOrientationState != nullptr)
     {
-        m_currentOrientationState->UpdateChassisSpeeds(moveInfo);
+        // m_currentOrientationState->UpdateChassisSpeeds(moveInfo);
     }
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("swerve"), string("VxAfterHeading"), moveInfo.chassisSpeeds.vx.to<double>());

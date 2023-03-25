@@ -39,7 +39,8 @@ std::array<frc::SwerveModuleState, 4> FieldDrive::UpdateSwerveModuleStates(Chass
                                                                                          ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose().Rotation());
 
     chassisMovement.chassisSpeeds = fieldRelativeSpeeds;
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "FieldDrive", "Chassis Rotation", ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose().Rotation().Degrees().to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "FieldDrive", "Odometry Rotation", ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose().Rotation().Degrees().to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "FieldDrive", "Pigeon Rotation", ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetYaw().to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "FieldDrive", "VxAFTER", chassisMovement.chassisSpeeds.vx.to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "FieldDrive", "VyAFTER", chassisMovement.chassisSpeeds.vy.to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "FieldDrive", "OmegaAFTER", chassisMovement.chassisSpeeds.omega.to<double>());

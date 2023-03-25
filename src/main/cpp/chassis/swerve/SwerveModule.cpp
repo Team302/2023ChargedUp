@@ -95,7 +95,7 @@ SwerveModule::SwerveModule(
                                                          m_currentSpeed(0.0_rpm),
                                                          m_currentRotations(0.0),
                                                          m_maxVelocity(1_mps),
-                                                         m_runClosedLoopDrive(true),
+                                                         m_runClosedLoopDrive(false),
                                                          m_countsOnTurnEncoderPerDegreesOnAngleSensor(countsOnTurnEncoderPerDegreesOnAngleSensor)
 {
     driveMotor.get()->SetFramePeriodPriority(IDragonMotorController::MOTOR_PRIORITY::HIGH);
@@ -181,10 +181,10 @@ void SwerveModule::Init(
     m_driveVelocityControlData = new ControlData(ControlModes::CONTROL_TYPE::VELOCITY_RPS,
                                                  ControlModes::CONTROL_RUN_LOCS::MOTOR_CONTROLLER,
                                                  string("DriveSpeed"),
-                                                 0.5, // 0.01
+                                                 0.0, // 0.01
                                                  0.0,
                                                  0.0,
-                                                 0.0, // 0.5
+                                                 0.398, // 1.025, // 2.39, // 0.5
                                                  0.0,
                                                  maxAcceleration.to<double>(),
                                                  maxVelocity.to<double>(),
@@ -349,6 +349,8 @@ void SwerveModule::SetDriveSpeed(units::velocity::meters_per_second_t speed)
         auto driveTarget = m_activeState.speed.to<double>() / (units::length::meter_t(m_wheelDiameter).to<double>() * numbers::pi);
         driveTarget /= m_driveMotor.get()->GetGearRatio();
         m_driveMotor.get()->Set(driveTarget);
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_nt, string("GetGearRatio"), m_driveMotor.get()->GetGearRatio());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_nt, string("Mode"), m_driveMotor.get()->GetGearRatio());
     }
     else
     {
