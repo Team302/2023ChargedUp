@@ -39,8 +39,8 @@ IntakeStateMgr *IntakeStateMgr::GetInstance()
 {
     if (IntakeStateMgr::m_instance == nullptr)
     {
-        auto grabberPtr = MechanismFactory::GetMechanismFactory()->GetGrabber();
-        if (grabberPtr != nullptr)
+        auto intake = MechanismFactory::GetMechanismFactory()->GetIntake();
+        if (intake != nullptr)
         {
             IntakeStateMgr::m_instance = new IntakeStateMgr();
         }

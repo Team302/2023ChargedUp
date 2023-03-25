@@ -53,6 +53,7 @@ MechanismTypes::MechanismTypes()
     m_typeMap["ARM"] = MECHANISM_TYPE::ARM;
     m_typeMap["EXTENDER"] = MECHANISM_TYPE::EXTENDER;
     m_typeMap["GRABBER"] = MECHANISM_TYPE::GRABBER;
+    m_typeMap["INTAKE"] = MECHANISM_TYPE::INTAKE;
 
     // m_typeMap["EXAMPLE"]    = MECHANISM_TYPE::EXAMPLE;
 }

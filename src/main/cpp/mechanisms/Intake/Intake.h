@@ -21,18 +21,13 @@
 
 class Intake : public Mech2Motors1Solenoid
 {
-private:
-    std::shared_ptr<DragonDigitalInput> m_bannerSensor;
-
 public:
-    Intake(MechanismTypes::MECHANISM_TYPE type,
-           std::string controlFileName,
-           std::string networkTableName,
-           std::shared_ptr<IDragonMotorController> primaryMotor,
-           std::shared_ptr<IDragonMotorController> secondaryMotor,
-           std::shared_ptr<DragonSolenoid> solenoid);
+    Intake(std::string controlFileName, std::string networkTableName, std::shared_ptr<IDragonMotorController> primaryMotor, std::shared_ptr<IDragonMotorController> secondaryMotor, std::shared_ptr<DragonSolenoid> solenoid, std::shared_ptr<DragonDigitalInput> gamePresentSw);
     Intake() = delete;
     ~Intake() = default;
 
     bool IsGamePiecePresent();
+
+private:
+    std::shared_ptr<DragonDigitalInput> m_gamePiecePresent;
 };

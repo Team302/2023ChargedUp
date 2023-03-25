@@ -36,9 +36,7 @@ class StateMgr : public LoggableItem
 public:
     StateMgr();
     ~StateMgr() = default;
-    void Init(
-        Mech *mech,
-        const std::map<std::string, StateStruc> &stateMap);
+    void Init(Mech *mech, const std::map<std::string, StateStruc> &stateMap);
 
     /// @brief  run the current state
     /// @return void
@@ -48,15 +46,12 @@ public:
     /// @param [in]     int - state to set
     /// @param [in]     run - true means run, false just initialize it
     /// @return void
-    virtual void SetCurrentState(
-        int state,
-        bool run);
+    virtual void SetCurrentState(int state, bool run);
 
     /// @brief  Get the current Parameter parm value for the state of this mechanism
     /// @param PrimitiveParams* currentParams current set of primitive parameters
     /// @returns int state id - -1 indicates that there is not a state to set
-    virtual int GetCurrentStateParam(
-        PrimitiveParams *currentParams);
+    virtual int GetCurrentStateParam(PrimitiveParams *currentParams);
 
     /// @brief  return the current state
     /// @return int - the current state

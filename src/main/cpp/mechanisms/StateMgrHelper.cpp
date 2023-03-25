@@ -46,6 +46,7 @@ void StateMgrHelper::InitStateMgrs()
     ArmStateMgr::GetInstance();
     ExtenderStateMgr::GetInstance();
     GrabberStateMgr::GetInstance();
+    IntakeStateMgr::GetInstance();
 }
 
 void StateMgrHelper::RunCurrentMechanismStates()

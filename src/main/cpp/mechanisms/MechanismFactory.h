@@ -84,22 +84,12 @@ public:
 		MechanismTypes::MECHANISM_TYPE type) const;
 
 private:
-	std::shared_ptr<IDragonMotorController> GetMotorController(
-		const IDragonMotorControllerMap &motorcontrollers,
-		MotorControllerUsage::MOTOR_CONTROLLER_USAGE usage);
-	std::shared_ptr<DragonSolenoid> GetSolenoid(
-		const DragonSolenoidMap &solenoids,
-		SolenoidUsage::SOLENOID_USAGE usage);
-	DragonServo *GetServo(
-		const ServoMap &servos,
-		ServoUsage::SERVO_USAGE usage);
-	std::shared_ptr<DragonDigitalInput> GetDigitalInput(
-		const DigitalInputMap &digitaInputs,
-		DigitalInputUsage::DIGITAL_INPUT_USAGE usage);
+	std::shared_ptr<IDragonMotorController> GetMotorController(const IDragonMotorControllerMap &motorcontrollers, MotorControllerUsage::MOTOR_CONTROLLER_USAGE usage);
+	std::shared_ptr<DragonSolenoid> GetSolenoid(const DragonSolenoidMap &solenoids, SolenoidUsage::SOLENOID_USAGE usage);
+	DragonServo *GetServo(const ServoMap &servos, ServoUsage::SERVO_USAGE usage);
+	std::shared_ptr<DragonDigitalInput> GetDigitalInput(const DigitalInputMap &digitaInputs, DigitalInputUsage::DIGITAL_INPUT_USAGE usage);
 
-	DragonAnalogInput *GetAnalogInput(
-		const AnalogInputMap &analogInputs,
-		DragonAnalogInput::ANALOG_SENSOR_TYPE usage);
+	DragonAnalogInput *GetAnalogInput(const AnalogInputMap &analogInputs, DragonAnalogInput::ANALOG_SENSOR_TYPE usage);
 
 	MechanismFactory();
 	virtual ~MechanismFactory() = default;

@@ -20,25 +20,29 @@
 //                    Your hand written code goes here
 //	//========= Hand modified code end section x ========
 //==============================================================
+#include <memory>
+#include <string>
 
-#include <mechanisms/Intake/Intake.h>
+#include <hw/DragonDigitalInput.h>
+#include <hw/DragonSolenoid.h>
+#include <hw/interfaces/IDragonMotorController.h>
 #include <mechanisms/base/Mech2Motors1Solenoid.h>
+#include <mechanisms/Intake/Intake.h>
 
-Intake::Intake(MechanismTypes::MECHANISM_TYPE type,
-               std::string controlFileName,
-               std::string networkTableName,
-               std::shared_ptr<IDragonMotorController> primaryMotor,
-               std::shared_ptr<IDragonMotorController> secondaryMotor,
-               std::shared_ptr<DragonSolenoid> solenoid) : Mech2Motors1Solenoid(MechanismTypes::MECHANISM_TYPE::INTAKE,
-                                                                                controlFileName,
-                                                                                networkTableName,
-                                                                                primaryMotor,
-                                                                                secondaryMotor,
-                                                                                solenoid)
+using std::shared_ptr;
+using std::string;
+
+Intake::Intake(string controlFileName, string networkTableName, shared_ptr<IDragonMotorController> primaryMotor, shared_ptr<IDragonMotorController> secondaryMotor, shared_ptr<DragonSolenoid> solenoid, shared_ptr<DragonDigitalInput> gamePresentSw) : Mech2Motors1Solenoid(MechanismTypes::MECHANISM_TYPE::INTAKE,
+                                                                                                                                                                                                                                                                              controlFileName,
+                                                                                                                                                                                                                                                                              networkTableName,
+                                                                                                                                                                                                                                                                              primaryMotor,
+                                                                                                                                                                                                                                                                              secondaryMotor,
+                                                                                                                                                                                                                                                                              solenoid),
+                                                                                                                                                                                                                                                         m_gamePiecePresent(gamePresentSw)
 {
 }
 
 bool Intake::IsGamePiecePresent()
 {
-    return (m_bannerSensor.get() != nullptr) ? m_bannerSensor->Get() : false;
+    return (m_gamePiecePresent.get() != nullptr) ? m_gamePiecePresent->Get() : false;
 }
