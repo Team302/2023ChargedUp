@@ -125,6 +125,9 @@ void ArmStateMgr::CheckForStateTransition()
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Target: "), m_arm->GetTarget());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Current Pos: "), m_arm->GetPositionDegrees().to<double>());
 
+    double armAngle = m_arm->GetPositionDegrees().to<double>();
+    double extenderPos = MechanismFactory::GetMechanismFactory()->GetExtender()->GetPositionInches().to<double>();
+
     if (m_targetState != m_currentState)
     {
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Setting target state to: "), m_targetState);
@@ -135,12 +138,12 @@ void ArmStateMgr::CheckForStateTransition()
 
         if (m_targetState == ARM_STATE::HOLD_POSITION_ROTATE)
         {
-            double armAngle = m_arm->GetPositionDegrees().to<double>();
-            double extenderPos = MechanismFactory::GetMechanismFactory()->GetExtender()->GetPositionInches().to<double>();
 
             m_arm->UpdateTarget(ArmHoldPosHelper::CalculateHoldPositionTarget(armAngle, extenderPos, m_gamepieceMode, m_grabberState));
         }
     }
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Ext Current Pos: "), extenderPos);
+
     //========= Hand modified code end section 3 ========
 }
 
