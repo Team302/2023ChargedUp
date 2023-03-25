@@ -55,7 +55,7 @@ void DriverFeedback::UpdateCompressorState()
 void DriverFeedback::DisplayPressure()
 {
     auto table = nt::NetworkTableInstance::GetDefault().GetTable("Compressor");
-    table.get()->GetNumber(std::string("Pressure"), CompressorFactory::GetFactory()->GetCurrentPressure().to<double>());
+    table.get()->PutNumber(std::string("Pressure"), CompressorFactory::GetFactory()->GetCurrentPressure().to<double>());
 }
 void DriverFeedback::UpdateLEDStates()
 {

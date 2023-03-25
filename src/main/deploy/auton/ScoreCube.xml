@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE auton SYSTEM "auton.dtd">
+<auton>
+    <primitive id="DO_NOTHING"
+               arm="CUBE_BACKROW_ROTATE"
+               extender="STARTING_POSITION_EXTEND"
+               grabber="GRAB"
+               time="0.35"
+               />
+    <primitive id="DO_NOTHING"
+               arm="CUBE_BACKROW_ROTATE"
+               extender="CUBE_BACKROW_EXTEND"
+               grabber="GRAB"
+               time="0.6"
+               />
+    <primitive id="DO_NOTHING"
+               arm="CUBE_BACKROW_ROTATE"
+               extender="CUBE_BACKROW_EXTEND"
+               grabber="OPEN"
+               time="0.35"
+               />
+    <primitive id="DO_NOTHING"
+               arm="CUBE_BACKROW_ROTATE"
+               extender="STARTING_POSITION_EXTEND"
+               grabber="GRAB"
+               time="0.5"
+               />
+</auton>

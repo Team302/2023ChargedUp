@@ -85,6 +85,7 @@ ArmStateMgr::ArmStateMgr() : StateMgr(),
     stateMap["HUMAN_PLAYER_STATION_ROTATE"] = m_human_player_station_rotateState;
     stateMap["STARTING_POSITION_ROTATE"] = m_starting_position_rotateState;
     stateMap["FLOOR_POSITION_ROTATE"] = m_floor_position_rotateState;
+    stateMap["FLOOR_POSITION_ROTATE_AUTON"] = m_floor_position_rotate_autonState;
 
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::DesiredGamePiece);
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::GrabberState);

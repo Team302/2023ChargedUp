@@ -66,10 +66,11 @@ ExtenderStateMgr::ExtenderStateMgr() : StateMgr(),
                                        m_extender(MechanismFactory::GetMechanismFactory()->GetExtender())
                                        //========= Hand modified code start section 1 ========
                                        ,
-                                       m_prevState(EXTENDER_STATE::STARTING_POSITION_EXTEND),
-                                       m_currentState(EXTENDER_STATE::STARTING_POSITION_EXTEND),
-                                       m_targetState(EXTENDER_STATE::STARTING_POSITION_EXTEND),
+                                       m_prevState(EXTENDER_STATE::INITIALIZE),
+                                       m_currentState(EXTENDER_STATE::INITIALIZE),
+                                       m_targetState(EXTENDER_STATE::INITIALIZE),
                                        m_gamepieceMode(RobotStateChanges::None),
+                                       m_initializationTimer(new frc::Timer()),
                                        m_extendedPosition(84320.3176), // 22.25 inches in counts for extender
                                        m_armState(ArmStateMgr::ARM_STATE::HOLD_POSITION_ROTATE)
 //========= Hand modified code end section 1 ========
@@ -85,6 +86,7 @@ ExtenderStateMgr::ExtenderStateMgr() : StateMgr(),
     stateMap["HUMAN_PLAYER_STATION_EXTEND"] = m_human_player_station_extendState;
     stateMap["STARTING_POSITION_EXTEND"] = m_starting_position_extendState;
     stateMap["FLOOR_EXTEND"] = m_floor_extendState;
+    stateMap["INITIALIZE"] = m_initializeState;
 
     Init(m_extender, stateMap);
     if (m_extender != nullptr)
@@ -95,6 +97,8 @@ ExtenderStateMgr::ExtenderStateMgr() : StateMgr(),
     //========= Hand modified code start section 2 ========
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::ArmRotateState);
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::DesiredGamePiece);
+
+    m_initializationTimer->Reset();
     //========= Hand modified code end section 2 ========
 }
 
@@ -110,6 +114,9 @@ int ExtenderStateMgr::GetCurrentStateParam(PrimitiveParams *currentParams)
 void ExtenderStateMgr::CheckForStateTransition()
 {
     //========= Hand modified code start section 3 ========
+    m_currentState = static_cast<EXTENDER_STATE>(GetCurrentState());
+    m_targetState = m_currentState;
+
     CheckForSensorTransitions();
 
     if (m_checkGamePadTransitions)
@@ -131,6 +138,19 @@ void ExtenderStateMgr::CheckForStateTransition()
             m_targetState = m_prevState;
         }
 
+        // timeout initialization if we haven't hit limit switch within 1 second
+        if (m_initializationTimer->HasElapsed(units::time::second_t(1.0)))
+        {
+            m_hasInitialized = true;
+            m_initializationTimer->Stop();
+        }
+
+        // initalize extender
+        if (!m_hasInitialized)
+        {
+            m_targetState = EXTENDER_STATE::INITIALIZE;
+        }
+
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ExtenderMgr"), string("Target State"), m_targetState);
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ExtenderMgr"), string("Current State"), m_currentState);
 
@@ -149,9 +169,6 @@ void ExtenderStateMgr::CheckForGamepadTransitions()
 {
     if (m_extender != nullptr)
     {
-        m_currentState = static_cast<EXTENDER_STATE>(GetCurrentState());
-        m_targetState = m_currentState;
-
         auto controller = TeleopControl::GetInstance();
         if (controller != nullptr)
         {
@@ -240,9 +257,18 @@ void ExtenderStateMgr::CheckForSensorTransitions()
 {
     if (m_extender != nullptr)
     {
+        // Start timeout timer for initialization state
+        m_initializationTimer->Start();
+
         // If we are hitting limit switches, reset position
-        m_extender->ResetIfFullyExtended(m_extendedPosition);
-        m_extender->ResetIfFullyRetracted();
+        bool hittingLimitSwitch = m_extender->ResetIfFullyExtended(m_extendedPosition);
+        hittingLimitSwitch = !hittingLimitSwitch ? m_extender->ResetIfFullyRetracted() : hittingLimitSwitch;
+
+        if (hittingLimitSwitch && m_currentState == EXTENDER_STATE::INITIALIZE)
+        {
+            m_hasInitialized = true;
+            m_targetState = EXTENDER_STATE::STARTING_POSITION_EXTEND;
+        }
     }
 }
 

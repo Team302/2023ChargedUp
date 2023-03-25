@@ -42,6 +42,14 @@
     solenoid="NONE"
     solenoid2="NONE" />
   <mechanismTarget
+    stateIdentifier="INITIALIZE"
+    controlDataIdentifier="PercentOutput"
+    controlDataIdentifier2=""
+    value="-0.2"
+    secondValue=""
+    solenoid="NONE"
+    solenoid2="NONE" />
+  <mechanismTarget
     stateIdentifier="MANUAL_EXTEND_RETRACT"
     controlDataIdentifier="PercentOutput"
     controlDataIdentifier2=""
@@ -101,7 +109,7 @@
     stateIdentifier="FLOOR_EXTEND"
     controlDataIdentifier="ExtendPosition"
     controlDataIdentifier2=""
-    value="10.5"
+    value="12.5"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
