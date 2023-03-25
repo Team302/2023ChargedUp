@@ -139,8 +139,14 @@ State *StateMgrHelper::CreateState(Mech *mech, StateStruc &stateInfo, MechanismT
         break;
 
     case StateType::INTAKE_STATE:
+    {
+        string identifier("creating");
+        identifier += xmlString;
+        identifier += to_string(id);
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "IntakeDebugging", identifier, "creating");
         thisState = new IntakeState(xmlString, id, controlData, controlData2, target, secondaryTarget, solenoidState);
-        break;
+    }
+    break;
 
     default:
         Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, mech->GetNetworkTableName(), string("StateMgr::StateMgr"), string("unknown state"));

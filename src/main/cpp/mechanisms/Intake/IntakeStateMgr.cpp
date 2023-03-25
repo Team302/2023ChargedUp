@@ -64,9 +64,14 @@ IntakeStateMgr::IntakeStateMgr() : StateMgr(),
     stateMap[m_releaseXMLString] = m_releaseState;
     stateMap[m_expelXMLString] = m_expelState;
 
+    string identifier("IntakeStateMgr::IntakeStateMgr");
+
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "IntakeDebugging", identifier, "Before Init");
+
     Init(m_intake, stateMap);
     if (m_intake != nullptr)
     {
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "IntakeDebugging", identifier, "Intake Not Null");
         m_intake->AddStateMgr(this);
     }
 
