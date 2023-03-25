@@ -145,7 +145,14 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates(Chass
 
     wpi::array<frc::SwerveModuleState, 4> states = {m_flState, m_frState, m_blState, m_brState};
 
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Robot Drive"), string("bl_Before"), m_blState.speed.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Robot Drive"), string("br_Before"), m_brState.speed.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Robot Drive"), string("MaxSpeed"), chassis->GetMaxSpeed().to<double>());
+
     chassis->GetKinematics().DesaturateWheelSpeeds(&states, chassis->GetMaxSpeed());
+
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Robot Drive"), string("bl_After"), m_blState.speed.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Robot Drive"), string("br_After"), m_brState.speed.to<double>());
 
     auto [fl, fr, bl, br] = states;
 
