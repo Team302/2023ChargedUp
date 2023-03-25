@@ -129,6 +129,8 @@ public:
     units::angle::degree_t GetPitch() const;
     units::angle::degree_t GetRoll() const;
 
+    frc::SwerveDriveKinematics<4> GetKinematics() const { return m_kinematics; }
+
     // Dummy functions for IChassis Implementation
     inline IChassis::CHASSIS_TYPE GetType() const override { return IChassis::CHASSIS_TYPE::SWERVE; };
     inline void Initialize() override{};

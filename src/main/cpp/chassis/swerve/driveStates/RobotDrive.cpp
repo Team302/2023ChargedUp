@@ -126,15 +126,21 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates(Chass
         maxCalcSpeed = abs(m_brState.speed.to<double>());
     }
 
-    // normalize speeds if necessary (maxCalcSpeed > max attainable speed)
-    if (maxCalcSpeed > m_maxspeed.to<double>())
-    {
-        auto ratio = m_maxspeed.to<double>() / maxCalcSpeed;
-        m_flState.speed *= ratio;
-        m_frState.speed *= ratio;
-        m_blState.speed *= ratio;
-        m_brState.speed *= ratio;
-    }
+    // normalize wheel speeds
+    SwerveChassis *chassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
+    frc::SwerveDriveKinematics<4> kinematics = chassis->GetKinematics();
+
+    wpi::array<frc::SwerveModuleState, 4> states = {m_flState, m_frState, m_blState, m_brState};
+
+    chassis->GetKinematics().DesaturateWheelSpeeds(&states, chassis->GetMaxSpeed());
+
+    auto [fl, fr, bl, br] = states;
+
+    m_flState = fl;
+    m_frState = fr;
+    m_blState = bl;
+    m_brState = br;
+
     return {m_flState, m_frState, m_blState, m_brState};
 }
 
