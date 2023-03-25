@@ -83,7 +83,8 @@ std::array<frc::SwerveModuleState, 4> TrajectoryDrivePathPlanner::UpdateSwerveMo
         refChassisSpeeds = m_holonomicController.calculate(m_chassis->GetPose(), m_desiredState);
 
         // negate speeds from holo controller when sending to chassis
-        refChassisSpeeds.omega *= -1.0;
+        //refChassisSpeeds.omega *= -1.0;
+        refChassisSpeeds.omega = units::angular_velocity::radians_per_second_t(0.0);
 
         chassisMovement.chassisSpeeds = refChassisSpeeds;
 
