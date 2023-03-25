@@ -46,7 +46,7 @@ public:
 	~Extender() override = default;
 
 	//========= Hand modified code start section 0 ========
-	void ResetIfFullyExtended(double counts);
-	void ResetIfFullyRetracted();
+	bool ResetIfFullyExtended(double counts);
+	bool ResetIfFullyRetracted();
 	//========= Hand modified code end section 0 ========
 };
