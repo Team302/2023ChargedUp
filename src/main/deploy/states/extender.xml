@@ -109,7 +109,7 @@
     stateIdentifier="FLOOR_EXTEND"
     controlDataIdentifier="ExtendPosition"
     controlDataIdentifier2=""
-    value="12.5"
+    value="10.0"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />

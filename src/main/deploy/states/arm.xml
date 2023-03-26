@@ -4,8 +4,8 @@
     identifier="RotateToUpwardAngle"
     mode="POSITION_DEGREES"
     constrolServer="MOTORCONTROLLER"
-    proportional="0.0225"
-    integral="0.000165"
+    proportional="0.02"
+    integral="0.00015"
     derivative="0.0"
     feedforward="0.0"
     izone="0.0"
@@ -72,7 +72,7 @@
     stateIdentifier="CONE_BACKROW_ROTATE"
     controlDataIdentifier="RotateToUpwardAngle"
     controlDataIdentifier2=""
-    value="75"
+    value="73.5"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
@@ -112,7 +112,7 @@
     stateIdentifier="HUMAN_PLAYER_STATION_ROTATE"
     controlDataIdentifier="RotateToUpwardAngle"
     controlDataIdentifier2=""
-    value="57"
+    value="60"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
@@ -128,7 +128,7 @@
     stateIdentifier="FLOOR_POSITION_ROTATE"
     controlDataIdentifier="RotateToUpwardAngle"
     controlDataIdentifier2=""
-    value="17.5"
+    value="14"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
@@ -136,7 +136,7 @@
     stateIdentifier="FLOOR_POSITION_ROTATE_AUTON"
     controlDataIdentifier="RotateToUpwardAngle"
     controlDataIdentifier2=""
-    value="17.5"
+    value="14"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
