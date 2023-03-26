@@ -30,6 +30,8 @@
 using std::abs;
 using std::string;
 
+#define CENTER_OF_MASS_IS_OFFSET
+
 RobotDrive::RobotDrive() : ISwerveDriveState::ISwerveDriveState(),
                            m_flState(),
                            m_frState(),
@@ -79,6 +81,66 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates(Chass
     // We will use these variable names in the code to help tie back to the document.
     // Variable names, though, will follow C++ standards and start with a lower case letter.
 
+#ifdef CENTER_OF_MASS_IS_OFFSET
+
+    // X and Y offsets are in Dragon coordinates
+    chassisMovement.centerOfRotationOffset.Y = units::length::meter_t(0);
+    chassisMovement.centerOfRotationOffset.X = units::length::meter_t(-1.5 * 2.54 / 100.0); // center of mass is 1.5 inches behind the geometric center of Hookfang
+
+    auto L = units::length::meter_t(m_wheelbase);
+    auto W = units::length::meter_t(m_wheeltrack);
+
+    auto vy = 1.0 * chassisMovement.chassisSpeeds.vx;
+    auto vx = -1.0 * chassisMovement.chassisSpeeds.vy;
+    auto omega = chassisMovement.chassisSpeeds.omega;
+
+    // Paper naming -> Wheel 1
+    auto V_fr_x = vx + ((omega.to<double>() * ((L / 2.0) - chassisMovement.centerOfRotationOffset.X)) / 1_s);
+    auto V_fr_y = vy - ((omega.to<double>() * ((W / 2.0) + chassisMovement.centerOfRotationOffset.Y)) / 1_s);
+
+    // here we'll negate the angle to conform to the positive CCW convention
+    m_frState.angle = units::angle::radian_t(atan2(V_fr_x.to<double>(), V_fr_y.to<double>()));
+    m_frState.angle = -1.0 * m_frState.angle.Degrees();
+    m_frState.speed = units::velocity::meters_per_second_t(sqrt(pow(V_fr_x.to<double>(), 2) + pow(V_fr_y.to<double>(), 2)));
+    double maxCalcSpeed = abs(m_frState.speed.to<double>());
+
+    // Paper naming -> Wheel 2
+    auto V_fl_x = vx + ((omega.to<double>() * ((L / 2.0) - chassisMovement.centerOfRotationOffset.X)) / 1_s);
+    auto V_fl_y = vy + ((omega.to<double>() * ((W / 2.0) - chassisMovement.centerOfRotationOffset.Y)) / 1_s);
+
+    m_flState.angle = units::angle::radian_t(atan2(V_fl_x.to<double>(), V_fl_y.to<double>()));
+    m_flState.angle = -1.0 * m_flState.angle.Degrees();
+    m_flState.speed = units::velocity::meters_per_second_t(sqrt(pow(V_fl_x.to<double>(), 2) + pow(V_fl_y.to<double>(), 2)));
+    if (abs(m_flState.speed.to<double>()) > maxCalcSpeed)
+    {
+        maxCalcSpeed = abs(m_flState.speed.to<double>());
+    }
+
+    // Paper naming -> Wheel 3
+    auto V_bl_x = vx - ((omega.to<double>() * ((L / 2.0) + chassisMovement.centerOfRotationOffset.X)) / 1_s);
+    auto V_bl_y = vy + ((omega.to<double>() * ((W / 2.0) - chassisMovement.centerOfRotationOffset.Y)) / 1_s);
+
+    m_blState.angle = units::angle::radian_t(atan2(V_bl_x.to<double>(), V_bl_y.to<double>()));
+    m_blState.angle = -1.0 * m_blState.angle.Degrees();
+    m_blState.speed = units::velocity::meters_per_second_t(sqrt(pow(V_bl_x.to<double>(), 2) + pow(V_bl_y.to<double>(), 2)));
+    if (abs(m_blState.speed.to<double>()) > maxCalcSpeed)
+    {
+        maxCalcSpeed = abs(m_blState.speed.to<double>());
+    }
+
+    // Paper naming -> Wheel 4
+    auto V_br_x = vx - ((omega.to<double>() * ((L / 2.0) + chassisMovement.centerOfRotationOffset.X)) / 1_s);
+    auto V_br_y = vy - ((omega.to<double>() * ((W / 2.0) + chassisMovement.centerOfRotationOffset.Y)) / 1_s);
+
+    m_brState.angle = units::angle::radian_t(atan2(V_br_x.to<double>(), V_br_y.to<double>()));
+    m_brState.angle = -1.0 * m_brState.angle.Degrees();
+    m_brState.speed = units::velocity::meters_per_second_t(sqrt(pow(V_br_x.to<double>(), 2) + pow(V_br_y.to<double>(), 2)));
+    if (abs(m_brState.speed.to<double>()) > maxCalcSpeed)
+    {
+        maxCalcSpeed = abs(m_brState.speed.to<double>());
+    }
+
+#else
     auto l = m_wheelbase;
     auto w = m_wheeltrack;
 
@@ -130,6 +192,7 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates(Chass
     {
         maxCalcSpeed = abs(m_brState.speed.to<double>());
     }
+#endif
 
     if (0)
     {
