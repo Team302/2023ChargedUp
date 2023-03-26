@@ -38,11 +38,11 @@ private:
     static constexpr double m_cubeArmSquaredComponent = 0.00000803241;
     static constexpr double m_cubeExtenderSquaredComponent = 0.0000511601;
 
-    static constexpr double m_coneOffset = 0.0412269;
-    static constexpr double m_coneArmComponent = 0.000421601;
-    static constexpr double m_coneExtenderComponent = 0.000703398;
-    static constexpr double m_coneArmSquaredComponent = -0.00000267649;
-    static constexpr double m_coneExtenderSquaredComponent = -0.0000138281;
+    static constexpr double m_coneOffset = 0.0291106;
+    static constexpr double m_coneArmComponent = 0.00123687;
+    static constexpr double m_coneExtenderComponent = -0.000724541;
+    static constexpr double m_coneArmSquaredComponent = 0;
+    static constexpr double m_coneExtenderSquaredComponent = 0.000116897;
 
     static constexpr double m_fullExtensionFTerm = 0.115;
 
