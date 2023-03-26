@@ -32,11 +32,11 @@ public:
 
 private:
     // Hold Position function components
-    static constexpr double m_cubeOffset = 0.0446119;
-    static constexpr double m_cubeArmComponent = -0.00010589;
-    static constexpr double m_cubeExtenderComponent = 0.000633812;
-    static constexpr double m_cubeArmSquaredComponent = 0.00000489504;
-    static constexpr double m_cubeExtenderSquaredComponent = 0.00000226623;
+    static constexpr double m_cubeOffset = 0.04242107;
+    static constexpr double m_cubeArmComponent = 0.000106669;
+    static constexpr double m_cubeExtenderComponent = 0.000125066;
+    static constexpr double m_cubeArmSquaredComponent = 0.00000803241;
+    static constexpr double m_cubeExtenderSquaredComponent = 0.0000511601;
 
     static constexpr double m_coneOffset = 0.0412269;
     static constexpr double m_coneArmComponent = 0.000421601;

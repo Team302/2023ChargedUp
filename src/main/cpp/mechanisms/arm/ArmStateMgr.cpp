@@ -164,7 +164,7 @@ void ArmStateMgr::CheckForGamepadTransitions()
             m_currentState = static_cast<ARM_STATE>(GetCurrentState());
             m_targetState = m_currentState;
 
-            if (abs(controller->GetAxisValue(TeleopControlFunctions::MANUAL_ROTATE)) > 0.05)
+            if (abs(controller->GetAxisValue(TeleopControlFunctions::MANUAL_ROTATE)) > 0.10)
             {
                 m_targetState = ARM_STATE::MANUAL_ROTATE;
             }
