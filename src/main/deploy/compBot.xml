@@ -354,38 +354,16 @@
       voltageCompensationEnable="false"
       countsPerInch="3811.0878"/>
   </mechanism>
-  <!-- <mechanism
-    type="GRABBER"
-    networkTable="grabberNT"
-    controlFile="grabber.xml">
-    <solenoid
-      usage="GrabberSolenoid"
-      canId="1"
-      channel="0"
-      reversed="false" />
-    <digitalInput  
-      usage="GAME_PIECE_PRESENT_SENSOR" 
-      digitalId="9" 
-      reversed="true"/> 
-  </mechanism>
-  <roborio
-    orientation="X_LEFT_Y_UP" /> -->
-
-  <mechanism
+<mechanism
     type="INTAKE"
     networkTable="intakeNT"
     controlFile="intake.xml">
-    <solenoid
-      usage="IntakeSolenoid"
-      canId="1"
-      channel="0"
-      reversed="false" />
       <motor
       usage="INTAKE1"
       canId="5"
       canBusName="rio"
       pdpID="5"
-      type="TALON"
+      type="TALONSRX"
       inverted="false"
       sensorInverted="false"
       feedbackDevice="NONE"
@@ -405,8 +383,8 @@
       canId="7"
       canBusName="rio"
       pdpID="7"
-      type="TALON"
-      inverted="false"
+      type="TALONSRX"
+      inverted="true"
       sensorInverted="false"
       feedbackDevice="NONE"
       countsPerRev="1"
@@ -420,6 +398,11 @@
       voltageCompensationSaturation="10.5"
       voltageCompensationEnable="true"
       countsPerDegree="0" />
+    <solenoid
+      usage="IntakeSolenoid"
+      canId="1"
+      channel="0"
+      reversed="false" />
     <digitalInput  
       usage="GAME_PIECE_PRESENT_SENSOR" 
       digitalId="9" 

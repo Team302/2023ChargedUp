@@ -45,7 +45,6 @@ void StateMgrHelper::InitStateMgrs()
     //@ADDMech Add MechanismStateMgr::GetInstanceI() here
     ArmStateMgr::GetInstance();
     ExtenderStateMgr::GetInstance();
-    GrabberStateMgr::GetInstance();
     IntakeStateMgr::GetInstance();
 }
 
@@ -54,9 +53,21 @@ void StateMgrHelper::RunCurrentMechanismStates()
     for (auto i = MechanismTypes::MECHANISM_TYPE::UNKNOWN_MECHANISM + 1; i < MechanismTypes::MECHANISM_TYPE::MAX_MECHANISM_TYPES; ++i)
     {
         auto mech = MechanismFactory::GetMechanismFactory()->GetMechanism(static_cast<MechanismTypes::MECHANISM_TYPE>(i));
+
+        string identifier("mechanism");
+        identifier += to_string(i);
+
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), identifier, mech != nullptr ? "not nullptr" : "nullptr");
+
         auto stateMgr = mech != nullptr ? mech->GetStateMgr() : nullptr;
+
+        identifier += " state mgr ";
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), identifier, stateMgr != nullptr ? "not nullptr" : "nullptr");
+        identifier += " running current state ";
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), identifier, false);
         if (stateMgr != nullptr)
         {
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), identifier, true);
             stateMgr->RunCurrentState();
         }
     }
@@ -143,7 +154,7 @@ State *StateMgrHelper::CreateState(Mech *mech, StateStruc &stateInfo, MechanismT
         string identifier("creating");
         identifier += xmlString;
         identifier += to_string(id);
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "IntakeDebugging", identifier, "creating");
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), identifier, "creating");
         thisState = new IntakeState(xmlString, id, controlData, controlData2, target, secondaryTarget, solenoidState);
     }
     break;

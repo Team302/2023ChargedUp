@@ -43,11 +43,11 @@ IntakeState::IntakeState(string stateName, int stateId, ControlData *control, Co
     string identifier(stateName);
     identifier += to_string(stateId);
 
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "IntakeDebugging", identifier, "creating");
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string(string("IntakeDebugging")), identifier, "creating");
     identifier += string(" target");
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "IntakeDebugging", identifier, primaryTarget);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), identifier, primaryTarget);
     identifier += string(" 2");
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "IntakeDebugging", identifier, secondaryTarget);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), identifier, secondaryTarget);
 }
 
 bool IntakeState::AtTarget() const

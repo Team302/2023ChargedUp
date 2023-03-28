@@ -40,7 +40,6 @@
 // @ADDMECH include for your mechanism
 #include <mechanisms/arm/Arm.h>
 #include <mechanisms/extender/Extender.h>
-#include <mechanisms/grabber/Grabber.h>
 #include <mechanisms/Intake/Intake.h>
 // Third Party Includes
 #include <ctre/phoenix/sensors/CANCoder.h>
@@ -69,6 +68,7 @@ MechanismFactory::MechanismFactory() : m_arm(nullptr),
 									   m_intake(nullptr)
 // @ADDMECH Initialize mechanism to NULLPTR
 {
+	Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), string("intake created"), false);
 }
 
 /// @brief      create the requested mechanism
@@ -136,7 +136,13 @@ void MechanismFactory::CreateMechanism(
 		auto motor2 = GetMotorController(motorControllers, MotorControllerUsage::INTAKE2);
 		if (intakeSol.get() != nullptr && gamePiecePresent.get() != nullptr && motor.get() != nullptr && motor2.get() != nullptr)
 		{
+			Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), string("components"), "not nullptr");
 			m_intake = new Intake(controlFileName, networkTableName, motor, motor2, intakeSol, gamePiecePresent);
+			Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), string("intake created"), true);
+		}
+		else
+		{
+			Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), string("components"), "nullptr");
 		}
 	}
 	break;
@@ -171,6 +177,7 @@ Mech *MechanismFactory::GetMechanism(MechanismTypes::MECHANISM_TYPE type) const
 		break;
 
 	case MechanismTypes::INTAKE:
+		Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), string("Getting intake"), m_intake != nullptr ? "true" : "false");
 		return m_intake;
 		break;
 	default:

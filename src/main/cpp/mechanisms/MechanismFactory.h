@@ -28,6 +28,7 @@
 // C++ Includes
 #include <map>
 #include <memory>
+#include <string>
 #include <vector>
 
 // FRC includes
@@ -46,6 +47,7 @@
 #include <mechanisms/extender/Extender.h>
 #include <mechanisms/grabber/Grabber.h>
 #include <mechanisms/Intake/Intake.h>
+#include <utils/logging/Logger.h>
 // Third Party Includes
 
 // forward declares
@@ -78,7 +80,11 @@ public:
 	inline Arm *GetArm() const { return m_arm; }
 	inline Extender *GetExtender() const { return m_extender; }
 	inline Grabber *GetGrabber() const { return m_grabber; }
-	inline Intake *GetIntake() const { return m_intake; }
+	inline Intake *GetIntake() const
+	{
+		Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("IntakeDebugging"), std::string("Getting intake2"), m_intake != nullptr ? "true" : "false");
+		return m_intake;
+	}
 
 	Mech *GetMechanism(
 		MechanismTypes::MECHANISM_TYPE type) const;

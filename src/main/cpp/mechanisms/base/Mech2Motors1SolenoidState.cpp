@@ -55,6 +55,11 @@ Mech2Motors1SolenoidState::Mech2Motors1SolenoidState(
 
 void Mech2Motors1SolenoidState::Init()
 {
+    string identifier("Mech2Motors1SolenoidState::Init motor state");
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), identifier, m_motorState != nullptr ? "not nullptr" : "nullptr");
+    string identifier2("Mech2Motors1SolenoidState::Init solenoid state");
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), identifier2, m_solenoidState != nullptr ? "not nullptr" : "nullptr");
+
     if (m_motorState != nullptr)
     {
         m_motorState->Init();
@@ -67,6 +72,11 @@ void Mech2Motors1SolenoidState::Init()
 
 void Mech2Motors1SolenoidState::Run()
 {
+    string identifier("Mech2Motors1SolenoidState::Run motor state");
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), identifier, m_motorState != nullptr ? "not nullptr" : "nullptr");
+    string identifier2("Mech2Motors1SolenoidState::Run solenoid state");
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), identifier2, m_solenoidState != nullptr ? "not nullptr" : "nullptr");
+
     if (m_motorState != nullptr)
     {
         m_motorState->Run();

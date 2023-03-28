@@ -88,7 +88,7 @@ ArmStateMgr::ArmStateMgr() : StateMgr(),
     stateMap["FLOOR_POSITION_ROTATE_AUTON"] = m_floor_position_rotate_autonState;
 
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::DesiredGamePiece);
-    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::GrabberState);
+    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::IntakeState);
 
     Init(m_arm, stateMap);
     if (m_arm != nullptr)
@@ -270,7 +270,7 @@ void ArmStateMgr::Update(RobotStateChanges::StateChange change, int state)
     {
         m_gamepieceMode = static_cast<RobotStateChanges::GamePiece>(state);
     }
-    else if (change == RobotStateChanges::GrabberState)
+    else if (change == RobotStateChanges::IntakeState)
     {
         m_grabberState = static_cast<GrabberStateMgr::GRABBER_STATE>(state);
     }

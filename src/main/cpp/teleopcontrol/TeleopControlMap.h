@@ -183,6 +183,8 @@ robin_hood::unordered_map<TeleopControlFunctions::FUNCTION, const TeleopControlB
     {TeleopControlFunctions::BACKROW, copilotYButton},
     {TeleopControlFunctions::INTAKE, copilotLBumper},
     {TeleopControlFunctions::RELEASE, copilotRBumper},
+    {TeleopControlFunctions::HOLD, copilotLTriggerPressed},
+    {TeleopControlFunctions::EXPEL, copilotRTriggerPressed},
 
     {TeleopControlFunctions::HOLD_POSITION_ROTATE, extra1AButton},
     {TeleopControlFunctions::CUBE_BACKROW_ROTATE, extra1XButton},

@@ -1,5 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<statedata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<?xml version="1.0"?>
+<!DOCTYPE statedata SYSTEM "stateData.dtd">
+<statedata>
   <controlData
     identifier="intake"
     mode="PERCENT_OUTPUT"
@@ -14,15 +15,15 @@
   <mechanismTarget
     stateIdentifier="INTAKE_OFF"
     controlDataIdentifier="intake"
-    controlDataIdentifier2=""
+    controlDataIdentifier2="intake"
     value="0"
     secondValue="0"
     solenoid="REVERSE"
     solenoid2="NONE" />
   <mechanismTarget
     stateIdentifier="INTAKE"
-    controlDataIdentifier="INTAKE"
-    controlDataIdentifier2=""
+    controlDataIdentifier="intake"
+    controlDataIdentifier2="intake"
     value="1"
     secondValue="1"
     solenoid="ON"
@@ -30,23 +31,23 @@
   <mechanismTarget
     stateIdentifier="INTAKE_HOLD"
     controlDataIdentifier="intake"
-    controlDataIdentifier2=""
-    value=".1"
-    secondValue=".1"
+    controlDataIdentifier2="intake"
+    value=".15"
+    secondValue=".15"
     solenoid="REVERSE"
     solenoid2="NONE" />
   <mechanismTarget
     stateIdentifier="INTAKE_RELEASE"
     controlDataIdentifier="intake"
-    controlDataIdentifier2=""
-    value="0"
-    secondValue="0"
+    controlDataIdentifier2="intake"
+    value="-0.25"
+    secondValue="-0.25"
     solenoid="ON"
     solenoid2="NONE" />
   <mechanismTarget
     stateIdentifier="INTAKE_EXPEL"
     controlDataIdentifier="intake"
-    controlDataIdentifier2=""
+    controlDataIdentifier2="intake"
     value="-1"
     secondValue="-1"
     solenoid="REVERSE"

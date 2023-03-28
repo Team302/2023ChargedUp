@@ -66,12 +66,12 @@ IntakeStateMgr::IntakeStateMgr() : StateMgr(),
 
     string identifier("IntakeStateMgr::IntakeStateMgr");
 
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "IntakeDebugging", identifier, "Before Init");
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), identifier, "Before Init");
 
     Init(m_intake, stateMap);
     if (m_intake != nullptr)
     {
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "IntakeDebugging", identifier, "Intake Not Null");
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), identifier, "Intake Not Null");
         m_intake->AddStateMgr(this);
     }
 
@@ -93,11 +93,14 @@ void IntakeStateMgr::CheckForStateTransition()
     string identifier2 = string("CheckForStateTransition - target state");
     string identifier3 = string("CheckForStateTransition - have intake");
 
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "IntakeDebugging", identifier, m_targetState);
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "IntakeDebugging", identifier3, m_intake != nullptr ? "true" : "false");
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), identifier, m_targetState);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), identifier3, m_intake != nullptr ? "true" : "false");
 
     if (m_intake != nullptr)
     {
+        m_currentState = static_cast<INTAKE_STATE>(GetCurrentState());
+        m_targetState = m_currentState;
+
         CheckForSensorTransitions();
         if (m_checkGamePadTransitions)
         {
@@ -110,7 +113,7 @@ void IntakeStateMgr::CheckForStateTransition()
             m_prevState = m_targetState;
             RobotState::GetInstance()->PublishStateChange(RobotStateChanges::IntakeState, m_targetState);
         }
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "IntakeDebugging", identifier, m_targetState);
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), identifier, m_targetState);
     }
 }
 
@@ -129,9 +132,6 @@ void IntakeStateMgr::CheckForGamepadTransitions()
 {
     if (m_intake != nullptr)
     {
-        m_currentState = static_cast<INTAKE_STATE>(GetCurrentState());
-        m_targetState = m_currentState;
-
         auto controller = TeleopControl::GetInstance();
         if (controller != nullptr)
         {
@@ -141,7 +141,16 @@ void IntakeStateMgr::CheckForGamepadTransitions()
             }
             else if (controller->IsButtonPressed(TeleopControlFunctions::INTAKE))
             {
-                m_targetState = INTAKE_STATE::INTAKE;
+                auto hasGamePiece = m_intake->IsGamePiecePresent();
+                m_targetState = hasGamePiece ? INTAKE_STATE::HOLD : INTAKE_STATE::INTAKE;
+            }
+            else if (controller->IsButtonPressed(TeleopControlFunctions::EXPEL))
+            {
+                m_targetState = INTAKE_STATE::EXPEL;
+            }
+            else if (controller->IsButtonPressed(TeleopControlFunctions::HOLD))
+            {
+                m_targetState = INTAKE_STATE::HOLD;
             }
             else if (m_currentState != INTAKE_STATE::HOLD)
             {
