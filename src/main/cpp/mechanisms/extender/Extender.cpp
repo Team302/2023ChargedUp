@@ -50,7 +50,7 @@ Extender::Extender(
 }
 
 //========= Hand modified code start section 0 ========
-void Extender::ResetIfFullyExtended(double counts)
+bool Extender::ResetIfFullyExtended(double counts)
 {
 	if (GetMotor().get()->IsForwardLimitSwitchClosed())
 	{
@@ -58,10 +58,12 @@ void Extender::ResetIfFullyExtended(double counts)
 		auto fx = dynamic_cast<ctre::phoenix::motorcontrol::can::WPI_TalonFX *>(motor.get());
 		auto sensors = fx->GetSensorCollection();
 		sensors.SetIntegratedSensorPosition(counts, 0);
+		return true;
 	}
+	return false;
 }
 
-void Extender::ResetIfFullyRetracted()
+bool Extender::ResetIfFullyRetracted()
 {
 	if (GetMotor().get()->IsReverseLimitSwitchClosed())
 	{
@@ -69,6 +71,8 @@ void Extender::ResetIfFullyRetracted()
 		auto fx = dynamic_cast<ctre::phoenix::motorcontrol::can::WPI_TalonFX *>(motor.get());
 		auto sensors = fx->GetSensorCollection();
 		sensors.SetIntegratedSensorPosition(0, 0);
+		return true;
 	}
+	return false;
 }
 //========= Hand modified code end section 0 ========
