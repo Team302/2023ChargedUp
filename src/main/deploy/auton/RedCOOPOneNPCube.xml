@@ -1,34 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE auton SYSTEM "auton.dtd">
 <auton>
-<primitive id="RESET_POSITION"
-	   pathname="RedCOOPOne1CubeSlow.wpilib.json"
-       grabber="GRAB"/>
+   <primitive id="RESET_POSITION"
+	            pathname="RedCOOPOne1CubeSlow.wpilib.json"
+               grabber="GRAB"
+               intake="HOLD"/>
     <!--score preloaded cone-->
-    <primitive id="DO_NOTHING"
-               arm="CUBE_BACKROW_ROTATE"
-               extender="STARTING_POSITION_EXTEND"
-               grabber="GRAB"
-               time="0.35"
-               />
-    <primitive id="DO_NOTHING"
-               arm="CUBE_BACKROW_ROTATE"
-               extender="CUBE_BACKROW_EXTEND"
-               grabber="GRAB"
-               time="0.6"
-               />
-    <primitive id="DO_NOTHING"
-               arm="CUBE_BACKROW_ROTATE"
-               extender="CUBE_BACKROW_EXTEND"
-               grabber="OPEN"
-               time="0.35"
-               />
-    <primitive id="DO_NOTHING"
-               arm="CUBE_BACKROW_ROTATE"
-               extender="STARTING_POSITION_EXTEND"
-               grabber="GRAB"
-               time="0.5"
-               />
+    <snippet file="ScoreCone.xml"/>
+
     <!--drive over charging station-->
     <primitive id="DRIVE_PATH"
                pathname="RedCOOPOne1CubeSlow.wpilib.json"
@@ -37,6 +16,7 @@
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                grabber="GRAB"
+               intake="INTAKE_OFF"
                time="15.0"
                />
     <!--do nothing!!-->
@@ -46,6 +26,7 @@
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                grabber="GRAB"
+               intake="INTAKE_OFF"
                time="10.0"
                />
 </auton>

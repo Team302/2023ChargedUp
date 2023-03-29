@@ -35,6 +35,8 @@
 #include <mechanisms/extender/ExtenderStateMgr.h>
 #include <mechanisms/grabber/GrabberState.h>
 #include <mechanisms/grabber/GrabberStateMgr.h>
+#include <mechanisms/intake/IntakeState.h>
+#include <mechanisms/intake/IntakeStateMgr.h>
 
 using namespace std;
 
@@ -43,7 +45,7 @@ void StateMgrHelper::InitStateMgrs()
     //@ADDMech Add MechanismStateMgr::GetInstanceI() here
     ArmStateMgr::GetInstance();
     ExtenderStateMgr::GetInstance();
-    GrabberStateMgr::GetInstance();
+    IntakeStateMgr::GetInstance();
 }
 
 void StateMgrHelper::RunCurrentMechanismStates()
@@ -51,9 +53,21 @@ void StateMgrHelper::RunCurrentMechanismStates()
     for (auto i = MechanismTypes::MECHANISM_TYPE::UNKNOWN_MECHANISM + 1; i < MechanismTypes::MECHANISM_TYPE::MAX_MECHANISM_TYPES; ++i)
     {
         auto mech = MechanismFactory::GetMechanismFactory()->GetMechanism(static_cast<MechanismTypes::MECHANISM_TYPE>(i));
+
+        string identifier("mechanism");
+        identifier += to_string(i);
+
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), identifier, mech != nullptr ? "not nullptr" : "nullptr");
+
         auto stateMgr = mech != nullptr ? mech->GetStateMgr() : nullptr;
+
+        identifier += " state mgr ";
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), identifier, stateMgr != nullptr ? "not nullptr" : "nullptr");
+        identifier += " running current state ";
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), identifier, false);
         if (stateMgr != nullptr)
         {
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), identifier, true);
             stateMgr->RunCurrentState();
         }
     }
@@ -95,9 +109,9 @@ void StateMgrHelper::SetCheckGamepadInputsForStateTransitions(bool check)
 State *StateMgrHelper::CreateState(Mech *mech, StateStruc &stateInfo, MechanismTargetData *targetData)
 {
     auto controlData = targetData->GetController();
-    // auto controlData2 = targetData->GetController2();
+    auto controlData2 = targetData->GetController2();
     auto target = targetData->GetTarget();
-    // auto secondaryTarget = targetData->GetSecondTarget();
+    auto secondaryTarget = targetData->GetSecondTarget();
     auto solenoidState = targetData->GetSolenoidState();
     //  auto solenoid2State = targetData->GetSolenoid2State();
     //  auto robotPitch = targetData->GetRobotPitch();
@@ -134,6 +148,16 @@ State *StateMgrHelper::CreateState(Mech *mech, StateStruc &stateInfo, MechanismT
     case StateType::GRABBER_STATE:
         thisState = new GrabberState(xmlString, id, solenoidState);
         break;
+
+    case StateType::INTAKE_STATE:
+    {
+        string identifier("creating");
+        identifier += xmlString;
+        identifier += to_string(id);
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), identifier, "creating");
+        thisState = new IntakeState(xmlString, id, controlData, controlData2, target, secondaryTarget, solenoidState);
+    }
+    break;
 
     default:
         Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, mech->GetNetworkTableName(), string("StateMgr::StateMgr"), string("unknown state"));

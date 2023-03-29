@@ -17,6 +17,7 @@
 
 // Team 302 Includes
 #include <robotstate/RobotStateChanges.h>
+#include <mechanisms/intake/IntakeStateMgr.h>
 #include <mechanisms/grabber/GrabberStateMgr.h>
 
 class ArmHoldPosHelper
@@ -28,7 +29,8 @@ public:
     static double CalculateHoldPositionTarget(double armAngle,
                                               double extenderPosition,
                                               RobotStateChanges::GamePiece gamepieceMode,
-                                              GrabberStateMgr::GRABBER_STATE grabberState);
+                                              GrabberStateMgr::GRABBER_STATE grabberState,
+                                              IntakeStateMgr::INTAKE_STATE intakeState);
 
 private:
     // Hold Position function components
@@ -50,4 +52,5 @@ private:
     static constexpr double m_maxArmAngle = 75.0;
     static constexpr double m_fullExtensionExtenderPos = 21.0;
     static constexpr double m_fullExtensionArmAngle = 40.0;
+    static constexpr double m_intakeScaling = 1.035;
 };

@@ -26,6 +26,7 @@ public:
         ArmExtenderState,
         ArmRotateState,
         GrabberState,
+        IntakeState,
         DesiredPlacementLocation,
         DesiredPlacementDepth,
         ChassisTipStatus,
