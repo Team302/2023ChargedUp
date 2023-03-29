@@ -58,9 +58,6 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates(Chass
         CorrectForTipping(chassisMovement);
     }
 
-    /// debugging
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("RobotDrive"), string("ChassisSpeedsOmega"), chassisMovement.chassisSpeeds.omega.to<double>());
-
     // These calculations are based on Ether's Chief Delphi derivation
     // The only changes are that that derivation is based on positive angles being clockwise
     // and our codes/sensors are based on positive angles being counter clockwise.
@@ -129,7 +126,6 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates(Chass
         maxCalcSpeed = abs(m_brState.speed.to<double>());
     }
 
-    /*
     // normalize speeds if necessary (maxCalcSpeed > max attainable speed)
     if (maxCalcSpeed > m_maxspeed.to<double>())
     {
@@ -139,8 +135,8 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates(Chass
         m_blState.speed *= ratio;
         m_brState.speed *= ratio;
     }
-    */
 
+    /*
     SwerveChassis *chassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
     frc::SwerveDriveKinematics<4> kinematics = chassis->GetKinematics();
 
@@ -161,7 +157,7 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates(Chass
     m_frState = fr;
     m_blState = bl;
     m_brState = br;
-
+*/
     return {m_flState, m_frState, m_blState, m_brState};
 }
 
