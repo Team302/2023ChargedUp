@@ -126,7 +126,6 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates(Chass
         maxCalcSpeed = abs(m_brState.speed.to<double>());
     }
 
-    /*
     // normalize speeds if necessary (maxCalcSpeed > max attainable speed)
     if (maxCalcSpeed > m_maxspeed.to<double>())
     {
