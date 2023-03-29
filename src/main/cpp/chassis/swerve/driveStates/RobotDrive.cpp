@@ -86,12 +86,28 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates(Chass
     auto vx = -1.0 * chassisMovement.chassisSpeeds.vy;
     auto omega = chassisMovement.chassisSpeeds.omega;
 
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("Muscat_debug"), string("vy"), vy.to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("Muscat_debug"), string("vx"), vx.to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("Muscat_debug"), string("omega"), omega.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Robot Drive"), string("vyIn"), vy.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Robot Drive"), string("vxIn"), vx.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Robot Drive"), string("omegaIn"), omega.to<double>());
 
-    units::length::meter_t centerOfRotationW = (w / 2.0) - chassisMovement.centerOfRotationOffset.Y;
-    units::length::meter_t centerOfRotationL = (l / 2.0) - chassisMovement.centerOfRotationOffset.X;
+    // Fudge Factor to drive straight while turning
+    /*if (abs(omega.to<double>()) > 0.1)
+    {
+        if (abs(vx.to<double>()) > 0.1)
+        {
+            vy = units::velocity::meters_per_second_t(vy.to<double>() - (omega.to<double>() / vx.to<double>()) * 0.75);
+        }
+        if (abs(vy.to<double>()) > 0.1)
+        {
+            vx = units::velocity::meters_per_second_t(vx.to<double>() - (omega.to<double>() / vy.to<double>()) * 0.75);
+        }
+    }
+
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Robot Drive"), string("vyOut"), vy.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Robot Drive"), string("vxOut"), vx.to<double>());*/
+
+    units::length::meter_t centerOfRotationW = (w / 2.0); //- chassisMovement.centerOfRotationOffset.Y;
+    units::length::meter_t centerOfRotationL = (l / 2.0); //- chassisMovement.centerOfRotationOffset.X;
 
     units::velocity::meters_per_second_t omegaW = omega.to<double>() * centerOfRotationW / 1_s;
     units::velocity::meters_per_second_t omegaL = omega.to<double>() * centerOfRotationL / 1_s;
