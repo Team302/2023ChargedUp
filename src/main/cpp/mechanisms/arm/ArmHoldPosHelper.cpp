@@ -15,6 +15,8 @@
 
 // Team 302 Includes
 #include <mechanisms/arm/ArmHoldPosHelper.h>
+#include <mechanisms/intake/IntakeStateMgr.h>
+#include <mechanisms/grabber/GrabberStateMgr.h>
 
 /// DEBUGGING
 #include <utils/logging/Logger.h>
@@ -26,7 +28,8 @@ ArmHoldPosHelper::ArmHoldPosHelper()
 double ArmHoldPosHelper::CalculateHoldPositionTarget(double armAngle,
                                                      double extenderPos,
                                                      RobotStateChanges::GamePiece gamepieceMode,
-                                                     GrabberStateMgr::GRABBER_STATE grabberState)
+                                                     GrabberStateMgr::GRABBER_STATE grabberState,
+                                                     IntakeStateMgr::INTAKE_STATE intakeState)
 {
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ArmHoldPos", "ArmAngle", armAngle);
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ArmHoldPos", "ExtenderPos", extenderPos);
@@ -40,7 +43,8 @@ double ArmHoldPosHelper::CalculateHoldPositionTarget(double armAngle,
             // specific f term for outlier position
             return m_fullExtensionFTerm;
         }
-        else if (gamepieceMode == RobotStateChanges::GamePiece::Cone && grabberState == GrabberStateMgr::GRABBER_STATE::GRAB)
+        else if (gamepieceMode == RobotStateChanges::GamePiece::Cone && (grabberState == GrabberStateMgr::GRABBER_STATE::GRAB ||
+                                                                         intakeState == IntakeStateMgr::INTAKE_STATE::HOLD))
         {
             // f term function for cone
             Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ArmHoldPos", "ArrivedAt", "Game mode cone && grabber closed");

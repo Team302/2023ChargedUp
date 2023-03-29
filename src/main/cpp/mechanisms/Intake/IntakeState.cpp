@@ -30,7 +30,7 @@
 #include <mechanisms/base/Mech2Motors1Solenoid.h>
 #include <mechanisms/base/Mech2Motors1SolenoidState.h>
 #include <mechanisms/controllers/ControlData.h>
-#include <mechanisms/Intake/IntakeState.h>
+#include <mechanisms/intake/IntakeState.h>
 #include <mechanisms/MechanismFactory.h>
 #include <utils/logging/Logger.h>
 

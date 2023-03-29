@@ -28,7 +28,7 @@
 #include <mechanisms/arm/ArmStateMgr.h>
 #include <mechanisms/extender/ExtenderStateMgr.h>
 #include <mechanisms/grabber/GrabberStateMgr.h>
-#include <mechanisms/Intake/IntakeStateMgr.h>
+#include <mechanisms/intake/IntakeStateMgr.h>
 // @ADDMECH include for your mechanism
 
 #include <chassis/IChassis.h>

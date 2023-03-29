@@ -27,7 +27,7 @@
 #include <hw/DragonSolenoid.h>
 #include <hw/interfaces/IDragonMotorController.h>
 #include <mechanisms/base/Mech2Motors1Solenoid.h>
-#include <mechanisms/Intake/Intake.h>
+#include <mechanisms/intake/Intake.h>
 
 using std::shared_ptr;
 using std::string;

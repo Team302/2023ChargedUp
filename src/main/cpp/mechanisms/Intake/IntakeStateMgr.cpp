@@ -63,6 +63,7 @@ IntakeStateMgr::IntakeStateMgr() : StateMgr(),
     stateMap[m_holdXMLString] = m_holdState;
     stateMap[m_releaseXMLString] = m_releaseState;
     stateMap[m_expelXMLString] = m_expelState;
+    stateMap[m_hpconeintakeXMLString] = m_hpconeintakeState;
 
     string identifier("IntakeStateMgr::IntakeStateMgr");
 
@@ -75,6 +76,7 @@ IntakeStateMgr::IntakeStateMgr() : StateMgr(),
         m_intake->AddStateMgr(this);
     }
 
+    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::DesiredGamePiece);
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::ArmRotateState);
 }
 
@@ -123,7 +125,7 @@ void IntakeStateMgr::CheckForSensorTransitions()
     if (m_intake != nullptr && m_intake->IsGamePiecePresent())
     {
         m_targetState = INTAKE_STATE::HOLD;
-        RobotState::GetInstance()->PublishStateChange(RobotStateChanges::HoldingGamePiece, m_wantCone ? RobotStateChanges::Cone : RobotStateChanges::Cube);
+        RobotState::GetInstance()->PublishStateChange(RobotStateChanges::HoldingGamePiece, m_coneMode ? RobotStateChanges::Cone : RobotStateChanges::Cube);
     }
 }
 
@@ -137,12 +139,32 @@ void IntakeStateMgr::CheckForGamepadTransitions()
         {
             if (controller->IsButtonPressed(TeleopControlFunctions::RELEASE))
             {
-                m_targetState = INTAKE_STATE::RELEASE;
+                if (m_coneMode)
+                {
+                    m_targetState = INTAKE_STATE::RELEASE;
+                }
+                else
+                {
+                    m_targetState = INTAKE_STATE::EXPEL;
+                }
+                // m_targetState = INTAKE_STATE::RELEASE;
             }
             else if (controller->IsButtonPressed(TeleopControlFunctions::INTAKE))
             {
                 auto hasGamePiece = m_intake->IsGamePiecePresent();
-                m_targetState = hasGamePiece ? INTAKE_STATE::HOLD : INTAKE_STATE::INTAKE;
+                if (hasGamePiece)
+                {
+                    m_targetState = INTAKE_STATE::HOLD;
+                }
+                else if (m_coneMode && m_isHP)
+                {
+                    m_targetState = INTAKE_STATE::HP_CONE_INTAKE;
+                }
+                else
+                {
+                    m_targetState = INTAKE_STATE::INTAKE;
+                }
+                // m_targetState = hasGamePiece ? INTAKE_STATE::HOLD : INTAKE_STATE::INTAKE;
             }
             else if (controller->IsButtonPressed(TeleopControlFunctions::EXPEL))
             {
@@ -165,7 +187,13 @@ void IntakeStateMgr::Update(RobotStateChanges::StateChange change, int value)
     if (change == RobotStateChanges::DesiredGamePiece)
     {
         auto gamepiece = static_cast<RobotStateChanges::GamePiece>(value);
-        m_wantCube = gamepiece == RobotStateChanges::Cube;
-        m_wantCone = gamepiece == RobotStateChanges::Cone;
+        // m_wantCube = gamepiece == RobotStateChanges::Cube;
+        // m_wantCone = gamepiece == RobotStateChanges::Cone;
+        m_coneMode = gamepiece == RobotStateChanges::Cone;
+    }
+    else if (change == RobotStateChanges::ArmRotateState)
+    {
+        auto armState = static_cast<ArmStateMgr::ARM_STATE>(value);
+        m_isHP = armState == ArmStateMgr::ARM_STATE::HUMAN_PLAYER_STATION_ROTATE;
     }
 }

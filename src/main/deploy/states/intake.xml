@@ -52,4 +52,13 @@
     secondValue="-1"
     solenoid="REVERSE"
     solenoid2="NONE" />
+  <mechanismTarget
+    stateIdentifier="HP_CONE_INTAKE"
+    controlDataIdentifier="intake"
+    controlDataIdentifier2="intake"
+    value="1"
+    secondValue="1"
+    solenoid="REVERSE"
+    solenoid2="NONE" />
+
 </statedata>

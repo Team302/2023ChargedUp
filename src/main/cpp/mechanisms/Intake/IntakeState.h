@@ -25,7 +25,7 @@
 #include <string>
 #include <mechanisms/base/Mech2Motors1Solenoid.h>
 #include <mechanisms/base/Mech2Motors1SolenoidState.h>
-#include <mechanisms/Intake/Intake.h>
+#include <mechanisms/intake/Intake.h>
 class ControlData;
 class Intake;
 using namespace std;

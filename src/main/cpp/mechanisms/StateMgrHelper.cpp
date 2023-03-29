@@ -35,8 +35,8 @@
 #include <mechanisms/extender/ExtenderStateMgr.h>
 #include <mechanisms/grabber/GrabberState.h>
 #include <mechanisms/grabber/GrabberStateMgr.h>
-#include <mechanisms/Intake/IntakeState.h>
-#include <mechanisms/Intake/IntakeStateMgr.h>
+#include <mechanisms/intake/IntakeState.h>
+#include <mechanisms/intake/IntakeStateMgr.h>
 
 using namespace std;
 

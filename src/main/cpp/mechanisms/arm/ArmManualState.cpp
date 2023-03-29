@@ -20,6 +20,8 @@
 #include <mechanisms/controllers/ControlData.h>
 #include <teleopcontrol/TeleopControl.h>
 #include <mechanisms/MechanismFactory.h>
+#include <robotstate/RobotState.h>
+#include <robotstate/RobotStateChanges.h>
 
 /// DEBUGGING
 #include <utils/logging/Logger.h>
@@ -33,8 +35,12 @@ ArmManualState::ArmManualState(std::string stateName,
                                                  m_controller(TeleopControl::GetInstance()),
                                                  m_controlData(control0),
                                                  m_gamepieceMode(RobotStateChanges::Cone),
-                                                 m_grabberState(GrabberStateMgr::GRABBER_STATE::GRAB)
+                                                 m_grabberState(GrabberStateMgr::GRABBER_STATE::GRAB),
+                                                 m_intakeState(IntakeStateMgr::INTAKE_STATE::HOLD)
 {
+    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::DesiredGamePiece);
+    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::GrabberState);
+    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::IntakeState);
 }
 
 void ArmManualState::Init()
@@ -55,7 +61,8 @@ void ArmManualState::Run()
         auto target = percent + ArmHoldPosHelper::CalculateHoldPositionTarget(m_arm->GetPositionDegrees().to<double>(),
                                                                               MechanismFactory::GetMechanismFactory()->GetExtender()->GetPositionInches().to<double>(),
                                                                               m_gamepieceMode,
-                                                                              m_grabberState);
+                                                                              m_grabberState,
+                                                                              m_intakeState);
         m_arm->SetControlConstants(0, m_controlData);
         m_arm->UpdateTarget(target);
         m_arm->Update();
@@ -76,5 +83,9 @@ void ArmManualState::Update(RobotStateChanges::StateChange change, int state)
     else if (change == RobotStateChanges::GrabberState)
     {
         m_grabberState = static_cast<GrabberStateMgr::GRABBER_STATE>(state);
+    }
+    else if (change == RobotStateChanges::IntakeState)
+    {
+        m_intakeState = static_cast<IntakeStateMgr::INTAKE_STATE>(state);
     }
 }
