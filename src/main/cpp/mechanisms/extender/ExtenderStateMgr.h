@@ -27,6 +27,7 @@
 #include <string>
 
 // FRC includes
+#include <frc/Timer.h>
 
 // Team 302 includes
 #include <mechanisms/base/StateMgr.h>
@@ -62,7 +63,8 @@ public:
         CONE_MIDROW_EXTEND,
         HUMAN_PLAYER_STATION_EXTEND,
         STARTING_POSITION_EXTEND,
-        FLOOR_EXTEND
+        FLOOR_EXTEND,
+        INITIALIZE
     };
 
     const std::map<const std::string, EXTENDER_STATE> m_extenderXmlStringToStateEnumMap{
@@ -74,7 +76,8 @@ public:
         {"CONE_MIDROW_EXTEND", EXTENDER_STATE::CONE_MIDROW_EXTEND},
         {"HUMAN_PLAYER_STATION_EXTEND", EXTENDER_STATE::HUMAN_PLAYER_STATION_EXTEND},
         {"STARTING_POSITION_EXTEND", EXTENDER_STATE::STARTING_POSITION_EXTEND},
-        {"FLOOR_EXTEND", EXTENDER_STATE::FLOOR_EXTEND}};
+        {"FLOOR_EXTEND", EXTENDER_STATE::FLOOR_EXTEND},
+        {"INITIALIZE", EXTENDER_STATE::INITIALIZE}};
 
     /// @brief  Find or create the state manmanager
     static ExtenderStateMgr *GetInstance();
@@ -114,6 +117,11 @@ private:
 
     bool m_canAutomaticallyMove = false;
     bool m_goToStartingConfig = true;
+
+    bool m_hasInitialized = false;
+
+    frc::Timer *m_initializationTimer;
+
     double m_extendedPosition;
     //========= Hand modified code end section 5 ========
 
@@ -128,6 +136,7 @@ private:
     const StateStruc m_human_player_station_extendState = {EXTENDER_STATE::HUMAN_PLAYER_STATION_EXTEND, "HUMAN_PLAYER_STATION_EXTEND", StateType::EXTENDER_STATE, false};
     const StateStruc m_starting_position_extendState = {EXTENDER_STATE::STARTING_POSITION_EXTEND, "STARTING_POSITION_EXTEND", StateType::EXTENDER_STATE, true};
     const StateStruc m_floor_extendState = {EXTENDER_STATE::FLOOR_EXTEND, "FLOOR_EXTEND", StateType::EXTENDER_STATE, false};
+    const StateStruc m_initializeState = {EXTENDER_STATE::INITIALIZE, "INITIALIZE", StateType::EXTENDER_STATE, false};
 
     ArmStateMgr::ARM_STATE m_armState;
 

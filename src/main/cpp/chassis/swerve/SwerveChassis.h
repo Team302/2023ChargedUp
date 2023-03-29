@@ -213,8 +213,6 @@ private:
     std::string m_networkTableName;
     std::string m_controlFileName;
 
-    const units::length::inch_t m_shootingDistance = units::length::inch_t(105.0); // was 105.0
-
     ISwerveDriveState *m_currentDriveState;
     ISwerveDriveOrientation *m_currentOrientationState;
 
