@@ -123,7 +123,7 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                     auto armstate = ArmStateMgr::ARM_STATE::HOLD_POSITION_ROTATE;
                     auto extenderstate = ExtenderStateMgr::EXTENDER_STATE::HOLD_POSITION_EXTEND;
                     auto grabberstate = GrabberStateMgr::GRABBER_STATE::OPEN;
-                    auto intakestate = IntakeStateMgr::INTAKE_STATE::OFF;
+                    auto intakestate = IntakeStateMgr::INTAKE_STATE::HOLD;
                     // @ADDMECH Initialize your mechanism state
                     for (xml_attribute attr = primitiveNode.first_attribute(); attr; attr = attr.next_attribute())
                     {
@@ -217,6 +217,19 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                             if (grabberItr != GrabberStateMgr::GetInstance()->m_grabberXmlStringToStateEnumMap.end())
                             {
                                 grabberstate = grabberItr->second;
+                            }
+                            else
+                            {
+                                Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("PrimitiveParser"), string("PrimitiveParser::ParseXML invalid grabber state"), attr.value());
+                                hasError = true;
+                            }
+                        }
+                        else if (strcmp(attr.name(), "intake") == 0)
+                        {
+                            auto intakeItr = IntakeStateMgr::GetInstance()->m_intakeXmlStringToStateEnumMap.find(attr.value());
+                            if (intakeItr != IntakeStateMgr::GetInstance()->m_intakeXmlStringToStateEnumMap.end())
+                            {
+                                intakestate = intakeItr->second;
                             }
                             else
                             {
