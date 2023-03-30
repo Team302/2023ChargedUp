@@ -39,10 +39,10 @@ std::array<frc::SwerveModuleState, 4> FieldDrive::UpdateSwerveModuleStates(Chass
     auto vy = chassisMovement.chassisSpeeds.vy;
     auto omega = chassisMovement.chassisSpeeds.omega;
     double origianlSpeed = sqrt(pow(vx.to<double>(), 2) + pow(vy.to<double>(), 2)); // Original speed of hte chassis
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "FieldDrive", "Orignal Chassis Direction", atan2(vx.to<double>(), vy.to<double>()) * 180 / PI);
 
     // debugging
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "FieldDrive", "Orignal Chassis Direction", atan2(vx.to<double>(), vy.to<double>()) * 180 / PI);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "FieldDrive", "Orignal Chassis Speed", origianlSpeed);
 
     if (std::abs(omega.to<double>()) > 0.1) // checks if you have any rotation
     {
@@ -52,7 +52,7 @@ std::array<frc::SwerveModuleState, 4> FieldDrive::UpdateSwerveModuleStates(Chass
         }
         if (std::abs(vy.to<double>()) > 0.1) // if you have a y speed and rotation, add a small x speed to counter act the drift
         {
-            vx -= units::velocity::meters_per_second_t(omega.to<double>() * vy.to<double>() * 0.325);
+            vx -= units::velocity::meters_per_second_t(omega.to<double>() * chassisMovement.chassisSpeeds.vy.to<double>() * 0.325); // Need to use the original vx speed not new adjusted speed
         }
         double newSpeed = sqrt(pow(vx.to<double>(), 2) + pow(vy.to<double>(), 2)); // calculates new speed of the chassis
         double ratio = origianlSpeed / newSpeed;
