@@ -30,6 +30,7 @@
 #include <hw/DragonCanCoder.h>
 #include <mechanisms/base/Mech1IndMotor.h>
 #include <mechanisms/arm/arm.h>
+#include <utils/logging/Logger.h>
 
 // Third Party Includes
 //========= Hand modified code start section 1 ========
@@ -73,9 +74,12 @@ units::angle::degree_t Arm::GetPositionDegrees() const
 		auto hasErrors = !(lastError == ctre::phoenix::ErrorCode::OK || lastError == ctre::phoenix::ErrorCode::OKAY);
 		if (!hasErrors)
 		{
+			Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, GetNetworkTableName(), "Arm Angle", GetPosition());
+			Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, GetNetworkTableName(), "Cancoder Angle", m_cancoder->GetAbsolutePosition());
 			return units::angle::degree_t(m_cancoder->GetAbsolutePosition());
 		}
 	}
+	Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, GetNetworkTableName(), "Arm Angle", GetPosition());
 	return units::angle::degree_t(GetPosition());
 }
 
