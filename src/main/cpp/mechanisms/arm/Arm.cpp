@@ -64,6 +64,11 @@ void Arm::ResetIfArmDown()
 		auto fx = dynamic_cast<ctre::phoenix::motorcontrol::can::WPI_TalonFX *>(motor.get());
 		auto sensors = fx->GetSensorCollection();
 		sensors.SetIntegratedSensorPosition(0, 0);
+
+		if (m_cancoder != nullptr)
+		{
+			m_cancoder->SetPosition(0.0, 0);
+		}
 	}
 }
 units::angle::degree_t Arm::GetPositionDegrees() const

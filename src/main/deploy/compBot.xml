@@ -326,7 +326,7 @@
     <cancoder
       canId="4"
       canBusName="rio"
-      offset="0.0"
+      offset="-129.463"
       reverse="false" />
   </mechanism>
   <mechanism
