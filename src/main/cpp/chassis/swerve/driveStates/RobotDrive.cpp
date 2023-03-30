@@ -98,8 +98,8 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates(Chass
         // vy = twist_vel.dx / kLooperDt;
         // omega = twist_vel.dtheta / kLooperDt;
     */
-    units::length::meter_t centerOfRotationW = (w / 2.0) - chassisMovement.centerOfRotationOffset.Y;
-    units::length::meter_t centerOfRotationL = (l / 2.0) - chassisMovement.centerOfRotationOffset.X;
+    units::length::meter_t centerOfRotationW = (w / 2.0) - chassisMovement.centerOfRotationOffset.Y();
+    units::length::meter_t centerOfRotationL = (l / 2.0) - chassisMovement.centerOfRotationOffset.X();
 
     units::velocity::meters_per_second_t omegaW = omega.to<double>() * centerOfRotationW / 1_s;
     units::velocity::meters_per_second_t omegaL = omega.to<double>() * centerOfRotationL / 1_s;
