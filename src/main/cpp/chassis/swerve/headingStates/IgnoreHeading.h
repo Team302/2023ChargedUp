@@ -1,4 +1,3 @@
-
 //====================================================================================================================================================
 // Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
@@ -16,31 +15,16 @@
 
 #pragma once
 
-// C++ Includes
+#include <units/angle.h>
 
-// FRC includes
+// Team302 Includes
+#include <chassis/swerve/headingStates/ISwerveDriveOrientation.h>
+#include <chassis/ChassisOptionEnums.h>
 
-// Team 302 includes
-
-// Third Party Includes
-
-#include <auton/drivePrimitives/SuperDrive.h>
-
-class PrimitiveParams;
-
-class DriveToWall : public SuperDrive
+class IgnoreHeading : public ISwerveDriveOrientation
 {
 public:
-	bool IsDone() override;
-	void Init(PrimitiveParams *params) override;
-	void Run() override;
-	DriveToWall();
-	virtual ~DriveToWall() = default;
-
-private:
-	float m_minimumTime;
-	float m_timeRemaining;
-	int m_underSpeedCounts;
-	const float SPEED_THRESHOLD = 3;
-	const int UNDER_SPEED_COUNT_THRESHOLD = 2;
+    IgnoreHeading();
+    ~IgnoreHeading();
+    void UpdateChassisSpeeds(ChassisMovement &chassisMovement) override;
 };

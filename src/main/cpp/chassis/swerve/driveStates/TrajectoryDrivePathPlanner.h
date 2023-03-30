@@ -1,4 +1,3 @@
-
 //====================================================================================================================================================
 // Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
@@ -16,53 +15,47 @@
 
 #pragma once
 
-// C++ Includes
-#include <memory>
+// FRC Includes
+#include <frc/Timer.h>
 
-// FRC includes
+// Team302 Includes
+#include <chassis/swerve/driveStates/RobotDrive.h>
+#include <chassis/swerve/SwerveChassis.h>
 
-// Team 302 includes
-#include <auton/drivePrimitives/IPrimitive.h>
-#include <hw/DragonPigeon.h>
+// Third party includes
+#include <pathplanner/lib/PathPlannerTrajectory.h>
+#include <pathplanner/lib/controllers/PPHolonomicDriveController.h>
 
-// Third Party Includes
-
-class IChassis;
-namespace frc
-{
-    class Timer;
-}
-
-class TurnAngle : public IPrimitive
+class TrajectoryDrivePathPlanner : public RobotDrive
 {
 public:
-    TurnAngle();
-    virtual ~TurnAngle() = default;
+    TrajectoryDrivePathPlanner(RobotDrive *robotDrive);
 
-    void Init(PrimitiveParams *params) override;
-    void Run() override;
-    bool IsDone() override;
+    std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates(
+        ChassisMovement &chassisMovement) override;
+
+    void Init(
+        ChassisMovement &chassisMovement) override;
+
+    std::string WhyDone() const { return m_whyDone; };
+    bool IsDone();
 
 private:
-    const double PROPORTIONAL_COEFF = 3.0; // 0.5
-    const double INTREGRAL_COEFF = 0.0;
-    const double DERIVATIVE_COEFF = 0.0;
-    const double FEET_FORWARD_COEFF = 0.0;
+    void CalcCurrentAndDesiredStates();
 
-    std::shared_ptr<IChassis> m_chassis;
+    bool IsSamePose(frc::Pose2d currentPose, frc::Pose2d previousPose, double xyTolerance, double rotTolerance);
+
+    pathplanner::PathPlannerTrajectory m_trajectory;
+    RobotDrive *m_robotDrive;
+    pathplanner::PPHolonomicDriveController m_holonomicController;
+    pathplanner::PathPlannerTrajectory::PathPlannerState m_desiredState;
+    std::vector<pathplanner::PathPlannerTrajectory::PathPlannerState> m_trajectoryStates;
+    pathplanner::PathPlannerTrajectory::PathPlannerState m_finalState;
+    frc::Pose2d m_prevPose;
+    bool m_wasMoving;
+    frc::Transform2d m_delta;
     std::unique_ptr<frc::Timer> m_timer;
 
-    double m_targetAngle;
-    double m_maxTime;
-    double m_leftPos;
-    double m_rightPos;
-    bool m_isDone;
-
-    const double ANGLE_THRESH = 2;  // +/- threshold for being at angle
-    const double MAX_VELOCITY = 20; // inches per second
-    const double MIN_VELOCITY = 4;
-    const double ANGLE_DIFFERENCE_VELOCITY_MULTIPLIER = 0.7;
-
-    DragonPigeon *m_pigeon;
-    double m_heading;
+    SwerveChassis *m_chassis;
+    std::string m_whyDone;
 };

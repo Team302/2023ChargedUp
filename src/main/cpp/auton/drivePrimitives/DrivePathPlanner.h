@@ -1,4 +1,3 @@
-
 //====================================================================================================================================================
 // Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
@@ -13,53 +12,38 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
+#pragma once
 
 // C++ Includes
 #include <memory>
-#include <string>
 
-// FRC includes
-#include <frc/Timer.h>
-
-// Team 302 includes
-#include <auton/drivePrimitives/DriveStop.h>
+// Team302 Includes
 #include <auton/PrimitiveParams.h>
 #include <auton/drivePrimitives/IPrimitive.h>
-#include <mechanisms/MechanismFactory.h>
-#include <mechanisms/controllers/ControlModes.h>
+#include <chassis/swerve/SwerveChassis.h>
 
-// Third Party Includes
+// FRC,WPI Includes
+#include <frc/Timer.h>
 
-using namespace std;
-using namespace frc;
+// third party includes
+#include <pathplanner/lib/PathPlanner.h>
 
-// Includes
-// Team302 includes
-#include <auton/drivePrimitives/DriveTime.h>
-#include <auton/PrimitiveFactory.h>
-#include <auton/PrimitiveParams.h>
-#include <mechanisms/MechanismFactory.h>
-
-DriveTime::DriveTime() : SuperDrive(),
-						 m_timeRemaining(0.0) // Value will changed in init
-
+class DrivePathPlanner : public IPrimitive
 {
-}
+public:
+    DrivePathPlanner();
 
-void DriveTime::Init(PrimitiveParams *params)
-{
-	SuperDrive::Init(params);
-	// Get timeRemaining from m_params
-	m_timeRemaining = params->GetTime();
-}
+    virtual ~DrivePathPlanner() = default;
 
-void DriveTime::Run()
-{
-	SuperDrive::Run();
-}
+    void Init(PrimitiveParams *params) override;
+    void Run() override;
+    bool IsDone() override;
 
-bool DriveTime::IsDone()
-{
-	m_timeRemaining -= LOOP_LENGTH;					   // Decrement time remaining
-	return ((m_timeRemaining <= (LOOP_LENGTH / 2.0))); // Return true when time runs out
-}
+private:
+    SwerveChassis *m_chassis;
+    std::unique_ptr<frc::Timer> m_timer;
+    pathplanner::PathPlannerTrajectory m_trajectory;
+    std::string m_pathname;
+    double m_maxTime;
+    std::string m_ntName;
+};
