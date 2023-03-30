@@ -128,7 +128,7 @@
     stateIdentifier="FLOOR_POSITION_ROTATE"
     controlDataIdentifier="RotateToUpwardAngle"
     controlDataIdentifier2=""
-    value="14"
+    value="16"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
@@ -136,7 +136,7 @@
     stateIdentifier="FLOOR_POSITION_ROTATE_AUTON"
     controlDataIdentifier="RotateToUpwardAngle"
     controlDataIdentifier2=""
-    value="14"
+    value="16"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />

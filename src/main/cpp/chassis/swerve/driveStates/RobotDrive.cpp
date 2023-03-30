@@ -87,17 +87,17 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates(Chass
     auto vy = 1.0 * chassisMovement.chassisSpeeds.vx;
     auto vx = -1.0 * chassisMovement.chassisSpeeds.vy;
     auto omega = chassisMovement.chassisSpeeds.omega;
+    /*
+        units::time::second_t kLooperDt = units::time::second_t(20.0 / 1000.0);
+        frc::Pose2d robot_pose_vel = frc::Pose2d(vx * kLooperDt, vy * kLooperDt, frc::Rotation2d(omega * kLooperDt));
+        // frc::Twist2d twist_vel = chassis->GetPose().Log(robot_pose_vel);
+        frc::Twist2d twist_vel = frc::Pose2d().Log(robot_pose_vel);
+        // chassisMovement.chassisSpeeds = frc::ChassisSpeeds(twist_vel.dx / kLooperDt, twist_vel.dy / kLooperDt, twist_vel.dtheta / kLooperDt);
 
-    units::time::second_t kLooperDt = units::time::second_t(20.0 / 1000.0);
-    frc::Pose2d robot_pose_vel = frc::Pose2d(vx * kLooperDt, vy * kLooperDt, frc::Rotation2d(omega * kLooperDt));
-    // frc::Twist2d twist_vel = chassis->GetPose().Log(robot_pose_vel);
-    frc::Twist2d twist_vel = frc::Pose2d().Log(robot_pose_vel);
-    // chassisMovement.chassisSpeeds = frc::ChassisSpeeds(twist_vel.dx / kLooperDt, twist_vel.dy / kLooperDt, twist_vel.dtheta / kLooperDt);
-
-    vx = twist_vel.dx / kLooperDt;
-    vy = twist_vel.dx / kLooperDt;
-    omega = twist_vel.dtheta / kLooperDt;
-
+        // vx = twist_vel.dx / kLooperDt;
+        // vy = twist_vel.dx / kLooperDt;
+        // omega = twist_vel.dtheta / kLooperDt;
+    */
     units::length::meter_t centerOfRotationW = (w / 2.0) - chassisMovement.centerOfRotationOffset.Y;
     units::length::meter_t centerOfRotationL = (l / 2.0) - chassisMovement.centerOfRotationOffset.X;
 
