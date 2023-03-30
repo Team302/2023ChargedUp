@@ -21,51 +21,25 @@
 //	//========= Hand modified code end section x ========
 //==============================================================
 
-// C++ Includes
-#include <map>
-#include <memory>
+#pragma once
 #include <string>
-
-// FRC includes
-
-// Team 302 includes
-#include <hw/usages/SolenoidUsage.h>
-#include <utils/logging/Logger.h>
-
-// Third Party Includes
-
+#include <mechanisms/base/Mech2Motors1Solenoid.h>
+#include <mechanisms/base/Mech2Motors1SolenoidState.h>
+#include <mechanisms/intake/Intake.h>
+class ControlData;
+class Intake;
 using namespace std;
-
-SolenoidUsage *SolenoidUsage::m_instance = nullptr;
-SolenoidUsage *SolenoidUsage::GetInstance()
+class IntakeState : public Mech2Motors1SolenoidState
 {
-	if (m_instance == nullptr)
-	{
-		m_instance = new SolenoidUsage();
-	}
-	return m_instance;
-}
+public:
+    IntakeState() = delete;
+    IntakeState(string stateName, int stateId, ControlData *control, ControlData *control2, double primaryTarget, double secondaryTarget, MechanismTargetData::SOLENOID solState);
+    ~IntakeState() = default;
 
-SolenoidUsage::SolenoidUsage()
-{
+    bool AtTarget() const override;
+    Intake *GetIntake() const;
 
-	m_usageMap["GrabberSolenoid"] = SOLENOID_USAGE::GrabberSolenoid;
-	m_usageMap["IntakeSolenoid"] = SOLENOID_USAGE::IntakeSolenoid;
-}
-
-SolenoidUsage::~SolenoidUsage()
-{
-	m_usageMap.clear();
-}
-
-SolenoidUsage::SOLENOID_USAGE SolenoidUsage::GetUsage(
-	const string usageString)
-{
-	auto it = m_usageMap.find(usageString);
-	if (it != m_usageMap.end())
-	{
-		return it->second;
-	}
-	Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("Solenoid::GetUsage"), string("unknown usage"), usageString);
-	return SolenoidUsage::SOLENOID_USAGE::UNKNOWN_SOLENOID_USAGE;
-}
+private:
+    Intake *m_intake;
+    Mech2Motors1Solenoid *m_mechanism;
+};

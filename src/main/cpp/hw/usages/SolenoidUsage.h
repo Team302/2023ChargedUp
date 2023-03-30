@@ -46,6 +46,8 @@ public:
 
 		GrabberSolenoid,
 
+		IntakeSolenoid,
+
 		MAX_SOLENOID_USAGES
 	};
 

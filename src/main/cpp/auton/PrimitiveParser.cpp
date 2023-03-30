@@ -123,6 +123,7 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                     auto armstate = ArmStateMgr::ARM_STATE::HOLD_POSITION_ROTATE;
                     auto extenderstate = ExtenderStateMgr::EXTENDER_STATE::HOLD_POSITION_EXTEND;
                     auto grabberstate = GrabberStateMgr::GRABBER_STATE::OPEN;
+                    auto intakestate = IntakeStateMgr::INTAKE_STATE::HOLD;
                     // @ADDMECH Initialize your mechanism state
                     for (xml_attribute attr = primitiveNode.first_attribute(); attr; attr = attr.next_attribute())
                     {
@@ -223,6 +224,19 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                                 hasError = true;
                             }
                         }
+                        else if (strcmp(attr.name(), "intake") == 0)
+                        {
+                            auto intakeItr = IntakeStateMgr::GetInstance()->m_intakeXmlStringToStateEnumMap.find(attr.value());
+                            if (intakeItr != IntakeStateMgr::GetInstance()->m_intakeXmlStringToStateEnumMap.end())
+                            {
+                                intakestate = intakeItr->second;
+                            }
+                            else
+                            {
+                                Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("PrimitiveParser"), string("PrimitiveParser::ParseXML invalid grabber state"), attr.value());
+                                hasError = true;
+                            }
+                        }
                         // @ADDMECH add case for your mechanism state to get the statemgr / state
 
                         else
@@ -246,7 +260,8 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                                                                      // @ADDMECH add parameter for your mechanism state
                                                                      armstate,
                                                                      extenderstate,
-                                                                     grabberstate));
+                                                                     grabberstate,
+                                                                     intakestate));
                         string ntName = string("Primitive ") + to_string(paramVector.size());
                         int slot = paramVector.size() - 1;
                         auto logger = Logger::GetLogger();

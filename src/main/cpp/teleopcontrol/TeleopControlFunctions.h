@@ -90,8 +90,11 @@ public:
         GRAB,
         CYCLE_GRABBER,
         // Active intake controls?
+        INTAKE_OFF,
         INTAKE,
+        HOLD,
         EXPEL,
+        RELEASE,
         // Compressor ON/Off controls
         TOGGLE_COMPRESSER,
         MAX_FUNCTIONS,

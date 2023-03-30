@@ -42,8 +42,8 @@ public:
         UNKNOWN_MECHANISM = -1,
         ARM,
         EXTENDER,
+        INTAKE,
         GRABBER,
-
         MAX_MECHANISM_TYPES
     };
 
