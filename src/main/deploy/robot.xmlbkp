@@ -342,16 +342,6 @@
       voltageCompensationEnable="false"
       countsPerInch="3811.0878"/>
   </mechanism>
-  <mechanism
-    type="GRABBER"
-    networkTable="grabberNT"
-    controlFile="grabber.xml">
-    <solenoid
-      usage="GrabberSolenoid"
-      canId="1"
-      channel="0"
-      reversed="false" />
-  </mechanism>
   <roborio
     orientation="X_LEFT_Y_UP" />
 </robot>

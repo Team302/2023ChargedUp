@@ -35,20 +35,22 @@ PrimitiveParams::PrimitiveParams(
 	// @ADDMECH mechanism state for mech as parameter
 	ArmStateMgr::ARM_STATE armState,
 	ExtenderStateMgr::EXTENDER_STATE extenderState,
-	GrabberStateMgr::GRABBER_STATE grabberState) :			 // Pass over parameters to class variables
-												   m_id(id), // Primitive ID
-												   m_time(time),
-												   m_distance(distance),
-												   m_xLoc(xLoc),
-												   m_yLoc(yLoc),
-												   m_headingOption(headingOpt),
-												   m_heading(heading),
-												   m_startDriveSpeed(startDriveSpeed),
-												   m_endDriveSpeed(endDriveSpeed),
-												   m_pathName(pathName),
-												   // @ADDMECH initilize state mgr attribute
-												   m_armState(armState),
-												   m_extenderState(extenderState),
-												   m_grabberState(grabberState)
+	GrabberStateMgr::GRABBER_STATE grabberState,
+	IntakeStateMgr::INTAKE_STATE intakeState) :			  // Pass over parameters to class variables
+												m_id(id), // Primitive ID
+												m_time(time),
+												m_distance(distance),
+												m_xLoc(xLoc),
+												m_yLoc(yLoc),
+												m_headingOption(headingOpt),
+												m_heading(heading),
+												m_startDriveSpeed(startDriveSpeed),
+												m_endDriveSpeed(endDriveSpeed),
+												m_pathName(pathName),
+												// @ADDMECH initilize state mgr attribute
+												m_armState(armState),
+												m_extenderState(extenderState),
+												m_grabberState(grabberState),
+												m_intakeState(intakeState)
 {
 }

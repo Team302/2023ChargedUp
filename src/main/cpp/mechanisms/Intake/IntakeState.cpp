@@ -22,50 +22,37 @@
 //==============================================================
 
 // C++ Includes
-#include <map>
-#include <memory>
 #include <string>
 
 // FRC includes
 
 // Team 302 includes
-#include <hw/usages/SolenoidUsage.h>
+#include <mechanisms/base/Mech2Motors1Solenoid.h>
+#include <mechanisms/base/Mech2Motors1SolenoidState.h>
+#include <mechanisms/controllers/ControlData.h>
+#include <mechanisms/intake/IntakeState.h>
+#include <mechanisms/MechanismFactory.h>
 #include <utils/logging/Logger.h>
 
 // Third Party Includes
 
 using namespace std;
 
-SolenoidUsage *SolenoidUsage::m_instance = nullptr;
-SolenoidUsage *SolenoidUsage::GetInstance()
+IntakeState::IntakeState(string stateName, int stateId, ControlData *control, ControlData *control2, double primaryTarget, double secondaryTarget, MechanismTargetData::SOLENOID solState) : Mech2Motors1SolenoidState(MechanismFactory::GetMechanismFactory()->GetIntake(), stateName, stateId, control, control2, primaryTarget, secondaryTarget, solState)
 {
-	if (m_instance == nullptr)
-	{
-		m_instance = new SolenoidUsage();
-	}
-	return m_instance;
+    string identifier(stateName);
+    identifier += to_string(stateId);
+
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string(string("IntakeDebugging")), identifier, "creating");
+    identifier += string(" target");
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), identifier, primaryTarget);
+    identifier += string(" 2");
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), identifier, secondaryTarget);
 }
 
-SolenoidUsage::SolenoidUsage()
+bool IntakeState::AtTarget() const
 {
-
-	m_usageMap["GrabberSolenoid"] = SOLENOID_USAGE::GrabberSolenoid;
-	m_usageMap["IntakeSolenoid"] = SOLENOID_USAGE::IntakeSolenoid;
-}
-
-SolenoidUsage::~SolenoidUsage()
-{
-	m_usageMap.clear();
-}
-
-SolenoidUsage::SOLENOID_USAGE SolenoidUsage::GetUsage(
-	const string usageString)
-{
-	auto it = m_usageMap.find(usageString);
-	if (it != m_usageMap.end())
-	{
-		return it->second;
-	}
-	Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("Solenoid::GetUsage"), string("unknown usage"), usageString);
-	return SolenoidUsage::SOLENOID_USAGE::UNKNOWN_SOLENOID_USAGE;
+    //========= Hand modified code start section 0 ========
+    //========= Hand modified code end section 0 ========
+    return true;
 }

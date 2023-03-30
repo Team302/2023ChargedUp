@@ -33,7 +33,8 @@ public:
 
 private:
     void CheckControllers();
-    void DisplayPressure();
+    void DisplayPressure() const;
+    void ResetRequests(void);
     DriverFeedback();
     ~DriverFeedback() = default;
 
@@ -69,6 +70,4 @@ private:
     DriverFeedbackStates m_gamePieceState = DriverFeedbackStates::NONE;
     DriverFeedbackStates m_compressorState = DriverFeedbackStates::NONE;
     bool m_grabberStateChanged = true;
-
-    void resetRequests(void);
 };
