@@ -61,11 +61,7 @@ Logger *Logger::GetLogger()
 /// @param [in] std::string: network table name or classname to group messages.  If logging option is DASHBOARD, this will be the network table name
 /// @param [in] std::string: message identifier: within a grouping multiple messages may be displayed this is the prefix/look up key
 /// @param [in] std::string: message/value
-void Logger::LogData(
-    LOGGER_LEVEL level,
-    const string &group,
-    const string &identifier,
-    const string &message)
+void Logger::LogData(LOGGER_LEVEL level, const string &group, const string &identifier, const string &message) const
 {
     if (ShouldDisplayIt(level, group, identifier, message))
     {
@@ -90,11 +86,7 @@ void Logger::LogData(
     }
 }
 
-void Logger::LogData(
-    LOGGER_LEVEL level,
-    const string &group,
-    const string &identifier,
-    const char *message)
+void Logger::LogData(LOGGER_LEVEL level, const string &group, const string &identifier, const char *message) const
 {
     LogData(level, group, identifier, string(message));
 }
@@ -103,11 +95,7 @@ void Logger::LogData(
 /// @param [in] std::string: network table name or classname to group messages.  If logging option is DASHBOARD, this will be the network table name
 /// @param [in] std::string: message identifier: within a grouping multiple messages may be displayed this is the prefix/look up key
 /// @param [in] double: value to display
-void Logger::LogData(
-    LOGGER_LEVEL level,
-    const string &group,
-    const string &identifier,
-    double value)
+void Logger::LogData(LOGGER_LEVEL level, const string &group, const string &identifier, double value) const
 {
     if (ShouldDisplayIt(level, group, identifier, to_string(value)))
     {
@@ -137,11 +125,7 @@ void Logger::LogData(
 /// @param [in] std::string: network table name or classname to group messages.  If logging option is DASHBOARD, this will be the network table name
 /// @param [in] std::string: message identifier: within a grouping multiple messages may be displayed this is the prefix/look up key
 /// @param [in] bool: value to display
-void Logger::LogData(
-    LOGGER_LEVEL level,
-    const std::string &group,
-    const std::string &identifier,
-    bool value)
+void Logger::LogData(LOGGER_LEVEL level, const std::string &group, const std::string &identifier, bool value) const
 {
     if (ShouldDisplayIt(level, group, identifier, to_string(value)))
     {
@@ -171,11 +155,7 @@ void Logger::LogData(
 /// @param [in] std::string: network table name or classname to group messages.  If logging option is DASHBOARD, this will be the network table name
 /// @param [in] std::string: message identifier: within a grouping multiple messages may be displayed this is the prefix/look up key
 /// @param [in] int: value to display
-void Logger::LogData(
-    LOGGER_LEVEL level,
-    const std::string &group,
-    const std::string &identifier,
-    int value)
+void Logger::LogData(LOGGER_LEVEL level, const std::string &group, const std::string &identifier, int value) const
 {
     if (ShouldDisplayIt(level, group, identifier, to_string(value)))
     {
@@ -200,8 +180,7 @@ void Logger::LogData(
     }
 }
 
-void Logger::LogData(
-    LoggerData &info)
+void Logger::LogData(LoggerData &info) const
 {
     for (auto boollog : info.bools)
     {
@@ -227,11 +206,7 @@ void Logger::LogData(
 /// @param [in] std::string: message identifier: within a grouping multiple messages may be displayed this is the prefix/look up key
 /// @param [in] std::string: message/value
 /// @returns bool: true - display the message, false - don't display the message
-bool Logger::ShouldDisplayIt(
-    LOGGER_LEVEL level,
-    const string &group,
-    const string &identifier,
-    const string &message)
+bool Logger::ShouldDisplayIt(LOGGER_LEVEL level, const string &group, const string &identifier, const string &message) const
 {
     if (m_option == LOGGER_OPTION::EAT_IT)
     {

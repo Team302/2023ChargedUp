@@ -40,8 +40,7 @@
 // @ADDMECH include for your mechanism
 #include <mechanisms/arm/Arm.h>
 #include <mechanisms/extender/Extender.h>
-#include <mechanisms/grabber/Grabber.h>
-
+#include <mechanisms/intake/Intake.h>
 // Third Party Includes
 #include <ctre/phoenix/sensors/CANCoder.h>
 
@@ -65,9 +64,11 @@ MechanismFactory *MechanismFactory::GetMechanismFactory()
 
 MechanismFactory::MechanismFactory() : m_arm(nullptr),
 									   m_extender(nullptr),
-									   m_grabber(nullptr)
+									   m_grabber(nullptr),
+									   m_intake(nullptr)
 // @ADDMECH Initialize mechanism to NULLPTR
 {
+	Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), string("intake created"), false);
 }
 
 /// @brief      create the requested mechanism
@@ -118,11 +119,30 @@ void MechanismFactory::CreateMechanism(
 	case MechanismTypes::GRABBER:
 	{
 		auto solenoid1 = GetSolenoid(solenoids, SolenoidUsage::GrabberSolenoid);
-		auto sensor0 = GetDigitalInput(digitalInputs, DigitalInputUsage::DIGITAL_INPUT_USAGE::GRABBER_SENSEOR);
+		auto sensor0 = GetDigitalInput(digitalInputs, DigitalInputUsage::DIGITAL_INPUT_USAGE::GAME_PIECE_PRESENT_SENSOR);
 		// if (solenoid1.get() != nullptr && sensor0.get() != nullptr)
 		if (solenoid1.get() != nullptr)
 		{
 			m_grabber = new Grabber(controlFileName, networkTableName, solenoid1, sensor0);
+		}
+	}
+	break;
+
+	case MechanismTypes::INTAKE:
+	{
+		auto intakeSol = GetSolenoid(solenoids, SolenoidUsage::IntakeSolenoid);
+		auto gamePiecePresent = GetDigitalInput(digitalInputs, DigitalInputUsage::GAME_PIECE_PRESENT_SENSOR);
+		auto motor = GetMotorController(motorControllers, MotorControllerUsage::INTAKE1);
+		auto motor2 = GetMotorController(motorControllers, MotorControllerUsage::INTAKE2);
+		if (intakeSol.get() != nullptr && gamePiecePresent.get() != nullptr && motor.get() != nullptr && motor2.get() != nullptr)
+		{
+			Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), string("components"), "not nullptr");
+			m_intake = new Intake(controlFileName, networkTableName, motor, motor2, intakeSol, gamePiecePresent);
+			Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), string("intake created"), true);
+		}
+		else
+		{
+			Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), string("components"), "nullptr");
 		}
 	}
 	break;
@@ -137,8 +157,7 @@ void MechanismFactory::CreateMechanism(
 	}
 }
 
-Mech *MechanismFactory::GetMechanism(
-	MechanismTypes::MECHANISM_TYPE type) const
+Mech *MechanismFactory::GetMechanism(MechanismTypes::MECHANISM_TYPE type) const
 {
 	switch (type)
 	{
@@ -157,6 +176,10 @@ Mech *MechanismFactory::GetMechanism(
 		return m_grabber;
 		break;
 
+	case MechanismTypes::INTAKE:
+		Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), string("Getting intake"), m_intake != nullptr ? "true" : "false");
+		return m_intake;
+		break;
 	default:
 		return nullptr;
 		break;
@@ -164,11 +187,7 @@ Mech *MechanismFactory::GetMechanism(
 	return nullptr;
 }
 
-shared_ptr<IDragonMotorController> MechanismFactory::GetMotorController(
-	const IDragonMotorControllerMap &motorControllers,
-	MotorControllerUsage::MOTOR_CONTROLLER_USAGE usage
-
-)
+shared_ptr<IDragonMotorController> MechanismFactory::GetMotorController(const IDragonMotorControllerMap &motorControllers, MotorControllerUsage::MOTOR_CONTROLLER_USAGE usage)
 {
 	shared_ptr<IDragonMotorController> motor;
 	auto it = motorControllers.find(usage);
@@ -192,9 +211,7 @@ shared_ptr<IDragonMotorController> MechanismFactory::GetMotorController(
 	return motor;
 }
 
-shared_ptr<DragonSolenoid> MechanismFactory::GetSolenoid(
-	const DragonSolenoidMap &solenoids,
-	SolenoidUsage::SOLENOID_USAGE usage)
+shared_ptr<DragonSolenoid> MechanismFactory::GetSolenoid(const DragonSolenoidMap &solenoids, SolenoidUsage::SOLENOID_USAGE usage)
 {
 	shared_ptr<DragonSolenoid> solenoid;
 	auto it = solenoids.find(usage);
@@ -217,9 +234,7 @@ shared_ptr<DragonSolenoid> MechanismFactory::GetSolenoid(
 	}
 	return solenoid;
 }
-DragonServo *MechanismFactory::GetServo(
-	const ServoMap &servos,
-	ServoUsage::SERVO_USAGE usage)
+DragonServo *MechanismFactory::GetServo(const ServoMap &servos, ServoUsage::SERVO_USAGE usage)
 {
 	DragonServo *servo = nullptr;
 	auto it = servos.find(usage);
@@ -242,9 +257,7 @@ DragonServo *MechanismFactory::GetServo(
 	}
 	return servo;
 }
-shared_ptr<DragonDigitalInput> MechanismFactory::GetDigitalInput(
-	const DigitalInputMap &digitaInputs,
-	DigitalInputUsage::DIGITAL_INPUT_USAGE usage)
+shared_ptr<DragonDigitalInput> MechanismFactory::GetDigitalInput(const DigitalInputMap &digitaInputs, DigitalInputUsage::DIGITAL_INPUT_USAGE usage)
 {
 	shared_ptr<DragonDigitalInput> dio;
 	auto it = digitaInputs.find(usage);
@@ -268,9 +281,7 @@ shared_ptr<DragonDigitalInput> MechanismFactory::GetDigitalInput(
 	return dio;
 }
 
-DragonAnalogInput *MechanismFactory::GetAnalogInput(
-	const AnalogInputMap &analogInputs,
-	DragonAnalogInput::ANALOG_SENSOR_TYPE usage)
+DragonAnalogInput *MechanismFactory::GetAnalogInput(const AnalogInputMap &analogInputs, DragonAnalogInput::ANALOG_SENSOR_TYPE usage)
 {
 	DragonAnalogInput *anIn = nullptr;
 	auto it = analogInputs.find(usage);

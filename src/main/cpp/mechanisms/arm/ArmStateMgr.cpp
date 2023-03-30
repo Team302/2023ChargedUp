@@ -69,7 +69,8 @@ ArmStateMgr::ArmStateMgr() : StateMgr(),
                              m_currentState(ARM_STATE::STARTING_POSITION_ROTATE),
                              m_targetState(ARM_STATE::STARTING_POSITION_ROTATE),
                              m_gamepieceMode(RobotStateChanges::None),
-                             m_grabberState(GrabberStateMgr::GRABBER_STATE::GRAB)
+                             m_grabberState(GrabberStateMgr::GRABBER_STATE::GRAB),
+                             m_intakeState(IntakeStateMgr::INTAKE_STATE::HOLD)
 //========= Hand modified code end section 1 ========
 
 {
@@ -87,9 +88,6 @@ ArmStateMgr::ArmStateMgr() : StateMgr(),
     stateMap["FLOOR_POSITION_ROTATE"] = m_floor_position_rotateState;
     stateMap["FLOOR_POSITION_ROTATE_AUTON"] = m_floor_position_rotate_autonState;
 
-    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::DesiredGamePiece);
-    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::GrabberState);
-
     Init(m_arm, stateMap);
     if (m_arm != nullptr)
     {
@@ -98,6 +96,8 @@ ArmStateMgr::ArmStateMgr() : StateMgr(),
 
     //========= Hand modified code start section 2 ========
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::DesiredGamePiece);
+    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::GrabberState);
+    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::IntakeState);
     //========= Hand modified code end section 2 ========
 }
 
@@ -125,6 +125,9 @@ void ArmStateMgr::CheckForStateTransition()
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Target: "), m_arm->GetTarget());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Current Pos: "), m_arm->GetPositionDegrees().to<double>());
 
+    double armAngle = m_arm->GetPositionDegrees().to<double>();
+    double extenderPos = MechanismFactory::GetMechanismFactory()->GetExtender()->GetPositionInches().to<double>();
+
     if (m_targetState != m_currentState)
     {
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Setting target state to: "), m_targetState);
@@ -135,12 +138,12 @@ void ArmStateMgr::CheckForStateTransition()
 
         if (m_targetState == ARM_STATE::HOLD_POSITION_ROTATE)
         {
-            double armAngle = m_arm->GetPositionDegrees().to<double>();
-            double extenderPos = MechanismFactory::GetMechanismFactory()->GetExtender()->GetPositionInches().to<double>();
 
-            m_arm->UpdateTarget(ArmHoldPosHelper::CalculateHoldPositionTarget(armAngle, extenderPos, m_gamepieceMode, m_grabberState));
+            m_arm->UpdateTarget(ArmHoldPosHelper::CalculateHoldPositionTarget(armAngle, extenderPos, m_gamepieceMode, m_grabberState, m_intakeState));
         }
     }
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Ext Current Pos: "), extenderPos);
+
     //========= Hand modified code end section 3 ========
 }
 
@@ -161,7 +164,7 @@ void ArmStateMgr::CheckForGamepadTransitions()
             m_currentState = static_cast<ARM_STATE>(GetCurrentState());
             m_targetState = m_currentState;
 
-            if (abs(controller->GetAxisValue(TeleopControlFunctions::MANUAL_ROTATE)) > 0.05)
+            if (abs(controller->GetAxisValue(TeleopControlFunctions::MANUAL_ROTATE)) > 0.10)
             {
                 m_targetState = ARM_STATE::MANUAL_ROTATE;
             }
@@ -273,6 +276,10 @@ void ArmStateMgr::Update(RobotStateChanges::StateChange change, int state)
     else if (change == RobotStateChanges::GrabberState)
     {
         m_grabberState = static_cast<GrabberStateMgr::GRABBER_STATE>(state);
+    }
+    else if (change == RobotStateChanges::IntakeState)
+    {
+        m_intakeState = static_cast<IntakeStateMgr::INTAKE_STATE>(state);
     }
 }
 //========= Hand modified code end section 4 ========

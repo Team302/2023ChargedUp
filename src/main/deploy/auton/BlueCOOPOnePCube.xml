@@ -3,7 +3,8 @@
 <auton>
 <primitive id="RESET_POSITION"
 	           pathname="BlueCOOPOne1CubeSlow.wpilib.json"
-               grabber="GRAB"/>
+               grabber="GRAB"
+               intake="HOLD"/>
     <!--score preloaded cube-->
     <snippet file="ScoreCube.xml"/>
     <!--drive over charging station-->
@@ -14,6 +15,7 @@
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                grabber="OPEN"
+               intake="INTAKE_OFF"
                time="9.0"
                />
     <!--drive onto charging station-->
@@ -24,6 +26,7 @@
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                grabber="OPEN"
+               intake="INTAKE_OFF"
                time="10.0"
                />
     <!--auto balance-->
@@ -33,6 +36,7 @@
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                grabber="OPEN"
+               intake="INTAKE_OFF"
                time="10.0"
                />
 </auton>

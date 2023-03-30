@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE auton SYSTEM "auton.dtd">
 <auton>
-<primitive id="RESET_POSITION"
-	   pathname="BlueWallOne1.wpilib.json"
-       grabber="GRAB"/>
+   <primitive id="RESET_POSITION"
+	            pathname="BlueWallOne1.wpilib.json"
+               grabber="GRAB"
+               intake="HOLD"/>
     <!--score preloaded cone-->
     <snippet file="ScoreCone.xml"/>
     <!--drive to charing station-->
@@ -14,6 +15,7 @@
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                grabber="OPEN"
+               intake="INTAKE"
                time="0.8"
                />
     <primitive id="DRIVE_PATH"
@@ -23,6 +25,7 @@
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                grabber="OPEN"
+               intake="INTAKE"
                time="1.0"
                />
     <primitive id="DRIVE_PATH"
@@ -32,6 +35,7 @@
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                grabber="OPEN"
+               intake="INTAKE"
                time="3.5"
                />
     <primitive id="DRIVE_PATH"
@@ -41,6 +45,7 @@
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                grabber="OPEN"
+               intake="INTAKE"
                time="1.5"
                />
     <!--pick up cube-->
@@ -50,6 +55,7 @@
                arm="FLOOR_POSITION_ROTATE_AUTON"
                extender="STARTING_POSITION_EXTEND"
                grabber="OPEN"
+               intake="INTAKE"
                time="1.0"
                />
     <primitive id="DO_NOTHING"
@@ -58,6 +64,7 @@
                arm="FLOOR_POSITION_ROTATE_AUTON"
                extender="FLOOR_EXTEND"
                grabber="OPEN"
+               intake="INTAKE"
                time="0.4"
                />
     <primitive id="DO_NOTHING"
@@ -66,6 +73,7 @@
                arm="FLOOR_POSITION_ROTATE_AUTON"
                extender="FLOOR_EXTEND"
                grabber="GRAB"
+               intake="HOLD"
                time="0.4"
                />
    <!--drive to scoring station-->
@@ -76,6 +84,7 @@
                arm="HOLD_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                grabber="GRAB"
+               intake="HOLD"
                time="6.0"
                />
    <!--score cube-->
@@ -83,30 +92,35 @@
                arm="CUBE_BACKROW_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                grabber="GRAB"
+               intake="HOLD"
                time="0.6"
                />
     <primitive id="DO_NOTHING"
                arm="HOLD_POSITION_ROTATE"
                extender="CUBE_BACKROW_EXTEND"
                grabber="GRAB"
+               intake="HOLD"
                time="0.35"
                />
     <primitive id="DO_NOTHING"
                arm="HOLD_POSITION_ROTATE"
                extender="CUBE_BACKROW_EXTEND"
                grabber="OPEN"
+               intake="INTAKE_RELEASE"
                time="0.5"
                />
     <primitive id="DO_NOTHING"
                arm="HOLD_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                grabber="OPEN"
+               intake="INTAKE_RELEASE"
                time="0.5"
                />
    <primitive id="DO_NOTHING"
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                grabber="OPEN"
+               intake="INTAKE_RELEASE"
                time="0.5"
                />
 </auton>
