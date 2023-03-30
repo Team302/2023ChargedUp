@@ -18,12 +18,15 @@
 // FRC Includes
 #include <frc/kinematics/ChassisSpeeds.h>
 #include <frc/trajectory/TrajectoryUtil.h>
+#include <frc/geometry/Translation2d.h>
 
 #include <units/angle.h>
 
 // Team302 Includes
-#include <utils/Point2d.h>
 #include <chassis/ChassisOptionEnums.h>
+
+// Third party includes
+#include <pathplanner/lib/PathPlannerTrajectory.h>
 
 /// @brief This is used to give all neccessary data to ISwerveDriveStates
 
@@ -32,7 +35,8 @@ struct ChassisMovement
     ChassisOptionEnums::DriveStateType driveOption = ChassisOptionEnums::DriveStateType::ROBOT_DRIVE;
     frc::ChassisSpeeds chassisSpeeds = frc::ChassisSpeeds();
     frc::Trajectory trajectory = frc::Trajectory();
-    Point2d centerOfRotationOffset = Point2d();
+    pathplanner::PathPlannerTrajectory pathplannerTrajectory = pathplanner::PathPlannerTrajectory();
+    frc::Translation2d centerOfRotationOffset = frc::Translation2d();
     ChassisOptionEnums::HeadingOption headingOption = ChassisOptionEnums::HeadingOption::MAINTAIN;
     ChassisOptionEnums::NoMovementOption noMovementOption = ChassisOptionEnums::NoMovementOption::STOP;
     ChassisOptionEnums::AutonControllerType controllerType = ChassisOptionEnums::AutonControllerType::RAMSETE;

@@ -1,4 +1,3 @@
-
 //====================================================================================================================================================
 // Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
@@ -14,62 +13,35 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
+#pragma once
+
 // C++ Includes
 #include <memory>
-#include <string>
 
-// FRC includes
-#include <frc/Timer.h>
+// Third party includes
+#include <pathplanner/lib/PathPlanner.h>
 
-// Team 302 includes
-#include <auton/drivePrimitives/DriveStop.h>
-#include <auton/PrimitiveParams.h>
+// Team 302 Includes
 #include <auton/drivePrimitives/IPrimitive.h>
-#include <mechanisms/MechanismFactory.h>
-#include <mechanisms/controllers/ControlModes.h>
 
-// Third Party Includes
+// Forward Declares
+class IChassis;
+class PrimitiveParams;
 
-using namespace std;
-using namespace frc;
-
-// Includes
-#include <cmath>
-
-// Team302 includes
-#include <auton/drivePrimitives/DriveToWall.h>
-#include <chassis/ChassisFactory.h>
-
-DriveToWall::DriveToWall() : SuperDrive(),
-							 m_minimumTime(0),
-							 m_timeRemaining(0),
-							 m_underSpeedCounts(0)
+class ResetPositionPathPlanner : public IPrimitive
 {
-}
+public:
+    ResetPositionPathPlanner();
 
-void DriveToWall::Init(PrimitiveParams *params)
-{
-	SuperDrive::Init(params);
-	m_timeRemaining = params->GetTime();
-	m_underSpeedCounts = 0;
-	m_minimumTime = 0.3;
-}
+    virtual ~ResetPositionPathPlanner() = default;
 
-void DriveToWall::Run()
-{
-	if (m_minimumTime <= 0)
-	{
-		// if (abs( ChassisFactory::GetChassisFactory()->GetIChassis()->GetCurrentSpeed()) < SPEED_THRESHOLD)
-		//{
-		//	m_underSpeedCounts++;
-		// }
-	}
+    void Init(PrimitiveParams *params) override;
 
-	m_minimumTime -= IPrimitive::LOOP_LENGTH;
-	m_timeRemaining -= IPrimitive::LOOP_LENGTH;
-}
+    void Run() override;
 
-bool DriveToWall::IsDone()
-{
-	return (m_underSpeedCounts >= UNDER_SPEED_COUNT_THRESHOLD) && m_timeRemaining <= 0;
-}
+    bool IsDone() override;
+
+private:
+    std::shared_ptr<IChassis> m_chassis;
+    pathplanner::PathPlannerTrajectory m_trajectory;
+};

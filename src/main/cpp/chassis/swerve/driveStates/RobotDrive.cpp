@@ -98,8 +98,8 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates(Chass
         // vy = twist_vel.dx / kLooperDt;
         // omega = twist_vel.dtheta / kLooperDt;
     */
-    units::length::meter_t centerOfRotationW = (w / 2.0) - chassisMovement.centerOfRotationOffset.Y;
-    units::length::meter_t centerOfRotationL = (l / 2.0) - chassisMovement.centerOfRotationOffset.X;
+    units::length::meter_t centerOfRotationW = (w / 2.0) - chassisMovement.centerOfRotationOffset.Y();
+    units::length::meter_t centerOfRotationL = (l / 2.0) - chassisMovement.centerOfRotationOffset.X();
 
     units::velocity::meters_per_second_t omegaW = omega.to<double>() * centerOfRotationW / 1_s;
     units::velocity::meters_per_second_t omegaL = omega.to<double>() * centerOfRotationL / 1_s;
@@ -148,6 +148,29 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates(Chass
         m_blState.speed *= ratio;
         m_brState.speed *= ratio;
     }
+
+    /*
+    SwerveChassis *chassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
+    frc::SwerveDriveKinematics<4> kinematics = chassis->GetKinematics();
+
+    wpi::array<frc::SwerveModuleState, 4> states = kinematics.ToSwerveModuleStates(chassisMovement.chassisSpeeds, chassisMovement.centerOfRotationOffset);
+
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Robot Drive"), string("bl_Before"), m_blState.speed.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Robot Drive"), string("br_Before"), m_brState.speed.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Robot Drive"), string("MaxSpeed"), chassis->GetMaxSpeed().to<double>());
+
+    chassis->GetKinematics().DesaturateWheelSpeeds(&states, chassis->GetMaxSpeed());
+
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Robot Drive"), string("bl_After"), m_blState.speed.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Robot Drive"), string("br_After"), m_brState.speed.to<double>());
+
+    auto [fl, fr, bl, br] = states;
+
+    m_flState = fl;
+    m_frState = fr;
+    m_blState = bl;
+    m_brState = br;
+*/
     return {m_flState, m_frState, m_blState, m_brState};
 }
 

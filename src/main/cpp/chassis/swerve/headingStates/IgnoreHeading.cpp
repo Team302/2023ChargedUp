@@ -1,4 +1,3 @@
-
 //====================================================================================================================================================
 // Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
@@ -14,50 +13,21 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#pragma once
+// Team302 Includes
+#include <chassis/ChassisOptionEnums.h>
+#include <chassis/swerve/headingStates/IgnoreHeading.h>
+#include <chassis/ChassisFactory.h>
 
-// C++ Includes
+// Standish Quick Fix
+#include <frc/DriverStation.h>
 
-// FRC includes
-
-// Team 302 includes
-
-// Third Party Includes
-
-#include <auton/drivePrimitives/SuperDrive.h>
-
-class PrimitiveParams;
-
-class DriveDistance : public SuperDrive
+IgnoreHeading::IgnoreHeading() : ISwerveDriveOrientation(ChassisOptionEnums::HeadingOption::IGNORE)
 {
-public:
-	bool IsDone() override;
-	void Init(PrimitiveParams *params) override;
-	void Run() override;
-	DriveDistance();
-	virtual ~DriveDistance() = default;
+}
 
-protected:
-	void SetDistance(
-		double distance);
-
-private:
-	void CalculateSlowDownDistance();
-	PrimitiveParams *m_params;
-
-	double m_targetDistance;
-	double m_initialDistance;
-	double m_timeRemaining;
-
-	double m_minSpeedCountTime;
-	int m_underSpeedCounts;
-	double m_startHeading;
-	double m_endHeading;
-	double m_minSpeed;
-	bool m_arcing;
-
-	const double SPEED_THRESHOLD = 1.5;
-	const double MIN_SPEED_COUNT_TIME = 0.5; // seconds before we start checking for wall collisions
-	const int UNDER_SPEED_COUNT_THRESHOLD = 4;
-	const double DECEL_TIME_MULTIPLIER = 0.85; // 0.75
-};
+void IgnoreHeading::UpdateChassisSpeeds(ChassisMovement &chassisMovement)
+{
+    // update stored heading for transition to teleop from auton
+    auto chassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
+    chassis->SetStoredHeading(chassis->GetPose().Rotation().Degrees());
+}

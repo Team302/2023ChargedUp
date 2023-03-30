@@ -45,19 +45,17 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
     map<string, PRIMITIVE_IDENTIFIER> primStringToEnumMap;
     primStringToEnumMap["DO_NOTHING"] = DO_NOTHING;
     primStringToEnumMap["HOLD_POSITION"] = HOLD_POSITION;
-    primStringToEnumMap["DRIVE_DISTANCE"] = DRIVE_DISTANCE;
-    primStringToEnumMap["DRIVE_TIME"] = DRIVE_TIME;
-    primStringToEnumMap["DRIVE_TO_WALL"] = DRIVE_TO_WALL;
-    primStringToEnumMap["TURN_ANGLE_ABS"] = TURN_ANGLE_ABS;
-    primStringToEnumMap["TURN_ANGLE_REL"] = TURN_ANGLE_REL;
     primStringToEnumMap["DRIVE_PATH"] = DRIVE_PATH;
+    primStringToEnumMap["DRIVE_PATH_PLANNER"] = DRIVE_PATH_PLANNER;
     primStringToEnumMap["RESET_POSITION"] = RESET_POSITION;
+    primStringToEnumMap["RESET_POSITION_PATH_PLANNER"] = RESET_POSITION_PATH_PLANNER;
     primStringToEnumMap["AUTO_BALANCE"] = AUTO_BALANCE;
 
     map<string, ChassisOptionEnums::HeadingOption> headingOptionMap;
     headingOptionMap["MAINTAIN"] = ChassisOptionEnums::HeadingOption::MAINTAIN;
     headingOptionMap["TOWARD_GOAL"] = ChassisOptionEnums::HeadingOption::TOWARD_GOAL;
     headingOptionMap["SPECIFIED_ANGLE"] = ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE;
+    headingOptionMap["IGNORE"] = ChassisOptionEnums::HeadingOption::IGNORE;
 
     xml_document doc;
     xml_parse_result result = doc.load_file(fulldirfile.c_str());
