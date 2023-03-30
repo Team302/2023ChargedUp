@@ -123,7 +123,7 @@ bool TrajectoryDrivePathPlanner::IsDone()
     if (!m_trajectoryStates.empty()) // If we have states...
     {
         // isDone = m_holonomicController.atReference();
-        isDone = IsSamePose(m_chassis->GetPose(), m_finalState.pose, 10.0, 3.0);
+        isDone = IsSamePose(m_chassis->GetPose(), m_finalState.pose, 10.0, 2.0);
     }
     else
     {
