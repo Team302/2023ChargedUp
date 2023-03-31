@@ -8,28 +8,9 @@
 
 #include <cameraserver/CameraServer.h>
 
-#include <auton/AutonPreviewer.h>
-#include <auton/CyclePrimitives.h>
-#include <chassis/ChassisFactory.h>
-#include <chassis/holonomic/HolonomicDrive.h>
 #include <chassis/swerve/SwerveChassis.h>
-#include <chassis/mecanum/MecanumChassis.h>
-#include <driveteamfeedback/DriverFeedback.h>
-#include <DragonVision/LimelightFactory.h>
-#include <mechanisms/StateMgrHelper.h>
 #include <Robot.h>
-#include <robotstate/RobotState.h>
-#include <RobotXmlParser.h>
 #include <teleopcontrol/TeleopControl.h>
-#include <utils/DragonField.h>
-#include <utils/FMSData.h>
-#include <utils/logging/LoggableItemMgr.h>
-#include <utils/logging/Logger.h>
-#include <utils/logging/LoggerData.h>
-#include <utils/logging/LoggerEnums.h>
-#include <utils/WaypointXmlParser.h>
-
-#include <AdjustableItemMgr.h>
 
 /// DEBUGGING
 #include <hw/factories/PigeonFactory.h>
