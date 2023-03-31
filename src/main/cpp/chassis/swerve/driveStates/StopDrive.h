@@ -24,18 +24,22 @@
 #include <chassis/swerve/driveStates/ISwerveDriveState.h>
 #include <chassis/ChassisMovement.h>
 
+class SwerveChassis;
+
 class StopDrive : public ISwerveDriveState
 {
 public:
     using ISwerveDriveState::ISwerveDriveState;
 
-    std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates(
-        ChassisMovement &chassisMovement) override;
+    StopDrive();
+    ~StopDrive() = default;
 
-    void Init(
-        ChassisMovement &chassisMovement) override;
+    std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates(ChassisMovement &chassisMovement) override;
+
+    void Init(ChassisMovement &chassisMovement) override;
 
 private:
+    SwerveChassis *m_chassis;
     frc::SwerveModuleState *m_flState = new frc::SwerveModuleState();
     frc::SwerveModuleState *m_frState = new frc::SwerveModuleState();
     frc::SwerveModuleState *m_blState = new frc::SwerveModuleState();
