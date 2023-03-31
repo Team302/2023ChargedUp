@@ -241,16 +241,34 @@ ISwerveDriveOrientation *SwerveChassis::GetHeadingState(ChassisMovement moveInfo
 }
 ISwerveDriveState *SwerveChassis::GetDriveState(ChassisMovement moveInfo)
 {
-    auto itr = m_driveStateMap.find(moveInfo.driveOption);
-    if (itr == m_driveStateMap.end())
-    {
-        return m_robotDrive;
-    }
-    auto state = itr->second;
+    ISwerveDriveState *state = nullptr;
 
-    if (m_currentDriveState == nullptr)
+    if ((units::math::abs(moveInfo.chassisSpeeds.vx) < m_velocityDeadband) &&
+        (units::math::abs(moveInfo.chassisSpeeds.vy) < m_velocityDeadband) &&
+        (units::math::abs(moveInfo.chassisSpeeds.omega) < m_angularDeadband))
     {
-        m_currentDriveState = m_robotDrive;
+        if (moveInfo.noMovementOption == ChassisOptionEnums::NoMovementOption::HOLD_POSITION)
+        {
+            state = m_driveStateMap[ChassisOptionEnums::HOLD_DRIVE];
+        }
+        else
+        {
+            state = m_driveStateMap[ChassisOptionEnums::STOP_DRIVE];
+        }
+    }
+    else
+    {
+        auto itr = m_driveStateMap.find(moveInfo.driveOption);
+        if (itr == m_driveStateMap.end())
+        {
+            return m_robotDrive;
+        }
+        state = itr->second;
+
+        if (m_currentDriveState == nullptr)
+        {
+            m_currentDriveState = m_robotDrive;
+        }
     }
 
     if (state != m_currentDriveState)
