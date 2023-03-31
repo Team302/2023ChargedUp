@@ -48,6 +48,7 @@ public:
 	~Arm() override = default;
 
 	//========= Hand modified code start section 0 ========
+	void Update() override;
 	void ResetIfArmDown();
 
 	/// @brief  Return the current position of the mechanism in degrees

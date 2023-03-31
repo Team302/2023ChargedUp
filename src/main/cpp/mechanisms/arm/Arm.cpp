@@ -30,6 +30,8 @@
 #include <hw/DragonCanCoder.h>
 #include <mechanisms/base/Mech1IndMotor.h>
 #include <mechanisms/arm/arm.h>
+#include <robotstate/RobotState.h>
+#include <robotstate/RobotStateChanges.h>
 #include <utils/logging/Logger.h>
 
 // Third Party Includes
@@ -55,7 +57,14 @@ Arm::Arm(string controlFileName,
 }
 
 //========= Hand modified code start section 0 ========
+void Arm::Update()
+{
+	Mech1IndMotor::Update();
+	auto angle = GetPositionDegrees();
+	int wholeAngle = static_cast<int>(std::round(angle.to<double>()));
 
+	RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmRotateAngle, wholeAngle);
+}
 void Arm::ResetIfArmDown()
 {
 	if (GetMotor().get()->IsReverseLimitSwitchClosed())
