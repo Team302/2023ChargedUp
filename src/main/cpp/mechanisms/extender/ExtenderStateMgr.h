@@ -140,6 +140,6 @@ private:
 
     ArmStateMgr::ARM_STATE m_armState;
 
-    const double m_armAngleTolerance = 5.0;
+    const double m_armAngleTolerance = 10.0;
     const double m_armFloorTolerance = 11.0;
 };

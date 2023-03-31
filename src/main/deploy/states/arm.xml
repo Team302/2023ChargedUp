@@ -112,7 +112,7 @@
     stateIdentifier="HUMAN_PLAYER_STATION_ROTATE"
     controlDataIdentifier="RotateToUpwardAngle"
     controlDataIdentifier2=""
-    value="65"
+    value="67"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
