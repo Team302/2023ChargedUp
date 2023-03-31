@@ -49,7 +49,7 @@ std::array<frc::SwerveModuleState, 4> VisionDrive::UpdateSwerveModuleStates(
     if (tc->IsButtonPressed(TeleopControlFunctions::DEBUG_INC_P))
     {
         pCounter++;
-        if (pCounter == 1000 / 20)
+        if (pCounter == 400 / 20)
         {
             pCounter = 0;
             m_visionKP_Y += 0.01;
@@ -58,7 +58,7 @@ std::array<frc::SwerveModuleState, 4> VisionDrive::UpdateSwerveModuleStates(
     else if (tc->IsButtonPressed(TeleopControlFunctions::DEBUG_DEC_P))
     {
         pCounter++;
-        if (pCounter == 1000 / 20)
+        if (pCounter == 400 / 20)
         {
             pCounter = 0;
             m_visionKP_Y -= 0.01;
@@ -70,19 +70,19 @@ std::array<frc::SwerveModuleState, 4> VisionDrive::UpdateSwerveModuleStates(
     if (tc->IsButtonPressed(TeleopControlFunctions::DEBUG_INC_I))
     {
         iCounter++;
-        if (iCounter == 1000 / 20)
+        if (iCounter == 400 / 20)
         {
             iCounter = 0;
-            m_visionKI_Y += 0.01;
+            m_visionKI_Y += 0.001;
         }
     }
     else if (tc->IsButtonPressed(TeleopControlFunctions::DEBUG_DEC_I))
     {
         iCounter++;
-        if (iCounter == 1000 / 20)
+        if (iCounter == 400 / 20)
         {
             iCounter = 0;
-            m_visionKI_Y -= 0.01;
+            m_visionKI_Y -= 0.001;
         }
     }
     else
@@ -234,11 +234,11 @@ void VisionDrive::DriveToTarget(ChassisMovement &chassisMovement)
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "YError", yError.to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "XError", xError.to<double>());
 
-    if (abs(xError.to<double>()) < m_driveXTolerance)
+    if (std::abs(xError.to<double>()) < m_driveXTolerance)
     {
         chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(m_autoAlignKP_Y * yError.to<double>());
 
-        if (abs(chassisMovement.chassisSpeeds.vy.to<double>()) > m_maximumSpeed)
+        if (std::abs(chassisMovement.chassisSpeeds.vy.to<double>()) > m_maximumSpeed)
         {
             if (chassisMovement.chassisSpeeds.vy.to<double>() < 0.0)
             {
@@ -251,7 +251,7 @@ void VisionDrive::DriveToTarget(ChassisMovement &chassisMovement)
         }
     }
 
-    if (abs(xError.to<double>()) > m_autoAlignXTolerance)
+    if (std::abs(xError.to<double>()) > m_autoAlignXTolerance)
     {
         chassisMovement.chassisSpeeds.vx = units::velocity::meters_per_second_t(1.0);
     }
@@ -259,7 +259,7 @@ void VisionDrive::DriveToTarget(ChassisMovement &chassisMovement)
     chassisMovement.chassisSpeeds.vx = units::velocity::meters_per_second_t(0.0);
 
     // once we get within threshold, switch to logic similar to below
-    if ((abs(yError.to<double>()) < m_autoAlignYTolerance)) //&& (abs(xError.to<double>()) < m_autoAlignXTolerance))
+    if ((std::abs(yError.to<double>()) < m_autoAlignYTolerance)) //&& (std::abs(xError.to<double>()) < m_autoAlignXTolerance))
     {
         exit = true;
     }
@@ -275,6 +275,7 @@ void VisionDrive::DriveToTarget(ChassisMovement &chassisMovement)
 void VisionDrive::AlignRawVision(ChassisMovement &chassisMovement)
 {
     bool exit = false;
+    static units::length::inch_t yErrorPrevious = units::length::inch_t(0.0);
 
     // Entry
     DragonLimelight::PIPELINE_MODE pipelineMode = DragonLimelight::APRIL_TAG;
@@ -307,6 +308,11 @@ void VisionDrive::AlignRawVision(ChassisMovement &chassisMovement)
     {
         // override yError and xError to data from pipeline
         yError = targetData->getYdistanceToTargetRobotFrame();
+        if ((yError * yErrorPrevious).to<double>() < 0)
+            yErrorIntegral = units::length::inch_t(0.0);
+
+        yErrorPrevious = yError;
+
         yErrorIntegral += yError;
 
         xError = targetData->getXdistanceToTargetRobotFrame() - units::length::inch_t(m_robotFrameXDistCorrection);
@@ -314,8 +320,9 @@ void VisionDrive::AlignRawVision(ChassisMovement &chassisMovement)
         exit = (AtTargetY(targetData) /*&& AtTargetX(targetData)*/);
     }
 
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "YError", yError.to<double>() + 100);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "YError", yError.to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "XError", xError.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "yErrorIntegral", yErrorIntegral.to<double>());
 
     units::velocity::meters_per_second_t ySpeed = units::velocity::meters_per_second_t(0.0);
     units::velocity::meters_per_second_t xSpeed = units::velocity::meters_per_second_t(0.0);
@@ -324,9 +331,21 @@ void VisionDrive::AlignRawVision(ChassisMovement &chassisMovement)
     {
         ySpeed = units::length::meter_t((yError * m_visionKP_Y) + (yErrorIntegral * m_visionKI_Y)) / 1_s;
 
-        if (abs(yError.to<double>()) < m_autoAlignYTolerance)
+        if (std::abs(yError.to<double>()) < m_autoAlignYTolerance)
         {
             xSpeed = units::length::meter_t(xError * m_visionKP_X * 0) / 1_s;
+        }
+    }
+
+    if (!exit)
+    {
+        if (std::abs(ySpeed.to<double>()) < m_minimumSpeed)
+        {
+            ySpeed = units::length::meter_t(m_minimumSpeed * ((ySpeed.to<double>() < 0 ? -1 : 1))) / 1_s;
+        }
+        if (std::abs(ySpeed.to<double>()) > m_maximumSpeed)
+        {
+            ySpeed = units::length::meter_t(m_maximumSpeed * ((ySpeed.to<double>() < 0 ? -1 : 1))) / 1_s;
         }
     }
     /*
@@ -388,14 +407,14 @@ bool VisionDrive::AtTargetX(std::shared_ptr<DragonVisionTarget> targetData)
         // vertical angle is positive, so we are looking at high cone
         if (verticalAngle.to<double>() > 0.0)
         {
-            if ((abs(xError.to<double>()) - m_highConeDistance) < m_tolerance)
+            if ((std::abs(xError.to<double>()) - m_highConeDistance) < m_tolerance)
             {
                 return true;
             }
         }
         else // vert angle is negative, so we're looking at low cone
         {
-            if ((abs(xError.to<double>()) - m_lowConeDistance) < m_tolerance)
+            if ((std::abs(xError.to<double>()) - m_lowConeDistance) < m_tolerance)
             {
                 return true;
             }
@@ -410,7 +429,7 @@ bool VisionDrive::AtTargetY(std::shared_ptr<DragonVisionTarget> targetData)
     {
         units::length::inch_t yError = targetData->getYdistanceToTargetRobotFrame();
 
-        if (abs(yError.to<double>()) < m_tolerance)
+        if (std::abs(yError.to<double>()) < m_tolerance)
         {
             return true;
         }
@@ -463,6 +482,7 @@ double VisionDrive::getOffsetToTarget(ChassisOptionEnums::RELATIVE_POSITION targ
 
 void VisionDrive::ResetVisionDrive()
 {
+    yErrorIntegral = units::length::inch_t(0);
     m_previousState = m_currentState;
     m_currentState = VISION_STATE::LOOKING_FOR_APRIL_TAG;
 }
