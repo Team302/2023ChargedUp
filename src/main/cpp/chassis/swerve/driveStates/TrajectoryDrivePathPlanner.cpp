@@ -27,9 +27,9 @@ using frc::Pose2d;
 TrajectoryDrivePathPlanner::TrajectoryDrivePathPlanner(RobotDrive *robotDrive) : RobotDrive(),
                                                                                  m_trajectory(),
                                                                                  m_robotDrive(robotDrive),
-                                                                                 m_holonomicController(frc2::PIDController{3.0, 1.0, 0},  // 3.725, 0.85
-                                                                                                       frc2::PIDController{3.0, 1.0, 0},  // 3.725, 0.85
-                                                                                                       frc::PIDController{1.5, 0.25, 0}), // 0.325, 0.0
+                                                                                 m_holonomicController(frc2::PIDController{2.0, 0.5, 0},   // 3.725, 0.85
+                                                                                                       frc2::PIDController{2.0, 0.5, 0},   // 3.725, 0.85
+                                                                                                       frc::PIDController{1.25, 0.25, 0}), // 0.325, 0.0
                                                                                  m_desiredState(),
                                                                                  m_trajectoryStates(),
                                                                                  m_prevPose(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose()),
