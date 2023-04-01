@@ -14,6 +14,8 @@
 <!--drive to scoring station-->
 <primitive id="DRIVE_PATH_PLANNER"
 	           pathname="BlueHP2"
+				extender="FLOOR_EXTEND"
+				intake="INTAKE"
                time="5.0"/>
 <primitive id="DRIVE_PATH_PLANNER"
 	           pathname="BlueHP3"

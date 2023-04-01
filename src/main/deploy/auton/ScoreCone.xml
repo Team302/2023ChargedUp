@@ -19,7 +19,7 @@
                />
     <primitive id="DO_NOTHING"
                arm="CONE_BACKROW_ROTATE"
-               extender="FLOOR_EXTEND"
+               extender="STARTING_POSITION_EXTEND"
                intake="INTAKE_RELEASE"
                time="0.25"
                />
