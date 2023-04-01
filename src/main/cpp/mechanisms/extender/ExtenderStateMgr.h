@@ -121,6 +121,7 @@ private:
     bool m_hasInitialized = false;
 
     frc::Timer *m_initializationTimer;
+    bool m_timerStarted = false;
 
     double m_extendedPosition;
     int m_armAngle = 0.0;

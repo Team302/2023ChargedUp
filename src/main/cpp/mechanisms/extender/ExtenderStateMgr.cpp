@@ -36,7 +36,6 @@
 #include <mechanisms/extender/extenderStateMgr.h>
 #include <robotstate/RobotState.h>
 #include <robotstate/RobotStateChanges.h>
-#include <utils/logging/Logger.h>
 
 // Third Party Includes
 
@@ -119,8 +118,13 @@ void ExtenderStateMgr::CheckForStateTransition()
     m_currentState = static_cast<EXTENDER_STATE>(GetCurrentState());
     m_targetState = m_currentState;
 
-    CheckForSensorTransitions();
+    if (!m_timerStarted)
+    {
+        m_initializationTimer->Start();
+        m_timerStarted = true;
+    }
 
+    CheckForSensorTransitions();
     if (m_checkGamePadTransitions)
     {
         CheckForGamepadTransitions();
@@ -128,30 +132,15 @@ void ExtenderStateMgr::CheckForStateTransition()
 
     if (m_extender != nullptr)
     {
-        // auto armAngle = MechanismFactory::GetMechanismFactory()->GetArm()->GetPositionDegrees().to<double>();
-        // auto armTarget = MechanismFactory::GetMechanismFactory()->GetArm()->GetTarget();
-        // auto armState = MechanismFactory::GetMechanismFactory()->GetArm()->GetStateMgr()->GetCurrentState();
-
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_extender->GetNetworkTableName(), "armangle", m_armAngle);
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_extender->GetNetworkTableName(), "armTarget", m_armTargetAngle);
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_extender->GetNetworkTableName(), "m_armFloorTolerance", m_armFloorTolerance);
-
         if ((m_armAngle < m_armFloorTolerance || abs(m_armAngle - m_armTargetAngle) > m_armAngleTolerance) &&
             m_targetState != EXTENDER_STATE::MANUAL_EXTEND_RETRACT &&
             m_armState != ArmStateMgr::ARM_STATE::MANUAL_ROTATE)
         {
             m_targetState = EXTENDER_STATE::STARTING_POSITION_EXTEND;
         }
-        else
+        else if (m_prevState != EXTENDER_STATE::INITIALIZE)
         {
             m_targetState = m_prevState;
-        }
-
-        // timeout initialization if we haven't hit limit switch within 1 second
-        if (m_initializationTimer->HasElapsed(units::time::second_t(1.0)))
-        {
-            m_hasInitialized = true;
-            m_initializationTimer->Stop();
         }
 
         // initalize extender
@@ -160,15 +149,13 @@ void ExtenderStateMgr::CheckForStateTransition()
             m_targetState = EXTENDER_STATE::INITIALIZE;
         }
 
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ExtenderMgr"), string("Target State"), m_targetState);
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ExtenderMgr"), string("Current State"), m_currentState);
-
         if (m_targetState != m_currentState)
         {
             SetCurrentState(m_targetState, true);
             RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmExtenderState, m_targetState);
         }
     }
+
     //========= Hand modified code end section 3 ========
 }
 
@@ -185,7 +172,6 @@ void ExtenderStateMgr::CheckForGamepadTransitions()
             {
                 m_targetState = EXTENDER_STATE::MANUAL_EXTEND_RETRACT;
                 m_prevState = m_targetState;
-                Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ExtenderMgr"), string("Extender Pct"), controller->GetAxisValue(TeleopControlFunctions::MANUAL_EXTEND_RETRACT));
             }
             else if (controller->IsButtonPressed(TeleopControlFunctions::STARTING_POSITION))
             {
@@ -266,14 +252,11 @@ void ExtenderStateMgr::CheckForSensorTransitions()
 {
     if (m_extender != nullptr)
     {
-        // Start timeout timer for initialization state
-        m_initializationTimer->Start();
-
         // If we are hitting limit switches, reset position
         bool hittingLimitSwitch = m_extender->ResetIfFullyExtended(m_extendedPosition);
         hittingLimitSwitch = !hittingLimitSwitch ? m_extender->ResetIfFullyRetracted() : hittingLimitSwitch;
 
-        if (hittingLimitSwitch && m_currentState == EXTENDER_STATE::INITIALIZE)
+        if (!m_hasInitialized && (hittingLimitSwitch || m_initializationTimer->HasElapsed(units::time::second_t(1.0))))
         {
             m_hasInitialized = true;
             m_targetState = EXTENDER_STATE::STARTING_POSITION_EXTEND;
