@@ -28,7 +28,6 @@ enum StateType
 {
     ARM_STATE,
     EXTENDER_STATE,
-    GRABBER_STATE,
     INTAKE_STATE,
     //========= Hand modified code start section 0 ========
     MANUAL_ARM_STATE,

@@ -27,7 +27,6 @@
 #include <chassis/ChassisOptionEnums.h>
 #include <mechanisms/arm/ArmStateMgr.h>
 #include <mechanisms/extender/ExtenderStateMgr.h>
-#include <mechanisms/grabber/GrabberStateMgr.h>
 #include <mechanisms/intake/IntakeStateMgr.h>
 #include <dragonVision/DragonLimelight.h>
 #include <chassis/swerve/driveStates/VisionDrive.h>
@@ -54,7 +53,6 @@ public:
         // @ADDMECH add parameter for your mechanism state
         ArmStateMgr::ARM_STATE armState,
         ExtenderStateMgr::EXTENDER_STATE extenderState,
-        GrabberStateMgr::GRABBER_STATE,
         IntakeStateMgr::INTAKE_STATE intakeState,
         DragonLimelight::PIPELINE_MODE pipelineMode,
         VisionDrive::ALIGNMENT_METHOD alignmentMethod); // Constructor. Takes in all parameters
@@ -75,7 +73,6 @@ public:
     std::string GetPathName() const { return m_pathName; };
     ArmStateMgr::ARM_STATE GetArmState() const { return m_armState; };
     ExtenderStateMgr::EXTENDER_STATE GetExtenderState() const { return m_extenderState; };
-    GrabberStateMgr::GRABBER_STATE GetGrabberState() const { return m_grabberState; };
     IntakeStateMgr::INTAKE_STATE GetIntakeState() const { return m_intakeState; }
     DragonLimelight::PIPELINE_MODE GetPipelineMode() const { return m_pipelineMode; }
     VisionDrive::ALIGNMENT_METHOD GetAlignmentMethod() const { return m_alignmentMethod; }
@@ -105,7 +102,6 @@ private:
     // @ADDMECH add attribute for your mechanism state
     ArmStateMgr::ARM_STATE m_armState;
     ExtenderStateMgr::EXTENDER_STATE m_extenderState;
-    GrabberStateMgr::GRABBER_STATE m_grabberState;
     IntakeStateMgr::INTAKE_STATE m_intakeState;
     DragonLimelight::PIPELINE_MODE m_pipelineMode;
     VisionDrive::ALIGNMENT_METHOD m_alignmentMethod;

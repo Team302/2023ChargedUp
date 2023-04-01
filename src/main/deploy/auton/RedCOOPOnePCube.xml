@@ -3,8 +3,7 @@
 <auton>
       <primitive id="RESET_POSITION"
 	            pathname="RedCOOPOne1CubeSlow.wpilib.json"
-               grabber="GRAB"
-               intake="HOLD"/>
+                  intake="HOLD"/>
     <!--score preloaded cone-->
     <snippet file="ScoreCone.xml"/>
 
@@ -13,7 +12,6 @@
                pathname="RedCOOPOne1CubeSlow.wpilib.json"
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
-               grabber="OPEN"
                intake="INTAKE_OFF"
                time="15.0"
                />
@@ -24,7 +22,6 @@
                heading="179.5"
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
-               grabber="OPEN"
                intake="INTAKE_OFF"
                time="10.0"
                />
@@ -34,7 +31,6 @@
                heading="179.5"
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
-               grabber="OPEN"
                intake="INTAKE_OFF"
                time="10.0"
                />

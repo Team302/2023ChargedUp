@@ -19,7 +19,7 @@
 #include <robotstate/RobotState.h>
 #include <robotstate/RobotStateChanges.h>
 #include <robotstate/IRobotStateChangeSubscriber.h>
-#include <mechanisms/grabber/GrabberStateMgr.h>
+#include <mechanisms/intake/IntakeStateMgr.h>>
 #include <networktables/NetworkTableInstance.h>
 #include <networktables/NetworkTable.h>
 #include <networktables/NetworkTableEntry.h>
@@ -60,7 +60,7 @@ void DriverFeedback::DisplayPressure() const
 }
 void DriverFeedback::UpdateLEDStates()
 {
-    if (DriverFeedback::m_AlignedWithConeNode)
+    if (DriverFeedback::m_alignedWithConeNode)
     {
         if (m_gamePieceState != DriverFeedbackStates::ALIGNED_WITH_CONE_NODE)
         {
@@ -69,7 +69,7 @@ void DriverFeedback::UpdateLEDStates()
         m_LEDStates->ClosingInChaserPattern(DragonLeds::YELLOW);
         m_gamePieceState = DriverFeedbackStates::ALIGNED_WITH_CONE_NODE;
     }
-    else if (DriverFeedback::m_AlignedWithCubeNode)
+    else if (DriverFeedback::m_alignedWithCubeNode)
     {
         if (m_gamePieceState != DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE)
         {
@@ -78,41 +78,41 @@ void DriverFeedback::UpdateLEDStates()
         m_LEDStates->ClosingInChaserPattern(DragonLeds::PURPLE);
         m_gamePieceState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
     }
-    else if (DriverFeedback::m_GamePieceInGrabber)
+    else if (DriverFeedback::m_gamePieceInIntake)
     {
 
-        if (m_gamePieceState != DriverFeedbackStates::GAME_PIECE_IN_GRABBER)
+        if (m_gamePieceState != DriverFeedbackStates::GAME_PIECE_IN_INTAKE)
         {
             m_LEDStates->ResetVariables();
         }
         m_LEDStates->AlternatingColorBlinkingPattern(DragonLeds::YELLOW, DragonLeds::PURPLE);
         m_gamePieceState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
     }
-    else if (DriverFeedback::m_WantCube)
+    else if (DriverFeedback::m_wantCube)
     {
         if (m_gamePieceState != DriverFeedbackStates::WANT_CUBE)
         {
             m_LEDStates->ResetVariables();
             m_gamePieceState = DriverFeedbackStates::WANT_CUBE;
         }
-        if (m_grabberStateChanged)
+        if (m_intakeStateChanged)
         {
-            if (m_GrabberIsOpen)
+            if (m_intakeIntaking)
                 m_LEDStates->BlinkingPattern(DragonLeds::PURPLE);
             else
                 m_LEDStates->SolidColorPattern(DragonLeds::PURPLE);
         }
     }
-    else if (DriverFeedback::m_WantCone)
+    else if (DriverFeedback::m_wantCone)
     {
         if (m_gamePieceState != DriverFeedbackStates::WANT_CONE)
         {
             m_LEDStates->ResetVariables();
             m_gamePieceState = DriverFeedbackStates::WANT_CONE;
         }
-        if (m_grabberStateChanged)
+        if (m_intakeStateChanged)
         {
-            if (m_GrabberIsOpen)
+            if (m_intakeIntaking)
                 m_LEDStates->BlinkingPattern(DragonLeds::YELLOW);
             else
                 m_LEDStates->SolidColorPattern(DragonLeds::YELLOW);
@@ -120,7 +120,7 @@ void DriverFeedback::UpdateLEDStates()
         m_LEDStates->SolidColorPattern(DragonLeds::YELLOW);
         m_gamePieceState = DriverFeedbackStates::WANT_CONE;
     }
-    else if (DriverFeedback::m_GamePieceReadyToPickUp)
+    else if (DriverFeedback::m_gamePieceReadyToPickUp)
     {
         if (m_gamePieceState != DriverFeedbackStates::GAME_PIECE_READY_TO_PICK_UP)
         {
@@ -142,20 +142,20 @@ void DriverFeedback::UpdateLEDStates()
 
 void DriverFeedback::ResetRequests(void)
 {
-    m_GrabberIsOpen = false;
-    m_WantCube = false;
-    m_WantCone = false;
-    m_GamePieceReadyToPickUp = false;
-    m_GamePieceInGrabber = false;
-    m_AlignedWithConeNode = false;
-    m_AlignedWithCubeNode = false;
+    m_intakeIntaking = false;
+    m_wantCube = false;
+    m_wantCone = false;
+    m_gamePieceReadyToPickUp = false;
+    m_gamePieceInIntake = false;
+    m_alignedWithConeNode = false;
+    m_alignedWithCubeNode = false;
 
-    m_grabberStateChanged = true;
+    m_intakeStateChanged = true;
 }
 
 DriverFeedback::DriverFeedback() : IRobotStateChangeSubscriber()
 {
-    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::GrabberState);
+    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::IntakeState);
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::DesiredGamePiece);
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::GameState);
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::CompressorChange);
@@ -165,18 +165,18 @@ void DriverFeedback::Update(RobotStateChanges::StateChange change, int value)
     if (change == RobotStateChanges::DesiredGamePiece)
     {
         auto gamepiece = static_cast<RobotStateChanges::GamePiece>(value);
-        m_WantCube = gamepiece == RobotStateChanges::Cube;
-        m_WantCone = gamepiece == RobotStateChanges::Cone;
+        m_wantCube = gamepiece == RobotStateChanges::Cube;
+        m_wantCone = gamepiece == RobotStateChanges::Cone;
     }
-    else if (change == RobotStateChanges::GrabberState)
+    else if (change == RobotStateChanges::IntakeState)
     {
-        auto state = static_cast<GrabberStateMgr::GRABBER_STATE>(value);
-        bool newState = state == GrabberStateMgr::GRABBER_STATE::OPEN;
+        auto state = static_cast<IntakeStateMgr::INTAKE_STATE>(value);
+        bool newState = state == IntakeStateMgr::INTAKE_STATE::INTAKE;
 
-        if (m_GrabberIsOpen != newState)
+        if (m_intakeIntaking != newState)
         {
-            m_grabberStateChanged = true;
-            m_GrabberIsOpen = newState;
+            m_intakeStateChanged = true;
+            m_intakeIntaking = newState;
         }
     }
     else if (change == RobotStateChanges::GameState)

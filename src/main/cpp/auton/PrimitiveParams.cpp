@@ -35,7 +35,6 @@ PrimitiveParams::PrimitiveParams(
 	// @ADDMECH mechanism state for mech as parameter
 	ArmStateMgr::ARM_STATE armState,
 	ExtenderStateMgr::EXTENDER_STATE extenderState,
-	GrabberStateMgr::GRABBER_STATE grabberState,
 	IntakeStateMgr::INTAKE_STATE intakeState,
 	DragonLimelight::PIPELINE_MODE pipelineMode,
 	VisionDrive::ALIGNMENT_METHOD alignmentMethod) :		   // Pass over parameters to class variables
@@ -52,7 +51,6 @@ PrimitiveParams::PrimitiveParams(
 													 // @ADDMECH initilize state mgr attribute
 													 m_armState(armState),
 													 m_extenderState(extenderState),
-													 m_grabberState(grabberState),
 													 m_intakeState(intakeState),
 													 m_pipelineMode(pipelineMode),
 													 m_alignmentMethod(alignmentMethod)
