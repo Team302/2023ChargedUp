@@ -6,38 +6,38 @@
 
 Chassis::Chassis()
 {
-    DragonCanCoder *flCancoder = new DragonCanCoder(flCancoderID,
+    DragonCanCoder *flCancoder = new DragonCanCoder(kFLCancoderID,
                                                     CANBUS,
-                                                    flCancoderOffset, false);
-    DragonCanCoder *frCancoder = new DragonCanCoder(frCancoderID,
+                                                    kFLCancoderOffset, false);
+    DragonCanCoder *frCancoder = new DragonCanCoder(kFRCancoderID,
                                                     CANBUS,
-                                                    frCancoderOffset, false);
-    DragonCanCoder *blCancoder = new DragonCanCoder(blCancoderID,
+                                                    kFRCancoderOffset, false);
+    DragonCanCoder *blCancoder = new DragonCanCoder(kBLCancoderID,
                                                     CANBUS,
-                                                    blCancoderOffset, false);
-    DragonCanCoder *brCancoder = new DragonCanCoder(brCancoderID,
+                                                    kBLCancoderOffset, false);
+    DragonCanCoder *brCancoder = new DragonCanCoder(kBRCancoderID,
                                                     CANBUS,
-                                                    brCancoderOffset, false);
+                                                    kBRCancoderOffset, false);
 
-    m_frontLeft = new SwerveModule(new WPI_TalonFX(flDriveCANID, CANBUS),
-                                   new WPI_TalonFX(flTurnCANID, CANBUS),
+    m_frontLeft = new SwerveModule(new WPI_TalonFX(kFLDriveCANID, CANBUS),
+                                   new WPI_TalonFX(kFLTurnCANID, CANBUS),
                                    flCancoder,
-                                   countsOnTurnEncoderPerDegree);
+                                   kCountsOnTurnEncoderPerDegree);
 
-    m_frontRight = new SwerveModule(new WPI_TalonFX(frDriveCANID, CANBUS),
-                                    new WPI_TalonFX(frTurnCANID, CANBUS),
+    m_frontRight = new SwerveModule(new WPI_TalonFX(kFRDriveCANID, CANBUS),
+                                    new WPI_TalonFX(kFRTurnCANID, CANBUS),
                                     frCancoder,
-                                    countsOnTurnEncoderPerDegree);
+                                    kCountsOnTurnEncoderPerDegree);
 
-    m_backLeft = new SwerveModule(new WPI_TalonFX(blDriveCANID, CANBUS),
-                                  new WPI_TalonFX(blTurnCANID, CANBUS),
+    m_backLeft = new SwerveModule(new WPI_TalonFX(kBLDriveCANID, CANBUS),
+                                  new WPI_TalonFX(kBLTurnCANID, CANBUS),
                                   blCancoder,
-                                  countsOnTurnEncoderPerDegree);
+                                  kCountsOnTurnEncoderPerDegree);
 
-    m_backRight = new SwerveModule(new WPI_TalonFX(brDriveCANID, CANBUS),
-                                   new WPI_TalonFX(brTurnCANID, CANBUS),
+    m_backRight = new SwerveModule(new WPI_TalonFX(kBRDriveCANID, CANBUS),
+                                   new WPI_TalonFX(kBRTurnCANID, CANBUS),
                                    brCancoder,
-                                   countsOnTurnEncoderPerDegree);
+                                   kCountsOnTurnEncoderPerDegree);
 
     m_pigeon.ConfigFactoryDefault();
 
