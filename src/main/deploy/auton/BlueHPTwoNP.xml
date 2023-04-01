@@ -8,11 +8,14 @@
 <!--drive to cube-->
 <primitive id="DRIVE_PATH_PLANNER"
 	           pathname="BlueHP1"
-               time="2.0"/> 
+               time="1.75"/> 
 <!--drive to scoring station-->
 <primitive id="DRIVE_PATH_PLANNER"
 	           pathname="BlueHP2"
-               time="10.0"/>
+               time="5.0"/>
+<primitive id="DRIVE_PATH_PLANNER"
+	           pathname="BlueHP3"
+               time="5.0"/>
 <!--drive to cone-->
 
 <!--drive to scoring station-->
