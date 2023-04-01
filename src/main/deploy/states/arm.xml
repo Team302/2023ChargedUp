@@ -145,7 +145,7 @@
     solenoid2="NONE" />
     <mechanismTarget
     stateIdentifier="FLOOR_POSITION_ROTATE_AUTON"
-    controlDataIdentifier="RotateToUpwardAngle"
+    controlDataIdentifier="RotateToDownwardAngle"
     controlDataIdentifier2=""
     value="15"
     secondValue=""
