@@ -143,6 +143,14 @@ void ArmStateMgr::CheckForStateTransition()
         }
     }
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Ext Current Pos: "), extenderPos);
+    if (m_arm != nullptr)
+    {
+        auto angle = m_arm->GetPositionDegrees();
+        int wholeAngle = static_cast<int>(std::round(angle.to<double>()));
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("whole anlge "), wholeAngle);
+
+        RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmRotateAngle, wholeAngle);
+    }
 
     //========= Hand modified code end section 3 ========
 }
@@ -258,12 +266,6 @@ void ArmStateMgr::CheckForSensorTransitions()
 
         // If we are hitting limit switch, reset position
         m_arm->ResetIfArmDown();
-
-        // If arm is at target and the prev state hasn't changed then stay in hold
-        if (abs(m_arm->GetPositionDegrees().to<double>() - m_arm->GetTarget()) < 5.0 && m_arm->GetPositionDegrees().to<double>() > 1.0)
-        {
-            m_targetState = ARM_STATE::HOLD_POSITION_ROTATE;
-        }
     }
 }
 

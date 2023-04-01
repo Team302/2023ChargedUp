@@ -75,4 +75,21 @@ bool Extender::ResetIfFullyRetracted()
 	}
 	return false;
 }
+
+void Extender::Update()
+{
+	Mech1IndMotor::Update();
+}
+void Extender::Update(RobotStateChanges::StateChange change, int value)
+{
+	if (change == RobotStateChanges::StateChange::ArmRotateAngle)
+	{
+		m_armAngle = value;
+	}
+	else if (change == RobotStateChanges::StateChange::ArmRotateAngleTarget)
+	{
+		m_armTargetAngle = value;
+	}
+}
+
 //========= Hand modified code end section 0 ========

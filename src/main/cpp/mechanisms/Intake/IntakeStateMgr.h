@@ -82,10 +82,11 @@ private:
     INTAKE_STATE m_prevState;
 
     bool m_coneMode = true;
-    // bool m_wantCube = false;
-    // bool m_wantCone = false;
     bool m_isHP = false;
+    int m_armAngle = 0;
     static IntakeStateMgr *m_instance;
+
+    static constexpr int HUMAN_PLAYER_STATION_ANGLE = 55;
 
     const StateStruc m_offState = {INTAKE_STATE::OFF, m_intakeOffXMLString, StateType::INTAKE_STATE, true};
     const StateStruc m_intakeState = {INTAKE_STATE::INTAKE, m_intakeXMLString, StateType::INTAKE_STATE, false};
