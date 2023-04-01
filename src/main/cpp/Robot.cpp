@@ -10,47 +10,10 @@
 
 #include <Robot.h>
 
-#include <hw/factories/PigeonFactory.h>
-
 using namespace std;
 
 void Robot::RobotInit()
 {
-    Logger::GetLogger()->PutLoggingSelectionsOnDashboard();
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("RobotInit"), string("arrived"));
-
-    m_controller = nullptr;
-
-    // Read the XML file to build the robot
-    auto XmlParser = new RobotXmlParser();
-    XmlParser->ParseXML();
-
-    auto waypointParser = WaypointXmlParser::GetInstance();
-    waypointParser->ParseWaypoints();
-
-    // Get AdjustableItemMgr instance
-    m_tuner = AdjustableItemMgr::GetInstance();
-
-    m_robotState = RobotState::GetInstance();
-    m_robotState->Init();
-
-    m_chassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
-
-    m_holonomic = nullptr;
-    if (m_chassis != nullptr)
-    {
-        m_holonomic = new HolonomicDrive();
-    }
-
-    m_cyclePrims = new CyclePrimitives();
-    m_previewer = new AutonPreviewer(m_cyclePrims); // TODO:: Move to DriveTeamFeedback
-    m_field = DragonField::GetInstance();           // TODO: move to drive team feedback
-
-    //    m_dragonLimeLight = LimelightFactory::GetLimelightFactory()->GetLimelight(); // ToDo:: Move to Dragon Vision
-
-    StateMgrHelper::InitStateMgrs();
-
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("RobotInit"), string("end"));
 }
 
 /**

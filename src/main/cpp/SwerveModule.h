@@ -36,42 +36,23 @@
 #include <units/voltage.h>
 
 // Team 302 Includes
-#include <chassis/PoseEstimatorEnum.h>
 #include <hw/DragonCanCoder.h>
-#include <hw/DragonFalcon.h>
-#include <hw/interfaces/IDragonMotorController.h>
-#include <mechanisms/controllers/ControlData.h>
 
-// Third Party Includes
+#include <ctre/phoenix/motorcontrol/can/WPI_TalonFX.h>
+
+using namespace ctre::phoenix::motorcontrol::can;
 
 class SwerveModule
 {
 public:
-    enum ModuleID
-    {
-        LEFT_FRONT,
-        RIGHT_FRONT,
-        LEFT_BACK,
-        RIGHT_BACK
-    };
-
     /// @brief Constructs a Swerve Module.  This is assuming 2 TalonFX (Falcons) with a CanCoder for the turn angle
     /// @param [in] ModuleID                                                type:           Which Swerve Module is it
     /// @param [in] shared_ptr<IDragonMotorController>                      driveMotor:     Motor that makes the robot move
     /// @param [in] shared_ptr<IDragonMotorController>                      turnMotor:      Motor that turns the swerve module
     /// @param [in] DragonCanCoder*       		                            canCoder:       Sensor for detecting the angle of the wheel
-    SwerveModule(ModuleID type,
-                 std::shared_ptr<IDragonMotorController> driveMotor,
-                 std::shared_ptr<IDragonMotorController> turningMotor,
+    SwerveModule(WPI_TalonFX *driveMotor,
+                 WPI_TalonFX *turningMotor,
                  DragonCanCoder *canCoder,
-                 double turnP,
-                 double turnI,
-                 double turnD,
-                 double turnF,
-                 double turnNominalPos,
-                 double turnNominalNeg,
-                 double turnMaxAcc,
-                 double turnCruiseVel,
                  double countsOnTurnEncoderPerDegreesOnAngleSensor);
 
     void Init(
@@ -104,40 +85,17 @@ public:
     /// @returns void
     void SetDesiredState(const frc::SwerveModuleState &state);
 
-    void RunCurrentState();
-
-    /// @brief Return which module this is
-    /// @returns ModuleID
-    ModuleID GetType() { return m_type; }
     units::length::inch_t GetWheelDiameter() const { return m_wheelDiameter; }
 
-    void StopMotors();
-
-    frc::Pose2d GetCurrentPose(PoseEstimatorEnum opt);
-
-    void UpdateCurrPose(
-        units::length::meter_t x,
-        units::length::meter_t y);
-
 private:
-    // Note:  the following was taken from the WPI code and tweaked because we were seeing some weird
-    //        reversals that we believe was due to not using a tolerance
-    frc::SwerveModuleState Optimize(
-        const frc::SwerveModuleState &desiredState,
-        const frc::Rotation2d &currentAngle);
+    const int COUNTS_PER_REV = 2048;
 
     void SetDriveSpeed(units::velocity::meters_per_second_t speed);
     void SetTurnAngle(units::angle::degree_t angle);
 
-    ModuleID m_type;
-
-    std::shared_ptr<IDragonMotorController> m_driveMotor;
-    std::shared_ptr<IDragonMotorController> m_turnMotor;
+    WPI_TalonFX *m_driveMotor;
+    WPI_TalonFX *m_turnMotor;
     DragonCanCoder *m_turnSensor;
-
-    ControlData *m_driveVelocityControlData;
-    ControlData *m_drivePercentControlData;
-    ControlData *m_turnPositionControlData;
 
     units::length::inch_t m_wheelDiameter;
 
