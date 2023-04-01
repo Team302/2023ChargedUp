@@ -101,7 +101,7 @@ void RobotState::PublishCompressorInfo()
 
 void RobotState::CheckGamePieceMode(TeleopControl *controller)
 {
-    if (controller->IsButtonPressed(TeleopControlFunctions::CYCLE_GRABBER))
+    if (controller->IsButtonPressed(TeleopControlFunctions::CYCLE_CYCLE_GAMEPIECE))
     {
         if (m_wasGamePieceButtonReleased)
         {
@@ -109,7 +109,7 @@ void RobotState::CheckGamePieceMode(TeleopControl *controller)
             PublishStateChange(RobotStateChanges::DesiredGamePiece, m_gamePiece);
         }
     }
-    m_wasGamePieceButtonReleased = !controller->IsButtonPressed(TeleopControlFunctions::CYCLE_GRABBER);
+    m_wasGamePieceButtonReleased = !controller->IsButtonPressed(TeleopControlFunctions::CYCLE_CYCLE_GAMEPIECE);
 }
 
 void RobotState::RegisterForStateChanges(IRobotStateChangeSubscriber *subscriber, RobotStateChanges::StateChange change)

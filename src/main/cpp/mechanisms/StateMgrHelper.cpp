@@ -33,8 +33,6 @@
 #include <mechanisms/extender/ExtenderState.h>
 #include <mechanisms/extender/ExtenderManualState.h>
 #include <mechanisms/extender/ExtenderStateMgr.h>
-#include <mechanisms/grabber/GrabberState.h>
-#include <mechanisms/grabber/GrabberStateMgr.h>
 #include <mechanisms/intake/IntakeState.h>
 #include <mechanisms/intake/IntakeStateMgr.h>
 
@@ -125,9 +123,6 @@ State *StateMgrHelper::CreateState(Mech *mech, StateStruc &stateInfo, MechanismT
     switch (type)
     {
         // @ADDMECH Add case(s) to create your state(s)
-        // case StateType::GRABBER_STATE:
-        //      thisState = new GrabberState(xmlString, id, solenoidState, solenoid2State);
-        //     break;
 
     case StateType::ARM_STATE:
         thisState = new ArmState(xmlString, id, controlData, target);
@@ -143,10 +138,6 @@ State *StateMgrHelper::CreateState(Mech *mech, StateStruc &stateInfo, MechanismT
 
     case StateType::MANUAL_EXTENDER_STATE:
         thisState = new ExtenderManualState(xmlString, id, controlData, target);
-        break;
-
-    case StateType::GRABBER_STATE:
-        thisState = new GrabberState(xmlString, id, solenoidState);
         break;
 
     case StateType::INTAKE_STATE:

@@ -50,6 +50,7 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
     primStringToEnumMap["RESET_POSITION"] = RESET_POSITION;
     primStringToEnumMap["RESET_POSITION_PATH_PLANNER"] = RESET_POSITION_PATH_PLANNER;
     primStringToEnumMap["AUTO_BALANCE"] = AUTO_BALANCE;
+    primStringToEnumMap["VISION_ALIGN"] = VISION_ALIGN;
 
     map<string, ChassisOptionEnums::HeadingOption> headingOptionMap;
     headingOptionMap["MAINTAIN"] = ChassisOptionEnums::HeadingOption::MAINTAIN;
@@ -120,8 +121,10 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                     std::string pathName;
                     auto armstate = ArmStateMgr::ARM_STATE::HOLD_POSITION_ROTATE;
                     auto extenderstate = ExtenderStateMgr::EXTENDER_STATE::HOLD_POSITION_EXTEND;
-                    auto grabberstate = GrabberStateMgr::GRABBER_STATE::OPEN;
                     auto intakestate = IntakeStateMgr::INTAKE_STATE::HOLD;
+                    auto pipelineMode = DragonLimelight::PIPELINE_MODE::UNKNOWN;
+                    auto alignmentMethod = VisionDrive::ALIGNMENT_METHOD::ROTATE;
+
                     // @ADDMECH Initialize your mechanism state
                     for (xml_attribute attr = primitiveNode.first_attribute(); attr; attr = attr.next_attribute())
                     {
@@ -209,19 +212,6 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                                 hasError = true;
                             }
                         }
-                        else if (strcmp(attr.name(), "grabber") == 0)
-                        {
-                            auto grabberItr = GrabberStateMgr::GetInstance()->m_grabberXmlStringToStateEnumMap.find(attr.value());
-                            if (grabberItr != GrabberStateMgr::GetInstance()->m_grabberXmlStringToStateEnumMap.end())
-                            {
-                                grabberstate = grabberItr->second;
-                            }
-                            else
-                            {
-                                Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("PrimitiveParser"), string("PrimitiveParser::ParseXML invalid grabber state"), attr.value());
-                                hasError = true;
-                            }
-                        }
                         else if (strcmp(attr.name(), "intake") == 0)
                         {
                             auto intakeItr = IntakeStateMgr::GetInstance()->m_intakeXmlStringToStateEnumMap.find(attr.value());
@@ -231,12 +221,60 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                             }
                             else
                             {
-                                Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("PrimitiveParser"), string("PrimitiveParser::ParseXML invalid grabber state"), attr.value());
+                                Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("PrimitiveParser"), string("PrimitiveParser::ParseXML invalid intake state"), attr.value());
                                 hasError = true;
                             }
                         }
-                        // @ADDMECH add case for your mechanism state to get the statemgr / state
+                        else if (strcmp(attr.name(), "alignmentMethod") == 0)
+                        {
+                            if (strcmp(attr.value(), "ROTATE") == 0)
+                            {
+                                alignmentMethod = VisionDrive::ALIGNMENT_METHOD::ROTATE;
+                            }
+                            else if (strcmp(attr.name(), "STRAFE") == 0)
+                            {
+                                alignmentMethod = VisionDrive::ALIGNMENT_METHOD::STRAFE;
+                            }
+                            else
+                            {
+                                Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("PrimitiveParser"), string("PrimitiveParser::ParseXML invalid alignment method"), attr.value());
+                                hasError = true;
+                            }
+                        }
+                        else if (strcmp(attr.name(), "pipeline") == 0)
+                        {
+                            if (strcmp(attr.value(), "UNKNOWN") == 0)
+                            {
+                                pipelineMode = DragonLimelight::PIPELINE_MODE::UNKNOWN;
+                            }
+                            else if (strcmp(attr.name(), "OFF") == 0)
+                            {
+                                pipelineMode = DragonLimelight::PIPELINE_MODE::OFF;
+                            }
+                            else if (strcmp(attr.name(), "APRIL_TAG") == 0)
+                            {
+                                pipelineMode = DragonLimelight::PIPELINE_MODE::APRIL_TAG;
+                            }
+                            else if (strcmp(attr.name(), "CONE_NODE") == 0)
+                            {
+                                pipelineMode = DragonLimelight::PIPELINE_MODE::CONE_NODE;
+                            }
+                            else if (strcmp(attr.name(), "CONE") == 0)
+                            {
+                                pipelineMode = DragonLimelight::PIPELINE_MODE::CONE;
+                            }
+                            else if (strcmp(attr.name(), "CUBE") == 0)
+                            {
+                                pipelineMode = DragonLimelight::PIPELINE_MODE::CUBE;
+                            }
+                            else
+                            {
+                                Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("PrimitiveParser"), string("PrimitiveParser::ParseXML invalid pipeline mode"), attr.value());
+                                hasError = true;
+                            }
+                        }
 
+                        // @ADDMECH add case for your mechanism state to get the statemgr / state
                         else
                         {
                             Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("PrimitiveParser"), string("ParseXML invalid attribute"), attr.name());
@@ -258,8 +296,9 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                                                                      // @ADDMECH add parameter for your mechanism state
                                                                      armstate,
                                                                      extenderstate,
-                                                                     grabberstate,
-                                                                     intakestate));
+                                                                     intakestate,
+                                                                     DragonLimelight::PIPELINE_MODE::UNKNOWN,
+                                                                     VisionDrive::ALIGNMENT_METHOD::ROTATE));
                         string ntName = string("Primitive ") + to_string(paramVector.size());
                         int slot = paramVector.size() - 1;
                         auto logger = Logger::GetLogger();
