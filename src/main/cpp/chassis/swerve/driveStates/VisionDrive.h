@@ -26,6 +26,12 @@
 class VisionDrive : public RobotDrive
 {
 public:
+    enum ALIGNMENT_METHOD
+    {
+        ROTATE,
+        STRAFE
+    };
+
     VisionDrive(RobotDrive *robotDrive);
 
     std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates(

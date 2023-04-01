@@ -259,7 +259,9 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                                                                      armstate,
                                                                      extenderstate,
                                                                      grabberstate,
-                                                                     intakestate));
+                                                                     intakestate,
+                                                                     DragonLimelight::PIPELINE_MODE::UNKNOWN,
+                                                                     VisionDrive::ALIGNMENT_METHOD::ROTATE));
                         string ntName = string("Primitive ") + to_string(paramVector.size());
                         int slot = paramVector.size() - 1;
                         auto logger = Logger::GetLogger();
