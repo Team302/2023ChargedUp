@@ -3,7 +3,6 @@
 <auton>
    <primitive id="RESET_POSITION"
 	            pathname="BlueWallOne1.wpilib.json"
-               grabber="GRAB"
                intake="HOLD"/>
     <!--score preloaded cone-->
     <snippet file="ScoreCone.xml"/>
@@ -14,7 +13,6 @@
                heading="180"
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
-               grabber="GRAB"
                intake="INTAKE_OFF"
                time="0.5"
                />
@@ -24,7 +22,6 @@
                heading="180"
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
-               grabber="GRAB"
                intake="INTAKE_OFF"
                time="4.0"
                />
@@ -34,7 +31,6 @@
                heading="0"
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
-               grabber="GRAB"
                intake="INTAKE_OFF"
                time="7.0"
                />
@@ -44,7 +40,6 @@
                heading="0"
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
-               grabber="GRAB"
                intake="INTAKE_OFF"
                time="10.0"
                />

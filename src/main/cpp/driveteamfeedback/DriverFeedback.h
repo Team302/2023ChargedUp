@@ -55,7 +55,7 @@ private:
     };
 
     LEDStates *m_LEDStates = LEDStates::GetInstance();
-    bool m_intakeIsOpen = false;
+    bool m_intakeIntaking = false;
     bool m_wantCube = false;
     bool m_wantCone = false;
     bool m_gamePieceReadyToPickUp = false;

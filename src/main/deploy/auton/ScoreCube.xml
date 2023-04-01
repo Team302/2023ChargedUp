@@ -4,28 +4,24 @@
     <primitive id="DO_NOTHING"
                arm="CUBE_BACKROW_ROTATE"
                extender="STARTING_POSITION_EXTEND"
-               grabber="GRAB"
                intake="HOLD"
                time="0.35"
                />
     <primitive id="DO_NOTHING"
                arm="CUBE_BACKROW_ROTATE"
                extender="CUBE_BACKROW_EXTEND"
-               grabber="GRAB"
                intake="HOLD"
                time="0.6"
                />
     <primitive id="DO_NOTHING"
                arm="CUBE_BACKROW_ROTATE"
                extender="CUBE_BACKROW_EXTEND"
-               grabber="OPEN"
                intake="INTAKE_RELEASE"
                time="0.35"
                />
     <primitive id="DO_NOTHING"
                arm="CUBE_BACKROW_ROTATE"
                extender="STARTING_POSITION_EXTEND"
-               grabber="GRAB"
                intake="INTAKE_RELEASE"
                time="0.5"
                />

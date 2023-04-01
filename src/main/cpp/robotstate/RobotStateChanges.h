@@ -27,7 +27,7 @@ public:
         ArmRotateState,
         ArmRotateAngle,
         ArmRotateAngleTarget,
-        GrabberState,
+        CYCLE_GAMEPIECEState,
         IntakeState,
         DesiredPlacementLocation,
         DesiredPlacementDepth,

@@ -3,7 +3,6 @@
 <auton>
 <primitive id="RESET_POSITION"
 	   pathname="BlueHPOne1.wpilib.json"
-               grabber="GRAB"
                intake="HOLD"/>
     <!--score preloaded cone-->
     <snippet file="ScoreCone.xml"/>
@@ -13,7 +12,6 @@
                headingOption="SPECIFIED_ANGLE"
                heading="180"
                arm="STARTING_POSITION_ROTATE"
-               grabber="OPEN"
                intake="INTAKE"
                time="0.5"
                />
@@ -22,7 +20,6 @@
                headingOption="SPECIFIED_ANGLE"
                heading="180"
                arm="STARTING_POSITION_ROTATE"
-               grabber="OPEN"
                intake="INTAKE"
                time="0.75"
                />
@@ -30,7 +27,6 @@
                pathname="BlueHPTwo1.wpilib.json"
                headingOption="SPECIFIED_ANGLE"
                heading="0"
-               grabber="OPEN"
                intake="INTAKE"
                time="8.0"
                />
@@ -38,7 +34,6 @@
     <primitive id="DO_NOTHING"
                headingOption="SPECIFIED_ANGLE"
                heading="0"
-               grabber="OPEN"
                intake="INTAKE"
                time="0.5"
                />
@@ -47,7 +42,6 @@
                pathname="BlueHPTwo2.wpilib.json"
                headingOption="SPECIFIED_ANGLE"
                heading="0"
-               grabber="GRAB"
                intake="HOLD"
                time="8.0"
                />
@@ -55,7 +49,6 @@
     <primitive id="DO_NOTHING"
                headingOption="SPECIFIED_ANGLE"
                heading="0"
-               grabber="OPEN"
                intake="INTAKE_RELEASE"
                time="0.5"
                />

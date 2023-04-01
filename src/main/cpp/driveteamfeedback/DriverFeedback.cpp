@@ -60,7 +60,7 @@ void DriverFeedback::DisplayPressure() const
 }
 void DriverFeedback::UpdateLEDStates()
 {
-    if (DriverFeedback::m_AlignedWithConeNode)
+    if (DriverFeedback::m_alignedWithConeNode)
     {
         if (m_gamePieceState != DriverFeedbackStates::ALIGNED_WITH_CONE_NODE)
         {
@@ -69,7 +69,7 @@ void DriverFeedback::UpdateLEDStates()
         m_LEDStates->ClosingInChaserPattern(DragonLeds::YELLOW);
         m_gamePieceState = DriverFeedbackStates::ALIGNED_WITH_CONE_NODE;
     }
-    else if (DriverFeedback::m_AlignedWithCubeNode)
+    else if (DriverFeedback::m_alignedWithCubeNode)
     {
         if (m_gamePieceState != DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE)
         {
@@ -78,7 +78,7 @@ void DriverFeedback::UpdateLEDStates()
         m_LEDStates->ClosingInChaserPattern(DragonLeds::PURPLE);
         m_gamePieceState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
     }
-    else if (DriverFeedback::m_GamePieceInIntake)
+    else if (DriverFeedback::m_gamePieceInIntake)
     {
 
         if (m_gamePieceState != DriverFeedbackStates::GAME_PIECE_IN_INTAKE)
@@ -88,7 +88,7 @@ void DriverFeedback::UpdateLEDStates()
         m_LEDStates->AlternatingColorBlinkingPattern(DragonLeds::YELLOW, DragonLeds::PURPLE);
         m_gamePieceState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
     }
-    else if (DriverFeedback::m_WantCube)
+    else if (DriverFeedback::m_wantCube)
     {
         if (m_gamePieceState != DriverFeedbackStates::WANT_CUBE)
         {
@@ -97,13 +97,13 @@ void DriverFeedback::UpdateLEDStates()
         }
         if (m_intakeStateChanged)
         {
-            if (m_intakeIsOpen)
+            if (m_intakeIntaking)
                 m_LEDStates->BlinkingPattern(DragonLeds::PURPLE);
             else
                 m_LEDStates->SolidColorPattern(DragonLeds::PURPLE);
         }
     }
-    else if (DriverFeedback::m_WantCone)
+    else if (DriverFeedback::m_wantCone)
     {
         if (m_gamePieceState != DriverFeedbackStates::WANT_CONE)
         {
@@ -112,7 +112,7 @@ void DriverFeedback::UpdateLEDStates()
         }
         if (m_intakeStateChanged)
         {
-            if (m_IntakeIsOpen)
+            if (m_intakeIntaking)
                 m_LEDStates->BlinkingPattern(DragonLeds::YELLOW);
             else
                 m_LEDStates->SolidColorPattern(DragonLeds::YELLOW);
@@ -120,7 +120,7 @@ void DriverFeedback::UpdateLEDStates()
         m_LEDStates->SolidColorPattern(DragonLeds::YELLOW);
         m_gamePieceState = DriverFeedbackStates::WANT_CONE;
     }
-    else if (DriverFeedback::m_GamePieceReadyToPickUp)
+    else if (DriverFeedback::m_gamePieceReadyToPickUp)
     {
         if (m_gamePieceState != DriverFeedbackStates::GAME_PIECE_READY_TO_PICK_UP)
         {
@@ -142,13 +142,13 @@ void DriverFeedback::UpdateLEDStates()
 
 void DriverFeedback::ResetRequests(void)
 {
-    m_intakeIsOpen = false;
-    m_WantCube = false;
-    m_WantCone = false;
-    m_GamePieceReadyToPickUp = false;
-    m_GamePieceInIntake = false;
-    m_AlignedWithConeNode = false;
-    m_AlignedWithCubeNode = false;
+    m_intakeIntaking = false;
+    m_wantCube = false;
+    m_wantCone = false;
+    m_gamePieceReadyToPickUp = false;
+    m_gamePieceInIntake = false;
+    m_alignedWithConeNode = false;
+    m_alignedWithCubeNode = false;
 
     m_intakeStateChanged = true;
 }
@@ -165,18 +165,18 @@ void DriverFeedback::Update(RobotStateChanges::StateChange change, int value)
     if (change == RobotStateChanges::DesiredGamePiece)
     {
         auto gamepiece = static_cast<RobotStateChanges::GamePiece>(value);
-        m_WantCube = gamepiece == RobotStateChanges::Cube;
-        m_WantCone = gamepiece == RobotStateChanges::Cone;
+        m_wantCube = gamepiece == RobotStateChanges::Cube;
+        m_wantCone = gamepiece == RobotStateChanges::Cone;
     }
     else if (change == RobotStateChanges::IntakeState)
     {
         auto state = static_cast<IntakeStateMgr::INTAKE_STATE>(value);
         bool newState = state == IntakeStateMgr::INTAKE_STATE::INTAKE;
 
-        if (m_intakeIsOpen != newState)
+        if (m_intakeIntaking != newState)
         {
             m_intakeStateChanged = true;
-            m_intakeIsOpen = newState;
+            m_intakeIntaking = newState;
         }
     }
     else if (change == RobotStateChanges::GameState)

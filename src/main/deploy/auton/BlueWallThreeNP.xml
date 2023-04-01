@@ -2,8 +2,7 @@
 <!DOCTYPE auton SYSTEM "auton.dtd">
 <auton>
     <primitive id="RESET_POSITION"
-	            pathname="BlueWallOne1.wpilib.json"
-               grabber="GRAB"
+               pathname="BlueWallOne1.wpilib.json"
                intake="HOLD"/>
     <!--score preloaded cone-->
     <snippet file="ScoreCone.xml"/>
