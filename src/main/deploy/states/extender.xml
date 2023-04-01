@@ -15,7 +15,7 @@
     identifier="ExtendPosition"
     mode="POSITION_INCH"
     constrolServer="MOTORCONTROLLER"
-    proportional="0.04"
+    proportional="0.06"
     integral="0.000075"
     derivative="0.0"
     feedforward="0.0"
@@ -109,7 +109,7 @@
     stateIdentifier="FLOOR_EXTEND"
     controlDataIdentifier="ExtendPosition"
     controlDataIdentifier2=""
-    value="11.0"
+    value="10.50"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />

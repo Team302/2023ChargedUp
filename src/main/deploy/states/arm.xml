@@ -4,8 +4,19 @@
     identifier="RotateToUpwardAngle"
     mode="POSITION_DEGREES"
     constrolServer="MOTORCONTROLLER"
-    proportional="0.02"
-    integral="0.00015"
+    proportional="0.04"
+    integral="0.00075"
+    derivative="0.5"
+    feedforward="0.0"
+    izone="0.0"
+    maxacceleration="0.0"
+    cruisevelocity="0.0" />
+    <controlData
+    identifier="RotateToFloordAngle"
+    mode="POSITION_DEGREES"
+    constrolServer="MOTORCONTROLLER"
+    proportional="0.025"
+    integral="0.0025"
     derivative="0.0"
     feedforward="0.0"
     izone="0.0"
@@ -126,9 +137,9 @@
     solenoid2="NONE" />
   <mechanismTarget
     stateIdentifier="FLOOR_POSITION_ROTATE"
-    controlDataIdentifier="RotateToUpwardAngle"
+    controlDataIdentifier="RotateToFloordAngle"
     controlDataIdentifier2=""
-    value="16"
+    value="18"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
@@ -136,7 +147,7 @@
     stateIdentifier="FLOOR_POSITION_ROTATE_AUTON"
     controlDataIdentifier="RotateToUpwardAngle"
     controlDataIdentifier2=""
-    value="16"
+    value="18"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
