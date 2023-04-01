@@ -143,6 +143,14 @@ void ArmStateMgr::CheckForStateTransition()
         }
     }
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("Ext Current Pos: "), extenderPos);
+    if (m_arm != nullptr)
+    {
+        auto angle = m_arm->GetPositionDegrees();
+        int wholeAngle = static_cast<int>(std::round(angle.to<double>()));
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArmMgr"), string("whole anlge "), wholeAngle);
+
+        RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmRotateAngle, wholeAngle);
+    }
 
     //========= Hand modified code end section 3 ========
 }

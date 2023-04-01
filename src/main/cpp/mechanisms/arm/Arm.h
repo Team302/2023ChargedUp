@@ -49,6 +49,7 @@ public:
 
 	//========= Hand modified code start section 0 ========
 	void Update() override;
+	double GetTarget() const override;
 	void ResetIfArmDown();
 
 	/// @brief  Return the current position of the mechanism in degrees

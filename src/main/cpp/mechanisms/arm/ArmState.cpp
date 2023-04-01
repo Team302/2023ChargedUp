@@ -31,6 +31,8 @@
 #include <mechanisms/controllers/ControlData.h>
 #include <mechanisms/arm/ArmState.h>
 #include <mechanisms/MechanismFactory.h>
+#include <robotstate/RobotState.h>
+#include <robotstate/RobotStateChanges.h>
 #include <utils/AngleUtils.h>
 
 // Third Party Includes
@@ -77,6 +79,8 @@ void ArmState::Init()
 	if (m_arm != nullptr)
 	{
 		auto targetAngle = units::angle::degree_t(GetCurrentTarget());
+		int wholeAngle = static_cast<int>(std::round(targetAngle.to<double>()));
+		RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmRotateAngleTarget, wholeAngle);
 		auto currAngle = m_arm->GetPositionDegrees();
 		auto deltaAngle = AngleUtils::GetDeltaAngle(currAngle, targetAngle);
 		double targetCounts = 0.0;

@@ -65,6 +65,13 @@ void Arm::Update()
 
 	RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmRotateAngle, wholeAngle);
 }
+
+double Arm::GetTarget() const
+{
+	auto target = Mech1IndMotor::GetTarget();
+	return (target / GetMotor().get()->GetCountsPerDegree());
+}
+
 void Arm::ResetIfArmDown()
 {
 	if (GetMotor().get()->IsReverseLimitSwitchClosed())
@@ -73,11 +80,6 @@ void Arm::ResetIfArmDown()
 		auto fx = dynamic_cast<ctre::phoenix::motorcontrol::can::WPI_TalonFX *>(motor.get());
 		auto sensors = fx->GetSensorCollection();
 		sensors.SetIntegratedSensorPosition(0, 0);
-
-		if (m_cancoder != nullptr)
-		{
-			m_cancoder->SetPosition(0.0, 0);
-		}
 	}
 }
 units::angle::degree_t Arm::GetPositionDegrees() const

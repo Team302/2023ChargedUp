@@ -26,6 +26,7 @@ public:
         ArmExtenderState,
         ArmRotateState,
         ArmRotateAngle,
+        ArmRotateAngleTarget,
         GrabberState,
         IntakeState,
         DesiredPlacementLocation,

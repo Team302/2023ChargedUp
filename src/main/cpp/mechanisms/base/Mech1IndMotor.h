@@ -78,7 +78,7 @@ public:
     /// @param [in] ControlData*                                   pid:  the control constants
     /// @return void
     void SetControlConstants(int slot, ControlData *pid);
-    double GetTarget() const { return m_target; }
+    virtual double GetTarget() const { return m_target; }
     std::shared_ptr<IDragonMotorController> GetMotor() const { return m_motor; }
 
 private:
