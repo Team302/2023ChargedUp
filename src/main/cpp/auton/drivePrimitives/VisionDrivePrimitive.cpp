@@ -34,6 +34,11 @@ VisionDrivePrimitive::VisionDrivePrimitive() : m_ntName("VisionDrivePrimitive")
 void VisionDrivePrimitive::Init(PrimitiveParams *params)
 {
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "ArrivedAtInit", true);
+    m_alignmentMethod = params->GetAlignmentMethod();
+    m_pipelineMode = params->GetPipelineMode();
+
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "m_alignmentMethod", m_alignmentMethod);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "m_pipelineMode", m_pipelineMode);
 }
 
 void VisionDrivePrimitive::Run()

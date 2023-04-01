@@ -47,4 +47,6 @@ public:
 
 private:
     std::string m_ntName;
+    DragonLimelight::PIPELINE_MODE m_pipelineMode;
+    VisionDrive::ALIGNMENT_METHOD m_alignmentMethod;
 };
