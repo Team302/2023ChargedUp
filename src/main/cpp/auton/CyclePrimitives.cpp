@@ -62,10 +62,13 @@ void CyclePrimitives::Init()
 {
 	m_currentPrimSlot = 0; // Reset current prim
 	m_primParams.clear();
+	Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("Muscat"), string("before parse"), true);
+	Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("Muscat"), string("name"), m_autonSelector->GetSelectedAutoFile());
 
 	m_primParams = PrimitiveParser::ParseXML(m_autonSelector->GetSelectedAutoFile());
 	if (!m_primParams.empty())
 	{
+		Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("Muscat"), string("primitives not empty"), true);
 		GetNextPrim();
 	}
 }

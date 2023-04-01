@@ -58,6 +58,8 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
     headingOptionMap["SPECIFIED_ANGLE"] = ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE;
     headingOptionMap["IGNORE"] = ChassisOptionEnums::HeadingOption::IGNORE;
 
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("Muscat"), string("Parse 1"), true);
+
     xml_document doc;
     xml_parse_result result = doc.load_file(fulldirfile.c_str());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "PrimitiveParser", "Original File", fulldirfile.c_str());
@@ -245,7 +247,7 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                             {
                                 alignmentMethod = VisionDrive::ALIGNMENT_METHOD::ROTATE;
                             }
-                            else if (strcmp(attr.name(), "STRAFE") == 0)
+                            else if (strcmp(attr.value(), "STRAFE") == 0)
                             {
                                 alignmentMethod = VisionDrive::ALIGNMENT_METHOD::STRAFE;
                             }
@@ -261,23 +263,23 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                             {
                                 pipelineMode = DragonLimelight::PIPELINE_MODE::UNKNOWN;
                             }
-                            else if (strcmp(attr.name(), "OFF") == 0)
+                            else if (strcmp(attr.value(), "OFF") == 0)
                             {
                                 pipelineMode = DragonLimelight::PIPELINE_MODE::OFF;
                             }
-                            else if (strcmp(attr.name(), "APRIL_TAG") == 0)
+                            else if (strcmp(attr.value(), "APRIL_TAG") == 0)
                             {
                                 pipelineMode = DragonLimelight::PIPELINE_MODE::APRIL_TAG;
                             }
-                            else if (strcmp(attr.name(), "CONE_NODE") == 0)
+                            else if (strcmp(attr.value(), "CONE_NODE") == 0)
                             {
                                 pipelineMode = DragonLimelight::PIPELINE_MODE::CONE_NODE;
                             }
-                            else if (strcmp(attr.name(), "CONE") == 0)
+                            else if (strcmp(attr.value(), "CONE") == 0)
                             {
                                 pipelineMode = DragonLimelight::PIPELINE_MODE::CONE;
                             }
-                            else if (strcmp(attr.name(), "CUBE") == 0)
+                            else if (strcmp(attr.value(), "CUBE") == 0)
                             {
                                 pipelineMode = DragonLimelight::PIPELINE_MODE::CUBE;
                             }
@@ -312,8 +314,8 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                                                                      extenderstate,
                                                                      grabberstate,
                                                                      intakestate,
-                                                                     DragonLimelight::PIPELINE_MODE::UNKNOWN,
-                                                                     VisionDrive::ALIGNMENT_METHOD::ROTATE));
+                                                                     pipelineMode,
+                                                                     alignmentMethod));
                         string ntName = string("Primitive ") + to_string(paramVector.size());
                         int slot = paramVector.size() - 1;
                         auto logger = Logger::GetLogger();
