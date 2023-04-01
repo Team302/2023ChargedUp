@@ -297,8 +297,8 @@ void VisionDrive::AlignRawVision(ChassisMovement &chassisMovement)
     }
     else
     {
-        m_vision->setPipeline(DragonLimelight::PIPELINE_MODE::APRIL_TAG);
         pipelineMode = DragonLimelight::PIPELINE_MODE::APRIL_TAG;
+        m_vision->setPipeline(pipelineMode);
     }
 
     // get targetdata

@@ -85,7 +85,7 @@ private:
     const double m_minimumSpeed = 0.25;
     const double m_maximumSpeed = 0.5;
 
-    const double m_tolerance = 0.25;            // tolerance in inches
+    const double m_tolerance = 1;               // tolerance in inches
     const double m_findTagAngleTolerance = 5.0; // tolerance in angle
     const double m_autoAlignYTolerance = 2.5;   // tolerance in inches
     const double m_autoAlignXTolerance = 10.0;  // tolerance in inches
