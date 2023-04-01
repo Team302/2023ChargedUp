@@ -18,6 +18,7 @@
 #include <auton/PrimitiveEnums.h>
 #include <auton/PrimitiveFactory.h>
 #include <auton/PrimitiveParser.h>
+#include <auton/drivePrimitives/VisionDrivePrimitive.h>
 #include <auton/drivePrimitives/AutoBalance.h>
 #include <auton/drivePrimitives/DriveStop.h>
 #include <auton/drivePrimitives/DrivePath.h>
@@ -112,6 +113,15 @@ IPrimitive *PrimitiveFactory::GetIPrimitive(PrimitiveParams *primitivePasser)
 			m_autoBalance = new AutoBalance();
 		}
 		primitive = m_autoBalance;
+		break;
+
+	case VISION_ALIGN:
+		if (m_visionAlign == nullptr)
+		{
+			m_visionAlign = new VisionDrivePrimitive();
+		}
+		primitive = m_visionAlign;
+		break;
 
 	default:
 		break;
