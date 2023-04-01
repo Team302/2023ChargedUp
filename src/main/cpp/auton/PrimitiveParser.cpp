@@ -244,7 +244,9 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                                                                      // @ADDMECH add parameter for your mechanism state
                                                                      armstate,
                                                                      extenderstate,
-                                                                     intakestate));
+                                                                     intakestate,
+                                                                     DragonLimelight::PIPELINE_MODE::UNKNOWN,
+                                                                     VisionDrive::ALIGNMENT_METHOD::ROTATE));
                         string ntName = string("Primitive ") + to_string(paramVector.size());
                         int slot = paramVector.size() - 1;
                         auto logger = Logger::GetLogger();

@@ -1,4 +1,3 @@
-
 //====================================================================================================================================================
 // Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
@@ -13,46 +12,41 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
+#pragma once
 
-#include <auton/PrimitiveEnums.h>
+// C++ Includes
+#include <memory>
+
+// Team302 Includes
 #include <auton/PrimitiveParams.h>
-#include <chassis/IChassis.h>
+#include <auton/drivePrimitives/IPrimitive.h>
+#include <chassis/ChassisFactory.h>
+#include <chassis/swerve/SwerveChassis.h>
 #include <chassis/ChassisOptionEnums.h>
 
-// @ADDMECH include for your mechanism state mgr
+// FRC,WPI Includes
+#include <frc/controller/HolonomicDriveController.h>
+#include <frc/controller/RamseteController.h>
+#include <frc/Filesystem.h>
+#include <frc/geometry/Pose2d.h>
+#include <frc/trajectory/TrajectoryConfig.h>
+#include <frc/trajectory/TrajectoryUtil.h>
+#include <wpi/SmallString.h>
+#include <frc/Timer.h>
 
-PrimitiveParams::PrimitiveParams(
-	PRIMITIVE_IDENTIFIER id,
-	float time,
-	float distance,
-	float xLoc,
-	float yLoc,
-	ChassisOptionEnums::HeadingOption headingOpt,
-	float heading,
-	float startDriveSpeed,
-	float endDriveSpeed,
-	std::string pathName,
-	// @ADDMECH mechanism state for mech as parameter
-	ArmStateMgr::ARM_STATE armState,
-	ExtenderStateMgr::EXTENDER_STATE extenderState,
-	IntakeStateMgr::INTAKE_STATE intakeState,
-	DragonLimelight::PIPELINE_MODE pipelineMode,
-	VisionDrive::ALIGNMENT_METHOD alignmentMethod) :		   // Pass over parameters to class variables
-												m_id(id), // Primitive ID
-												m_time(time),
-												m_distance(distance),
-												m_xLoc(xLoc),
-												m_yLoc(yLoc),
-												m_headingOption(headingOpt),
-												m_heading(heading),
-												m_startDriveSpeed(startDriveSpeed),
-												m_endDriveSpeed(endDriveSpeed),
-												m_pathName(pathName),
-												// @ADDMECH initilize state mgr attribute
-												m_armState(armState),
-												m_extenderState(extenderState),
-												m_intakeState(intakeState)
-   											    m_pipelineMode(pipelineMode),
-												m_alignmentMethod(alignmentMethod)
+class VisionDrivePrimitive : public IPrimitive
 {
-}
+public:
+    VisionDrivePrimitive();
+
+    virtual ~VisionDrivePrimitive() = default;
+
+    void Init(PrimitiveParams *params) override;
+    void Run() override;
+    bool IsDone() override;
+
+private:
+    std::string m_ntName;
+    DragonLimelight::PIPELINE_MODE m_pipelineMode;
+    VisionDrive::ALIGNMENT_METHOD m_alignmentMethod;
+};

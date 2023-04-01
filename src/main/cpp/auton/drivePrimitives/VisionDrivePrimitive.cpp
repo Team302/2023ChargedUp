@@ -1,4 +1,3 @@
-
 //====================================================================================================================================================
 // Copyright 2023 Lake Orion Robotics FIRST Team 302
 //
@@ -14,45 +13,41 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#include <auton/PrimitiveEnums.h>
-#include <auton/PrimitiveParams.h>
-#include <chassis/IChassis.h>
+// C++
+#include <string>
+
+// FRC Includes
+
+// 302 Includes
+#include <auton/drivePrimitives/VisionDrivePrimitive.h>
+#include <chassis/ChassisMovement.h>
 #include <chassis/ChassisOptionEnums.h>
+#include <chassis/ChassisFactory.h>
 
-// @ADDMECH include for your mechanism state mgr
+/// DEBUGGING
+#include <utils/logging/Logger.h>
 
-PrimitiveParams::PrimitiveParams(
-	PRIMITIVE_IDENTIFIER id,
-	float time,
-	float distance,
-	float xLoc,
-	float yLoc,
-	ChassisOptionEnums::HeadingOption headingOpt,
-	float heading,
-	float startDriveSpeed,
-	float endDriveSpeed,
-	std::string pathName,
-	// @ADDMECH mechanism state for mech as parameter
-	ArmStateMgr::ARM_STATE armState,
-	ExtenderStateMgr::EXTENDER_STATE extenderState,
-	IntakeStateMgr::INTAKE_STATE intakeState,
-	DragonLimelight::PIPELINE_MODE pipelineMode,
-	VisionDrive::ALIGNMENT_METHOD alignmentMethod) :		   // Pass over parameters to class variables
-												m_id(id), // Primitive ID
-												m_time(time),
-												m_distance(distance),
-												m_xLoc(xLoc),
-												m_yLoc(yLoc),
-												m_headingOption(headingOpt),
-												m_heading(heading),
-												m_startDriveSpeed(startDriveSpeed),
-												m_endDriveSpeed(endDriveSpeed),
-												m_pathName(pathName),
-												// @ADDMECH initilize state mgr attribute
-												m_armState(armState),
-												m_extenderState(extenderState),
-												m_intakeState(intakeState)
-   											    m_pipelineMode(pipelineMode),
-												m_alignmentMethod(alignmentMethod)
+VisionDrivePrimitive::VisionDrivePrimitive() : m_ntName("VisionDrivePrimitive")
 {
+}
+
+void VisionDrivePrimitive::Init(PrimitiveParams *params)
+{
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "ArrivedAtInit", true);
+    m_alignmentMethod = params->GetAlignmentMethod();
+    m_pipelineMode = params->GetPipelineMode();
+
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "m_alignmentMethod", m_alignmentMethod);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "m_pipelineMode", m_pipelineMode);
+}
+
+void VisionDrivePrimitive::Run()
+{
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "ArrivedAtRun", true);
+}
+
+bool VisionDrivePrimitive::IsDone()
+{
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "ArrivedAtDone", true);
+    return true;
 }
