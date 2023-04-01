@@ -2,11 +2,13 @@
 <!DOCTYPE auton SYSTEM "auton.dtd">
 <auton>
 <primitive id="RESET_POSITION_PATH_PLANNER"
-	           pathname="BlueHP1"/>
-<!--score preloaded cone
-    <snippet file="ScoreCone.xml"/> -->
+	           pathname="BlueHP1"
+			/>
+<!--score preloaded cone-->
+    <snippet file="ScoreCone.xml"/> 
 <!--drive to cube-->
 <primitive id="DRIVE_PATH_PLANNER"
+			   arm="FLOOR_POSITION_ROTATE_AUTON"
 	           pathname="BlueHP1"
                time="1.75"/> 
 <!--drive to scoring station-->
