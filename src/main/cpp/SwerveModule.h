@@ -79,5 +79,7 @@ private:
 
     const units::length::inch_t m_wheelDiameter = units::length::inch_t(4.0);
 
+    const units::velocity::meters_per_second_t m_maxVelocity = units::velocity::meters_per_second_t(4.0);
+
     double m_countsOnTurnEncoderPerDegreesOnAngleSensor;
 };

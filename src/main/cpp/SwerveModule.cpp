@@ -125,8 +125,11 @@ void SwerveModule::SetDesiredState(
     SetDriveSpeed(optimizedState.speed);
 }
 
-/// @brief Run the swerve module at the same speed and angle
-/// @returns void
+void SwerveModule::SetDriveSpeed(units::velocity::meters_per_second_t speed)
+{
+    double percent = speed / m_maxVelocity;
+    m_driveMotor->Set(percent);
+}
 
 /// @brief Turn the swerve module to a specified angle
 /// @param [in] units::angle::degree_t the target angle to turn the wheel to

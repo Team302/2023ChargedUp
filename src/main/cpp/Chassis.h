@@ -28,7 +28,7 @@ public:
     void UpdateOdometry();
 
     static constexpr units::meters_per_second_t kMaxSpeed =
-        3.0_mps; // 3 meters per second
+        4.0_mps; // 4 meters per second
     static constexpr units::radians_per_second_t kMaxAngularSpeed{
         std::numbers::pi}; // 1/2 rotation per second
 
@@ -36,8 +36,8 @@ private:
     const int PIGEON_CANID = 0;
     const std::string CANBUS = "canivore";
 
-    const units::length::meter_t CHASSIS_TRACK = units::length::meter_t(20.25);     // x direction
-    const units::length::meter_t CHASSIS_WHEELBASE = units::length::meter_t(20.25); // y direction
+    const units::length::meter_t CHASSIS_TRACK = units::length::inch_t(20.25);     // x direction
+    const units::length::meter_t CHASSIS_WHEELBASE = units::length::inch_t(20.25); // y direction
 
     frc::Translation2d m_frontLeftLocation{CHASSIS_WHEELBASE, CHASSIS_TRACK};
     frc::Translation2d m_frontRightLocation{CHASSIS_WHEELBASE, -CHASSIS_TRACK};

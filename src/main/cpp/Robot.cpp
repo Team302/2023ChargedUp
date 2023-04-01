@@ -1,79 +1,57 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
+#include <frc/MathUtil.h>
+#include <frc/TimedRobot.h>
+#include <frc/XboxController.h>
+#include <frc/filter/SlewRateLimiter.h>
 
-#include <Robot.h>
+#include <Chassis.h>
 
-#include <string>
-
-#include <cameraserver/CameraServer.h>
-
-#include <Robot.h>
-
-using namespace std;
-
-void Robot::RobotInit()
+class Robot : public frc::TimedRobot
 {
-}
-
-/**
- * This function is called every robot packet, no matter the mode. Use
- * this for items like diagnostics that you want ran during disabled,
- * autonomous, teleoperated and test.
- *
- * <p> This runs after the mode specific periodic functions, but before
- * LiveWindow and SmartDashboard integrated updating.
- */
-void Robot::RobotPeriodic()
-{
-}
-
-/**
- * This autonomous (along with the chooser code above) shows how to select
- * between different autonomous modes using the dashboard. The sendable chooser
- * code works with the Java SmartDashboard. If you prefer the LabVIEW Dashboard,
- * remove all of the chooser code and uncomment the GetString line to get the
- * auto name from the text box below the Gyro.
- *
- * You can add additional auto modes by adding additional comparisons to the
- * if-else structure below with additional strings. If using the SendableChooser
- * make sure to add them to the chooser code above as well.
- */
-void Robot::AutonomousInit()
-{
-}
-
-void Robot::AutonomousPeriodic()
-{
-}
-
-void Robot::TeleopInit()
-{
-}
-
-void Robot::TeleopPeriodic()
-{
-
-    /*if (m_chassis != nullptr)
+public:
+    void AutonomousPeriodic() override
     {
-    }*/
-}
+        DriveWithJoystick(false);
+        m_swerve.UpdateOdometry();
+    }
 
-void Robot::DisabledInit()
-{
-}
+    void TeleopPeriodic() override { DriveWithJoystick(true); }
 
-void Robot::DisabledPeriodic()
-{
-}
+private:
+    frc::XboxController m_controller{0};
+    Chassis m_swerve;
 
-void Robot::TestInit()
-{
-}
+    // Slew rate limiters to make joystick inputs more gentle; 1/3 sec from 0
+    // to 1.
+    frc::SlewRateLimiter<units::scalar> m_xspeedLimiter{3 / 1_s};
+    frc::SlewRateLimiter<units::scalar> m_yspeedLimiter{3 / 1_s};
+    frc::SlewRateLimiter<units::scalar> m_rotLimiter{3 / 1_s};
 
-void Robot::TestPeriodic()
-{
-}
+    void DriveWithJoystick(bool fieldRelative)
+    {
+        // Get the x speed. We are inverting this because Xbox controllers return
+        // negative values when we push forward.
+        const auto xSpeed = -m_xspeedLimiter.Calculate(
+                                frc::ApplyDeadband(m_controller.GetLeftY(), 0.02)) *
+                            Chassis::kMaxSpeed;
+
+        // Get the y speed or sideways/strafe speed. We are inverting this because
+        // we want a positive value when we pull to the left. Xbox controllers
+        // return positive values when you pull to the right by default.
+        const auto ySpeed = -m_yspeedLimiter.Calculate(
+                                frc::ApplyDeadband(m_controller.GetLeftX(), 0.02)) *
+                            Chassis::kMaxSpeed;
+
+        // Get the rate of angular rotation. We are inverting this because we want a
+        // positive value when we pull to the left (remember, CCW is positive in
+        // mathematics). Xbox controllers return positive values when you pull to
+        // the right by default.
+        const auto rot = -m_rotLimiter.Calculate(
+                             frc::ApplyDeadband(m_controller.GetRightX(), 0.02)) *
+                         Chassis::kMaxAngularSpeed;
+
+        m_swerve.Drive(xSpeed, ySpeed, rot, fieldRelative);
+    }
+};
 
 #ifndef RUNNING_FRC_TESTS
 int main()
