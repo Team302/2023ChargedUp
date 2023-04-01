@@ -78,14 +78,14 @@ private:
     const double m_autoAlignKP_Y = 0.05;  // used for driving to target
     const double m_autoAlignKP_X = 0.035; // used for driving to target
     const double m_visionKP_X = 1.5;      // used for vision based alignment
-    double m_visionKP_Y = 1.0;            // used for vision based alignment
+    double m_visionKP_Y = 1.75;           // used for vision based alignment
     double m_visionKI_Y = 0.00;           // used for vision based alignment
 
     const double m_speedTolerance = 0.2;
-    const double m_minimumSpeed = 0.20;
+    const double m_minimumSpeed = 0.4;
     const double m_maximumSpeed = 0.5;
 
-    const double m_tolerance = 1;               // tolerance in inches
+    const double m_tolerance = 2;               // tolerance in inches
     const double m_findTagAngleTolerance = 5.0; // tolerance in angle
     const double m_autoAlignYTolerance = 2.5;   // tolerance in inches
     const double m_autoAlignXTolerance = 10.0;  // tolerance in inches

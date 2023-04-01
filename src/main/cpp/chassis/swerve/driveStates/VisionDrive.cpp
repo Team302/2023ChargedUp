@@ -279,9 +279,12 @@ void VisionDrive::AlignRawVision(ChassisMovement &chassisMovement)
     bool atTarget_y = false;
     static units::length::inch_t yErrorPrevious = units::length::inch_t(0.0);
 
-    // Entry
+    units::velocity::meters_per_second_t ySpeed = units::velocity::meters_per_second_t(0.0);
+    units::velocity::meters_per_second_t xSpeed = units::velocity::meters_per_second_t(0.0);
+
     DragonLimelight::PIPELINE_MODE pipelineMode = DragonLimelight::APRIL_TAG;
 
+    // Entry
     if (m_currentState != m_previousState)
     {
         yErrorIntegral = units::length::inch_t(0);
@@ -320,15 +323,16 @@ void VisionDrive::AlignRawVision(ChassisMovement &chassisMovement)
         atTarget_x = AtTargetX(targetData);
         atTarget_y = AtTargetY(targetData);
     }
+    else
+    {
+        ySpeed = units::velocity::meters_per_second_t(-0.1);
+    }
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "YError", yError.to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "XError", xError.to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "yErrorIntegral", yErrorIntegral.to<double>());
 
-    units::velocity::meters_per_second_t ySpeed = units::velocity::meters_per_second_t(0.0);
-    units::velocity::meters_per_second_t xSpeed = units::velocity::meters_per_second_t(0.0);
-
-    exit = (atTarget_x && atTarget_y);
+    exit = (/*atTarget_x &&*/ atTarget_y);
     if (!exit)
     {
         if ((targetData != nullptr) && (pipelineMode == targetData->getTargetType()))
@@ -345,6 +349,9 @@ void VisionDrive::AlignRawVision(ChassisMovement &chassisMovement)
                 }
             }
         }
+
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "YSpeedBeforeThres", ySpeed.to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "XSpeedBeforeThres", xSpeed.to<double>());
 
         if (std::abs(ySpeed.to<double>()) < m_minimumSpeed)
         {
