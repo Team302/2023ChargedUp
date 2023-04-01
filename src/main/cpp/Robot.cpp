@@ -8,12 +8,6 @@
 class Robot : public frc::TimedRobot
 {
 public:
-    void AutonomousPeriodic() override
-    {
-        DriveWithJoystick(false);
-        m_swerve.UpdateOdometry();
-    }
-
     void TeleopPeriodic() override { DriveWithJoystick(true); }
 
 private:

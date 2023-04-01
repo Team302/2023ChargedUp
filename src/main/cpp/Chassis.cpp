@@ -24,7 +24,10 @@ Chassis::Chassis()
                                    flCancoder,
                                    kCountsOnTurnEncoderPerDegree);
 
-    m_frontRight = new SwerveModule(new WPI_TalonFX(kFRDriveCANID, CANBUS),
+    auto frDrive = new WPI_TalonFX(kFRDriveCANID, CANBUS);
+    frDrive->SetInverted(true);
+
+    m_frontRight = new SwerveModule(frDrive,
                                     new WPI_TalonFX(kFRTurnCANID, CANBUS),
                                     frCancoder,
                                     kCountsOnTurnEncoderPerDegree);
@@ -34,7 +37,10 @@ Chassis::Chassis()
                                   blCancoder,
                                   kCountsOnTurnEncoderPerDegree);
 
-    m_backRight = new SwerveModule(new WPI_TalonFX(kBRDriveCANID, CANBUS),
+    auto brDrive = new WPI_TalonFX(kBRDriveCANID, CANBUS);
+    brDrive->SetInverted(true);
+
+    m_backRight = new SwerveModule(brDrive,
                                    new WPI_TalonFX(kBRTurnCANID, CANBUS),
                                    brCancoder,
                                    kCountsOnTurnEncoderPerDegree);

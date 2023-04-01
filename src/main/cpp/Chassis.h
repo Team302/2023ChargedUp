@@ -36,34 +36,34 @@ private:
     const int PIGEON_CANID = 0;
     const std::string CANBUS = "canivore";
 
-    const units::length::meter_t CHASSIS_TRACK = units::length::inch_t(20.25);     // x direction
-    const units::length::meter_t CHASSIS_WHEELBASE = units::length::inch_t(20.25); // y direction
+    const units::length::meter_t CHASSIS_TRACK = units::length::inch_t(20.75);     // x direction
+    const units::length::meter_t CHASSIS_WHEELBASE = units::length::inch_t(20.75); // y direction
 
     frc::Translation2d m_frontLeftLocation{CHASSIS_WHEELBASE, CHASSIS_TRACK};
     frc::Translation2d m_frontRightLocation{CHASSIS_WHEELBASE, -CHASSIS_TRACK};
     frc::Translation2d m_backLeftLocation{-CHASSIS_WHEELBASE, CHASSIS_TRACK};
     frc::Translation2d m_backRightLocation{-CHASSIS_WHEELBASE, -CHASSIS_TRACK};
 
-    const int kFRCancoderID = 0;
-    const int kFLCancoderID = 0;
-    const int kBRCancoderID = 0;
-    const int kBLCancoderID = 0;
+    const int kFRCancoderID = 3;
+    const int kFLCancoderID = 17;
+    const int kBRCancoderID = 1;
+    const int kBLCancoderID = 19;
 
-    const double kFRCancoderOffset = 0.0;
-    const double kFLCancoderOffset = 0.0;
-    const double kBRCancoderOffset = 0.0;
-    const double kBLCancoderOffset = 0.0;
+    const double kFRCancoderOffset = -102.041;
+    const double kFLCancoderOffset = -23.643;
+    const double kBRCancoderOffset = -118.301;
+    const double kBLCancoderOffset = -146.953;
 
     const double kCountsOnTurnEncoderPerDegree = -120.9325;
 
-    const int kFRDriveCANID = 0;
-    const int kFRTurnCANID = 0;
-    const int kFLDriveCANID = 0;
-    const int kFLTurnCANID = 0;
-    const int kBRDriveCANID = 0;
-    const int kBRTurnCANID = 0;
-    const int kBLDriveCANID = 0;
-    const int kBLTurnCANID = 0;
+    const int kFRDriveCANID = 2;
+    const int kFRTurnCANID = 3;
+    const int kFLDriveCANID = 16;
+    const int kFLTurnCANID = 17;
+    const int kBRDriveCANID = 0; // 0 from xml
+    const int kBRTurnCANID = 1;
+    const int kBLDriveCANID = 18;
+    const int kBLTurnCANID = 19;
 
     SwerveModule *m_frontLeft;
     SwerveModule *m_frontRight;
