@@ -58,14 +58,6 @@ SwerveModule::SwerveModule(
     double countsOnTurnEncoderPerDegreesOnAngleSensor) : m_driveMotor(driveMotor),
                                                          m_turnMotor(turnMotor),
                                                          m_turnSensor(canCoder),
-                                                         m_wheelDiameter(0.0),
-                                                         m_nt(),
-                                                         m_activeState(),
-                                                         m_currentPose(),
-                                                         m_currentSpeed(0.0_rpm),
-                                                         m_currentRotations(0.0),
-                                                         m_maxVelocity(1_mps),
-                                                         m_runClosedLoopDrive(false),
                                                          m_countsOnTurnEncoderPerDegreesOnAngleSensor(countsOnTurnEncoderPerDegreesOnAngleSensor)
 {
 
@@ -141,8 +133,6 @@ void SwerveModule::SetDesiredState(
 /// @returns void
 void SwerveModule::SetTurnAngle(units::angle::degree_t targetAngle)
 {
-    m_activeState.angle = targetAngle;
-
     auto currAngle = units::angle::degree_t(m_turnSensor->GetAbsolutePosition());
     auto deltaAngle = AngleUtils::GetDeltaAngle(currAngle, targetAngle);
 

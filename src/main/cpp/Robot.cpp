@@ -26,100 +26,6 @@ void Robot::RobotInit()
  */
 void Robot::RobotPeriodic()
 {
-    LoggableItemMgr::GetInstance()->LogData();
-    Logger::GetLogger()->PeriodicLog();
-
-    if (m_chassis != nullptr)
-    {
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "balance info", "yaw", m_chassis->GetYaw().to<double>());
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "balance info", "pitch", m_chassis->GetPitch().to<double>());
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "balance info", "roll", m_chassis->GetRoll().to<double>());
-    }
-    if (m_tuner != nullptr)
-    {
-        m_tuner->ListenForUpdates();
-    }
-    if (m_robotState != nullptr)
-    {
-        m_robotState->Run();
-    }
-
-#define ENABLE_VISION
-#ifdef ENABLE_VISION
-    // This is an example of how to use RobotVision
-
-    static int mycounter = 0;
-    mycounter++;
-
-    // First get the DragonVision singleton
-    auto vision = DragonVision::GetDragonVision();
-
-    LoggerIntValue count = {string("counter"), mycounter};
-    if (vision != nullptr)
-    {
-        LoggerStringValue status = {string("HW connection Status"), "Dragon vision is not null"};
-
-        // Set the pipeline. You do not need to call this function repeatedly
-        // vision->setPipeline(DragonLimelight::APRIL_TAG);
-
-        // Next get a pointer
-        std::shared_ptr<DragonVisionTarget> dvt = vision->getTargetInfo();
-
-        if (dvt == nullptr)
-        {
-            status = {string("Status"), "No target found or missing limelight"};
-            LoggerData data = {LOGGER_LEVEL::PRINT, string("DragonLimelight"), {}, {}, {count}, {status}};
-            Logger::GetLogger()->LogData(data);
-        }
-        else
-        {
-            status = {string("Status"), "Target found"};
-            LoggerDoubleValue vertAngle = {string("VertAngle"), dvt.get()->getVerticalAngleToTarget().to<double>()};
-            LoggerDoubleValue horAngle = {string("HorizAngle"), dvt.get()->getHorizontalAngleToTarget().to<double>()};
-            LoggerDoubleValue xDistance = {string("x distance RF "), dvt.get()->getXdistanceToTargetRobotFrame().to<double>()};
-            LoggerDoubleValue yDistance = {string("y distance RF "), dvt.get()->getYdistanceToTargetRobotFrame().to<double>()};
-            LoggerData data = {LOGGER_LEVEL::PRINT, string("DragonLimelight"), {}, {vertAngle, horAngle, yDistance, xDistance}, {count}, {status}};
-            Logger::GetLogger()->LogData(data);
-        }
-    }
-    else
-    {
-        LoggerStringValue status = {string("HW connection Status"), "Dragon vision is  null"};
-
-        LoggerData data = {LOGGER_LEVEL::PRINT, string("DragonLimelight"), {}, {}, {count}, {status}};
-        Logger::GetLogger()->LogData(data);
-    }
-#endif
-
-    // ToDo:: Move to DriveTeamFeedback
-    if (m_previewer != nullptr)
-    {
-        m_previewer->CheckCurrentAuton();
-    }
-    if (m_field != nullptr && m_chassis != nullptr)
-    {
-        m_field->UpdateRobotPosition(m_chassis->GetPose()); // ToDo:: Move to DriveTeamFeedback (also don't assume m_field isn't a nullptr)
-    }
-
-    m_tuner->ListenForUpdates();
-
-    auto feedback = DriverFeedback::GetInstance();
-    if (feedback != nullptr)
-    {
-        feedback->UpdateFeedback();
-    }
-
-    auto pigeon = PigeonFactory::GetFactory()->GetCenterPigeon();
-    if (pigeon == nullptr)
-    {
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DEUBGGING"), string("Pigeon Nullptr?"), "true");
-    }
-    else
-    {
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Pigeon"), string("Pigeon Yaw"), pigeon->GetYaw());
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Pigeon"), string("Pigeon Pitch"), pigeon->GetPitch());
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Pigeon"), string("Pigeon Roll"), pigeon->GetRoll());
-    }
 }
 
 /**
@@ -135,80 +41,26 @@ void Robot::RobotPeriodic()
  */
 void Robot::AutonomousInit()
 {
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("AutonomousInit"), string("arrived"));
-
-    StateMgrHelper::SetCheckGamepadInputsForStateTransitions(false);
-    if (m_cyclePrims != nullptr)
-    {
-        m_cyclePrims->Init();
-    }
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("AutonomousInit"), string("end"));
 }
 
 void Robot::AutonomousPeriodic()
 {
-    if (m_cyclePrims != nullptr)
-    {
-        m_cyclePrims->Run();
-    }
 }
 
 void Robot::TeleopInit()
 {
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopInit"), string("arrived"));
-
-    if (m_controller == nullptr)
-    {
-        m_controller = TeleopControl::GetInstance();
-    }
-
-    StateMgrHelper::SetCheckGamepadInputsForStateTransitions(true);
-    if (m_chassis != nullptr && m_controller != nullptr)
-    {
-        if (m_holonomic != nullptr)
-        {
-            m_holonomic->Init();
-        }
-
-        // Create chassismovement to flush out any drive options from auton
-        ChassisMovement resetMoveInfo;
-        resetMoveInfo.driveOption = ChassisOptionEnums::DriveStateType::FIELD_DRIVE;
-        resetMoveInfo.headingOption = ChassisOptionEnums::HeadingOption::MAINTAIN;
-
-        m_chassis->Drive();
-    }
-    StateMgrHelper::RunCurrentMechanismStates();
-
-    // now in teleop, clear field of trajectories
-    if (m_field != nullptr)
-    {
-        m_field->ResetField(); // ToDo:  Move to DriveTeamFeedback
-    }
-
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopInit"), string("end"));
 }
 
 void Robot::TeleopPeriodic()
 {
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopPeriodic"), string("arrived"));
-    if (m_chassis != nullptr && m_controller != nullptr)
-    {
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("HolonomicRun"), string("arrived"));
-        if (m_holonomic != nullptr)
-        {
-            m_holonomic->Run();
-        }
-    }
-    StateMgrHelper::RunCurrentMechanismStates();
 
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopPeriodic"), string("end"));
+    /*if (m_chassis != nullptr)
+    {
+    }*/
 }
 
 void Robot::DisabledInit()
 {
-
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("DisabledInit"), string("arrived"));
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("DisabledInit"), string("end"));
 }
 
 void Robot::DisabledPeriodic()
@@ -217,7 +69,6 @@ void Robot::DisabledPeriodic()
 
 void Robot::TestInit()
 {
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TestInit"), string("arrived"));
 }
 
 void Robot::TestPeriodic()

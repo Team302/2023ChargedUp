@@ -55,26 +55,6 @@ public:
                  DragonCanCoder *canCoder,
                  double countsOnTurnEncoderPerDegreesOnAngleSensor);
 
-    void Init(
-        units::length::inch_t wheelDiameter,
-        units::velocity::meters_per_second_t maxVelocity,
-        units::angular_velocity::radians_per_second_t maxAngularVelocity,
-        units::acceleration::meters_per_second_squared_t maxAcceleration,
-        units::angular_acceleration::radians_per_second_squared_t maxAngularAcceleration,
-        frc::Translation2d offsetFromRobotCenter);
-
-    /// @brief Turn all of the wheel to zero degrees yaw according to the pigeon
-    /// @returns void
-    void ZeroAlignModule();
-
-    /// @brief Set all motor encoders to zero
-    /// @returns void
-    void SetEncodersToZero();
-
-    ///@brief
-    /// @returns
-    double GetEncoderValues();
-
     /// @brief Get the current state of the module (speed of the wheel and angle of the wheel)
     /// @returns SwerveModuleState
     frc::SwerveModuleState GetState() const;
@@ -97,16 +77,7 @@ private:
     WPI_TalonFX *m_turnMotor;
     DragonCanCoder *m_turnSensor;
 
-    units::length::inch_t m_wheelDiameter;
+    const units::length::inch_t m_wheelDiameter = units::length::inch_t(4.0);
 
-    std::string m_nt;
-
-    frc::SwerveModuleState m_activeState;
-    frc::Pose2d m_currentPose;
-    units::angular_velocity::revolutions_per_minute_t m_currentSpeed;
-    double m_currentRotations;
-
-    units::velocity::meters_per_second_t m_maxVelocity;
-    bool m_runClosedLoopDrive;
     double m_countsOnTurnEncoderPerDegreesOnAngleSensor;
 };
