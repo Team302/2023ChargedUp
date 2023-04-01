@@ -4,6 +4,11 @@
     <primitive id="RESET_POSITION"
 	           pathname="BlueCOOPOne1CubeSlow.wpilib.json"
                intake="HOLD"/>
+	<primitive id="DO_NOTHING"
+	          arm="STARTING_POSITION_ROTATE"
+               extender="INITIALIZE"
+			   time="0.5"/>
+			   		   
     <!--score preloaded cone-->
     <snippet file="ScoreCone.xml"/> 
     <!--drive over charging station-->
