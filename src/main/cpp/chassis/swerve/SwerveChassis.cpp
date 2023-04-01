@@ -244,7 +244,7 @@ ISwerveDriveState *SwerveChassis::GetDriveState(ChassisMovement moveInfo)
     ISwerveDriveState *state = nullptr;
 
     auto isVisionDrive = moveInfo.driveOption == ChassisOptionEnums::VISION_DRIVE;
-    auto hasTrajectory = moveInfo.driveOption == ChassisOptionEnums::TRAJECTORY_DRIVE || ChassisOptionEnums::TRAJECTORY_DRIVE_PLANNER;
+    auto hasTrajectory = moveInfo.driveOption == ChassisOptionEnums::TRAJECTORY_DRIVE || moveInfo.driveOption == ChassisOptionEnums::TRAJECTORY_DRIVE_PLANNER;
 
     if (!hasTrajectory && !isVisionDrive &&
         (units::math::abs(moveInfo.chassisSpeeds.vx) < m_velocityDeadband) &&
