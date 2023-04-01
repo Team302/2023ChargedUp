@@ -78,6 +78,7 @@ IntakeStateMgr::IntakeStateMgr() : StateMgr(),
 
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::DesiredGamePiece);
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::ArmRotateState);
+    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::ArmRotateAngle);
 }
 
 /// @brief  Get the current Parameter parm value for the state of this mechanism
@@ -156,7 +157,7 @@ void IntakeStateMgr::CheckForGamepadTransitions()
                 {
                     m_targetState = INTAKE_STATE::HOLD;
                 }
-                else if (m_coneMode && m_isHP)
+                else if (m_coneMode && (m_isHP || m_armAngle > HUMAN_PLAYER_STATION_ANGLE))
                 {
                     m_targetState = INTAKE_STATE::HP_CONE_INTAKE;
                 }
@@ -195,5 +196,9 @@ void IntakeStateMgr::Update(RobotStateChanges::StateChange change, int value)
     {
         auto armState = static_cast<ArmStateMgr::ARM_STATE>(value);
         m_isHP = armState == ArmStateMgr::ARM_STATE::HUMAN_PLAYER_STATION_ROTATE;
+    }
+    else if (change == RobotStateChanges::ArmRotateAngle)
+    {
+        m_armAngle = value;
     }
 }

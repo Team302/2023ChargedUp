@@ -27,29 +27,50 @@
 
 // team 302 includes
 #include <hw/interfaces/IDragonMotorController.h>
+#include <hw/DragonCanCoder.h>
 #include <mechanisms/base/Mech1IndMotor.h>
 #include <mechanisms/arm/arm.h>
+#include <robotstate/RobotState.h>
+#include <robotstate/RobotStateChanges.h>
+#include <utils/logging/Logger.h>
 
 // Third Party Includes
 //========= Hand modified code start section 1 ========
 #include <ctre/phoenix/motorcontrol/can/WPI_TalonFX.h>
+#include <units/angle.h>
 //========= Hand modified code end section 1 ========
 
-using namespace std;
+using std::shared_ptr;
+using std::string;
 
 /// @brief Create an Arm mechanism wiht 1 independent motor
 /// @param [in] std::string the name of the file that will set control parameters for this mechanism
 /// @param [in] std::string the name of the network table for logging information
 /// @param [in] std::shared_ptr<IDragonMotorController>
 
-Arm::Arm(
-	std::string controlFileName,
-	std::string networkTableName,
-	std::shared_ptr<IDragonMotorController> motorController0) : Mech1IndMotor(MechanismTypes::MECHANISM_TYPE::ARM, controlFileName, networkTableName, motorController0)
+Arm::Arm(string controlFileName,
+		 string networkTableName,
+		 shared_ptr<IDragonMotorController> motorController,
+		 DragonCanCoder *canCoder) : Mech1IndMotor(MechanismTypes::MECHANISM_TYPE::ARM, controlFileName, networkTableName, motorController),
+									 m_cancoder(canCoder)
 {
 }
 
 //========= Hand modified code start section 0 ========
+void Arm::Update()
+{
+	Mech1IndMotor::Update();
+	auto angle = GetPositionDegrees();
+	int wholeAngle = static_cast<int>(std::round(angle.to<double>()));
+
+	RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmRotateAngle, wholeAngle);
+}
+
+double Arm::GetTarget() const
+{
+	auto target = Mech1IndMotor::GetTarget();
+	return (target / GetMotor().get()->GetCountsPerDegree());
+}
 
 void Arm::ResetIfArmDown()
 {
@@ -60,6 +81,22 @@ void Arm::ResetIfArmDown()
 		auto sensors = fx->GetSensorCollection();
 		sensors.SetIntegratedSensorPosition(0, 0);
 	}
+}
+units::angle::degree_t Arm::GetPositionDegrees() const
+{
+	if (m_cancoder == nullptr) // Don't use the CANcoder, if we want to use hte CAN coder we need to switch to the external sensor
+	{
+		auto lastError = m_cancoder->GetLastError();
+		auto hasErrors = !(lastError == ctre::phoenix::ErrorCode::OK || lastError == ctre::phoenix::ErrorCode::OKAY);
+		if (!hasErrors)
+		{
+			Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, GetNetworkTableName(), "Motor Angle", GetPosition());
+			Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, GetNetworkTableName(), "Cancoder Angle", m_cancoder->GetAbsolutePosition());
+			return units::angle::degree_t(m_cancoder->GetAbsolutePosition());
+		}
+	}
+	Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, GetNetworkTableName(), "Arm Angle", GetPosition());
+	return units::angle::degree_t(GetPosition());
 }
 
 //========= Hand modified code end section 0 ========

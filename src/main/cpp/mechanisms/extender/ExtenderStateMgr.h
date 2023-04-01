@@ -121,8 +121,12 @@ private:
     bool m_hasInitialized = false;
 
     frc::Timer *m_initializationTimer;
+    bool m_timerStarted = false;
 
     double m_extendedPosition;
+    int m_armAngle = 0.0;
+    int m_armTargetAngle = 0.0;
+    ArmStateMgr::ARM_STATE m_armState = ArmStateMgr::ARM_STATE::HOLD_POSITION_ROTATE;
     //========= Hand modified code end section 5 ========
 
     static ExtenderStateMgr *m_instance;
@@ -138,8 +142,6 @@ private:
     const StateStruc m_floor_extendState = {EXTENDER_STATE::FLOOR_EXTEND, "FLOOR_EXTEND", StateType::EXTENDER_STATE, false};
     const StateStruc m_initializeState = {EXTENDER_STATE::INITIALIZE, "INITIALIZE", StateType::EXTENDER_STATE, false};
 
-    ArmStateMgr::ARM_STATE m_armState;
-
     const double m_armAngleTolerance = 10.0;
-    const double m_armFloorTolerance = 6.0;
+    const double m_armFloorTolerance = 11.0;
 };

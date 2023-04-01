@@ -31,6 +31,9 @@
 #include <mechanisms/controllers/ControlData.h>
 #include <mechanisms/arm/ArmState.h>
 #include <mechanisms/MechanismFactory.h>
+#include <robotstate/RobotState.h>
+#include <robotstate/RobotStateChanges.h>
+#include <utils/AngleUtils.h>
 
 // Third Party Includes
 
@@ -39,12 +42,23 @@ using namespace std;
 ArmState::ArmState(
 	string stateName,
 	int stateId,
-	ControlData *control0,
-	double target0) : Mech1IndMotorState(MechanismFactory::GetMechanismFactory()->GetArm(), stateName, stateId, control0, target0),
-					  m_arm(MechanismFactory::GetMechanismFactory()->GetArm())
+	ControlData *control,
+	double target0) : Mech1IndMotorState(MechanismFactory::GetMechanismFactory()->GetArm(), stateName, stateId, control, target0),
+					  m_arm(MechanismFactory::GetMechanismFactory()->GetArm()),
+					  m_control(new ControlData(ControlModes::CONTROL_TYPE::POSITION_ABSOLUTE,
+												ControlModes::CONTROL_RUN_LOCS::MOTOR_CONTROLLER,
+												control->GetIdentifier(),
+												control->GetP(),
+												control->GetI(),
+												control->GetD(),
+												control->GetF(),
+												control->GetIZone(),
+												control->GetMaxAcceleration(),
+												control->GetCruiseVelocity(),
+												control->GetPeakValue(),
+												control->GetNominalValue()))
 {
 }
-
 bool ArmState::AtTarget() const
 {
 	//========= Hand modified code start section 0 ========
@@ -58,4 +72,25 @@ bool ArmState::AtTarget() const
 	}*/
 	//========= Hand modified code end section 0 ========
 	return true;
+}
+
+void ArmState::Init()
+{
+	if (m_arm != nullptr)
+	{
+		auto targetAngle = units::angle::degree_t(GetCurrentTarget());
+		int wholeAngle = static_cast<int>(std::round(targetAngle.to<double>()));
+		RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmRotateAngleTarget, wholeAngle);
+		auto currAngle = m_arm->GetPositionDegrees();
+		auto deltaAngle = AngleUtils::GetDeltaAngle(currAngle, targetAngle);
+		double targetCounts = 0.0;
+		auto motor = m_arm->GetMotor().get();
+		if (motor != nullptr)
+		{
+			auto currentCounts = motor->GetCounts();
+			targetCounts = currentCounts + deltaAngle.to<double>() * motor->GetCountsPerDegree();
+		}
+		m_arm->SetControlConstants(0, m_control);
+		m_arm->UpdateTarget(targetCounts);
+	}
 }

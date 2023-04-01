@@ -321,11 +321,11 @@
       reverselimitswitchopen="true"
       voltageCompensationSaturation="10.5"
       voltageCompensationEnable="true"
-      countsPerDegree="531" />
+      countsPerDegree="515.433" />
     <cancoder
       canId="4"
       canBusName="rio"
-      offset="0.0"
+      offset="-40.342"
       reverse="false" />
   </mechanism>
   <mechanism

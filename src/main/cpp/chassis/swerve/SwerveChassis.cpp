@@ -243,7 +243,11 @@ ISwerveDriveState *SwerveChassis::GetDriveState(ChassisMovement moveInfo)
 {
     ISwerveDriveState *state = nullptr;
 
-    if ((units::math::abs(moveInfo.chassisSpeeds.vx) < m_velocityDeadband) &&
+    auto isVisionDrive = moveInfo.driveOption == ChassisOptionEnums::VISION_DRIVE;
+    auto hasTrajectory = moveInfo.driveOption == ChassisOptionEnums::TRAJECTORY_DRIVE || moveInfo.driveOption == ChassisOptionEnums::TRAJECTORY_DRIVE_PLANNER;
+
+    if (!hasTrajectory && !isVisionDrive &&
+        (units::math::abs(moveInfo.chassisSpeeds.vx) < m_velocityDeadband) &&
         (units::math::abs(moveInfo.chassisSpeeds.vy) < m_velocityDeadband) &&
         (units::math::abs(moveInfo.chassisSpeeds.omega) < m_angularDeadband))
     {

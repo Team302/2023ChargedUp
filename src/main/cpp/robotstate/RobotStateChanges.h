@@ -25,6 +25,8 @@ public:
         HoldingGamePiece,
         ArmExtenderState,
         ArmRotateState,
+        ArmRotateAngle,
+        ArmRotateAngleTarget,
         GrabberState,
         IntakeState,
         DesiredPlacementLocation,

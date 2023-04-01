@@ -190,7 +190,7 @@ private:
     units::angular_velocity::radians_per_second_t m_rotate;
 
     static constexpr units::velocity::meters_per_second_t m_velocityDeadband = units::velocity::meters_per_second_t(0.025);
-    const units::angular_velocity::radians_per_second_t m_angularDeadband = units::angular_velocity::radians_per_second_t(0.005);
+    static constexpr units::angular_velocity::radians_per_second_t m_angularDeadband = units::angular_velocity::radians_per_second_t(0.1);
 
     frc::Translation2d m_frontLeftLocation;
     frc::Translation2d m_frontRightLocation;
