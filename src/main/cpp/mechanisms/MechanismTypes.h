@@ -43,7 +43,6 @@ public:
         ARM,
         EXTENDER,
         INTAKE,
-        GRABBER,
         MAX_MECHANISM_TYPES
     };
 

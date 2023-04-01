@@ -64,7 +64,6 @@ MechanismFactory *MechanismFactory::GetMechanismFactory()
 
 MechanismFactory::MechanismFactory() : m_arm(nullptr),
 									   m_extender(nullptr),
-									   m_grabber(nullptr),
 									   m_intake(nullptr)
 // @ADDMECH Initialize mechanism to NULLPTR
 {
@@ -116,18 +115,6 @@ void MechanismFactory::CreateMechanism(
 	}
 	break;
 
-	case MechanismTypes::GRABBER:
-	{
-		auto solenoid1 = GetSolenoid(solenoids, SolenoidUsage::GrabberSolenoid);
-		auto sensor0 = GetDigitalInput(digitalInputs, DigitalInputUsage::DIGITAL_INPUT_USAGE::GAME_PIECE_PRESENT_SENSOR);
-		// if (solenoid1.get() != nullptr && sensor0.get() != nullptr)
-		if (solenoid1.get() != nullptr)
-		{
-			m_grabber = new Grabber(controlFileName, networkTableName, solenoid1, sensor0);
-		}
-	}
-	break;
-
 	case MechanismTypes::INTAKE:
 	{
 		auto intakeSol = GetSolenoid(solenoids, SolenoidUsage::IntakeSolenoid);
@@ -170,10 +157,6 @@ Mech *MechanismFactory::GetMechanism(MechanismTypes::MECHANISM_TYPE type) const
 
 	case MechanismTypes::EXTENDER:
 		return m_extender;
-		break;
-
-	case MechanismTypes::GRABBER:
-		return m_grabber;
 		break;
 
 	case MechanismTypes::INTAKE:

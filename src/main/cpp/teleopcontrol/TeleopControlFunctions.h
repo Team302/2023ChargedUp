@@ -85,10 +85,10 @@ public:
         // Turn about point states
         FRONT_LEFT_BUMPER_TURNABOUT_POINT,
         FRONT_RIGHT_BUMPER_TURNABOUT_POINT,
-        // Grabber states
+        // CYCLE_GAMEPIECE states
         OPEN,
         GRAB,
-        CYCLE_GRABBER,
+        CYCLE_CYCLE_GAMEPIECE,
         // Active intake controls?
         INTAKE_OFF,
         INTAKE,
