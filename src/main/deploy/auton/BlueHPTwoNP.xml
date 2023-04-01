@@ -6,11 +6,8 @@
 <!--drive to cube-->
 <primitive id="DRIVE_PATH_PLANNER"
 	           pathname="BlueHP1"
-               time="3.0"/> 
+               time="2.25"/> 
 <!--drive to scoring station-->
-<primitive id="DO_NOTHING"
-               extender="FLOOR_EXTEND"
-	           time="1.0"/>
 <primitive id="DRIVE_PATH_PLANNER"
 	           pathname="BlueHP2"
                time="10.0"/>
