@@ -275,6 +275,8 @@ void VisionDrive::DriveToTarget(ChassisMovement &chassisMovement)
 void VisionDrive::AlignRawVision(ChassisMovement &chassisMovement)
 {
     bool exit = false;
+    bool atTarget_x = false;
+    bool atTarget_y = false;
     static units::length::inch_t yErrorPrevious = units::length::inch_t(0.0);
 
     // Entry
@@ -315,9 +317,8 @@ void VisionDrive::AlignRawVision(ChassisMovement &chassisMovement)
 
         yErrorIntegral += yError;
 
-        xError = targetData->getXdistanceToTargetRobotFrame() - units::length::inch_t(m_robotFrameXDistCorrection);
-
-        exit = (AtTargetY(targetData) /*&& AtTargetX(targetData)*/);
+        atTarget_x = AtTargetX(targetData);
+        atTarget_y = AtTargetY(targetData);
     }
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "YError", yError.to<double>());
@@ -327,18 +328,24 @@ void VisionDrive::AlignRawVision(ChassisMovement &chassisMovement)
     units::velocity::meters_per_second_t ySpeed = units::velocity::meters_per_second_t(0.0);
     units::velocity::meters_per_second_t xSpeed = units::velocity::meters_per_second_t(0.0);
 
-    if ((targetData != nullptr) && (pipelineMode == targetData->getTargetType()))
-    {
-        ySpeed = units::length::meter_t((yError * m_visionKP_Y) + (yErrorIntegral * m_visionKI_Y)) / 1_s;
-
-        if (std::abs(yError.to<double>()) < m_autoAlignYTolerance)
-        {
-            xSpeed = units::length::meter_t(xError * m_visionKP_X * 0) / 1_s;
-        }
-    }
-
+    exit = (atTarget_x && atTarget_y);
     if (!exit)
     {
+        if ((targetData != nullptr) && (pipelineMode == targetData->getTargetType()))
+        {
+            if (atTarget_y == false)
+                ySpeed = units::length::meter_t((yError * m_visionKP_Y) + (yErrorIntegral * m_visionKI_Y)) / 1_s;
+
+            if (atTarget_x == false)
+            {
+                if (std::abs(yError.to<double>()) < m_autoAlignYTolerance)
+                {
+                    xError = targetData->getXdistanceToTargetRobotFrame() - units::length::inch_t(m_robotFrameXDistCorrection / 2.0 + m_robotFrameGapToTag);
+                    xSpeed = units::length::meter_t(xError * m_visionKP_X * 0) / 1_s;
+                }
+            }
+        }
+
         if (std::abs(ySpeed.to<double>()) < m_minimumSpeed)
         {
             ySpeed = units::length::meter_t(m_minimumSpeed * ((ySpeed.to<double>() < 0 ? -1 : 1))) / 1_s;
@@ -348,19 +355,7 @@ void VisionDrive::AlignRawVision(ChassisMovement &chassisMovement)
             ySpeed = units::length::meter_t(m_maximumSpeed * ((ySpeed.to<double>() < 0 ? -1 : 1))) / 1_s;
         }
     }
-    /*
-        if (abs(ySpeed.to<double>()) < m_minimumSpeed)
-        {
-            if (ySpeed.to<double>() < 0.0)
-            {
-                ySpeed = units::velocity::meters_per_second_t(m_minimumSpeed * -1.0);
-            }
-            else
-            {
-                ySpeed = units::velocity::meters_per_second_t(m_minimumSpeed);
-            }
-        }
-    */
+
     chassisMovement.chassisSpeeds.vy = ySpeed;
     chassisMovement.chassisSpeeds.vx = xSpeed;
 
@@ -401,22 +396,33 @@ bool VisionDrive::AtTargetX(std::shared_ptr<DragonVisionTarget> targetData)
     if (targetData != nullptr)
     {
         units::length::inch_t xError = targetData->getXdistanceToTargetRobotFrame();
+        DragonLimelight::PIPELINE_MODE pipelineMode = DragonVision::GetDragonVision()->getPipeline(DragonVision::LIMELIGHT_POSITION::FRONT);
 
-        units::angle::degree_t verticalAngle = targetData->getVerticalAngleToTarget();
-
-        // vertical angle is positive, so we are looking at high cone
-        if (verticalAngle.to<double>() > 0.0)
+        if (pipelineMode == DragonLimelight::PIPELINE_MODE::APRIL_TAG)
         {
-            if ((std::abs(xError.to<double>()) - m_highConeDistance) < m_tolerance)
+            if ((std::abs(xError.to<double>()) - (m_robotFrameXDistCorrection / 2.0 + m_robotFrameGapToTag)) < m_tolerance)
             {
                 return true;
             }
         }
-        else // vert angle is negative, so we're looking at low cone
+        else
         {
-            if ((std::abs(xError.to<double>()) - m_lowConeDistance) < m_tolerance)
+            units::angle::degree_t verticalAngle = targetData->getVerticalAngleToTarget();
+
+            // vertical angle is positive, so we are looking at high cone
+            if (verticalAngle.to<double>() > 0.0)
             {
-                return true;
+                if ((std::abs(xError.to<double>()) - m_highConeDistance) < m_tolerance)
+                {
+                    return true;
+                }
+            }
+            else // vert angle is negative, so we're looking at low cone
+            {
+                if ((std::abs(xError.to<double>()) - m_lowConeDistance) < m_tolerance)
+                {
+                    return true;
+                }
             }
         }
     }

@@ -78,11 +78,11 @@ private:
     const double m_autoAlignKP_Y = 0.05;  // used for driving to target
     const double m_autoAlignKP_X = 0.035; // used for driving to target
     const double m_visionKP_X = 1.5;      // used for vision based alignment
-    double m_visionKP_Y = 2.6;            // used for vision based alignment
+    double m_visionKP_Y = 1.0;            // used for vision based alignment
     double m_visionKI_Y = 0.00;           // used for vision based alignment
 
     const double m_speedTolerance = 0.2;
-    const double m_minimumSpeed = 0.25;
+    const double m_minimumSpeed = 0.20;
     const double m_maximumSpeed = 0.5;
 
     const double m_tolerance = 1;               // tolerance in inches
@@ -91,9 +91,10 @@ private:
     const double m_autoAlignXTolerance = 10.0;  // tolerance in inches
     const double m_driveXTolerance = 19.5;      // tolerance in inches
 
-    const double m_robotFrameXDistCorrection = 31.0; // Corrects for physical barrier to april tag, can never get closer than 30 inches
+    const double m_robotFrameXDistCorrection = 32.0; // Corrects for physical barrier to april tag, can never get closer than 30 inches
     const double m_robotFrameGapToTag = 7.0;         // This 6 inches  is so we don't scrape while driving in y direction
 
+    const double m_AprilTagTargetDistance = 32.0 / 2.0 + 5; // to stop 5" off the wood
     const double m_highConeDistance = 45.0;
     const double m_lowConeDistance = 40.0;
 
