@@ -120,7 +120,6 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                     std::string pathName;
                     auto armstate = ArmStateMgr::ARM_STATE::HOLD_POSITION_ROTATE;
                     auto extenderstate = ExtenderStateMgr::EXTENDER_STATE::HOLD_POSITION_EXTEND;
-                    auto grabberstate = GrabberStateMgr::GRABBER_STATE::OPEN;
                     auto intakestate = IntakeStateMgr::INTAKE_STATE::HOLD;
                     // @ADDMECH Initialize your mechanism state
                     for (xml_attribute attr = primitiveNode.first_attribute(); attr; attr = attr.next_attribute())
@@ -209,19 +208,6 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                                 hasError = true;
                             }
                         }
-                        else if (strcmp(attr.name(), "grabber") == 0)
-                        {
-                            auto grabberItr = GrabberStateMgr::GetInstance()->m_grabberXmlStringToStateEnumMap.find(attr.value());
-                            if (grabberItr != GrabberStateMgr::GetInstance()->m_grabberXmlStringToStateEnumMap.end())
-                            {
-                                grabberstate = grabberItr->second;
-                            }
-                            else
-                            {
-                                Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("PrimitiveParser"), string("PrimitiveParser::ParseXML invalid grabber state"), attr.value());
-                                hasError = true;
-                            }
-                        }
                         else if (strcmp(attr.name(), "intake") == 0)
                         {
                             auto intakeItr = IntakeStateMgr::GetInstance()->m_intakeXmlStringToStateEnumMap.find(attr.value());
@@ -231,7 +217,7 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                             }
                             else
                             {
-                                Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("PrimitiveParser"), string("PrimitiveParser::ParseXML invalid grabber state"), attr.value());
+                                Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("PrimitiveParser"), string("PrimitiveParser::ParseXML invalid intake state"), attr.value());
                                 hasError = true;
                             }
                         }
@@ -258,7 +244,6 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                                                                      // @ADDMECH add parameter for your mechanism state
                                                                      armstate,
                                                                      extenderstate,
-                                                                     grabberstate,
                                                                      intakestate));
                         string ntName = string("Primitive ") + to_string(paramVector.size());
                         int slot = paramVector.size() - 1;
