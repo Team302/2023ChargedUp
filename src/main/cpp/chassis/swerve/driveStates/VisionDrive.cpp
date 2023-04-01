@@ -38,8 +38,7 @@ VisionDrive::VisionDrive(RobotDrive *robotDrive) : RobotDrive(),
 {
 }
 
-std::array<frc::SwerveModuleState, 4> VisionDrive::UpdateSwerveModuleStates(
-    ChassisMovement &chassisMovement)
+std::array<frc::SwerveModuleState, 4> VisionDrive::UpdateSwerveModuleStates(ChassisMovement &chassisMovement)
 {
 
     static int pCounter = 0;
@@ -130,8 +129,7 @@ void VisionDrive::STANDISH()
     m_currentState = ALIGN_RAW_VISION;
 }
 
-void VisionDrive::Init(
-    ChassisMovement &chassisMovement)
+void VisionDrive::Init(ChassisMovement &chassisMovement)
 {
 }
 
@@ -497,5 +495,5 @@ void VisionDrive::ResetVisionDrive()
 {
     yErrorIntegral = units::length::inch_t(0);
     m_previousState = m_currentState;
-    m_currentState = VISION_STATE::LOOKING_FOR_APRIL_TAG;
+    m_currentState = VISION_STATE::ALIGN_RAW_VISION; // skip all the previous states
 }

@@ -34,6 +34,7 @@ VisionDrivePrimitive::VisionDrivePrimitive() : m_ntName("VisionDrivePrimitive")
 void VisionDrivePrimitive::Init(PrimitiveParams *params)
 {
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "ArrivedAtInit", true);
+    m_dragonVision = DragonVision::GetDragonVision();
 }
 
 void VisionDrivePrimitive::Run()

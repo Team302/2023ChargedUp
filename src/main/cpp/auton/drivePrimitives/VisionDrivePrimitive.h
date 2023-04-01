@@ -23,6 +23,7 @@
 #include <chassis/ChassisFactory.h>
 #include <chassis/swerve/SwerveChassis.h>
 #include <chassis/ChassisOptionEnums.h>
+#include <DragonVision/DragonVision.h>
 
 // FRC,WPI Includes
 #include <frc/controller/HolonomicDriveController.h>
@@ -47,4 +48,6 @@ public:
 
 private:
     std::string m_ntName;
+
+    DragonVision *m_dragonVision;
 };
