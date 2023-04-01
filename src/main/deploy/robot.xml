@@ -59,12 +59,12 @@
   <chassis
     type="SWERVE"
     wheelDiameter="4.0"
-    wheelBase="20.625"
-    track="20.625"
-    maxVelocity="162.0"
-    maxAngularVelocity="360.0"
+    wheelBase="20.75"
+    track="20.75"
+    maxVelocity="177.0"
+    maxAngularVelocity="434.0"
     maxAcceleration="81"
-    maxAngularAcceleration="24"
+    maxAngularAcceleration="173.6062"
     networkTable="ChassisNT"
     controlFile="chassis.xml">
     <swervemodule

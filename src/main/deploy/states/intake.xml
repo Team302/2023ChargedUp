@@ -32,8 +32,8 @@
     stateIdentifier="INTAKE_HOLD"
     controlDataIdentifier="intake"
     controlDataIdentifier2="intake"
-    value=".15"
-    secondValue=".15"
+    value="0.0"
+    secondValue="0.0"
     solenoid="REVERSE"
     solenoid2="NONE" />
   <mechanismTarget
