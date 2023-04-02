@@ -9,13 +9,14 @@
     <primitive id="DO_NOTHING"
                arm="CONE_BACKROW_ROTATE"
                extender="CONE_BACKROW_EXTEND"
-               time="0.5"
+                intake="INTAKE_HOLD"
+               time="2.0"
                />
     <primitive id="DO_NOTHING"
                arm="CONE_BACKROW_ROTATE"
                extender="CONE_BACKROW_EXTEND"
                intake="INTAKE_RELEASE"
-               time="0.5"
+               time="2.0"
                />
     <primitive id="DO_NOTHING"
                arm="CONE_BACKROW_ROTATE"

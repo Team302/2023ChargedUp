@@ -138,7 +138,7 @@ void ExtenderStateMgr::CheckForStateTransition()
         {
             m_targetState = EXTENDER_STATE::STARTING_POSITION_EXTEND;
         }
-        else if (m_prevState != EXTENDER_STATE::INITIALIZE)
+        else if (m_prevState != EXTENDER_STATE::INITIALIZE && m_checkGamePadTransitions)
         {
             m_targetState = m_prevState;
         }
