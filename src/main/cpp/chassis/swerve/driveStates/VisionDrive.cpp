@@ -456,6 +456,8 @@ void VisionDrive::Aligned(ChassisMovement &chassisMovement)
 
 bool VisionDrive::AtTargetX(std::shared_ptr<DragonVisionTarget> targetData)
 {
+    return true;
+
     if (targetData != nullptr)
     {
         units::length::inch_t xError = targetData->getXdistanceToTargetRobotFrame() - units::length::inch_t(m_centerOfRobotToBumperEdge_in + m_visionAlignmentXoffset_in);
