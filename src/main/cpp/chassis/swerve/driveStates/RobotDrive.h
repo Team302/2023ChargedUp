@@ -31,8 +31,7 @@ public:
     RobotDrive();
     ~RobotDrive() = default;
 
-    std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates(
-        ChassisMovement &chassisMovement) override;
+    std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates(ChassisMovement &chassisMovement) override;
 
     void Init(ChassisMovement &chassisMovement) override;
 
@@ -48,4 +47,9 @@ protected:
 
 private:
     void CorrectForTipping(ChassisMovement &chassisMovement);
+    void AdjustForRotation(ChassisMovement &chassisMovement);
+
+    SwerveChassis *m_chassis;
+
+    static constexpr units::time::millisecond_t LOOP_TIME = units::time::millisecond_t(20.0);
 };

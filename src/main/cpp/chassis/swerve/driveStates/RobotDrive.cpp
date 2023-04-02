@@ -27,6 +27,7 @@
 #include <chassis/ChassisMovement.h>
 #include <utils/logging/Logger.h>
 
+using frc::Pose2d;
 using std::string;
 
 RobotDrive::RobotDrive() : ISwerveDriveState::ISwerveDriveState(),
@@ -36,14 +37,15 @@ RobotDrive::RobotDrive() : ISwerveDriveState::ISwerveDriveState(),
                            m_brState(),
                            m_wheelbase(units::length::inch_t(20.0)),
                            m_wheeltrack(units::length::inch_t(20.0)),
-                           m_maxspeed(units::velocity::feet_per_second_t(1.0))
+                           m_maxspeed(units::velocity::feet_per_second_t(1.0)),
+                           m_chassis(ChassisFactory::GetChassisFactory()->GetSwerveChassis())
+
 {
-    auto chassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
-    if (chassis != nullptr)
+    if (m_chassis != nullptr)
     {
-        m_wheelbase = chassis->GetWheelBase();
-        m_wheeltrack = chassis->GetTrack();
-        m_maxspeed = chassis->GetMaxSpeed();
+        m_wheelbase = m_chassis->GetWheelBase();
+        m_wheeltrack = m_chassis->GetTrack();
+        m_maxspeed = m_chassis->GetMaxSpeed();
     }
     else
     {
@@ -177,12 +179,11 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates(Chass
 void RobotDrive::CorrectForTipping(ChassisMovement &chassisMovement)
 
 {
-    auto chassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
-    if (chassis != nullptr)
+    if (m_chassis != nullptr)
     {
         // pitch is positive when back of robot is lifted and negative when front of robot is lifted
         // vx is positive driving forward, so if pitch is +, need to slow down
-        auto pitch = chassis->GetPitch();
+        auto pitch = m_chassis->GetPitch();
         if (std::abs(pitch.to<double>()) > chassisMovement.tippingTolerance.to<double>())
         {
             auto adjust = m_maxspeed * chassisMovement.tippingCorrection * pitch.to<double>();
@@ -191,7 +192,7 @@ void RobotDrive::CorrectForTipping(ChassisMovement &chassisMovement)
 
         // roll is positive when the left side of the robot is lifted and negative when the right side of the robot is lifted
         // vy is positive strafing left, so if roll is +, need to strafe slower
-        auto roll = chassis->GetRoll();
+        auto roll = m_chassis->GetRoll();
         if (std::abs(roll.to<double>()) > chassisMovement.tippingTolerance.to<double>())
         {
             auto adjust = m_maxspeed * chassisMovement.tippingCorrection * roll.to<double>();
@@ -199,7 +200,29 @@ void RobotDrive::CorrectForTipping(ChassisMovement &chassisMovement)
         }
     }
 }
+void RobotDrive::AdjustForRotation(ChassisMovement &chassisMovement)
+{
+    if (m_chassis != nullptr)
+    {
+        auto currentPose = m_chassis->GetPose();
+        auto x = currentPose.X() + chassisMovement.chassisSpeeds.vx * LOOP_TIME;
+        auto y = currentPose.Y() + chassisMovement.chassisSpeeds.vy * LOOP_TIME;
+        auto rot = currentPose.Rotation() + chassisMovement.chassisSpeeds.omega * LOOP_TIME;
+        auto target = Pose2d(x, y, rot);
 
+        auto targetPose = Pose2d((currentPose.X() + chassisMovement.chassisSpeeds.vx * LOOP_TIME),
+                                 (currentPose.Y() + chassisMovement.chassisSpeeds.vy * LOOP_TIME),
+                                 (currentPose.Rotation() + chassisMovement.chassisSpeeds.omega * LOOP_TIME));
+
+        Pose2d robot_pose_vel = new Pose2d(mPeriodicIO.des_chassis_speeds.vxMetersPerSecond * Constants.kLooperDt,
+                                           mPeriodicIO.des_chassis_speeds.vyMetersPerSecond * Constants.kLooperDt,
+                                           Rotation2d.fromRadians(mPeriodicIO.des_chassis_speeds.omegaRadiansPerSecond * Constants.kLooperDt));
+        Twist2d twist_vel = Pose2d.log(robot_pose_vel);
+        ChassisSpeeds updated_chassis_speeds = new ChassisSpeeds(
+            twist_vel.dx / Constants.kLooperDt, twist_vel.dy / Constants.kLooperDt, twist_vel.dtheta / Constants.kLooperDt);
+        `
+    }
+}
 void RobotDrive::Init(ChassisMovement &chassisMovement)
 {
 }
