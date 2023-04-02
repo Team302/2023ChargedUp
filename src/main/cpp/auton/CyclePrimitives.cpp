@@ -116,6 +116,8 @@ void CyclePrimitives::GetNextPrim()
 		m_timer->Start();
 	}
 
+	Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("CyclePrim"), string("Current Prim "), m_currentPrimSlot);
+
 	m_currentPrimSlot++;
 }
 

@@ -22,7 +22,7 @@
     <primitive id="DO_NOTHING"
                arm="CUBE_BACKROW_ROTATE"
                extender="STARTING_POSITION_EXTEND"
-               intake="INTAKE_RELEASE"
+               intake="INTAKE_EXPEL"
                time="0.5"
                />
 </auton>

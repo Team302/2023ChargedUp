@@ -138,7 +138,7 @@ void ExtenderStateMgr::CheckForStateTransition()
         {
             m_targetState = EXTENDER_STATE::STARTING_POSITION_EXTEND;
         }
-        else if (m_prevState != EXTENDER_STATE::INITIALIZE)
+        else if (m_prevState != EXTENDER_STATE::INITIALIZE && m_checkGamePadTransitions)
         {
             m_targetState = m_prevState;
         }
@@ -256,7 +256,7 @@ void ExtenderStateMgr::CheckForSensorTransitions()
         bool hittingLimitSwitch = m_extender->ResetIfFullyExtended(m_extendedPosition);
         hittingLimitSwitch = !hittingLimitSwitch ? m_extender->ResetIfFullyRetracted() : hittingLimitSwitch;
 
-        if (!m_hasInitialized && (hittingLimitSwitch || m_initializationTimer->HasElapsed(units::time::second_t(1.0))))
+        if (!m_hasInitialized && (hittingLimitSwitch || m_initializationTimer->HasElapsed(units::time::second_t(0.45))))
         {
             m_hasInitialized = true;
             m_targetState = EXTENDER_STATE::STARTING_POSITION_EXTEND;

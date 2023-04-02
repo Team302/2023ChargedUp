@@ -4,7 +4,7 @@
     identifier="RotateToUpwardAngle"
     mode="POSITION_DEGREES"
     constrolServer="MOTORCONTROLLER"
-    proportional="0.0175"
+    proportional="0.0165"
     integral="0.00015"
     derivative="0.0"
     feedforward="0.0"
@@ -15,8 +15,8 @@
     identifier="RotateToFloordAngle"
     mode="POSITION_DEGREES"
     constrolServer="MOTORCONTROLLER"
-    proportional="0.025"
-    integral="0.0025"
+    proportional="0.02"
+    integral="0.001"
     derivative="0.0"
     feedforward="0.0"
     izone="0.0"
@@ -91,7 +91,7 @@
     stateIdentifier="CUBE_MIDROW_ROTATE_UP"
     controlDataIdentifier="RotateToUpwardAngle"
     controlDataIdentifier2=""
-    value="50"
+    value="55"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
@@ -99,7 +99,7 @@
     stateIdentifier="CUBE_MIDROW_ROTATE_DOWN"
     controlDataIdentifier="RotateToDownwardAngle"
     controlDataIdentifier2=""
-    value="50"
+    value="55"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
@@ -107,7 +107,7 @@
     stateIdentifier="CONE_MIDROW_ROTATE_UP"
     controlDataIdentifier="RotateToUpwardAngle"
     controlDataIdentifier2=""
-    value="58.5"
+    value="60"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
@@ -115,7 +115,7 @@
     stateIdentifier="CONE_MIDROW_ROTATE_DOWN"
     controlDataIdentifier="RotateToDownwardAngle"
     controlDataIdentifier2=""
-    value="58.5"
+    value="60"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
@@ -145,7 +145,7 @@
     solenoid2="NONE" />
     <mechanismTarget
     stateIdentifier="FLOOR_POSITION_ROTATE_AUTON"
-    controlDataIdentifier="RotateToUpwardAngle"
+    controlDataIdentifier="RotateToDownwardAngle"
     controlDataIdentifier2=""
     value="15"
     secondValue=""

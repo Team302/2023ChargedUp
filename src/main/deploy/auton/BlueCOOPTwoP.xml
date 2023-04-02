@@ -1,23 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE auton SYSTEM "auton.dtd">
 <auton>
-<primitive id="RESET_POSITION_PATH_PLANNER"
-	           pathname="BlueCOOP1"/>
-<!--score preloaded cone-->
-<primitive id="DO_NOTHING"
-	           time="1.0"/>
-<!--drive to cube-->
-<primitive id="DRIVE_PATH_PLANNER"
-	           pathname="BlueCOOP1"
-               time="4.0"/>
-<!--pickup cube-->
-<primitive id="DO_NOTHING"
-	           time="0.25"/>
-<!--park on charging station-->  
-<primitive id="DRIVE_PATH_PLANNER"
-	           pathname="BlueCOOP2"
-               time="4.0"/>
-<!--balance on charging station-->
-<primitive id="AUTO_BALANCE"
-                time="10.0"/>
+    <primitive id="RESET_POSITION"
+	           pathname="BlueCOOPOne1CubeSlow.wpilib.json"
+               intake="HOLD"/>
+	<primitive id="DO_NOTHING"
+	          arm="STARTING_POSITION_ROTATE"
+               extender="INITIALIZE"
+			   time="0.5"/>
+			   		   
+    <!--score preloaded cone-->
+    <snippet file="ScoreCone.xml"/> 
+    <!--drive over charging station-->
+    <primitive id="DRIVE_PATH"
+               pathname="BlueCOOPOne1CubeSlow.wpilib.json"
+               headingOption="SPECIFIED_ANGLE"
+               heading="180"
+               arm="FLOOR_POSITION_ROTATE_AUTON"
+               extender="STARTING_POSITION_EXTEND"
+               intake="INTAKE_OFF"
+               time="6.0"
+               />
+	<primitive id="RESET_POSITION"
+	           pathname="RESET_POSITION_PATH_PLANNER"
+			   arm="FLOOR_POSITION_ROTATE_AUTON"
+               extender="STARTING_POSITION_EXTEND"
+               intake="HOLD"/>
+    <!--drive picking up a cube after the charging station-->
+    <primitive id="DRIVE_PATH_PLANNER"
+               pathname="BlueCOOPOne2CubeSlow.wpilib.json"
+               arm="FLOOR_POSITION_ROTATE_AUTON"
+               extender="FLOOR_EXTEND"
+               intake="INTAKE"
+               time="5.0"
+               />
+    <!--Balance on charging station-->
+    <primitive id="AUTO_BALANCE"
+               headingOption="SPECIFIED_ANGLE"
+               heading="0"
+               arm="FLOOR_POSITION_ROTATE_AUTON"
+               extender="STARTING_POSITION_EXTEND"
+               intake="INTAKE_HOLD"
+               time="10.0"
+               />
 </auton>
