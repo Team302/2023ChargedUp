@@ -16,7 +16,7 @@
                arm="CONE_BACKROW_ROTATE"
                extender="CONE_BACKROW_EXTEND"
                intake="INTAKE_RELEASE"
-               time="0.35"
+               time="0.25"
                />
     <primitive id="DO_NOTHING"
                arm="CONE_BACKROW_ROTATE"

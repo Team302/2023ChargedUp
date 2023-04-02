@@ -9,7 +9,7 @@
 <!--drive to cube-->
 <primitive id="DRIVE_PATH_PLANNER"
 	           pathname="BlueHP1"
-             arm="FLOOR_POSITION_ROTATE_AUTON"
+             arm="FLOOR_POSITION_ROTATE"
              intake="INTAKE"
              time="2.5"/> 
 <primitive id="DO_NOTHING"
@@ -26,8 +26,21 @@
 				    intake="INTAKE"
             time="5.0"/>
 <!--Score High Cube-->
-<primitive id="DO_NOTHING"
-               time="15"/> 
+       <primitive id="DO_NOTHING"
+               arm="CUBE_BACKROW_ROTATE"
+               extender="CUBE_BACKROW_EXTEND"
+               intake="HOLD"
+               time="0.4"
+               />
+    <primitive id="DO_NOTHING"
+               arm="CUBE_BACKROW_ROTATE"
+               extender="STARTING_POSITION_EXTEND"
+               intake="INTAKE_EXPEL"
+               time="0.35"
+               />
+    <primitive id="DO_NOTHING"
+               time="15"
+               />
 <primitive id="DRIVE_PATH_PLANNER"
 	           pathname="BlueHP3"
                time="2.35"/>
