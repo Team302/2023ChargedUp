@@ -40,8 +40,8 @@
     stateIdentifier="INTAKE_RELEASE"
     controlDataIdentifier="intake"
     controlDataIdentifier2="intake"
-    value="-0.5"
-    secondValue="-0.5"
+    value="-0.25"
+    secondValue="-0.25"
     solenoid="ON"
     solenoid2="NONE" />
   <mechanismTarget
