@@ -181,6 +181,7 @@ void ExtenderStateMgr::CheckForStateTransition()
 /// @brief Check sensors to determine target state
 void ExtenderStateMgr::CheckForGamepadTransitions()
 {
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "testing extender states", "m_gamepieceMode", m_gamepieceMode);
     auto controller = TeleopControl::GetInstance();
     if (controller != nullptr)
     {
@@ -284,6 +285,10 @@ void ExtenderStateMgr::Update(RobotStateChanges::StateChange change, int value)
     else if (change == RobotStateChanges::StateChange::ArmRotateState)
     {
         m_armState = static_cast<ArmStateMgr::ARM_STATE>(value);
+    }
+    else if (change == RobotStateChanges::StateChange::DesiredGamePiece)
+    {
+        m_gamepieceMode = static_cast<RobotStateChanges::GamePiece>(value);
     }
 }
 //========= Hand modified code end section 4 ========
