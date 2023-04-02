@@ -172,7 +172,6 @@ void ExtenderStateMgr::CheckForStateTransition()
 /// @brief Check sensors to determine target state
 void ExtenderStateMgr::CheckForGamepadTransitions()
 {
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "testing extender states", "m_gamepieceMode", m_gamepieceMode);
     auto controller = TeleopControl::GetInstance();
     if (controller != nullptr)
     {
