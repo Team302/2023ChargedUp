@@ -143,5 +143,5 @@ private:
     const StateStruc m_initializeState = {EXTENDER_STATE::INITIALIZE, "INITIALIZE", StateType::EXTENDER_STATE, false};
 
     const double m_armAngleTolerance = 10.0;
-    const double m_armFloorTolerance = 11.0;
+    const double m_armFloorTolerance = 6.0;
 };

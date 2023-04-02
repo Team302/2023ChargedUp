@@ -4,29 +4,23 @@
     <primitive id="DO_NOTHING"
                arm="CONE_BACKROW_ROTATE"
                extender="STARTING_POSITION_EXTEND"
-               grabber="GRAB"
-               intake="HOLD"
-               time="0.35"
+               time="0.25"
                />
     <primitive id="DO_NOTHING"
                arm="CONE_BACKROW_ROTATE"
                extender="CONE_BACKROW_EXTEND"
-               grabber="GRAB"
-               intake="HOLD"
-               time="0.6"
+               time="0.5"
                />
     <primitive id="DO_NOTHING"
                arm="CONE_BACKROW_ROTATE"
                extender="CONE_BACKROW_EXTEND"
-               grabber="OPEN"
                intake="INTAKE_RELEASE"
-               time="0.35"
+               time="0.5"
                />
     <primitive id="DO_NOTHING"
                arm="CONE_BACKROW_ROTATE"
                extender="STARTING_POSITION_EXTEND"
-               grabber="OPEN"
                intake="INTAKE_RELEASE"
-               time="0.5"
+               time="0.25"
                />
 </auton>

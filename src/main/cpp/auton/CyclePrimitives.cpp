@@ -140,7 +140,6 @@ void CyclePrimitives::RunDriveStop()
 										  // @ADDMECH mechanism state
 										  ArmStateMgr::ARM_STATE::HOLD_POSITION_ROTATE,
 										  ExtenderStateMgr::EXTENDER_STATE::HOLD_POSITION_EXTEND,
-										  GrabberStateMgr::GRABBER_STATE::OPEN,
 										  IntakeStateMgr::INTAKE_STATE::HOLD,
 										  DragonLimelight::PIPELINE_MODE::UNKNOWN,
 										  VisionDrive::ALIGNMENT_METHOD::ROTATE);

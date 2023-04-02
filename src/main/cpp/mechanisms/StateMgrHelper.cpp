@@ -33,8 +33,6 @@
 #include <mechanisms/extender/ExtenderState.h>
 #include <mechanisms/extender/ExtenderManualState.h>
 #include <mechanisms/extender/ExtenderStateMgr.h>
-#include <mechanisms/grabber/GrabberState.h>
-#include <mechanisms/grabber/GrabberStateMgr.h>
 #include <mechanisms/intake/IntakeState.h>
 #include <mechanisms/intake/IntakeStateMgr.h>
 
@@ -57,17 +55,12 @@ void StateMgrHelper::RunCurrentMechanismStates()
         string identifier("mechanism");
         identifier += to_string(i);
 
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), identifier, mech != nullptr ? "not nullptr" : "nullptr");
-
         auto stateMgr = mech != nullptr ? mech->GetStateMgr() : nullptr;
 
         identifier += " state mgr ";
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), identifier, stateMgr != nullptr ? "not nullptr" : "nullptr");
         identifier += " running current state ";
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), identifier, false);
         if (stateMgr != nullptr)
         {
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), identifier, true);
             stateMgr->RunCurrentState();
         }
     }
@@ -125,9 +118,6 @@ State *StateMgrHelper::CreateState(Mech *mech, StateStruc &stateInfo, MechanismT
     switch (type)
     {
         // @ADDMECH Add case(s) to create your state(s)
-        // case StateType::GRABBER_STATE:
-        //      thisState = new GrabberState(xmlString, id, solenoidState, solenoid2State);
-        //     break;
 
     case StateType::ARM_STATE:
         thisState = new ArmState(xmlString, id, controlData, target);
@@ -143,10 +133,6 @@ State *StateMgrHelper::CreateState(Mech *mech, StateStruc &stateInfo, MechanismT
 
     case StateType::MANUAL_EXTENDER_STATE:
         thisState = new ExtenderManualState(xmlString, id, controlData, target);
-        break;
-
-    case StateType::GRABBER_STATE:
-        thisState = new GrabberState(xmlString, id, solenoidState);
         break;
 
     case StateType::INTAKE_STATE:
