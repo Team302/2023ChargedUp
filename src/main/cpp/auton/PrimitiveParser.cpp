@@ -94,7 +94,11 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                             auto snippetParams = ParseXML(filename);
                             if (!snippetParams.empty())
                             {
-                                paramVector.insert(paramVector.end(), snippetParams.begin(), snippetParams.end());
+                                for (auto snippet : snippetParams)
+                                {
+                                    paramVector.emplace_back(snippet);
+                                }
+                                // paramVector.insert(paramVector.end(), snippetParams.begin(), snippetParams.end());
                             }
                             else
                             {
@@ -307,21 +311,6 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                                                                      pipelineMode,
                                                                      alignmentMethod,
                                                                      visionAlignmentXoffset_in));
-                        string ntName = string("Primitive ") + to_string(paramVector.size());
-                        int slot = paramVector.size() - 1;
-                        auto logger = Logger::GetLogger();
-                        auto param = paramVector[slot];
-                        logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("Primitive ID"), to_string(param->GetID()));
-                        logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("Time"), param->GetTime());
-                        logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("Distance"), param->GetDistance());
-                        logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("X Location"), param->GetXLocation());
-                        logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("Y Location"), param->GetYLocation());
-                        logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("Heading Option"), to_string(param->GetHeadingOption()));
-                        logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("Heading"), param->GetHeading());
-                        logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("Drive Speed"), param->GetDriveSpeed());
-                        logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("End Drive Speed"), param->GetEndDriveSpeed());
-                        logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("Path Name"), param->GetPathName());
-                        // @ADDMECH Log state data
                     }
                     else
                     {
@@ -353,5 +342,30 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
             }
         }
     }
+    auto slot = 0;
+    for (auto param : paramVector)
+    {
+        string ntName = string("Primitive ") + to_string(slot);
+        auto logger = Logger::GetLogger();
+        logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("Primitive ID"), to_string(param->GetID()));
+        logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("Time"), param->GetTime());
+        logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("Distance"), param->GetDistance());
+        logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("X Location"), param->GetXLocation());
+        logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("Y Location"), param->GetYLocation());
+        logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("Heading Option"), to_string(param->GetHeadingOption()));
+        logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("Heading"), param->GetHeading());
+        logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("Drive Speed"), param->GetDriveSpeed());
+        logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("End Drive Speed"), param->GetEndDriveSpeed());
+        logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("Path Name"), param->GetPathName());
+        // @ADDMECH Log state data
+        logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("armstate"), param->GetArmState());
+        logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("extenderstate"), param->GetExtenderState());
+        logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("intakestate"), param->GetIntakeState());
+        logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("PIPELINE_MODE"), param->GetIntakeState());
+        logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("ALIGNMENT_METHOD"), param->GetAlignmentMethod());
+        logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("Alignment_X_offset_in"), param->GetVisionAlignmentXoffset_in());
+        slot++;
+    }
+
     return paramVector;
 }
