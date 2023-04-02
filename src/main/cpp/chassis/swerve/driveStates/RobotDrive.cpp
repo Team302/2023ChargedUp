@@ -17,6 +17,8 @@
 
 // FRC Includes
 #include <frc/filter/SlewRateLimiter.h>
+#include <frc/geometry/Pose2d.h>
+#include <frc/geometry/Rotation2d.h>
 #include <units/velocity.h>
 #include <units/angle.h>
 
@@ -28,6 +30,7 @@
 #include <utils/logging/Logger.h>
 
 using frc::Pose2d;
+using frc::Rotation2d;
 using std::string;
 
 RobotDrive::RobotDrive() : ISwerveDriveState::ISwerveDriveState(),
@@ -207,12 +210,11 @@ void RobotDrive::AdjustForRotation(ChassisMovement &chassisMovement)
         auto currentPose = m_chassis->GetPose();
         auto x = currentPose.X() + chassisMovement.chassisSpeeds.vx * LOOP_TIME;
         auto y = currentPose.Y() + chassisMovement.chassisSpeeds.vy * LOOP_TIME;
-        auto rot = currentPose.Rotation() + chassisMovement.chassisSpeeds.omega * LOOP_TIME;
-        auto target = Pose2d(x, y, rot);
 
-        auto targetPose = Pose2d((currentPose.X() + chassisMovement.chassisSpeeds.vx * LOOP_TIME),
-                                 (currentPose.Y() + chassisMovement.chassisSpeeds.vy * LOOP_TIME),
-                                 (currentPose.Rotation() + chassisMovement.chassisSpeeds.omega * LOOP_TIME));
+        auto targetAngle = chassisMovement.chassisSpeeds.omega * LOOP_TIME;
+        auto rot = Rotation2d(chassisMovement.chassisSpeeds.omega * LOOP_TIME);
+        auto rot = currentPose.Rotation() + Rotation2d(chassisMovement.chassisSpeeds.omega * LOOP_TIME);
+        auto targetPose = Pose2d(x, y, rot);
 
         Pose2d robot_pose_vel = new Pose2d(mPeriodicIO.des_chassis_speeds.vxMetersPerSecond * Constants.kLooperDt,
                                            mPeriodicIO.des_chassis_speeds.vyMetersPerSecond * Constants.kLooperDt,
