@@ -181,6 +181,7 @@ void ExtenderStateMgr::CheckForStateTransition()
 /// @brief Check sensors to determine target state
 void ExtenderStateMgr::CheckForGamepadTransitions()
 {
+    m_desiredState = m_currentState;
     auto controller = TeleopControl::GetInstance();
     if (controller != nullptr)
     {

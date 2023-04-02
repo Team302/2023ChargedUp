@@ -15,7 +15,7 @@
     identifier="ExtendPosition"
     mode="POSITION_INCH"
     constrolServer="MOTORCONTROLLER"
-    proportional="0.075"
+    proportional="0.1"
     integral="0.000075"
     derivative="0.0"
     feedforward="0.0"
@@ -61,7 +61,7 @@
     stateIdentifier="CUBE_BACKROW_EXTEND"
     controlDataIdentifier="ExtendPosition"
     controlDataIdentifier2=""
-    value="22"
+    value="15.0"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
@@ -69,7 +69,7 @@
     stateIdentifier="CONE_BACKROW_EXTEND"
     controlDataIdentifier="ExtendPosition"
     controlDataIdentifier2=""
-    value="15.0"
+    value="20.5"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
