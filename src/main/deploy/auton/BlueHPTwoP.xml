@@ -11,7 +11,7 @@
 	           pathname="BlueHP1"
              arm="FLOOR_POSITION_ROTATE"
              intake="INTAKE"
-             time="2.5"/> 
+             time="2.0"/> 
 <primitive id="DO_NOTHING"
                arm="FLOOR_POSITION_ROTATE"
                extender="FLOOR_EXTEND"
@@ -21,19 +21,19 @@
 <!--drive to cube/scoring station-->
 <primitive id="DRIVE_PATH_PLANNER"
 	          pathname="BlueHP2"
-            arm="FLOOR_POSITION_ROTATE"
+            arm="FLOOR_POSITION_ROTATE_AUTON_HOLD"
             extender="FLOOR_EXTEND"
 				    intake="INTAKE"
-            time="5.0"/>
+            time="6.0"/>
 <!--Score High Cube-->
        <primitive id="DO_NOTHING"
-               arm="CUBE_BACKROW_ROTATE"
-               extender="CUBE_BACKROW_EXTEND"
+               arm="CONE_BACKROW_ROTATE"
+               extender="STARTING_POSITION_EXTEND"
                intake="HOLD"
                time="0.4"
                />
     <primitive id="DO_NOTHING"
-               arm="CUBE_BACKROW_ROTATE"
+               arm="CONE_BACKROW_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                intake="INTAKE_EXPEL"
                time="0.35"
