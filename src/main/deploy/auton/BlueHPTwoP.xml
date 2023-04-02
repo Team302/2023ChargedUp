@@ -1,55 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE auton SYSTEM "auton.dtd">
 <auton>
-<primitive id="RESET_POSITION"
-	   pathname="BlueHPOne1.wpilib.json"
-               intake="HOLD"/>
-    <!--score preloaded cone-->
-    <snippet file="ScoreCone.xml"/>
-    <!--drive to charing station-->
-    <primitive id="DRIVE_PATH"
-               pathname="BlueHPOne1.wpilib.json"
-               headingOption="SPECIFIED_ANGLE"
-               heading="180"
-               arm="STARTING_POSITION_ROTATE"
-               intake="INTAKE"
-               time="0.5"
-               />
-    <primitive id="DRIVE_PATH"
-               pathname="BlueHPOne4.wpilib.json"
-               headingOption="SPECIFIED_ANGLE"
-               heading="180"
-               arm="STARTING_POSITION_ROTATE"
-               intake="INTAKE"
-               time="0.75"
-               />
-    <primitive id="DRIVE_PATH"
-               pathname="BlueHPTwo1.wpilib.json"
-               headingOption="SPECIFIED_ANGLE"
-               heading="0"
-               intake="INTAKE"
-               time="8.0"
-               />
-   <!--grab cube-->
-    <primitive id="DO_NOTHING"
-               headingOption="SPECIFIED_ANGLE"
-               heading="0"
-               intake="INTAKE"
-               time="0.5"
-               />
-   <!--drive to scoring station-->
-    <primitive id="DRIVE_PATH"
-               pathname="BlueHPTwo2.wpilib.json"
-               headingOption="SPECIFIED_ANGLE"
-               heading="0"
-               intake="HOLD"
-               time="8.0"
-               />
-   <!--score cube-->
-    <primitive id="DO_NOTHING"
-               headingOption="SPECIFIED_ANGLE"
-               heading="0"
-               intake="INTAKE_RELEASE"
-               time="0.5"
+<primitive id="RESET_POSITION_PATH_PLANNER"
+	           pathname="BlueHP1"
+			/>
+<!--score preloaded cone
+    <snippet file="ScoreCone.xml"/> -->
+<primitive id="DO_NOTHING"
+               time="1.0"/> 
+<!--drive to cube-->
+<primitive id="DRIVE_PATH_PLANNER"
+	           pathname="BlueHP1"
+               time="5.75"/> 
+<!--drive to scoring station
+<primitive id="DRIVE_PATH_PLANNER"
+	           pathname="BlueHP2"
+				intake="INTAKE"
+               time="5.0"/>-->
+<primitive id="DO_NOTHING"
+               time="0.5"/> 
+<primitive id="DRIVE_PATH_PLANNER"
+	           pathname="BlueHP3"
+               time="2.35"/>
+<!--drive to cone-->
+
+<!--drive to scoring station-->
+<primitive id="DRIVE_PATH_PLANNER"
+	           pathname="BlueHP4P"
+               time="2.75"/>
+<!--score cone-->
+  <!--auto balance-->
+    <primitive id="AUTO_BALANCE"
+               extender="STARTING_POSITION_EXTEND"
+               intake="INTAKE_OFF"
+               time="10.0"
                />
 </auton>
