@@ -4,7 +4,7 @@
     <primitive id="DO_NOTHING"
                arm="CONE_BACKROW_ROTATE"
                extender="STARTING_POSITION_EXTEND"
-               time="0.4"
+               time="0.45"
                />
     <primitive id="DO_NOTHING"
                arm="CONE_BACKROW_ROTATE"
@@ -20,14 +20,14 @@
                />
     <primitive id="DO_NOTHING"
                arm="CONE_BACKROW_ROTATE"
-               extender="STARTING_POSITION_EXTEND"
+               extender="FLOOR_EXTEND"
                intake="INTAKE_RELEASE"
                time="0.25"
                />
     <primitive id="DO_NOTHING"
                arm="STARTING_POSITION_ROTATE"
-               extender="STARTING_POSITION_EXTEND"
+               extender="FLOOR_EXTEND"
                intake="INTAKE_RELEASE"
-               time="0.25"
+               time="2.0"
                />
 </auton>

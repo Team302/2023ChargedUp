@@ -15,7 +15,7 @@
     identifier="ExtendPosition"
     mode="POSITION_INCH"
     constrolServer="MOTORCONTROLLER"
-    proportional="0.1"
+    proportional="0.2"
     integral="0.000075"
     derivative="0.0"
     feedforward="0.0"
