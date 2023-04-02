@@ -27,7 +27,7 @@
 <!--drive to scoring station-->
 <primitive id="DRIVE_PATH_PLANNER"
 	           pathname="BlueHP4P"
-               time="2.75"/>
+               time="2.5"/>
 <!--score cone-->
   <!--auto balance-->
     <primitive id="AUTO_BALANCE"
