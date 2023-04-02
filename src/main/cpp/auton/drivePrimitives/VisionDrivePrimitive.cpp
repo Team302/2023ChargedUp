@@ -27,7 +27,9 @@
 /// DEBUGGING
 #include <utils/logging/Logger.h>
 
-VisionDrivePrimitive::VisionDrivePrimitive() : m_ntName("VisionDrivePrimitive")
+VisionDrivePrimitive::VisionDrivePrimitive() : m_chassis(ChassisFactory::GetChassisFactory()->GetSwerveChassis()),
+                                               m_headingOption(ChassisOptionEnums::HeadingOption::MAINTAIN),
+                                               m_ntName("VisionDrivePrimitive")
 {
 }
 
@@ -36,18 +38,53 @@ void VisionDrivePrimitive::Init(PrimitiveParams *params)
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "ArrivedAtInit", true);
     m_alignmentMethod = params->GetAlignmentMethod();
     m_pipelineMode = params->GetPipelineMode();
+    m_visionAlignmentXoffset_in = params->GetVisionAlignmentXoffset_in();
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "m_alignmentMethod", m_alignmentMethod);
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "m_pipelineMode", m_pipelineMode);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "m_visionAlignmentXoffset_in", m_visionAlignmentXoffset_in);
+
+    m_dragonVision = DragonVision::GetDragonVision();
+    if (m_dragonVision != nullptr)
+        m_dragonVision->setPipeline(m_pipelineMode);
+
+    if (m_chassis != nullptr)
+    {
+        m_visionDrive = dynamic_cast<VisionDrive *>(m_chassis->GetSpecifiedDriveState(ChassisOptionEnums::DriveStateType::VISION_DRIVE));
+        m_visionDrive->ResetVisionDrive();
+        m_visionDrive->setVisionPipeline(m_pipelineMode);
+        m_visionDrive->setAlignmentMethod(m_alignmentMethod);
+        m_visionDrive->setVisionAlignmentXoffset_in(m_visionAlignmentXoffset_in);
+        m_visionDrive->setInAutonMode();
+    }
 }
 
 void VisionDrivePrimitive::Run()
 {
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "ArrivedAtRun", true);
+
+    if (m_chassis != nullptr)
+    {
+        ChassisMovement moveInfo;
+        moveInfo.driveOption = ChassisOptionEnums::DriveStateType::VISION_DRIVE;
+
+        if (m_alignmentMethod == VisionDrive::ALIGNMENT_METHOD::ROTATE)
+            moveInfo.headingOption = ChassisOptionEnums::HeadingOption::IGNORE;
+        else
+            moveInfo.headingOption = ChassisOptionEnums::HeadingOption::MAINTAIN;
+
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "driveOption", moveInfo.driveOption);
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "headingOption", moveInfo.headingOption);
+
+        m_chassis->Drive(moveInfo);
+    }
 }
 
 bool VisionDrivePrimitive::IsDone()
 {
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "ArrivedAtDone", true);
-    return true;
+    bool done = m_visionDrive->isAligned();
+
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "ArrivedAtDone", done);
+
+    return done;
 }

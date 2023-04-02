@@ -23,6 +23,7 @@
 #include <chassis/ChassisFactory.h>
 #include <chassis/swerve/SwerveChassis.h>
 #include <chassis/ChassisOptionEnums.h>
+#include <DragonVision/DragonVision.h>
 
 // FRC,WPI Includes
 #include <frc/controller/HolonomicDriveController.h>
@@ -46,7 +47,13 @@ public:
     bool IsDone() override;
 
 private:
+    SwerveChassis *m_chassis;
+    VisionDrive *m_visionDrive;
+    ChassisOptionEnums::HeadingOption m_headingOption;
     std::string m_ntName;
     DragonLimelight::PIPELINE_MODE m_pipelineMode;
     VisionDrive::ALIGNMENT_METHOD m_alignmentMethod;
+    double m_visionAlignmentXoffset_in;
+
+    DragonVision *m_dragonVision;
 };

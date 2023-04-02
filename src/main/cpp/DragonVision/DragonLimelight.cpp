@@ -391,6 +391,10 @@ std::optional<units::length::inch_t> DragonLimelight::GetTargetHeight() const
         else
             return units::length::inch_t(m_targetHeight2);
     }
+    else if (getPipeline() == PIPELINE_MODE::CUBE)
+    {
+        return units::length::inch_t(5);
+    }
 
     return {};
 }
