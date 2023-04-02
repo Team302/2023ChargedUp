@@ -128,6 +128,7 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                     auto intakestate = IntakeStateMgr::INTAKE_STATE::HOLD;
                     auto pipelineMode = DragonLimelight::PIPELINE_MODE::UNKNOWN;
                     auto alignmentMethod = VisionDrive::ALIGNMENT_METHOD::ROTATE;
+                    auto visionAlignmentXoffset_in = 0;
 
                     // @ADDMECH Initialize your mechanism state
                     for (xml_attribute attr = primitiveNode.first_attribute(); attr; attr = attr.next_attribute())
@@ -229,13 +230,17 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                                 hasError = true;
                             }
                         }
+                        else if (strcmp(attr.name(), "visionAlignmentXoffset_in") == 0)
+                        {
+                            visionAlignmentXoffset_in = attr.as_float();
+                        }
                         else if (strcmp(attr.name(), "alignmentMethod") == 0)
                         {
                             if (strcmp(attr.value(), "ROTATE") == 0)
                             {
                                 alignmentMethod = VisionDrive::ALIGNMENT_METHOD::ROTATE;
                             }
-                            else if (strcmp(attr.name(), "STRAFE") == 0)
+                            else if (strcmp(attr.value(), "STRAFE") == 0)
                             {
                                 alignmentMethod = VisionDrive::ALIGNMENT_METHOD::STRAFE;
                             }
@@ -251,23 +256,23 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                             {
                                 pipelineMode = DragonLimelight::PIPELINE_MODE::UNKNOWN;
                             }
-                            else if (strcmp(attr.name(), "OFF") == 0)
+                            else if (strcmp(attr.value(), "OFF") == 0)
                             {
                                 pipelineMode = DragonLimelight::PIPELINE_MODE::OFF;
                             }
-                            else if (strcmp(attr.name(), "APRIL_TAG") == 0)
+                            else if (strcmp(attr.value(), "APRIL_TAG") == 0)
                             {
                                 pipelineMode = DragonLimelight::PIPELINE_MODE::APRIL_TAG;
                             }
-                            else if (strcmp(attr.name(), "CONE_NODE") == 0)
+                            else if (strcmp(attr.value(), "CONE_NODE") == 0)
                             {
                                 pipelineMode = DragonLimelight::PIPELINE_MODE::CONE_NODE;
                             }
-                            else if (strcmp(attr.name(), "CONE") == 0)
+                            else if (strcmp(attr.value(), "CONE") == 0)
                             {
                                 pipelineMode = DragonLimelight::PIPELINE_MODE::CONE;
                             }
-                            else if (strcmp(attr.name(), "CUBE") == 0)
+                            else if (strcmp(attr.value(), "CUBE") == 0)
                             {
                                 pipelineMode = DragonLimelight::PIPELINE_MODE::CUBE;
                             }
@@ -301,8 +306,9 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                                                                      armstate,
                                                                      extenderstate,
                                                                      intakestate,
-                                                                     DragonLimelight::PIPELINE_MODE::UNKNOWN,
-                                                                     VisionDrive::ALIGNMENT_METHOD::ROTATE));
+                                                                     pipelineMode,
+                                                                     alignmentMethod,
+                                                                     visionAlignmentXoffset_in));
                     }
                     else
                     {
@@ -355,6 +361,7 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
         logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("intakestate"), param->GetIntakeState());
         logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("PIPELINE_MODE"), param->GetIntakeState());
         logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("ALIGNMENT_METHOD"), param->GetAlignmentMethod());
+        logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("Alignment_X_offset_in"), param->GetVisionAlignmentXoffset_in());
         slot++;
     }
 
