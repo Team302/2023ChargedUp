@@ -45,55 +45,6 @@ VisionDrive::VisionDrive(RobotDrive *robotDrive) : RobotDrive(),
 
 std::array<frc::SwerveModuleState, 4> VisionDrive::UpdateSwerveModuleStates(ChassisMovement &chassisMovement)
 {
-
-    static int pCounter = 0;
-    static int iCounter = 0;
-
-    TeleopControl *tc = TeleopControl::GetInstance();
-    if (tc->IsButtonPressed(TeleopControlFunctions::DEBUG_INC_P))
-    {
-        pCounter++;
-        if (pCounter == 400 / 20)
-        {
-            pCounter = 0;
-            m_visionKP_Y += 0.01;
-        }
-    }
-    else if (tc->IsButtonPressed(TeleopControlFunctions::DEBUG_DEC_P))
-    {
-        pCounter++;
-        if (pCounter == 400 / 20)
-        {
-            pCounter = 0;
-            m_visionKP_Y -= 0.01;
-        }
-    }
-    else
-        pCounter = 0;
-
-    if (tc->IsButtonPressed(TeleopControlFunctions::DEBUG_INC_I))
-    {
-        iCounter++;
-        if (iCounter == 400 / 20)
-        {
-            iCounter = 0;
-            // m_visionKI_Y += 0.001;
-            m_visionKP_Angle += 0.01;
-        }
-    }
-    else if (tc->IsButtonPressed(TeleopControlFunctions::DEBUG_DEC_I))
-    {
-        iCounter++;
-        if (iCounter == 400 / 20)
-        {
-            iCounter = 0;
-            // m_visionKI_Y -= 0.001;
-            m_visionKP_Angle -= 0.01;
-        }
-    }
-    else
-        iCounter = 0;
-
     switch (m_currentState)
     {
     case VISION_STATE::NORMAL_DRIVE:

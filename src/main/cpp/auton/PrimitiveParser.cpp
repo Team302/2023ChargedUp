@@ -58,8 +58,6 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
     headingOptionMap["SPECIFIED_ANGLE"] = ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE;
     headingOptionMap["IGNORE"] = ChassisOptionEnums::HeadingOption::IGNORE;
 
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("Muscat"), string("Parse 1"), true);
-
     xml_document doc;
     xml_parse_result result = doc.load_file(fulldirfile.c_str());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "PrimitiveParser", "Original File", fulldirfile.c_str());
