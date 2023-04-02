@@ -99,7 +99,8 @@ public:
         TOGGLE_COMPRESSER,
         MAX_FUNCTIONS,
         // tip correction controls
-        TOGGLE_TIPCORRECTION,
+        TIPCORRECTION_ON,
+        TIPCORRECTION_OFF,
 
     };
 };
