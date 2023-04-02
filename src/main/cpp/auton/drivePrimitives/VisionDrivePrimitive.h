@@ -47,6 +47,9 @@ public:
     bool IsDone() override;
 
 private:
+    SwerveChassis *m_chassis;
+    VisionDrive *m_visionDrive;
+    ChassisOptionEnums::HeadingOption m_headingOption;
     std::string m_ntName;
     DragonLimelight::PIPELINE_MODE m_pipelineMode;
     VisionDrive::ALIGNMENT_METHOD m_alignmentMethod;

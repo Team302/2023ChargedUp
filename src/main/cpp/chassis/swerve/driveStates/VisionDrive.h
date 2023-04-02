@@ -42,6 +42,9 @@ public:
 
     void ResetVisionDrive();
 
+    bool isAligned();
+    void setAlignmentMethod(ALIGNMENT_METHOD alignmentMethod) { m_alignmentMethod = alignmentMethod; }
+
 private:
     enum VISION_STATE
     {
@@ -52,6 +55,8 @@ private:
         ALIGN_RAW_VISION,
         ALIGNED
     };
+
+    ALIGNMENT_METHOD m_alignmentMethod;
 
     // state functions
     void LookingForTag(ChassisMovement &chassisMovement);

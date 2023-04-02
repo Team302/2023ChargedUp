@@ -30,6 +30,7 @@
 VisionDrive::VisionDrive(RobotDrive *robotDrive) : RobotDrive(),
                                                    // m_visionVYPID(1.0, 0.05, 0.0), // kP, kI, kD
                                                    // m_visionVXPID(1.0, 0.05, 0.0), // kP, kI, kD
+                                                   m_alignmentMethod(ALIGNMENT_METHOD::STRAFE),
                                                    m_currentState(VISION_STATE::LOOKING_FOR_APRIL_TAG),
                                                    m_previousState(VISION_STATE::NORMAL_DRIVE),
                                                    m_robotDrive(robotDrive),
@@ -118,9 +119,6 @@ std::array<frc::SwerveModuleState, 4> VisionDrive::UpdateSwerveModuleStates(Chas
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "VY", chassisMovement.chassisSpeeds.vy.to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "VX", chassisMovement.chassisSpeeds.vx.to<double>());
 
-    // temporary disable driving
-    // chassisMovement.chassisSpeeds.vy = units::meters_per_second_t(0.0);
-
     return m_robotDrive->UpdateSwerveModuleStates(chassisMovement);
 }
 
@@ -131,6 +129,11 @@ void VisionDrive::STANDISH()
 
 void VisionDrive::Init(ChassisMovement &chassisMovement)
 {
+}
+
+bool VisionDrive::isAligned()
+{
+    return m_currentState == ALIGNED;
 }
 
 void VisionDrive::LookingForTag(ChassisMovement &chassisMovement)
@@ -384,9 +387,6 @@ void VisionDrive::Aligned(ChassisMovement &chassisMovement)
     }
 
     // Cyclic
-
-    // set arm and extender state to automatically score
-
     chassisMovement.chassisSpeeds.vy = units::velocity::meters_per_second_t(0.0);
     chassisMovement.chassisSpeeds.vx = units::velocity::meters_per_second_t(0.0);
 
@@ -493,7 +493,9 @@ double VisionDrive::getOffsetToTarget(ChassisOptionEnums::RELATIVE_POSITION targ
 
 void VisionDrive::ResetVisionDrive()
 {
+    m_currentState = VISION_STATE::ALIGN_RAW_VISION; // skip all the previous states because after we wrote a bunch of code we agreed not to use the other states
+
     yErrorIntegral = units::length::inch_t(0);
     m_previousState = m_currentState;
-    m_currentState = VISION_STATE::ALIGN_RAW_VISION; // skip all the previous states
+    m_alignmentMethod = ALIGNMENT_METHOD::STRAFE;
 }
