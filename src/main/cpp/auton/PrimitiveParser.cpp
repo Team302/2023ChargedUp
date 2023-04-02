@@ -126,6 +126,7 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                     auto intakestate = IntakeStateMgr::INTAKE_STATE::HOLD;
                     auto pipelineMode = DragonLimelight::PIPELINE_MODE::UNKNOWN;
                     auto alignmentMethod = VisionDrive::ALIGNMENT_METHOD::ROTATE;
+                    auto visionAlignmentXoffset_in = 0;
 
                     // @ADDMECH Initialize your mechanism state
                     for (xml_attribute attr = primitiveNode.first_attribute(); attr; attr = attr.next_attribute())
@@ -227,6 +228,10 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                                 hasError = true;
                             }
                         }
+                        else if (strcmp(attr.name(), "visionAlignmentXoffset_in") == 0)
+                        {
+                            visionAlignmentXoffset_in = attr.as_float();
+                        }
                         else if (strcmp(attr.name(), "alignmentMethod") == 0)
                         {
                             if (strcmp(attr.value(), "ROTATE") == 0)
@@ -300,7 +305,8 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                                                                      extenderstate,
                                                                      intakestate,
                                                                      pipelineMode,
-                                                                     alignmentMethod));
+                                                                     alignmentMethod,
+                                                                     visionAlignmentXoffset_in));
                         string ntName = string("Primitive ") + to_string(paramVector.size());
                         int slot = paramVector.size() - 1;
                         auto logger = Logger::GetLogger();
