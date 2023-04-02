@@ -34,10 +34,9 @@
 #include <mechanisms/StateStruc.h>
 
 //========= Hand modified code start section 0 ========
-#include <mechanisms/grabber/GrabberStateMgr.h>
+#include <mechanisms/intake/IntakeStateMgr.h>
 #include <robotstate/IRobotStateChangeSubscriber.h>
 #include <robotstate/RobotStateChanges.h>
-#include <mechanisms/grabber/GrabberStateMgr.h>
 //========= Hand modified code end section 0 ========
 
 // Third Party Includes
@@ -121,7 +120,7 @@ private:
     RobotStateChanges::GamePiece m_gamepieceMode;
     //========= Hand modified code end section 5 ========
 
-    GrabberStateMgr::GRABBER_STATE m_grabberState;
+    IntakeStateMgr::INTAKE_STATE m_intakeState;
 
     static ArmStateMgr *m_instance;
 

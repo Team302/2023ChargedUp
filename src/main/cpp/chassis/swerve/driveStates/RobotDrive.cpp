@@ -57,6 +57,11 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates(Chass
     {
         CorrectForTipping(chassisMovement);
     }
+
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "RobotDrive", "Vx", chassisMovement.chassisSpeeds.vx.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "RobotDrive", "Vy", chassisMovement.chassisSpeeds.vy.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "RobotDrive", "Omega", chassisMovement.chassisSpeeds.omega.to<double>());
+
     // These calculations are based on Ether's Chief Delphi derivation
     // The only changes are that that derivation is based on positive angles being clockwise
     // and our codes/sensors are based on positive angles being counter clockwise.
@@ -76,24 +81,33 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates(Chass
     // Since our Vx is forward and Vy is strafe we need to rotate the vectors
     // We will use these variable names in the code to help tie back to the document.
     // Variable names, though, will follow C++ standards and start with a lower case letter.
-
     auto l = m_wheelbase;
     auto w = m_wheeltrack;
 
     auto vy = 1.0 * chassisMovement.chassisSpeeds.vx;
     auto vx = -1.0 * chassisMovement.chassisSpeeds.vy;
     auto omega = chassisMovement.chassisSpeeds.omega;
+    /*
+        units::time::second_t kLooperDt = units::time::second_t(20.0 / 1000.0);
+        frc::Pose2d robot_pose_vel = frc::Pose2d(vx * kLooperDt, vy * kLooperDt, frc::Rotation2d(omega * kLooperDt));
+        // frc::Twist2d twist_vel = chassis->GetPose().Log(robot_pose_vel);
+        frc::Twist2d twist_vel = frc::Pose2d().Log(robot_pose_vel);
+        // chassisMovement.chassisSpeeds = frc::ChassisSpeeds(twist_vel.dx / kLooperDt, twist_vel.dy / kLooperDt, twist_vel.dtheta / kLooperDt);
 
-    units::length::meter_t centerOfRotationW = (w / 2.0) - chassisMovement.centerOfRotationOffset.Y;
-    units::length::meter_t centerOfRotationL = (l / 2.0) - chassisMovement.centerOfRotationOffset.X;
+        // vx = twist_vel.dx / kLooperDt;
+        // vy = twist_vel.dx / kLooperDt;
+        // omega = twist_vel.dtheta / kLooperDt;
+    */
+    units::length::meter_t centerOfRotationW = (w / 2.0) - chassisMovement.centerOfRotationOffset.Y();
+    units::length::meter_t centerOfRotationL = (l / 2.0) - chassisMovement.centerOfRotationOffset.X();
 
     units::velocity::meters_per_second_t omegaW = omega.to<double>() * centerOfRotationW / 1_s;
     units::velocity::meters_per_second_t omegaL = omega.to<double>() * centerOfRotationL / 1_s;
 
-    auto a = vx - omegaL;
-    auto b = vx + omegaL;
-    auto c = vy - omegaW;
-    auto d = vy + omegaW;
+    auto a = vx + omegaL;
+    auto b = vx - omegaL;
+    auto c = vy + omegaW;
+    auto d = vy - omegaW;
 
     // here we'll negate the angle to conform to the positive CCW convention
     m_flState.angle = units::angle::radian_t(atan2(b.to<double>(), d.to<double>()));
@@ -134,6 +148,29 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates(Chass
         m_blState.speed *= ratio;
         m_brState.speed *= ratio;
     }
+
+    /*
+    SwerveChassis *chassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
+    frc::SwerveDriveKinematics<4> kinematics = chassis->GetKinematics();
+
+    wpi::array<frc::SwerveModuleState, 4> states = kinematics.ToSwerveModuleStates(chassisMovement.chassisSpeeds, chassisMovement.centerOfRotationOffset);
+
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Robot Drive"), string("bl_Before"), m_blState.speed.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Robot Drive"), string("br_Before"), m_brState.speed.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Robot Drive"), string("MaxSpeed"), chassis->GetMaxSpeed().to<double>());
+
+    chassis->GetKinematics().DesaturateWheelSpeeds(&states, chassis->GetMaxSpeed());
+
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Robot Drive"), string("bl_After"), m_blState.speed.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Robot Drive"), string("br_After"), m_brState.speed.to<double>());
+
+    auto [fl, fr, bl, br] = states;
+
+    m_flState = fl;
+    m_frState = fr;
+    m_blState = bl;
+    m_brState = br;
+*/
     return {m_flState, m_frState, m_blState, m_brState};
 }
 

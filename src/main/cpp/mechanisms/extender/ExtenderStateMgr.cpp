@@ -36,7 +36,6 @@
 #include <mechanisms/extender/extenderStateMgr.h>
 #include <robotstate/RobotState.h>
 #include <robotstate/RobotStateChanges.h>
-#include <utils/logging/Logger.h>
 
 // Third Party Includes
 
@@ -66,10 +65,11 @@ ExtenderStateMgr::ExtenderStateMgr() : StateMgr(),
                                        m_extender(MechanismFactory::GetMechanismFactory()->GetExtender())
                                        //========= Hand modified code start section 1 ========
                                        ,
-                                       m_prevState(EXTENDER_STATE::STARTING_POSITION_EXTEND),
-                                       m_currentState(EXTENDER_STATE::STARTING_POSITION_EXTEND),
-                                       m_targetState(EXTENDER_STATE::STARTING_POSITION_EXTEND),
+                                       m_prevState(EXTENDER_STATE::INITIALIZE),
+                                       m_currentState(EXTENDER_STATE::INITIALIZE),
+                                       m_targetState(EXTENDER_STATE::INITIALIZE),
                                        m_gamepieceMode(RobotStateChanges::None),
+                                       m_initializationTimer(new frc::Timer()),
                                        m_extendedPosition(84320.3176), // 22.25 inches in counts for extender
                                        m_armState(ArmStateMgr::ARM_STATE::HOLD_POSITION_ROTATE)
 //========= Hand modified code end section 1 ========
@@ -85,6 +85,7 @@ ExtenderStateMgr::ExtenderStateMgr() : StateMgr(),
     stateMap["HUMAN_PLAYER_STATION_EXTEND"] = m_human_player_station_extendState;
     stateMap["STARTING_POSITION_EXTEND"] = m_starting_position_extendState;
     stateMap["FLOOR_EXTEND"] = m_floor_extendState;
+    stateMap["INITIALIZE"] = m_initializeState;
 
     Init(m_extender, stateMap);
     if (m_extender != nullptr)
@@ -94,7 +95,11 @@ ExtenderStateMgr::ExtenderStateMgr() : StateMgr(),
 
     //========= Hand modified code start section 2 ========
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::ArmRotateState);
+    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::ArmRotateAngleTarget);
+    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::ArmRotateAngle);
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::DesiredGamePiece);
+
+    m_initializationTimer->Reset();
     //========= Hand modified code end section 2 ========
 }
 
@@ -110,8 +115,16 @@ int ExtenderStateMgr::GetCurrentStateParam(PrimitiveParams *currentParams)
 void ExtenderStateMgr::CheckForStateTransition()
 {
     //========= Hand modified code start section 3 ========
-    CheckForSensorTransitions();
+    m_currentState = static_cast<EXTENDER_STATE>(GetCurrentState());
+    m_targetState = m_currentState;
 
+    if (!m_timerStarted)
+    {
+        m_initializationTimer->Start();
+        m_timerStarted = true;
+    }
+
+    CheckForSensorTransitions();
     if (m_checkGamePadTransitions)
     {
         CheckForGamepadTransitions();
@@ -119,20 +132,22 @@ void ExtenderStateMgr::CheckForStateTransition()
 
     if (m_extender != nullptr)
     {
-        auto armAngle = MechanismFactory::GetMechanismFactory()->GetArm()->GetPositionDegrees().to<double>();
-        auto armTarget = MechanismFactory::GetMechanismFactory()->GetArm()->GetTarget();
-        auto armState = MechanismFactory::GetMechanismFactory()->GetArm()->GetStateMgr()->GetCurrentState();
-        if ((armAngle < m_armFloorTolerance || abs(armAngle - armTarget) > m_armAngleTolerance) && m_targetState != EXTENDER_STATE::MANUAL_EXTEND_RETRACT && armState != ArmStateMgr::ARM_STATE::MANUAL_ROTATE)
+        if ((m_armAngle < m_armFloorTolerance || abs(m_armAngle - m_armTargetAngle) > m_armAngleTolerance) &&
+            m_targetState != EXTENDER_STATE::MANUAL_EXTEND_RETRACT &&
+            m_armState != ArmStateMgr::ARM_STATE::MANUAL_ROTATE)
         {
             m_targetState = EXTENDER_STATE::STARTING_POSITION_EXTEND;
         }
-        else
+        else if (m_prevState != EXTENDER_STATE::INITIALIZE)
         {
             m_targetState = m_prevState;
         }
 
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ExtenderMgr"), string("Target State"), m_targetState);
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ExtenderMgr"), string("Current State"), m_currentState);
+        // initalize extender
+        if (!m_hasInitialized)
+        {
+            m_targetState = EXTENDER_STATE::INITIALIZE;
+        }
 
         if (m_targetState != m_currentState)
         {
@@ -140,6 +155,7 @@ void ExtenderStateMgr::CheckForStateTransition()
             RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmExtenderState, m_targetState);
         }
     }
+
     //========= Hand modified code end section 3 ========
 }
 
@@ -149,9 +165,6 @@ void ExtenderStateMgr::CheckForGamepadTransitions()
 {
     if (m_extender != nullptr)
     {
-        m_currentState = static_cast<EXTENDER_STATE>(GetCurrentState());
-        m_targetState = m_currentState;
-
         auto controller = TeleopControl::GetInstance();
         if (controller != nullptr)
         {
@@ -159,7 +172,6 @@ void ExtenderStateMgr::CheckForGamepadTransitions()
             {
                 m_targetState = EXTENDER_STATE::MANUAL_EXTEND_RETRACT;
                 m_prevState = m_targetState;
-                Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ExtenderMgr"), string("Extender Pct"), controller->GetAxisValue(TeleopControlFunctions::MANUAL_EXTEND_RETRACT));
             }
             else if (controller->IsButtonPressed(TeleopControlFunctions::STARTING_POSITION))
             {
@@ -241,28 +253,30 @@ void ExtenderStateMgr::CheckForSensorTransitions()
     if (m_extender != nullptr)
     {
         // If we are hitting limit switches, reset position
-        m_extender->ResetIfFullyExtended(m_extendedPosition);
-        m_extender->ResetIfFullyRetracted();
+        bool hittingLimitSwitch = m_extender->ResetIfFullyExtended(m_extendedPosition);
+        hittingLimitSwitch = !hittingLimitSwitch ? m_extender->ResetIfFullyRetracted() : hittingLimitSwitch;
+
+        if (!m_hasInitialized && (hittingLimitSwitch || m_initializationTimer->HasElapsed(units::time::second_t(1.0))))
+        {
+            m_hasInitialized = true;
+            m_targetState = EXTENDER_STATE::STARTING_POSITION_EXTEND;
+        }
     }
 }
 
 void ExtenderStateMgr::Update(RobotStateChanges::StateChange change, int value)
 {
-    if (change == RobotStateChanges::StateChange::ArmRotateState)
+    if (change == RobotStateChanges::StateChange::ArmRotateAngle)
+    {
+        m_armAngle = value;
+    }
+    else if (change == RobotStateChanges::StateChange::ArmRotateAngleTarget)
+    {
+        m_armTargetAngle = value;
+    }
+    else if (change == RobotStateChanges::StateChange::ArmRotateState)
     {
         m_armState = static_cast<ArmStateMgr::ARM_STATE>(value);
-        if (m_armState != ArmStateMgr::ARM_STATE::HOLD_POSITION_ROTATE || m_armState != ArmStateMgr::ARM_STATE::MANUAL_ROTATE)
-        {
-            // m_goToStartingConfig = true;
-        }
-        else
-        {
-            m_goToStartingConfig = false;
-        }
-    }
-    else if (change == RobotStateChanges::DesiredGamePiece)
-    {
-        m_gamepieceMode = static_cast<RobotStateChanges::GamePiece>(value);
     }
 }
 //========= Hand modified code end section 4 ========

@@ -17,7 +17,7 @@
 
 // Team 302 Includes
 #include <robotstate/RobotStateChanges.h>
-#include <mechanisms/grabber/GrabberStateMgr.h>
+#include <mechanisms/intake/IntakeStateMgr.h>
 
 class ArmHoldPosHelper
 {
@@ -28,21 +28,21 @@ public:
     static double CalculateHoldPositionTarget(double armAngle,
                                               double extenderPosition,
                                               RobotStateChanges::GamePiece gamepieceMode,
-                                              GrabberStateMgr::GRABBER_STATE grabberState);
+                                              IntakeStateMgr::INTAKE_STATE intakeState);
 
 private:
     // Hold Position function components
-    static constexpr double m_cubeOffset = 0.0446119;
-    static constexpr double m_cubeArmComponent = -0.00010589;
-    static constexpr double m_cubeExtenderComponent = 0.000633812;
-    static constexpr double m_cubeArmSquaredComponent = 0.00000489504;
-    static constexpr double m_cubeExtenderSquaredComponent = 0.00000226623;
+    static constexpr double m_cubeOffset = 0.04242107;
+    static constexpr double m_cubeArmComponent = 0.000106669;
+    static constexpr double m_cubeExtenderComponent = 0.000125066;
+    static constexpr double m_cubeArmSquaredComponent = 0.00000803241;
+    static constexpr double m_cubeExtenderSquaredComponent = 0.0000511601;
 
-    static constexpr double m_coneOffset = 0.0412269;
-    static constexpr double m_coneArmComponent = 0.000421601;
-    static constexpr double m_coneExtenderComponent = 0.000703398;
-    static constexpr double m_coneArmSquaredComponent = -0.00000267649;
-    static constexpr double m_coneExtenderSquaredComponent = -0.0000138281;
+    static constexpr double m_coneOffset = 0.0291106;
+    static constexpr double m_coneArmComponent = 0.00123687;
+    static constexpr double m_coneExtenderComponent = -0.000724541;
+    static constexpr double m_coneArmSquaredComponent = 0;
+    static constexpr double m_coneExtenderSquaredComponent = 0.000116897;
 
     static constexpr double m_fullExtensionFTerm = 0.115;
 
@@ -50,4 +50,5 @@ private:
     static constexpr double m_maxArmAngle = 75.0;
     static constexpr double m_fullExtensionExtenderPos = 21.0;
     static constexpr double m_fullExtensionArmAngle = 40.0;
+    static constexpr double m_intakeScaling = 1.035;
 };

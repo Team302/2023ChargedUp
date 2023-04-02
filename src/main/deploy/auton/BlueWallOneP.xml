@@ -1,34 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE auton SYSTEM "auton.dtd">
 <auton>
-<primitive id="RESET_POSITION"
-	   pathname="BlueWallOne1.wpilib.json"
-       grabber="GRAB"/>
+    <primitive id="RESET_POSITION"
+	            pathname="BlueWallOne1.wpilib.json"
+                intake="HOLD"/>
    <!--score preloaded cone-->
-   <primitive id="DO_NOTHING"
-               arm="CONE_BACKROW_ROTATE"
-               extender="STARTING_POSITION_EXTEND"
-               grabber="GRAB"
-               time="0.35"
-               />
-    <primitive id="DO_NOTHING"
-               arm="CONE_BACKROW_ROTATE"
-               extender="CONE_BACKROW_EXTEND"
-               grabber="GRAB"
-               time="0.6"
-               />
-    <primitive id="DO_NOTHING"
-               arm="CONE_BACKROW_ROTATE"
-               extender="CONE_BACKROW_EXTEND"
-               grabber="OPEN"
-               time="0.35"
-               />
-    <primitive id="DO_NOTHING"
-               arm="CONE_BACKROW_ROTATE"
-               extender="STARTING_POSITION_EXTEND"
-               grabber="OPEN"
-               time="0.6"
-               />
+    <snippet file="ScoreCone.xml"/>
     <!--drive to charing station-->
     <primitive id="DRIVE_PATH"
                pathname="BlueWallOne1.wpilib.json"
@@ -36,7 +13,7 @@
                heading="180"
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
-               grabber="OPEN"
+               intake="INTAKE_OFF"
                time="0.8"
                />
     <primitive id="DRIVE_PATH"
@@ -45,7 +22,7 @@
                heading="180"
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
-               grabber="OPEN"
+               intake="INTAKE_OFF"
                time="4.0"
                />
     <primitive id="DRIVE_PATH"
@@ -54,7 +31,7 @@
                heading="180"
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
-               grabber="OPEN"
+               intake="INTAKE_OFF"
                time="5.0"
                />
     <primitive id="DRIVE_PATH"
@@ -63,7 +40,7 @@
                heading="0"
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
-               grabber="OPEN"
+               intake="INTAKE_OFF"
                time="2.0"
                />
     <!--drive onto charging station-->
@@ -73,14 +50,14 @@
                heading="0"
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
-               grabber="OPEN"
+               intake="INTAKE_OFF"
                time="3.0"
                />
     <!--auto balance-->
     <primitive id="AUTO_BALANCE"
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
-               grabber="OPEN"
+               intake="INTAKE_OFF"
                time="10.0"
                />
 </auton>

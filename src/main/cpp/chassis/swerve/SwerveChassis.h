@@ -129,6 +129,8 @@ public:
     units::angle::degree_t GetPitch() const;
     units::angle::degree_t GetRoll() const;
 
+    frc::SwerveDriveKinematics<4> GetKinematics() const { return m_kinematics; }
+
     // Dummy functions for IChassis Implementation
     inline IChassis::CHASSIS_TYPE GetType() const override { return IChassis::CHASSIS_TYPE::SWERVE; };
     inline void Initialize() override{};
@@ -187,8 +189,8 @@ private:
     units::velocity::meters_per_second_t m_steer;
     units::angular_velocity::radians_per_second_t m_rotate;
 
-    const double m_deadband = 0.0;
-    const units::angular_velocity::radians_per_second_t m_angularDeadband = units::angular_velocity::radians_per_second_t(0.00);
+    static constexpr units::velocity::meters_per_second_t m_velocityDeadband = units::velocity::meters_per_second_t(0.025);
+    static constexpr units::angular_velocity::radians_per_second_t m_angularDeadband = units::angular_velocity::radians_per_second_t(0.1);
 
     frc::Translation2d m_frontLeftLocation;
     frc::Translation2d m_frontRightLocation;

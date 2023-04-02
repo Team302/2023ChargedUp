@@ -3,7 +3,7 @@
 <auton>
 <primitive id="RESET_POSITION"
 	   pathname="BlueHPOne1.wpilib.json"
-       grabber="GRAB"/>
+               intake="HOLD"/>
     <!--score preloaded cone-->
     <snippet file="ScoreCone.xml"/>
     <!--drive to charing station-->
@@ -12,7 +12,7 @@
                headingOption="SPECIFIED_ANGLE"
                heading="180"
                arm="STARTING_POSITION_ROTATE"
-               grabber="GRAB"
+               intake="INTAKE_OFF"
                time="0.5"
                />
     <primitive id="DRIVE_PATH"
@@ -20,21 +20,21 @@
                headingOption="SPECIFIED_ANGLE"
                heading="180"
                arm="STARTING_POSITION_ROTATE"
-               grabber="GRAB"
+               intake="INTAKE_OFF"
                time="2.0"
                />
     <primitive id="DRIVE_PATH"
                pathname="BlueHPOne2.wpilib.json"
                headingOption="SPECIFIED_ANGLE"
                heading="180"
-               grabber="GRAB"
+               intake="INTAKE_OFF"
                time="5.0"
                />
     <primitive id="DRIVE_PATH"
                pathname="BlueHPOne3.wpilib.json"
                headingOption="SPECIFIED_ANGLE"
                heading="0"
-               grabber="GRAB"
+               intake="INTAKE_OFF"
                time="2.0"
                />
     <!--drive onto charging station-->
@@ -42,14 +42,14 @@
                pathname="BlueHPOne4Slow.wpilib.json"
                headingOption="SPECIFIED_ANGLE"
                heading="0"
-               grabber="GRAB"
+               intake="INTAKE_OFF"
                time="6.0"
                />
     <!--auto balance-->
     <primitive id="AUTO_BALANCE"
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
-               grabber="GRAB"
+               intake="INTAKE_OFF"
                time="10.0"
                />
 </auton>

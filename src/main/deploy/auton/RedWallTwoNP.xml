@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE auton SYSTEM "auton.dtd">
 <auton>
-<primitive id="RESET_POSITION"
-	   pathname="BlueWallOne1.wpilib.json"
-       grabber="GRAB"/>
+    <primitive id="RESET_POSITION"
+	            pathname="BlueWallOne1.wpilib.json"
+               intake="HOLD"/>
     <!--score preloaded cone-->
     <snippet file="ScoreCone.xml"/>
     <!--drive to charing station-->
@@ -13,7 +13,7 @@
                heading="0"
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
-               grabber="OPEN"
+               intake="INTAKE"
                time="0.8"
                />
     <primitive id="DRIVE_PATH"
@@ -22,7 +22,7 @@
                heading="180"
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
-               grabber="OPEN"
+               intake="INTAKE"
                time="1.0"
                />
     <primitive id="DRIVE_PATH"
@@ -31,7 +31,7 @@
                heading="180"
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
-               grabber="OPEN"
+               intake="INTAKE"
                time="5.0"
                />
     <primitive id="DRIVE_PATH"
@@ -40,7 +40,7 @@
                heading="180"
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
-               grabber="OPEN"
+               intake="INTAKE"
                time="3.0"
                />
     <!--pick up cube-->
@@ -49,7 +49,7 @@
                heading="180"
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
-               grabber="OPEN"
+               intake="INTAKE"
                time="0.5"/>
    <!--drive to scoring station-->
     <primitive id="DRIVE_PATH"
@@ -58,7 +58,7 @@
                heading="0"
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
-               grabber="OPEN"
+               intake="HOLD"
                time="5.0"
                />
     <primitive id="DRIVE_PATH"
@@ -67,7 +67,7 @@
                heading="0"
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
-               grabber="OPEN"
+               intake="HOLD"
                time="5.0"
                />
     <!--score cube-->
