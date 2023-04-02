@@ -144,17 +144,8 @@ void ExtenderStateMgr::CheckForStateTransition()
         CheckForGamepadTransitions();
     }
 
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ExtenderDebugging"), "m_armAngle", m_armAngle);
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ExtenderDebugging"), "m_armFloorTolerance", m_armFloorTolerance);
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ExtenderDebugging"), "m_armTargetAngle", m_armTargetAngle);
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ExtenderDebugging"), "m_armAngleTolerance", m_armAngleTolerance);
-
     auto armInsideFrame = m_armAngle < m_armFloorTolerance;
     auto armAtTarget = abs(m_armAngle - m_armTargetAngle) > m_armAngleTolerance;
-
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ExtenderDebugging"), "armInsideFrame", armInsideFrame);
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ExtenderDebugging"), "armAtTarget", armAtTarget);
-
     if ((armInsideFrame || armAtTarget) &&
         m_targetState != EXTENDER_STATE::MANUAL_EXTEND_RETRACT &&
         m_targetState != EXTENDER_STATE::INITIALIZE &&
@@ -181,9 +172,11 @@ void ExtenderStateMgr::CheckForStateTransition()
 /// @brief Check sensors to determine target state
 void ExtenderStateMgr::CheckForGamepadTransitions()
 {
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "testing extender states", "m_gamepieceMode", m_gamepieceMode);
     auto controller = TeleopControl::GetInstance();
     if (controller != nullptr)
     {
+        m_desiredState = m_currentState;
         if (abs(controller->GetAxisValue(TeleopControlFunctions::MANUAL_EXTEND_RETRACT)) > 0.1)
         {
             m_desiredState = EXTENDER_STATE::MANUAL_EXTEND_RETRACT;
@@ -229,10 +222,6 @@ void ExtenderStateMgr::CheckForConeGamepadTransitions(TeleopControl *controller)
         {
             m_desiredState = EXTENDER_STATE::CONE_MIDROW_EXTEND;
         }
-        else
-        {
-            m_desiredState = EXTENDER_STATE::HOLD_POSITION_EXTEND;
-        }
     }
 }
 
@@ -247,10 +236,6 @@ void ExtenderStateMgr::CheckForCubeGamepadTransitions(TeleopControl *controller)
         else if (controller->IsButtonPressed(TeleopControlFunctions::MIDROW))
         {
             m_desiredState = EXTENDER_STATE::CUBE_MIDROW_EXTEND;
-        }
-        else
-        {
-            m_desiredState = EXTENDER_STATE::HOLD_POSITION_EXTEND;
         }
     }
 }
@@ -284,6 +269,10 @@ void ExtenderStateMgr::Update(RobotStateChanges::StateChange change, int value)
     else if (change == RobotStateChanges::StateChange::ArmRotateState)
     {
         m_armState = static_cast<ArmStateMgr::ARM_STATE>(value);
+    }
+    else if (change == RobotStateChanges::StateChange::DesiredGamePiece)
+    {
+        m_gamepieceMode = static_cast<RobotStateChanges::GamePiece>(value);
     }
 }
 //========= Hand modified code end section 4 ========
