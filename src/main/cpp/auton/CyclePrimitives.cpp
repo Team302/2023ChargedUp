@@ -141,7 +141,8 @@ void CyclePrimitives::RunDriveStop()
 										  ExtenderStateMgr::EXTENDER_STATE::HOLD_POSITION_EXTEND,
 										  IntakeStateMgr::INTAKE_STATE::HOLD,
 										  DragonLimelight::PIPELINE_MODE::UNKNOWN,
-										  VisionDrive::ALIGNMENT_METHOD::ROTATE);
+										  VisionDrive::ALIGNMENT_METHOD::ROTATE,
+										  0.0);
 		m_DriveStop = m_primFactory->GetIPrimitive(params);
 		m_DriveStop->Init(params);
 	}

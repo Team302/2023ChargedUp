@@ -54,8 +54,14 @@ public:
         ArmStateMgr::ARM_STATE armState,
         ExtenderStateMgr::EXTENDER_STATE extenderState,
         IntakeStateMgr::INTAKE_STATE intakeState,
+
+        // VisionDrive settings start
         DragonLimelight::PIPELINE_MODE pipelineMode,
-        VisionDrive::ALIGNMENT_METHOD alignmentMethod); // Constructor. Takes in all parameters
+        VisionDrive::ALIGNMENT_METHOD alignmentMethod,
+        double visionAlignmentXoffset_in // offset from bumper edge to target
+        // VisionDrive settings end
+
+    ); // Constructor. Takes in all parameters
 
     PrimitiveParams() = delete;
     virtual ~PrimitiveParams() = default; // Destructor
@@ -76,6 +82,7 @@ public:
     IntakeStateMgr::INTAKE_STATE GetIntakeState() const { return m_intakeState; }
     DragonLimelight::PIPELINE_MODE GetPipelineMode() const { return m_pipelineMode; }
     VisionDrive::ALIGNMENT_METHOD GetAlignmentMethod() const { return m_alignmentMethod; }
+    double GetVisionAlignmentXoffset_in() const { return m_visionAlignmentXoffset_in; }
 
     // @ADDMECH Add methods to get the state mgr for mechanism
 
@@ -105,6 +112,7 @@ private:
     IntakeStateMgr::INTAKE_STATE m_intakeState;
     DragonLimelight::PIPELINE_MODE m_pipelineMode;
     VisionDrive::ALIGNMENT_METHOD m_alignmentMethod;
+    double m_visionAlignmentXoffset_in;
 };
 
 typedef std::vector<PrimitiveParams *> PrimitiveParamsVector;
