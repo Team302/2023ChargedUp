@@ -124,7 +124,6 @@ void ExtenderStateMgr::CheckForStateTransition()
 {
     //========= Hand modified code start section 3 ========
     m_currentState = static_cast<EXTENDER_STATE>(GetCurrentState());
-    m_targetState = m_currentState;
 
     if (!m_timerStarted)
     {
@@ -145,8 +144,8 @@ void ExtenderStateMgr::CheckForStateTransition()
     }
 
     auto armInsideFrame = m_armAngle < m_armFloorTolerance;
-    auto armAtTarget = abs(m_armAngle - m_armTargetAngle) > m_armAngleTolerance;
-    if ((armInsideFrame || armAtTarget) &&
+    auto armAtTarget = abs(m_armAngle - m_armTargetAngle) < m_armAngleTolerance;
+    if ((armInsideFrame || !armAtTarget) &&
         m_targetState != EXTENDER_STATE::MANUAL_EXTEND_RETRACT &&
         m_targetState != EXTENDER_STATE::INITIALIZE &&
         m_armState != ArmStateMgr::ARM_STATE::MANUAL_ROTATE)
