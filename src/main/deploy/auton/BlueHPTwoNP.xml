@@ -8,27 +8,22 @@
     <snippet file="ScoreCone.xml"/> 
 <!--drive to cube-->
 <primitive id="DRIVE_PATH_PLANNER"
-			   arm="FLOOR_POSITION_ROTATE_AUTON"
 	           pathname="BlueHP1"
-               time="1.75"/> 
-<!--drive to scoring station-->
-<primitive id="DRIVE_PATH_PLANNER"
-	           pathname="BlueHP2"
-				extender="FLOOR_EXTEND"
-				intake="INTAKE"
-               time="5.0"/>
+			   arm="FLOOR_POSITION_ROTATE_AUTON"
+			   extender="FLOOR_EXTEND"
+			   intake="INTAKE"
+               time="5.75"/> 
+<primitive id="DO_NOTHING"
+               time="0.5"/> 
 <primitive id="DRIVE_PATH_PLANNER"
 	           pathname="BlueHP3"
-               time="5.0"/>
+               time="2.35"/>
 <!--drive to cone-->
 
 <!--drive to scoring station-->
-<!--
 <primitive id="DRIVE_PATH_PLANNER"
 	           pathname="BlueHP4"
-               time="4.0"/> -->
+               time="3.0"/>
 <!--score cone-->
-<!--
-<primitive id="DO_NOTHING"
-	           time="1.0"/> -->
+
 </auton>

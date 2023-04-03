@@ -58,6 +58,7 @@ public:
 
 private:
 	DragonCanCoder *m_cancoder;
+	bool m_initialized = false;
 
 	//========= Hand modified code end section 0 ========
 };
