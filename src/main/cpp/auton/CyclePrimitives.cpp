@@ -116,6 +116,8 @@ void CyclePrimitives::GetNextPrim()
 		m_timer->Start();
 	}
 
+	Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("CyclePrim"), string("Current Prim "), m_currentPrimSlot);
+
 	m_currentPrimSlot++;
 }
 
@@ -137,7 +139,10 @@ void CyclePrimitives::RunDriveStop()
 										  // @ADDMECH mechanism state
 										  ArmStateMgr::ARM_STATE::HOLD_POSITION_ROTATE,
 										  ExtenderStateMgr::EXTENDER_STATE::HOLD_POSITION_EXTEND,
-										  GrabberStateMgr::GRABBER_STATE::OPEN);
+										  IntakeStateMgr::INTAKE_STATE::HOLD,
+										  DragonLimelight::PIPELINE_MODE::UNKNOWN,
+										  VisionDrive::ALIGNMENT_METHOD::ROTATE,
+										  0.0);
 		m_DriveStop = m_primFactory->GetIPrimitive(params);
 		m_DriveStop->Init(params);
 	}

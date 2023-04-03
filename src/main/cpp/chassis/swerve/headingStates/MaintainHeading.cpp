@@ -37,7 +37,7 @@ void MaintainHeading::UpdateChassisSpeeds(ChassisMovement &chassisMovement)
 
     auto chassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
 
-    if (rot.to<double>() == 0.0)
+    if (std::abs(rot.to<double>()) < 0.1)
     {
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Maintain", "HitIf", true);
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Maintain", "HitElse", false);
@@ -46,15 +46,10 @@ void MaintainHeading::UpdateChassisSpeeds(ChassisMovement &chassisMovement)
         {
             correction = CalcHeadingCorrection(chassis->GetStoredHeading(), m_kPMaintainHeadingControl);
 
-            chassisMovement.chassisSpeeds.omega -= correction;
+            chassisMovement.chassisSpeeds.omega += correction;
         }
     }
-    else
-    {
-        chassis->SetStoredHeading(chassis->GetPose().Rotation().Degrees());
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Maintain", "HitIf", false);
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Maintain", "HitElse", true);
-    }
+    chassis->SetStoredHeading(chassis->GetPose().Rotation().Degrees());
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Maintain", "VxAFTER", chassisMovement.chassisSpeeds.vx.to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Maintain", "VyAFTER", chassisMovement.chassisSpeeds.vy.to<double>());

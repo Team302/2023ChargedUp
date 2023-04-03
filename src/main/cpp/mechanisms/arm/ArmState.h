@@ -33,16 +33,15 @@ class ArmState : public Mech1IndMotorState
 {
 public:
 	ArmState() = delete;
-	ArmState(
-		std::string stateName,
-		int stateId,
-		ControlData *control0,
-		double target0);
+	ArmState(std::string stateName, int stateId, ControlData *control, double target);
 	~ArmState() = default;
+
+	void Init() override;
 
 	bool AtTarget() const override;
 	Arm *GetArm() const { return m_arm; }
 
 private:
 	Arm *m_arm;
+	ControlData *m_control;
 };

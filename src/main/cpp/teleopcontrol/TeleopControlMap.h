@@ -176,13 +176,15 @@ robin_hood::unordered_map<TeleopControlFunctions::FUNCTION, const TeleopControlB
     {TeleopControlFunctions::DEBUG_DEC_I, driverDPad270},
 
     {TeleopControlFunctions::STARTING_POSITION, copilotStartButton},
-    {TeleopControlFunctions::CYCLE_GRABBER, copilotSelectButton},
+    {TeleopControlFunctions::CYCLE_CYCLE_GAMEPIECE, copilotSelectButton},
     {TeleopControlFunctions::HUMAN_PLAYER_STATION, copilotBButton},
     {TeleopControlFunctions::FLOOR_POSITION, copilotAButton},
     {TeleopControlFunctions::MIDROW, copilotXButton},
     {TeleopControlFunctions::BACKROW, copilotYButton},
-    {TeleopControlFunctions::OPEN, copilotLBumper},
-    {TeleopControlFunctions::GRAB, copilotRBumper},
+    {TeleopControlFunctions::INTAKE, copilotLBumper},
+    {TeleopControlFunctions::RELEASE, copilotRBumper},
+    {TeleopControlFunctions::HOLD, copilotLTriggerPressed},
+    {TeleopControlFunctions::EXPEL, copilotRTriggerPressed},
 
     {TeleopControlFunctions::HOLD_POSITION_ROTATE, extra1AButton},
     {TeleopControlFunctions::CUBE_BACKROW_ROTATE, extra1XButton},
@@ -205,8 +207,8 @@ robin_hood::unordered_map<TeleopControlFunctions::FUNCTION, const TeleopControlB
 
 const TeleopControlAxis driverLJoystickX = {TeleopControlMappingEnums::DRIVER, TeleopControlMappingEnums::LEFT_JOYSTICK_X, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::REVERSED, 1.0};
 const TeleopControlAxis driverLJoystickY = {TeleopControlMappingEnums::DRIVER, TeleopControlMappingEnums::LEFT_JOYSTICK_Y, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::REVERSED, 1.0};
-const TeleopControlAxis driverRJoystickX = {TeleopControlMappingEnums::DRIVER, TeleopControlMappingEnums::RIGHT_JOYSTICK_X, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::SYNCED, 0.5};
-const TeleopControlAxis driverRJoystickY = {TeleopControlMappingEnums::DRIVER, TeleopControlMappingEnums::RIGHT_JOYSTICK_X, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::REVERSED, 1.0};
+const TeleopControlAxis driverRJoystickX = {TeleopControlMappingEnums::DRIVER, TeleopControlMappingEnums::RIGHT_JOYSTICK_X, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::REVERSED, 0.5};
+const TeleopControlAxis driverRJoystickY = {TeleopControlMappingEnums::DRIVER, TeleopControlMappingEnums::RIGHT_JOYSTICK_Y, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::REVERSED, 1.0};
 const TeleopControlAxis driverLTrigger = {TeleopControlMappingEnums::DRIVER, TeleopControlMappingEnums::LEFT_TRIGGER, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::SYNCED, 1.0};
 const TeleopControlAxis driverRTrigger = {TeleopControlMappingEnums::DRIVER, TeleopControlMappingEnums::RIGHT_TRIGGER, TeleopControlMappingEnums::APPLY_STANDARD_DEADBAND, TeleopControlMappingEnums::CUBED, TeleopControlMappingEnums::SYNCED, 1.0};
 

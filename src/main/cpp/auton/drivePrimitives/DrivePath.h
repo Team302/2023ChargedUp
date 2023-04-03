@@ -20,24 +20,11 @@
 // Team302 Includes
 #include <auton/PrimitiveParams.h>
 #include <auton/drivePrimitives/IPrimitive.h>
-#include <chassis/ChassisFactory.h>
 #include <chassis/IChassis.h>
 #include <chassis/ChassisOptionEnums.h>
 
 // FRC,WPI Includes
-#include <frc/controller/HolonomicDriveController.h>
-#include <frc/controller/RamseteController.h>
-#include <frc/Filesystem.h>
-#include <frc/geometry/Pose2d.h>
 #include <frc/Timer.h>
-#include <frc/trajectory/TrajectoryConfig.h>
-#include <frc/trajectory/TrajectoryUtil.h>
-#include <wpi/SmallString.h>
-
-namespace frc
-{
-    class Timer;
-}
 
 class DrivePath : public IPrimitive
 {

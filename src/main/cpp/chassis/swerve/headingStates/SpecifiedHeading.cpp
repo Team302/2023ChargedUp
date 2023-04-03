@@ -31,11 +31,11 @@ void SpecifiedHeading::UpdateChassisSpeeds(ChassisMovement &chassisMovement)
     m_targetAngle = chassisMovement.yawAngle;
     if (frc::DriverStation::IsAutonomous())
     {
-        chassisMovement.chassisSpeeds.omega -= CalcHeadingCorrection(m_targetAngle, m_kPGoalHeadingControl);
+        chassisMovement.chassisSpeeds.omega += CalcHeadingCorrection(m_targetAngle, m_kPGoalHeadingControl);
     }
     else
     {
-        chassisMovement.chassisSpeeds.omega -= CalcHeadingCorrection(m_targetAngle, m_kPGoalHeadingControl_STANDISH);
+        chassisMovement.chassisSpeeds.omega += CalcHeadingCorrection(m_targetAngle, m_kPGoalHeadingControl_STANDISH);
     }
 
     auto chassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();

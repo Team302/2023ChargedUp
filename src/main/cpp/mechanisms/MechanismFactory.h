@@ -28,6 +28,7 @@
 // C++ Includes
 #include <map>
 #include <memory>
+#include <string>
 #include <vector>
 
 // FRC includes
@@ -44,8 +45,8 @@
 // @ADDMECH include for your mechanism
 #include <mechanisms/arm/Arm.h>
 #include <mechanisms/extender/Extender.h>
-#include <mechanisms/grabber/Grabber.h>
-
+#include <mechanisms/intake/Intake.h>
+#include <utils/logging/Logger.h>
 // Third Party Includes
 
 // forward declares
@@ -77,28 +78,22 @@ public:
 	// @ADDMECH  Add inline Get method for your mechanism
 	inline Arm *GetArm() const { return m_arm; }
 	inline Extender *GetExtender() const { return m_extender; }
-	inline Grabber *GetGrabber() const { return m_grabber; }
+	inline Intake *GetIntake() const
+	{
+		Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("IntakeDebugging"), std::string("Getting intake2"), m_intake != nullptr ? "true" : "false");
+		return m_intake;
+	}
 
 	Mech *GetMechanism(
 		MechanismTypes::MECHANISM_TYPE type) const;
 
 private:
-	std::shared_ptr<IDragonMotorController> GetMotorController(
-		const IDragonMotorControllerMap &motorcontrollers,
-		MotorControllerUsage::MOTOR_CONTROLLER_USAGE usage);
-	std::shared_ptr<DragonSolenoid> GetSolenoid(
-		const DragonSolenoidMap &solenoids,
-		SolenoidUsage::SOLENOID_USAGE usage);
-	DragonServo *GetServo(
-		const ServoMap &servos,
-		ServoUsage::SERVO_USAGE usage);
-	std::shared_ptr<DragonDigitalInput> GetDigitalInput(
-		const DigitalInputMap &digitaInputs,
-		DigitalInputUsage::DIGITAL_INPUT_USAGE usage);
+	std::shared_ptr<IDragonMotorController> GetMotorController(const IDragonMotorControllerMap &motorcontrollers, MotorControllerUsage::MOTOR_CONTROLLER_USAGE usage);
+	std::shared_ptr<DragonSolenoid> GetSolenoid(const DragonSolenoidMap &solenoids, SolenoidUsage::SOLENOID_USAGE usage);
+	DragonServo *GetServo(const ServoMap &servos, ServoUsage::SERVO_USAGE usage);
+	std::shared_ptr<DragonDigitalInput> GetDigitalInput(const DigitalInputMap &digitaInputs, DigitalInputUsage::DIGITAL_INPUT_USAGE usage);
 
-	DragonAnalogInput *GetAnalogInput(
-		const AnalogInputMap &analogInputs,
-		DragonAnalogInput::ANALOG_SENSOR_TYPE usage);
+	DragonAnalogInput *GetAnalogInput(const AnalogInputMap &analogInputs, DragonAnalogInput::ANALOG_SENSOR_TYPE usage);
 
 	MechanismFactory();
 	virtual ~MechanismFactory() = default;
@@ -108,5 +103,5 @@ private:
 	// @ADDMECH  Add your mechanism here
 	Arm *m_arm;
 	Extender *m_extender;
-	Grabber *m_grabber;
+	Intake *m_intake;
 };

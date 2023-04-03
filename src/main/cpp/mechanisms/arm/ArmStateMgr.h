@@ -34,10 +34,9 @@
 #include <mechanisms/StateStruc.h>
 
 //========= Hand modified code start section 0 ========
-#include <mechanisms/grabber/GrabberStateMgr.h>
+#include <mechanisms/intake/IntakeStateMgr.h>
 #include <robotstate/IRobotStateChangeSubscriber.h>
 #include <robotstate/RobotStateChanges.h>
-#include <mechanisms/grabber/GrabberStateMgr.h>
 //========= Hand modified code end section 0 ========
 
 // Third Party Includes
@@ -66,7 +65,9 @@ public:
         CONE_MIDROW_ROTATE_DOWN,
         HUMAN_PLAYER_STATION_ROTATE,
         STARTING_POSITION_ROTATE,
-        FLOOR_POSITION_ROTATE
+        FLOOR_POSITION_ROTATE,
+        FLOOR_POSITION_ROTATE_AUTON,
+        FLOOR_POSITION_ROTATE_AUTON_HOLD
     };
 
     const std::map<const std::string, ARM_STATE> m_armXmlStringToStateEnumMap{
@@ -80,7 +81,9 @@ public:
         {"CONE_MIDROW_ROTATE_DOWN", ARM_STATE::CONE_MIDROW_ROTATE_DOWN},
         {"HUMAN_PLAYER_STATION_ROTATE", ARM_STATE::HUMAN_PLAYER_STATION_ROTATE},
         {"STARTING_POSITION_ROTATE", ARM_STATE::STARTING_POSITION_ROTATE},
-        {"FLOOR_POSITION_ROTATE", ARM_STATE::FLOOR_POSITION_ROTATE}};
+        {"FLOOR_POSITION_ROTATE", ARM_STATE::FLOOR_POSITION_ROTATE},
+        {"FLOOR_POSITION_ROTATE_AUTON", ARM_STATE::FLOOR_POSITION_ROTATE_AUTON},
+        {"FLOOR_POSITION_ROTATE_AUTON_HOLD", ARM_STATE::FLOOR_POSITION_ROTATE_AUTON_HOLD}};
 
     /// @brief  Find or create the state manmanager
     static ArmStateMgr *GetInstance();
@@ -119,7 +122,7 @@ private:
     RobotStateChanges::GamePiece m_gamepieceMode;
     //========= Hand modified code end section 5 ========
 
-    GrabberStateMgr::GRABBER_STATE m_grabberState;
+    IntakeStateMgr::INTAKE_STATE m_intakeState;
 
     static ArmStateMgr *m_instance;
 
@@ -134,4 +137,6 @@ private:
     const StateStruc m_human_player_station_rotateState = {ARM_STATE::HUMAN_PLAYER_STATION_ROTATE, "HUMAN_PLAYER_STATION_ROTATE", StateType::ARM_STATE, false};
     const StateStruc m_starting_position_rotateState = {ARM_STATE::STARTING_POSITION_ROTATE, "STARTING_POSITION_ROTATE", StateType::ARM_STATE, true};
     const StateStruc m_floor_position_rotateState = {ARM_STATE::FLOOR_POSITION_ROTATE, "FLOOR_POSITION_ROTATE", StateType::ARM_STATE, false};
+    const StateStruc m_floor_position_rotate_autonState = {ARM_STATE::FLOOR_POSITION_ROTATE_AUTON, "FLOOR_POSITION_ROTATE_AUTON", StateType::ARM_STATE, false};
+    const StateStruc m_floor_position_rotate_auton_holdState = {ARM_STATE::FLOOR_POSITION_ROTATE_AUTON_HOLD, "FLOOR_POSITION_ROTATE_AUTON_HOLD", StateType::ARM_STATE, false};
 };

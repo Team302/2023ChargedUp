@@ -35,7 +35,8 @@ public:
 private:
     void UpdateStickyFaultStates();
     void CheckControllers();
-    void DisplayPressure();
+    void DisplayPressure() const;
+    void ResetRequests(void);
     DriverFeedback();
     ~DriverFeedback() = default;
 
@@ -46,7 +47,7 @@ private:
     {
         ALIGNED_WITH_CONE_NODE,
         ALIGNED_WITH_CUBE_NODE,
-        GAME_PIECE_IN_GRABBER,
+        GAME_PIECE_IN_INTAKE,
         WANT_CUBE,
         WANT_CONE,
         GAME_PIECE_READY_TO_PICK_UP,
@@ -56,13 +57,13 @@ private:
     };
 
     LEDStates *m_LEDStates = LEDStates::GetInstance();
-    bool m_GrabberIsOpen = false;
-    bool m_WantCube = false;
-    bool m_WantCone = false;
-    bool m_GamePieceReadyToPickUp = false;
-    bool m_GamePieceInGrabber = false;
-    bool m_AlignedWithConeNode = false;
-    bool m_AlignedWithCubeNode = false;
+    bool m_intakeIntaking = false;
+    bool m_wantCube = false;
+    bool m_wantCone = false;
+    bool m_gamePieceReadyToPickUp = false;
+    bool m_gamePieceInIntake = false;
+    bool m_alignedWithConeNode = false;
+    bool m_alignedWithCubeNode = false;
     int m_controllerCounter = 0;
     int m_stickyFaultsCounter = 0;
     bool m_compressorOn = true;
@@ -71,7 +72,5 @@ private:
 
     DriverFeedbackStates m_gamePieceState = DriverFeedbackStates::NONE;
     DriverFeedbackStates m_compressorState = DriverFeedbackStates::NONE;
-    bool m_grabberStateChanged = true;
-
-    void resetRequests(void);
+    bool m_intakeStateChanged = true;
 };

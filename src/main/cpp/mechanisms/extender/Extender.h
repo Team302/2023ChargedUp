@@ -29,8 +29,10 @@
 
 // Team 302 includes
 #include <mechanisms/base/Mech1IndMotor.h>
+#include <robotstate/IRobotStateChangeSubscriber.h>
+#include <robotstate/RobotStateChanges.h>
 
-class Extender : public Mech1IndMotor
+class Extender : public Mech1IndMotor, public IRobotStateChangeSubscriber
 {
 public:
 	/// @brief Create an Extender mechanism wiht 1 independent motor
@@ -46,7 +48,14 @@ public:
 	~Extender() override = default;
 
 	//========= Hand modified code start section 0 ========
-	void ResetIfFullyExtended(double counts);
-	void ResetIfFullyRetracted();
+	void Update() override;
+	void Update(RobotStateChanges::StateChange change, int value) override;
+	bool ResetIfFullyExtended(double counts);
+	bool ResetIfFullyRetracted();
+
+private:
+	int m_armAngle = 0.0;
+	int m_armTargetAngle = 0.0;
+
 	//========= Hand modified code end section 0 ========
 };
