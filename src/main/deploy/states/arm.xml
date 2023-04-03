@@ -166,7 +166,7 @@
     stateIdentifier="FLOOR_POSITION_ROTATE_AUTON_HOLD"
     controlDataIdentifier="PercentOutput"
     controlDataIdentifier2=""
-    value="-0.0225"
+    value="-0.0175"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
