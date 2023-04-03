@@ -20,8 +20,9 @@
 //                    Your hand written code goes here
 //	//========= Hand modified code end section x ========
 //==============================================================
-
+#include <algorithm>
 #include <map>
+#include <string>
 
 // FRC includes
 
@@ -43,7 +44,12 @@
 
 //========= Hand modified code end section 0 ========
 
-using namespace std;
+using std::abs;
+using std::allocator;
+using std::less;
+using std::map;
+using std::pair;
+using std::string;
 
 ExtenderStateMgr *ExtenderStateMgr::m_instance = nullptr;
 ExtenderStateMgr *ExtenderStateMgr::GetInstance()
@@ -65,7 +71,7 @@ ExtenderStateMgr::ExtenderStateMgr() : StateMgr(),
                                        m_extender(MechanismFactory::GetMechanismFactory()->GetExtender())
                                        //========= Hand modified code start section 1 ========
                                        ,
-                                       m_prevState(EXTENDER_STATE::INITIALIZE),
+                                       m_desiredState(EXTENDER_STATE::INITIALIZE),
                                        m_currentState(EXTENDER_STATE::INITIALIZE),
                                        m_targetState(EXTENDER_STATE::INITIALIZE),
                                        m_gamepieceMode(RobotStateChanges::None),
@@ -108,7 +114,9 @@ ExtenderStateMgr::ExtenderStateMgr() : StateMgr(),
 /// @returns int state id - -1 indicates that there is not a state to set
 int ExtenderStateMgr::GetCurrentStateParam(PrimitiveParams *currentParams)
 {
-    return static_cast<int>(currentParams->GetExtenderState());
+    auto state = currentParams->GetExtenderState();
+    m_desiredState = state;
+    return static_cast<int>(state);
 }
 
 /// @brief Check if driver inputs or sensors trigger a state transition
@@ -124,36 +132,37 @@ void ExtenderStateMgr::CheckForStateTransition()
         m_timerStarted = true;
     }
 
+    // initalize extender
+    if (!m_hasInitialized)
+    {
+        m_targetState = EXTENDER_STATE::INITIALIZE;
+    }
+
     CheckForSensorTransitions();
     if (m_checkGamePadTransitions)
     {
         CheckForGamepadTransitions();
     }
 
-    if (m_extender != nullptr)
+    auto armInsideFrame = m_armAngle < m_armFloorTolerance;
+    auto armAtTarget = abs(m_armAngle - m_armTargetAngle) > m_armAngleTolerance;
+    if ((armInsideFrame || armAtTarget) &&
+        m_targetState != EXTENDER_STATE::MANUAL_EXTEND_RETRACT &&
+        m_targetState != EXTENDER_STATE::INITIALIZE &&
+        m_armState != ArmStateMgr::ARM_STATE::MANUAL_ROTATE)
     {
-        if ((m_armAngle < m_armFloorTolerance || abs(m_armAngle - m_armTargetAngle) > m_armAngleTolerance) &&
-            m_targetState != EXTENDER_STATE::MANUAL_EXTEND_RETRACT &&
-            m_armState != ArmStateMgr::ARM_STATE::MANUAL_ROTATE)
-        {
-            m_targetState = EXTENDER_STATE::STARTING_POSITION_EXTEND;
-        }
-        else if (m_prevState != EXTENDER_STATE::INITIALIZE)
-        {
-            m_targetState = m_prevState;
-        }
+        m_targetState = EXTENDER_STATE::STARTING_POSITION_EXTEND;
+    }
+    // else if (m_desiredState != EXTENDER_STATE::INITIALIZE && m_checkGamePadTransitions)
+    else if (m_desiredState != EXTENDER_STATE::INITIALIZE)
+    {
+        m_targetState = m_desiredState;
+    }
 
-        // initalize extender
-        if (!m_hasInitialized)
-        {
-            m_targetState = EXTENDER_STATE::INITIALIZE;
-        }
-
-        if (m_targetState != m_currentState)
-        {
-            SetCurrentState(m_targetState, true);
-            RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmExtenderState, m_targetState);
-        }
+    if (m_targetState != m_currentState)
+    {
+        SetCurrentState(m_targetState, true);
+        RobotState::GetInstance()->PublishStateChange(RobotStateChanges::ArmExtenderState, m_targetState);
     }
 
     //========= Hand modified code end section 3 ========
@@ -163,39 +172,34 @@ void ExtenderStateMgr::CheckForStateTransition()
 /// @brief Check sensors to determine target state
 void ExtenderStateMgr::CheckForGamepadTransitions()
 {
-    if (m_extender != nullptr)
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "testing extender states", "m_gamepieceMode", m_gamepieceMode);
+    auto controller = TeleopControl::GetInstance();
+    if (controller != nullptr)
     {
-        auto controller = TeleopControl::GetInstance();
-        if (controller != nullptr)
+        m_desiredState = m_currentState;
+        if (abs(controller->GetAxisValue(TeleopControlFunctions::MANUAL_EXTEND_RETRACT)) > 0.1)
         {
-            if (abs(controller->GetAxisValue(TeleopControlFunctions::MANUAL_EXTEND_RETRACT)) > 0.1)
-            {
-                m_targetState = EXTENDER_STATE::MANUAL_EXTEND_RETRACT;
-                m_prevState = m_targetState;
-            }
-            else if (controller->IsButtonPressed(TeleopControlFunctions::STARTING_POSITION))
-            {
-                m_targetState = EXTENDER_STATE::STARTING_POSITION_EXTEND;
-                m_prevState = m_targetState;
-            }
-            else if (controller->IsButtonPressed(TeleopControlFunctions::HUMAN_PLAYER_STATION))
-            {
-                m_targetState = EXTENDER_STATE::HUMAN_PLAYER_STATION_EXTEND;
-                m_prevState = m_targetState;
-            }
-            else if (controller->IsButtonPressed(TeleopControlFunctions::FLOOR_POSITION))
-            {
-                m_targetState = EXTENDER_STATE::FLOOR_EXTEND;
-                m_prevState = m_targetState;
-            }
-            else if (m_gamepieceMode == RobotStateChanges::Cone) // if we want cone or the gamepiece mode hasn't been updated
-            {
-                CheckForConeGamepadTransitions(controller);
-            }
-            else
-            {
-                CheckForCubeGamepadTransitions(controller);
-            }
+            m_desiredState = EXTENDER_STATE::MANUAL_EXTEND_RETRACT;
+        }
+        else if (controller->IsButtonPressed(TeleopControlFunctions::STARTING_POSITION))
+        {
+            m_desiredState = EXTENDER_STATE::STARTING_POSITION_EXTEND;
+        }
+        else if (controller->IsButtonPressed(TeleopControlFunctions::HUMAN_PLAYER_STATION))
+        {
+            m_desiredState = EXTENDER_STATE::HUMAN_PLAYER_STATION_EXTEND;
+        }
+        else if (controller->IsButtonPressed(TeleopControlFunctions::FLOOR_POSITION))
+        {
+            m_desiredState = EXTENDER_STATE::FLOOR_EXTEND;
+        }
+        else if (m_gamepieceMode == RobotStateChanges::Cone) // if we want cone or the gamepiece mode hasn't been updated
+        {
+            CheckForConeGamepadTransitions(controller);
+        }
+        else
+        {
+            CheckForCubeGamepadTransitions(controller);
         }
     }
 }
@@ -212,17 +216,11 @@ void ExtenderStateMgr::CheckForConeGamepadTransitions(TeleopControl *controller)
     {
         if (controller->IsButtonPressed(TeleopControlFunctions::BACKROW))
         {
-            m_targetState = EXTENDER_STATE::CONE_BACKROW_EXTEND;
-            m_prevState = m_targetState;
+            m_desiredState = EXTENDER_STATE::CONE_BACKROW_EXTEND;
         }
         else if (controller->IsButtonPressed(TeleopControlFunctions::MIDROW))
         {
-            m_targetState = EXTENDER_STATE::CONE_MIDROW_EXTEND;
-            m_prevState = m_targetState;
-        }
-        else
-        {
-            m_targetState = EXTENDER_STATE::HOLD_POSITION_EXTEND;
+            m_desiredState = EXTENDER_STATE::CONE_MIDROW_EXTEND;
         }
     }
 }
@@ -233,17 +231,11 @@ void ExtenderStateMgr::CheckForCubeGamepadTransitions(TeleopControl *controller)
     {
         if (controller->IsButtonPressed(TeleopControlFunctions::BACKROW))
         {
-            m_targetState = EXTENDER_STATE::CUBE_BACKROW_EXTEND;
-            m_prevState = m_targetState;
+            m_desiredState = EXTENDER_STATE::CUBE_BACKROW_EXTEND;
         }
         else if (controller->IsButtonPressed(TeleopControlFunctions::MIDROW))
         {
-            m_targetState = EXTENDER_STATE::CUBE_MIDROW_EXTEND;
-            m_prevState = m_targetState;
-        }
-        else
-        {
-            m_targetState = EXTENDER_STATE::HOLD_POSITION_EXTEND;
+            m_desiredState = EXTENDER_STATE::CUBE_MIDROW_EXTEND;
         }
     }
 }
@@ -256,7 +248,7 @@ void ExtenderStateMgr::CheckForSensorTransitions()
         bool hittingLimitSwitch = m_extender->ResetIfFullyExtended(m_extendedPosition);
         hittingLimitSwitch = !hittingLimitSwitch ? m_extender->ResetIfFullyRetracted() : hittingLimitSwitch;
 
-        if (!m_hasInitialized && (hittingLimitSwitch || m_initializationTimer->HasElapsed(units::time::second_t(1.0))))
+        if (!m_hasInitialized && (hittingLimitSwitch || m_initializationTimer->HasElapsed(units::time::second_t(0.45))))
         {
             m_hasInitialized = true;
             m_targetState = EXTENDER_STATE::STARTING_POSITION_EXTEND;
@@ -277,6 +269,10 @@ void ExtenderStateMgr::Update(RobotStateChanges::StateChange change, int value)
     else if (change == RobotStateChanges::StateChange::ArmRotateState)
     {
         m_armState = static_cast<ArmStateMgr::ARM_STATE>(value);
+    }
+    else if (change == RobotStateChanges::StateChange::DesiredGamePiece)
+    {
+        m_gamepieceMode = static_cast<RobotStateChanges::GamePiece>(value);
     }
 }
 //========= Hand modified code end section 4 ========

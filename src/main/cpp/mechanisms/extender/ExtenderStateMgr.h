@@ -109,7 +109,7 @@ private:
     Extender *m_extender;
 
     //========= Hand modified code start section 5 ========
-    EXTENDER_STATE m_prevState;
+    EXTENDER_STATE m_desiredState;
     EXTENDER_STATE m_currentState;
     EXTENDER_STATE m_targetState;
 
@@ -142,6 +142,6 @@ private:
     const StateStruc m_floor_extendState = {EXTENDER_STATE::FLOOR_EXTEND, "FLOOR_EXTEND", StateType::EXTENDER_STATE, false};
     const StateStruc m_initializeState = {EXTENDER_STATE::INITIALIZE, "INITIALIZE", StateType::EXTENDER_STATE, false};
 
-    const double m_armAngleTolerance = 10.0;
-    const double m_armFloorTolerance = 11.0;
+    static constexpr double m_armAngleTolerance = 10.0;
+    static constexpr double m_armFloorTolerance = 6.0;
 };

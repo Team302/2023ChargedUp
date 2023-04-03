@@ -55,17 +55,12 @@ void StateMgrHelper::RunCurrentMechanismStates()
         string identifier("mechanism");
         identifier += to_string(i);
 
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), identifier, mech != nullptr ? "not nullptr" : "nullptr");
-
         auto stateMgr = mech != nullptr ? mech->GetStateMgr() : nullptr;
 
         identifier += " state mgr ";
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), identifier, stateMgr != nullptr ? "not nullptr" : "nullptr");
         identifier += " running current state ";
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), identifier, false);
         if (stateMgr != nullptr)
         {
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), identifier, true);
             stateMgr->RunCurrentState();
         }
     }
