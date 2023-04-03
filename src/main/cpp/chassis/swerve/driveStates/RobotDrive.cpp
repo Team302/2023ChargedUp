@@ -19,6 +19,7 @@
 #include <frc/filter/SlewRateLimiter.h>
 #include <frc/geometry/Pose2d.h>
 #include <frc/geometry/Rotation2d.h>
+#include <frc/geometry/Twist2d.h>
 #include <units/velocity.h>
 #include <units/angle.h>
 
@@ -63,7 +64,10 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates(Chass
         CorrectForTipping(chassisMovement);
     }
 
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "RobotDrive", "Vx", chassisMovement.chassisSpeeds.vx.to<double>());
+    AdjustForRotation(chassisMovement);
+
+    Logger::GetLogger()
+        ->LogData(LOGGER_LEVEL::PRINT, "RobotDrive", "Vx", chassisMovement.chassisSpeeds.vx.to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "RobotDrive", "Vy", chassisMovement.chassisSpeeds.vy.to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "RobotDrive", "Omega", chassisMovement.chassisSpeeds.omega.to<double>());
 
@@ -211,18 +215,29 @@ void RobotDrive::AdjustForRotation(ChassisMovement &chassisMovement)
         auto x = currentPose.X() + chassisMovement.chassisSpeeds.vx * LOOP_TIME;
         auto y = currentPose.Y() + chassisMovement.chassisSpeeds.vy * LOOP_TIME;
 
-        auto targetAngle = chassisMovement.chassisSpeeds.omega * LOOP_TIME;
-        auto rot = Rotation2d(chassisMovement.chassisSpeeds.omega * LOOP_TIME);
-        auto rot = currentPose.Rotation() + Rotation2d(chassisMovement.chassisSpeeds.omega * LOOP_TIME);
-        auto targetPose = Pose2d(x, y, rot);
+        auto angVel = chassisMovement.chassisSpeeds.omega;
+        auto rot = units::angle::radian_t(angVel.to<double>() * LOOP_TIME.to<double>());
+        auto rot2d = Rotation2d(rot);
+        auto newRot = currentPose.Rotation() + rot2d;
+        auto targetPose = Pose2d(x, y, newRot);
 
-        Pose2d robot_pose_vel = new Pose2d(mPeriodicIO.des_chassis_speeds.vxMetersPerSecond * Constants.kLooperDt,
-                                           mPeriodicIO.des_chassis_speeds.vyMetersPerSecond * Constants.kLooperDt,
-                                           Rotation2d.fromRadians(mPeriodicIO.des_chassis_speeds.omegaRadiansPerSecond * Constants.kLooperDt));
-        Twist2d twist_vel = Pose2d.log(robot_pose_vel);
-        ChassisSpeeds updated_chassis_speeds = new ChassisSpeeds(
-            twist_vel.dx / Constants.kLooperDt, twist_vel.dy / Constants.kLooperDt, twist_vel.dtheta / Constants.kLooperDt);
-        `
+        auto twist = currentPose.Log(targetPose);
+
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("RobotDrive debugging"), string("before chassisMovement vx"), chassisMovement.chassisSpeeds.vx.to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("RobotDrive debugging"), string("before chassisMovement vy"), chassisMovement.chassisSpeeds.vy.to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("RobotDrive debugging"), string("before chassisMovement omega"), chassisMovement.chassisSpeeds.omega.to<double>());
+
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("RobotDrive debugging"), string("twist dx"), twist.dx.to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("RobotDrive debugging"), string("twist dy"), twist.dy.to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("RobotDrive debugging"), string("twist dtheta"), twist.dtheta.to<double>());
+
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("RobotDrive debugging"), string("after chassisMovement vx"), (twist.dx / LOOP_TIME).to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("RobotDrive debugging"), string("after chassisMovement vy"), (twist.dy / LOOP_TIME).to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("RobotDrive debugging"), string("after chassisMovement omega"), (twist.dtheta / LOOP_TIME).to<double>());
+
+        // chassisMovement.chassisSpeeds.vx = twist.dx / LOOP_TIME;
+        // chassisMovement.chassisSpeeds.vy = twist.dy / LOOP_TIME;
+        // chassisMovement.chassisSpeeds.omega = twist.dtheta / LOOP_TIME;
     }
 }
 void RobotDrive::Init(ChassisMovement &chassisMovement)
