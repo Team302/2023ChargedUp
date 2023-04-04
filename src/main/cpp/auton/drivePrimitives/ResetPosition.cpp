@@ -28,6 +28,7 @@
 #include <hw/factories/PigeonFactory.h>
 #include <utils/logging/Logger.h>
 #include <DragonVision/DragonVision.h>
+#include <utils/FMSData.h>
 
 using namespace std;
 using namespace frc;
@@ -41,17 +42,9 @@ void ResetPosition::Init(PrimitiveParams *params)
 
     m_trajectory = DragonTrajectoryUtils::GetTrajectory(params);
 
-    auto pigeon = PigeonFactory::GetFactory()->GetCenterPigeon();
-
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Reset Position"), string("Pigeon Angle Before"), pigeon->GetYaw());
-
-    pigeon->ReZeroPigeon(m_trajectory.InitialPose().Rotation().Degrees().to<double>());
-
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Reset Position"), string("Pigeon Angle After ReZero"), pigeon->GetYaw());
+    dynamic_cast<SwerveChassis *>(m_chassis.get())->ResetYaw();
 
     m_chassis->ResetPose(m_trajectory.InitialPose());
-
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Reset Position"), string("Pigeon Angle After ResetPose"), pigeon->GetYaw());
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Reset Position"), string("Auton Info: ResetPosX"), m_chassis.get()->GetPose().X().to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Reset Position"), string("Auton Info: ResetPosY"), m_chassis.get()->GetPose().Y().to<double>());
