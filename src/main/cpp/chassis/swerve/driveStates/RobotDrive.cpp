@@ -56,7 +56,12 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates(Chass
     if (chassisMovement.checkTipping)
     {
         CorrectForTipping(chassisMovement);
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("check tipping"), string("arrived"));
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("check tipping in robot drive"), string("arrived"));
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("check tipping"), chassisMovement.checkTipping);
+    }
+    else
+    {
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("check tipping in robot drive"), string(" not arrived"));
     }
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "RobotDrive", "Vx", chassisMovement.chassisSpeeds.vx.to<double>());
