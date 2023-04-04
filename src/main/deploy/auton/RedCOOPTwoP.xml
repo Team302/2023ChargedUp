@@ -33,7 +33,7 @@
                heading="0"
                arm="FLOOR_POSITION_ROTATE_AUTON"
                extender="FLOOR_EXTEND"
-               intake="INTAKE"
+               intake="INTAKE_HOLD"
                time="4.0"
                />
     <!--Balance on charging station-->
