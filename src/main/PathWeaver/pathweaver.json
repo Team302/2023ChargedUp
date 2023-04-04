@@ -5,5 +5,5 @@
   "maxAcceleration": 1.0,
   "trackWidth": 20.75,
   "gameName": "Charged Up",
-  "outputDir": "../deploy/auton/output/slowPaths"
+  "outputDir": "Paths"
 }
