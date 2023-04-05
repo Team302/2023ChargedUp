@@ -62,7 +62,6 @@ HolonomicDrive::HolonomicDrive() : State(string("HolonomicDrive"), -1),
 void HolonomicDrive::Init()
 {
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("Initialized?"), "true");
-    m_tipset = false;
 }
 
 /// @brief calculate the output for the wheels on the chassis from the throttle and steer components
@@ -267,22 +266,32 @@ void HolonomicDrive::Run()
 
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("DriveOptionEND"), moveInfo.driveOption);
 
-        if (controller->IsButtonPressed(TeleopControlFunctions::TIPCORRECTION_ON))
+        if (controller->IsButtonPressed(TeleopControlFunctions::TIPCORRECTION_TOGGLE))
         {
-            m_tipset = true;
-        }
-        else if (controller->IsButtonPressed(TeleopControlFunctions::TIPCORRECTION_OFF))
-        {
-            m_tipset = false;
-        }
-        if (m_tipset == true)
-        {
-            moveInfo.checkTipping = true;
+            if (m_latch == false)
+            {
+                m_CheckTipping = !m_CheckTipping;
+                m_latch = true;
+            }
         }
         else
         {
-            moveInfo.checkTipping = false;
+            m_latch = false;
         }
+
+        // if (controller->IsButtonPressed(TeleopControlFunctions::TIPCORRECTION_TOGGLE))
+        // {
+        //     m_timer++;
+        // }
+        // else
+        // {
+        //     m_timer = 0;
+        // }
+        // if (m_timer > 10)
+        // {
+        //     m_CheckTipping = !m_CheckTipping;
+        // }
+        moveInfo.checkTipping = m_CheckTipping;
 
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("check tipping"), moveInfo.checkTipping);
         m_chassis->Drive(moveInfo);
