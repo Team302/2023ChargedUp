@@ -101,27 +101,14 @@ void HolonomicDrive::Run()
         {
             m_inVisionDrive = true;
 
-            double yawAngle = 0.0;
-
-            // determine target heading
-            frc::DriverStation::Alliance alliance = FMSData::GetInstance()->GetAllianceColor();
-
-            if (alliance == frc::DriverStation::Alliance::kBlue)
-            {
-                yawAngle = 180.0;
-                moveInfo.yawAngle = units::angle::degree_t(yawAngle);
-            }
-            else if (alliance == frc::DriverStation::Alliance::kRed)
-            {
-                moveInfo.yawAngle = units::angle::degree_t(yawAngle);
-            }
-
             if (controller->IsButtonPressed(TeleopControlFunctions::ALIGN_CUBE))
             {
                 moveInfo.nodePosition = ChassisOptionEnums::RELATIVE_POSITION::LEFT; // represents cone
 
                 // set pipeline to discover retroreflective
                 DragonVision::GetDragonVision()->setPipeline(DragonLimelight::PIPELINE_MODE::CUBE);
+                moveInfo.headingOption = ChassisOptionEnums::HeadingOption::FACE_CUBE;
+                moveInfo.driveOption = ChassisOptionEnums::DriveStateType::ROBOT_DRIVE;
             }
 
             if (controller->IsButtonPressed(TeleopControlFunctions::ALIGN_APRIL_TAG))
@@ -130,12 +117,9 @@ void HolonomicDrive::Run()
 
                 // set pipeline to discover april tags
                 DragonVision::GetDragonVision()->setPipeline(DragonLimelight::PIPELINE_MODE::APRIL_TAG);
+                moveInfo.headingOption = ChassisOptionEnums::HeadingOption::FACE_APRIL_TAG;
+                moveInfo.driveOption = ChassisOptionEnums::DriveStateType::FIELD_DRIVE;
             }
-
-            moveInfo.headingOption = ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE;
-
-            // set drive and heading mode
-            moveInfo.driveOption = ChassisOptionEnums::DriveStateType::VISION_DRIVE;
         }
         else
         {
@@ -145,56 +129,6 @@ void HolonomicDrive::Run()
 
             visionDrive->ResetVisionDrive();
         }
-
-        // Auto alignment to grid nodes
-        /*if (IsAutoAligning())
-        {
-            m_inVisionDrive = true;
-
-            double yawAngle = 0.0;
-
-            // get destination for alignment
-            std::pair<ChassisOptionEnums::RELATIVE_POSITION, ChassisOptionEnums::RELATIVE_POSITION> destination = GetAutoAlignDestination();
-
-            moveInfo.gridPosition = destination.first;
-            moveInfo.nodePosition = destination.second;
-
-            // determine target heading
-            frc::DriverStation::Alliance alliance = FMSData::GetInstance()->GetAllianceColor();
-
-            if (alliance == frc::DriverStation::Alliance::kBlue)
-            {
-                yawAngle = 180.0;
-                moveInfo.yawAngle = units::angle::degree_t(yawAngle);
-            }
-            else if (alliance == frc::DriverStation::Alliance::kRed)
-            {
-                moveInfo.yawAngle = units::angle::degree_t(yawAngle);
-            }
-
-            // if (abs(PigeonFactory::GetFactory()->GetPigeon(DragonPigeon::PIGEON_USAGE::CENTER_OF_ROBOT)->GetYaw() - yawAngle) > m_autoAlignAngleTolerance)
-            // {
-            moveInfo.headingOption = ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE;
-            // }
-            // else
-            // {
-            //     moveInfo.headingOption = ChassisOptionEnums::HeadingOption::MAINTAIN;
-            // }
-
-            // set drive and heading mode
-            moveInfo.driveOption = ChassisOptionEnums::DriveStateType::VISION_DRIVE;
-        }
-        else
-        {
-            // no longer in vision drive, set boolean and reset offsets in VisionDrive
-            m_inVisionDrive = false;
-            auto visionDrive = dynamic_cast<VisionDrive *>(m_swerve->GetSpecifiedDriveState(ChassisOptionEnums::DriveStateType::VISION_DRIVE));
-
-            visionDrive->ResetVisionDrive();
-
-            // set pipeline to discover april tags
-            DragonVision::GetDragonVision()->setPipeline(DragonLimelight::PIPELINE_MODE::APRIL_TAG);
-        }*/
 
         // add button to align with substation
 
