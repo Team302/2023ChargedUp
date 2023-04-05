@@ -97,7 +97,7 @@ void HolonomicDrive::Run()
             m_hasResetPosition = false;
         }
 
-        if (controller->IsButtonPressed(TeleopControlFunctions::ALIGN_CONE) || controller->IsButtonPressed(TeleopControlFunctions::ALIGN_CUBE))
+        if (controller->IsButtonPressed(TeleopControlFunctions::ALIGN_CUBE) || controller->IsButtonPressed(TeleopControlFunctions::ALIGN_APRIL_TAG))
         {
             m_inVisionDrive = true;
 
@@ -116,15 +116,15 @@ void HolonomicDrive::Run()
                 moveInfo.yawAngle = units::angle::degree_t(yawAngle);
             }
 
-            if (controller->IsButtonPressed(TeleopControlFunctions::ALIGN_CONE))
+            if (controller->IsButtonPressed(TeleopControlFunctions::ALIGN_CUBE))
             {
                 moveInfo.nodePosition = ChassisOptionEnums::RELATIVE_POSITION::LEFT; // represents cone
 
                 // set pipeline to discover retroreflective
-                DragonVision::GetDragonVision()->setPipeline(DragonLimelight::PIPELINE_MODE::CONE_NODE);
+                DragonVision::GetDragonVision()->setPipeline(DragonLimelight::PIPELINE_MODE::CUBE);
             }
 
-            if (controller->IsButtonPressed(TeleopControlFunctions::ALIGN_CUBE))
+            if (controller->IsButtonPressed(TeleopControlFunctions::ALIGN_APRIL_TAG))
             {
                 moveInfo.nodePosition = ChassisOptionEnums::RELATIVE_POSITION::CENTER; // represents cube
 
