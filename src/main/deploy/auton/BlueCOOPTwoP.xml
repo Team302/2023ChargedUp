@@ -24,7 +24,7 @@
                arm="FLOOR_POSITION_ROTATE_AUTON"
                extender="FLOOR_EXTEND"
                intake="INTAKE"
-               time="1.0"
+               time="3.5"
                />
     <!--drive onto charging station-->
     <primitive id="DRIVE_PATH"
@@ -32,7 +32,7 @@
                headingOption="SPECIFIED_ANGLE"
                heading="180"
                arm="FLOOR_POSITION_ROTATE_AUTON"
-               extender="FLOOR_EXTEND"
+               extender="STARTING_POSITION_EXTEND"
                intake="INTAKE"
                time="4.0"
                />
