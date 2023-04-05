@@ -22,9 +22,18 @@
                headingOption="SPECIFIED_ANGLE"
                heading="0"
                arm="FLOOR_POSITION_ROTATE_AUTON"
+               extender="STARTING_POSITION_EXTEND"
+               intake="INTAKE"
+               time="3.0"
+               />
+ <!--grab cube-->
+    <primitive id="DO_NOTHING"
+               headingOption="SPECIFIED_ANGLE"
+               heading="0"
+               arm="FLOOR_POSITION_ROTATE_AUTON"
                extender="FLOOR_EXTEND"
                intake="INTAKE"
-               time="3.5"
+               time="1.0"
                />
     <!--drive onto charging station-->
     <primitive id="DRIVE_PATH"
