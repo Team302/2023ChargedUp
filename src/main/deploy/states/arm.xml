@@ -134,7 +134,7 @@
     stateIdentifier="HUMAN_PLAYER_STATION_ROTATE"
     controlDataIdentifier="RotateToHP"
     controlDataIdentifier2=""
-    value="65"
+    value="61"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />

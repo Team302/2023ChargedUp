@@ -83,16 +83,6 @@ void DriverFeedback::UpdateLEDStates()
         m_LEDStates->ClosingInChaserPattern(DragonLeds::PURPLE);
         m_gamePieceState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
     }
-    else if (DriverFeedback::m_gamePieceInIntake)
-    {
-        if (m_gamePieceState != DriverFeedbackStates::GAME_PIECE_IN_INTAKE)
-        {
-            m_LEDStates->ResetVariables();
-        }
-        m_LEDStates->AlternatingColorBlinkingPattern(DragonLeds::YELLOW, DragonLeds::PURPLE);
-        // TeleopControl::GetInstance()->SetRumble(0, true, true);
-        m_gamePieceState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
-    }
     else if (DriverFeedback::m_findingCube)
     {
         m_LEDStates->ResetVariables();
@@ -127,7 +117,10 @@ void DriverFeedback::UpdateLEDStates()
             else
                 m_LEDStates->SolidColorPattern(DragonLeds::YELLOW);
         }
-        m_LEDStates->SolidColorPattern(DragonLeds::YELLOW);
+        else
+        {
+            m_LEDStates->SolidColorPattern(DragonLeds::YELLOW);
+        }
         m_gamePieceState = DriverFeedbackStates::WANT_CONE;
     }
     else if (DriverFeedback::m_gamePieceReadyToPickUp)
@@ -146,6 +139,23 @@ void DriverFeedback::UpdateLEDStates()
             m_LEDStates->ResetVariables();
             m_LEDStates->SolidColorPattern(DragonLeds::GREEN);
             m_gamePieceState = DriverFeedbackStates::NONE;
+        }
+    }
+
+    if (DriverFeedback::m_gamePieceInIntake)
+    {
+        if (m_gamePieceState != DriverFeedbackStates::GAME_PIECE_IN_INTAKE)
+        {
+            m_LEDStates->ResetVariables();
+            m_gamePieceState = DriverFeedbackStates::GAME_PIECE_IN_INTAKE;
+        }
+        if (DriverFeedback::m_wantCone)
+        {
+            m_LEDStates->BlinkingPattern(DragonLeds::YELLOW);
+        }
+        else
+        {
+            m_LEDStates->BlinkingPattern(DragonLeds::PURPLE);
         }
     }
 }
