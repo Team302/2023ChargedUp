@@ -15,51 +15,30 @@
 
 #pragma once
 
-class ChassisOptionEnums
+// Team302 Includes
+#include <chassis/swerve/headingStates/ISwerveDriveOrientation.h>
+#include <DragonVision/DragonVision.h>
+
+class FaceCube : public ISwerveDriveOrientation
 {
 public:
-    enum HeadingOption
-    {
-        MAINTAIN,
-        TOWARD_GOAL,
-        SPECIFIED_ANGLE,
-        FACE_CUBE,
-        FACE_APRIL_TAG,
-        IGNORE
-    };
+    FaceCube();
+    ~FaceCube();
 
-    enum DriveStateType
-    {
-        ROBOT_DRIVE,
-        FIELD_DRIVE,
-        TRAJECTORY_DRIVE,
-        TRAJECTORY_DRIVE_PLANNER,
-        POLAR_DRIVE,
-        HOLD_DRIVE,
-        STOP_DRIVE,
-        AUTO_BALANCE,
-        VISION_DRIVE
-    };
+    void UpdateChassisSpeeds(ChassisMovement &chassisMovement) override;
 
-    enum RELATIVE_POSITION
-    {
-        LEFT = 1,
-        CENTER = 2,
-        RIGHT = 3
-    };
+private:
+    units::angular_velocity::radians_per_second_t limitAngularVelocityToBetweenMinAndMax(units::angular_velocity::radians_per_second_t angularSpeed);
 
-    enum NoMovementOption
-    {
-        STOP,
-        HOLD_POSITION
-    };
+    bool AtTargetAngle(std::shared_ptr<DragonVisionTarget> targetData, units::angle::radian_t *error);
 
-    enum AutonControllerType
-    {
-        RAMSETE,
-        HOLONOMIC
-    };
+    DragonLimelight::PIPELINE_MODE m_pipelineMode;
+    DragonVision *m_vision;
 
-    ChassisOptionEnums() = delete;
-    ~ChassisOptionEnums() = delete;
+    // Angular movement settings
+    const double m_minimumOmega_radps = 0.7;
+    const double m_maximumOmega_radps = 1.2;
+    const double m_AngularTolerance_rad = std::numbers::pi * 4.0 / 180.0;
+    const double m_inhibitXspeedAboveAngularError_rad = std::numbers::pi * 5.0 / 180.0;
+    double m_visionKP_Angle = 2;
 };

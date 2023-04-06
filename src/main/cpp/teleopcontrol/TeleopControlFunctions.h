@@ -49,7 +49,7 @@ public:
         AUTO_TURN_FORWARD,
         AUTO_TURN_BACKWARD,
         // Standish raw vision
-        ALIGN_CONE,
+        ALIGN_APRIL_TAG,
         ALIGN_CUBE,
         // Scoring states
         DEBUG_INC_P,
