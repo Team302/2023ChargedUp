@@ -94,7 +94,7 @@
     stateIdentifier="CONE_BACKROW_ROTATE"
     controlDataIdentifier="RotateToUpwardAngle"
     controlDataIdentifier2=""
-    value="71.5"
+    value="73"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
@@ -150,7 +150,7 @@
     stateIdentifier="FLOOR_POSITION_ROTATE"
     controlDataIdentifier="RotateToFloordAngle"
     controlDataIdentifier2=""
-    value="15"
+    value="17"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
@@ -158,7 +158,7 @@
     stateIdentifier="FLOOR_POSITION_ROTATE_AUTON"
     controlDataIdentifier="RotateToDownwardAngle"
     controlDataIdentifier2=""
-    value="15"
+    value="16.5"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />

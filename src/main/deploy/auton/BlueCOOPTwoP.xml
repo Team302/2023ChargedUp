@@ -22,6 +22,23 @@
                headingOption="SPECIFIED_ANGLE"
                heading="0"
                arm="FLOOR_POSITION_ROTATE_AUTON"
+               extender="STARTING_POSITION_EXTEND"
+               intake="INTAKE"
+               time="2.0"
+               />
+<!--<primitive id="VISION_ALIGN"
+                pipeline="CUBE"
+                alignmentMethod="ROTATE"
+                visionAlignmentXoffset_in="0.0"
+                arm="FLOOR_POSITION_ROTATE_AUTON"
+               extender="STARTING_POSITION_EXTEND"
+                intake="INTAKE"
+                time="0.5"/>-->
+ <!--grab cube-->
+    <primitive id="DO_NOTHING"
+               headingOption="SPECIFIED_ANGLE"
+               heading="0"
+               arm="FLOOR_POSITION_ROTATE_AUTON"
                extender="FLOOR_EXTEND"
                intake="INTAKE"
                time="1.0"
@@ -32,9 +49,9 @@
                headingOption="SPECIFIED_ANGLE"
                heading="180"
                arm="FLOOR_POSITION_ROTATE_AUTON"
-               extender="FLOOR_EXTEND"
+               extender="STARTING_POSITION_EXTEND"
                intake="INTAKE"
-               time="4.0"
+               time="3.5"
                />
     <!--Balance on charging station-->
     <primitive id="AUTO_BALANCE"

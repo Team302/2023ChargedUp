@@ -90,7 +90,7 @@ void DriverFeedback::UpdateLEDStates()
     else if (DriverFeedback::m_findingCube)
     {
         m_LEDStates->ResetVariables();
-        m_LEDStates->SolidColorPattern(DragonLeds::WHITE);
+        m_LEDStates->SolidColorPattern(DragonLeds::BLACK);
     }
     else if (DriverFeedback::m_wantCube)
     {
