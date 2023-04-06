@@ -63,7 +63,7 @@ void DriverFeedback::DisplayPressure() const
 void DriverFeedback::UpdateLEDStates()
 {
     // reset controller rumble
-    TeleopControl::GetInstance()->SetRumble(0, false, false);
+    // TeleopControl::GetInstance()->SetRumble(0, false, false);
 
     if (DriverFeedback::m_alignedWithConeNode)
     {
@@ -90,7 +90,7 @@ void DriverFeedback::UpdateLEDStates()
             m_LEDStates->ResetVariables();
         }
         m_LEDStates->AlternatingColorBlinkingPattern(DragonLeds::YELLOW, DragonLeds::PURPLE);
-        TeleopControl::GetInstance()->SetRumble(0, true, true);
+        // TeleopControl::GetInstance()->SetRumble(0, true, true);
         m_gamePieceState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
     }
     else if (DriverFeedback::m_findingCube)
