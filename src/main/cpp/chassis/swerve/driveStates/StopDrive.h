@@ -44,4 +44,6 @@ private:
     frc::SwerveModuleState *m_frState = new frc::SwerveModuleState();
     frc::SwerveModuleState *m_blState = new frc::SwerveModuleState();
     frc::SwerveModuleState *m_brState = new frc::SwerveModuleState();
+    units::velocity::feet_per_second_t m_maxspeed;
+    void CorrectForTipping(ChassisMovement &chassisMovement);
 };
