@@ -162,6 +162,7 @@ DriverFeedback::DriverFeedback() : IRobotStateChangeSubscriber()
 {
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::IntakeState);
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::DesiredGamePiece);
+    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::HoldingGamePiece);
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::GameState);
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::CompressorChange);
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::FindingCube);
@@ -184,6 +185,10 @@ void DriverFeedback::Update(RobotStateChanges::StateChange change, int value)
             m_intakeStateChanged = true;
             m_intakeIntaking = newState;
         }
+    }
+    else if (change == RobotStateChanges::HoldingGamePiece)
+    {
+        m_gamePieceInIntake = static_cast<RobotStateChanges::GamePiece>(value) != RobotStateChanges::None;
     }
     else if (change == RobotStateChanges::GameState)
     {
