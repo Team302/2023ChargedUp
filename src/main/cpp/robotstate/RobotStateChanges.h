@@ -35,6 +35,7 @@ public:
         DriveAssistMode,
         GameState,
         CompressorChange,
+        FindingCube,
         LoopCounter
     };
 

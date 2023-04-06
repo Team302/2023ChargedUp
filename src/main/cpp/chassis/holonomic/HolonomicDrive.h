@@ -55,4 +55,5 @@ private:
     const double m_autoAlignAngleTolerance = 5.0;
     bool m_hasResetPosition = false;
     bool m_inVisionDrive = false;
+    bool m_findingCube = false;
 };

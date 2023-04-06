@@ -40,6 +40,7 @@
 #include <utils/DragonField.h>
 #include <DragonVision/DragonVision.h>
 #include <chassis/swerve/driveStates/VisionDrive.h>
+#include <robotstate/RobotState.h>
 
 using namespace std;
 using namespace frc;
@@ -97,6 +98,8 @@ void HolonomicDrive::Run()
             m_hasResetPosition = false;
         }
 
+        m_findingCube = false;
+
         if (controller->IsButtonPressed(TeleopControlFunctions::ALIGN_CUBE) || controller->IsButtonPressed(TeleopControlFunctions::ALIGN_APRIL_TAG))
         {
             m_inVisionDrive = true;
@@ -109,6 +112,7 @@ void HolonomicDrive::Run()
                 DragonVision::GetDragonVision()->setPipeline(DragonLimelight::PIPELINE_MODE::CUBE);
                 moveInfo.headingOption = ChassisOptionEnums::HeadingOption::FACE_CUBE;
                 moveInfo.driveOption = ChassisOptionEnums::DriveStateType::ROBOT_DRIVE;
+                m_findingCube = true;
             }
 
             if (controller->IsButtonPressed(TeleopControlFunctions::ALIGN_APRIL_TAG))
@@ -130,6 +134,8 @@ void HolonomicDrive::Run()
             visionDrive->ResetVisionDrive();
         }
 
+        // update leds based on finding cube with vision
+        RobotState::GetInstance()->PublishStateChange(RobotStateChanges::StateChange::FindingCube, m_findingCube ? 1 : 0);
         // add button to align with substation
 
         if (controller->IsButtonPressed(TeleopControlFunctions::HOLD_POSITION))
