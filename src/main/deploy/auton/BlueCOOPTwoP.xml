@@ -26,6 +26,11 @@
                intake="INTAKE"
                time="2.0"
                />
+    <primitive id="VISION_ALIGN"
+               pipeline="CUBE"
+               alignmentMethod="ROTATE"
+               visionAlignmentXoffset_in="0.0"
+               time="0.5"/>
  <!--grab cube-->
     <primitive id="DO_NOTHING"
                headingOption="SPECIFIED_ANGLE"
