@@ -24,6 +24,8 @@
 #include <networktables/NetworkTable.h>
 #include <networktables/NetworkTableEntry.h>
 
+#include <teleopcontrol/TeleopControl.h>
+
 using frc::DriverStation;
 
 DriverFeedback *DriverFeedback::m_instance = nullptr;
@@ -60,6 +62,9 @@ void DriverFeedback::DisplayPressure() const
 }
 void DriverFeedback::UpdateLEDStates()
 {
+    // reset controller rumble
+    TeleopControl::GetInstance()->SetRumble(0, false, false);
+
     if (DriverFeedback::m_alignedWithConeNode)
     {
         if (m_gamePieceState != DriverFeedbackStates::ALIGNED_WITH_CONE_NODE)
@@ -85,6 +90,7 @@ void DriverFeedback::UpdateLEDStates()
             m_LEDStates->ResetVariables();
         }
         m_LEDStates->AlternatingColorBlinkingPattern(DragonLeds::YELLOW, DragonLeds::PURPLE);
+        TeleopControl::GetInstance()->SetRumble(0, true, true);
         m_gamePieceState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
     }
     else if (DriverFeedback::m_findingCube)
