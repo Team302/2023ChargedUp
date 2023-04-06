@@ -24,7 +24,7 @@
                arm="FLOOR_POSITION_ROTATE_AUTON"
                extender="STARTING_POSITION_EXTEND"
                intake="INTAKE"
-               time="3.0"
+               time="2.0"
                />
  <!--grab cube-->
     <primitive id="DO_NOTHING"
@@ -43,7 +43,7 @@
                arm="FLOOR_POSITION_ROTATE_AUTON"
                extender="STARTING_POSITION_EXTEND"
                intake="INTAKE"
-               time="4.0"
+               time="3.5"
                />
     <!--Balance on charging station-->
     <primitive id="AUTO_BALANCE"

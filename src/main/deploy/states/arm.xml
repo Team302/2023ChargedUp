@@ -94,7 +94,7 @@
     stateIdentifier="CONE_BACKROW_ROTATE"
     controlDataIdentifier="RotateToUpwardAngle"
     controlDataIdentifier2=""
-    value="72"
+    value="73"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />

@@ -43,23 +43,15 @@
                arm="FLOOR_POSITION_ROTATE_AUTON"
                extender="STARTING_POSITION_EXTEND"
                intake="INTAKE"
-               time="3.25"
+               time="3.0"
                />
     <!--Balance on charging station-->
     <primitive id="AUTO_BALANCE"
                headingOption="SPECIFIED_ANGLE"
                heading="0"
-               arm="CONE_BACKROW_ROTATE"
+               arm="FLOOR_POSITION_ROTATE_AUTON"
                extender="STARTING_POSITION_EXTEND"
                intake="INTAKE"
-               time="0.2"
-               />
-    <primitive id="AUTO_BALANCE"
-               headingOption="SPECIFIED_ANGLE"
-               heading="0"
-               arm="CONE_BACKROW_ROTATE"
-               extender="STARTING_POSITION_EXTEND"
-               intake="INTAKE_EXPEL"
                time="10.0"
                />
 </auton>
