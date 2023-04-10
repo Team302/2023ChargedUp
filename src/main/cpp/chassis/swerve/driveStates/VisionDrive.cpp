@@ -259,7 +259,7 @@ void VisionDrive::AlignRawVision(ChassisMovement &chassisMovement)
     if (!m_inAutonMode)
     {
         if (chassisMovement.nodePosition == ChassisOptionEnums::RELATIVE_POSITION::LEFT || chassisMovement.nodePosition == ChassisOptionEnums::RELATIVE_POSITION::RIGHT)
-            m_pipelineMode = DragonLimelight::PIPELINE_MODE::CONE_NODE;
+            m_pipelineMode = DragonLimelight::PIPELINE_MODE::CUBE;
         else
             m_pipelineMode = DragonLimelight::PIPELINE_MODE::APRIL_TAG;
 
@@ -296,7 +296,7 @@ void VisionDrive::AlignRawVision(ChassisMovement &chassisMovement)
         if (m_alignmentMethod == ALIGNMENT_METHOD::STRAFE)
             ySpeed = units::velocity::meters_per_second_t(-1.0 * m_minimumSpeed_mps);
         else
-            omega = units::angular_velocity::radians_per_second_t(m_minimumOmega_radps);
+            omega = -1.0 * units::angular_velocity::radians_per_second_t(m_minimumOmega_radps);
     }
 
     exit = (m_alignmentMethod == ALIGNMENT_METHOD::STRAFE) ? (atTarget_x && atTarget_y) : (atTarget_x && atTarget_angle);

@@ -21,6 +21,7 @@
 
 // Team302 Includes
 #include <chassis/swerve/driveStates/RobotDrive.h>
+#include <chassis/swerve/driveStates/FieldDrive.h>
 #include <DragonVision/DragonVision.h>
 
 class VisionDrive : public RobotDrive
