@@ -109,6 +109,16 @@ void DriverFeedback::UpdateLEDStates()
             m_LEDStates->ResetVariables();
             m_gamePieceState = DriverFeedbackStates::WANT_CONE;
         }
+
+        auto pitch = m_chassis != nullptr ? m_chassis->GetPitch().to<double>() : 0.0;
+        int ledSize = m_LEDStates->m_LEDstring->m_ledBuffer.size();
+
+        int NumberOfLedsOn = (ledSize - (pitch * (ledSize / MaxChargeStationAngle)));
+
+        m_LEDStates->NumberOfLedsOnPattern(DragonLeds::GREEN, NumberOfLedsOn);
+
+        m_gamePieceState = DriverFeedbackStates::NONE;
+
         if (m_grabberStateChanged)
         {
             if (m_GrabberIsOpen)
