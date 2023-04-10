@@ -86,6 +86,7 @@ ArmStateMgr::ArmStateMgr() : StateMgr(),
     stateMap["STARTING_POSITION_ROTATE"] = m_starting_position_rotateState;
     stateMap["FLOOR_POSITION_ROTATE"] = m_floor_position_rotateState;
     stateMap["FLOOR_POSITION_ROTATE_AUTON"] = m_floor_position_rotate_autonState;
+    stateMap["FLOOR_POSITION_ROTATE_AUTON_HOLD"] = m_floor_position_rotate_auton_holdState;
 
     Init(m_arm, stateMap);
     if (m_arm != nullptr)

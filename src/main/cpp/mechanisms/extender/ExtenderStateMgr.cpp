@@ -123,8 +123,13 @@ int ExtenderStateMgr::GetCurrentStateParam(PrimitiveParams *currentParams)
 void ExtenderStateMgr::CheckForStateTransition()
 {
     //========= Hand modified code start section 3 ========
+    if (m_gamepieceMode == RobotStateChanges::None)
+    {
+        m_gamepieceMode = RobotStateChanges::Cone;
+        RobotState::GetInstance()->PublishStateChange(RobotStateChanges::DesiredGamePiece, m_gamepieceMode);
+    }
+
     m_currentState = static_cast<EXTENDER_STATE>(GetCurrentState());
-    m_targetState = m_currentState;
 
     if (!m_timerStarted)
     {
@@ -145,15 +150,14 @@ void ExtenderStateMgr::CheckForStateTransition()
     }
 
     auto armInsideFrame = m_armAngle < m_armFloorTolerance;
-    auto armAtTarget = abs(m_armAngle - m_armTargetAngle) > m_armAngleTolerance;
-    if ((armInsideFrame || armAtTarget) &&
+    auto armAtTarget = abs(m_armAngle - m_armTargetAngle) < m_armAngleTolerance;
+    if ((armInsideFrame || !armAtTarget) &&
         m_targetState != EXTENDER_STATE::MANUAL_EXTEND_RETRACT &&
         m_targetState != EXTENDER_STATE::INITIALIZE &&
         m_armState != ArmStateMgr::ARM_STATE::MANUAL_ROTATE)
     {
         m_targetState = EXTENDER_STATE::STARTING_POSITION_EXTEND;
     }
-    // else if (m_desiredState != EXTENDER_STATE::INITIALIZE && m_checkGamePadTransitions)
     else if (m_desiredState != EXTENDER_STATE::INITIALIZE)
     {
         m_targetState = m_desiredState;
@@ -172,11 +176,9 @@ void ExtenderStateMgr::CheckForStateTransition()
 /// @brief Check sensors to determine target state
 void ExtenderStateMgr::CheckForGamepadTransitions()
 {
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "testing extender states", "m_gamepieceMode", m_gamepieceMode);
     auto controller = TeleopControl::GetInstance();
     if (controller != nullptr)
     {
-        m_desiredState = m_currentState;
         if (abs(controller->GetAxisValue(TeleopControlFunctions::MANUAL_EXTEND_RETRACT)) > 0.1)
         {
             m_desiredState = EXTENDER_STATE::MANUAL_EXTEND_RETRACT;
@@ -206,12 +208,6 @@ void ExtenderStateMgr::CheckForGamepadTransitions()
 
 void ExtenderStateMgr::CheckForConeGamepadTransitions(TeleopControl *controller)
 {
-    if (m_gamepieceMode == RobotStateChanges::None)
-    {
-        m_gamepieceMode = RobotStateChanges::Cone;
-        RobotState::GetInstance()->PublishStateChange(RobotStateChanges::DesiredGamePiece, m_gamepieceMode);
-    }
-
     if (controller != nullptr)
     {
         if (controller->IsButtonPressed(TeleopControlFunctions::BACKROW))

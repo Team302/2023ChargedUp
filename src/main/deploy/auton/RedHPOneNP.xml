@@ -3,7 +3,7 @@
 <auton>
       <primitive id="RESET_POSITION"
 	            pathname="RedCOOPOne1Slow.wpilib.json"
-               intake="HOLD"/>
+               intake="INTAKE_HOLD"/>
     <!--score preloaded cone-->
     <snippet file="ScoreCone.xml"/>
 

@@ -123,10 +123,18 @@ void IntakeStateMgr::CheckForStateTransition()
 /// @brief Check for sensor input to transition
 void IntakeStateMgr::CheckForSensorTransitions()
 {
-    if (m_intake != nullptr && m_intake->IsGamePiecePresent())
+    if (m_intake != nullptr && m_currentState == INTAKE_STATE::INTAKE)
     {
-        m_targetState = INTAKE_STATE::HOLD;
-        RobotState::GetInstance()->PublishStateChange(RobotStateChanges::HoldingGamePiece, m_coneMode ? RobotStateChanges::Cone : RobotStateChanges::Cube);
+        if (m_intake->IsGamePiecePresent())
+        {
+            m_targetState = INTAKE_STATE::HOLD;
+            RobotState::GetInstance()->PublishStateChange(RobotStateChanges::HoldingGamePiece, m_coneMode ? RobotStateChanges::Cone : RobotStateChanges::Cube);
+        }
+    }
+
+    if (!m_intake->IsGamePiecePresent())
+    {
+        RobotState::GetInstance()->PublishStateChange(RobotStateChanges::HoldingGamePiece, RobotStateChanges::None);
     }
 }
 
@@ -148,7 +156,6 @@ void IntakeStateMgr::CheckForGamepadTransitions()
                 {
                     m_targetState = INTAKE_STATE::EXPEL;
                 }
-                // m_targetState = INTAKE_STATE::RELEASE;
             }
             else if (controller->IsButtonPressed(TeleopControlFunctions::INTAKE))
             {
@@ -165,7 +172,6 @@ void IntakeStateMgr::CheckForGamepadTransitions()
                 {
                     m_targetState = INTAKE_STATE::INTAKE;
                 }
-                // m_targetState = hasGamePiece ? INTAKE_STATE::HOLD : INTAKE_STATE::INTAKE;
             }
             else if (controller->IsButtonPressed(TeleopControlFunctions::EXPEL))
             {

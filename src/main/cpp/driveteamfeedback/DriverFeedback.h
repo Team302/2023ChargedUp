@@ -64,6 +64,7 @@ private:
     bool m_alignedWithCubeNode = false;
     int m_controllerCounter = 0;
     bool m_compressorOn = true;
+    bool m_findingCube = false;
 
     static DriverFeedback *m_instance;
 

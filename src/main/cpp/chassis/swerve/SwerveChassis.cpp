@@ -51,6 +51,8 @@
 #include <chassis/swerve/driveStates/VisionDrive.h>
 
 #include <chassis/swerve/headingStates/FaceGoalHeading.h>
+#include <chassis/swerve/headingStates/FaceCube.h>
+#include <chassis/swerve/headingStates/FaceAprilTag.h>
 #include <chassis/swerve/headingStates/ISwerveDriveOrientation.h>
 #include <chassis/swerve/headingStates/MaintainHeading.h>
 #include <chassis/swerve/headingStates/SpecifiedHeading.h>
@@ -172,6 +174,8 @@ void SwerveChassis::InitStates()
 
     m_headingStateMap[ChassisOptionEnums::HeadingOption::MAINTAIN] = new MaintainHeading();
     m_headingStateMap[ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE] = new SpecifiedHeading();
+    m_headingStateMap[ChassisOptionEnums::HeadingOption::FACE_CUBE] = new FaceCube();
+    m_headingStateMap[ChassisOptionEnums::HeadingOption::FACE_APRIL_TAG] = new FaceAprilTag();
     m_headingStateMap[ChassisOptionEnums::HeadingOption::TOWARD_GOAL] = new FaceGoalHeading();
     m_headingStateMap[ChassisOptionEnums::HeadingOption::IGNORE] = new IgnoreHeading();
 }
@@ -244,9 +248,11 @@ ISwerveDriveState *SwerveChassis::GetDriveState(ChassisMovement moveInfo)
     ISwerveDriveState *state = nullptr;
 
     auto isVisionDrive = moveInfo.driveOption == ChassisOptionEnums::VISION_DRIVE;
+    auto isAutoBlance = moveInfo.driveOption == ChassisOptionEnums::AUTO_BALANCE;
+    auto isHoldDrive = moveInfo.driveOption == ChassisOptionEnums::HOLD_DRIVE;
     auto hasTrajectory = moveInfo.driveOption == ChassisOptionEnums::TRAJECTORY_DRIVE || moveInfo.driveOption == ChassisOptionEnums::TRAJECTORY_DRIVE_PLANNER;
 
-    if (!hasTrajectory && !isVisionDrive &&
+    if (!hasTrajectory && !isVisionDrive && !isAutoBlance && !isHoldDrive &&
         (units::math::abs(moveInfo.chassisSpeeds.vx) < m_velocityDeadband) &&
         (units::math::abs(moveInfo.chassisSpeeds.vy) < m_velocityDeadband) &&
         (units::math::abs(moveInfo.chassisSpeeds.omega) < m_angularDeadband))
