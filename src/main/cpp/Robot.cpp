@@ -105,7 +105,6 @@ void Robot::RobotPeriodic()
     }
 
 #define ENABLE_VISION
-#ifdef ENABLE_VISION
     // This is an example of how to use RobotVision
 
     static int mycounter = 0;
@@ -149,7 +148,6 @@ void Robot::RobotPeriodic()
         LoggerData data = {LOGGER_LEVEL::PRINT, string("DragonLimelight"), {}, {}, {count}, {status}};
         Logger::GetLogger()->LogData(data);
     }
-#endif
 
     // ToDo:: Move to DriveTeamFeedback
     if (m_previewer != nullptr)
