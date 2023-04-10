@@ -179,7 +179,6 @@ void ExtenderStateMgr::CheckForGamepadTransitions()
     auto controller = TeleopControl::GetInstance();
     if (controller != nullptr)
     {
-        m_desiredState = m_currentState;
         if (abs(controller->GetAxisValue(TeleopControlFunctions::MANUAL_EXTEND_RETRACT)) > 0.1)
         {
             m_desiredState = EXTENDER_STATE::MANUAL_EXTEND_RETRACT;
