@@ -194,7 +194,8 @@ void HolonomicDrive::Run()
 
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("Run"), string("axis read"));
 
-        if (FMSData::GetInstance()->GetAllianceColor() == frc::DriverStation::Alliance::kRed)
+        if (FMSData::GetInstance()->GetAllianceColor() == frc::DriverStation::Alliance::kRed &&
+            moveInfo.driveOption == ChassisOptionEnums::DriveStateType::FIELD_DRIVE)
         {
             forward *= -1.0;
             strafe *= -1.0;
