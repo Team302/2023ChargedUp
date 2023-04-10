@@ -120,7 +120,7 @@ void DriverFeedback::UpdateLEDStates()
 
         m_gamePieceState = DriverFeedbackStates::NONE;
 
-        if (m_grabberStateChanged)
+        if (m_intakeStateChanged)
         {
             if (m_intakeIntaking)
                 m_LEDStates->BlinkingPattern(DragonLeds::YELLOW);
@@ -146,7 +146,7 @@ void DriverFeedback::UpdateLEDStates()
     {
         if (m_TeleopEnabled)
         {
-            m_WantCone = true;
+            m_wantCone = true;
             m_gamePieceState = DriverFeedbackStates::NONE;
         }
         else
