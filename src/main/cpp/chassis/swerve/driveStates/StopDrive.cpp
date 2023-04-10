@@ -16,15 +16,55 @@
 // Team302 Includes
 #include <chassis/swerve/driveStates/StopDrive.h>
 #include <chassis/ChassisMovement.h>
+#include <chassis/swerve/driveStates/RobotDrive.h>
+#include <chassis/ChassisFactory.h>
 
-std::array<frc::SwerveModuleState, 4> StopDrive::UpdateSwerveModuleStates(
-    ChassisMovement &chassisMovement)
+StopDrive::StopDrive() : m_chassis(ChassisFactory::GetChassisFactory()->GetSwerveChassis())
+{
+}
+
+std::array<frc::SwerveModuleState, 4> StopDrive::UpdateSwerveModuleStates(ChassisMovement &chassisMovement)
 {
     return {*m_flState, *m_frState, *m_blState, *m_brState};
 }
 
-void StopDrive::Init(
-    ChassisMovement &chassisMovement)
+void StopDrive::Init(ChassisMovement &chassisMovement)
 {
-    // Should we do anything here?
+    // set module angles
+    if (m_chassis != nullptr)
+    {
+        auto module = m_chassis->GetFrontLeft().get();
+        if (module != nullptr)
+        {
+            auto currState = module->GetState();
+            m_flState->angle = currState.angle;
+        }
+
+        module = m_chassis->GetFrontRight().get();
+        if (module != nullptr)
+        {
+            auto currState = module->GetState();
+            m_frState->angle = currState.angle;
+        }
+
+        module = m_chassis->GetBackLeft().get();
+        if (module != nullptr)
+        {
+            auto currState = module->GetState();
+            m_blState->angle = currState.angle;
+        }
+
+        module = m_chassis->GetBackRight().get();
+        if (module != nullptr)
+        {
+            auto currState = module->GetState();
+            m_brState->angle = currState.angle;
+        }
+    }
+
+    // set the module speeds
+    m_flState->speed = 0_mps;
+    m_frState->speed = 0_mps;
+    m_blState->speed = 0_mps;
+    m_brState->speed = 0_mps;
 }

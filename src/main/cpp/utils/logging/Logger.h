@@ -39,53 +39,30 @@ public:
     /// @param [in] std::string: network table name or classname to group messages.  If logging option is DASHBOARD, this will be the network table name
     /// @param [in] std::string: message identifier: within a grouping multiple messages may be displayed this is the prefix/look up key
     /// @param [in] std::string: message - text of the message
-    void LogData(
-        LOGGER_LEVEL level,
-        const std::string &group,
-        const std::string &identifier,
-        const std::string &message);
-
-    void LogData(
-        LOGGER_LEVEL level,
-        const std::string &group,
-        const std::string &identifier,
-        const char *message);
-
-    void LogData(
-        LoggerData &info);
+    void LogData(LOGGER_LEVEL level, const std::string &group, const std::string &identifier, const std::string &message) const;
+    void LogData(LOGGER_LEVEL level, const std::string &group, const std::string &identifier, const char *message) const;
+    void LogData(LoggerData &info) const;
 
     /// @brief log a message
     /// @param [in] LOGGER_LEVEL: message level
     /// @param [in] std::string: network table name or classname to group messages.  If logging option is DASHBOARD, this will be the network table name
     /// @param [in] std::string: message identifier: within a grouping multiple messages may be displayed this is the prefix/look up key
     /// @param [in] double: value to display
-    void LogData(
-        LOGGER_LEVEL level,
-        const std::string &group,
-        const std::string &identifier,
-        double value);
+    void LogData(LOGGER_LEVEL level, const std::string &group, const std::string &identifier, double value) const;
 
     /// @brief log a message
     /// @param [in] LOGGER_LEVEL: message level
     /// @param [in] std::string: network table name or classname to group messages.  If logging option is DASHBOARD, this will be the network table name
     /// @param [in] std::string: message identifier: within a grouping multiple messages may be displayed this is the prefix/look up key
     /// @param [in] bool: value to display
-    void LogData(
-        LOGGER_LEVEL level,
-        const std::string &group,
-        const std::string &identifier,
-        bool value);
+    void LogData(LOGGER_LEVEL level, const std::string &group, const std::string &identifier, bool value) const;
 
     /// @brief log a message
     /// @param [in] LOGGER_LEVEL: message level
     /// @param [in] std::string: network table name or classname to group messages.  If logging option is DASHBOARD, this will be the network table name
     /// @param [in] std::string: message identifier: within a grouping multiple messages may be displayed this is the prefix/look up key
     /// @param [in] int: value to display
-    void LogData(
-        LOGGER_LEVEL level,
-        const std::string &group,
-        const std::string &identifier,
-        int value);
+    void LogData(LOGGER_LEVEL level, const std::string &group, const std::string &identifier, int value) const;
     /// @brief Display logging options on dashboard
     void PutLoggingSelectionsOnDashboard();
 
@@ -100,11 +77,7 @@ private:
     /// @param [in] std::string: message identifier: within a grouping multiple messages may be displayed this is the prefix/look up key
     /// @param [in] std::string: message/value
     /// @returns bool: true - display the message, false - don't display the message
-    bool ShouldDisplayIt(
-        LOGGER_LEVEL level,
-        const std::string &group,
-        const std::string &identifier,
-        const std::string &message);
+    bool ShouldDisplayIt(LOGGER_LEVEL level, const std::string &group, const std::string &identifier, const std::string &message) const;
 
     /// @brief set the option for where the logging messages should be displayed
     /// @param [in] LOGGER_OPTION:  logging option for where to log messages
@@ -120,7 +93,7 @@ private:
 
     LOGGER_OPTION m_option; // indicates where the message should go
     LOGGER_LEVEL m_level;   // the level at which a message is important enough to send
-    std::set<std::string> m_alreadyDisplayed;
+    mutable std::set<std::string> m_alreadyDisplayed;
     int m_cyclingCounter; // count 20ms loops
     frc::SendableChooser<LOGGER_OPTION> m_optionChooser;
     frc::SendableChooser<LOGGER_LEVEL> m_levelChooser;

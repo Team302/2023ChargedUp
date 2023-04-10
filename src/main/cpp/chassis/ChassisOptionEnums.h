@@ -22,7 +22,10 @@ public:
     {
         MAINTAIN,
         TOWARD_GOAL,
-        SPECIFIED_ANGLE
+        SPECIFIED_ANGLE,
+        FACE_CUBE,
+        FACE_APRIL_TAG,
+        IGNORE
     };
 
     enum DriveStateType
@@ -30,6 +33,7 @@ public:
         ROBOT_DRIVE,
         FIELD_DRIVE,
         TRAJECTORY_DRIVE,
+        TRAJECTORY_DRIVE_PLANNER,
         POLAR_DRIVE,
         HOLD_DRIVE,
         STOP_DRIVE,

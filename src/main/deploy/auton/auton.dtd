@@ -1,4 +1,4 @@
-<!ELEMENT auton (snippet*, primitive*) >
+<!ELEMENT auton (snippet | primitive)* >
 
 <!ELEMENT snippet EMPTY>
 <!ATTLIST snippet file CDATA #IMPLIED>
@@ -7,7 +7,7 @@
 <!ATTLIST primitive 
           id                ( DO_NOTHING | HOLD_POSITION | 
                               DRIVE_DISTANCE | DRIVE_TIME | 
-                              TURN_ANGLE_ABS | TURN_ANGLE_REL | DRIVE_PATH | RESET_POSITION | AUTO_BALANCE) "DO_NOTHING"
+                              TURN_ANGLE_ABS | TURN_ANGLE_REL | DRIVE_PATH | DRIVE_PATH_PLANNER | RESET_POSITION | RESET_POSITION_PATH_PLANNER | AUTO_BALANCE | VISION_ALIGN) "DO_NOTHING"
 		  time				CDATA #IMPLIED
           distance		    CDATA "0.0"
           headingOption     CDATA "MAINTAIN"
@@ -23,8 +23,9 @@
           extender          ( HOLD_POSITION_EXTEND | MANUAL_EXTEND_RETRACT | 
                               CUBE_BACKROW_EXTEND | CONE_BACKROW_EXTEND | 
                               CUBE_MIDROW_EXTEND | CONE_MIDROW_EXTEND | HUMAN_PLAYER_STATION_EXTEND | STARTING_POSITION_EXTEND | FLOOR_EXTEND) "HOLD_POSITION_EXTEND"
-          grabber           ( OPEN | GRAB) "OPEN"
-          
+          intake            ( INTAKE_OFF | INTAKE | INTAKE_HOLD | INTAKE_RELEASE | INTAKE_EXPEL | HP_CONE_INTAKE ) "INTAKE_HOLD"
+          alignmentMethod   ( ROTATE | STRAFE ) "ROTATE"
+          pipeline          ( UNKNOWN | OFF | APRIL_TAG | CONE_NODE | CONE | CUBE ) "APRIL_TAG"
 >
 
 

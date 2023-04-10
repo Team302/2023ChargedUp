@@ -27,8 +27,9 @@
 #include <chassis/ChassisOptionEnums.h>
 #include <mechanisms/arm/ArmStateMgr.h>
 #include <mechanisms/extender/ExtenderStateMgr.h>
-#include <mechanisms/grabber/GrabberStateMgr.h>
-
+#include <mechanisms/intake/IntakeStateMgr.h>
+#include <dragonVision/DragonLimelight.h>
+#include <chassis/swerve/driveStates/VisionDrive.h>
 // @ADDMECH include for your mechanism
 
 #include <chassis/IChassis.h>
@@ -52,7 +53,13 @@ public:
         // @ADDMECH add parameter for your mechanism state
         ArmStateMgr::ARM_STATE armState,
         ExtenderStateMgr::EXTENDER_STATE extenderState,
-        GrabberStateMgr::GRABBER_STATE grabberState
+        IntakeStateMgr::INTAKE_STATE intakeState,
+
+        // VisionDrive settings start
+        DragonLimelight::PIPELINE_MODE pipelineMode,
+        VisionDrive::ALIGNMENT_METHOD alignmentMethod,
+        double visionAlignmentXoffset_in // offset from bumper edge to target
+        // VisionDrive settings end
 
     ); // Constructor. Takes in all parameters
 
@@ -72,12 +79,19 @@ public:
     std::string GetPathName() const { return m_pathName; };
     ArmStateMgr::ARM_STATE GetArmState() const { return m_armState; };
     ExtenderStateMgr::EXTENDER_STATE GetExtenderState() const { return m_extenderState; };
-    GrabberStateMgr::GRABBER_STATE GetGrabberState() const { return m_grabberState; };
+    IntakeStateMgr::INTAKE_STATE GetIntakeState() const { return m_intakeState; }
+    DragonLimelight::PIPELINE_MODE GetPipelineMode() const { return m_pipelineMode; }
+    VisionDrive::ALIGNMENT_METHOD GetAlignmentMethod() const { return m_alignmentMethod; }
+    double GetVisionAlignmentXoffset_in() const { return m_visionAlignmentXoffset_in; }
 
     // @ADDMECH Add methods to get the state mgr for mechanism
 
     // Setters
-    void SetDistance(float distance) { m_distance = distance; }
+    void
+    SetDistance(float distance)
+    {
+        m_distance = distance;
+    }
     void SetPathName(std::string path) { m_pathName = path; }
 
 private:
@@ -95,7 +109,10 @@ private:
     // @ADDMECH add attribute for your mechanism state
     ArmStateMgr::ARM_STATE m_armState;
     ExtenderStateMgr::EXTENDER_STATE m_extenderState;
-    GrabberStateMgr::GRABBER_STATE m_grabberState;
+    IntakeStateMgr::INTAKE_STATE m_intakeState;
+    DragonLimelight::PIPELINE_MODE m_pipelineMode;
+    VisionDrive::ALIGNMENT_METHOD m_alignmentMethod;
+    double m_visionAlignmentXoffset_in;
 };
 
 typedef std::vector<PrimitiveParams *> PrimitiveParamsVector;

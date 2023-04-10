@@ -53,9 +53,9 @@
     crosshairy=""
     secondcrosshairx=""
     secondcrosshairy="" />
-  <!-- led
+  <led
     pwmId="8"
-    number="144" / -->
+    number="15" />
   <chassis
     type="SWERVE"
     wheelDiameter="4.0"
@@ -321,11 +321,11 @@
       reverselimitswitchopen="true"
       voltageCompensationSaturation="10.5"
       voltageCompensationEnable="true"
-      countsPerDegree="455.15" />
+      countsPerDegree="515.433" />
     <cancoder
       canId="4"
       canBusName="rio"
-      offset="0.0"
+      offset="-40.342"
       reverse="false" />
   </mechanism>
   <mechanism
@@ -353,47 +353,52 @@
       voltageCompensationEnable="false"
       countsPerInch="3811.0878"/>
   </mechanism>
-  <!--mechanism
-    type="GRABBER"
-    networkTable="grabberNT"
-    controlFile="grabber.xml">
-    <solenoid
-      usage="GrabberSolenoid"
-      canId="1"
-      channel="0"
-      reversed="false" />
-    <digitalInput  
-      usage="GRABBER_SENSOR" 
-      digitalId="9" 
-      reversed="true"/> 
-  </mechanism-->
-  <!-- mechanism
+<mechanism
     type="INTAKE"
     networkTable="intakeNT"
     controlFile="intake.xml">
-    <motor
-      usage="INTAKE"
-      canId="8"
+      <motor
+      usage="INTAKE1"
+      canId="5"
       canBusName="rio"
-      pdpID="8"
+      pdpID="5"
       type="TALONSRX"
       inverted="false"
       sensorInverted="false"
       feedbackDevice="NONE"
-      countsPerRev="2048"
+      countsPerRev="1"
       gearRatio="1"
       brakeMode="true"
       follow="-1"
-      forwardlimitswitch="false"
+      forwardlimitswitch="true"
       forwardlimitswitchopen="true"
-      reverselimitswitch="false"
+      reverselimitswitch="true"
       reverselimitswitchopen="true"
       voltageCompensationSaturation="10.5"
-      voltageCompensationEnable="false"
-      countsPerInch="1"/>
-  </mechanism>
-  <solenoid
-      usage="INTAKE_SOLENOID"
+      voltageCompensationEnable="true"
+      countsPerDegree="0" />
+      <motor
+      usage="INTAKE2"
+      canId="7"
+      canBusName="rio"
+      pdpID="7"
+      type="TALONSRX"
+      inverted="true"
+      sensorInverted="false"
+      feedbackDevice="NONE"
+      countsPerRev="1"
+      gearRatio="1"
+      brakeMode="true"
+      follow="-1"
+      forwardlimitswitch="true"
+      forwardlimitswitchopen="true"
+      reverselimitswitch="true"
+      reverselimitswitchopen="true"
+      voltageCompensationSaturation="10.5"
+      voltageCompensationEnable="true"
+      countsPerDegree="0" />
+    <solenoid
+      usage="IntakeSolenoid"
       canId="1"
       channel="0"
       reversed="false" />
@@ -401,8 +406,7 @@
       usage="GAME_PIECE_PRESENT_SENSOR" 
       digitalId="9" 
       reversed="true"/> 
-  </mechanism -->
-
+  </mechanism>
   <roborio
     orientation="X_LEFT_Y_UP" />
 </robot>

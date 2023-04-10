@@ -47,12 +47,16 @@
 #include <chassis/swerve/driveStates/RobotDrive.h>
 #include <chassis/swerve/driveStates/StopDrive.h>
 #include <chassis/swerve/driveStates/TrajectoryDrive.h>
+#include <chassis/swerve/driveStates/TrajectoryDrivePathPlanner.h>
 #include <chassis/swerve/driveStates/VisionDrive.h>
 
 #include <chassis/swerve/headingStates/FaceGoalHeading.h>
+#include <chassis/swerve/headingStates/FaceCube.h>
+#include <chassis/swerve/headingStates/FaceAprilTag.h>
 #include <chassis/swerve/headingStates/ISwerveDriveOrientation.h>
 #include <chassis/swerve/headingStates/MaintainHeading.h>
 #include <chassis/swerve/headingStates/SpecifiedHeading.h>
+#include <chassis/swerve/headingStates/IgnoreHeading.h>
 
 #include <DragonVision/DragonLimelight.h>
 #include <DragonVision/LimelightFactory.h>
@@ -164,12 +168,16 @@ void SwerveChassis::InitStates()
     m_driveStateMap[ChassisOptionEnums::ROBOT_DRIVE] = m_robotDrive;
     m_driveStateMap[ChassisOptionEnums::STOP_DRIVE] = new StopDrive();
     m_driveStateMap[ChassisOptionEnums::TRAJECTORY_DRIVE] = new TrajectoryDrive(m_robotDrive);
+    m_driveStateMap[ChassisOptionEnums::TRAJECTORY_DRIVE_PLANNER] = new TrajectoryDrivePathPlanner(m_robotDrive);
     m_driveStateMap[ChassisOptionEnums::VISION_DRIVE] = new VisionDrive(m_robotDrive);
     m_driveStateMap[ChassisOptionEnums::AUTO_BALANCE] = new AutoBalanceDrive(m_robotDrive);
 
     m_headingStateMap[ChassisOptionEnums::HeadingOption::MAINTAIN] = new MaintainHeading();
     m_headingStateMap[ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE] = new SpecifiedHeading();
+    m_headingStateMap[ChassisOptionEnums::HeadingOption::FACE_CUBE] = new FaceCube();
+    m_headingStateMap[ChassisOptionEnums::HeadingOption::FACE_APRIL_TAG] = new FaceAprilTag();
     m_headingStateMap[ChassisOptionEnums::HeadingOption::TOWARD_GOAL] = new FaceGoalHeading();
+    m_headingStateMap[ChassisOptionEnums::HeadingOption::IGNORE] = new IgnoreHeading();
 }
 /// @brief Align all of the swerve modules to point forward
 void SwerveChassis::ZeroAlignSwerveModules()
@@ -237,16 +245,39 @@ ISwerveDriveOrientation *SwerveChassis::GetHeadingState(ChassisMovement moveInfo
 }
 ISwerveDriveState *SwerveChassis::GetDriveState(ChassisMovement moveInfo)
 {
-    auto itr = m_driveStateMap.find(moveInfo.driveOption);
-    if (itr == m_driveStateMap.end())
-    {
-        return m_robotDrive;
-    }
-    auto state = itr->second;
+    ISwerveDriveState *state = nullptr;
 
-    if (m_currentDriveState == nullptr)
+    auto isVisionDrive = moveInfo.driveOption == ChassisOptionEnums::VISION_DRIVE;
+    auto isAutoBlance = moveInfo.driveOption == ChassisOptionEnums::AUTO_BALANCE;
+    auto hasTrajectory = moveInfo.driveOption == ChassisOptionEnums::TRAJECTORY_DRIVE || moveInfo.driveOption == ChassisOptionEnums::TRAJECTORY_DRIVE_PLANNER;
+
+    if (!hasTrajectory && !isVisionDrive && !isAutoBlance &&
+        (units::math::abs(moveInfo.chassisSpeeds.vx) < m_velocityDeadband) &&
+        (units::math::abs(moveInfo.chassisSpeeds.vy) < m_velocityDeadband) &&
+        (units::math::abs(moveInfo.chassisSpeeds.omega) < m_angularDeadband))
     {
-        m_currentDriveState = m_robotDrive;
+        if (moveInfo.noMovementOption == ChassisOptionEnums::NoMovementOption::HOLD_POSITION)
+        {
+            state = m_driveStateMap[ChassisOptionEnums::HOLD_DRIVE];
+        }
+        else
+        {
+            state = m_driveStateMap[ChassisOptionEnums::STOP_DRIVE];
+        }
+    }
+    else
+    {
+        auto itr = m_driveStateMap.find(moveInfo.driveOption);
+        if (itr == m_driveStateMap.end())
+        {
+            return m_robotDrive;
+        }
+        state = itr->second;
+
+        if (m_currentDriveState == nullptr)
+        {
+            m_currentDriveState = m_robotDrive;
+        }
     }
 
     if (state != m_currentDriveState)
@@ -367,6 +398,8 @@ void SwerveChassis::ResetPose(const Pose2d &pose)
     Rotation2d rot2d{yaw};
 
     SetEncodersToZero();
+
+    ZeroAlignSwerveModules();
 
     m_poseEstimator.ResetPosition(rot2d, wpi::array<frc::SwerveModulePosition, 4>{m_frontLeft.get()->GetPosition(), m_frontRight.get()->GetPosition(), m_backLeft.get()->GetPosition(), m_backRight.get()->GetPosition()}, pose);
 }

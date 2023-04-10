@@ -47,6 +47,12 @@ Extender::Extender(
 	std::string networkTableName,
 	std::shared_ptr<IDragonMotorController> motorController0) : Mech1IndMotor(MechanismTypes::MECHANISM_TYPE::EXTENDER, controlFileName, networkTableName, motorController0)
 {
+	auto motor = GetMotor().get()->GetSpeedController();
+	auto fx = dynamic_cast<ctre::phoenix::motorcontrol::can::WPI_TalonFX *>(motor.get());
+	if (fx != nullptr)
+	{
+		fx->ConfigClosedloopRamp(0.1);
+	}
 }
 
 //========= Hand modified code start section 0 ========
@@ -75,4 +81,21 @@ bool Extender::ResetIfFullyRetracted()
 	}
 	return false;
 }
+
+void Extender::Update()
+{
+	Mech1IndMotor::Update();
+}
+void Extender::Update(RobotStateChanges::StateChange change, int value)
+{
+	if (change == RobotStateChanges::StateChange::ArmRotateAngle)
+	{
+		m_armAngle = value;
+	}
+	else if (change == RobotStateChanges::StateChange::ArmRotateAngleTarget)
+	{
+		m_armTargetAngle = value;
+	}
+}
+
 //========= Hand modified code end section 0 ========

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE auton SYSTEM "auton.dtd">
-<auton>
-    <primitive id="RESET_POSITION"
-			   pathname="Straight1MSlow.wpilib.json"/>
-    <primitive id="DRIVE_PATH"
-               pathname="Straight1MSlow.wpilib.json"/>
-</auton>

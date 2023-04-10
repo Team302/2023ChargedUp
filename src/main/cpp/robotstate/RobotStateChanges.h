@@ -25,13 +25,17 @@ public:
         HoldingGamePiece,
         ArmExtenderState,
         ArmRotateState,
-        GrabberState,
+        ArmRotateAngle,
+        ArmRotateAngleTarget,
+        CYCLE_GAMEPIECEState,
+        IntakeState,
         DesiredPlacementLocation,
         DesiredPlacementDepth,
         ChassisTipStatus,
         DriveAssistMode,
         GameState,
         CompressorChange,
+        FindingCube,
         LoopCounter
     };
 
