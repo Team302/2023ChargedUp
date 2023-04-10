@@ -33,7 +33,7 @@
                arm="FLOOR_POSITION_ROTATE_AUTON"
                extender="FLOOR_EXTEND"
                intake="INTAKE"
-               time="1.0"
+               time="0.85"
                />
     <!--drive onto charging station-->
     <primitive id="DRIVE_PATH"
@@ -43,7 +43,7 @@
                arm="FLOOR_POSITION_ROTATE_AUTON"
                extender="STARTING_POSITION_EXTEND"
                intake="INTAKE"
-               time="3.0"
+               time="3.5"
                />
     <!--Balance on charging station-->
     <primitive id="AUTO_BALANCE"

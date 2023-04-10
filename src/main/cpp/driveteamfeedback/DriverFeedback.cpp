@@ -24,6 +24,8 @@
 #include <networktables/NetworkTable.h>
 #include <networktables/NetworkTableEntry.h>
 
+#include <teleopcontrol/TeleopControl.h>
+
 using frc::DriverStation;
 
 DriverFeedback *DriverFeedback::m_instance = nullptr;
@@ -60,6 +62,9 @@ void DriverFeedback::DisplayPressure() const
 }
 void DriverFeedback::UpdateLEDStates()
 {
+    // reset controller rumble
+    // TeleopControl::GetInstance()->SetRumble(0, false, false);
+
     if (DriverFeedback::m_alignedWithConeNode)
     {
         if (m_gamePieceState != DriverFeedbackStates::ALIGNED_WITH_CONE_NODE)
@@ -76,15 +81,6 @@ void DriverFeedback::UpdateLEDStates()
             m_LEDStates->ResetVariables();
         }
         m_LEDStates->ClosingInChaserPattern(DragonLeds::PURPLE);
-        m_gamePieceState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
-    }
-    else if (DriverFeedback::m_gamePieceInIntake)
-    {
-        if (m_gamePieceState != DriverFeedbackStates::GAME_PIECE_IN_INTAKE)
-        {
-            m_LEDStates->ResetVariables();
-        }
-        m_LEDStates->AlternatingColorBlinkingPattern(DragonLeds::YELLOW, DragonLeds::PURPLE);
         m_gamePieceState = DriverFeedbackStates::ALIGNED_WITH_CUBE_NODE;
     }
     else if (DriverFeedback::m_findingCube)
@@ -121,7 +117,10 @@ void DriverFeedback::UpdateLEDStates()
             else
                 m_LEDStates->SolidColorPattern(DragonLeds::YELLOW);
         }
-        m_LEDStates->SolidColorPattern(DragonLeds::YELLOW);
+        else
+        {
+            m_LEDStates->SolidColorPattern(DragonLeds::YELLOW);
+        }
         m_gamePieceState = DriverFeedbackStates::WANT_CONE;
     }
     else if (DriverFeedback::m_gamePieceReadyToPickUp)
@@ -140,6 +139,23 @@ void DriverFeedback::UpdateLEDStates()
             m_LEDStates->ResetVariables();
             m_LEDStates->SolidColorPattern(DragonLeds::GREEN);
             m_gamePieceState = DriverFeedbackStates::NONE;
+        }
+    }
+
+    if (DriverFeedback::m_gamePieceInIntake)
+    {
+        if (m_gamePieceState != DriverFeedbackStates::GAME_PIECE_IN_INTAKE)
+        {
+            m_LEDStates->ResetVariables();
+            m_gamePieceState = DriverFeedbackStates::GAME_PIECE_IN_INTAKE;
+        }
+        if (DriverFeedback::m_wantCone)
+        {
+            m_LEDStates->BlinkingPattern(DragonLeds::YELLOW);
+        }
+        else
+        {
+            m_LEDStates->BlinkingPattern(DragonLeds::PURPLE);
         }
     }
 }
@@ -162,6 +178,7 @@ DriverFeedback::DriverFeedback() : IRobotStateChangeSubscriber()
 {
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::IntakeState);
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::DesiredGamePiece);
+    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::HoldingGamePiece);
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::GameState);
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::CompressorChange);
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::FindingCube);
@@ -184,6 +201,10 @@ void DriverFeedback::Update(RobotStateChanges::StateChange change, int value)
             m_intakeStateChanged = true;
             m_intakeIntaking = newState;
         }
+    }
+    else if (change == RobotStateChanges::HoldingGamePiece)
+    {
+        m_gamePieceInIntake = static_cast<RobotStateChanges::GamePiece>(value) != RobotStateChanges::None;
     }
     else if (change == RobotStateChanges::GameState)
     {
