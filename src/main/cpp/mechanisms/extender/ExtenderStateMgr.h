@@ -27,6 +27,7 @@
 #include <string>
 
 // FRC includes
+#include <frc/Timer.h>
 
 // Team 302 includes
 #include <mechanisms/base/StateMgr.h>
@@ -62,7 +63,8 @@ public:
         CONE_MIDROW_EXTEND,
         HUMAN_PLAYER_STATION_EXTEND,
         STARTING_POSITION_EXTEND,
-        FLOOR_EXTEND
+        FLOOR_EXTEND,
+        INITIALIZE
     };
 
     const std::map<const std::string, EXTENDER_STATE> m_extenderXmlStringToStateEnumMap{
@@ -74,7 +76,8 @@ public:
         {"CONE_MIDROW_EXTEND", EXTENDER_STATE::CONE_MIDROW_EXTEND},
         {"HUMAN_PLAYER_STATION_EXTEND", EXTENDER_STATE::HUMAN_PLAYER_STATION_EXTEND},
         {"STARTING_POSITION_EXTEND", EXTENDER_STATE::STARTING_POSITION_EXTEND},
-        {"FLOOR_EXTEND", EXTENDER_STATE::FLOOR_EXTEND}};
+        {"FLOOR_EXTEND", EXTENDER_STATE::FLOOR_EXTEND},
+        {"INITIALIZE", EXTENDER_STATE::INITIALIZE}};
 
     /// @brief  Find or create the state manmanager
     static ExtenderStateMgr *GetInstance();
@@ -106,7 +109,7 @@ private:
     Extender *m_extender;
 
     //========= Hand modified code start section 5 ========
-    EXTENDER_STATE m_prevState;
+    EXTENDER_STATE m_desiredState;
     EXTENDER_STATE m_currentState;
     EXTENDER_STATE m_targetState;
 
@@ -114,7 +117,16 @@ private:
 
     bool m_canAutomaticallyMove = false;
     bool m_goToStartingConfig = true;
+
+    bool m_hasInitialized = false;
+
+    frc::Timer *m_initializationTimer;
+    bool m_timerStarted = false;
+
     double m_extendedPosition;
+    int m_armAngle = 0.0;
+    int m_armTargetAngle = 0.0;
+    ArmStateMgr::ARM_STATE m_armState = ArmStateMgr::ARM_STATE::HOLD_POSITION_ROTATE;
     //========= Hand modified code end section 5 ========
 
     static ExtenderStateMgr *m_instance;
@@ -128,9 +140,8 @@ private:
     const StateStruc m_human_player_station_extendState = {EXTENDER_STATE::HUMAN_PLAYER_STATION_EXTEND, "HUMAN_PLAYER_STATION_EXTEND", StateType::EXTENDER_STATE, false};
     const StateStruc m_starting_position_extendState = {EXTENDER_STATE::STARTING_POSITION_EXTEND, "STARTING_POSITION_EXTEND", StateType::EXTENDER_STATE, true};
     const StateStruc m_floor_extendState = {EXTENDER_STATE::FLOOR_EXTEND, "FLOOR_EXTEND", StateType::EXTENDER_STATE, false};
+    const StateStruc m_initializeState = {EXTENDER_STATE::INITIALIZE, "INITIALIZE", StateType::EXTENDER_STATE, false};
 
-    ArmStateMgr::ARM_STATE m_armState;
-
-    const double m_armAngleTolerance = 10.0;
-    const double m_armFloorTolerance = 6.0;
+    static constexpr double m_armAngleTolerance = 10.0;
+    static constexpr double m_armFloorTolerance = 6.0;
 };

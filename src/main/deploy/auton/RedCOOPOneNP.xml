@@ -3,34 +3,13 @@
 <auton>
 <primitive id="RESET_POSITION"
 	           pathname="RedCOOPOne1Slow.wpilib.json"
-               grabber="GRAB"/>
+               intake="INTAKE_HOLD"/>
     <!--score preloaded cone-->
-        <primitive id="DO_NOTHING"
-               arm="CONE_BACKROW_ROTATE"
-               extender="STARTING_POSITION_EXTEND"
-               grabber="GRAB"
-               time="0.35"
-               />
-    <primitive id="DO_NOTHING"
-               arm="CONE_BACKROW_ROTATE"
-               extender="CONE_BACKROW_EXTEND"
-               grabber="GRAB"
-               time="0.6"
-               />
-    <primitive id="DO_NOTHING"
-               arm="CONE_BACKROW_ROTATE"
-               extender="CONE_BACKROW_EXTEND"
-               grabber="OPEN"
-               time="0.35"
-               />
-    <primitive id="DO_NOTHING"
-               arm="CONE_BACKROW_ROTATE"
-               extender="STARTING_POSITION_EXTEND"
-               grabber="OPEN"
-               time="0.5"
-               />
+    <snippet file="ScoreCone.xml"/>
+
     <!--do nothing!-->
     <primitive id="DO_NOTHING"
+               intake="INTAKE_OFF"
                time="10.0"
                />
 </auton>

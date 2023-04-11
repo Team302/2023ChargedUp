@@ -54,10 +54,9 @@ public:
 
     /// @brief update the output to the mechanism using the current controller and target value(s)
     /// @return void
-    void Update();
+    virtual void Update();
 
-    void UpdateTarget(
-        double target);
+    void UpdateTarget(double target);
 
     /// @brief  Return the current position of the mechanism.  The value is in inches or degrees.
     /// @return double motor rotations in degrees
@@ -69,7 +68,7 @@ public:
 
     /// @brief  Return the current position of the mechanism in degrees
     /// @return units::angle::degree_t	position in degrees
-    units::angle::degree_t GetPositionDegrees() const;
+    virtual units::angle::degree_t GetPositionDegrees() const;
 
     /// @brief  Get the current speed of the mechanism.  The value is in inches per second or degrees per second.
     /// @return double	speed in inches/second (translating mechanisms) or degrees/second (rotating mechanisms)
@@ -78,10 +77,8 @@ public:
     /// @brief  Set the control constants (e.g. PIDF values).
     /// @param [in] ControlData*                                   pid:  the control constants
     /// @return void
-    void SetControlConstants(
-        int slot,
-        ControlData *pid);
-    double GetTarget() const { return m_target; }
+    void SetControlConstants(int slot, ControlData *pid);
+    virtual double GetTarget() const { return m_target; }
     std::shared_ptr<IDragonMotorController> GetMotor() const { return m_motor; }
 
 private:

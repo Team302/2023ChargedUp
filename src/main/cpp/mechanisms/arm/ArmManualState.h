@@ -15,7 +15,7 @@
 
 #include <mechanisms/arm/ArmState.h>
 #include <robotstate/IRobotStateChangeSubscriber.h>
-#include <mechanisms/grabber/GrabberStateMgr.h>
+#include <mechanisms/intake/IntakeStateMgr.h>
 
 class ControlData;
 class Arm;
@@ -44,6 +44,5 @@ private:
     ControlData *m_controlData;
 
     RobotStateChanges::GamePiece m_gamepieceMode;
-
-    GrabberStateMgr::GRABBER_STATE m_grabberState;
+    IntakeStateMgr::INTAKE_STATE m_intakeState;
 };

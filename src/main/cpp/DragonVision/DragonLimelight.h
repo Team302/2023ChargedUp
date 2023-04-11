@@ -159,7 +159,7 @@ protected:
     units::length::inch_t m_targetHeight;
     units::length::inch_t m_targetHeight2;
 
-    double PI = 3.14159265;
+    // double PI = 3.14159265;
 
 private:
     DragonAprilTagInfo m_aprilTagInfo;

@@ -51,7 +51,8 @@ void Robot::RobotInit()
     waypointParser->ParseWaypoints();
 
     // Get AdjustableItemMgr instance
-    m_tuner = AdjustableItemMgr::GetInstance();
+    m_tuner = nullptr;
+    // m_tuner = AdjustableItemMgr::GetInstance();
 
     m_robotState = RobotState::GetInstance();
     m_robotState->Init();
@@ -96,10 +97,10 @@ void Robot::RobotPeriodic()
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "balance info", "pitch", m_chassis->GetPitch().to<double>());
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "balance info", "roll", m_chassis->GetRoll().to<double>());
     }
-    if (m_tuner != nullptr)
-    {
-        m_tuner->ListenForUpdates();
-    }
+    // if (m_tuner != nullptr)
+    // {
+    //     m_tuner->ListenForUpdates();
+    // }
     if (m_robotState != nullptr)
     {
         m_robotState->Run();
@@ -162,7 +163,7 @@ void Robot::RobotPeriodic()
         m_field->UpdateRobotPosition(m_chassis->GetPose()); // ToDo:: Move to DriveTeamFeedback (also don't assume m_field isn't a nullptr)
     }
 
-    m_tuner->ListenForUpdates();
+    // m_tuner->ListenForUpdates();
 
     auto feedback = DriverFeedback::GetInstance();
     if (feedback != nullptr)

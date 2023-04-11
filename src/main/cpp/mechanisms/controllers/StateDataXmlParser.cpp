@@ -56,8 +56,7 @@ using namespace std;
 /// @brief      Parse a mechanismState.xml file
 /// @param [in] MechanismTypes::MECHANISM_TYPE  - mechanism that the states are for
 /// @return     state data
-vector<MechanismTargetData *> StateDataXmlParser::ParseXML(
-    MechanismTypes::MECHANISM_TYPE mechanism)
+vector<MechanismTargetData *> StateDataXmlParser::ParseXML(MechanismTypes::MECHANISM_TYPE mechanism)
 {
     bool hasError = false;
     vector<MechanismTargetData *> targetDataVector;

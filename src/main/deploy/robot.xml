@@ -61,10 +61,10 @@
     wheelDiameter="4.0"
     wheelBase="20.75"
     track="20.75"
-    maxVelocity="162.0"
-    maxAngularVelocity="360.0"
+    maxVelocity="177.0"
+    maxAngularVelocity="434.0"
     maxAcceleration="81"
-    maxAngularAcceleration="24"
+    maxAngularAcceleration="173.6062"
     networkTable="ChassisNT"
     controlFile="chassis.xml">
     <swervemodule
@@ -322,11 +322,11 @@
       reverselimitswitchopen="true"
       voltageCompensationSaturation="10.5"
       voltageCompensationEnable="true"
-      countsPerDegree="455.15" />
+      countsPerDegree="531" />
     <cancoder
       canId="4"
       canBusName="rio"
-      offset="0.0"
+      offset="-129.463"
       reverse="false" />
   </mechanism>
   <mechanism
@@ -354,17 +354,57 @@
       voltageCompensationEnable="false"
       countsPerInch="3811.0878"/>
   </mechanism>
-  <mechanism
-    type="GRABBER"
-    networkTable="grabberNT"
-    controlFile="grabber.xml">
+<mechanism
+    type="INTAKE"
+    networkTable="intakeNT"
+    controlFile="intake.xml">
+      <motor
+      usage="INTAKE1"
+      canId="5"
+      canBusName="rio"
+      pdpID="5"
+      type="TALONSRX"
+      inverted="false"
+      sensorInverted="false"
+      feedbackDevice="NONE"
+      countsPerRev="1"
+      gearRatio="1"
+      brakeMode="true"
+      follow="-1"
+      forwardlimitswitch="true"
+      forwardlimitswitchopen="true"
+      reverselimitswitch="true"
+      reverselimitswitchopen="true"
+      voltageCompensationSaturation="10.5"
+      voltageCompensationEnable="true"
+      countsPerDegree="0" />
+      <motor
+      usage="INTAKE2"
+      canId="7"
+      canBusName="rio"
+      pdpID="7"
+      type="TALONSRX"
+      inverted="true"
+      sensorInverted="false"
+      feedbackDevice="NONE"
+      countsPerRev="1"
+      gearRatio="1"
+      brakeMode="true"
+      follow="-1"
+      forwardlimitswitch="true"
+      forwardlimitswitchopen="true"
+      reverselimitswitch="true"
+      reverselimitswitchopen="true"
+      voltageCompensationSaturation="10.5"
+      voltageCompensationEnable="true"
+      countsPerDegree="0" />
     <solenoid
-      usage="GrabberSolenoid"
+      usage="IntakeSolenoid"
       canId="1"
       channel="0"
       reversed="false" />
     <digitalInput  
-      usage="GRABBER_SENSOR" 
+      usage="GAME_PIECE_PRESENT_SENSOR" 
       digitalId="9" 
       reversed="true"/> 
   </mechanism>

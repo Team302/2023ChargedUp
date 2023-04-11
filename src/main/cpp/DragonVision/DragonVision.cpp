@@ -62,6 +62,18 @@ bool DragonVision::setPipeline(DragonLimelight::PIPELINE_MODE mode)
 	return setPipeline(mode, LIMELIGHT_POSITION::FRONT);
 }
 
+DragonLimelight::PIPELINE_MODE DragonVision::getPipeline(LIMELIGHT_POSITION position)
+{
+	DragonLimelight *dll = getLimelight(position);
+
+	if (dll != nullptr)
+	{
+		return dll->getPipeline();
+	}
+
+	return DragonLimelight::PIPELINE_MODE::UNKNOWN;
+}
+
 /// @brief Use this function to get the currently detected target information
 /// @param position From which limelight to get the info
 /// @return If a target has not been acquired, returns null, otherwise a pointer to an object containing all the information

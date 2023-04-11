@@ -4,8 +4,30 @@
     identifier="RotateToUpwardAngle"
     mode="POSITION_DEGREES"
     constrolServer="MOTORCONTROLLER"
-    proportional="0.0225"
+    proportional="0.0170"
     integral="0.000165"
+    derivative="0.0"
+    feedforward="0.0"
+    izone="0.0"
+    maxacceleration="0.0"
+    cruisevelocity="0.0" />
+  <controlData
+    identifier="RotateToHP"
+    mode="POSITION_DEGREES"
+    constrolServer="MOTORCONTROLLER"
+    proportional="0.0165"
+    integral="0.00015"
+    derivative="0.0"
+    feedforward="0.0"
+    izone="0.0"
+    maxacceleration="0.0"
+    cruisevelocity="0.0" />
+    <controlData
+    identifier="RotateToFloordAngle"
+    mode="POSITION_DEGREES"
+    constrolServer="MOTORCONTROLLER"
+    proportional="0.02"
+    integral="0.00115"
     derivative="0.0"
     feedforward="0.0"
     izone="0.0"
@@ -15,7 +37,7 @@
     identifier="RotateToDownwardAngle"
     mode="POSITION_DEGREES"
     constrolServer="MOTORCONTROLLER"
-    proportional="0.01"
+    proportional="0.025"
     integral="0.0001"
     derivative="0.0"
     feedforward="0.0"
@@ -27,7 +49,7 @@
     mode="PERCENT_OUTPUT"
     constrolServer="MOTORCONTROLLER"
     proportional="0.0"
-    integral="0.0"
+    integral="0.0"   
     derivative="0.0"
     feedforward="0.0"
     izone="0.0"
@@ -56,7 +78,7 @@
     stateIdentifier="MANUAL_ROTATE"
     controlDataIdentifier="PercentOutput"
     controlDataIdentifier2=""
-    value="0.4"
+    value="0.45"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
@@ -72,7 +94,7 @@
     stateIdentifier="CONE_BACKROW_ROTATE"
     controlDataIdentifier="RotateToUpwardAngle"
     controlDataIdentifier2=""
-    value="75"
+    value="73"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
@@ -80,7 +102,7 @@
     stateIdentifier="CUBE_MIDROW_ROTATE_UP"
     controlDataIdentifier="RotateToUpwardAngle"
     controlDataIdentifier2=""
-    value="50"
+    value="55"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
@@ -88,7 +110,7 @@
     stateIdentifier="CUBE_MIDROW_ROTATE_DOWN"
     controlDataIdentifier="RotateToDownwardAngle"
     controlDataIdentifier2=""
-    value="50"
+    value="55"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
@@ -96,7 +118,7 @@
     stateIdentifier="CONE_MIDROW_ROTATE_UP"
     controlDataIdentifier="RotateToUpwardAngle"
     controlDataIdentifier2=""
-    value="58.5"
+    value="60"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
@@ -104,15 +126,15 @@
     stateIdentifier="CONE_MIDROW_ROTATE_DOWN"
     controlDataIdentifier="RotateToDownwardAngle"
     controlDataIdentifier2=""
-    value="58.5"
+    value="60"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
   <mechanismTarget
     stateIdentifier="HUMAN_PLAYER_STATION_ROTATE"
-    controlDataIdentifier="RotateToUpwardAngle"
+    controlDataIdentifier="RotateToHP"
     controlDataIdentifier2=""
-    value="57"
+    value="61"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
@@ -126,9 +148,25 @@
     solenoid2="NONE" />
   <mechanismTarget
     stateIdentifier="FLOOR_POSITION_ROTATE"
+    controlDataIdentifier="RotateToFloordAngle"
+    controlDataIdentifier2=""
+    value="17"
+    secondValue=""
+    solenoid="NONE"
+    solenoid2="NONE" />
+    <mechanismTarget
+    stateIdentifier="FLOOR_POSITION_ROTATE_AUTON"
     controlDataIdentifier="RotateToDownwardAngle"
     controlDataIdentifier2=""
-    value="11.5"
+    value="16.5"
+    secondValue=""
+    solenoid="NONE"
+    solenoid2="NONE" />
+    <mechanismTarget
+    stateIdentifier="FLOOR_POSITION_ROTATE_AUTON_HOLD"
+    controlDataIdentifier="PercentOutput"
+    controlDataIdentifier2=""
+    value="-0.015"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />

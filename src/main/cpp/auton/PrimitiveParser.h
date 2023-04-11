@@ -28,6 +28,5 @@
 class PrimitiveParser
 {
 public:
-    static PrimitiveParamsVector ParseXML(
-        std::string fileName);
+    static PrimitiveParamsVector ParseXML(std::string fileName);
 };

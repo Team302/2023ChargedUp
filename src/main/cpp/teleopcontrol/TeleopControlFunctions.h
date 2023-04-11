@@ -49,7 +49,7 @@ public:
         AUTO_TURN_FORWARD,
         AUTO_TURN_BACKWARD,
         // Standish raw vision
-        ALIGN_CONE,
+        ALIGN_APRIL_TAG,
         ALIGN_CUBE,
         // Scoring states
         DEBUG_INC_P,
@@ -85,13 +85,16 @@ public:
         // Turn about point states
         FRONT_LEFT_BUMPER_TURNABOUT_POINT,
         FRONT_RIGHT_BUMPER_TURNABOUT_POINT,
-        // Grabber states
+        // CYCLE_GAMEPIECE states
         OPEN,
         GRAB,
-        CYCLE_GRABBER,
+        CYCLE_CYCLE_GAMEPIECE,
         // Active intake controls?
+        INTAKE_OFF,
         INTAKE,
+        HOLD,
         EXPEL,
+        RELEASE,
         // Compressor ON/Off controls
         TOGGLE_COMPRESSER,
         MAX_FUNCTIONS,

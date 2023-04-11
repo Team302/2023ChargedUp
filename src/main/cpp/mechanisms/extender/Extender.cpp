@@ -47,10 +47,16 @@ Extender::Extender(
 	std::string networkTableName,
 	std::shared_ptr<IDragonMotorController> motorController0) : Mech1IndMotor(MechanismTypes::MECHANISM_TYPE::EXTENDER, controlFileName, networkTableName, motorController0)
 {
+	auto motor = GetMotor().get()->GetSpeedController();
+	auto fx = dynamic_cast<ctre::phoenix::motorcontrol::can::WPI_TalonFX *>(motor.get());
+	if (fx != nullptr)
+	{
+		fx->ConfigClosedloopRamp(0.1);
+	}
 }
 
 //========= Hand modified code start section 0 ========
-void Extender::ResetIfFullyExtended(double counts)
+bool Extender::ResetIfFullyExtended(double counts)
 {
 	if (GetMotor().get()->IsForwardLimitSwitchClosed())
 	{
@@ -58,10 +64,12 @@ void Extender::ResetIfFullyExtended(double counts)
 		auto fx = dynamic_cast<ctre::phoenix::motorcontrol::can::WPI_TalonFX *>(motor.get());
 		auto sensors = fx->GetSensorCollection();
 		sensors.SetIntegratedSensorPosition(counts, 0);
+		return true;
 	}
+	return false;
 }
 
-void Extender::ResetIfFullyRetracted()
+bool Extender::ResetIfFullyRetracted()
 {
 	if (GetMotor().get()->IsReverseLimitSwitchClosed())
 	{
@@ -69,6 +77,25 @@ void Extender::ResetIfFullyRetracted()
 		auto fx = dynamic_cast<ctre::phoenix::motorcontrol::can::WPI_TalonFX *>(motor.get());
 		auto sensors = fx->GetSensorCollection();
 		sensors.SetIntegratedSensorPosition(0, 0);
+		return true;
+	}
+	return false;
+}
+
+void Extender::Update()
+{
+	Mech1IndMotor::Update();
+}
+void Extender::Update(RobotStateChanges::StateChange change, int value)
+{
+	if (change == RobotStateChanges::StateChange::ArmRotateAngle)
+	{
+		m_armAngle = value;
+	}
+	else if (change == RobotStateChanges::StateChange::ArmRotateAngleTarget)
+	{
+		m_armTargetAngle = value;
 	}
 }
+
 //========= Hand modified code end section 0 ========
