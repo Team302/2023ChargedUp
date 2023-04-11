@@ -57,4 +57,5 @@ private:
     bool m_inVisionDrive = false;
     bool m_CheckTipping = false;
     bool m_latch = false;
+    bool m_findingCube = false;
 };

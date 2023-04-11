@@ -19,7 +19,7 @@
 #include <chassis/swerve/driveStates/RobotDrive.h>
 #include <chassis/ChassisFactory.h>
 
-StopDrive::StopDrive() : m_chassis(ChassisFactory::GetChassisFactory()->GetSwerveChassis())
+StopDrive::StopDrive() : m_chassis(ChassisFactory::GetChassisFactory()->GetSwerveChassis()), (RobotDrive * robotDrive) : RobotDrive(), m_robotDrive(robotDrive)
 {
 }
 
@@ -29,9 +29,7 @@ std::array<frc::SwerveModuleState, 4> StopDrive::UpdateSwerveModuleStates(Chassi
     if (chassisMovement.checkTipping)
     {
         CorrectForTipping(chassisMovement);
-    }
-    else
-    {
+        return m_robotDrive->UpdateSwerveModuleStates(chassisMovement);
     }
 
     return {*m_flState, *m_frState, *m_blState, *m_brState};
@@ -76,29 +74,4 @@ void StopDrive::Init(ChassisMovement &chassisMovement)
     m_frState->speed = 0_mps;
     m_blState->speed = 0_mps;
     m_brState->speed = 0_mps;
-}
-void StopDrive::CorrectForTipping(ChassisMovement &chassisMovement)
-
-{
-    auto chassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
-    if (chassis != nullptr)
-    {
-        // pitch is positive when back of robot is lifted and negative when front of robot is lifted
-        // vx is positive driving forward, so if pitch is +, need to slow down
-        auto pitch = chassis->GetPitch();
-        if (std::abs(pitch.to<double>()) > chassisMovement.tippingTolerance.to<double>())
-        {
-            auto adjust = m_maxspeed * chassisMovement.tippingCorrection * pitch.to<double>();
-            chassisMovement.chassisSpeeds.vx -= adjust;
-        }
-
-        // roll is positive when the left side of the robot is lifted and negative when the right side of the robot is lifted
-        // vy is positive strafing left, so if roll is +, need to strafe slower
-        auto roll = chassis->GetRoll();
-        if (std::abs(roll.to<double>()) > chassisMovement.tippingTolerance.to<double>())
-        {
-            auto adjust = m_maxspeed * chassisMovement.tippingCorrection * roll.to<double>();
-            chassisMovement.chassisSpeeds.vy -= adjust;
-        }
-    }
 }

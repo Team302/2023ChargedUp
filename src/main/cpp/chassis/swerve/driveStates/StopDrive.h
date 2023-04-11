@@ -23,13 +23,14 @@
 // Team302 Includes
 #include <chassis/swerve/driveStates/ISwerveDriveState.h>
 #include <chassis/ChassisMovement.h>
+#include <chassis/swerve/driveStates/RobotDrive.h>
 
 class SwerveChassis;
 
-class StopDrive : public ISwerveDriveState
+class StopDrive : public RobotDrive
 {
 public:
-    using ISwerveDriveState::ISwerveDriveState;
+    using RobotDrive::RobotDrive;
 
     StopDrive();
     ~StopDrive() = default;
@@ -44,6 +45,5 @@ private:
     frc::SwerveModuleState *m_frState = new frc::SwerveModuleState();
     frc::SwerveModuleState *m_blState = new frc::SwerveModuleState();
     frc::SwerveModuleState *m_brState = new frc::SwerveModuleState();
-    units::velocity::feet_per_second_t m_maxspeed;
-    void CorrectForTipping(ChassisMovement &chassisMovement);
+    RobotDrive *m_robotDrive;
 };

@@ -47,6 +47,5 @@ protected:
     units::length::inch_t m_wheeltrack;
     units::velocity::feet_per_second_t m_maxspeed;
 
-private:
     void CorrectForTipping(ChassisMovement &chassisMovement);
 };
