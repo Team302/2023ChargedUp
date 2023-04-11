@@ -174,7 +174,7 @@ void SwerveChassis::InitStates()
 
     m_headingStateMap[ChassisOptionEnums::HeadingOption::MAINTAIN] = new MaintainHeading();
     m_headingStateMap[ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE] = new SpecifiedHeading();
-    m_headingStateMap[ChassisOptionEnums::HeadingOption::FACE_CUBE] = new FaceCube();
+    m_headingStateMap[ChassisOptionEnums::HeadingOption::FACE_FLOOR_GAME_PIECE] = new FaceCube();
     m_headingStateMap[ChassisOptionEnums::HeadingOption::FACE_APRIL_TAG] = new FaceAprilTag();
     m_headingStateMap[ChassisOptionEnums::HeadingOption::TOWARD_GOAL] = new FaceGoalHeading();
     m_headingStateMap[ChassisOptionEnums::HeadingOption::IGNORE] = new IgnoreHeading();

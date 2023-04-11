@@ -54,8 +54,8 @@ private:
     enum VISION_STATE
     {
         NORMAL_DRIVE,
-        LOOKING_FOR_APRIL_TAG,
-        FOUND_APRIL_TAG,
+        LOOKING_FOR_VISION_TARGET,
+        FOUND_VISION_TARGET,
         DRIVE_TO_TARGET,
         ALIGN_RAW_VISION,
         ALIGNED
@@ -65,22 +65,11 @@ private:
     DragonLimelight::PIPELINE_MODE m_pipelineMode;
     bool m_inAutonMode;
 
-    // state functions
-    void LookingForTag(ChassisMovement &chassisMovement);
-    void FoundTag(ChassisMovement &chassisMovement);
-    void DriveToTarget(ChassisMovement &chassisMovement);
-
-    void STANDISH();
-
     void AlignRawVision(ChassisMovement &chassisMovement);
-    void Aligned(ChassisMovement &chassisMovement);
 
     bool AtTargetX(std::shared_ptr<DragonVisionTarget> targetData);
     bool AtTargetY(std::shared_ptr<DragonVisionTarget> targetData);
     bool AtTargetAngle(std::shared_ptr<DragonVisionTarget> targetData, units::angle::radian_t *error);
-
-    VISION_STATE m_currentState;
-    VISION_STATE m_previousState;
 
     RobotDrive *m_robotDrive;
 
@@ -88,8 +77,8 @@ private:
     double m_kP_Y = 0.075;
 
     int m_aprilTagID = -1;
-    units::length::inch_t m_yDistanceToTag = units::length::inch_t(0.0);
-    units::length::inch_t m_xDistanceToTag = units::length::inch_t(0.0);
+    units::length::inch_t m_yDistanceToTarget = units::length::inch_t(0.0);
+    units::length::inch_t m_xDistanceToTarget = units::length::inch_t(0.0);
 
     units::length::inch_t yErrorIntegral;
 
@@ -109,6 +98,7 @@ private:
     const double m_inhibitXspeedAboveYError_in = 2.5;
     double m_visionAlignmentXoffset_in = 18.0; // in Auton gets updated from primitive
     const double m_centerOfRobotToBumperEdge_in = 16.0;
+    const double m_gamePieceToBumperOffset = 9.0;
 
     // Angular movement settings
     const double m_minimumOmega_radps = 0.7;
@@ -131,9 +121,6 @@ private:
 
     units::length::inch_t m_yTargetPos = units::length::inch_t(0.0);
     units::length::inch_t m_xTargetPos = units::length::inch_t(0.0);
-
-    ChassisOptionEnums::RELATIVE_POSITION m_storedGridPos = ChassisOptionEnums::RELATIVE_POSITION::CENTER;
-    ChassisOptionEnums::RELATIVE_POSITION m_storedNodePos = ChassisOptionEnums::RELATIVE_POSITION::CENTER;
 
     SwerveChassis *m_chassis;
 
