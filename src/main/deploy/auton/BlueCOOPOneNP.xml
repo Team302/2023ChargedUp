@@ -2,7 +2,8 @@
 <!DOCTYPE auton SYSTEM "auton.dtd">
 <auton>
 <primitive id="RESET_POSITION"
-	           pathname="BlueCOOPOne1CubeSlow.wpilib.json"               intake="HOLD"/>
+	           pathname="BlueCOOPOne1CubeSlow.wpilib.json"               
+               intake="INTAKE_HOLD"/>
     <!--score preloaded cone-->
     <snippet file="ScoreCone.xml"/>
     <!--drive over charging station-->

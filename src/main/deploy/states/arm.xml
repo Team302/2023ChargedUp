@@ -27,7 +27,7 @@
     mode="POSITION_DEGREES"
     constrolServer="MOTORCONTROLLER"
     proportional="0.02"
-    integral="0.00135"
+    integral="0.00115"
     derivative="0.0"
     feedforward="0.0"
     izone="0.0"
@@ -94,7 +94,7 @@
     stateIdentifier="CONE_BACKROW_ROTATE"
     controlDataIdentifier="RotateToUpwardAngle"
     controlDataIdentifier2=""
-    value="71.5"
+    value="73"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
@@ -134,7 +134,7 @@
     stateIdentifier="HUMAN_PLAYER_STATION_ROTATE"
     controlDataIdentifier="RotateToHP"
     controlDataIdentifier2=""
-    value="65"
+    value="61"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
@@ -150,7 +150,7 @@
     stateIdentifier="FLOOR_POSITION_ROTATE"
     controlDataIdentifier="RotateToFloordAngle"
     controlDataIdentifier2=""
-    value="15"
+    value="17"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
@@ -158,7 +158,7 @@
     stateIdentifier="FLOOR_POSITION_ROTATE_AUTON"
     controlDataIdentifier="RotateToDownwardAngle"
     controlDataIdentifier2=""
-    value="15"
+    value="16.5"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
@@ -166,7 +166,7 @@
     stateIdentifier="FLOOR_POSITION_ROTATE_AUTON_HOLD"
     controlDataIdentifier="PercentOutput"
     controlDataIdentifier2=""
-    value="-0.0175"
+    value="-0.015"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />

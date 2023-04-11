@@ -1,47 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE auton SYSTEM "auton.dtd">
 <auton>
-<primitive id="RESET_POSITION_PATH_PLANNER"
-	           pathname="BlueHP1"
-			/>
-<primitive id="DRIVE_PATH_PLANNER"
-	           pathname="BlueHP1"
-             time="2.0"/> 
-<primitive id="DO_NOTHING"
-               time="0.25"
-               />
-<!--drive to cube/scoring station-->
-<primitive id="DRIVE_PATH_PLANNER"
-	          pathname="BlueHP2"
-            time="15.0"/>
-<!--Score High Cube-->
-       <primitive id="DO_NOTHING"
-               arm="CUBE_BACKROW_ROTATE"
-               extender="CUBE_BACKROW_EXTEND"
-               intake="HOLD"
-               time="0.4"
-               />
-    <primitive id="DO_NOTHING"
-               arm="CUBE_BACKROW_ROTATE"
-               extender="STARTING_POSITION_EXTEND"
-               intake="INTAKE_EXPEL"
-               time="0.35"
-               />
-    <primitive id="DO_NOTHING"
-               time="15"
-               />
-<primitive id="DRIVE_PATH_PLANNER"
-	           pathname="BlueHP3"
-               time="2.35"/>
-<!--drive to scoring station-->
-<primitive id="DRIVE_PATH_PLANNER"
-	           pathname="BlueHP4P"
-               time="2.5"/>
-<!--score cone-->
-  <!--auto balance-->
-    <primitive id="AUTO_BALANCE"
-               extender="STARTING_POSITION_EXTEND"
+    <primitive id="RESET_POSITION"
+	           pathname="RedCOOPOne1CubeSlow.wpilib.json"
+               intake="INTAKE_HOLD"/>
+    <!--score preloaded cone-->
+    <!--drive over charging station-->
+    <primitive id="DRIVE_PATH"
+               pathname="RedCOOPOne1CubeSlow.wpilib.json"
+               headingOption="SPECIFIED_ANGLE"
+               heading="0"
                intake="INTAKE_OFF"
+               time="6.0"
+               />
+    <!--drive picking up a cube after the charging station-->
+    <primitive id="DRIVE_PATH"
+               pathname="RedCOOPTwo1Slow.wpilib.json"
+               headingOption="SPECIFIED_ANGLE"
+               heading="180"
+               intake="INTAKE"
+               time="2.5"
+               />
+ <!--grab cube-->
+    <primitive id="DO_NOTHING"
+               headingOption="SPECIFIED_ANGLE"
+               heading="180"
+               intake="INTAKE"
+               time="1.0"
+               />
+    <!--drive onto charging station-->
+    <primitive id="DRIVE_PATH"
+               pathname="RedCOOPTwo2Slow.wpilib.json"
+               headingOption="SPECIFIED_ANGLE"
+               heading="0"
+               intake="INTAKE"
+               time="4.0"
+               />
+    <!--Balance on charging station-->
+    <primitive id="AUTO_BALANCE"
+               headingOption="SPECIFIED_ANGLE"
+               heading="0"
+               intake="INTAKE_HOLD"
                time="10.0"
                />
 </auton>

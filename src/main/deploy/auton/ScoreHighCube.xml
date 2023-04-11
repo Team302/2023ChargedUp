@@ -4,7 +4,7 @@
     <primitive id="DO_NOTHING"
                arm="CUBE_BACKROW_ROTATE"
                extender="CUBE_BACKROW_EXTEND"
-               intake="HOLD"
+               intake="INTAKE_HOLD"
                time="0.4"
                />
     <primitive id="DO_NOTHING"

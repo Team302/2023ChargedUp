@@ -67,6 +67,7 @@ private:
     int m_controllerCounter = 0;
     int m_stickyFaultsCounter = 0;
     bool m_compressorOn = true;
+    bool m_findingCube = false;
 
     static DriverFeedback *m_instance;
 
