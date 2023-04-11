@@ -12,11 +12,11 @@
 			   arm="FLOOR_POSITION_ROTATE_AUTON"
                intake="INTAKE_OFF"
 			   extender="STARTING_POSITION_EXTEND"
-               time="6.0"/>
+               time="2.75"/>
 <!--drive to cone-->
 <primitive id="DRIVE_PATH_PLANNER"
 	           pathname="BlueHP2"
-			   arm="FLOOR_POSITION_ROTATE_AUTON"
+			   arm="FLOOR_POSITION_ROTATE"
                intake="INTAKE"
 			   extender="FLOOR_EXTEND"
                time="6.0"/>
