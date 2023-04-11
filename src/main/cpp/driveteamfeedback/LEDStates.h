@@ -30,12 +30,16 @@ public:
     void AlternatingColorBlinkingPattern(DragonLeds::Colors c);
     void AlternatingColorBlinkingPattern(DragonLeds::Colors c1, DragonLeds::Colors c2);
     void ClosingInChaserPattern(DragonLeds::Colors c);
+    void HalfAndHalfPattern(DragonLeds::Colors currentGamePieceColor, DragonLeds::Colors nextGamePieceColor);
     DragonLeds *m_LEDstring = DragonLeds::GetInstance();
     static LEDStates *GetInstance();
 
 private:
     LEDStates() = default;
     ~LEDStates() = default;
+
+    int topIndividualLEDStripLength = 27;
+    int botIndividualLEDStripLength = 34;
 
     int loopThroughIndividualLEDs = -1;
     int colorLoop = 0;

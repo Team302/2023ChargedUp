@@ -17,6 +17,70 @@
 #include <driveteamfeedback/LEDStates.h>
 #include <span>
 
+void LEDStates::HalfAndHalfPattern(DragonLeds::Colors currentGamePieceColor, DragonLeds::Colors nextGamePieceColor)
+{
+    int topIndividualLEDStripLength = 27;
+    int botIndividualLEDStripLength = 34;
+    int startingPositionIndex = 0;
+    int endingPositionIndex = 0;
+
+    int currentGamePieceColorValues[3] = {m_LEDstring->getColorValues(currentGamePieceColor)[0],
+                                          m_LEDstring->getColorValues(currentGamePieceColor)[1],
+                                          m_LEDstring->getColorValues(currentGamePieceColor)[2]};
+
+    int nextGamePieceColorValues[3] = {m_LEDstring->getColorValues(nextGamePieceColor)[0],
+                                       m_LEDstring->getColorValues(nextGamePieceColor)[1],
+                                       m_LEDstring->getColorValues(nextGamePieceColor)[2]};
+
+    // sets the whole first bottom LED strip to the next Game Piece color
+    endingPositionIndex += botIndividualLEDStripLength;
+    for (int i = startingPositionIndex; i < endingPositionIndex - 1; i++)
+    {
+        m_LEDstring->m_ledBuffer[i].SetRGB(nextGamePieceColorValues[0], nextGamePieceColorValues[1], nextGamePieceColorValues[2]);
+    }
+    for (int i = startingPositionIndex; i < (endingPositionIndex / 2) - 1; i++)
+    {
+        m_LEDstring->m_ledBuffer[i].SetRGB(currentGamePieceColorValues[0], currentGamePieceColorValues[1], currentGamePieceColorValues[2]);
+    }
+    // overrides half of the bottom first LED strip to the current Game Piece color.
+    //
+    //
+    startingPositionIndex += endingPositionIndex;
+    endingPositionIndex += topIndividualLEDStripLength;
+
+    for (int i = startingPositionIndex; i < endingPositionIndex - 1; i++)
+    {
+        m_LEDstring->m_ledBuffer[i].SetRGB(nextGamePieceColorValues[0], nextGamePieceColorValues[1], nextGamePieceColorValues[2]);
+    }
+    for (int i = startingPositionIndex; i < (endingPositionIndex / 2) - 1; i++)
+    {
+        m_LEDstring->m_ledBuffer[i].SetRGB(currentGamePieceColorValues[0], currentGamePieceColorValues[1], currentGamePieceColorValues[2]);
+    }
+
+    startingPositionIndex += topIndividualLEDStripLength;
+    endingPositionIndex += topIndividualLEDStripLength;
+
+    for (int i = startingPositionIndex; i < endingPositionIndex - 1; i++)
+    {
+        m_LEDstring->m_ledBuffer[i].SetRGB(nextGamePieceColorValues[0], nextGamePieceColorValues[1], nextGamePieceColorValues[2]);
+    }
+    for (int i = startingPositionIndex + topIndividualLEDStripLength; i > (endingPositionIndex / 2) - 1; i--)
+    {
+        m_LEDstring->m_ledBuffer[i].SetRGB(currentGamePieceColorValues[0], currentGamePieceColorValues[1], currentGamePieceColorValues[2]);
+    }
+
+    startingPositionIndex += topIndividualLEDStripLength;
+    endingPositionIndex += botIndividualLEDStripLength;
+
+    for (int i = startingPositionIndex; i < endingPositionIndex - 1; i++)
+    {
+        m_LEDstring->m_ledBuffer[i].SetRGB(nextGamePieceColorValues[0], nextGamePieceColorValues[1], nextGamePieceColorValues[2]);
+    }
+    for (int i = startingPositionIndex + botIndividualLEDStripLength; i > (endingPositionIndex / 2) - 1; i--)
+    {
+        m_LEDstring->m_ledBuffer[i].SetRGB(currentGamePieceColorValues[0], currentGamePieceColorValues[1], currentGamePieceColorValues[2]);
+    }
+}
 void LEDStates::BlinkingPattern(DragonLeds::Colors c)
 {
     if (timer > 2 * blinkPatternPeriod)
