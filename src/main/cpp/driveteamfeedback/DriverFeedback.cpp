@@ -26,6 +26,7 @@
 #include <hw/factories/CompressorFactory.h>
 #include <hw/factories/PDPFactory.h>
 #include <hw/factories/PigeonFactory.h>
+#include <hw/DragonPigeon.h>
 
 #include <teleopcontrol/TeleopControl.h>
 
@@ -233,7 +234,9 @@ void DriverFeedback::UpdateStickyFaultStates()
     auto table = nt::NetworkTableInstance::GetDefault().GetTable("Sticky Faults");
     table.get()->PutBoolean(std::string("Compressor Sticky Fault Value"), CompressorFactory::GetFactory()->CompressorHasStickyFaults());
     table.get()->PutBoolean(std::string("PDP Sticky Fault Value"), PDPFactory::GetFactory()->PDPHasStickyFaults());
-    table.get()->PutBoolean(std::string("Pigeon2 Sticky Fault Value"), PigeonFactory::GetFactory::GetPigeon()->PigeonHasStickyFaults)
+    auto pigeon = PigeonFactory::GetFactory()->GetPigeon(DragonPigeon::PIGEON_USAGE::CENTER_OF_ROBOT);
+    auto hasfaults = pigeon != nullptr ? pigeon->PigeonHasStickyFaults() : false;
+    table.get()->PutBoolean(std::string("Pigeon2 Sticky Fault Value"), hasfaults);
 }
 
 void DriverFeedback::CheckControllers()
