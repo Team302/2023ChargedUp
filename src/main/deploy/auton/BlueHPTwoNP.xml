@@ -4,26 +4,24 @@
 <primitive id="RESET_POSITION_PATH_PLANNER"
 	           pathname="BlueHP1"
 			/>
-<!--score preloaded cone-->
-    <snippet file="ScoreCone.xml"/> 
-<!--drive to cube-->
-<primitive id="DRIVE_PATH_PLANNER"
+    <!--score preloaded cone-->
+    <snippet file="ScoreCone.xml"/>
+    <!--drive to charing station-->
+   <primitive id="DRIVE_PATH_PLANNER"
 	           pathname="BlueHP1"
 			   arm="FLOOR_POSITION_ROTATE_AUTON"
-			   extender="FLOOR_EXTEND"
-			   intake="INTAKE"
-               time="5.75"/> 
-<primitive id="DO_NOTHING"
-               time="0.5"/> 
-<primitive id="DRIVE_PATH_PLANNER"
-	           pathname="BlueHP3"
-               time="2.35"/>
+               intake="INTAKE_OFF"
+			   extender="STARTING_POSITION_EXTEND"
+               time="6.0"/>
 <!--drive to cone-->
-
-<!--drive to scoring station-->
 <primitive id="DRIVE_PATH_PLANNER"
-	           pathname="BlueHP4"
-               time="3.0"/>
+	           pathname="BlueHP2"
+			   arm="FLOOR_POSITION_ROTATE_AUTON"
+               intake="INTAKE"
+			   extender="FLOOR_EXTEND"
+               time="6.0"/>
+<!--drive to scoring station-->
+
 <!--score cone-->
 
 </auton>
