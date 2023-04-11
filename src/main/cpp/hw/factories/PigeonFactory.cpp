@@ -103,11 +103,3 @@ DragonPigeon *PigeonFactory::GetPigeon(
     }
     return nullptr;
 }
-
-bool PigeonFactory::PigeonHasStickyFaults()
-{
-    if (m_Pigeon2 != nullptr)
-    {
-        Pigeon2 StickyFaultsValue = m_Pigeon2->
-    }
-}

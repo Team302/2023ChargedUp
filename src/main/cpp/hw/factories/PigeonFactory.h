@@ -17,7 +17,6 @@
 #pragma once
 
 #include <hw/DragonPigeon.h>
-#include <ctre/phoenix/sensors/Pigeon2.h>
 
 /// @class PigeonFactory
 /// @brief This controls the creation of analog inputs
@@ -41,15 +40,12 @@ public:
 		DragonPigeon::PIGEON_USAGE usage,
 		double rotation);
 
-	bool PigeonHasStickyFaults();
-
 private:
 	PigeonFactory();
 	virtual ~PigeonFactory() = default;
 
 	DragonPigeon *m_centerPigeon;
 	DragonPigeon *m_shooterPigeon;
-	Pigeon2 *m_Pigeon2;
 
 	static PigeonFactory *m_factory;
 };

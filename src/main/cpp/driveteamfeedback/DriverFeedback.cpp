@@ -25,6 +25,7 @@
 #include <networktables/NetworkTableEntry.h>
 #include <hw/factories/CompressorFactory.h>
 #include <hw/factories/PDPFactory.h>
+#include <hw/factories/PigeonFactory.h>
 
 using frc::DriverStation;
 
@@ -201,6 +202,7 @@ void DriverFeedback::UpdateStickyFaultStates()
     auto table = nt::NetworkTableInstance::GetDefault().GetTable("Sticky Faults");
     table.get()->PutBoolean(std::string("Compressor Sticky Fault Value"), CompressorFactory::GetFactory()->CompressorHasStickyFaults());
     table.get()->PutBoolean(std::string("PDP Sticky Fault Value"), PDPFactory::GetFactory()->PDPHasStickyFaults());
+    table.get()->PutBoolean(std::string("Pigeon2 Sticky Fault Value"), PigeonFactory::GetFactory::GetPigeon()->PigeonHasStickyFaults)
 }
 
 void DriverFeedback::CheckControllers()

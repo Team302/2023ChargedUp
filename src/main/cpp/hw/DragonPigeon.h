@@ -18,6 +18,7 @@
 #include <memory>
 #include <ctre/phoenix/sensors/WPI_PigeonIMU.h>
 #include <ctre/phoenix/sensors/WPI_Pigeon2.h>
+#include <hw/DragonPigeon.h>
 #include <ctre/Phoenix.h>
 
 class DragonPigeon
@@ -49,6 +50,8 @@ public:
     double GetYaw();
     void ReZeroPigeon(double angleDeg, int timeoutMs = 0);
 
+    bool PigeonHasStickyFaults();
+
 private:
     ctre::phoenix::sensors::WPI_PigeonIMU *m_pigeon;
     ctre::phoenix::sensors::WPI_Pigeon2 *m_pigeon2;
@@ -56,6 +59,8 @@ private:
     double m_initialYaw;
     double m_initialPitch;
     double m_initialRoll;
+
+    void ClearStickyFaults();
 
     // these methods correct orientation, but do not apply the initial offsets
     double GetRawYaw();

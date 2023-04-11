@@ -15,6 +15,8 @@
 //====================================================================================================================================================
 
 #include <ctre/phoenix/Sensors/PigeonIMU.h>
+#include <ctre/phoenix/sensors/Pigeon2.h>
+#include <ctre/phoenix/sensors/Pigeon2_StickyFaults.h>
 #include <hw/DragonPigeon.h>
 #include <memory>
 
@@ -134,4 +136,24 @@ double DragonPigeon::GetRawYaw()
         yaw += 360.0;
     }
     return yaw;
+}
+
+bool DragonPigeon::PigeonHasStickyFaults()
+{
+    if (m_pigeon2 != nullptr)
+    {
+        Pigeon2_StickyFaults faults;
+        m_pigeon2->GetStickyFaults(faults);
+        return faults.HasAnyFault();
+    }
+    return false;
+}
+
+void DragonPigeon::ClearStickyFaults()
+{
+
+    if (m_pigeon2 != nullptr)
+    {
+        m_pigeon2->ClearStickyFaults();
+    }
 }
