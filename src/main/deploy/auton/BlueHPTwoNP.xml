@@ -34,4 +34,11 @@
                time="3.0"/>
 <!--score cone-->
         <snippet file="ScoreHighCube.xml"/>
+
+<primitive id="DRIVE_PATH_PLANNER"
+	           pathname="BlueHP4"
+			   arm="FLOOR_POSITION_ROTATE"
+               intake="INTAKE_HOLD"
+			   extender="STARTING_POSITION_EXTEND"
+               time="3.0"/>
 </auton>

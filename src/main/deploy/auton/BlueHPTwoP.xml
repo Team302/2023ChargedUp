@@ -4,55 +4,47 @@
 <primitive id="RESET_POSITION_PATH_PLANNER"
 	           pathname="BlueHP1"
 			/>
-<!--score preloaded cone -->
+    <!--score preloaded cone-->
     <snippet file="ScoreCone.xml"/>
-<!--drive to cube-->
+    <!--drive to charing station-->
 <primitive id="DRIVE_PATH_PLANNER"
 	           pathname="BlueHP1"
-             arm="FLOOR_POSITION_ROTATE"
-             intake="INTAKE"
-             time="2.0"/> 
+			   arm="FLOOR_POSITION_ROTATE_AUTON"
+               intake="INTAKE_OFF"
+			   extender="STARTING_POSITION_EXTEND"
+               time="2.25"/>
 <primitive id="DO_NOTHING"
-               arm="FLOOR_POSITION_ROTATE"
-               extender="FLOOR_EXTEND"
+			   arm="FLOOR_POSITION_ROTATE"
                intake="INTAKE"
-               time="0.25"
-               />
-<!--drive to cube/scoring station-->
+			   extender="FLOOR_EXTEND"
+               time="0.35"/>
+<!--drive to cone-->
 <primitive id="DRIVE_PATH_PLANNER"
-	          pathname="BlueHP2"
-            arm="FLOOR_POSITION_ROTATE_AUTON_HOLD"
-            extender="FLOOR_EXTEND"
-				    intake="INTAKE"
-            time="6.0"/>
-<!--Score High Cube-->
-       <primitive id="DO_NOTHING"
-               arm="CONE_BACKROW_ROTATE"
-               extender="STARTING_POSITION_EXTEND"
-               intake="INTAKE_HOLD"
-               time="0.4"
-               />
-    <primitive id="DO_NOTHING"
-               arm="CONE_BACKROW_ROTATE"
-               extender="STARTING_POSITION_EXTEND"
-               intake="INTAKE_EXPEL"
-               time="0.35"
-               />
-    <primitive id="DO_NOTHING"
-               time="15"
-               />
-<primitive id="DRIVE_PATH_PLANNER"
-	           pathname="BlueHP3"
-               time="2.35"/>
+	           pathname="BlueHP2"
+			   arm="FLOOR_POSITION_ROTATE"
+               intake="INTAKE"
+			   extender="FLOOR_EXTEND"
+               time="3.0"/>
 <!--drive to scoring station-->
 <primitive id="DRIVE_PATH_PLANNER"
-	           pathname="BlueHP4P"
-               time="2.5"/>
+	           pathname="BlueHP3"
+			   arm="FLOOR_POSITION_ROTATE"
+               intake="INTAKE_HOLD"
+			   extender="STARTING_POSITION_EXTEND"
+               time="3.0"/>
 <!--score cone-->
-  <!--auto balance-->
-    <primitive id="AUTO_BALANCE"
-               extender="STARTING_POSITION_EXTEND"
-               intake="INTAKE_OFF"
-               time="10.0"
-               />
+<snippet file="ScoreHighCube.xml"/>
+<!--drive onto charging station-->
+<primitive id="DRIVE_PATH_PLANNER"
+	           pathname="BlueHP4P"
+			   arm="FLOOR_POSITION_ROTATE"
+               intake="INTAKE_HOLD"
+			   extender="STARTING_POSITION_EXTEND"
+               time="2.0"/>
+<!--auto balance-->
+<primitive id="AUTO_BALANCE"
+			   arm="FLOOR_POSITION_ROTATE"
+               intake="INTAKE_HOLD"
+			   extender="STARTING_POSITION_EXTEND"
+               time="10.0"/>
 </auton>
