@@ -33,7 +33,7 @@
     controlDataIdentifier="intake"
     controlDataIdentifier2="intake"
     value="0.20"
-    secondValue="0.0"
+    secondValue="0.20"
     solenoid="REVERSE"
     solenoid2="NONE" />
   <mechanismTarget

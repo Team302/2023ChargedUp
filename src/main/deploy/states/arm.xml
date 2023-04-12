@@ -37,7 +37,7 @@
     identifier="RotateToDownwardAngle"
     mode="POSITION_DEGREES"
     constrolServer="MOTORCONTROLLER"
-    proportional="0.025"
+    proportional="0.02"
     integral="0.0001"
     derivative="0.0"
     feedforward="0.0"
@@ -86,7 +86,7 @@
     stateIdentifier="CUBE_BACKROW_ROTATE"
     controlDataIdentifier="RotateToUpwardAngle"
     controlDataIdentifier2=""
-    value="70"
+    value="75"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
