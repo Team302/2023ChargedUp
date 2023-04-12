@@ -26,7 +26,6 @@
 #include <hw/factories/PigeonFactory.h>
 #include <utils/logging/Logger.h>
 #include <DragonVision/DragonVision.h>
-#include <utils/FMSData.h>
 
 // Third Party Includes
 #include <pathplanner/lib/PathPlanner.h>
@@ -45,10 +44,6 @@ void ResetPositionPathPlanner::Init(PrimitiveParams *params)
     // m_trajectory = pathplanner::PathPlanner::loadPath(params->GetPathName(), pathplanner::PathPlanner::getConstraintsFromPath(params->GetPathName()));
     m_trajectory = pathplanner::PathPlanner::loadPath(params->GetPathName(), pathplanner::PathConstraints(3.0_mps, 2.0_mps_sq));
 
-    if (FMSData::GetInstance()->GetAllianceColor() == frc::DriverStation::Alliance::kRed)
-    {
-        m_trajectory = PathPlannerTrajectory::transformTrajectoryForAlliance(m_trajectory, frc::DriverStation::Alliance::kRed);
-    }
     // auto pigeon = PigeonFactory::GetFactory()->GetCenterPigeon();
     //  pigeon->ReZeroPigeon(m_trajectory.getInitialState().holonomicRotation.Degrees().to<double>());
 

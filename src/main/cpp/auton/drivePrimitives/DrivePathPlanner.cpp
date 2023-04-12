@@ -31,7 +31,6 @@
 #include <chassis/IChassis.h>
 #include <utils/logging/Logger.h>
 #include <chassis/swerve/driveStates/TrajectoryDrivePathPlanner.h>
-#include <utils/FMSData.h>
 
 // third party includes
 #include <pathplanner/lib/PathPlanner.h>
@@ -60,11 +59,6 @@ void DrivePathPlanner::Init(PrimitiveParams *params)
     m_maxTime = params->GetTime();
 
     m_trajectory = PathPlanner::loadPath(m_pathname, PathConstraints(3.0_mps, 2.0_mps_sq));
-
-    if (FMSData::GetInstance()->GetAllianceColor() == frc::DriverStation::Alliance::kRed)
-    {
-        m_trajectory = PathPlannerTrajectory::transformTrajectoryForAlliance(m_trajectory, frc::DriverStation::Alliance::kRed);
-    }
 
     // Start timeout timer for path
     m_timer.get()->Reset();
