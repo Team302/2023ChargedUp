@@ -29,7 +29,7 @@
 <primitive id="DRIVE_PATH_PLANNER"
 	           pathname="BlueHP3"
 			   arm="FLOOR_POSITION_ROTATE"
-               intake="INTAKE_HOLD"
+               intake="INTAKE_HOLD_CUBE"
 			   extender="STARTING_POSITION_EXTEND"
                time="3.0"/>
 <!--score cone-->
@@ -38,7 +38,7 @@
 <primitive id="DRIVE_PATH_PLANNER"
 	           pathname="BlueHP4"
 			   arm="FLOOR_POSITION_ROTATE"
-               intake="INTAKE_HOLD"
+               intake="INTAKE_OFF"
 			   extender="STARTING_POSITION_EXTEND"
                time="3.0"/>
 </auton>
