@@ -90,15 +90,17 @@ private:
     double m_visionKI_Y = 0.00;           // used for vision based alignment
 
     // Linear movement settings for both X and Y directions
-    const double m_minimumSpeed_mps = 0.4;
-    const double m_maximumSpeed_mps = 0.5;
+    const double m_minimumSpeed_mps = 0.6;
+    const double m_maximumSpeed_mps = 1.75;
     const double m_linearTolerance_in = 2;
 
     // Linear movement settings for X direction
     const double m_inhibitXspeedAboveYError_in = 2.5;
     double m_visionAlignmentXoffset_in = 18.0; // in Auton gets updated from primitive
     const double m_centerOfRobotToBumperEdge_in = 16.0;
-    const double m_gamePieceToBumperOffset = 9.0;
+    const double m_gamePieceToBumperOffset = 0.0;
+    bool m_xErrorUnderThreshold = false;
+    const double m_xErrorThreshold = 3.0;
 
     // Angular movement settings
     const double m_minimumOmega_radps = 0.7;

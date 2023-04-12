@@ -44,28 +44,46 @@ VisionDrive::VisionDrive(RobotDrive *robotDrive) : RobotDrive(),
 std::array<frc::SwerveModuleState, 4> VisionDrive::UpdateSwerveModuleStates(ChassisMovement &chassisMovement)
 {
     auto targetData = DragonVision::GetDragonVision()->getTargetInfo();
-    if ((targetData != nullptr) && (m_pipelineMode == targetData->getTargetType()))
+    if (((targetData != nullptr) || m_xErrorUnderThreshold) && (m_vision->getPipeline(DragonVision::LIMELIGHT_POSITION::FRONT) == targetData->getTargetType()))
     {
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ANickDebugging", "Has reached drive code", true);
+
         bool atTarget_x = false;
         bool atTarget_angle = false;
 
         units::angle::radian_t angleError = units::angle::radian_t(0.0);
 
-        atTarget_angle = AtTargetAngle(targetData, &angleError);
-
-        // Do not move in the X direction until the other measure angle is within a certain tolerance
-        bool moveInXDir = std::abs(angleError.to<double>()) < m_inhibitXspeedAboveAngularError_rad;
-
-        if (moveInXDir)
+        if (targetData != nullptr)
         {
-            units::velocity::meters_per_second_t xSpeed = units::velocity::meters_per_second_t(0.0);
-            units::length::inch_t xError = targetData->getXdistanceToTargetRobotFrame() - units::length::inch_t(m_centerOfRobotToBumperEdge_in + m_gamePieceToBumperOffset);
+            atTarget_angle = AtTargetAngle(targetData, &angleError);
 
-            xSpeed = units::length::meter_t(xError * m_visionKP_X) / 1_s;
-            xSpeed = limitVelocityToBetweenMinAndMax(xSpeed);
+            // Do not move in the X direction until the other measure angle is within a certain tolerance
+            bool moveInXDir = std::abs(angleError.to<double>()) < m_inhibitXspeedAboveAngularError_rad;
 
-            chassisMovement.chassisSpeeds.vx = xSpeed;
+            if (moveInXDir)
+            {
+                units::velocity::meters_per_second_t xSpeed = units::velocity::meters_per_second_t(0.0);
+                units::length::inch_t xError = targetData->getXdistanceToTargetRobotFrame() - units::length::inch_t(m_centerOfRobotToBumperEdge_in + m_gamePieceToBumperOffset);
+
+                if (units::math::abs(xError).to<double>() < m_xErrorThreshold)
+                {
+                    m_xErrorUnderThreshold = true;
+                }
+
+                xSpeed = units::length::meter_t(xError * m_visionKP_X) / 1_s;
+                xSpeed = limitVelocityToBetweenMinAndMax(xSpeed);
+
+                chassisMovement.chassisSpeeds.vx = xSpeed;
+            }
         }
+        else
+        {
+            chassisMovement.chassisSpeeds.vx = units::velocity::meters_per_second_t(m_minimumSpeed_mps);
+        }
+    }
+    else
+    {
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ANickDebugging", "Has reached drive code", false);
     }
 
     return m_robotDrive->UpdateSwerveModuleStates(chassisMovement);
@@ -313,4 +331,5 @@ bool VisionDrive::isAligned()
 void VisionDrive::ResetVisionDrive()
 {
     yErrorIntegral = units::length::inch_t(0);
+    m_xErrorUnderThreshold = false;
 }

@@ -116,6 +116,8 @@ void HolonomicDrive::Run()
 
             if (controller->IsButtonPressed(TeleopControlFunctions::ALIGN_FLOOR_GAME_PIECE))
             {
+                Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ANickDebugging"), string("DesiredGamePiece"), m_desiredGamePiece);
+
                 // set pipeline to discover retroreflective
                 if (m_desiredGamePiece == RobotStateChanges::GamePiece::Cube)
                 {
@@ -151,7 +153,6 @@ void HolonomicDrive::Run()
 
         // update leds based on finding cube with vision
         RobotState::GetInstance()->PublishStateChange(RobotStateChanges::StateChange::FindingCube, m_findingFloorGamePiece ? 1 : 0);
-        // add button to align with substation
 
         if (controller->IsButtonPressed(TeleopControlFunctions::HOLD_POSITION))
         {
@@ -224,6 +225,10 @@ void HolonomicDrive::Run()
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("Vy"), moveInfo.chassisSpeeds.vy.to<double>());
 
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("DriveOptionEND"), moveInfo.driveOption);
+
+        /// debugging
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ANickDebugging"), string("DriveState"), moveInfo.driveOption);
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ANickDebugging"), string("HeadingOption"), moveInfo.headingOption);
 
         m_chassis->Drive(moveInfo);
     }
