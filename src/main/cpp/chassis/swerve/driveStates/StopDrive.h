@@ -32,7 +32,7 @@ class StopDrive : public RobotDrive
 public:
     using RobotDrive::RobotDrive;
 
-    StopDrive();
+    StopDrive() = delete;
     ~StopDrive() = default;
 
     std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates(ChassisMovement &chassisMovement) override;
@@ -40,10 +40,10 @@ public:
     void Init(ChassisMovement &chassisMovement) override;
 
 private:
-    SwerveChassis *m_chassis;
     frc::SwerveModuleState *m_flState = new frc::SwerveModuleState();
     frc::SwerveModuleState *m_frState = new frc::SwerveModuleState();
     frc::SwerveModuleState *m_blState = new frc::SwerveModuleState();
     frc::SwerveModuleState *m_brState = new frc::SwerveModuleState();
     RobotDrive *m_robotDrive;
+    SwerveChassis *m_chassis;
 };

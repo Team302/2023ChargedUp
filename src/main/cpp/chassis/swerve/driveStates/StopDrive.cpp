@@ -19,7 +19,7 @@
 #include <chassis/swerve/driveStates/RobotDrive.h>
 #include <chassis/ChassisFactory.h>
 
-StopDrive::StopDrive() : m_chassis(ChassisFactory::GetChassisFactory()->GetSwerveChassis()), (RobotDrive * robotDrive) : RobotDrive(), m_robotDrive(robotDrive)
+StopDrive::StopDrive(RobotDrive *robotDrive) : RobotDrive(), m_robotDrive(robotDrive), m_chassis(ChassisFactory::GetChassisFactory()->GetSwerveChassis())
 {
 }
 
