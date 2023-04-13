@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE auton SYSTEM "auton.dtd">
 <auton>
-    <primitive id="VISION_ALIGN"
-               pipeline="APRIL_TAG"
-               alignmentMethod="ROTATE"
+    <primitive id="DO_NOTHING"
                arm="CUBE_BACKROW_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                intake="INTAKE_HOLD_CUBE"
