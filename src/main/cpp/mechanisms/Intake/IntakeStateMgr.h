@@ -39,7 +39,8 @@ public:
         HOLD,
         RELEASE,
         EXPEL,
-        HP_CONE_INTAKE
+        HP_CONE_INTAKE,
+        HOLD_CUBE
     };
     const std::string m_intakeOffXMLString{"INTAKE_OFF"};
     const std::string m_intakeXMLString{"INTAKE"};
@@ -47,6 +48,7 @@ public:
     const std::string m_releaseXMLString{"INTAKE_RELEASE"};
     const std::string m_expelXMLString{"INTAKE_EXPEL"};
     const std::string m_hpconeintakeXMLString{"HP_CONE_INTAKE"};
+    const std::string m_holdCubeXMLString{"INTAKE_HOLD_CUBE"};
 
     const std::map<const std::string, INTAKE_STATE> m_intakeXmlStringToStateEnumMap{
         {m_intakeOffXMLString, INTAKE_STATE::OFF},
@@ -54,7 +56,8 @@ public:
         {m_holdXMLString, INTAKE_STATE::HOLD},
         {m_releaseXMLString, INTAKE_STATE::RELEASE},
         {m_expelXMLString, INTAKE_STATE::EXPEL},
-        {m_hpconeintakeXMLString, INTAKE_STATE::HP_CONE_INTAKE}};
+        {m_hpconeintakeXMLString, INTAKE_STATE::HP_CONE_INTAKE},
+        {m_holdCubeXMLString, INTAKE_STATE::HOLD_CUBE}};
 
     /// @brief  Find or create the state manmanager
     static IntakeStateMgr *GetInstance();
@@ -94,4 +97,5 @@ private:
     const StateStruc m_releaseState = {INTAKE_STATE::RELEASE, m_releaseXMLString, StateType::INTAKE_STATE, false};
     const StateStruc m_expelState = {INTAKE_STATE::EXPEL, m_expelXMLString, StateType::INTAKE_STATE, false};
     const StateStruc m_hpconeintakeState = {INTAKE_STATE::HP_CONE_INTAKE, m_hpconeintakeXMLString, StateType::INTAKE_STATE, false};
+    const StateStruc m_holdCubeState = {INTAKE_STATE::HOLD_CUBE, m_holdCubeXMLString, StateType::INTAKE_STATE, false};
 };
