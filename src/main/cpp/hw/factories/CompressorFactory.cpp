@@ -117,7 +117,7 @@ bool CompressorFactory::CompressorHasStickyFaults()
     if (m_hub != nullptr)
     {
         frc::PneumaticHub::StickyFaults StickyFaultsValue = m_hub->GetStickyFaults();
-        bool AllStickyFaults = StickyFaultsValue.CompressorOverCurrent || StickyFaultsValue.CompressorOpen || StickyFaultsValue.SolenoidOverCurrent || StickyFaultsValue.Brownout || StickyFaultsValue.CanWarning || StickyFaultsValue.CanBusOff || StickyFaultsValue.HasReset;
+        return (StickyFaultsValue.CompressorOverCurrent || StickyFaultsValue.CompressorOpen || StickyFaultsValue.SolenoidOverCurrent || StickyFaultsValue.Brownout || StickyFaultsValue.CanWarning || StickyFaultsValue.CanBusOff || StickyFaultsValue.HasReset);
     }
-    return CompressorFactory::CompressorHasStickyFaults();
+    return false;
 }

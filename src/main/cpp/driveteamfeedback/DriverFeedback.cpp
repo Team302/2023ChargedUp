@@ -49,6 +49,7 @@ void DriverFeedback::UpdateFeedback()
     UpdateCompressorState();
     CheckControllers();
     DisplayPressure();
+    UpdateStickyFaultStates();
 }
 
 void DriverFeedback::UpdateCompressorState()

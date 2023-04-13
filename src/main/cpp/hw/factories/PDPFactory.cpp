@@ -77,7 +77,7 @@ bool PDPFactory::PDPHasStickyFaults()
     if (m_pdp != nullptr)
     {
         frc::PowerDistribution::StickyFaults StickyFaultsValue = m_pdp->GetStickyFaults();
-        bool AllStickyFaults = StickyFaultsValue.Channel0BreakerFault || StickyFaultsValue.Channel1BreakerFault || StickyFaultsValue.Channel12BreakerFault || StickyFaultsValue.Channel13BreakerFault || StickyFaultsValue.Channel14BreakerFault || StickyFaultsValue.Channel15BreakerFault || StickyFaultsValue.Channel16BreakerFault || StickyFaultsValue.Channel17BreakerFault || StickyFaultsValue.Channel18BreakerFault || StickyFaultsValue.Channel19BreakerFault || StickyFaultsValue.Channel20BreakerFault || StickyFaultsValue.Channel21BreakerFault || StickyFaultsValue.Channel22BreakerFault || StickyFaultsValue.Channel23BreakerFault || StickyFaultsValue.Brownout || StickyFaultsValue.CanWarning || StickyFaultsValue.CanBusOff || StickyFaultsValue.HasReset;
+        return (StickyFaultsValue.Channel0BreakerFault || StickyFaultsValue.Channel1BreakerFault || StickyFaultsValue.Channel12BreakerFault || StickyFaultsValue.Channel13BreakerFault || StickyFaultsValue.Channel14BreakerFault || StickyFaultsValue.Channel15BreakerFault || StickyFaultsValue.Channel16BreakerFault || StickyFaultsValue.Channel17BreakerFault || StickyFaultsValue.Channel18BreakerFault || StickyFaultsValue.Channel19BreakerFault || StickyFaultsValue.Channel20BreakerFault || StickyFaultsValue.Channel21BreakerFault || StickyFaultsValue.Channel22BreakerFault || StickyFaultsValue.Channel23BreakerFault || StickyFaultsValue.Brownout || StickyFaultsValue.CanWarning || StickyFaultsValue.CanBusOff || StickyFaultsValue.HasReset);
     }
-    return PDPFactory::PDPHasStickyFaults();
+    return false;
 }
