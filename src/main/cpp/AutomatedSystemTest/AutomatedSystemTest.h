@@ -15,8 +15,7 @@
 #pragma once
 #include <frc/PowerDistribution.h>
 #include <hw/factories/PDPFactory.h>
-
-#include <mechanisms/extender/ExtenderStateMgr.h>
+#include <AutomatedSystemTest/ArmTest.h>
 #include <chassis/swerve/swerveChassis.h>
 #include <chassis/swerve/headingStates/ISwerveDriveOrientation.h>
 #include <chassis/ChassisFactory.h>
@@ -53,14 +52,11 @@ private:
     int m_timer1 = 0;
     int m_timer2 = 0;
     int m_timer3 = 0;
-    double m_basepdpusage;
-    double m_extenderusage;
     double m_swervechassisforwardusage;
     double m_swervechassisstrafeusage;
     double m_swervechassisturnusage;
     double m_InitialPDPWatts;
     frc::PowerDistribution *m_PDP;
-    bool BasePDPValue();
     bool TestExtender();
     bool TestswervevxForward();
     bool TestswervevxBackward();

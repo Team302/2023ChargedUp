@@ -33,9 +33,6 @@ AutomatedSystemTest::AutomatedSystemTest()
     m_timer1 = 0;
     m_timer2 = 0;
     m_timer3 = 0;
-    m_basepdpusage;
-    m_armusage;
-    m_extenderusage;
     m_swervechassisforwardusage;
     m_swervechassisstrafeusage;
     m_swervechassisturnusage;
@@ -55,19 +52,7 @@ void AutomatedSystemTest::Run()
 {
     m_finishedcurrentstep = false;
 
-    if (TestStepnum == BASE_TEST)
-    {
-        m_finishedcurrentstep = BasePDPValue();
-    }
-    else if (TestStepnum == ARM_TEST)
-    {
-        m_finishedcurrentstep = TestArm();
-    }
-    else if (TestStepnum == EXTENDER_TEST)
-    {
-        m_finishedcurrentstep = TestExtender();
-    }
-    else if (TestStepnum == SWERVE_VX_FORWARD)
+    if (TestStepnum == SWERVE_VX_FORWARD)
     {
         m_finishedcurrentstep = TestswervevxForward();
     }
@@ -89,63 +74,6 @@ void AutomatedSystemTest::Run()
     }
     TestswervevxForward();
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("periodic"), "reached");
-}
-bool AutomatedSystemTest::BasePDPValue()
-{
-    return true;
-    if (m_PDP != nullptr)
-    {
-        m_basepdpusage = m_PDP->GetTotalCurrent();
-        return true;
-    }
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("pdp"), "cannot accses pdp");
-    return false;
-}
-
-bool AutomatedSystemTest::TestArm()
-{
-    return true;
-    ArmStateMgr::GetInstance()->SetCurrentState(ArmStateMgr::ARM_STATE::STARTING_POSITION_ROTATE, true);
-    auto m_armstate = ArmStateMgr::GetInstance()->GetCurrentState();
-    if (m_armstate == ArmStateMgr::ARM_STATE::STARTING_POSITION_ROTATE)
-    {
-        ArmStateMgr::GetInstance()->SetCurrentState(ArmStateMgr::ARM_STATE::CONE_BACKROW_ROTATE, true);
-    }
-
-    if (m_PDP != nullptr)
-    {
-        m_armusage = m_PDP->GetTotalCurrent();
-        ArmStateMgr::GetInstance()->SetCurrentState(ArmStateMgr::ARM_STATE::STARTING_POSITION_ROTATE, true);
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("arm use wattage"), (m_armusage));
-        return true;
-    }
-    else
-    {
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("pdp"), "cannot accses pdp");
-        ArmStateMgr::GetInstance()->SetCurrentState(ArmStateMgr::ARM_STATE::STARTING_POSITION_ROTATE, true);
-        return false;
-    }
-}
-bool AutomatedSystemTest::TestExtender()
-{
-    return true;
-    ExtenderStateMgr::GetInstance()->SetCurrentState(ExtenderStateMgr::EXTENDER_STATE::STARTING_POSITION_EXTEND, (true));
-    auto m_extenderstate = ExtenderStateMgr::GetInstance()->GetCurrentState();
-    if (m_extenderstate == ExtenderStateMgr::EXTENDER_STATE::STARTING_POSITION_EXTEND)
-    {
-        ExtenderStateMgr::GetInstance()->SetCurrentState(ExtenderStateMgr::EXTENDER_STATE::CONE_BACKROW_EXTEND, (true));
-    }
-
-    if (m_PDP != nullptr)
-    {
-        m_extenderusage = m_PDP->GetTotalCurrent();
-        ExtenderStateMgr::GetInstance()->SetCurrentState(ExtenderStateMgr::EXTENDER_STATE::STARTING_POSITION_EXTEND, (true));
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("extender use wattage"), (m_extenderusage));
-        return true;
-    }
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("pdp"), "cannot accses pdp");
-    ExtenderStateMgr::GetInstance()->SetCurrentState(ExtenderStateMgr::EXTENDER_STATE::STARTING_POSITION_EXTEND, (true));
-    return false;
 }
 
 // swerve forward test

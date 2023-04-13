@@ -25,8 +25,6 @@
 
 // Third Party Includes
 
-class PrimitiveParams;
-
 class ArmTest
 {
 public:
@@ -39,5 +37,6 @@ public:
 private:
     double m_armusage;
     frc::PowerDistribution *m_PDP;
-    bool m_armTestcomplete = false;
+    bool m_armTestComplete = false;
+    bool m_extenderTestComplete = false;
 };

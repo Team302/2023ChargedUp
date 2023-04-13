@@ -16,26 +16,46 @@
 #include <mechanisms/arm/ArmStateMgr.h>
 #include <utils/logging/Logger.h>
 #include <string>
+#include <mechanisms/extender/ExtenderStateMgr.h>
 
 using namespace std;
+
+ArmTest::ArmTest()
+{
+}
+void ArmTest::Init()
+{
+    ExtenderStateMgr::GetInstance()->SetCurrentState(ExtenderStateMgr::EXTENDER_STATE::STARTING_POSITION_EXTEND, (true));
+    ArmStateMgr::GetInstance()->SetCurrentState(ArmStateMgr::ARM_STATE::STARTING_POSITION_ROTATE, true);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("ArmTest"), "Arm Test Running");
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("ExtenderTest"), "Extender Test Running");
+}
 void ArmTest::Run()
 {
-    ArmStateMgr::GetInstance()->SetCurrentState(ArmStateMgr::ARM_STATE::STARTING_POSITION_ROTATE, true);
     auto m_armstate = ArmStateMgr::GetInstance()->GetCurrentState();
+    auto m_extenderstate = ExtenderStateMgr::GetInstance()->GetCurrentState();
     if (m_armstate == ArmStateMgr::ARM_STATE::STARTING_POSITION_ROTATE)
     {
         ArmStateMgr::GetInstance()->SetCurrentState(ArmStateMgr::ARM_STATE::CONE_BACKROW_ROTATE, true);
-        m_armTestcomplete = true;
+        m_armTestComplete = true;
     }
 
+    if (m_extenderstate == ExtenderStateMgr::EXTENDER_STATE::STARTING_POSITION_EXTEND && m_armstate == ArmStateMgr::ARM_STATE::CONE_BACKROW_ROTATE)
+    {
+        ExtenderStateMgr::GetInstance()->SetCurrentState(ExtenderStateMgr::EXTENDER_STATE::CONE_BACKROW_EXTEND, (true));
+        m_extenderTestComplete = true;
+    }
     else
     {
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("pdp"), "cannot accses pdp");
-        ArmStateMgr::GetInstance()->SetCurrentState(ArmStateMgr::ARM_STATE::STARTING_POSITION_ROTATE, true);
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("ArmTest"), "Arm or Extender test problem");
     }
 }
 
 bool ArmTest::IsDone()
 {
-    return m_armTestcomplete;
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("ArmTest"), "Arm Test complete");
+    if (m_armTestComplete && m_extenderTestComplete)
+    {
+        return true;
+    }
 }
