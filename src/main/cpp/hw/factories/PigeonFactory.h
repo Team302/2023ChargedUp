@@ -27,8 +27,7 @@ public:
 	/// @return PigeonFactory* pointer to the factory
 	static PigeonFactory *GetFactory();
 
-	DragonPigeon *GetPigeon(
-		DragonPigeon::PIGEON_USAGE usage) const;
+	DragonPigeon *GetPigeon(DragonPigeon::PIGEON_USAGE usage) const;
 
 	DragonPigeon *GetCenterPigeon() const { return m_centerPigeon; };
 	DragonPigeon *GetShooterPigeon() const { return m_shooterPigeon; };

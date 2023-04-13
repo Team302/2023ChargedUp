@@ -64,10 +64,9 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates(Chass
         CorrectForTipping(chassisMovement);
     }
 
-    AdjustForRotation(chassisMovement);
+    OverSteerCorrection(chassisMovement);
 
-    Logger::GetLogger()
-        ->LogData(LOGGER_LEVEL::PRINT, "RobotDrive", "Vx", chassisMovement.chassisSpeeds.vx.to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "RobotDrive", "Vx", chassisMovement.chassisSpeeds.vx.to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "RobotDrive", "Vy", chassisMovement.chassisSpeeds.vy.to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "RobotDrive", "Omega", chassisMovement.chassisSpeeds.omega.to<double>());
 
@@ -96,27 +95,19 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates(Chass
     auto vy = 1.0 * chassisMovement.chassisSpeeds.vx;
     auto vx = -1.0 * chassisMovement.chassisSpeeds.vy;
     auto omega = chassisMovement.chassisSpeeds.omega;
-    /*
-        units::time::second_t kLooperDt = units::time::second_t(20.0 / 1000.0);
-        frc::Pose2d robot_pose_vel = frc::Pose2d(vx * kLooperDt, vy * kLooperDt, frc::Rotation2d(omega * kLooperDt));
-        // frc::Twist2d twist_vel = chassis->GetPose().Log(robot_pose_vel);
-        frc::Twist2d twist_vel = frc::Pose2d().Log(robot_pose_vel);
-        // chassisMovement.chassisSpeeds = frc::ChassisSpeeds(twist_vel.dx / kLooperDt, twist_vel.dy / kLooperDt, twist_vel.dtheta / kLooperDt);
 
-        // vx = twist_vel.dx / kLooperDt;
-        // vy = twist_vel.dx / kLooperDt;
-        // omega = twist_vel.dtheta / kLooperDt;
-    */
     units::length::meter_t centerOfRotationW = (w / 2.0) - chassisMovement.centerOfRotationOffset.Y();
     units::length::meter_t centerOfRotationL = (l / 2.0) - chassisMovement.centerOfRotationOffset.X();
+
+    auto radius = sqrt(pow(centerOfRotationL.to<double>(), 2) + pow(centerOfRotationW.to<double>(), 2));
 
     units::velocity::meters_per_second_t omegaW = omega.to<double>() * centerOfRotationW / 1_s;
     units::velocity::meters_per_second_t omegaL = omega.to<double>() * centerOfRotationL / 1_s;
 
-    auto a = vx + omegaL;
-    auto b = vx - omegaL;
-    auto c = vy + omegaW;
-    auto d = vy - omegaW;
+    auto a = vx + omegaL / radius;
+    auto b = vx - omegaL / radius;
+    auto c = vy + omegaW / radius;
+    auto d = vy - omegaW / radius;
 
     // here we'll negate the angle to conform to the positive CCW convention
     m_flState.angle = units::angle::radian_t(atan2(b.to<double>(), d.to<double>()));
@@ -207,37 +198,96 @@ void RobotDrive::CorrectForTipping(ChassisMovement &chassisMovement)
         }
     }
 }
-void RobotDrive::AdjustForRotation(ChassisMovement &chassisMovement)
+void RobotDrive::OverSteerCorrection(ChassisMovement &chassisMovement)
 {
+    /*
+    units::time::second_t kLooperDt = units::time::second_t(20.0 / 1000.0);
+    frc::Pose2d robot_pose_vel = frc::Pose2d(vx * kLooperDt, vy * kLooperDt, frc::Rotation2d(omega * kLooperDt));
+    // frc::Twist2d twist_vel = chassis->GetPose().Log(robot_pose_vel);
+    frc::Twist2d twist_vel = frc::Pose2d().Log(robot_pose_vel);
+    // chassisMovement.chassisSpeeds = frc::ChassisSpeeds(twist_vel.dx / kLooperDt, twist_vel.dy / kLooperDt, twist_vel.dtheta / kLooperDt);
+
+    // vx = twist_vel.dx / kLooperDt;
+    // vy = twist_vel.dx / kLooperDt;
+    // omega = twist_vel.dtheta / kLooperDt;
+    */
+
     if (m_chassis != nullptr)
     {
         auto currentPose = m_chassis->GetPose();
-        auto x = currentPose.X() + chassisMovement.chassisSpeeds.vx * LOOP_TIME;
-        auto y = currentPose.Y() + chassisMovement.chassisSpeeds.vy * LOOP_TIME;
 
-        auto angVel = chassisMovement.chassisSpeeds.omega;
-        auto rot = units::angle::radian_t(angVel.to<double>() * LOOP_TIME.to<double>());
-        auto rot2d = Rotation2d(rot);
-        auto newRot = currentPose.Rotation() + rot2d;
-        auto targetPose = Pose2d(x, y, newRot);
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("RobotDrive debugging"), string("input chassisMovement vx"), chassisMovement.chassisSpeeds.vx.to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("RobotDrive debugging"), string("input chassisMovement vy"), chassisMovement.chassisSpeeds.vy.to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("RobotDrive debugging"), string("input chassisMovement omega"), chassisMovement.chassisSpeeds.omega.to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("RobotDrive debugging"), string("positive input chassisMovement vx"), chassisMovement.chassisSpeeds.vx.to<double>() > 0.01);
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("RobotDrive debugging"), string("positive input chassisMovement vy"), chassisMovement.chassisSpeeds.vy.to<double>() > 0.01);
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("RobotDrive debugging"), string("positive input chassisMovement omega"), chassisMovement.chassisSpeeds.omega.to<double>() > 0.01);
+
+        auto targetX = currentPose.X() + chassisMovement.chassisSpeeds.vx * LOOP_TIME;
+        auto targetY = currentPose.Y() + chassisMovement.chassisSpeeds.vy * LOOP_TIME;
+        auto targetRot = currentPose.Rotation() + Rotation2d(units::angle::radian_t(chassisMovement.chassisSpeeds.omega.to<double>() * LOOP_TIME.to<double>()));
+        auto targetPose = Pose2d(targetX, targetY, targetRot);
 
         auto twist = currentPose.Log(targetPose);
 
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("RobotDrive debugging"), string("before chassisMovement vx"), chassisMovement.chassisSpeeds.vx.to<double>());
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("RobotDrive debugging"), string("before chassisMovement vy"), chassisMovement.chassisSpeeds.vy.to<double>());
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("RobotDrive debugging"), string("before chassisMovement omega"), chassisMovement.chassisSpeeds.omega.to<double>());
-
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("RobotDrive debugging"), string("twist dx"), twist.dx.to<double>());
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("RobotDrive debugging"), string("twist dy"), twist.dy.to<double>());
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("RobotDrive debugging"), string("twist dtheta"), twist.dtheta.to<double>());
-
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("RobotDrive debugging"), string("after chassisMovement vx"), (twist.dx / LOOP_TIME).to<double>());
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("RobotDrive debugging"), string("after chassisMovement vy"), (twist.dy / LOOP_TIME).to<double>());
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("RobotDrive debugging"), string("after chassisMovement omega"), (twist.dtheta / LOOP_TIME).to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("RobotDrive debugging"), string("twist dx"), twist.dx.to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("RobotDrive debugging"), string("twist dy"), twist.dy.to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("RobotDrive debugging"), string("twist dtheta"), twist.dtheta.to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("RobotDrive debugging"), string("positive twist dx"), twist.dx.to<double>() > 0.0);
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("RobotDrive debugging"), string("positive twist dy"), twist.dy.to<double>() > 0.0);
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("RobotDrive debugging"), string("positive twist dtheta"), twist.dtheta.to<double>() > 0.0);
 
         // chassisMovement.chassisSpeeds.vx = twist.dx / LOOP_TIME;
         // chassisMovement.chassisSpeeds.vy = twist.dy / LOOP_TIME;
         // chassisMovement.chassisSpeeds.omega = twist.dtheta / LOOP_TIME;
+        frc::ChassisSpeeds dummy;
+        // dummy.vx = twist.dx / LOOP_TIME;
+        // dummy.vy = twist.dy / LOOP_TIME;
+        // dummy.omega = twist.dtheta / LOOP_TIME;
+        auto ccwRot = chassisMovement.chassisSpeeds.omega > ROTATE_TOLERANCE;
+        auto cwRot = chassisMovement.chassisSpeeds.omega < -1.0 * ROTATE_TOLERANCE;
+        auto forwardDrive = chassisMovement.chassisSpeeds.vx > MOVE_TOLERANCE;
+        auto backwardDrive = chassisMovement.chassisSpeeds.vx < -1.0 * MOVE_TOLERANCE;
+        auto strafeLeft = chassisMovement.chassisSpeeds.vy > MOVE_TOLERANCE;
+        auto strafeRight = chassisMovement.chassisSpeeds.vy < -1.0 * MOVE_TOLERANCE;
+        auto twistVxAdjust = twist.dx.to<double>();
+        auto twistVyAdjust = twist.dy.to<double>();
+
+        auto vxFactor = 1.0;
+        auto vyFactor = -1.0;
+        if (ccwRot)
+        {
+            if (forwardDrive && !strafeLeft)
+            {
+                vxFactor = 1.0;
+                vyFactor = -1.0;
+            }
+            else if (backwardDrive)
+            {
+                vxFactor = -1.0;
+                vyFactor = 1.0;
+            }
+        }
+        else if (cwRot)
+        {
+            if (forwardDrive)
+            {
+                vxFactor = -1.0;
+                vyFactor = 1.0;
+            }
+            else if (backwardDrive)
+            {
+                vxFactor = 1.0;
+                vyFactor = -1.0;
+            }
+        }
+        chassisMovement.chassisSpeeds.vx += units::velocity::meters_per_second_t(vxFactor * twistVxAdjust);
+        chassisMovement.chassisSpeeds.vy += units::velocity::meters_per_second_t(vyFactor * twistVyAdjust);
+        // chassisMovement.chassisSpeeds.omega += units::angular_velocity::radians_per_second_t(twist.dtheta.to<double>());
+
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("RobotDrive debugging"), string("corrected chassisMovement vx"), chassisMovement.chassisSpeeds.vx.to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("RobotDrive debugging"), string("corrected chassisMovement vy"), chassisMovement.chassisSpeeds.vy.to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("RobotDrive debugging"), string("corrected chassisMovement omega"), chassisMovement.chassisSpeeds.omega.to<double>());
     }
 }
 void RobotDrive::Init(ChassisMovement &chassisMovement)

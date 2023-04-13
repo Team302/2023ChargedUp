@@ -47,9 +47,11 @@ protected:
 
 private:
     void CorrectForTipping(ChassisMovement &chassisMovement);
-    void AdjustForRotation(ChassisMovement &chassisMovement);
+    void OverSteerCorrection(ChassisMovement &chassisMovement);
 
     SwerveChassis *m_chassis;
 
     static constexpr units::time::millisecond_t LOOP_TIME = units::time::millisecond_t(20.0);
+    static constexpr units::velocity::meters_per_second_t MOVE_TOLERANCE = units::velocity::meters_per_second_t(0.1);
+    static constexpr units::angular_velocity::degrees_per_second_t ROTATE_TOLERANCE = units::angular_velocity::degrees_per_second_t(10.0);
 };
