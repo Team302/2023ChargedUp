@@ -26,6 +26,7 @@
 #include <chassis/ChassisFactory.h>
 #include <chassis/ChassisMovement.h>
 #include <utils/logging/Logger.h>
+#include <utils/FMSData.h>
 
 using std::string;
 
@@ -55,14 +56,11 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates(Chass
 {
     if (chassisMovement.checkTipping)
     {
-        CorrectForTipping(chassisMovement);
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("A"), string("check tipping in robot drive"), string("arrived"));
+        DecideTipCorrection(chassisMovement);
     }
     else
     {
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("A"), string("check tipping in robot drive"), string(" not arrived"));
     }
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("A"), string("check tipping"), chassisMovement.checkTipping);
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "RobotDrive", "Vx", chassisMovement.chassisSpeeds.vx.to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "RobotDrive", "Vy", chassisMovement.chassisSpeeds.vy.to<double>());
@@ -180,9 +178,24 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates(Chass
     return {m_flState, m_frState, m_blState, m_brState};
 }
 
-void RobotDrive::CorrectForTipping(ChassisMovement &chassisMovement)
+void RobotDrive::DecideTipCorrection(ChassisMovement &chassisMovement)
 
 {
+    if (frc::DriverStation::IsFMSAttached())
+    {
+        if (frc::DriverStation::GetMatchTime() > 20)
+        {
+            CorrectForTipping(chassisMovement);
+        }
+    }
+    else
+    {
+        CorrectForTipping(chassisMovement);
+    }
+}
+void RobotDrive::CorrectForTipping(ChassisMovement &chassisMovement)
+{
+    // TODO: add checktipping variable to network table
     auto chassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
     if (chassis != nullptr)
     {

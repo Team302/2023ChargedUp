@@ -48,4 +48,5 @@ protected:
     units::velocity::feet_per_second_t m_maxspeed;
 
     void CorrectForTipping(ChassisMovement &chassisMovement);
+    void DecideTipCorrection(ChassisMovement &chassisMovement);
 };
