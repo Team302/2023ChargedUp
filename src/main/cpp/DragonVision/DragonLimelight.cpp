@@ -378,11 +378,12 @@ void DragonLimelight::PrintValues()
 
 std::optional<units::length::inch_t> DragonLimelight::GetTargetHeight() const
 {
-    if (getPipeline() == PIPELINE_MODE::APRIL_TAG)
+    PIPELINE_MODE mode = getPipeline();
+    if (mode == PIPELINE_MODE::APRIL_TAG)
     {
         return m_aprilTagInfo.GetHeight(getAprilTagID());
     }
-    else if (getPipeline() == PIPELINE_MODE::CONE_NODE)
+    else if (mode == PIPELINE_MODE::CONE_NODE)
     {
         units::angle::degree_t ang = GetTargetVerticalOffset();
 
@@ -391,7 +392,7 @@ std::optional<units::length::inch_t> DragonLimelight::GetTargetHeight() const
         else
             return units::length::inch_t(m_targetHeight2);
     }
-    else if (getPipeline() == PIPELINE_MODE::CUBE)
+    else if ((mode == PIPELINE_MODE::CUBE) || mode == PIPELINE_MODE::CONE)
     {
         return units::length::inch_t(5);
     }
