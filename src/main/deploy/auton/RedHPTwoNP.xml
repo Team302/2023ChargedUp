@@ -2,17 +2,17 @@
 <!DOCTYPE auton SYSTEM "auton.dtd">
 <auton>
 <primitive id="RESET_POSITION_PATH_PLANNER"
-	           pathname="BlueHP1"
+	           pathname="RedHP1"
 			/>
     <!--score preloaded cone-->
     <snippet file="ScoreCone.xml"/>
     <!--drive to charing station-->
 <primitive id="DRIVE_PATH_PLANNER"
-	           pathname="BlueHP1"
+	           pathname="RedHP1"
 			   arm="FLOOR_POSITION_ROTATE_AUTON"
                intake="INTAKE_OFF"
 			   extender="STARTING_POSITION_EXTEND"
-               time="2.25"/>
+               time="2.75"/>
 <primitive id="DO_NOTHING"
 			   arm="FLOOR_POSITION_ROTATE"
                intake="INTAKE"
@@ -20,31 +20,25 @@
                time="0.35"/>
 <!--drive to cone-->
 <primitive id="DRIVE_PATH_PLANNER"
-	           pathname="BlueHP2"
+			   pathname="RedHP2"
 			   arm="FLOOR_POSITION_ROTATE"
                intake="INTAKE"
 			   extender="FLOOR_EXTEND"
-               time="3.0"/>
+               time="2.35"/>
 <!--drive to scoring station-->
 <primitive id="DRIVE_PATH_PLANNER"
-	           pathname="BlueHP3"
+	           pathname="RedHP3"
 			   arm="FLOOR_POSITION_ROTATE"
                intake="INTAKE_HOLD_CUBE"
 			   extender="STARTING_POSITION_EXTEND"
                time="3.0"/>
 <!--score cone-->
-<snippet file="ScoreHighCube.xml"/>
-<!--drive onto charging station-->
+        <snippet file="ScoreHighCube.xml"/>
+
 <primitive id="DRIVE_PATH_PLANNER"
-	           pathname="BlueHP4P"
+			   pathname="RedHP4"
 			   arm="FLOOR_POSITION_ROTATE"
                intake="INTAKE_OFF"
 			   extender="STARTING_POSITION_EXTEND"
-               time="2.0"/>
-<!--auto balance-->
-<primitive id="AUTO_BALANCE"
-			   arm="FLOOR_POSITION_ROTATE"
-               intake="INTAKE_OFF"
-			   extender="STARTING_POSITION_EXTEND"
-               time="10.0"/>
+               time="4.0"/>
 </auton>
