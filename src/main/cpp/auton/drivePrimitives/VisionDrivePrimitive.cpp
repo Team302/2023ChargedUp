@@ -64,7 +64,7 @@ void VisionDrivePrimitive::Init(PrimitiveParams *params)
             break;
         case DragonLimelight::PIPELINE_MODE::CONE:
         case DragonLimelight::PIPELINE_MODE::CUBE:
-            m_headingOption = ChassisOptionEnums::HeadingOption::FACE_FLOOR_GAME_PIECE;
+            m_headingOption = ChassisOptionEnums::HeadingOption::FACE_GAME_PIECE;
             break;
         default:
             break;

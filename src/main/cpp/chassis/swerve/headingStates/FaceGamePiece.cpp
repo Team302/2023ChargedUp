@@ -14,18 +14,18 @@
 //====================================================================================================================================================
 
 // Team302 Includes
-#include <chassis/swerve/headingStates/FaceFloorGamePiece.h>
+#include <chassis/swerve/headingStates/FaceGamePiece.h>
 #include <DragonVision/LimelightFactory.h>
 
 /// debugging
 #include <utils/logging/Logger.h>
 
-FaceFloorGamePiece::FaceFloorGamePiece() : ISwerveDriveOrientation(ChassisOptionEnums::HeadingOption::FACE_APRIL_TAG),
-                                           m_vision(DragonVision::GetDragonVision())
+FaceGamePiece::FaceGamePiece() : ISwerveDriveOrientation(ChassisOptionEnums::HeadingOption::FACE_APRIL_TAG),
+                                 m_vision(DragonVision::GetDragonVision())
 {
 }
 
-void FaceFloorGamePiece::UpdateChassisSpeeds(ChassisMovement &chassisMovement)
+void FaceGamePiece::UpdateChassisSpeeds(ChassisMovement &chassisMovement)
 {
     units::angular_velocity::radians_per_second_t omega = units::angular_velocity::radians_per_second_t(0.0);
 
@@ -43,12 +43,10 @@ void FaceFloorGamePiece::UpdateChassisSpeeds(ChassisMovement &chassisMovement)
 
             chassisMovement.chassisSpeeds.omega = omega;
         }
-
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ANickDebugging", "AngleError", angleError.to<double>());
     }
 }
 
-bool FaceFloorGamePiece::AtTargetAngle(std::shared_ptr<DragonVisionTarget> targetData, units::angle::radian_t *error)
+bool FaceGamePiece::AtTargetAngle(std::shared_ptr<DragonVisionTarget> targetData, units::angle::radian_t *error)
 {
     if (targetData != nullptr)
     {
@@ -68,7 +66,7 @@ bool FaceFloorGamePiece::AtTargetAngle(std::shared_ptr<DragonVisionTarget> targe
     return false;
 }
 
-units::angular_velocity::radians_per_second_t FaceFloorGamePiece::limitAngularVelocityToBetweenMinAndMax(units::angular_velocity::radians_per_second_t angularVelocity)
+units::angular_velocity::radians_per_second_t FaceGamePiece::limitAngularVelocityToBetweenMinAndMax(units::angular_velocity::radians_per_second_t angularVelocity)
 {
     double sign = angularVelocity.to<double>() < 0 ? -1 : 1;
 

@@ -242,10 +242,6 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                             {
                                 pipelineMode = DragonLimelight::PIPELINE_MODE::APRIL_TAG;
                             }
-                            else if (strcmp(attr.value(), "CONE_NODE") == 0)
-                            {
-                                pipelineMode = DragonLimelight::PIPELINE_MODE::CONE_NODE;
-                            }
                             else if (strcmp(attr.value(), "CONE") == 0)
                             {
                                 pipelineMode = DragonLimelight::PIPELINE_MODE::CONE;

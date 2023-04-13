@@ -49,8 +49,6 @@ std::array<frc::SwerveModuleState, 4> VisionDrive::UpdateSwerveModuleStates(Chas
     auto targetData = DragonVision::GetDragonVision()->getTargetInfo();
     if (((targetData != nullptr) || m_xErrorUnderThreshold) && (m_vision->getPipeline(DragonVision::LIMELIGHT_POSITION::FRONT) == targetData->getTargetType()))
     {
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ANickDebugging", "Has reached drive code", true);
-
         bool atTarget_x = false;
         bool atTarget_angle = false;
 
@@ -88,10 +86,6 @@ std::array<frc::SwerveModuleState, 4> VisionDrive::UpdateSwerveModuleStates(Chas
         {
             chassisMovement.chassisSpeeds.vx = units::velocity::meters_per_second_t(m_minimumSpeed_mps);
         }
-    }
-    else
-    {
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ANickDebugging", "Has reached drive code", false);
     }
 
     return m_robotDrive->UpdateSwerveModuleStates(chassisMovement);
