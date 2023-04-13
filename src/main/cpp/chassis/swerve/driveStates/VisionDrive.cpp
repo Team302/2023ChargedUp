@@ -30,6 +30,7 @@
 #include <utils/logging/Logger.h>
 
 VisionDrive::VisionDrive(RobotDrive *robotDrive) : RobotDrive(),
+                                                   IRobotStateChangeSubscriber(),
                                                    // m_visionVYPID(1.0, 0.05, 0.0), // kP, kI, kD
                                                    // m_visionVXPID(1.0, 0.05, 0.0), // kP, kI, kD
                                                    m_alignmentMethod(ALIGNMENT_METHOD::ROTATE),
@@ -37,8 +38,10 @@ VisionDrive::VisionDrive(RobotDrive *robotDrive) : RobotDrive(),
                                                    m_inAutonMode(false),
                                                    m_robotDrive(robotDrive),
                                                    m_chassis(ChassisFactory::GetChassisFactory()->GetSwerveChassis()),
-                                                   m_vision(DragonVision::GetDragonVision())
+                                                   m_vision(DragonVision::GetDragonVision()),
+                                                   m_haveGamePiece(false)
 {
+    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::HoldingGamePiece);
 }
 
 std::array<frc::SwerveModuleState, 4> VisionDrive::UpdateSwerveModuleStates(ChassisMovement &chassisMovement)
@@ -59,6 +62,11 @@ std::array<frc::SwerveModuleState, 4> VisionDrive::UpdateSwerveModuleStates(Chas
 
             // Do not move in the X direction until the other measure angle is within a certain tolerance
             bool moveInXDir = std::abs(angleError.to<double>()) < m_inhibitXspeedAboveAngularError_rad;
+
+            if ((m_vision->getPipeline(DragonVision::LIMELIGHT_POSITION::FRONT) == DragonLimelight::PIPELINE_MODE::APRIL_TAG) && m_inAutonMode)
+            {
+                moveInXDir = false;
+            }
 
             if (moveInXDir)
             {
@@ -93,136 +101,6 @@ void VisionDrive::Init(ChassisMovement &chassisMovement)
 {
 }
 
-void VisionDrive::AlignRawVision(ChassisMovement &chassisMovement)
-{
-    bool exit = false;
-    bool atTarget_x = false;
-    bool atTarget_y = false;
-    bool atTarget_angle = false;
-
-    static units::length::inch_t yErrorPrevious = units::length::inch_t(0.0);
-
-    // ======================= Entry =======================
-    /*if (m_currentState != m_previousState)
-    {
-        yErrorIntegral = units::length::inch_t(0);
-        m_previousState = VISION_STATE::ALIGN_RAW_VISION;
-    }
-    */
-
-    // ======================= Cyclic =======================
-    units::velocity::meters_per_second_t ySpeed = units::velocity::meters_per_second_t(0.0);
-    units::velocity::meters_per_second_t xSpeed = units::velocity::meters_per_second_t(0.0);
-    units::angular_velocity::radians_per_second_t omega = units::angular_velocity::radians_per_second_t(0.0);
-
-    units::length::inch_t yError = units::length::inch_t(0.0);
-    units::length::inch_t xError = units::length::inch_t(0.0);
-    units::angle::radian_t angleError = units::angle::radian_t(0.0);
-
-    if (!m_inAutonMode)
-    {
-        if (chassisMovement.nodePosition == ChassisOptionEnums::RELATIVE_POSITION::LEFT || chassisMovement.nodePosition == ChassisOptionEnums::RELATIVE_POSITION::RIGHT)
-            m_pipelineMode = DragonLimelight::PIPELINE_MODE::CUBE;
-        else
-            m_pipelineMode = DragonLimelight::PIPELINE_MODE::APRIL_TAG;
-
-        m_vision->setPipeline(m_pipelineMode);
-    }
-
-    // get targetdata from the vision system
-    auto targetData = DragonVision::GetDragonVision()->getTargetInfo();
-
-    if (targetData != nullptr)
-    {
-        yError = targetData->getYdistanceToTargetRobotFrame();
-        xError = targetData->getXdistanceToTargetRobotFrame() - units::length::inch_t(m_robotFrameXDistCorrection / 2.0 + m_robotFrameGapToTag);
-
-        // Get errors and check if we are aligned to the target
-        atTarget_x = AtTargetX(targetData);
-        atTarget_y = AtTargetY(targetData);
-        atTarget_angle = AtTargetAngle(targetData, &angleError);
-
-        // Integrate error... only in the y direction so far
-        // if the error switches sign, zero the integral to reduce overshoot
-        if ((yError * yErrorPrevious).to<double>() < 0)
-            yErrorIntegral = units::length::inch_t(0.0);
-
-        yErrorPrevious = yError;
-        yErrorIntegral += yError;
-    }
-    else
-    {
-        // the camera is offset to the Y direction. Therefore a small offset of the robot to the
-        // Positive Y direction places the target outside of the camera frame. Therefore Tanay and David
-        // thought that it would be good to move in the direction of -Y hoping that the target would
-        // come into the camera view
-        if (m_alignmentMethod == ALIGNMENT_METHOD::STRAFE)
-            ySpeed = units::velocity::meters_per_second_t(-1.0 * m_minimumSpeed_mps);
-        else
-            omega = -1.0 * units::angular_velocity::radians_per_second_t(m_minimumOmega_radps);
-    }
-
-    exit = (m_alignmentMethod == ALIGNMENT_METHOD::STRAFE) ? (atTarget_x && atTarget_y) : (atTarget_x && atTarget_angle);
-
-    if (!exit)
-    {
-        if ((targetData != nullptr) && (m_pipelineMode == targetData->getTargetType()))
-        {
-            if (m_alignmentMethod == ALIGNMENT_METHOD::STRAFE)
-            {
-                if (atTarget_y == false)
-                {
-                    ySpeed = units::length::meter_t((yError * m_visionKP_Y) + (yErrorIntegral * m_visionKI_Y)) / 1_s;
-                    ySpeed = limitVelocityToBetweenMinAndMax(ySpeed);
-                }
-            }
-            else
-            {
-                if (atTarget_angle == false)
-                {
-                    omega = units::angle::radian_t(angleError * m_visionKP_Angle) / 1_s;
-                    omega = limitAngularVelocityToBetweenMinAndMax(omega);
-                }
-            }
-
-            if (atTarget_x == false)
-            {
-                // Do not move in the X direction until the other measure (y or angle) is within a certain tolerance
-                bool moveInXDir;
-                if (m_alignmentMethod == ALIGNMENT_METHOD::STRAFE)
-                    moveInXDir = std::abs(yError.to<double>()) < m_inhibitXspeedAboveYError_in;
-                else
-                    moveInXDir = std::abs(angleError.to<double>()) < m_inhibitXspeedAboveAngularError_rad;
-
-                if (moveInXDir)
-                {
-                    xSpeed = units::length::meter_t(xError * m_visionKP_X) / 1_s;
-                    xSpeed = limitVelocityToBetweenMinAndMax(xSpeed);
-                }
-            }
-        }
-    }
-
-    chassisMovement.chassisSpeeds.vx = xSpeed;
-    chassisMovement.chassisSpeeds.vy = ySpeed;
-    chassisMovement.chassisSpeeds.omega = omega;
-
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "YError", yError.to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "XError", xError.to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "angleError", angleError.to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "yErrorIntegral", yErrorIntegral.to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "YSpeed", ySpeed.to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "XSpeed", xSpeed.to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "omega", omega.to<double>());
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "alignmentMethod", m_alignmentMethod);
-
-    // ======================= Exit =======================
-    if (exit)
-    {
-        // m_currentState = VISION_STATE::ALIGNED;
-    }
-}
-
 units::velocity::meters_per_second_t VisionDrive::limitVelocityToBetweenMinAndMax(units::velocity::meters_per_second_t velocity)
 {
     double sign = velocity.to<double>() < 0 ? -1 : 1;
@@ -249,6 +127,7 @@ units::angular_velocity::radians_per_second_t VisionDrive::limitAngularVelocityT
     return angularVelocity;
 }
 
+/*
 bool VisionDrive::AtTargetX(std::shared_ptr<DragonVisionTarget> targetData)
 {
     if (targetData != nullptr)
@@ -288,6 +167,7 @@ bool VisionDrive::AtTargetX(std::shared_ptr<DragonVisionTarget> targetData)
     }
     return false;
 }
+*/
 
 bool VisionDrive::AtTargetY(std::shared_ptr<DragonVisionTarget> targetData)
 {
@@ -323,8 +203,21 @@ bool VisionDrive::AtTargetAngle(std::shared_ptr<DragonVisionTarget> targetData, 
     return false;
 }
 
-bool VisionDrive::isAligned()
+bool VisionDrive::isAligned(DragonLimelight::PIPELINE_MODE pipelineMode)
 {
+    if (pipelineMode == DragonLimelight::PIPELINE_MODE::APRIL_TAG)
+    {
+        auto targetData = DragonVision::GetDragonVision()->getTargetInfo();
+        if (targetData != nullptr)
+        {
+            units::angle::radian_t angleError = units::angle::radian_t(0.0);
+            return AtTargetAngle(targetData, &angleError);
+        }
+    }
+    else
+    {
+        return m_haveGamePiece;
+    }
     return false;
 }
 
@@ -332,4 +225,13 @@ void VisionDrive::ResetVisionDrive()
 {
     yErrorIntegral = units::length::inch_t(0);
     m_xErrorUnderThreshold = false;
+    m_haveGamePiece = false;
+}
+
+void VisionDrive::Update(RobotStateChanges::StateChange change, int value)
+{
+    if (change == RobotStateChanges::StateChange::HoldingGamePiece)
+    {
+        m_haveGamePiece = static_cast<RobotStateChanges::GamePiece>(value) != RobotStateChanges::None;
+    }
 }

@@ -29,20 +29,22 @@
 
 VisionDrivePrimitive::VisionDrivePrimitive() : m_chassis(ChassisFactory::GetChassisFactory()->GetSwerveChassis()),
                                                m_headingOption(ChassisOptionEnums::HeadingOption::MAINTAIN),
-                                               m_ntName("VisionDrivePrimitive")
+                                               m_ntName("VisionDrivePrimitive"),
+                                               m_timer(new frc::Timer()),
+                                               m_timeout(0.0)
 {
 }
 
 void VisionDrivePrimitive::Init(PrimitiveParams *params)
 {
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "ArrivedAtInit", true);
-    m_alignmentMethod = params->GetAlignmentMethod();
     m_pipelineMode = params->GetPipelineMode();
-    m_visionAlignmentXoffset_in = params->GetVisionAlignmentXoffset_in();
+    m_timeout = params->GetTime();
 
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "m_alignmentMethod", m_alignmentMethod);
+    m_timer->Reset();
+    m_timer->Start();
+
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "m_pipelineMode", m_pipelineMode);
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "m_visionAlignmentXoffset_in", m_visionAlignmentXoffset_in);
 
     m_dragonVision = DragonVision::GetDragonVision();
     if (m_dragonVision != nullptr)
@@ -53,9 +55,20 @@ void VisionDrivePrimitive::Init(PrimitiveParams *params)
         m_visionDrive = dynamic_cast<VisionDrive *>(m_chassis->GetSpecifiedDriveState(ChassisOptionEnums::DriveStateType::VISION_DRIVE));
         m_visionDrive->ResetVisionDrive();
         m_visionDrive->setVisionPipeline(m_pipelineMode);
-        m_visionDrive->setAlignmentMethod(m_alignmentMethod);
-        m_visionDrive->setVisionAlignmentXoffset_in(m_visionAlignmentXoffset_in);
-        m_visionDrive->setInAutonMode();
+        m_visionDrive->setInAutonMode(true);
+
+        switch (m_pipelineMode)
+        {
+        case DragonLimelight::PIPELINE_MODE::APRIL_TAG:
+            m_headingOption = ChassisOptionEnums::HeadingOption::FACE_APRIL_TAG;
+            break;
+        case DragonLimelight::PIPELINE_MODE::CONE:
+        case DragonLimelight::PIPELINE_MODE::CUBE:
+            m_headingOption = ChassisOptionEnums::HeadingOption::FACE_FLOOR_GAME_PIECE;
+            break;
+        default:
+            break;
+        }
     }
 }
 
@@ -67,11 +80,7 @@ void VisionDrivePrimitive::Run()
     {
         ChassisMovement moveInfo;
         moveInfo.driveOption = ChassisOptionEnums::DriveStateType::VISION_DRIVE;
-
-        if (m_alignmentMethod == VisionDrive::ALIGNMENT_METHOD::ROTATE)
-            moveInfo.headingOption = ChassisOptionEnums::HeadingOption::IGNORE;
-        else
-            moveInfo.headingOption = ChassisOptionEnums::HeadingOption::MAINTAIN;
+        moveInfo.headingOption = m_headingOption;
 
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "driveOption", moveInfo.driveOption);
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "headingOption", moveInfo.headingOption);
@@ -82,7 +91,7 @@ void VisionDrivePrimitive::Run()
 
 bool VisionDrivePrimitive::IsDone()
 {
-    bool done = m_visionDrive->isAligned();
+    bool done = m_visionDrive->isAligned(m_pipelineMode) || m_timer->HasElapsed(units::time::second_t(m_timeout));
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "ArrivedAtDone", done);
 

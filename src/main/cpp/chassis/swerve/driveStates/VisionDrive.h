@@ -23,8 +23,9 @@
 #include <chassis/swerve/driveStates/RobotDrive.h>
 #include <chassis/swerve/driveStates/FieldDrive.h>
 #include <DragonVision/DragonVision.h>
+#include <robotstate/IRobotStateChangeSubscriber.h>
 
-class VisionDrive : public RobotDrive
+class VisionDrive : public RobotDrive, public IRobotStateChangeSubscriber
 {
 public:
     enum ALIGNMENT_METHOD
@@ -43,12 +44,14 @@ public:
 
     void ResetVisionDrive();
 
-    bool isAligned();
+    // robot state change subscriber override
+    void Update(RobotStateChanges::StateChange change, int state) override;
+
+    bool isAligned(DragonLimelight::PIPELINE_MODE pipelineMode);
 
     void setAlignmentMethod(ALIGNMENT_METHOD alignmentMethod) { m_alignmentMethod = alignmentMethod; }
-    void setVisionAlignmentXoffset_in(double offset) { m_visionAlignmentXoffset_in = offset; }
     void setVisionPipeline(DragonLimelight::PIPELINE_MODE pipeline) { m_pipelineMode = pipeline; }
-    void setInAutonMode() { m_inAutonMode = true; }
+    void setInAutonMode(bool inAuton) { m_inAutonMode = inAuton; }
 
 private:
     enum VISION_STATE
@@ -67,7 +70,7 @@ private:
 
     void AlignRawVision(ChassisMovement &chassisMovement);
 
-    bool AtTargetX(std::shared_ptr<DragonVisionTarget> targetData);
+    // bool AtTargetX(std::shared_ptr<DragonVisionTarget> targetData);
     bool AtTargetY(std::shared_ptr<DragonVisionTarget> targetData);
     bool AtTargetAngle(std::shared_ptr<DragonVisionTarget> targetData, units::angle::radian_t *error);
 
@@ -96,7 +99,6 @@ private:
 
     // Linear movement settings for X direction
     const double m_inhibitXspeedAboveYError_in = 2.5;
-    double m_visionAlignmentXoffset_in = 18.0; // in Auton gets updated from primitive
     const double m_centerOfRobotToBumperEdge_in = 16.0;
     const double m_gamePieceToBumperOffset = 0.0;
     bool m_xErrorUnderThreshold = false;
@@ -127,6 +129,8 @@ private:
     SwerveChassis *m_chassis;
 
     DragonVision *m_vision;
+
+    bool m_haveGamePiece;
 
     double getOffsetToTarget(ChassisOptionEnums::RELATIVE_POSITION targetGrid, ChassisOptionEnums::RELATIVE_POSITION targetNode, uint8_t AprilTagId);
     units::velocity::meters_per_second_t limitVelocityToBetweenMinAndMax(units::velocity::meters_per_second_t speed);
