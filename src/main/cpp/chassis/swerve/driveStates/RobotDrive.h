@@ -16,6 +16,8 @@
 #pragma once
 
 #include <frc/kinematics/SwerveModuleState.h>
+#include <frc/geometry/Pose2d.h>
+#include <frc/Timer.h>
 #include <units/length.h>
 #include <units/time.h>
 #include <units/velocity.h>
@@ -50,6 +52,12 @@ protected:
     void OverSteerCorrection(ChassisMovement &chassisMovement);
 
     SwerveChassis *m_chassis;
+    bool m_hasTargetPose;
+    frc::Pose2d m_targetPose;
+    frc::Timer m_timer;
+
+    static constexpr double PCONST_X = -0.01;
+    static constexpr double PCONST_Y = -0.01;
 
     static constexpr units::time::millisecond_t LOOP_TIME = units::time::millisecond_t(20.0);
     static constexpr units::velocity::meters_per_second_t MOVE_TOLERANCE = units::velocity::meters_per_second_t(0.1);
