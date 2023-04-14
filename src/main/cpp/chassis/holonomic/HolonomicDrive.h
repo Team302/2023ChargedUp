@@ -23,12 +23,13 @@
 #include <chassis/swerve/driveStates/DragonTrajectoryGenerator.h>
 #include <utils/DragonField.h>
 #include <chassis/swerve/driveStates/VisionDrive.h>
+#include <robotstate/IRobotStateChangeSubscriber.h>
 
 class IChassis;
 class MecanumChassis;
 class SwerveChassis;
 
-class HolonomicDrive : public State
+class HolonomicDrive : public State, public IRobotStateChangeSubscriber
 {
 public:
     HolonomicDrive();
@@ -38,6 +39,8 @@ public:
     void Run() override;
     void Exit() override;
     bool AtTarget() const override;
+
+    void Update(RobotStateChanges::StateChange change, int state) override;
 
 private:
     std::pair<ChassisOptionEnums::RELATIVE_POSITION, ChassisOptionEnums::RELATIVE_POSITION> GetAutoAlignDestination();
@@ -57,5 +60,7 @@ private:
     bool m_inVisionDrive = false;
     bool m_CheckTipping = false;
     bool m_latch = false;
-    bool m_findingCube = false;
+    bool m_findingFloorGamePiece = false;
+
+    RobotStateChanges::GamePiece m_desiredGamePiece;
 };

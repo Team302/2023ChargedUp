@@ -23,7 +23,7 @@ public:
         MAINTAIN,
         TOWARD_GOAL,
         SPECIFIED_ANGLE,
-        FACE_CUBE,
+        FACE_FLOOR_GAME_PIECE,
         FACE_APRIL_TAG,
         IGNORE
     };
