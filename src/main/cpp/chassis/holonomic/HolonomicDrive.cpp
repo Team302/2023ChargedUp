@@ -219,18 +219,6 @@ void HolonomicDrive::Run()
             m_latch = false;
         }
 
-        // if (controller->IsButtonPressed(TeleopControlFunctions::TIPCORRECTION_TOGGLE))
-        // {
-        //     m_timer++;
-        // }
-        // else
-        // {
-        //     m_timer = 0;
-        // }
-        // if (m_timer > 10)
-        // {
-        //     m_CheckTipping = !m_CheckTipping;
-        // }
         moveInfo.checkTipping = m_CheckTipping;
 
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("check tipping"), moveInfo.checkTipping);
