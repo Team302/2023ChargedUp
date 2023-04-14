@@ -241,6 +241,11 @@ void Robot::TeleopInit()
     }
     StateMgrHelper::RunCurrentMechanismStates();
 
+    if (m_chassis != nullptr)
+    {
+        dynamic_cast<VisionDrive *>(m_chassis->GetSpecifiedDriveState(ChassisOptionEnums::DriveStateType::VISION_DRIVE))->setInAutonMode(false);
+    }
+
     // now in teleop, clear field of trajectories
     if (m_field != nullptr)
     {

@@ -50,7 +50,7 @@ public:
         AUTO_TURN_BACKWARD,
         // Standish raw vision
         ALIGN_APRIL_TAG,
-        ALIGN_CUBE,
+        ALIGN_FLOOR_GAME_PIECE,
         // Scoring states
         DEBUG_INC_P,
         DEBUG_DEC_P,
