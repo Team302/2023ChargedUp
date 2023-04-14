@@ -79,17 +79,13 @@ void HolonomicDrive::Init()
 /// @return void
 void HolonomicDrive::Run()
 {
+    auto controller = TeleopControl::GetInstance();
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("controller "), controller != nullptr ? string("not nullptr ") : string("nullptr"));
     ChassisMovement moveInfo;
     moveInfo.driveOption = ChassisOptionEnums::DriveStateType::FIELD_DRIVE;
-    moveInfo.controllerType = ChassisOptionEnums::AutonControllerType::HOLONOMIC;
-
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("DriveOptionBEGINNING"), moveInfo.driveOption);
-
-    auto controller = TeleopControl::GetInstance();
-
+    moveInfo.controllerType = ChassisOptionEnums::AutonControllerType::HOLONOMIC;
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("chassis "), m_chassis != nullptr ? string("not nullptr ") : string("nullptr"));
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("controller "), controller != nullptr ? string("not nullptr ") : string("nullptr"));
-
     if (controller != nullptr && m_chassis != nullptr)
     {
         moveInfo.headingOption = ChassisOptionEnums::HeadingOption::MAINTAIN;
@@ -226,6 +222,22 @@ void HolonomicDrive::Run()
 
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("DriveOptionEND"), moveInfo.driveOption);
 
+        if (controller->IsButtonPressed(TeleopControlFunctions::TIPCORRECTION_TOGGLE))
+        {
+            if (m_latch == false)
+            {
+                m_CheckTipping = !m_CheckTipping;
+                m_latch = true;
+            }
+        }
+        else
+        {
+            m_latch = false;
+        }
+
+        moveInfo.checkTipping = m_CheckTipping;
+
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("check tipping"), moveInfo.checkTipping);
         /// debugging
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ANickDebugging"), string("DriveState"), moveInfo.driveOption);
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ANickDebugging"), string("HeadingOption"), moveInfo.headingOption);
@@ -237,7 +249,6 @@ void HolonomicDrive::Run()
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("Run"), string("nullptr"));
     }
 }
-
 void HolonomicDrive::Exit()
 {
 }

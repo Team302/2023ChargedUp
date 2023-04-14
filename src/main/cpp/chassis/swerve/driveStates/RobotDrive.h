@@ -24,6 +24,7 @@
 #include <chassis/swerve/SwerveChassis.h>
 #include <chassis/swerve/driveStates/ISwerveDriveState.h>
 #include <chassis/ChassisMovement.h>
+#include <teleopcontrol/TeleopControl.h>
 
 class RobotDrive : public ISwerveDriveState
 {
@@ -45,7 +46,6 @@ protected:
     units::length::inch_t m_wheeltrack;
     units::velocity::feet_per_second_t m_maxspeed;
 
-private:
     void CorrectForTipping(ChassisMovement &chassisMovement);
     void OverSteerCorrection(ChassisMovement &chassisMovement);
 
@@ -54,4 +54,5 @@ private:
     static constexpr units::time::millisecond_t LOOP_TIME = units::time::millisecond_t(20.0);
     static constexpr units::velocity::meters_per_second_t MOVE_TOLERANCE = units::velocity::meters_per_second_t(0.1);
     static constexpr units::angular_velocity::degrees_per_second_t ROTATE_TOLERANCE = units::angular_velocity::degrees_per_second_t(10.0);
+    void DecideTipCorrection(ChassisMovement &chassisMovement);
 };
