@@ -19,12 +19,19 @@
 #include <chassis/swerve/driveStates/RobotDrive.h>
 #include <chassis/ChassisFactory.h>
 
-StopDrive::StopDrive() : m_chassis(ChassisFactory::GetChassisFactory()->GetSwerveChassis())
+StopDrive::StopDrive(RobotDrive *robotDrive) : RobotDrive(), m_robotDrive(robotDrive), m_chassis(ChassisFactory::GetChassisFactory()->GetSwerveChassis())
 {
 }
 
 std::array<frc::SwerveModuleState, 4> StopDrive::UpdateSwerveModuleStates(ChassisMovement &chassisMovement)
+
 {
+    if (chassisMovement.checkTipping)
+    {
+        CorrectForTipping(chassisMovement);
+        return m_robotDrive->UpdateSwerveModuleStates(chassisMovement);
+    }
+
     return {*m_flState, *m_frState, *m_blState, *m_brState};
 }
 
