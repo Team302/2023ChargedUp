@@ -89,7 +89,7 @@ private:
     const double m_autoAlignKP_Y = 0.05;  // used for driving to target
     const double m_autoAlignKP_X = 0.035; // used for driving to target
     const double m_visionKP_X = 1.5;      // used for vision based alignment
-    double m_visionKP_Y = 1.75;           // used for vision based alignment
+    double m_visionKP_Y = 2.5;            // used for vision based alignment
     double m_visionKI_Y = 0.00;           // used for vision based alignment
 
     // Linear movement settings for both X and Y directions
