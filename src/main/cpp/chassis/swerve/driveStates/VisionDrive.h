@@ -18,6 +18,7 @@
 // FRC Includes
 #include <frc/kinematics/SwerveModuleState.h>
 #include <frc/kinematics/ChassisSpeeds.h>
+#include <frc/Timer.h>
 
 // Team302 Includes
 #include <chassis/swerve/driveStates/RobotDrive.h>
@@ -129,6 +130,9 @@ private:
     SwerveChassis *m_chassis;
 
     DragonVision *m_vision;
+
+    frc::Timer *m_lostGamePieceTimer;
+    const units::second_t m_lostGamePieceTimeout = units::second_t(0.25);
 
     bool m_haveGamePiece;
 

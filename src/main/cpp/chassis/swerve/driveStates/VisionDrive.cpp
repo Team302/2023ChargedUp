@@ -39,7 +39,8 @@ VisionDrive::VisionDrive(RobotDrive *robotDrive) : RobotDrive(),
                                                    m_robotDrive(robotDrive),
                                                    m_chassis(ChassisFactory::GetChassisFactory()->GetSwerveChassis()),
                                                    m_vision(DragonVision::GetDragonVision()),
-                                                   m_haveGamePiece(false)
+                                                   m_haveGamePiece(false),
+                                                   m_lostGamePieceTimer(new frc::Timer())
 {
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::HoldingGamePiece);
 }
@@ -47,19 +48,35 @@ VisionDrive::VisionDrive(RobotDrive *robotDrive) : RobotDrive(),
 std::array<frc::SwerveModuleState, 4> VisionDrive::UpdateSwerveModuleStates(ChassisMovement &chassisMovement)
 {
     auto targetData = DragonVision::GetDragonVision()->getTargetInfo();
-    if (((targetData != nullptr) || m_xErrorUnderThreshold) && (m_vision->getPipeline(DragonVision::LIMELIGHT_POSITION::FRONT) == targetData->getTargetType()))
+
+    bool targetDataIsNullptr = targetData == nullptr;
+
+    if (!targetDataIsNullptr)
+    {
+        m_lostGamePieceTimer->Stop();
+        m_lostGamePieceTimer->Reset();
+    }
+    else
+    {
+        m_lostGamePieceTimer->Start();
+    }
+
+    if ((!targetDataIsNullptr || m_xErrorUnderThreshold || (m_lostGamePieceTimer->Get() < m_lostGamePieceTimeout)) && (m_vision->getPipeline(DragonVision::LIMELIGHT_POSITION::FRONT) == targetData->getTargetType()))
     {
         bool atTarget_x = false;
         bool atTarget_angle = false;
 
         units::angle::radian_t angleError = units::angle::radian_t(0.0);
 
-        if (targetData != nullptr)
+        if (!targetDataIsNullptr)
         {
             atTarget_angle = AtTargetAngle(targetData, &angleError);
 
             // Do not move in the X direction until the other measure angle is within a certain tolerance
-            bool moveInXDir = std::abs(angleError.to<double>()) < m_inhibitXspeedAboveAngularError_rad;
+            if (!m_moveInXDir)
+            {
+                m_moveInXDir = std::abs(angleError.to<double>()) < m_inhibitXspeedAboveAngularError_rad;
+            }
 
             if ((m_vision->getPipeline(DragonVision::LIMELIGHT_POSITION::FRONT) == DragonLimelight::PIPELINE_MODE::APRIL_TAG) && m_inAutonMode)
             {
@@ -220,6 +237,8 @@ void VisionDrive::ResetVisionDrive()
     yErrorIntegral = units::length::inch_t(0);
     m_xErrorUnderThreshold = false;
     m_haveGamePiece = false;
+    m_lostGamePieceTimer->Stop();
+    m_lostGamePieceTimer->Reset();
 }
 
 void VisionDrive::Update(RobotStateChanges::StateChange change, int value)

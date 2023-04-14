@@ -58,8 +58,13 @@ bool FaceAprilTag::AtTargetAngle(std::shared_ptr<DragonVisionTarget> targetData,
         if (std::abs(xError.to<double>()) > 0.01)
         {
             /// Math
-            // First get the pigeon angle to later get field, this is considered theta
+            // First get the pigeon angle to later get field, this is considered
             // Next, get the angle to the tag, this is considered alpha
+            // Calculate alpha by taking the arc/inverse tangent of our yError and xError (robot oriented) to the tag
+            // Calculate field oriented error by taking the cosine and sine of alpha + theta
+            // From there, we can get the angle to the back of the node (considered beta)
+            // This is calculated by taking arc/inverse tangent of our field oriented yError, divided by our field oriented xError
+            // and the offset to the back of the cube node
 
             auto pigeon = PigeonFactory::GetFactory()->GetCenterPigeon();
             units::angle::degree_t robotYaw = units::angle::degree_t(pigeon->GetYaw());
