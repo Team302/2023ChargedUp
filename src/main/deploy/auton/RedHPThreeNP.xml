@@ -6,7 +6,7 @@
 			/>
     <!--score preloaded cone-->
     <snippet file="ScoreCone.xml"/>
-    <!--drive to charing station-->
+    <!--drive to cube-->
 <primitive id="DRIVE_PATH_PLANNER"
 	           pathname="RedHP1"
 			   arm="FLOOR_POSITION_ROTATE_AUTON"
@@ -18,7 +18,6 @@
                intake="INTAKE"
 			   extender="FLOOR_EXTEND"
                time="0.25"/>
-<!--drive to cone-->
 <primitive id="DRIVE_PATH_PLANNER"
 	           pathname="RedHP2"
 			   arm="FLOOR_POSITION_ROTATE"
@@ -32,20 +31,19 @@
                intake="INTAKE_HOLD_CUBE"
 			   extender="STARTING_POSITION_EXTEND"
                time="3.0"/>
-<!--score cone-->
+<!--score cube-->
         <snippet file="ScoreHighCube.xml"/>
-
+<!--drive to cone-->
 <primitive id="DRIVE_PATH_PLANNER"
-	           pathname="RedHP5"
-			   arm="FLOOR_POSITION_ROTATE"
-               intake="INTAKE"
-			   extender="STARTING_POSITION_EXTEND"
-               time="3.0"/>
+	        pathname="RedHP5"
+			arm="FLOOR_POSITION_ROTATE"
+            intake="INTAKE"
+			extender="FLOOR_EXTEND"
+            time="2.85"/>
 <primitive id="VISION_ALIGN"
             pipeline="CONE"
             arm="FLOOR_POSITION_ROTATE"
             intake="INTAKE"
-			extender="STARTING_POSITION_EXTEND"
-            time="30.0"
-/>
+			extender="FLOOR_EXTEND"
+            time="30.0"/>
 </auton>
