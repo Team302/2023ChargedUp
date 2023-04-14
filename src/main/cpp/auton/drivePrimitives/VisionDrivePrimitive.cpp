@@ -26,6 +26,7 @@
 
 /// DEBUGGING
 #include <utils/logging/Logger.h>
+#include <iostream>
 
 VisionDrivePrimitive::VisionDrivePrimitive() : m_chassis(ChassisFactory::GetChassisFactory()->GetSwerveChassis()),
                                                m_headingOption(ChassisOptionEnums::HeadingOption::MAINTAIN),
@@ -38,6 +39,7 @@ VisionDrivePrimitive::VisionDrivePrimitive() : m_chassis(ChassisFactory::GetChas
 void VisionDrivePrimitive::Init(PrimitiveParams *params)
 {
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "ArrivedAtInit", true);
+
     m_pipelineMode = params->GetPipelineMode();
     m_timeout = params->GetTime();
 
@@ -53,6 +55,7 @@ void VisionDrivePrimitive::Init(PrimitiveParams *params)
     if (m_chassis != nullptr)
     {
         m_visionDrive = dynamic_cast<VisionDrive *>(m_chassis->GetSpecifiedDriveState(ChassisOptionEnums::DriveStateType::VISION_DRIVE));
+
         m_visionDrive->ResetVisionDrive();
         m_visionDrive->setVisionPipeline(m_pipelineMode);
         m_visionDrive->setInAutonMode(true);
@@ -91,9 +94,12 @@ void VisionDrivePrimitive::Run()
 
 bool VisionDrivePrimitive::IsDone()
 {
-    bool done = m_visionDrive->isAligned(m_pipelineMode) || m_timer->HasElapsed(units::time::second_t(m_timeout));
+    bool done = false;
+
+    if (m_visionDrive != nullptr)
+        done = m_visionDrive->isAligned(m_pipelineMode);
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "ArrivedAtDone", done);
 
-    return done;
+    return done || m_timer->HasElapsed(units::time::second_t(m_timeout));
 }

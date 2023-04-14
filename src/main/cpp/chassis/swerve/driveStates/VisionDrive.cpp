@@ -28,6 +28,7 @@
 
 /// DEBUGGING
 #include <utils/logging/Logger.h>
+#include <iostream>
 
 VisionDrive::VisionDrive(RobotDrive *robotDrive) : RobotDrive(),
                                                    IRobotStateChangeSubscriber(),
@@ -61,22 +62,19 @@ std::array<frc::SwerveModuleState, 4> VisionDrive::UpdateSwerveModuleStates(Chas
         m_lostGamePieceTimer->Start();
     }
 
-    if ((!targetDataIsNullptr || m_xErrorUnderThreshold || (m_lostGamePieceTimer->Get() < m_lostGamePieceTimeout)) && (m_vision->getPipeline(DragonVision::LIMELIGHT_POSITION::FRONT) == targetData->getTargetType()))
+    if (!targetDataIsNullptr)
     {
-        bool atTarget_x = false;
-        bool atTarget_angle = false;
-
-        units::angle::radian_t angleError = units::angle::radian_t(0.0);
-
-        if (!targetDataIsNullptr)
+        if (m_vision->getPipeline(DragonVision::LIMELIGHT_POSITION::FRONT) == targetData->getTargetType())
         {
+            bool atTarget_x = false;
+            bool atTarget_angle = false;
+
+            units::angle::radian_t angleError = units::angle::radian_t(0.0);
+
             atTarget_angle = AtTargetAngle(targetData, &angleError);
 
             // Do not move in the X direction until the other measure angle is within a certain tolerance
-            if (!m_moveInXDir)
-            {
-                m_moveInXDir = std::abs(angleError.to<double>()) < m_inhibitXspeedAboveAngularError_rad;
-            }
+            bool moveInXDir = std::abs(angleError.to<double>()) < m_inhibitXspeedAboveAngularError_rad;
 
             if ((m_vision->getPipeline(DragonVision::LIMELIGHT_POSITION::FRONT) == DragonLimelight::PIPELINE_MODE::APRIL_TAG) && m_inAutonMode)
             {
@@ -99,10 +97,10 @@ std::array<frc::SwerveModuleState, 4> VisionDrive::UpdateSwerveModuleStates(Chas
                 chassisMovement.chassisSpeeds.vx = xSpeed;
             }
         }
-        else
-        {
-            chassisMovement.chassisSpeeds.vx = units::velocity::meters_per_second_t(m_minimumSpeed_mps);
-        }
+    }
+    else if (m_xErrorUnderThreshold)
+    {
+        chassisMovement.chassisSpeeds.vx = units::velocity::meters_per_second_t(m_minimumSpeed_mps);
     }
 
     return m_robotDrive->UpdateSwerveModuleStates(chassisMovement);

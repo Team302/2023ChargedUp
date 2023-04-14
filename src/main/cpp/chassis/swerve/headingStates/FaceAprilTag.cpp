@@ -36,7 +36,7 @@ void FaceAprilTag::UpdateChassisSpeeds(ChassisMovement &chassisMovement)
     // get targetdata from the vision system
     auto targetData = m_vision->getTargetInfo();
 
-    if ((targetData != nullptr) && (m_pipelineMode == targetData->getTargetType()))
+    if ((targetData != nullptr) && (m_vision->getPipeline(DragonVision::LIMELIGHT_POSITION::FRONT) == targetData->getTargetType()))
     {
         if (!AtTargetAngle(targetData, &angleError))
         {
