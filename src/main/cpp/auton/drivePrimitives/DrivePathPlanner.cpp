@@ -58,7 +58,7 @@ void DrivePathPlanner::Init(PrimitiveParams *params)
     m_ntName = string("DrivePathPlanner: ") + m_pathname;
     m_maxTime = params->GetTime();
 
-    m_trajectory = PathPlanner::loadPath(m_pathname, PathConstraints(3.0_mps, 2.0_mps_sq));
+    m_trajectory = PathPlanner::loadPath(m_pathname, PathConstraints(4.5_mps, 2.75_mps_sq));
 
     // Start timeout timer for path
     m_timer.get()->Reset();

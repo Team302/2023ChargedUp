@@ -89,12 +89,12 @@ private:
     const double m_autoAlignKP_Y = 0.05;  // used for driving to target
     const double m_autoAlignKP_X = 0.035; // used for driving to target
     const double m_visionKP_X = 1.5;      // used for vision based alignment
-    double m_visionKP_Y = 1.75;           // used for vision based alignment
+    double m_visionKP_Y = 2.5;            // used for vision based alignment
     double m_visionKI_Y = 0.00;           // used for vision based alignment
 
     // Linear movement settings for both X and Y directions
-    const double m_minimumSpeed_mps = 0.6;
-    const double m_maximumSpeed_mps = 1.75;
+    const double m_minimumSpeed_mps = 1.25;
+    const double m_maximumSpeed_mps = 2.0;
     const double m_linearTolerance_in = 2;
 
     // Linear movement settings for X direction
@@ -105,8 +105,8 @@ private:
     const double m_xErrorThreshold = 3.0;
 
     // Angular movement settings
-    const double m_minimumOmega_radps = 0.7;
-    const double m_maximumOmega_radps = 1.2;
+    const double m_minimumOmega_radps = 1.0;
+    const double m_maximumOmega_radps = 1.5;
     const double m_AngularTolerance_rad = std::numbers::pi * 4.0 / 180.0;
     const double m_inhibitXspeedAboveAngularError_rad = std::numbers::pi * 5.0 / 180.0;
     double m_visionKP_Angle = 2;
