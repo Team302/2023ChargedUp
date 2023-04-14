@@ -58,6 +58,8 @@ private:
     const double m_autoAlignAngleTolerance = 5.0;
     bool m_hasResetPosition = false;
     bool m_inVisionDrive = false;
+    bool m_CheckTipping = false;
+    bool m_latch = false;
     bool m_findingFloorGamePiece = false;
 
     RobotStateChanges::GamePiece m_desiredGamePiece;
