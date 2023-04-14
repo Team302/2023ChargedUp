@@ -31,7 +31,7 @@ class StopDrive : public RobotDrive
 {
 public:
     using RobotDrive::RobotDrive;
-
+    StopDrive() = delete;
     StopDrive(RobotDrive *RobotDrive);
     ~StopDrive() = default;
 
