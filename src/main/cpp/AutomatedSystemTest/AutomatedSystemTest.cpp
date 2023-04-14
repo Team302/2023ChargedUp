@@ -13,6 +13,7 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 // author: not charlie writer of dumb code, copy/paster of better code
+// co-author: imapenguin: creator of the "angel function"
 #include <AutomatedSystemTest/AutomatedSystemTest.h>
 #include <frc/PowerDistribution.h>
 #include <hw/factories/PDPFactory.h>
