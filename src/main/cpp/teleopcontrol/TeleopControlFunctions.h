@@ -98,6 +98,8 @@ public:
         // Compressor ON/Off controls
         TOGGLE_COMPRESSER,
         MAX_FUNCTIONS,
+        // tip correction controls
+        TIPCORRECTION_TOGGLE,
 
     };
 };
