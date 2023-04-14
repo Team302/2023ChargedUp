@@ -52,8 +52,9 @@ private:
     ChassisOptionEnums::HeadingOption m_headingOption;
     std::string m_ntName;
     DragonLimelight::PIPELINE_MODE m_pipelineMode;
-    VisionDrive::ALIGNMENT_METHOD m_alignmentMethod;
-    double m_visionAlignmentXoffset_in;
+
+    frc::Timer *m_timer;
+    float m_timeout;
 
     DragonVision *m_dragonVision;
 };

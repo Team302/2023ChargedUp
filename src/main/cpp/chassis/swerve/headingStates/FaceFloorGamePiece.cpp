@@ -14,16 +14,18 @@
 //====================================================================================================================================================
 
 // Team302 Includes
-#include <chassis/swerve/headingStates/FaceCube.h>
+#include <chassis/swerve/headingStates/FaceFloorGamePiece.h>
 #include <DragonVision/LimelightFactory.h>
 
-FaceCube::FaceCube() : ISwerveDriveOrientation(ChassisOptionEnums::HeadingOption::FACE_APRIL_TAG),
-                       m_pipelineMode(DragonLimelight::CUBE),
-                       m_vision(DragonVision::GetDragonVision())
+/// debugging
+#include <utils/logging/Logger.h>
+
+FaceFloorGamePiece::FaceFloorGamePiece() : ISwerveDriveOrientation(ChassisOptionEnums::HeadingOption::FACE_APRIL_TAG),
+                                           m_vision(DragonVision::GetDragonVision())
 {
 }
 
-void FaceCube::UpdateChassisSpeeds(ChassisMovement &chassisMovement)
+void FaceFloorGamePiece::UpdateChassisSpeeds(ChassisMovement &chassisMovement)
 {
     units::angular_velocity::radians_per_second_t omega = units::angular_velocity::radians_per_second_t(0.0);
 
@@ -32,7 +34,7 @@ void FaceCube::UpdateChassisSpeeds(ChassisMovement &chassisMovement)
     // get targetdata from the vision system
     auto targetData = m_vision->getTargetInfo();
 
-    if ((targetData != nullptr) && (m_pipelineMode == targetData->getTargetType()))
+    if ((targetData != nullptr) && (m_vision->getPipeline(DragonVision::LIMELIGHT_POSITION::FRONT) == targetData->getTargetType()))
     {
         if (!AtTargetAngle(targetData, &angleError))
         {
@@ -41,10 +43,12 @@ void FaceCube::UpdateChassisSpeeds(ChassisMovement &chassisMovement)
 
             chassisMovement.chassisSpeeds.omega = omega;
         }
+
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ANickDebugging", "AngleError", angleError.to<double>());
     }
 }
 
-bool FaceCube::AtTargetAngle(std::shared_ptr<DragonVisionTarget> targetData, units::angle::radian_t *error)
+bool FaceFloorGamePiece::AtTargetAngle(std::shared_ptr<DragonVisionTarget> targetData, units::angle::radian_t *error)
 {
     if (targetData != nullptr)
     {
@@ -64,7 +68,7 @@ bool FaceCube::AtTargetAngle(std::shared_ptr<DragonVisionTarget> targetData, uni
     return false;
 }
 
-units::angular_velocity::radians_per_second_t FaceCube::limitAngularVelocityToBetweenMinAndMax(units::angular_velocity::radians_per_second_t angularVelocity)
+units::angular_velocity::radians_per_second_t FaceFloorGamePiece::limitAngularVelocityToBetweenMinAndMax(units::angular_velocity::radians_per_second_t angularVelocity)
 {
     double sign = angularVelocity.to<double>() < 0 ? -1 : 1;
 
