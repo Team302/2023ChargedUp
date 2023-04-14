@@ -16,6 +16,10 @@
 // Team302 Includes
 #include <chassis/swerve/headingStates/FaceAprilTag.h>
 #include <DragonVision/LimelightFactory.h>
+#include <hw/factories/PigeonFactory.h>
+
+/// debugging
+#include <utils/logging/Logger.h>
 
 FaceAprilTag::FaceAprilTag() : ISwerveDriveOrientation(ChassisOptionEnums::HeadingOption::FACE_APRIL_TAG),
                                m_pipelineMode(DragonLimelight::APRIL_TAG),
@@ -53,7 +57,33 @@ bool FaceAprilTag::AtTargetAngle(std::shared_ptr<DragonVisionTarget> targetData,
 
         if (std::abs(xError.to<double>()) > 0.01)
         {
-            *error = units::angle::radian_t(std::atan2(yError.to<double>(), xError.to<double>()));
+            /// Math
+            // First get the pigeon angle to later get field, this is considered theta
+            // Next, get the angle to the tag, this is considered alpha
+
+            auto pigeon = PigeonFactory::GetFactory()->GetCenterPigeon();
+            units::angle::degree_t robotYaw = units::angle::degree_t(pigeon->GetYaw());
+
+            auto angleToTag = units::angle::radian_t(std::atan2(yError.to<double>(), xError.to<double>()));
+
+            units::length::inch_t xErrorFieldOriented = xError * units::math::cos(angleToTag + robotYaw);
+            units::length::inch_t yErrorFieldOriented = xError * units::math::sin(angleToTag + robotYaw);
+
+            auto angleToBackOfNode = units::math::atan2(yErrorFieldOriented, xErrorFieldOriented + m_cubeNodeLength);
+
+            *error = -1.0 * (robotYaw - angleToBackOfNode); // negate to turn correctly
+
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ANickDebugging", "RobotYaw (Deg)", robotYaw.to<double>());
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ANickDebugging", "AngleToTag (Rad)", angleToTag.to<double>());
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ANickDebugging", "AngleToTag (Deg)", units::angle::degree_t(angleToTag).to<double>());
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ANickDebugging", "YError (Inches)", yError.to<double>());
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ANickDebugging", "XError (Inches)", xError.to<double>());
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ANickDebugging", "XErrorFieldOriented (Inches)", xErrorFieldOriented.to<double>());
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ANickDebugging", "YErrorFieldOriented (Inches)", yErrorFieldOriented.to<double>());
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ANickDebugging", "Beta (Rad)", angleToBackOfNode.to<double>());
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ANickDebugging", "Beta (Deg)", units::angle::degree_t(angleToBackOfNode).to<double>());
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ANickDebugging", "Angle Error (Rad)", (*error).to<double>());
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ANickDebugging", "Angle Error (Deg)", units::angle::degree_t(*error).to<double>());
 
             if (std::abs((*error).to<double>()) < m_AngularTolerance_rad)
             {

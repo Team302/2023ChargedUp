@@ -127,7 +127,8 @@ void HolonomicDrive::Run()
                     DragonVision::GetDragonVision()->setPipeline(alignFloorPiece ? DragonLimelight::PIPELINE_MODE::CONE : DragonLimelight::PIPELINE_MODE::CONE_SUBSTATION);
 
                 moveInfo.headingOption = ChassisOptionEnums::HeadingOption::FACE_GAME_PIECE;
-                moveInfo.driveOption = ChassisOptionEnums::DriveStateType::VISION_DRIVE;
+                if (alignFloorPiece)
+                    moveInfo.driveOption = ChassisOptionEnums::DriveStateType::VISION_DRIVE;
 
                 m_findingFloorGamePiece = true;
             }
