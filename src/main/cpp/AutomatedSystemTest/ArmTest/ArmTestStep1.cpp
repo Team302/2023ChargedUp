@@ -12,7 +12,7 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
-#include <AutomatedSystemTest/ArmTest.h>
+#include <AutomatedSystemTest/ArmTest1.h>
 #include <mechanisms/arm/ArmStateMgr.h>
 #include <utils/logging/Logger.h>
 #include <string>
@@ -28,7 +28,6 @@ void ArmTest::Init()
     ExtenderStateMgr::GetInstance()->SetCurrentState(ExtenderStateMgr::EXTENDER_STATE::STARTING_POSITION_EXTEND, (true));
     ArmStateMgr::GetInstance()->SetCurrentState(ArmStateMgr::ARM_STATE::STARTING_POSITION_ROTATE, true);
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("ArmTest"), "Arm Test Running");
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("ExtenderTest"), "Extender Test Running");
 }
 void ArmTest::Run()
 {

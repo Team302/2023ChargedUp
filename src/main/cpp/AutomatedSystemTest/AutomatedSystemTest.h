@@ -14,7 +14,7 @@
 //====================================================================================================================================================
 #pragma once
 #include <AutomatedSystemTest/XBackwardTest.h>
-#include <AutomatedSystemTest/ArmTest.h>
+#include <AutomatedSystemTest/ArmTest/ArmTestStep1.h>
 #include <AutomatedSystemTest/ExtenderTest.h>
 #include <AutomatedSystemTest/XForwardTest.h>
 #include <AutomatedSystemTest/YBackwardTest.h>
@@ -34,11 +34,11 @@ private:
     enum TEST_STEP
     {
         BASE_TEST = 0,
-        ARM_TEST = 1,
-        SWERVE_VX_FORWARD = 2,
-        SWERVE_VX_BACKWARD = 3,
-        SWERVE_VY_FORWARD = 4,
-        SWERVE_VY_BACKWARD = 5,
+        ARM_TESTStep1,
+        SWERVE_VX_FORWARD,
+        SWERVE_VX_BACKWARD,
+        SWERVE_VY_FORWARD,
+        SWERVE_VY_BACKWARD,
     };
     TEST_STEP m_testStep;
     int m_stepnum = 1;

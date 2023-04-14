@@ -7,36 +7,26 @@
 //
 // The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 //
-// THE SOFTWARE IS PRINTOVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRINTESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 // MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
-// author: not charlie writer of dumb code, copy/paster of better code
-// co-author: imapenguin: creator of literally all of this code.
-#include <AutomatedSystemTest/AutomatedSystemTest.h>
-#include <frc/PowerDistribution.h>
-#include <hw/factories/PDPFactory.h>
+#include <AutomatedSystemTest/ArmTest/ArmTestStep2.h>>
+#include <mechanisms/arm/ArmStateMgr.h>
 #include <utils/logging/Logger.h>
-#include <hal/PowerDistribution.h>
-#include <units/velocity.h>
-#include <units/angular_velocity.h>
-
-using namespace std;
-AutomatedSystemTest::AutomatedSystemTest()
-{
-    TEST_STEP m_testStep;
-    m_finishedcurrenttest;
-}
-void AutomatedSystemTest::Init()
-{
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("test init"), "reached");
-    m_stepnum = 1;
-}
-void AutomatedSystemTest::Run()
+#include <mechanisms/arm/ArmState.h>
+ArmTestStep2::ArmTestStep2()
 {
 }
 
-void AutomatedSystemTest::Exit()
+void ArmTestStep2::Run()
 {
+    bool m_targetReached = false;
+    auto m_armstate = ArmStateMgr::GetInstance()->GetCurrentState();
+    if (m_armstate == ArmStateMgr::ARM_STATE::CONE_BACKROW_ROTATE)
+    {
+        ArmStateMgr::GetInstance()->SetCurrentState(ArmStateMgr::ARM_STATE::STARTING_POSITION_ROTATE, true);
+        m_targetReached = ArmState::AtTarget();
+    }
 }
