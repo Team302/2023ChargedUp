@@ -38,9 +38,6 @@ private:
     LEDStates() = default;
     ~LEDStates() = default;
 
-    int topIndividualLEDStripLength = 27;
-    int botIndividualLEDStripLength = 34;
-
     int loopThroughIndividualLEDs = -1;
     int colorLoop = 0;
     int timer;

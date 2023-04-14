@@ -22,6 +22,7 @@ public:
     enum StateChange
     {
         DesiredGamePiece,
+        CurrentGamePiece,
         HoldingGamePiece,
         ArmExtenderState,
         ArmRotateState,

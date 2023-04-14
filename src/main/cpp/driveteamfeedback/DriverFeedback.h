@@ -58,6 +58,8 @@ private:
     bool m_intakeIntaking = false;
     bool m_wantCube = false;
     bool m_wantCone = false;
+    bool m_hasCube = false;
+    bool m_hasCone = false;
     bool m_gamePieceReadyToPickUp = false;
     bool m_gamePieceInIntake = false;
     bool m_alignedWithConeNode = false;

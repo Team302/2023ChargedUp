@@ -95,6 +95,14 @@ void DriverFeedback::UpdateLEDStates()
             m_LEDStates->ResetVariables();
             m_gamePieceState = DriverFeedbackStates::WANT_CUBE;
         }
+        if (m_hasCone)
+        {
+            m_LEDStates->HalfAndHalfPattern(DragonLeds::YELLOW, DragonLeds::PURPLE);
+        }
+        else if (m_hasCube)
+        {
+            m_LEDStates->SolidColorPattern(DragonLeds::PURPLE);
+        }
         if (m_intakeStateChanged)
         {
             if (m_intakeIntaking)
@@ -109,6 +117,14 @@ void DriverFeedback::UpdateLEDStates()
         {
             m_LEDStates->ResetVariables();
             m_gamePieceState = DriverFeedbackStates::WANT_CONE;
+        }
+        if (m_hasCube)
+        {
+            m_LEDStates->HalfAndHalfPattern(DragonLeds::PURPLE, DragonLeds::YELLOW);
+        }
+        else if (m_hasCone)
+        {
+            m_LEDStates->SolidColorPattern(DragonLeds::YELLOW);
         }
         if (m_intakeStateChanged)
         {
@@ -151,11 +167,15 @@ void DriverFeedback::UpdateLEDStates()
         }
         if (DriverFeedback::m_wantCone)
         {
-            m_LEDStates->BlinkingPattern(DragonLeds::YELLOW);
-        }
+            // m_LEDStates->BlinkingPattern(DragonLeds::YELLOW);
+            m_hasCone = true;
+            m_hasCube = false;
+                }
         else
         {
-            m_LEDStates->BlinkingPattern(DragonLeds::PURPLE);
+            // m_LEDStates->BlinkingPattern(DragonLeds::PURPLE);
+            m_hasCube = true;
+            m_hasCone = false;
         }
     }
 }
@@ -178,6 +198,7 @@ DriverFeedback::DriverFeedback() : IRobotStateChangeSubscriber()
 {
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::IntakeState);
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::DesiredGamePiece);
+    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::CurrentGamePiece);
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::HoldingGamePiece);
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::GameState);
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::CompressorChange);
@@ -187,10 +208,16 @@ void DriverFeedback::Update(RobotStateChanges::StateChange change, int value)
 {
     if (change == RobotStateChanges::DesiredGamePiece)
     {
-        auto gamepiece = static_cast<RobotStateChanges::GamePiece>(value);
-        m_wantCube = gamepiece == RobotStateChanges::Cube;
-        m_wantCone = gamepiece == RobotStateChanges::Cone;
+        auto desiredgamepiece = static_cast<RobotStateChanges::GamePiece>(value);
+        m_wantCube = desiredgamepiece == RobotStateChanges::Cube;
+        m_wantCone = desiredgamepiece == RobotStateChanges::Cone;
     }
+    // else if (change == RobotStateChanges::CurrentGamePiece)
+    // {
+    //     auto currentgamepiece = static_cast<RobotStateChanges::GamePiece>(value);
+    //     m_hasCube = currentgamepiece == RobotStateChanges::Cube;
+    //     m_hasCone = currentgamepiece == RobotStateChanges::Cone;
+    // }
     else if (change == RobotStateChanges::IntakeState)
     {
         auto state = static_cast<IntakeStateMgr::INTAKE_STATE>(value);
