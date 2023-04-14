@@ -217,6 +217,8 @@ void SwerveChassis::Drive(ChassisMovement moveInfo)
         m_backLeft.get()->SetDesiredState(states[LEFT_BACK]);
         m_backRight.get()->SetDesiredState(states[RIGHT_BACK]);
     }
+    auto table = nt::NetworkTableInstance::GetDefault().GetTable("Anti-Tip");
+    table.get()->PutBoolean(std::string(" "), (moveInfo.checkTipping));
 }
 
 void SwerveChassis::Drive()
