@@ -13,17 +13,14 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 #pragma once
-#include <frc/PowerDistribution.h>
-#include <hw/factories/PDPFactory.h>
+#include <AutomatedSystemTest/XBackwardTest.h>
 #include <AutomatedSystemTest/ArmTest.h>
-#include <chassis/swerve/swerveChassis.h>
-#include <chassis/swerve/headingStates/ISwerveDriveOrientation.h>
-#include <chassis/ChassisFactory.h>
-#include <chassis/ChassisMovement.h>
-#include <frc/kinematics/ChassisSpeeds.h>
+#include <AutomatedSystemTest/ExtenderTest.h>
+#include <AutomatedSystemTest/XForwardTest.h>
+#include <AutomatedSystemTest/YBackwardTest.h>
+#include <AutomatedSystemTest/YForwardTest.h>
 
 using namespace std;
-class PowerDistribution;
 class AutomatedSystemTest
 {
 public:
@@ -31,37 +28,23 @@ public:
     ~AutomatedSystemTest() = default;
     void Init();
     void Run();
+    void Exit();
 
 private:
     enum TEST_STEP
     {
         BASE_TEST = 0,
         ARM_TEST = 1,
-        EXTENDER_TEST = 2,
-        SWERVE_VX_FORWARD = 3,
-        SWERVE_VX_BACKWARD = 4,
-        SWERVE_VY_FORWARD = 5,
-        SWERVE_VY_BACKWARD = 6,
+        SWERVE_VX_FORWARD = 2,
+        SWERVE_VX_BACKWARD = 3,
+        SWERVE_VY_FORWARD = 4,
+        SWERVE_VY_BACKWARD = 5,
     };
     TEST_STEP m_testStep;
-    bool m_finishedcurrentstep;
+    int m_stepnum = 1;
+    bool m_currentTest;
     bool m_finishedcurrenttest;
     bool m_startedtest;
-    int TestStepnum;
-    int m_timer0 = 0;
-    int m_timer1 = 0;
-    int m_timer2 = 0;
-    int m_timer3 = 0;
-    double m_swervechassisforwardusage;
-    double m_swervechassisstrafeusage;
-    double m_swervechassisturnusage;
-    double m_InitialPDPWatts;
-    frc::PowerDistribution *m_PDP;
-    bool TestExtender();
-    bool TestswervevxForward();
-    bool TestswervevxBackward();
-    bool TestswervevyForward();
-    bool TestswervevyBackward();
     // double GetTestPnumatics();
     // double GetPDHTemp();
 };
