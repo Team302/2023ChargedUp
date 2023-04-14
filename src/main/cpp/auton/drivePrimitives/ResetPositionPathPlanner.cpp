@@ -42,7 +42,7 @@ void ResetPositionPathPlanner::Init(PrimitiveParams *params)
 {
 
     // m_trajectory = pathplanner::PathPlanner::loadPath(params->GetPathName(), pathplanner::PathPlanner::getConstraintsFromPath(params->GetPathName()));
-    m_trajectory = pathplanner::PathPlanner::loadPath(params->GetPathName(), pathplanner::PathConstraints(4.5_mps, 3.0_mps_sq));
+    m_trajectory = pathplanner::PathPlanner::loadPath(params->GetPathName(), pathplanner::PathConstraints(4.5_mps, 2.75_mps_sq));
 
     // auto pigeon = PigeonFactory::GetFactory()->GetCenterPigeon();
     //  pigeon->ReZeroPigeon(m_trajectory.getInitialState().holonomicRotation.Degrees().to<double>());

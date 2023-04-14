@@ -28,7 +28,7 @@ TrajectoryDrivePathPlanner::TrajectoryDrivePathPlanner(RobotDrive *robotDrive) :
                                                                                  m_trajectory(),
                                                                                  m_robotDrive(robotDrive),
                                                                                  m_holonomicController(frc2::PIDController{0.75, 0.0, 0}, // 3.725, 0.85
-                                                                                                       frc2::PIDController{2.0, 0.0, 0},  // 3.725, 0.85
+                                                                                                       frc2::PIDController{2.5, 0.0, 0},  // 3.725, 0.85
                                                                                                        frc::PIDController{1.35, 0.0, 0}), // 0.325, 0.0
                                                                                  m_desiredState(),
                                                                                  m_trajectoryStates(),
