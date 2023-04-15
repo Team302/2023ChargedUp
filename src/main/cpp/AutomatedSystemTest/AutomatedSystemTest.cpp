@@ -74,6 +74,21 @@ void AutomatedSystemTest::Run()
 
                                     if (m_YBackwardTest->m_YBackwardTestInitDone)
                                     {
+                                        m_YBackwardTest->Run();
+
+                                        if (m_YBackwardTest->m_YBackwardTestDone)
+                                        {
+                                            m_YForwardTest->Init();
+
+                                            if (m_YForwardTest->m_YForwardTestInitDone)
+                                            {
+                                                m_YForwardTest->Run();
+
+                                                if (m_YForwardTest->m_YForwardTestDone)
+                                                {
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }

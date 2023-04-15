@@ -54,9 +54,5 @@ void YForwardTest::Run()
         m_swervechassis->Drive(moveinfo);
     }
 
-    else
-    {
-        m_swervechassis->ZeroAlignSwerveModules();
-    }
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("X Forward Test"), "running");
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("Y Forward Test"), "running");
 }

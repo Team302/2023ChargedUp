@@ -29,7 +29,6 @@ class YBackwardTest
 public:
     void Init();
     void Run();
-    bool Exit();
     YBackwardTest();
     virtual ~YBackwardTest() = default;
     bool m_YBackwardTestInitDone = false;
