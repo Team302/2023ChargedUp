@@ -42,8 +42,8 @@ struct ChassisMovement
     ChassisOptionEnums::AutonControllerType controllerType = ChassisOptionEnums::AutonControllerType::RAMSETE;
     units::angle::degree_t yawAngle = units::angle::degree_t(0.0);
     bool checkTipping = false;
-    units::angle::degree_t tippingTolerance = units::angle::degree_t(30.0);
-    double tippingCorrection = 0.1;
+    units::angle::degree_t tippingTolerance = units::angle::degree_t(5.0);
+    double tippingCorrection = -0.1;
     ChassisOptionEnums::RELATIVE_POSITION gridPosition = ChassisOptionEnums::RELATIVE_POSITION::CENTER;
     ChassisOptionEnums::RELATIVE_POSITION nodePosition = ChassisOptionEnums::RELATIVE_POSITION::CENTER;
 };
