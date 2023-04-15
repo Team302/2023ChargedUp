@@ -166,7 +166,7 @@ void SwerveChassis::InitStates()
     m_driveStateMap[ChassisOptionEnums::FIELD_DRIVE] = new FieldDrive(m_robotDrive);
     m_driveStateMap[ChassisOptionEnums::HOLD_DRIVE] = new HoldDrive();
     m_driveStateMap[ChassisOptionEnums::ROBOT_DRIVE] = m_robotDrive;
-    m_driveStateMap[ChassisOptionEnums::STOP_DRIVE] = new StopDrive();
+    m_driveStateMap[ChassisOptionEnums::STOP_DRIVE] = new StopDrive(m_robotDrive);
     m_driveStateMap[ChassisOptionEnums::TRAJECTORY_DRIVE] = new TrajectoryDrive(m_robotDrive);
     m_driveStateMap[ChassisOptionEnums::TRAJECTORY_DRIVE_PLANNER] = new TrajectoryDrivePathPlanner(m_robotDrive);
     m_driveStateMap[ChassisOptionEnums::VISION_DRIVE] = new VisionDrive(m_robotDrive);
@@ -217,6 +217,8 @@ void SwerveChassis::Drive(ChassisMovement moveInfo)
         m_backLeft.get()->SetDesiredState(states[LEFT_BACK]);
         m_backRight.get()->SetDesiredState(states[RIGHT_BACK]);
     }
+    auto table = nt::NetworkTableInstance::GetDefault().GetTable("Anti-Tip");
+    table.get()->PutBoolean(std::string(" "), (moveInfo.checkTipping));
 }
 
 void SwerveChassis::Drive()

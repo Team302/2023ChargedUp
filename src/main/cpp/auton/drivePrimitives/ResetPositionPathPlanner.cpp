@@ -27,8 +27,12 @@
 #include <utils/logging/Logger.h>
 #include <DragonVision/DragonVision.h>
 
+// Third Party Includes
+#include <pathplanner/lib/PathPlanner.h>
+
 using namespace std;
 using namespace frc;
+using namespace pathplanner;
 
 ResetPositionPathPlanner::ResetPositionPathPlanner() : m_chassis(ChassisFactory::GetChassisFactory()->GetIChassis())
 {
@@ -38,7 +42,7 @@ void ResetPositionPathPlanner::Init(PrimitiveParams *params)
 {
 
     // m_trajectory = pathplanner::PathPlanner::loadPath(params->GetPathName(), pathplanner::PathPlanner::getConstraintsFromPath(params->GetPathName()));
-    m_trajectory = pathplanner::PathPlanner::loadPath(params->GetPathName(), pathplanner::PathConstraints(4.0_mps, 2.0_mps_sq));
+    m_trajectory = pathplanner::PathPlanner::loadPath(params->GetPathName(), pathplanner::PathConstraints(4.5_mps, 2.75_mps_sq));
 
     // auto pigeon = PigeonFactory::GetFactory()->GetCenterPigeon();
     //  pigeon->ReZeroPigeon(m_trajectory.getInitialState().holonomicRotation.Degrees().to<double>());

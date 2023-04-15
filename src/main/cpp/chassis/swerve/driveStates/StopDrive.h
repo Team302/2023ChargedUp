@@ -23,15 +23,16 @@
 // Team302 Includes
 #include <chassis/swerve/driveStates/ISwerveDriveState.h>
 #include <chassis/ChassisMovement.h>
+#include <chassis/swerve/driveStates/RobotDrive.h>
 
 class SwerveChassis;
 
-class StopDrive : public ISwerveDriveState
+class StopDrive : public RobotDrive
 {
 public:
-    using ISwerveDriveState::ISwerveDriveState;
-
-    StopDrive();
+    using RobotDrive::RobotDrive;
+    StopDrive() = delete;
+    StopDrive(RobotDrive *RobotDrive);
     ~StopDrive() = default;
 
     std::array<frc::SwerveModuleState, 4> UpdateSwerveModuleStates(ChassisMovement &chassisMovement) override;
@@ -39,9 +40,10 @@ public:
     void Init(ChassisMovement &chassisMovement) override;
 
 private:
-    SwerveChassis *m_chassis;
     frc::SwerveModuleState *m_flState = new frc::SwerveModuleState();
     frc::SwerveModuleState *m_frState = new frc::SwerveModuleState();
     frc::SwerveModuleState *m_blState = new frc::SwerveModuleState();
     frc::SwerveModuleState *m_brState = new frc::SwerveModuleState();
+    RobotDrive *m_robotDrive;
+    SwerveChassis *m_chassis;
 };

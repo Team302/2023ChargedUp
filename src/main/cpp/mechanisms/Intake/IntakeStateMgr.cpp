@@ -64,6 +64,7 @@ IntakeStateMgr::IntakeStateMgr() : StateMgr(),
     stateMap[m_releaseXMLString] = m_releaseState;
     stateMap[m_expelXMLString] = m_expelState;
     stateMap[m_hpconeintakeXMLString] = m_hpconeintakeState;
+    stateMap[m_holdCubeXMLString] = m_holdCubeState;
 
     string identifier("IntakeStateMgr::IntakeStateMgr");
 
@@ -127,7 +128,14 @@ void IntakeStateMgr::CheckForSensorTransitions()
     {
         if (m_intake->IsGamePiecePresent())
         {
-            m_targetState = INTAKE_STATE::HOLD;
+            if (m_coneMode)
+            {
+                m_targetState = INTAKE_STATE::HOLD;
+            }
+            else
+            {
+                m_targetState = INTAKE_STATE::HOLD_CUBE;
+            }
             RobotState::GetInstance()->PublishStateChange(RobotStateChanges::HoldingGamePiece, m_coneMode ? RobotStateChanges::Cone : RobotStateChanges::Cube);
         }
     }
