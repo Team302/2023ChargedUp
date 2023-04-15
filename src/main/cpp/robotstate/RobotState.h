@@ -50,6 +50,7 @@ private:
     RobotStateChanges::CompressorState m_compressorCurrent;
 
     bool m_wasGamePieceButtonReleased;
+    bool m_wasNextGamePieceButtonReleased;
     bool m_wasCompressorButtonReleased;
     static RobotState *m_instance;
 };

@@ -60,6 +60,7 @@ private:
     bool m_wantCone = false;
     bool m_hasCube = false;
     bool m_hasCone = true;
+    bool m_LEDCheck = false;
     bool m_gamePieceReadyToPickUp = false;
     bool m_gamePieceInIntake = false;
     bool m_alignedWithConeNode = false;

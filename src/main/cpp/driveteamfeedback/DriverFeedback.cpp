@@ -168,14 +168,10 @@ void DriverFeedback::UpdateLEDStates()
         if (DriverFeedback::m_wantCone)
         {
             // m_LEDStates->BlinkingPattern(DragonLeds::YELLOW);
-            m_hasCone = true;
-            m_hasCube = false;
         }
-        else
+        else if (DriverFeedback::m_wantCube)
         {
             // m_LEDStates->BlinkingPattern(DragonLeds::PURPLE);
-            m_hasCube = true;
-            m_hasCone = false;
         }
     }
 }
@@ -212,12 +208,12 @@ void DriverFeedback::Update(RobotStateChanges::StateChange change, int value)
         m_wantCube = desiredgamepiece == RobotStateChanges::Cube;
         m_wantCone = desiredgamepiece == RobotStateChanges::Cone;
     }
-    // else if (change == RobotStateChanges::CurrentGamePiece)
-    // {
-    //     auto currentgamepiece = static_cast<RobotStateChanges::GamePiece>(value);
-    //     m_hasCube = currentgamepiece == RobotStateChanges::Cube;
-    //     m_hasCone = currentgamepiece == RobotStateChanges::Cone;
-    // }
+    else if (change == RobotStateChanges::NextGamePiece)
+    {
+        auto nextgamepiece = static_cast<RobotStateChanges::GamePiece>(value);
+        m_hasCube = nextgamepiece == RobotStateChanges::Cube;
+        m_hasCone = nextgamepiece == RobotStateChanges::Cone;
+    }
     else if (change == RobotStateChanges::IntakeState)
     {
         auto state = static_cast<IntakeStateMgr::INTAKE_STATE>(value);
