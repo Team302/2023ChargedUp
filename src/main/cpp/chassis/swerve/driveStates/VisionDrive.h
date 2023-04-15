@@ -18,6 +18,7 @@
 // FRC Includes
 #include <frc/kinematics/SwerveModuleState.h>
 #include <frc/kinematics/ChassisSpeeds.h>
+#include <frc/Timer.h>
 
 // Team302 Includes
 #include <chassis/swerve/driveStates/RobotDrive.h>
@@ -105,10 +106,11 @@ private:
     const double m_xErrorThreshold = 3.0;
 
     // Angular movement settings
-    const double m_minimumOmega_radps = 1.0;
-    const double m_maximumOmega_radps = 1.5;
+    const double m_minimumOmega_radps = 0.7;
+    const double m_maximumOmega_radps = 1.0;
     const double m_AngularTolerance_rad = std::numbers::pi * 4.0 / 180.0;
-    const double m_inhibitXspeedAboveAngularError_rad = std::numbers::pi * 5.0 / 180.0;
+    const units::angle::degree_t m_inhibitXspeedAboveAngularError = units::angle::degree_t(2.5);
+    const units::angle::degree_t m_stopXSpeedAboveAngleError = units::angle::degree_t(10.0);
     double m_visionKP_Angle = 2;
 
     // Other stuff
@@ -130,7 +132,11 @@ private:
 
     DragonVision *m_vision;
 
+    frc::Timer *m_lostGamePieceTimer;
+    const units::second_t m_lostGamePieceTimeout = units::second_t(0.25);
+
     bool m_haveGamePiece;
+    bool m_moveInXDir;
 
     double getOffsetToTarget(ChassisOptionEnums::RELATIVE_POSITION targetGrid, ChassisOptionEnums::RELATIVE_POSITION targetNode, uint8_t AprilTagId);
     units::velocity::meters_per_second_t limitVelocityToBetweenMinAndMax(units::velocity::meters_per_second_t speed);
