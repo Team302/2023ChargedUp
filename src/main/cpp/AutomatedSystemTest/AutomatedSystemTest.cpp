@@ -51,6 +51,30 @@ void AutomatedSystemTest::Run()
                 if (m_ArmTest->m_ArmTestDone)
                 {
                     m_XBackwardTest->Init();
+
+                    if (m_XBackwardTest->m_XBackWardTestInitDone)
+                    {
+                        m_XBackwardTest->Run();
+
+                        if (m_XBackwardTest->m_XBackwardTestDone)
+                        {
+                            m_XForwardTest->Init();
+
+                            if (m_XForwardTest->m_XForwardTestInitDone)
+                            {
+                                m_XForwardTest->Run();
+
+                                if (m_XForwardTest->m_XForwardTestDone)
+                                {
+                                    m_YBackwardTest->Init();
+
+                                    if (m_YBackwardTest->m_YBackwardTestInitDone)
+                                    {
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

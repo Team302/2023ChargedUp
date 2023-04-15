@@ -31,7 +31,7 @@ void YForwardTest::Init()
 {
     auto m_swervechassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
     m_swervechassis->ZeroAlignSwerveModules();
-    m_YForwardTestInitDone = true
+    m_YForwardTestInitDone = true;
 }
 void YForwardTest::Run()
 {
@@ -59,8 +59,4 @@ void YForwardTest::Run()
         m_swervechassis->ZeroAlignSwerveModules();
     }
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("X Forward Test"), "running");
-}
-
-void YForwardTest::Exit()
-{
 }

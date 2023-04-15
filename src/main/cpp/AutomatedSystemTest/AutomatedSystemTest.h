@@ -46,7 +46,7 @@ private:
     bool m_startedtest;
     ArmTest *m_ArmTest;
     XBackwardTest *m_XBackwardTest;
-    XForwardTest *m_XFarwardTest;
+    XForwardTest *m_XForwardTest;
     YBackwardTest *m_YBackwardTest;
     YForwardTest *m_YForwardTest;
     BaseTest *m_BaseTest;
