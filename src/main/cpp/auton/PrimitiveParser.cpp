@@ -127,8 +127,6 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                     auto extenderstate = ExtenderStateMgr::EXTENDER_STATE::HOLD_POSITION_EXTEND;
                     auto intakestate = IntakeStateMgr::INTAKE_STATE::HOLD;
                     auto pipelineMode = DragonLimelight::PIPELINE_MODE::UNKNOWN;
-                    auto alignmentMethod = VisionDrive::ALIGNMENT_METHOD::ROTATE;
-                    auto visionAlignmentXoffset_in = 0;
 
                     // @ADDMECH Initialize your mechanism state
                     for (xml_attribute attr = primitiveNode.first_attribute(); attr; attr = attr.next_attribute())
@@ -230,26 +228,6 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                                 hasError = true;
                             }
                         }
-                        else if (strcmp(attr.name(), "visionAlignmentXoffset_in") == 0)
-                        {
-                            visionAlignmentXoffset_in = attr.as_float();
-                        }
-                        else if (strcmp(attr.name(), "alignmentMethod") == 0)
-                        {
-                            if (strcmp(attr.value(), "ROTATE") == 0)
-                            {
-                                alignmentMethod = VisionDrive::ALIGNMENT_METHOD::ROTATE;
-                            }
-                            else if (strcmp(attr.value(), "STRAFE") == 0)
-                            {
-                                alignmentMethod = VisionDrive::ALIGNMENT_METHOD::STRAFE;
-                            }
-                            else
-                            {
-                                Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR, string("PrimitiveParser"), string("PrimitiveParser::ParseXML invalid alignment method"), attr.value());
-                                hasError = true;
-                            }
-                        }
                         else if (strcmp(attr.name(), "pipeline") == 0)
                         {
                             if (strcmp(attr.value(), "UNKNOWN") == 0)
@@ -306,9 +284,7 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                                                                      armstate,
                                                                      extenderstate,
                                                                      intakestate,
-                                                                     pipelineMode,
-                                                                     alignmentMethod,
-                                                                     visionAlignmentXoffset_in));
+                                                                     pipelineMode));
                     }
                     else
                     {
@@ -360,8 +336,6 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
         logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("extenderstate"), param->GetExtenderState());
         logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("intakestate"), param->GetIntakeState());
         logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("PIPELINE_MODE"), param->GetIntakeState());
-        logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("ALIGNMENT_METHOD"), param->GetAlignmentMethod());
-        logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("Alignment_X_offset_in"), param->GetVisionAlignmentXoffset_in());
         slot++;
     }
 

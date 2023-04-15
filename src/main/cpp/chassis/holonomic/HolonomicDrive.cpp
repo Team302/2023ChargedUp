@@ -47,15 +47,25 @@ using namespace frc;
 
 /// @brief initialize the object and validate the necessary items are not nullptrs
 HolonomicDrive::HolonomicDrive() : State(string("HolonomicDrive"), -1),
+                                   IRobotStateChangeSubscriber(),
                                    m_chassis(ChassisFactory::GetChassisFactory()->GetIChassis()),
                                    m_swerve(ChassisFactory::GetChassisFactory()->GetSwerveChassis()),
                                    m_mecanum(ChassisFactory::GetChassisFactory()->GetMecanumChassis()),
                                    m_trajectoryGenerator(new DragonTrajectoryGenerator(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetMaxSpeed(),
                                                                                        ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetMaxAcceleration())),
                                    m_previousDriveState(ChassisOptionEnums::DriveStateType::FIELD_DRIVE),
-                                   m_generatedTrajectory(frc::Trajectory()) //,
-                                                                            // m_field(DragonField::GetInstance())
+                                   m_generatedTrajectory(frc::Trajectory()),
+                                   m_desiredGamePiece(RobotStateChanges::GamePiece::None)
 {
+    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::DesiredGamePiece);
+}
+
+void HolonomicDrive::Update(RobotStateChanges::StateChange change, int value)
+{
+    if (change == RobotStateChanges::StateChange::DesiredGamePiece)
+    {
+        m_desiredGamePiece = static_cast<RobotStateChanges::GamePiece>(value);
+    }
 }
 
 /// @brief initialize the profiles for the various gamepad inputs
@@ -69,17 +79,13 @@ void HolonomicDrive::Init()
 /// @return void
 void HolonomicDrive::Run()
 {
+    auto controller = TeleopControl::GetInstance();
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("controller "), controller != nullptr ? string("not nullptr ") : string("nullptr"));
     ChassisMovement moveInfo;
     moveInfo.driveOption = ChassisOptionEnums::DriveStateType::FIELD_DRIVE;
-    moveInfo.controllerType = ChassisOptionEnums::AutonControllerType::HOLONOMIC;
-
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("DriveOptionBEGINNING"), moveInfo.driveOption);
-
-    auto controller = TeleopControl::GetInstance();
-
+    moveInfo.controllerType = ChassisOptionEnums::AutonControllerType::HOLONOMIC;
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("chassis "), m_chassis != nullptr ? string("not nullptr ") : string("nullptr"));
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("controller "), controller != nullptr ? string("not nullptr ") : string("nullptr"));
-
     if (controller != nullptr && m_chassis != nullptr)
     {
         moveInfo.headingOption = ChassisOptionEnums::HeadingOption::MAINTAIN;
@@ -98,27 +104,34 @@ void HolonomicDrive::Run()
             m_hasResetPosition = false;
         }
 
-        m_findingCube = false;
+        m_findingFloorGamePiece = false;
 
-        if (controller->IsButtonPressed(TeleopControlFunctions::ALIGN_CUBE) || controller->IsButtonPressed(TeleopControlFunctions::ALIGN_APRIL_TAG))
+        if (controller->IsButtonPressed(TeleopControlFunctions::ALIGN_FLOOR_GAME_PIECE) || controller->IsButtonPressed(TeleopControlFunctions::ALIGN_APRIL_TAG))
         {
             m_inVisionDrive = true;
 
-            if (controller->IsButtonPressed(TeleopControlFunctions::ALIGN_CUBE))
+            if (controller->IsButtonPressed(TeleopControlFunctions::ALIGN_FLOOR_GAME_PIECE))
             {
-                moveInfo.nodePosition = ChassisOptionEnums::RELATIVE_POSITION::LEFT; // represents cone
+                Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ANickDebugging"), string("DesiredGamePiece"), m_desiredGamePiece);
 
                 // set pipeline to discover retroreflective
-                DragonVision::GetDragonVision()->setPipeline(DragonLimelight::PIPELINE_MODE::CUBE);
-                moveInfo.headingOption = ChassisOptionEnums::HeadingOption::FACE_CUBE;
-                moveInfo.driveOption = ChassisOptionEnums::DriveStateType::ROBOT_DRIVE;
-                m_findingCube = true;
+                if (m_desiredGamePiece == RobotStateChanges::GamePiece::Cube)
+                {
+                    DragonVision::GetDragonVision()->setPipeline(DragonLimelight::PIPELINE_MODE::CUBE);
+                }
+                else
+                {
+                    DragonVision::GetDragonVision()->setPipeline(DragonLimelight::PIPELINE_MODE::CONE);
+                }
+
+                moveInfo.headingOption = ChassisOptionEnums::HeadingOption::FACE_FLOOR_GAME_PIECE;
+                moveInfo.driveOption = ChassisOptionEnums::DriveStateType::VISION_DRIVE;
+
+                m_findingFloorGamePiece = true;
             }
 
             if (controller->IsButtonPressed(TeleopControlFunctions::ALIGN_APRIL_TAG))
             {
-                moveInfo.nodePosition = ChassisOptionEnums::RELATIVE_POSITION::CENTER; // represents cube
-
                 // set pipeline to discover april tags
                 DragonVision::GetDragonVision()->setPipeline(DragonLimelight::PIPELINE_MODE::APRIL_TAG);
                 moveInfo.headingOption = ChassisOptionEnums::HeadingOption::FACE_APRIL_TAG;
@@ -135,8 +148,7 @@ void HolonomicDrive::Run()
         }
 
         // update leds based on finding cube with vision
-        RobotState::GetInstance()->PublishStateChange(RobotStateChanges::StateChange::FindingCube, m_findingCube ? 1 : 0);
-        // add button to align with substation
+        RobotState::GetInstance()->PublishStateChange(RobotStateChanges::StateChange::FindingCube, m_findingFloorGamePiece ? 1 : 0);
 
         if (controller->IsButtonPressed(TeleopControlFunctions::HOLD_POSITION))
         {
@@ -210,6 +222,26 @@ void HolonomicDrive::Run()
 
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("DriveOptionEND"), moveInfo.driveOption);
 
+        if (controller->IsButtonPressed(TeleopControlFunctions::TIPCORRECTION_TOGGLE))
+        {
+            if (m_latch == false)
+            {
+                m_CheckTipping = !m_CheckTipping;
+                m_latch = true;
+            }
+        }
+        else
+        {
+            m_latch = false;
+        }
+
+        moveInfo.checkTipping = m_CheckTipping;
+
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("check tipping"), moveInfo.checkTipping);
+        /// debugging
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ANickDebugging"), string("DriveState"), moveInfo.driveOption);
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ANickDebugging"), string("HeadingOption"), moveInfo.headingOption);
+
         m_chassis->Drive(moveInfo);
     }
     else
@@ -217,7 +249,6 @@ void HolonomicDrive::Run()
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("HolonomicDrive"), string("Run"), string("nullptr"));
     }
 }
-
 void HolonomicDrive::Exit()
 {
 }

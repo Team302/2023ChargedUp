@@ -51,7 +51,7 @@
 #include <chassis/swerve/driveStates/VisionDrive.h>
 
 #include <chassis/swerve/headingStates/FaceGoalHeading.h>
-#include <chassis/swerve/headingStates/FaceCube.h>
+#include <chassis/swerve/headingStates/FaceFloorGamePiece.h>
 #include <chassis/swerve/headingStates/FaceAprilTag.h>
 #include <chassis/swerve/headingStates/ISwerveDriveOrientation.h>
 #include <chassis/swerve/headingStates/MaintainHeading.h>
@@ -166,7 +166,7 @@ void SwerveChassis::InitStates()
     m_driveStateMap[ChassisOptionEnums::FIELD_DRIVE] = new FieldDrive(m_robotDrive);
     m_driveStateMap[ChassisOptionEnums::HOLD_DRIVE] = new HoldDrive();
     m_driveStateMap[ChassisOptionEnums::ROBOT_DRIVE] = m_robotDrive;
-    m_driveStateMap[ChassisOptionEnums::STOP_DRIVE] = new StopDrive();
+    m_driveStateMap[ChassisOptionEnums::STOP_DRIVE] = new StopDrive(m_robotDrive);
     m_driveStateMap[ChassisOptionEnums::TRAJECTORY_DRIVE] = new TrajectoryDrive(m_robotDrive);
     m_driveStateMap[ChassisOptionEnums::TRAJECTORY_DRIVE_PLANNER] = new TrajectoryDrivePathPlanner(m_robotDrive);
     m_driveStateMap[ChassisOptionEnums::VISION_DRIVE] = new VisionDrive(m_robotDrive);
@@ -174,7 +174,7 @@ void SwerveChassis::InitStates()
 
     m_headingStateMap[ChassisOptionEnums::HeadingOption::MAINTAIN] = new MaintainHeading();
     m_headingStateMap[ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE] = new SpecifiedHeading();
-    m_headingStateMap[ChassisOptionEnums::HeadingOption::FACE_CUBE] = new FaceCube();
+    m_headingStateMap[ChassisOptionEnums::HeadingOption::FACE_FLOOR_GAME_PIECE] = new FaceFloorGamePiece();
     m_headingStateMap[ChassisOptionEnums::HeadingOption::FACE_APRIL_TAG] = new FaceAprilTag();
     m_headingStateMap[ChassisOptionEnums::HeadingOption::TOWARD_GOAL] = new FaceGoalHeading();
     m_headingStateMap[ChassisOptionEnums::HeadingOption::IGNORE] = new IgnoreHeading();
@@ -217,6 +217,8 @@ void SwerveChassis::Drive(ChassisMovement moveInfo)
         m_backLeft.get()->SetDesiredState(states[LEFT_BACK]);
         m_backRight.get()->SetDesiredState(states[RIGHT_BACK]);
     }
+    auto table = nt::NetworkTableInstance::GetDefault().GetTable("Anti-Tip");
+    table.get()->PutBoolean(std::string(" "), (moveInfo.checkTipping));
 }
 
 void SwerveChassis::Drive()

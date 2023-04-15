@@ -19,11 +19,11 @@
 #include <chassis/swerve/headingStates/ISwerveDriveOrientation.h>
 #include <DragonVision/DragonVision.h>
 
-class FaceCube : public ISwerveDriveOrientation
+class FaceFloorGamePiece : public ISwerveDriveOrientation
 {
 public:
-    FaceCube();
-    ~FaceCube();
+    FaceFloorGamePiece();
+    ~FaceFloorGamePiece();
 
     void UpdateChassisSpeeds(ChassisMovement &chassisMovement) override;
 
