@@ -35,6 +35,7 @@ using namespace wpi::math;
 AutoBalance::AutoBalance() : m_chassis(ChassisFactory::GetChassisFactory()->GetSwerveChassis()),
                              // max velocity of 1 rotation per second and a max acceleration of 180 degrees per second squared.
                              m_headingOption(ChassisOptionEnums::HeadingOption::MAINTAIN),
+                             m_heading(0.0),
                              m_ntName("AutoBalance"),
                              m_timer(new frc::Timer()),
                              m_maxTime(-1.0),
@@ -48,6 +49,8 @@ void AutoBalance::Init(PrimitiveParams *params)
     m_maxTime = params->GetTime();
     m_maxTimeTimer->Reset();
     m_maxTimeTimer->Start();
+    m_headingOption = params->GetHeadingOption();
+    m_heading = params->GetHeading();
 }
 void AutoBalance::Run()
 {
@@ -57,7 +60,8 @@ void AutoBalance::Run()
     {
         ChassisMovement moveInfo;
         moveInfo.driveOption = ChassisOptionEnums::DriveStateType::AUTO_BALANCE;
-        moveInfo.headingOption = ChassisOptionEnums::HeadingOption::MAINTAIN;
+        moveInfo.headingOption = m_headingOption;
+        moveInfo.yawAngle = units::angle::degree_t(m_heading);
 
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "DriveState", moveInfo.driveOption);
         m_chassis->Drive(moveInfo);

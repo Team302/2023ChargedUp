@@ -48,6 +48,7 @@ public:
 private:
     SwerveChassis *m_chassis;
     ChassisOptionEnums::HeadingOption m_headingOption;
+    double m_heading;
     std::string m_ntName;
     frc::Timer *m_timer;
     double m_maxTime;
