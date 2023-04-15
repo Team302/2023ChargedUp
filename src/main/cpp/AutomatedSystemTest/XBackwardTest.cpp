@@ -24,11 +24,14 @@ using namespace std;
 
 XBackwardTest::XBackwardTest()
 {
+    m_XBackwardTestDone = false;
+    m_XBackWardTestInitDone = false;
 }
 void XBackwardTest::Init()
 {
     auto m_swervechassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
     m_swervechassis->ZeroAlignSwerveModules();
+    m_XBackWardTestInitDone = true;
 }
 void XBackwardTest::Run()
 {
@@ -47,7 +50,7 @@ void XBackwardTest::Run()
         else if (m_timer0 > 300)
         {
             moveinfo.chassisSpeeds.vx = 0.0 * maxspeed;
-            m_xBackwardTestComplete = true;
+            m_XBackwardTestDone = true;
         }
         m_swervechassis->Drive(moveinfo);
     }

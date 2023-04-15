@@ -32,8 +32,9 @@ public:
     void Exit();
     YForwardTest();
     virtual ~YForwardTest() = default;
+    bool m_YForwardTestDone;
+    bool m_YForwardTestInitDone;
 
 private:
     int m_timer0 = 0;
-    bool m_yForwardTestComplete = false;
 };

@@ -24,6 +24,8 @@ using namespace std;
 
 YBackwardTest::YBackwardTest()
 {
+    m_YBackwardTestInitDone = false;
+    m_YBackwardTestDone = false;
 }
 void YBackwardTest::Init()
 {
@@ -33,27 +35,29 @@ void YBackwardTest::Init()
 void YBackwardTest::Run()
 {
     auto m_swervechassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
-    auto maxspeed = m_swervechassis->GetMaxSpeed();
-    ChassisMovement moveinfo;
-    m_timer0++;
-
-    if (m_timer0 > 20 && m_timer0 < 300)
+    if (m_swervechassis != nullptr)
     {
-        moveinfo.chassisSpeeds.vy = -0.05 * maxspeed;
+        ChassisMovement moveinfo;
+        auto maxspeed = m_swervechassis->GetMaxSpeed();
+        m_timer0++;
+        // might be nice to have methods for each item
+        if (m_timer0 < 300 && m_timer0 > 20)
+        {
+            moveinfo.chassisSpeeds.vy = -0.5 * maxspeed;
+        }
+        else if (m_timer0 > 300)
+        {
+            moveinfo.chassisSpeeds.vy = 0.0 * maxspeed;
+            m_YBackwardTestDone = true;
+        }
         m_swervechassis->Drive(moveinfo);
     }
 
-    else if (m_timer0 > 300)
-    {
-
-        moveinfo.chassisSpeeds.vy = 0.0 * maxspeed;
-        m_swervechassis->Drive(moveinfo);
-    }
     else
     {
-        moveinfo.chassisSpeeds.vy = 0.0 * maxspeed;
-        m_swervechassis->Drive(moveinfo);
+        m_swervechassis->ZeroAlignSwerveModules();
     }
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("X Forward Test"), "running");
 }
 
 bool YBackwardTest::Exit()

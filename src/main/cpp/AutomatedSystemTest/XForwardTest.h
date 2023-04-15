@@ -32,8 +32,9 @@ public:
     void Exit();
     XForwardTest();
     virtual ~XForwardTest() = default;
+    bool m_XForwardTestInitDone;
+    bool m_XForwardTestDone;
 
 private:
     int m_timer0 = 0;
-    bool m_xForwardTestComplete = false;
 };
