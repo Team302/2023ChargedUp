@@ -12,7 +12,7 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
-#include <AutomatedSystemTest/ArmTest1.h>
+#include <AutomatedSystemTest/ArmTest.h>
 #include <mechanisms/arm/ArmStateMgr.h>
 #include <utils/logging/Logger.h>
 #include <string>

@@ -14,7 +14,7 @@
 //====================================================================================================================================================
 #pragma once
 #include <AutomatedSystemTest/XBackwardTest.h>
-#include <AutomatedSystemTest/ArmTest/ArmTestStep1.h>
+#include <AutomatedSystemTest/ArmTest.h>
 #include <AutomatedSystemTest/ExtenderTest.h>
 #include <AutomatedSystemTest/XForwardTest.h>
 #include <AutomatedSystemTest/YBackwardTest.h>

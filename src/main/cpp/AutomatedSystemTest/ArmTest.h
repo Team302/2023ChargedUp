@@ -12,21 +12,31 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
-#include <AutomatedSystemTest/ArmTest/ArmTestStep2.h>>
-#include <mechanisms/arm/ArmStateMgr.h>
-#include <utils/logging/Logger.h>
-#include <mechanisms/arm/ArmState.h>
-ArmTestStep2::ArmTestStep2()
-{
-}
 
-void ArmTestStep2::Run()
+#pragma once
+
+// C++ Includes
+#include <memory>
+#include <hw/factories/PDPFactory.h>
+
+// FRC includes
+
+// Team 302 includes
+#include <AutomatedSystemTest/AutomatedSystemTest.h>
+// Third Party Includes
+
+class ArmTest
 {
-    bool m_targetReached = false;
-    auto m_armstate = ArmStateMgr::GetInstance()->GetCurrentState();
-    if (m_armstate == ArmStateMgr::ARM_STATE::CONE_BACKROW_ROTATE)
-    {
-        ArmStateMgr::GetInstance()->SetCurrentState(ArmStateMgr::ARM_STATE::STARTING_POSITION_ROTATE, true);
-        m_targetReached = ArmState::AtTarget();
-    }
-}
+public:
+    void Init();
+    void Run();
+    bool IsDone();
+    ArmTest();
+    virtual ~ArmTest() = default;
+
+private:
+    double m_armusage;
+    frc::PowerDistribution *m_PDP;
+    bool m_armTestComplete = false;
+    bool m_extenderTestComplete = false;
+};
