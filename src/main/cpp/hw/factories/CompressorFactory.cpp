@@ -15,6 +15,7 @@
 //====================================================================================================================================================
 
 // C++ Includes
+#include <string>
 
 // FRC includes
 #include <frc/Compressor.h>
@@ -55,10 +56,12 @@ Compressor *CompressorFactory::CreateCompressor(int canID, frc::PneumaticsModule
         if (type == frc::PneumaticsModuleType::CTREPCM)
         {
             m_pcm = new frc::PneumaticsControlModule(canID);
+            ClearStickyFaults();
         }
         else
         {
             m_hub = new frc::PneumaticHub(canID);
+            ClearStickyFaults();
         }
     }
     return m_compressor;
@@ -117,6 +120,15 @@ bool CompressorFactory::CompressorHasStickyFaults()
     if (m_hub != nullptr)
     {
         frc::PneumaticHub::StickyFaults StickyFaultsValue = m_hub->GetStickyFaults();
+
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Compressor Sticky Faults Value", "Compressor Over Current", StickyFaultsValue.CompressorOverCurrent != 0);
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Compressor Sticky Faults Value", "Compressor Open", StickyFaultsValue.CompressorOpen != 0);
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Compressor Sticky Faults Value", "Solenoid Over Current", StickyFaultsValue.SolenoidOverCurrent != 0);
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Compressor Sticky Faults Value", "Brown Out", StickyFaultsValue.Brownout != 0);
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Compressor Sticky Faults Value", "Can Waring", StickyFaultsValue.CanWarning != 0);
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Compressor Sticky Faults Value", "Can Bus Off", StickyFaultsValue.CanBusOff != 0);
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Compressor Sticky Faults Value", "Has Reset", StickyFaultsValue.HasReset != 0);
+
         return (StickyFaultsValue.CompressorOverCurrent || StickyFaultsValue.CompressorOpen || StickyFaultsValue.SolenoidOverCurrent || StickyFaultsValue.Brownout || StickyFaultsValue.CanWarning || StickyFaultsValue.CanBusOff || StickyFaultsValue.HasReset);
     }
     return false;

@@ -48,6 +48,7 @@ DragonPigeon::DragonPigeon(
     else
     {
         m_pigeon2 = new WPI_Pigeon2(canID, canBusName);
+        ClearStickyFaults();
         m_pigeon2->ConfigFactoryDefault();
         m_pigeon2->SetYaw(rotation);
 
