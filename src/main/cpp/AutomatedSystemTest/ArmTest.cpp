@@ -18,6 +18,9 @@
 #include <string>
 #include <mechanisms/extender/ExtenderStateMgr.h>
 #include <mechanisms\Intake\IntakeStateMgr.h>
+#include <mechanisms/Intake/IntakeState.h>
+#include <mechanisms/arm/ArmState.h>
+#include <mechanisms/extender/ExtenderState.h>
 using namespace std;
 
 ArmTest::ArmTest()
@@ -30,7 +33,8 @@ ArmTest::ArmTest()
 }
 void ArmTest::Init()
 {
-    ExtenderStateMgr::GetInstance()->SetCurrentState(ExtenderStateMgr::EXTENDER_STATE::STARTING_POSITION_EXTEND, (true));
+    extenderPointer = ExtenderStateMgr::GetInstance();
+    extenderPointer->SetCurrentState(ExtenderStateMgr::EXTENDER_STATE::STARTING_POSITION_EXTEND, (true));
     ArmStateMgr::GetInstance()->SetCurrentState(ArmStateMgr::ARM_STATE::STARTING_POSITION_ROTATE, true);
     IntakeStateMgr::GetInstance()->SetCurrentState(IntakeStateMgr::INTAKE_STATE::OFF, true);
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("ArmTest (Init)"), "finished");
@@ -38,34 +42,36 @@ void ArmTest::Init()
 }
 void ArmTest::Run()
 {
-    auto m_intakestate = IntakeStateMgr::GetInstance()->GetCurrentState();
-    auto m_armstate = ArmStateMgr::GetInstance()->GetCurrentState();
-    auto m_extenderstate = ExtenderStateMgr::GetInstance()->GetCurrentState();
-    if (m_armstate == ArmStateMgr::ARM_STATE::STARTING_POSITION_ROTATE)
+    auto m_intakestate = IntakeStateMgr::GetInstance()->GetCurrentStatePtr();
+    auto m_armstate = ArmStateMgr::GetInstance()->GetCurrentStatePtr();
+    auto m_extenderstate = extenderPointer->GetCurrentStatePtr();
+    if (m_armstate->GetStateId() == ArmStateMgr::ARM_STATE::STARTING_POSITION_ROTATE)
     {
         ArmStateMgr::GetInstance()->SetCurrentState(ArmStateMgr::ARM_STATE::CONE_BACKROW_ROTATE, true);
     }
 
-    if (m_extenderstate == ExtenderStateMgr::EXTENDER_STATE::STARTING_POSITION_EXTEND && m_armstate == ArmStateMgr::ARM_STATE::CONE_BACKROW_ROTATE)
+    if (m_extenderstate->GetStateId() == ExtenderStateMgr::EXTENDER_STATE::STARTING_POSITION_EXTEND && m_armstate->GetStateId() == ArmStateMgr::ARM_STATE::CONE_BACKROW_ROTATE)
     {
-        ExtenderStateMgr::GetInstance()->SetCurrentState(ExtenderStateMgr::EXTENDER_STATE::CONE_BACKROW_EXTEND, (true));
+        extenderPointer->SetCurrentState(ExtenderStateMgr::EXTENDER_STATE::CONE_BACKROW_EXTEND, (true));
         m_extenderTestComplete = true;
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("ArmTest (Run)"), "finished");
-        if (m_extenderstate == ExtenderStateMgr::EXTENDER_STATE::CONE_BACKROW_EXTEND && m_armstate == ArmStateMgr::ARM_STATE::CONE_BACKROW_ROTATE)
+        if (m_extenderstate->GetStateId() == ExtenderStateMgr::EXTENDER_STATE::CONE_BACKROW_EXTEND && m_armstate->GetStateId() == ArmStateMgr::ARM_STATE::CONE_BACKROW_ROTATE)
         {
             IntakeStateMgr::GetInstance()->SetCurrentState(IntakeStateMgr::INTAKE_STATE::INTAKE, true);
             m_timer0++;
             if (m_timer0 > 100)
             {
                 IntakeStateMgr::GetInstance()->SetCurrentState(IntakeStateMgr::INTAKE_STATE::OFF, true);
-                if (m_intakestate = IntakeStateMgr::INTAKE_STATE::INTAKE)
-                    ExtenderStateMgr::GetInstance()->SetCurrentState(ExtenderStateMgr::EXTENDER_STATE::STARTING_POSITION_EXTEND, (true));
-                if (m_extenderstate == ExtenderStateMgr::EXTENDER_STATE::STARTING_POSITION_EXTEND)
+                if (m_intakestate->GetStateId() == IntakeStateMgr::INTAKE_STATE::INTAKE && m_intakestate->AtTarget())
                 {
-                    ArmStateMgr::GetInstance()->SetCurrentState(ArmStateMgr::ARM_STATE::STARTING_POSITION_ROTATE, (true));
-                    if (m_armstate == ArmStateMgr::ARM_STATE::STARTING_POSITION_ROTATE)
+                    ExtenderStateMgr::GetInstance()->SetCurrentState(ExtenderStateMgr::EXTENDER_STATE::STARTING_POSITION_EXTEND, (true));
+                    if (m_extenderstate->GetStateId() == ExtenderStateMgr::EXTENDER_STATE::STARTING_POSITION_EXTEND && m_extenderstate->AtTarget())
                     {
-                        m_armTestComplete = true;
+                        ArmStateMgr::GetInstance()->SetCurrentState(ArmStateMgr::ARM_STATE::STARTING_POSITION_ROTATE, (true));
+                        if (m_armstate->GetStateId() == ArmStateMgr::ARM_STATE::STARTING_POSITION_ROTATE && m_armstate->AtTarget())
+                        {
+                            m_armTestComplete = true;
+                        }
                     }
                 }
             }

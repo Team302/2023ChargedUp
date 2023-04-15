@@ -31,7 +31,7 @@ void YForwardTest::Init()
 {
     auto m_swervechassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
     m_swervechassis->ZeroAlignSwerveModules();
-    m_YForwardTestInitDone = true
+    m_YForwardTestInitDone = true;
 }
 void YForwardTest::Run()
 {
