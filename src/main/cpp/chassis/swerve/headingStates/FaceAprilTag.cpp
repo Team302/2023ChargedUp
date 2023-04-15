@@ -16,6 +16,10 @@
 // Team302 Includes
 #include <chassis/swerve/headingStates/FaceAprilTag.h>
 #include <DragonVision/LimelightFactory.h>
+#include <hw/factories/PigeonFactory.h>
+
+/// debugging
+#include <utils/logging/Logger.h>
 
 FaceAprilTag::FaceAprilTag() : ISwerveDriveOrientation(ChassisOptionEnums::HeadingOption::FACE_APRIL_TAG),
                                m_pipelineMode(DragonLimelight::APRIL_TAG),
@@ -32,7 +36,7 @@ void FaceAprilTag::UpdateChassisSpeeds(ChassisMovement &chassisMovement)
     // get targetdata from the vision system
     auto targetData = m_vision->getTargetInfo();
 
-    if ((targetData != nullptr) && (m_pipelineMode == targetData->getTargetType()))
+    if ((targetData != nullptr) && (m_vision->getPipeline(DragonVision::LIMELIGHT_POSITION::FRONT) == targetData->getTargetType()))
     {
         if (!AtTargetAngle(targetData, &angleError))
         {
@@ -53,7 +57,26 @@ bool FaceAprilTag::AtTargetAngle(std::shared_ptr<DragonVisionTarget> targetData,
 
         if (std::abs(xError.to<double>()) > 0.01)
         {
-            *error = units::angle::radian_t(std::atan2(yError.to<double>(), xError.to<double>()));
+            /// Math
+            // First get the pigeon angle to later get field, this is considered
+            // Next, get the angle to the tag, this is considered alpha
+            // Calculate alpha by taking the arc/inverse tangent of our yError and xError (robot oriented) to the tag
+            // Calculate field oriented error by taking the cosine and sine of alpha + theta
+            // From there, we can get the angle to the back of the node (considered beta)
+            // This is calculated by taking arc/inverse tangent of our field oriented yError, divided by our field oriented xError
+            // and the offset to the back of the cube node
+
+            auto pigeon = PigeonFactory::GetFactory()->GetCenterPigeon();
+            units::angle::degree_t robotYaw = units::angle::degree_t(pigeon->GetYaw());
+
+            auto angleToTag = units::angle::radian_t(std::atan2(yError.to<double>(), xError.to<double>()));
+
+            units::length::inch_t xErrorFieldOriented = xError * units::math::cos(angleToTag + robotYaw);
+            units::length::inch_t yErrorFieldOriented = xError * units::math::sin(angleToTag + robotYaw);
+
+            auto angleToBackOfNode = units::math::atan2(yErrorFieldOriented, xErrorFieldOriented + m_cubeNodeLength);
+
+            *error = -1.0 * (robotYaw - angleToBackOfNode); // negate to turn correctly
 
             if (std::abs((*error).to<double>()) < m_AngularTolerance_rad)
             {

@@ -41,9 +41,11 @@ public:
         UNKNOWN = -1,
         OFF = 0,
         APRIL_TAG = 1,
-        CONE_NODE = 2,
+
         CONE = 3,
         CUBE = 4,
+        CONE_SUBSTATION = 5,
+        CUBE_SUBSTATION = 6,
         MAX_PIPELINE_MODE
     };
 

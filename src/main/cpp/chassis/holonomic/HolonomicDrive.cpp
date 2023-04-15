@@ -106,26 +106,25 @@ void HolonomicDrive::Run()
 
         m_findingFloorGamePiece = false;
 
-        if (controller->IsButtonPressed(TeleopControlFunctions::ALIGN_FLOOR_GAME_PIECE) || controller->IsButtonPressed(TeleopControlFunctions::ALIGN_APRIL_TAG))
+        bool alignFloorPiece = controller->IsButtonPressed(TeleopControlFunctions::ALIGN_FLOOR_GAME_PIECE);
+        bool alignAprilTag = controller->IsButtonPressed(TeleopControlFunctions::ALIGN_APRIL_TAG);
+        bool alignSubstation = controller->IsButtonPressed(TeleopControlFunctions::ALIGN_SUBSTATION_GAME_PIECE);
+
+        if (alignFloorPiece || alignSubstation || alignAprilTag)
         {
             m_inVisionDrive = true;
 
-            if (controller->IsButtonPressed(TeleopControlFunctions::ALIGN_FLOOR_GAME_PIECE))
+            if (alignFloorPiece || alignSubstation)
             {
-                Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ANickDebugging"), string("DesiredGamePiece"), m_desiredGamePiece);
-
                 // set pipeline to discover retroreflective
                 if (m_desiredGamePiece == RobotStateChanges::GamePiece::Cube)
-                {
-                    DragonVision::GetDragonVision()->setPipeline(DragonLimelight::PIPELINE_MODE::CUBE);
-                }
+                    DragonVision::GetDragonVision()->setPipeline(alignFloorPiece ? DragonLimelight::PIPELINE_MODE::CUBE : DragonLimelight::PIPELINE_MODE::CUBE_SUBSTATION);
                 else
-                {
-                    DragonVision::GetDragonVision()->setPipeline(DragonLimelight::PIPELINE_MODE::CONE);
-                }
+                    DragonVision::GetDragonVision()->setPipeline(alignFloorPiece ? DragonLimelight::PIPELINE_MODE::CONE : DragonLimelight::PIPELINE_MODE::CONE_SUBSTATION);
 
-                moveInfo.headingOption = ChassisOptionEnums::HeadingOption::FACE_FLOOR_GAME_PIECE;
-                moveInfo.driveOption = ChassisOptionEnums::DriveStateType::VISION_DRIVE;
+                moveInfo.headingOption = ChassisOptionEnums::HeadingOption::FACE_GAME_PIECE;
+                if (alignFloorPiece)
+                    moveInfo.driveOption = ChassisOptionEnums::DriveStateType::VISION_DRIVE;
 
                 m_findingFloorGamePiece = true;
             }
