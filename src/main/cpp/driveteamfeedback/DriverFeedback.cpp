@@ -103,13 +103,13 @@ void DriverFeedback::UpdateLEDStates()
         {
             m_LEDStates->SolidColorPattern(DragonLeds::PURPLE);
         }
-        if (m_intakeStateChanged)
-        {
-            if (m_intakeIntaking)
-                m_LEDStates->BlinkingPattern(DragonLeds::PURPLE);
-            else
-                m_LEDStates->SolidColorPattern(DragonLeds::PURPLE);
-        }
+        // if (m_intakeStateChanged)
+        // {
+        //     if (m_intakeIntaking)
+        //         m_LEDStates->BlinkingPattern(DragonLeds::PURPLE);
+        //     else
+        //         m_LEDStates->SolidColorPattern(DragonLeds::PURPLE);
+        // }
     }
     else if (DriverFeedback::m_wantCone)
     {
@@ -126,17 +126,17 @@ void DriverFeedback::UpdateLEDStates()
         {
             m_LEDStates->SolidColorPattern(DragonLeds::YELLOW);
         }
-        if (m_intakeStateChanged)
-        {
-            if (m_intakeIntaking)
-                m_LEDStates->BlinkingPattern(DragonLeds::YELLOW);
-            else
-                m_LEDStates->SolidColorPattern(DragonLeds::YELLOW);
-        }
-        else
-        {
-            m_LEDStates->SolidColorPattern(DragonLeds::YELLOW);
-        }
+        // if (m_intakeStateChanged)
+        // {
+        //     if (m_intakeIntaking)
+        //         m_LEDStates->BlinkingPattern(DragonLeds::YELLOW);
+        //     else
+        //         m_LEDStates->SolidColorPattern(DragonLeds::YELLOW);
+        // }
+        // else
+        // {
+        //     m_LEDStates->SolidColorPattern(DragonLeds::YELLOW);
+        // }
         m_gamePieceState = DriverFeedbackStates::WANT_CONE;
     }
     else if (DriverFeedback::m_gamePieceReadyToPickUp)
@@ -170,7 +170,7 @@ void DriverFeedback::UpdateLEDStates()
             // m_LEDStates->BlinkingPattern(DragonLeds::YELLOW);
             m_hasCone = true;
             m_hasCube = false;
-                }
+        }
         else
         {
             // m_LEDStates->BlinkingPattern(DragonLeds::PURPLE);

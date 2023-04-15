@@ -52,7 +52,7 @@ void LEDStates::HalfAndHalfPattern(DragonLeds::Colors currentGamePieceColor, Dra
     {
         m_LEDstring->m_ledBuffer[i].SetRGB(nextGamePieceColorValues[0], nextGamePieceColorValues[1], nextGamePieceColorValues[2]);
     }
-    for (int i = startingPositionIndex; i < (endingPositionIndex / 2) - 1; i++)
+    for (int i = startingPositionIndex; i < endingPositionIndex - (topIndividualLEDStripLength / 2) - 1; i++)
     {
         m_LEDstring->m_ledBuffer[i].SetRGB(currentGamePieceColorValues[0], currentGamePieceColorValues[1], currentGamePieceColorValues[2]);
     }
@@ -64,7 +64,7 @@ void LEDStates::HalfAndHalfPattern(DragonLeds::Colors currentGamePieceColor, Dra
     {
         m_LEDstring->m_ledBuffer[i].SetRGB(nextGamePieceColorValues[0], nextGamePieceColorValues[1], nextGamePieceColorValues[2]);
     }
-    for (int i = startingPositionIndex + topIndividualLEDStripLength; i > (endingPositionIndex / 2) - 1; i--)
+    for (int i = startingPositionIndex + topIndividualLEDStripLength; i > endingPositionIndex - (topIndividualLEDStripLength / 2) - 1; i--)
     {
         m_LEDstring->m_ledBuffer[i].SetRGB(currentGamePieceColorValues[0], currentGamePieceColorValues[1], currentGamePieceColorValues[2]);
     }
@@ -76,7 +76,7 @@ void LEDStates::HalfAndHalfPattern(DragonLeds::Colors currentGamePieceColor, Dra
     {
         m_LEDstring->m_ledBuffer[i].SetRGB(nextGamePieceColorValues[0], nextGamePieceColorValues[1], nextGamePieceColorValues[2]);
     }
-    for (int i = startingPositionIndex + botIndividualLEDStripLength; i > (endingPositionIndex / 2) - 1; i--)
+    for (int i = startingPositionIndex + botIndividualLEDStripLength; i > endingPositionIndex - (botIndividualLEDStripLength / 2) - 1; i--)
     {
         m_LEDstring->m_ledBuffer[i].SetRGB(currentGamePieceColorValues[0], currentGamePieceColorValues[1], currentGamePieceColorValues[2]);
     }
