@@ -13,12 +13,12 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 #pragma once
-#include <AutomatedSystemTest/XBackwardTest.h>
+#include <AutomatedSystemTest/BasePDPTest.h>
 #include <AutomatedSystemTest/ArmTest.h>
+#include <AutomatedSystemTest/XBackwardTest.h>
 #include <AutomatedSystemTest/XForwardTest.h>
 #include <AutomatedSystemTest/YBackwardTest.h>
 #include <AutomatedSystemTest/YForwardTest.h>
-#include <AutomatedSystemTest/BasePDPTest.h>
 
 using namespace std;
 class AutomatedSystemTest
@@ -31,19 +31,6 @@ public:
     void Exit();
 
 private:
-    enum TEST_STEP
-    {
-        BASE_TEST = 0,
-        SWERVE_VX_FORWARD,
-        SWERVE_VX_BACKWARD,
-        SWERVE_VY_FORWARD,
-        SWERVE_VY_BACKWARD,
-    };
-    TEST_STEP m_testStep;
-    int m_stepnum = 1;
-    bool m_currentTest;
-    bool m_finishedcurrenttest;
-    bool m_startedtest;
     ArmTest *m_ArmTest;
     XBackwardTest *m_XBackwardTest;
     XForwardTest *m_XForwardTest;

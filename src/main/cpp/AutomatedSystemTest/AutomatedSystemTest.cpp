@@ -25,8 +25,12 @@
 using namespace std;
 AutomatedSystemTest::AutomatedSystemTest()
 {
-    TEST_STEP m_testStep;
-    m_finishedcurrenttest;
+    m_ArmTest = new ArmTest;
+    m_BaseTest = new BaseTest;
+    m_XBackwardTest = new XBackwardTest;
+    m_XForwardTest = new XForwardTest;
+    m_YBackwardTest = new YBackwardTest;
+    m_YForwardTest = new YForwardTest;
 }
 void AutomatedSystemTest::Init()
 {
