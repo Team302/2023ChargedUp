@@ -27,13 +27,12 @@
                time="1.25"
                />
     <!--grab cube-->
-    <primitive id="DO_NOTHING"
-               headingOption="SPECIFIED_ANGLE"
-               heading="180"
+    <primitive id="VISION_ALIGN"
+               pipeline="CUBE"
                arm="FLOOR_POSITION_ROTATE"
                extender="FLOOR_EXTEND"
                intake="INTAKE"
-               time="0.85"
+               time="0.5"
                />
     <!--drive onto charging station-->
     <primitive id="DRIVE_PATH"

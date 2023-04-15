@@ -65,7 +65,7 @@
                heading="0"
                arm="FLOOR_POSITION_ROTATE_AUTON"
                extender="STARTING_POSITION_EXTEND"
-               intake="INTAKE_EXPEL"
+               intake="INTAKE_HOLD_CUBE"
                time="10.0"
                />
 </auton>
