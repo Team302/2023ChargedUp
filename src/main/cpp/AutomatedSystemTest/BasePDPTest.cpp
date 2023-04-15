@@ -29,4 +29,5 @@ void BaseTest::Init()
 }
 void BaseTest::Run()
 {
+    m_BaseTestDone = true;
 }
