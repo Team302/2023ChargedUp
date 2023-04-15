@@ -32,8 +32,9 @@ public:
     void Exit();
     XBackwardTest();
     virtual ~XBackwardTest() = default;
+    bool m_XBackwardTestDone;
+    bool m_XBackWardTestInitDone;
 
 private:
     int m_timer0 = 0;
-    bool m_xBackwardTestComplete = false;
 };

@@ -32,8 +32,9 @@ public:
     bool Exit();
     YBackwardTest();
     virtual ~YBackwardTest() = default;
+    bool m_YBackwardTestInitDone = false;
+    bool m_YBackwardTestDone = false;
 
 private:
     int m_timer0 = 0;
-    bool m_yBackwardTestComplete = false;
 };
