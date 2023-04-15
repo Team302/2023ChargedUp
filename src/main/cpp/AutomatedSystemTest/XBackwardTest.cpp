@@ -59,8 +59,7 @@ void XBackwardTest::Run()
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("X Backward Test"), "running");
 }
 
-bool XBackwardTest::IsDone()
+void XBackwardTest::Exit()
 {
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("X Backward Test"), "complete");
-    return m_xBackwardTestComplete;
 }

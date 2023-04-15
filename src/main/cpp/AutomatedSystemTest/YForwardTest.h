@@ -29,7 +29,7 @@ class YForwardTest
 public:
     void Init();
     void Run();
-    bool IsDone();
+    void Exit();
     YForwardTest();
     virtual ~YForwardTest() = default;
 

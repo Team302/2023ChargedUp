@@ -56,7 +56,6 @@ void YForwardTest::Run()
     }
 }
 
-bool YForwardTest::IsDone()
+void YForwardTest::Exit()
 {
-    return m_yForwardTestComplete;
 }

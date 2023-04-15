@@ -15,10 +15,10 @@
 #pragma once
 #include <AutomatedSystemTest/XBackwardTest.h>
 #include <AutomatedSystemTest/ArmTest.h>
-#include <AutomatedSystemTest/ExtenderTest.h>
 #include <AutomatedSystemTest/XForwardTest.h>
 #include <AutomatedSystemTest/YBackwardTest.h>
 #include <AutomatedSystemTest/YForwardTest.h>
+#include <AutomatedSystemTest/BasePDPTest.h>
 
 using namespace std;
 class AutomatedSystemTest
@@ -34,7 +34,6 @@ private:
     enum TEST_STEP
     {
         BASE_TEST = 0,
-        ARM_TESTStep1,
         SWERVE_VX_FORWARD,
         SWERVE_VX_BACKWARD,
         SWERVE_VY_FORWARD,
@@ -45,6 +44,12 @@ private:
     bool m_currentTest;
     bool m_finishedcurrenttest;
     bool m_startedtest;
+    ArmTest *m_ArmTest;
+    XBackwardTest *m_XBackwardTest;
+    XForwardTest *m_XFarwardTest;
+    YBackwardTest *m_YBackwardTest;
+    YForwardTest *m_YForwardTest;
+    BaseTest *m_BaseTest;
     // double GetTestPnumatics();
     // double GetPDHTemp();
 };

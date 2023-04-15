@@ -59,8 +59,7 @@ void XForwardTest::Run()
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("X Forward Test"), "running");
 }
 
-bool XForwardTest::IsDone()
+void XForwardTest::Exit()
 {
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("X Forward Test"), "complete");
-    return m_xForwardTestComplete;
 }

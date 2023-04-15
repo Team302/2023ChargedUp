@@ -31,12 +31,31 @@ AutomatedSystemTest::AutomatedSystemTest()
 void AutomatedSystemTest::Init()
 {
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("test init"), "reached");
-    m_stepnum = 1;
 }
 void AutomatedSystemTest::Run()
 {
-}
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("run"), "reached");
+    m_BaseTest->Init();
+    if (m_BaseTest->m_InitDone)
+    {
+        m_BaseTest->Run();
 
+        if (m_BaseTest->m_BaseTestDone)
+        {
+            m_ArmTest->Init();
+
+            if (m_ArmTest->m_ArmTestInitDone)
+            {
+                m_ArmTest->Run();
+
+                if (m_ArmTest->m_ArmTestDone)
+                {
+                    m_XBackwardTest->Init();
+                }
+            }
+        }
+    }
+}
 void AutomatedSystemTest::Exit()
 {
 }

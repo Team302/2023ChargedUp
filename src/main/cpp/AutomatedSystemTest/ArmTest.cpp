@@ -22,12 +22,17 @@ using namespace std;
 
 ArmTest::ArmTest()
 {
+    m_armTestComplete = false;
+    m_extenderTestComplete = false;
+    m_ArmTestDone = false;
+    m_timer0 = 0;
 }
 void ArmTest::Init()
 {
     ExtenderStateMgr::GetInstance()->SetCurrentState(ExtenderStateMgr::EXTENDER_STATE::STARTING_POSITION_EXTEND, (true));
     ArmStateMgr::GetInstance()->SetCurrentState(ArmStateMgr::ARM_STATE::STARTING_POSITION_ROTATE, true);
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("ArmTest"), "Arm Test Running");
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("ArmTest (Init)"), "finished");
+    m_ArmTestInitDone = true;
 }
 void ArmTest::Run()
 {
@@ -36,25 +41,34 @@ void ArmTest::Run()
     if (m_armstate == ArmStateMgr::ARM_STATE::STARTING_POSITION_ROTATE)
     {
         ArmStateMgr::GetInstance()->SetCurrentState(ArmStateMgr::ARM_STATE::CONE_BACKROW_ROTATE, true);
-        m_armTestComplete = true;
     }
 
     if (m_extenderstate == ExtenderStateMgr::EXTENDER_STATE::STARTING_POSITION_EXTEND && m_armstate == ArmStateMgr::ARM_STATE::CONE_BACKROW_ROTATE)
     {
         ExtenderStateMgr::GetInstance()->SetCurrentState(ExtenderStateMgr::EXTENDER_STATE::CONE_BACKROW_EXTEND, (true));
         m_extenderTestComplete = true;
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("ArmTest (Run)"), "finished");
+        m_timer0++;
+        if (m_timer0 > 50)
+        {
+            ExtenderStateMgr::GetInstance()->SetCurrentState(ExtenderStateMgr::EXTENDER_STATE::STARTING_POSITION_EXTEND, (true));
+            if (m_extenderstate == ExtenderStateMgr::EXTENDER_STATE::STARTING_POSITION_EXTEND)
+            {
+                ArmStateMgr::GetInstance()->SetCurrentState(ArmStateMgr::ARM_STATE::STARTING_POSITION_ROTATE, (true));
+                if (m_armstate == ArmStateMgr::ARM_STATE::STARTING_POSITION_ROTATE)
+                {
+                    m_armTestComplete = true;
+                }
+            }
+        }
     }
     else
     {
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("ArmTest"), "Arm or Extender test problem");
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("ArmTest (Run)"), "Arm or Extender test problem");
     }
-}
 
-bool ArmTest::IsDone()
-{
-    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("ArmTest"), "Arm Test complete");
     if (m_armTestComplete && m_extenderTestComplete)
     {
-        return true;
+        m_ArmTestDone = true;
     }
 }

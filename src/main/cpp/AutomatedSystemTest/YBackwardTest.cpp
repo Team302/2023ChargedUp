@@ -56,7 +56,6 @@ void YBackwardTest::Run()
     }
 }
 
-bool YBackwardTest::IsDone()
+bool YBackwardTest::Exit()
 {
-    return m_yBackwardTestComplete;
 }

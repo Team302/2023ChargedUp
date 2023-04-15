@@ -29,7 +29,7 @@ class YBackwardTest
 public:
     void Init();
     void Run();
-    bool IsDone();
+    bool Exit();
     YBackwardTest();
     virtual ~YBackwardTest() = default;
 

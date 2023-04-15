@@ -30,13 +30,15 @@ class ArmTest
 public:
     void Init();
     void Run();
-    bool IsDone();
     ArmTest();
     virtual ~ArmTest() = default;
+    bool m_ArmTestDone;
+    bool m_ArmTestInitDone;
 
 private:
     double m_armusage;
     frc::PowerDistribution *m_PDP;
     bool m_armTestComplete = false;
     bool m_extenderTestComplete = false;
+    int m_timer0;
 };

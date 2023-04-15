@@ -29,7 +29,7 @@ class XBackwardTest
 public:
     void Init();
     void Run();
-    bool IsDone();
+    void Exit();
     XBackwardTest();
     virtual ~XBackwardTest() = default;
 

@@ -29,7 +29,7 @@ class XForwardTest
 public:
     void Init();
     void Run();
-    bool IsDone();
+    void Exit();
     XForwardTest();
     virtual ~XForwardTest() = default;
 
