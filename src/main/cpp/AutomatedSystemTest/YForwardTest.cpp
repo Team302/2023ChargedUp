@@ -60,7 +60,3 @@ void YForwardTest::Run()
     }
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("X Forward Test"), "running");
 }
-
-void YForwardTest::Exit()
-{
-}
