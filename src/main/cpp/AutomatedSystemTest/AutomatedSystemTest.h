@@ -37,22 +37,6 @@ public:
     void Exit();
 
 private:
-    enum TEST_STEP
-    {
-        BASE_TEST = 0,
-        SWERVE_VX_FORWARD,
-        SWERVE_VX_BACKWARD,
-        SWERVE_VY_FORWARD,
-        SWERVE_VY_BACKWARD,
-    };
-
-    TEST_STEP m_testStep;
-
-    int m_stepnum = 1;
-    bool m_currentTest;
-    bool m_finishedcurrenttest;
-    bool m_startedtest;
-
     ArmTest *m_ArmTest;
     XBackwardTest *m_XBackwardTest;
     XForwardTest *m_XForwardTest;
