@@ -17,7 +17,7 @@
 #include <utils/logging/Logger.h>
 #include <string>
 #include <mechanisms/extender/ExtenderStateMgr.h>
-
+#include <mechanisms\Intake\IntakeStateMgr.h>
 using namespace std;
 
 ArmTest::ArmTest()
@@ -26,16 +26,19 @@ ArmTest::ArmTest()
     m_extenderTestComplete = false;
     m_ArmTestDone = false;
     m_timer0 = 0;
+    intakeTestComplete = false;
 }
 void ArmTest::Init()
 {
     ExtenderStateMgr::GetInstance()->SetCurrentState(ExtenderStateMgr::EXTENDER_STATE::STARTING_POSITION_EXTEND, (true));
     ArmStateMgr::GetInstance()->SetCurrentState(ArmStateMgr::ARM_STATE::STARTING_POSITION_ROTATE, true);
+    IntakeStateMgr::GetInstance()->SetCurrentState(IntakeStateMgr::INTAKE_STATE::OFF, true);
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("ArmTest (Init)"), "finished");
     m_ArmTestInitDone = true;
 }
 void ArmTest::Run()
 {
+    auto m_intakestate = IntakeStateMgr::GetInstance()->GetCurrentState();
     auto m_armstate = ArmStateMgr::GetInstance()->GetCurrentState();
     auto m_extenderstate = ExtenderStateMgr::GetInstance()->GetCurrentState();
     if (m_armstate == ArmStateMgr::ARM_STATE::STARTING_POSITION_ROTATE)
@@ -48,16 +51,22 @@ void ArmTest::Run()
         ExtenderStateMgr::GetInstance()->SetCurrentState(ExtenderStateMgr::EXTENDER_STATE::CONE_BACKROW_EXTEND, (true));
         m_extenderTestComplete = true;
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Automatedsystemtest"), string("ArmTest (Run)"), "finished");
-        m_timer0++;
-        if (m_timer0 > 50)
+        if (m_extenderstate == ExtenderStateMgr::EXTENDER_STATE::CONE_BACKROW_EXTEND && m_armstate == ArmStateMgr::ARM_STATE::CONE_BACKROW_ROTATE)
         {
-            ExtenderStateMgr::GetInstance()->SetCurrentState(ExtenderStateMgr::EXTENDER_STATE::STARTING_POSITION_EXTEND, (true));
-            if (m_extenderstate == ExtenderStateMgr::EXTENDER_STATE::STARTING_POSITION_EXTEND)
+            IntakeStateMgr::GetInstance()->SetCurrentState(IntakeStateMgr::INTAKE_STATE::INTAKE, true);
+            m_timer0++;
+            if (m_timer0 > 100)
             {
-                ArmStateMgr::GetInstance()->SetCurrentState(ArmStateMgr::ARM_STATE::STARTING_POSITION_ROTATE, (true));
-                if (m_armstate == ArmStateMgr::ARM_STATE::STARTING_POSITION_ROTATE)
+                IntakeStateMgr::GetInstance()->SetCurrentState(IntakeStateMgr::INTAKE_STATE::OFF, true);
+                if (m_intakestate = IntakeStateMgr::INTAKE_STATE::INTAKE)
+                    ExtenderStateMgr::GetInstance()->SetCurrentState(ExtenderStateMgr::EXTENDER_STATE::STARTING_POSITION_EXTEND, (true));
+                if (m_extenderstate == ExtenderStateMgr::EXTENDER_STATE::STARTING_POSITION_EXTEND)
                 {
-                    m_armTestComplete = true;
+                    ArmStateMgr::GetInstance()->SetCurrentState(ArmStateMgr::ARM_STATE::STARTING_POSITION_ROTATE, (true));
+                    if (m_armstate == ArmStateMgr::ARM_STATE::STARTING_POSITION_ROTATE)
+                    {
+                        m_armTestComplete = true;
+                    }
                 }
             }
         }

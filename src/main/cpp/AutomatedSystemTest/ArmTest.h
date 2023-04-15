@@ -34,6 +34,7 @@ public:
     virtual ~ArmTest() = default;
     bool m_ArmTestDone;
     bool m_ArmTestInitDone;
+    bool intakeTestComplete;
 
 private:
     double m_armusage;
