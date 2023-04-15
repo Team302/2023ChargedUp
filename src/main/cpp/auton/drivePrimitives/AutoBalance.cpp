@@ -36,12 +36,18 @@ AutoBalance::AutoBalance() : m_chassis(ChassisFactory::GetChassisFactory()->GetS
                              // max velocity of 1 rotation per second and a max acceleration of 180 degrees per second squared.
                              m_headingOption(ChassisOptionEnums::HeadingOption::MAINTAIN),
                              m_ntName("AutoBalance"),
-                             m_timer(new frc::Timer())
+                             m_timer(new frc::Timer()),
+                             m_maxTime(-1.0),
+                             m_maxTimeTimer(new frc::Timer())
+
 {
 }
 void AutoBalance::Init(PrimitiveParams *params)
 {
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "ArrivedAtInit", true);
+    m_maxTime = params->GetTime();
+    m_maxTimeTimer->Reset();
+    m_maxTimeTimer->Start();
 }
 void AutoBalance::Run()
 {
@@ -63,18 +69,25 @@ bool AutoBalance::IsDone()
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, m_ntName, "ArrivedAtDone", true);
     if (m_chassis != nullptr)
     {
-        auto pitch = m_chassis->GetPitch().to<double>();
-        auto roll = m_chassis->GetRoll().to<double>();
-        if (abs(pitch) < m_balanceTolerance && abs(roll) < m_balanceTolerance)
+        if (m_maxTimeTimer->Get().to<double>() > m_maxTime && m_maxTime > 0)
         {
-            m_timer->Start();
+            return true;
         }
         else
         {
-            m_timer->Reset();
-        }
+            auto pitch = m_chassis->GetPitch().to<double>();
+            auto roll = m_chassis->GetRoll().to<double>();
+            if (abs(pitch) < m_balanceTolerance && abs(roll) < m_balanceTolerance)
+            {
+                m_timer->Start();
+            }
+            else
+            {
+                m_timer->Reset();
+            }
 
-        return m_timer->Get().to<double>() > m_balanceTimeout;
+            return m_timer->Get().to<double>() > m_balanceTimeout;
+        }
     }
     return true;
 }
