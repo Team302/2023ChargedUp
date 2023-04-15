@@ -41,6 +41,7 @@ VisionDrive::VisionDrive(RobotDrive *robotDrive) : RobotDrive(),
                                                    m_chassis(ChassisFactory::GetChassisFactory()->GetSwerveChassis()),
                                                    m_vision(DragonVision::GetDragonVision()),
                                                    m_haveGamePiece(false),
+                                                   m_moveInXDir(false),
                                                    m_lostGamePieceTimer(new frc::Timer())
 {
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::HoldingGamePiece);
@@ -74,14 +75,18 @@ std::array<frc::SwerveModuleState, 4> VisionDrive::UpdateSwerveModuleStates(Chas
             atTarget_angle = AtTargetAngle(targetData, &angleError);
 
             // Do not move in the X direction until the other measure angle is within a certain tolerance
-            bool moveInXDir = std::abs(angleError.to<double>()) < m_inhibitXspeedAboveAngularError_rad;
+            if (std::abs(units::angle::degree_t(angleError).to<double>()) < m_inhibitXspeedAboveAngularError.to<double>())
+                m_moveInXDir = true;
 
-            if ((m_vision->getPipeline(DragonVision::LIMELIGHT_POSITION::FRONT) == DragonLimelight::PIPELINE_MODE::APRIL_TAG) && m_inAutonMode)
+            if (std::abs(units::angle::degree_t(angleError).to<double>()) > m_stopXSpeedAboveAngleError.to<double>())
+                m_moveInXDir = false;
+
+            if (m_vision->getPipeline(DragonVision::LIMELIGHT_POSITION::FRONT) == DragonLimelight::PIPELINE_MODE::APRIL_TAG)
             {
-                moveInXDir = false;
+                m_moveInXDir = false;
             }
 
-            if (moveInXDir)
+            if (m_moveInXDir)
             {
                 units::velocity::meters_per_second_t xSpeed = units::velocity::meters_per_second_t(0.0);
                 units::length::inch_t xError = targetData->getXdistanceToTargetRobotFrame() - units::length::inch_t(m_centerOfRobotToBumperEdge_in + m_gamePieceToBumperOffset);
@@ -235,6 +240,7 @@ void VisionDrive::ResetVisionDrive()
     yErrorIntegral = units::length::inch_t(0);
     m_xErrorUnderThreshold = false;
     m_haveGamePiece = false;
+    m_moveInXDir = false;
     m_lostGamePieceTimer->Stop();
     m_lostGamePieceTimer->Reset();
 }

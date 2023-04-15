@@ -109,7 +109,8 @@ private:
     const double m_minimumOmega_radps = 0.7;
     const double m_maximumOmega_radps = 1.2;
     const double m_AngularTolerance_rad = std::numbers::pi * 4.0 / 180.0;
-    const double m_inhibitXspeedAboveAngularError_rad = std::numbers::pi * 5.0 / 180.0;
+    const units::angle::degree_t m_inhibitXspeedAboveAngularError = units::angle::degree_t(5.0);
+    const units::angle::degree_t m_stopXSpeedAboveAngleError = units::angle::degree_t(15.0);
     double m_visionKP_Angle = 2;
 
     // Other stuff
@@ -135,6 +136,7 @@ private:
     const units::second_t m_lostGamePieceTimeout = units::second_t(0.25);
 
     bool m_haveGamePiece;
+    bool m_moveInXDir;
 
     double getOffsetToTarget(ChassisOptionEnums::RELATIVE_POSITION targetGrid, ChassisOptionEnums::RELATIVE_POSITION targetNode, uint8_t AprilTagId);
     units::velocity::meters_per_second_t limitVelocityToBetweenMinAndMax(units::velocity::meters_per_second_t speed);
