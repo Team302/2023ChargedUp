@@ -23,6 +23,7 @@
 
 // Team 302 includes
 #include <AutomatedSystemTest/AutomatedSystemTest.h>
+#include <mechanisms/Extender/ExtenderStateMgr.h>
 // Third Party Includes
 
 class ArmTest
@@ -37,6 +38,7 @@ public:
     bool intakeTestComplete;
 
 private:
+    ExtenderStateMgr *extenderPointer;
     double m_armusage;
     frc::PowerDistribution *m_PDP;
     bool m_armTestComplete = false;
