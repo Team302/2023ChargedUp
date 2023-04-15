@@ -48,8 +48,11 @@ public:
 private:
     SwerveChassis *m_chassis;
     ChassisOptionEnums::HeadingOption m_headingOption;
+    double m_heading;
     std::string m_ntName;
     frc::Timer *m_timer;
+    double m_maxTime;
+    frc::Timer *m_maxTimeTimer;
 
     static constexpr double m_balanceTolerance = 1.0;
     static constexpr double m_balanceTimeout = 2.0;

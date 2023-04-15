@@ -56,6 +56,8 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
     headingOptionMap["MAINTAIN"] = ChassisOptionEnums::HeadingOption::MAINTAIN;
     headingOptionMap["TOWARD_GOAL"] = ChassisOptionEnums::HeadingOption::TOWARD_GOAL;
     headingOptionMap["SPECIFIED_ANGLE"] = ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE;
+    headingOptionMap["FACE_FLOOR_GAME_PIECE"] = ChassisOptionEnums::HeadingOption::FACE_FLOOR_GAME_PIECE;
+    headingOptionMap["FACE_APRIL_TAG"] = ChassisOptionEnums::HeadingOption::FACE_APRIL_TAG;
     headingOptionMap["IGNORE"] = ChassisOptionEnums::HeadingOption::IGNORE;
 
     xml_document doc;
@@ -241,10 +243,6 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                             else if (strcmp(attr.value(), "APRIL_TAG") == 0)
                             {
                                 pipelineMode = DragonLimelight::PIPELINE_MODE::APRIL_TAG;
-                            }
-                            else if (strcmp(attr.value(), "CONE_NODE") == 0)
-                            {
-                                pipelineMode = DragonLimelight::PIPELINE_MODE::CONE_NODE;
                             }
                             else if (strcmp(attr.value(), "CONE") == 0)
                             {
