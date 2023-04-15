@@ -28,7 +28,6 @@
 
 /// DEBUGGING
 #include <utils/logging/Logger.h>
-#include <iostream>
 
 VisionDrive::VisionDrive(RobotDrive *robotDrive) : RobotDrive(),
                                                    IRobotStateChangeSubscriber(),
@@ -74,6 +73,8 @@ std::array<frc::SwerveModuleState, 4> VisionDrive::UpdateSwerveModuleStates(Chas
 
             atTarget_angle = AtTargetAngle(targetData, &angleError);
 
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "Angle Error (Deg)", units::angle::degree_t(angleError).to<double>());
+
             // Do not move in the X direction until the other measure angle is within a certain tolerance
             if (std::abs(units::angle::degree_t(angleError).to<double>()) < m_inhibitXspeedAboveAngularError.to<double>())
                 m_moveInXDir = true;
@@ -97,7 +98,12 @@ std::array<frc::SwerveModuleState, 4> VisionDrive::UpdateSwerveModuleStates(Chas
                 }
 
                 xSpeed = units::length::meter_t(xError * m_visionKP_X) / 1_s;
+
+                Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "XSpeed Before Limiting (MPS)", xSpeed.to<double>());
+
                 xSpeed = limitVelocityToBetweenMinAndMax(xSpeed);
+
+                Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "XSpeed After Limiting (MPS)", xSpeed.to<double>());
 
                 chassisMovement.chassisSpeeds.vx = xSpeed;
             }

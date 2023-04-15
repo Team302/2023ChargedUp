@@ -78,18 +78,6 @@ bool FaceAprilTag::AtTargetAngle(std::shared_ptr<DragonVisionTarget> targetData,
 
             *error = -1.0 * (robotYaw - angleToBackOfNode); // negate to turn correctly
 
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ANickDebugging", "RobotYaw (Deg)", robotYaw.to<double>());
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ANickDebugging", "AngleToTag (Rad)", angleToTag.to<double>());
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ANickDebugging", "AngleToTag (Deg)", units::angle::degree_t(angleToTag).to<double>());
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ANickDebugging", "YError (Inches)", yError.to<double>());
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ANickDebugging", "XError (Inches)", xError.to<double>());
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ANickDebugging", "XErrorFieldOriented (Inches)", xErrorFieldOriented.to<double>());
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ANickDebugging", "YErrorFieldOriented (Inches)", yErrorFieldOriented.to<double>());
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ANickDebugging", "Beta (Rad)", angleToBackOfNode.to<double>());
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ANickDebugging", "Beta (Deg)", units::angle::degree_t(angleToBackOfNode).to<double>());
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ANickDebugging", "Angle Error (Rad)", (*error).to<double>());
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ANickDebugging", "Angle Error (Deg)", units::angle::degree_t(*error).to<double>());
-
             if (std::abs((*error).to<double>()) < m_AngularTolerance_rad)
             {
                 return true;

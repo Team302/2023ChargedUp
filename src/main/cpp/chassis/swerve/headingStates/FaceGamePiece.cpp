@@ -39,7 +39,12 @@ void FaceGamePiece::UpdateChassisSpeeds(ChassisMovement &chassisMovement)
         if (!AtTargetAngle(targetData, &angleError))
         {
             omega = units::angle::radian_t(angleError * m_visionKP_Angle) / 1_s;
+
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "Omega Before Limiting (DPS)", units::angular_velocity::degrees_per_second_t(omega).to<double>());
+
             omega = limitAngularVelocityToBetweenMinAndMax(omega);
+
+            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "Omega After Limiting (DPS)", units::angular_velocity::degrees_per_second_t(omega).to<double>());
 
             chassisMovement.chassisSpeeds.omega = omega;
         }
