@@ -34,6 +34,7 @@ public:
 private:
     void CheckControllers();
     void DisplayPressure() const;
+    void DisplayDesiredGamePiece();
     void ResetRequests(void);
     DriverFeedback();
     ~DriverFeedback() = default;

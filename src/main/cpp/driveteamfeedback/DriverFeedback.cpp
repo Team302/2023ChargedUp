@@ -45,6 +45,13 @@ void DriverFeedback::UpdateFeedback()
     UpdateCompressorState();
     CheckControllers();
     DisplayPressure();
+    DisplayDesiredGamePiece();
+}
+
+void DriverFeedback::DisplayDesiredGamePiece()
+{
+    auto table = nt::NetworkTableInstance::GetDefault().GetTable("Game Piece");
+    table.get()->PutBoolean(std::string("Desired Piece"), m_wantCone); // true if want cone, false if want cube
 }
 
 void DriverFeedback::UpdateCompressorState()
