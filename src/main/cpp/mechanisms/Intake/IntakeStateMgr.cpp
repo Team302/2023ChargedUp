@@ -189,9 +189,13 @@ void IntakeStateMgr::CheckForGamepadTransitions()
             {
                 m_targetState = INTAKE_STATE::HOLD;
             }
-            else if (m_currentState != INTAKE_STATE::HOLD)
+            else if (m_currentState != INTAKE_STATE::HOLD && m_coneMode)
             {
                 m_targetState = INTAKE_STATE::OFF;
+            }
+            else
+            {
+                m_targetState = INTAKE_STATE::HOLD_CUBE;
             }
         }
     }

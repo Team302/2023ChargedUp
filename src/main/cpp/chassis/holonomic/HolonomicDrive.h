@@ -54,7 +54,7 @@ private:
     ChassisOptionEnums::DriveStateType m_previousDriveState;
     frc::Trajectory m_generatedTrajectory;
     DragonField *m_field;
-    const double m_slowModeMultiplier = 0.45;
+    const double m_slowModeMultiplier = 0.5;
     const double m_autoAlignAngleTolerance = 5.0;
     bool m_hasResetPosition = false;
     bool m_inVisionDrive = false;

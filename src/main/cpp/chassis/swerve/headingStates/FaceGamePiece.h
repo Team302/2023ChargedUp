@@ -37,8 +37,7 @@ private:
 
     // Angular movement settings
     const double m_minimumOmega_radps = 0.7;
-    const double m_maximumOmega_radps = 1.2;
-    const double m_AngularTolerance_rad = std::numbers::pi * 4.0 / 180.0;
-    const double m_inhibitXspeedAboveAngularError_rad = std::numbers::pi * 5.0 / 180.0;
-    double m_visionKP_Angle = 3;
+    const double m_maximumOmega_radps = 1.5;
+    const double m_AngularTolerance_rad = std::numbers::pi * 2.0 / 180.0;
+    double m_visionKP_Angle = 6.0;
 };

@@ -39,6 +39,11 @@ void FaceAprilTag::UpdateChassisSpeeds(ChassisMovement &chassisMovement)
     units::angle::radian_t angleError = units::angle::radian_t(0.0);
 
     // get targetdata from the vision system
+    if (m_vision->getPipeline(DragonVision::LIMELIGHT_POSITION::FRONT) != DragonLimelight::PIPELINE_MODE::APRIL_TAG)
+    {
+        m_vision->setPipeline(DragonLimelight::PIPELINE_MODE::APRIL_TAG);
+    }
+
     auto targetData = m_vision->getTargetInfo();
 
     if ((targetData != nullptr) && (m_vision->getPipeline(DragonVision::LIMELIGHT_POSITION::FRONT) == targetData->getTargetType()))
