@@ -172,7 +172,7 @@ void IntakeStateMgr::CheckForGamepadTransitions()
                 {
                     m_targetState = INTAKE_STATE::HOLD;
                 }
-                else if (m_coneMode && (m_isHP || m_armAngle > HUMAN_PLAYER_STATION_ANGLE))
+                else if (m_coneMode && (m_isHP || m_armAngle > HUMAN_PLAYER_STATION_ANGLE)) // If Auton cones work well, we should remove the second part of this if statment
                 {
                     m_targetState = INTAKE_STATE::HP_CONE_INTAKE;
                 }
