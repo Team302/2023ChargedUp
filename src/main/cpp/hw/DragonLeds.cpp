@@ -14,7 +14,7 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#include <hw/DragonLeds.h >
+#include <hw/DragonLeds.h>
 #include <utils/logging/Logger.h>
 
 #include <span>
