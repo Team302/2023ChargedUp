@@ -37,13 +37,13 @@
 <primitive id="DRIVE_PATH_PLANNER"
 	        pathname="RedHP5"
 			arm="FLOOR_POSITION_ROTATE"
-            intake="INTAKE"
+            intake="INTAKE_HOLD_CUBE"
 			extender="FLOOR_EXTEND"
             time="2.85"/>
 <primitive id="VISION_ALIGN"
             pipeline="CONE"
             arm="FLOOR_POSITION_ROTATE"
-            intake="INTAKE"
+            intake="HP_CONE_INTAKE"
 			extender="FLOOR_EXTEND"
-            time="30.0"/>
+            time="3.0"/>
 </auton>
