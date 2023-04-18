@@ -63,6 +63,7 @@ IntakeStateMgr::IntakeStateMgr() : StateMgr(),
     stateMap[m_holdXMLString] = m_holdState;
     stateMap[m_releaseXMLString] = m_releaseState;
     stateMap[m_expelXMLString] = m_expelState;
+    stateMap[m_expelLowXMLString] = m_expelLowState;
     stateMap[m_hpconeintakeXMLString] = m_hpconeintakeState;
     stateMap[m_holdCubeXMLString] = m_holdCubeState;
 
@@ -162,7 +163,14 @@ void IntakeStateMgr::CheckForGamepadTransitions()
                 }
                 else
                 {
-                    m_targetState = INTAKE_STATE::EXPEL;
+                    if (m_armAngle < LOW_RELEASE_ANGLE)
+                    {
+                        m_targetState = INTAKE_STATE::INTAKE_EXPEL_LOW;
+                    }
+                    else
+                    {
+                        m_targetState = INTAKE_STATE::EXPEL;
+                    }
                 }
             }
             else if (controller->IsButtonPressed(TeleopControlFunctions::INTAKE))
