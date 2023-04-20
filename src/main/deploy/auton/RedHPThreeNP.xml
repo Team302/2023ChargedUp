@@ -12,7 +12,7 @@
 			   arm="FLOOR_POSITION_ROTATE_AUTON"
                intake="INTAKE_OFF"
 			   extender="STARTING_POSITION_EXTEND"
-               time="2.0"/>
+               time="2.25"/>
 <primitive id="DO_NOTHING"
 			   arm="FLOOR_POSITION_ROTATE"
                intake="INTAKE"
