@@ -39,6 +39,7 @@ public:
         HOLD,
         RELEASE,
         EXPEL,
+        INTAKE_EXPEL_LOW,
         HP_CONE_INTAKE,
         HOLD_CUBE
     };
@@ -47,6 +48,7 @@ public:
     const std::string m_holdXMLString{"INTAKE_HOLD"};
     const std::string m_releaseXMLString{"INTAKE_RELEASE"};
     const std::string m_expelXMLString{"INTAKE_EXPEL"};
+    const std::string m_expelLowXMLString{"INTAKE_EXPEL_LOW"};
     const std::string m_hpconeintakeXMLString{"HP_CONE_INTAKE"};
     const std::string m_holdCubeXMLString{"INTAKE_HOLD_CUBE"};
 
@@ -56,6 +58,7 @@ public:
         {m_holdXMLString, INTAKE_STATE::HOLD},
         {m_releaseXMLString, INTAKE_STATE::RELEASE},
         {m_expelXMLString, INTAKE_STATE::EXPEL},
+        {m_expelLowXMLString, INTAKE_STATE::INTAKE_EXPEL_LOW},
         {m_hpconeintakeXMLString, INTAKE_STATE::HP_CONE_INTAKE},
         {m_holdCubeXMLString, INTAKE_STATE::HOLD_CUBE}};
 
@@ -90,12 +93,14 @@ private:
     static IntakeStateMgr *m_instance;
 
     static constexpr int HUMAN_PLAYER_STATION_ANGLE = 55;
+    static constexpr int LOW_RELEASE_ANGLE = 50;
 
     const StateStruc m_offState = {INTAKE_STATE::OFF, m_intakeOffXMLString, StateType::INTAKE_STATE, true};
     const StateStruc m_intakeState = {INTAKE_STATE::INTAKE, m_intakeXMLString, StateType::INTAKE_STATE, false};
     const StateStruc m_holdState = {INTAKE_STATE::HOLD, m_holdXMLString, StateType::INTAKE_STATE, false};
     const StateStruc m_releaseState = {INTAKE_STATE::RELEASE, m_releaseXMLString, StateType::INTAKE_STATE, false};
     const StateStruc m_expelState = {INTAKE_STATE::EXPEL, m_expelXMLString, StateType::INTAKE_STATE, false};
+    const StateStruc m_expelLowState = {INTAKE_STATE::INTAKE_EXPEL_LOW, m_expelLowXMLString, StateType::INTAKE_STATE, false};
     const StateStruc m_hpconeintakeState = {INTAKE_STATE::HP_CONE_INTAKE, m_hpconeintakeXMLString, StateType::INTAKE_STATE, false};
     const StateStruc m_holdCubeState = {INTAKE_STATE::HOLD_CUBE, m_holdCubeXMLString, StateType::INTAKE_STATE, false};
 };

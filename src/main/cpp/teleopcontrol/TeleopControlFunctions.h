@@ -95,6 +95,7 @@ public:
         INTAKE,
         HOLD,
         EXPEL,
+        EXPEL_LOW,
         RELEASE,
         // Compressor ON/Off controls
         TOGGLE_COMPRESSER,
