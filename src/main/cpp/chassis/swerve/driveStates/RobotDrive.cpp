@@ -58,9 +58,6 @@ std::array<frc::SwerveModuleState, 4> RobotDrive::UpdateSwerveModuleStates(Chass
     {
         DecideTipCorrection(chassisMovement);
     }
-    else
-    {
-    }
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "RobotDrive", "Vx", chassisMovement.chassisSpeeds.vx.to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "RobotDrive", "Vy", chassisMovement.chassisSpeeds.vy.to<double>());
@@ -183,6 +180,9 @@ void RobotDrive::DecideTipCorrection(ChassisMovement &chassisMovement)
 {
     if (frc::DriverStation::IsFMSAttached())
     {
+        //        auto table = nt::NetworkTableInstance::GetDefault().GetTable("match time");
+        //        table.get()->PutNumber(std::string("time"), frc::DriverStation::GetMatchTime());
+
         if (frc::DriverStation::GetMatchTime() > 20)
         {
             CorrectForTipping(chassisMovement);
