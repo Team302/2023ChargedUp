@@ -24,16 +24,10 @@
                arm="FLOOR_POSITION_ROTATE"
                extender="FLOOR_EXTEND"
                intake="INTAKE"
-               time="1.25"
+               time="2.0"
                />
     <!--grab cube-->
-    <primitive id="VISION_ALIGN"
-               pipeline="CUBE"
-               arm="FLOOR_POSITION_ROTATE"
-               extender="FLOOR_EXTEND"
-               intake="INTAKE"
-               time="1.0"
-               />
+
     <!--drive onto charging station-->
     <primitive id="DRIVE_PATH"
                pathname="RedCOOPTwo2Slow.wpilib.json"
@@ -42,7 +36,7 @@
                arm="FLOOR_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                intake="INTAKE_HOLD_CUBE"
-               time="3.0"
+               time="3.5"
                />
     <!--Balance on charging station-->
     <primitive id="AUTO_BALANCE"
