@@ -1,40 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE auton SYSTEM "auton.dtd">
 <auton>
-<primitive id="RESET_POSITION"
-	   pathname="BlueHPOne1.wpilib.json"
-               intake="INTAKE_HOLD"/>
+<primitive id="RESET_POSITION_PATH_PLANNER"
+	           pathname="BlueHP1"
+			/>
     <!--score preloaded cone-->
     <snippet file="ScoreCone.xml"/>
     <!--drive to charing station-->
-    <primitive id="DRIVE_PATH"
-               pathname="BlueHPOne1.wpilib.json"
-               headingOption="SPECIFIED_ANGLE"
-               heading="180"
-               arm="STARTING_POSITION_ROTATE"
+<primitive id="DRIVE_PATH_PLANNER"
+	           pathname="BlueHP1"
+			   arm="FLOOR_POSITION_ROTATE_AUTON"
                intake="INTAKE_OFF"
-               time="0.5"
-               />
-    <primitive id="DRIVE_PATH"
-               pathname="BlueHPOne4.wpilib.json"
-               headingOption="SPECIFIED_ANGLE"
-               heading="180"
-               arm="STARTING_POSITION_ROTATE"
-               intake="INTAKE_OFF"
-               time="2.0"
-               />
-    <primitive id="DRIVE_PATH"
-               pathname="BlueHPOne2.wpilib.json"
-               headingOption="SPECIFIED_ANGLE"
-               heading="180"
-               intake="INTAKE_OFF"
-               time="5.0"
-               />
+			   extender="STARTING_POSITION_EXTEND"
+               time="2.0"/>
+<primitive id="DO_NOTHING"
+			   arm="FLOOR_POSITION_ROTATE"
+               intake="INTAKE"
+			   extender="FLOOR_EXTEND"
+               time="0.25"/>
+<!--drive to cube-->
+<primitive id="DRIVE_PATH_PLANNER"
+	           pathname="BlueHP2"
+			   arm="FLOOR_POSITION_ROTATE"
+               intake="INTAKE"
+			   extender="FLOOR_EXTEND"
+               time="2.65"/>
     <!--do nothing!-->
     <primitive id="DO_NOTHING"
-               headingOption="SPECIFIED_ANGLE"
-               heading="0"
                time="10.0"
-               intake="INTAKE_OFF"
+               extender="FLOOR_EXTEND"
+               intake="INTAKE"
                /> 
 </auton>
