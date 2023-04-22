@@ -28,7 +28,7 @@ std::array<frc::SwerveModuleState, 4> StopDrive::UpdateSwerveModuleStates(Chassi
 {
     if (chassisMovement.checkTipping)
     {
-        CorrectForTipping(chassisMovement);
+        CorrectForTipping(chassisMovement); // TODO:  can we remove this; robot drive handles this
         return m_robotDrive->UpdateSwerveModuleStates(chassisMovement);
     }
 

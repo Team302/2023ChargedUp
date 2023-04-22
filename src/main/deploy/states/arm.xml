@@ -150,7 +150,7 @@
     stateIdentifier="FLOOR_POSITION_ROTATE"
     controlDataIdentifier="RotateToFloordAngle"
     controlDataIdentifier2=""
-    value="16.5"
+    value="17.0"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />

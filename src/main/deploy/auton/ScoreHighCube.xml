@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE auton SYSTEM "auton.dtd">
 <auton>
-
     <primitive id="DO_NOTHING"
                headingOption="FACE_APRIL_TAG"
                arm="CUBE_BACKROW_ROTATE"

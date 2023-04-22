@@ -176,7 +176,7 @@ void IntakeStateMgr::CheckForGamepadTransitions()
             else if (controller->IsButtonPressed(TeleopControlFunctions::INTAKE))
             {
                 auto hasGamePiece = m_intake->IsGamePiecePresent();
-                if (hasGamePiece)
+                if (hasGamePiece && m_coneMode)
                 {
                     m_targetState = INTAKE_STATE::HOLD;
                 }
@@ -201,9 +201,13 @@ void IntakeStateMgr::CheckForGamepadTransitions()
             {
                 m_targetState = INTAKE_STATE::OFF;
             }
-            else
+            else if (!m_coneMode)
             {
                 m_targetState = INTAKE_STATE::HOLD_CUBE;
+            }
+            else
+            {
+                m_targetState = INTAKE_STATE::HOLD;
             }
         }
     }
