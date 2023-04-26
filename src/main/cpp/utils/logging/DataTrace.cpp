@@ -41,6 +41,12 @@ void DataTrace::sendArmData(double angle, double power)
     SendData();
 }
 
+void DataTrace::sendChassisWheelData(double angle_fr, double angle_fl, double angle_rr, double angle_rl)
+{
+    sprintf(sendBuffer, "$$ChassisWheelData:%.3f:%.2f:%.2f:%.2f:%.2f##", m_timer.Get().to<double>(), angle_fr, angle_fl, angle_rr, angle_rl);
+    SendData();
+}
+
 // int test(void)
 // {
 //     send(client_fd, hello, strlen(hello), 0);

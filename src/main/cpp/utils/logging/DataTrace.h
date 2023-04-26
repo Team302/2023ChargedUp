@@ -28,6 +28,7 @@ public:
     ~DataTrace() = default;
 
     void sendArmData(double angle, double power);
+    void sendChassisWheelData(double angle_fr, double angle_fl, double angle_rr, double angle_rl);
 
 private:
     static DataTrace *m_instance;

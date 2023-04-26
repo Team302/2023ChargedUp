@@ -47,6 +47,8 @@ private:
 
     bool isConnected = false;
 
+    void extractIpAddress(const char *sourceString, short *ipAddress);
+
 protected:
     frc::Timer m_timer;
 };
