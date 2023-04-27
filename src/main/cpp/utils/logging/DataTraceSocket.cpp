@@ -51,6 +51,11 @@ void DataTraceSocket::Connect(void)
     extractIpAddress(IP, octets);
     printf("================== Host IP(reconstructed): %d.%d.%d.%d\n", octets[0], octets[1], octets[2], octets[3]);
 
+    // since the DataTrace server is on a laptop that is getting its IP address through DHCP
+    // we need to scan a range of IP addresses starting with 10.3.2.3 to for example 10.3.2.10
+    // note that 10.3.2.1 is the compbot radio and 10.3.2.2 is the compbot roborio
+    // While this code is looking for the socket server, it will block the robot code
+    // maybe we need to find a better way
     for (int i = 180; i < 183; i++)
     {
         if ((client_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
@@ -59,10 +64,6 @@ void DataTraceSocket::Connect(void)
         {
             serv_addr.sin_family = AF_INET;
             serv_addr.sin_port = htons(PORT);
-
-            // since the DataTrace server is on a laptop that is getting its IP address through DHCP
-            // we need to scan a range of IP addresses starting with 10.3.2.3 to for example 10.3.2.10
-            // note that 10.3.2.1 is the compbot radio and 10.3.2.2 is the compbot roborio
 
             char ipAddressBuffer[20] = {0};
             // Convert IPv4 and IPv6 addresses from text to binary form
