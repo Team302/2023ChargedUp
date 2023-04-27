@@ -34,6 +34,7 @@
 # Executables
 *.exe
 !codeGenerator/tool/*.exe
+!dataTrace/*.exe
 *.out
 *.app
 
