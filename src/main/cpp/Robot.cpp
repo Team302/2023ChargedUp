@@ -27,6 +27,7 @@
 #include <utils/logging/Logger.h>
 #include <utils/logging/LoggerData.h>
 #include <utils/logging/LoggerEnums.h>
+#include <utils/logging/DataTrace.h>
 #include <utils/WaypointXmlParser.h>
 
 #include <AdjustableItemMgr.h>
@@ -215,6 +216,8 @@ void Robot::AutonomousPeriodic()
 
 void Robot::TeleopInit()
 {
+    DataTrace::GetInstance()->Connect();
+
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopInit"), string("arrived"));
 
     if (m_controller == nullptr)
@@ -255,6 +258,17 @@ void Robot::TeleopInit()
 
 void Robot::TeleopPeriodic()
 {
+    static double x = 0;
+    DataTrace::GetInstance()->sendArmData(x, x / 2.0);
+    x += 0.2;
+
+    auto chassis = ChassisFactory::GetChassisFactory()->GetSwerveChassis();
+    DataTrace::GetInstance()->sendChassisWheelData(
+        chassis->GetFrontLeft()->GetPosition().angle.Degrees().to<double>(),
+        chassis->GetFrontRight()->GetPosition().angle.Degrees().to<double>(),
+        chassis->GetBackLeft()->GetPosition().angle.Degrees().to<double>(),
+        chassis->GetBackRight()->GetPosition().angle.Degrees().to<double>());
+
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("TeleopPeriodic"), string("arrived"));
     if (m_chassis != nullptr && m_controller != nullptr)
     {
@@ -271,6 +285,7 @@ void Robot::TeleopPeriodic()
 
 void Robot::DisabledInit()
 {
+    DataTrace::GetInstance()->Disconnect();
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("DisabledInit"), string("arrived"));
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("DisabledInit"), string("end"));
