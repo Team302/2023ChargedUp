@@ -136,6 +136,13 @@ void HolonomicDrive::Run()
                 moveInfo.headingOption = ChassisOptionEnums::HeadingOption::FACE_APRIL_TAG;
                 moveInfo.driveOption = ChassisOptionEnums::DriveStateType::FIELD_DRIVE;
             }
+            else if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_APRIL_TAG))
+            {
+                // set pipeline to discover april tags
+                DragonVision::GetDragonVision()->setPipeline(DragonLimelight::PIPELINE_MODE::APRIL_TAG);
+                moveInfo.headingOption = ChassisOptionEnums::HeadingOption::FACE_APRIL_TAG;
+                moveInfo.driveOption = ChassisOptionEnums::DriveStateType::VISION_DRIVE;
+            }
         }
         else
         {

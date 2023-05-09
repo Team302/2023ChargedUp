@@ -82,10 +82,10 @@ std::array<frc::SwerveModuleState, 4> VisionDrive::UpdateSwerveModuleStates(Chas
             if (std::abs(units::angle::degree_t(angleError).to<double>()) > m_stopXSpeedAboveAngleError.to<double>())
                 m_moveInXDir = false;
 
-            if (m_vision->getPipeline(DragonVision::LIMELIGHT_POSITION::FRONT) == DragonLimelight::PIPELINE_MODE::APRIL_TAG)
-            {
-                m_moveInXDir = false;
-            }
+            // if (m_vision->getPipeline(DragonVision::LIMELIGHT_POSITION::FRONT) == DragonLimelight::PIPELINE_MODE::APRIL_TAG)
+            // {
+            //     m_moveInXDir = false;
+            // }
 
             if (m_moveInXDir)
             {
@@ -109,7 +109,7 @@ std::array<frc::SwerveModuleState, 4> VisionDrive::UpdateSwerveModuleStates(Chas
             }
         }
     }
-    else if (m_xErrorUnderThreshold)
+    else if (m_xErrorUnderThreshold && (targetData->getTargetType() != DragonLimelight::PIPELINE_MODE::APRIL_TAG))
     {
         chassisMovement.chassisSpeeds.vx = units::velocity::meters_per_second_t(m_minimumSpeed_mps);
     }

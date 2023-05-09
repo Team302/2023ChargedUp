@@ -50,6 +50,7 @@ public:
         AUTO_TURN_BACKWARD,
         // Standish raw vision
         ALIGN_APRIL_TAG,
+        DRIVE_TO_APRIL_TAG,
         ALIGN_FLOOR_GAME_PIECE,
         ALIGN_SUBSTATION_GAME_PIECE,
         // Scoring states
