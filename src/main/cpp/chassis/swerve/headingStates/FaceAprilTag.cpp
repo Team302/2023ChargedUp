@@ -98,9 +98,15 @@ bool FaceAprilTag::AtTargetAngle(std::shared_ptr<DragonVisionTarget> targetData,
             units::length::inch_t xErrorFieldOriented = xError * units::math::cos(angleToTag + robotYaw);
             units::length::inch_t yErrorFieldOriented = xError * units::math::sin(angleToTag + robotYaw);
 
-            auto angleToBackOfNode = units::math::atan2(yErrorFieldOriented, xErrorFieldOriented + m_cubeNodeLength);
+            // auto angleToBackOfNode = units::math::atan2(yErrorFieldOriented, xErrorFieldOriented + m_cubeNodeLength);
 
-            *error = -1.0 * (robotYaw - angleToBackOfNode); // negate to turn correctly
+            // demo code
+            // auto angleToBackOfNode = units::math::atan2(yErrorFieldOriented, xErrorFieldOriented);
+
+            //*error = -1.0 * (robotYaw - angleToBackOfNode); // negate to turn correctly
+
+            // demo code
+            *error = angleToTag;
 
             Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ANickDebugging", "Robot Yaw After (Deg)", robotYaw.to<double>());
 

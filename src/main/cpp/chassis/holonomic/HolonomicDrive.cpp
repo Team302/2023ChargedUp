@@ -109,8 +109,9 @@ void HolonomicDrive::Run()
         bool alignFloorPiece = controller->IsButtonPressed(TeleopControlFunctions::ALIGN_FLOOR_GAME_PIECE);
         bool alignAprilTag = controller->IsButtonPressed(TeleopControlFunctions::ALIGN_APRIL_TAG);
         bool alignSubstation = controller->IsButtonPressed(TeleopControlFunctions::ALIGN_SUBSTATION_GAME_PIECE);
+        bool driveAprilTag = controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_APRIL_TAG);
 
-        if (alignFloorPiece || alignSubstation || alignAprilTag)
+        if (alignFloorPiece || alignSubstation || alignAprilTag || driveAprilTag)
         {
             m_inVisionDrive = true;
 
@@ -136,7 +137,8 @@ void HolonomicDrive::Run()
                 moveInfo.headingOption = ChassisOptionEnums::HeadingOption::FACE_APRIL_TAG;
                 moveInfo.driveOption = ChassisOptionEnums::DriveStateType::FIELD_DRIVE;
             }
-            else if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_APRIL_TAG))
+
+            if (controller->IsButtonPressed(TeleopControlFunctions::DRIVE_TO_APRIL_TAG))
             {
                 // set pipeline to discover april tags
                 DragonVision::GetDragonVision()->setPipeline(DragonLimelight::PIPELINE_MODE::APRIL_TAG);

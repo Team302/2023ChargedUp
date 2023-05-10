@@ -91,21 +91,25 @@ std::array<frc::SwerveModuleState, 4> VisionDrive::UpdateSwerveModuleStates(Chas
             {
                 units::velocity::meters_per_second_t xSpeed = units::velocity::meters_per_second_t(0.0);
                 units::length::inch_t xError = targetData->getXdistanceToTargetRobotFrame() - units::length::inch_t(m_centerOfRobotToBumperEdge_in + m_gamePieceToBumperOffset);
+                units::length::inch_t xDemoError = targetData->getXdistanceToTargetRobotFrame();
 
                 if (units::math::abs(xError).to<double>() < m_xErrorThreshold)
                 {
                     m_xErrorUnderThreshold = true;
                 }
 
-                xSpeed = units::length::meter_t(xError * m_visionKP_X) / 1_s;
+                if (units::math::abs(xDemoError).to<double>() > m_demoXDistanceMinimum)
+                {
+                    xSpeed = units::length::meter_t(xError * m_visionKP_X) / 1_s;
 
-                Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "XSpeed Before Limiting (MPS)", xSpeed.to<double>());
+                    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "XSpeed Before Limiting (MPS)", xSpeed.to<double>());
 
-                xSpeed = limitVelocityToBetweenMinAndMax(xSpeed);
+                    xSpeed = limitVelocityToBetweenMinAndMax(xSpeed);
 
-                Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "XSpeed After Limiting (MPS)", xSpeed.to<double>());
+                    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "XSpeed After Limiting (MPS)", xSpeed.to<double>());
 
-                chassisMovement.chassisSpeeds.vx = xSpeed;
+                    chassisMovement.chassisSpeeds.vx = xSpeed;
+                }
             }
         }
     }
