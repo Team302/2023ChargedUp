@@ -45,4 +45,12 @@ public:
     );
 
 private:
+    std::map<std::string, ctre::phoenix::motorcontrol::RemoteSensorSource> m_stringToSensorSource{
+        {"CANCODER", ctre::phoenix::motorcontrol::RemoteSensorSource::RemoteSensorSource_CANCoder},
+        {"PIGEON_YAW", ctre::phoenix::motorcontrol::RemoteSensorSource::RemoteSensorSource_Pigeon_Yaw},
+        {"PIGEON_PITCH", ctre::phoenix::motorcontrol::RemoteSensorSource::RemoteSensorSource_Pigeon_Pitch},
+        {"PIGEON_ROLL", ctre::phoenix::motorcontrol::RemoteSensorSource::RemoteSensorSource_Pigeon_Roll},
+        {"SELECTED_SENSOR_FX", ctre::phoenix::motorcontrol::RemoteSensorSource::RemoteSensorSource_TalonFX_SelectedSensor},
+        {"SELECTED_SENSOR_SRX", ctre::phoenix::motorcontrol::RemoteSensorSource::RemoteSensorSource_TalonSRX_SelectedSensor},
+        {"QUADRATURE", ctre::phoenix::motorcontrol::RemoteSensorSource::RemoteSensorSource_CANifier_Quadrature}};
 };

@@ -52,6 +52,8 @@ shared_ptr<IDragonMotorController> DragonMotorControllerFactory::CreateMotorCont
     bool inverted,
     bool sensorInverted,
     FeedbackDevice feedbackDevice,
+    RemoteSensorSource remoteSensorType,
+    int remoteSensorID,
     DistanceAngleCalcStruc calsStruc,
     bool brakeMode,
     int followMotor,
@@ -86,6 +88,8 @@ shared_ptr<IDragonMotorController> DragonMotorControllerFactory::CreateMotorCont
             talon->ConfigSelectedFeedbackSensor(feedbackDevice, 1, 50);
         }
 
+        talon->SetRemoteSensor(remoteSensorID, remoteSensorType);
+
         talon->ConfigPeakCurrentLimit(peakCurrentLimit, 50);
         talon->ConfigPeakCurrentDuration(peakCurrentDuration, 50);
         talon->ConfigContinuousCurrentLimit(continuousCurrentLimit, 50);
@@ -117,6 +121,8 @@ shared_ptr<IDragonMotorController> DragonMotorControllerFactory::CreateMotorCont
         talon->Invert(inverted);
         talon->ConfigSelectedFeedbackSensor(feedbackDevice, 0, 50);
         talon->ConfigSelectedFeedbackSensor(feedbackDevice, 1, 50);
+
+        talon->SetRemoteSensor(remoteSensorID, remoteSensorType);
 
         if (forwardLimitSwitch)
         {

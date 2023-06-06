@@ -238,7 +238,11 @@
           feedbackDevice    		( NONE | INTERNAL | QUADENCODER |  ANALOG |  
                                       TACHOMETER | PULSEWIDTHENCODERPOSITION  |  
                                       SENSORSUM |  SENSORDIFFERENCE |  
-                                      REMOTESENSOR0 |  REMOTESENSOR1 | SOFTWAREEMULATEDSENSOR ) "NONE"
+                                      REMOTESENSOR | SOFTWAREEMULATEDSENSOR ) "NONE"
+          remoteSensorType            CDATA #IMPLIED (CANCODER | PIGEON_YAW | PIGEON_PITCH | PITCH_ROLL |
+                                                SELECTED_SENSOR_FX | SELECTED_SENSOR_SRX | QUADRATURE ) 
+          remoteSensorID              CDATA #IMPLIED (  0 |  1 |  2 |  3 |  4 |  5 |  6 |  7 |  8 |  9 | 
+                              		  10 | 11 | 12 | 13 | 14 | 15 )
           countsPerRev      		CDATA "0"
           gearRatio         		CDATA "1"
           brakeMode         		( true | false ) "false"
