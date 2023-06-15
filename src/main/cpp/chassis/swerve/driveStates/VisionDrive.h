@@ -105,13 +105,13 @@ private:
     bool m_xErrorUnderThreshold = false;
     const double m_xErrorThreshold = 3.0;
 
-    const double m_demoXDistanceMinimum = 160.0; // 5 feet
+    const double m_demoXDistanceMinimum = 130.0; // 5 feet
 
     // Angular movement settings
     const double m_minimumOmega_radps = 0.7;
     const double m_maximumOmega_radps = 1.0;
     const double m_AngularTolerance_rad = std::numbers::pi * 4.0 / 180.0;
-    const units::angle::degree_t m_inhibitXspeedAboveAngularError = units::angle::degree_t(5.0);
+    const units::angle::degree_t m_inhibitXspeedAboveAngularError = units::angle::degree_t(10.0);
     const units::angle::degree_t m_stopXSpeedAboveAngleError = units::angle::degree_t(10.0);
     double m_visionKP_Angle = 2;
 
