@@ -85,13 +85,15 @@ void Arm::ResetIfArmDown()
 }
 units::angle::degree_t Arm::GetPositionDegrees() const
 {
+	auto motor = GetMotor().get()->GetSpeedController();
+	auto fx = dynamic_cast<ctre::phoenix::motorcontrol::can::WPI_TalonFX *>(motor.get());
 	if (m_cancoder != nullptr) // Don't use the CANcoder, if we want to use the CANcoder we need to switch to the external sensor
 	{
 		auto lastError = m_cancoder->GetLastError();
 		auto hasErrors = !(lastError == ctre::phoenix::ErrorCode::OK || lastError == ctre::phoenix::ErrorCode::OKAY);
 		if (!hasErrors)
 		{
-			Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, GetNetworkTableName(), "Motor Angle", GetPosition());
+			Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, GetNetworkTableName(), "Motor Angle", fx->GetSelectedSensorPosition());
 			Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, GetNetworkTableName(), "Cancoder Angle", m_cancoder->GetAbsolutePosition());
 			return units::angle::degree_t(m_cancoder->GetAbsolutePosition());
 		}
