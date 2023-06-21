@@ -68,9 +68,10 @@ void Arm::Update()
 
 double Arm::GetTarget() const
 {
-	return Mech1IndMotor::GetTarget(); // using remote sensor now uncomment below to use encoder
-									   // auto target = Mech1IndMotor::GetTarget();
-									   // return (target / GetMotor().get()->GetCountsPerDegree());
+	return Mech1IndMotor::GetTarget();
+	// using remote sensor now uncomment below to use encoder
+	// auto target = Mech1IndMotor::GetTarget();
+	// return (target * GetMotor().get()->GetCountsPerDegree());
 }
 
 void Arm::ResetIfArmDown()
@@ -94,6 +95,7 @@ units::angle::degree_t Arm::GetPositionDegrees() const
 		if (!hasErrors)
 		{
 			Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, GetNetworkTableName(), "Motor Angle", fx->GetSelectedSensorPosition());
+			Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, GetNetworkTableName(), "Motor Target Angle", fx->GetClosedLoopTarget());
 			Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, GetNetworkTableName(), "Cancoder Angle", m_cancoder->GetAbsolutePosition());
 			return units::angle::degree_t(m_cancoder->GetAbsolutePosition());
 		}
