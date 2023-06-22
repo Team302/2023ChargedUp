@@ -88,8 +88,10 @@ shared_ptr<IDragonMotorController> DragonMotorControllerFactory::CreateMotorCont
             talon->ConfigSelectedFeedbackSensor(feedbackDevice, 1, 50);
         }
 
-        talon->SetRemoteSensor(remoteSensorID, remoteSensorType);
-
+        if (remoteSensorType != ctre::phoenix::motorcontrol::RemoteSensorSource::RemoteSensorSource_Off)
+        {
+            talon->SetRemoteSensor(remoteSensorID, remoteSensorType);
+        }
         talon->ConfigPeakCurrentLimit(peakCurrentLimit, 50);
         talon->ConfigPeakCurrentDuration(peakCurrentDuration, 50);
         talon->ConfigContinuousCurrentLimit(continuousCurrentLimit, 50);

@@ -77,7 +77,7 @@ shared_ptr<IDragonMotorController> MotorXmlParser::ParseXML(
     bool enableVoltageCompensation = false;
     IDragonMotorController::MOTOR_TYPE motortype = IDragonMotorController::NONE;
     std::string canBusName("rio");
-    ctre::phoenix::motorcontrol::RemoteSensorSource remoteSensorType = ctre::phoenix::motorcontrol::RemoteSensorSource::RemoteSensorSource_CANCoder;
+    ctre::phoenix::motorcontrol::RemoteSensorSource remoteSensorType = ctre::phoenix::motorcontrol::RemoteSensorSource::RemoteSensorSource_Off;
     int remoteSensorID = 0;
 
     string mtype;
