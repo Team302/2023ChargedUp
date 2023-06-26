@@ -298,8 +298,32 @@
         reverse="false" />
     </swervemodule>
   </chassis>
-
   <mechanism
+    type="EXTENDER"
+    networkTable="extenderNT"
+    controlFile="extender.xml">
+    <motor
+      usage="Extender"
+      canId="15"
+      canBusName="rio"
+      pdpID="15"
+      type="FALCON"
+      inverted="false"
+      sensorInverted="false"
+      feedbackDevice="INTERNAL"
+      countsPerRev="2048"
+      gearRatio="10"
+      brakeMode="true"
+      follow="-1"
+      forwardlimitswitch="true"
+      forwardlimitswitchopen="true"
+      reverselimitswitch="true"
+      reverselimitswitchopen="true"
+      voltageCompensationSaturation="10.5"
+      voltageCompensationEnable="false"
+      countsPerInch="3811.0878"/>
+  </mechanism>
+<mechanism
     type="ARM"
     networkTable="armNT"
     controlFile="arm.xml">
@@ -330,32 +354,7 @@
       canBusName="rio"
       offset="-144.229"
       reverse="false" />
-  </mechanism>
-  <mechanism
-    type="EXTENDER"
-    networkTable="extenderNT"
-    controlFile="extender.xml">
-    <motor
-      usage="Extender"
-      canId="15"
-      canBusName="rio"
-      pdpID="15"
-      type="FALCON"
-      inverted="false"
-      sensorInverted="false"
-      feedbackDevice="INTERNAL"
-      countsPerRev="2048"
-      gearRatio="10"
-      brakeMode="true"
-      follow="-1"
-      forwardlimitswitch="true"
-      forwardlimitswitchopen="true"
-      reverselimitswitch="true"
-      reverselimitswitchopen="true"
-      voltageCompensationSaturation="10.5"
-      voltageCompensationEnable="false"
-      countsPerInch="3811.0878"/>
-  </mechanism>
+</mechanism>
 <mechanism
     type="INTAKE"
     networkTable="intakeNT"
