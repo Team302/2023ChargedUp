@@ -299,18 +299,20 @@
     </swervemodule>
   </chassis>
   <mechanism
-    type="ARM"
+     type="ARM"
     networkTable="armNT"
     controlFile="arm.xml">
     <motor
       usage="ARM"
       canId="4"
       canBusName="rio"
-      pdpID="5"
+      pdpID="4"
       type="FALCON"
       inverted="false"
       sensorInverted="false"
-      feedbackDevice="INTERNAL"
+      feedbackDevice="REMOTESENSOR"
+      remoteSensorID="4"
+      remoteSensorType="CANCODER"
       countsPerRev="2048"
       gearRatio="84"
       brakeMode="true"
@@ -321,11 +323,11 @@
       reverselimitswitchopen="true"
       voltageCompensationSaturation="10.5"
       voltageCompensationEnable="true"
-      countsPerDegree="515.433" />
+      countsPerDegree="11.377777" />
     <cancoder
       canId="4"
       canBusName="rio"
-      offset="-40.342"
+      offset="-131.308"
       reverse="false" />
   </mechanism>
   <mechanism
@@ -363,7 +365,7 @@
       canBusName="rio"
       pdpID="5"
       type="TALONSRX"
-      inverted="true"
+      inverted="false"
       sensorInverted="false"
       feedbackDevice="NONE"
       countsPerRev="1"
@@ -383,7 +385,7 @@
       canBusName="rio"
       pdpID="7"
       type="TALONSRX"
-      inverted="false"
+      inverted="true"
       sensorInverted="false"
       feedbackDevice="NONE"
       countsPerRev="1"
