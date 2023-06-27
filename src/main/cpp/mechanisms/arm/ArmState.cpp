@@ -91,6 +91,6 @@ void ArmState::Init()
 			targetCounts = currentCounts + deltaAngle.to<double>() * motor->GetCountsPerDegree();
 		}
 		m_arm->SetControlConstants(0, m_control);
-		m_arm->UpdateTarget(targetCounts);
+		m_arm->UpdateTarget(targetAngle.to<double>()); // using target angle instead of counts now with the CANCoder
 	}
 }

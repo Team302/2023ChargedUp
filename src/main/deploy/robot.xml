@@ -298,37 +298,6 @@
         reverse="false" />
     </swervemodule>
   </chassis>
-
-  <mechanism
-    type="ARM"
-    networkTable="armNT"
-    controlFile="arm.xml">
-    <motor
-      usage="ARM"
-      canId="4"
-      canBusName="rio"
-      pdpID="4"
-      type="FALCON"
-      inverted="false"
-      sensorInverted="false"
-      feedbackDevice="INTERNAL"
-      countsPerRev="2048"
-      gearRatio="84"
-      brakeMode="true"
-      follow="-1"
-      forwardlimitswitch="true"
-      forwardlimitswitchopen="true"
-      reverselimitswitch="true"
-      reverselimitswitchopen="true"
-      voltageCompensationSaturation="10.5"
-      voltageCompensationEnable="true"
-      countsPerDegree="531" />
-    <cancoder
-      canId="4"
-      canBusName="rio"
-      offset="-129.463"
-      reverse="false" />
-  </mechanism>
   <mechanism
     type="EXTENDER"
     networkTable="extenderNT"
@@ -354,6 +323,38 @@
       voltageCompensationEnable="false"
       countsPerInch="3811.0878"/>
   </mechanism>
+<mechanism
+    type="ARM"
+    networkTable="armNT"
+    controlFile="arm.xml">
+    <motor
+      usage="ARM"
+      canId="4"
+      canBusName="rio"
+      pdpID="4"
+      type="FALCON"
+      inverted="false"
+      sensorInverted="false"
+      feedbackDevice="REMOTESENSOR"
+      remoteSensorID="4"
+      remoteSensorType="CANCODER"
+      countsPerRev="2048"
+      gearRatio="84"
+      brakeMode="true"
+      follow="-1"
+      forwardlimitswitch="true"
+      forwardlimitswitchopen="true"
+      reverselimitswitch="true"
+      reverselimitswitchopen="true"
+      voltageCompensationSaturation="10.5"
+      voltageCompensationEnable="true"
+      countsPerDegree="11.377777" />
+    <cancoder
+      canId="4"
+      canBusName="rio"
+      offset="-144.229"
+      reverse="false" />
+</mechanism>
 <mechanism
     type="INTAKE"
     networkTable="intakeNT"

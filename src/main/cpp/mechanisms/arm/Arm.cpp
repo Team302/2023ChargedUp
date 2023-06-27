@@ -68,8 +68,10 @@ void Arm::Update()
 
 double Arm::GetTarget() const
 {
-	auto target = Mech1IndMotor::GetTarget();
-	return (target / GetMotor().get()->GetCountsPerDegree());
+	return Mech1IndMotor::GetTarget();
+	// using remote sensor now uncomment below to use encoder
+	// auto target = Mech1IndMotor::GetTarget();
+	// return (target * GetMotor().get()->GetCountsPerDegree());
 }
 
 void Arm::ResetIfArmDown()
@@ -84,13 +86,16 @@ void Arm::ResetIfArmDown()
 }
 units::angle::degree_t Arm::GetPositionDegrees() const
 {
-	if (m_cancoder == nullptr) // Don't use the CANcoder, if we want to use hte CAN coder we need to switch to the external sensor
+	auto motor = GetMotor().get()->GetSpeedController();
+	auto fx = dynamic_cast<ctre::phoenix::motorcontrol::can::WPI_TalonFX *>(motor.get());
+	if (m_cancoder != nullptr) // Don't use the CANcoder, if we want to use the CANcoder we need to switch to the external sensor
 	{
 		auto lastError = m_cancoder->GetLastError();
 		auto hasErrors = !(lastError == ctre::phoenix::ErrorCode::OK || lastError == ctre::phoenix::ErrorCode::OKAY);
 		if (!hasErrors)
 		{
-			Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, GetNetworkTableName(), "Motor Angle", GetPosition());
+			Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, GetNetworkTableName(), "Motor Angle", fx->GetSelectedSensorPosition());
+			Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, GetNetworkTableName(), "Motor Target Angle", fx->GetClosedLoopTarget());
 			Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, GetNetworkTableName(), "Cancoder Angle", m_cancoder->GetAbsolutePosition());
 			return units::angle::degree_t(m_cancoder->GetAbsolutePosition());
 		}

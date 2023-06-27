@@ -77,6 +77,8 @@ shared_ptr<IDragonMotorController> MotorXmlParser::ParseXML(
     bool enableVoltageCompensation = false;
     IDragonMotorController::MOTOR_TYPE motortype = IDragonMotorController::NONE;
     std::string canBusName("rio");
+    ctre::phoenix::motorcontrol::RemoteSensorSource remoteSensorType = ctre::phoenix::motorcontrol::RemoteSensorSource::RemoteSensorSource_Off;
+    int remoteSensorID = 0;
 
     string mtype;
 
@@ -146,13 +148,9 @@ shared_ptr<IDragonMotorController> MotorXmlParser::ParseXML(
             {
                 feedbackDevice = ctre::phoenix::motorcontrol::FeedbackDevice::SensorDifference;
             }
-            else if (val.compare("REMOTESENSOR0") == 0)
+            else if (val.compare("REMOTESENSOR") == 0)
             {
                 feedbackDevice = ctre::phoenix::motorcontrol::FeedbackDevice::RemoteSensor0;
-            }
-            else if (val.compare("REMOTESENSOR1") == 0)
-            {
-                feedbackDevice = ctre::phoenix::motorcontrol::FeedbackDevice::RemoteSensor1;
             }
             else if (val.compare("SOFTWAREEMULATEDSENSOR") == 0)
             {
@@ -180,6 +178,16 @@ shared_ptr<IDragonMotorController> MotorXmlParser::ParseXML(
                 msg += val;
                 Logger::GetLogger()->LogData(LOGGER_LEVEL::ERROR_ONCE, string("MotorXmlParser "), string("ParseXML "), msg);
             }
+        }
+        else if (strcmp(attr.name(), "remoteSensorType") == 0)
+        {
+            auto val = string(attr.value());
+            remoteSensorType = m_stringToSensorSource[val];
+        }
+        else if (strcmp(attr.name(), "remoteSensorID") == 0)
+        {
+            remoteSensorID = attr.as_int();
+            hasError = HardwareIDValidation::ValidateCANID(remoteSensorID, string("MotorXmlParser::ParseXML"));
         }
         else if (strcmp(attr.name(), "motorType") == 0)
         {
@@ -358,6 +366,8 @@ shared_ptr<IDragonMotorController> MotorXmlParser::ParseXML(
                                                                                         inverted,
                                                                                         sensorInverted,
                                                                                         feedbackDevice,
+                                                                                        remoteSensorType,
+                                                                                        remoteSensorID,
                                                                                         calcStruc,
                                                                                         brakeMode,
                                                                                         follow,

@@ -57,6 +57,8 @@ public:
 		bool inverted,												/// Motor is inverted (positive values make the motor turn in reverse)or not
 		bool sensorInverted,										/// Sensor direction matches motor direction or not
 		ctre::phoenix::motorcontrol::FeedbackDevice feedbackDevice, /// Sensor type
+		ctre::phoenix::motorcontrol::RemoteSensorSource remoteSensorType,
+		int remoteSensorID,
 		DistanceAngleCalcStruc calcStruc,
 		bool brakeMode,				/// brake mode using back emf to resist motion when power is not applied
 		int followMotor,			/// CAN ID of the "master" motor controller if this is a follower motor controller (-1 indicates it is a master)

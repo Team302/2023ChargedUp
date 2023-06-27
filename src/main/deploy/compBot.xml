@@ -311,7 +311,9 @@
       type="FALCON"
       inverted="false"
       sensorInverted="false"
-      feedbackDevice="INTERNAL"
+      feedbackDevice="REMOTESENSOR"
+      remoteSensorID="4"
+      remoteSensorType="CANCODER"
       countsPerRev="2048"
       gearRatio="84"
       brakeMode="true"
@@ -326,7 +328,7 @@
     <cancoder
       canId="4"
       canBusName="rio"
-      offset="-129.463"
+      offset="-144.229"
       reverse="false" />
   </mechanism>
   <mechanism

@@ -150,7 +150,13 @@ void ExtenderStateMgr::CheckForStateTransition()
     }
 
     auto armInsideFrame = m_armAngle < m_armFloorTolerance;
-    auto armAtTarget = abs(m_armAngle - m_armTargetAngle) < m_armAngleTolerance;
+    auto armAtTarget = abs(m_armAngle - (m_armTargetAngle / 11.37777777)) < m_armAngleTolerance;
+
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Extender", "Arm Angle", m_armAngle);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Extender", "Arm Target Angle", m_armTargetAngle);
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Extender", "Arm Error", abs(m_armAngle - (m_armTargetAngle / 11.37777777)));
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Extender", "Extender Pos", m_extender->GetPositionInches().to<double>());
+
     if ((armInsideFrame || !armAtTarget) &&
         m_targetState != EXTENDER_STATE::MANUAL_EXTEND_RETRACT &&
         m_targetState != EXTENDER_STATE::INITIALIZE &&
