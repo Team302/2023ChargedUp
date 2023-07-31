@@ -97,7 +97,7 @@
     stateIdentifier="CUBE_BACKROW_ROTATE"
     controlDataIdentifier="RotateToUpwardAngle"
     controlDataIdentifier2=""
-    value="831"
+    value="820"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
@@ -145,7 +145,7 @@
     stateIdentifier="HUMAN_PLAYER_STATION_ROTATE"
     controlDataIdentifier="RotateToHP"
     controlDataIdentifier2=""
-    value="694"
+    value="683"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />

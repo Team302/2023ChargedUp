@@ -10,24 +10,18 @@
                arm="CONE_BACKROW_ROTATE"
                extender="CONE_BACKROW_EXTEND"
                 intake="INTAKE_HOLD"
-               time="1.0"
+               time="1.1"
                />
     <primitive id="DO_NOTHING"
                arm="FLOOR_POSITION_ROTATE_AUTON_HOLD"
                extender="CONE_BACKROW_EXTEND"
                intake="INTAKE_RELEASE"
-               time="0.25"
+               time="0.65"
                />
     <primitive id="DO_NOTHING"
                arm="CONE_BACKROW_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                intake="INTAKE_RELEASE"
-               time="0.25"
-               />
-    <primitive id="DO_NOTHING"
-               arm="FLOOR_POSITION_ROTATE_AUTON"
-               extender="STARTING_POSITION_EXTEND"
-               intake="INTAKE_RELEASE"
-               time="0.25"
+               time="0.5"
                />
 </auton>

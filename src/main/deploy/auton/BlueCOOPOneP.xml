@@ -24,7 +24,7 @@
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                intake="INTAKE_OFF"
-               time="5.0"
+               time="3.0"
                />
     <!--Balance on charging station-->
     <primitive id="AUTO_BALANCE"
