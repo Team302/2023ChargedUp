@@ -38,7 +38,7 @@ void ExtenderManualState::Run()
 {
     if (m_controller != nullptr && m_extender != nullptr)
     {
-        auto percent = 0.5 * m_controller->GetAxisValue(TeleopControlFunctions::MANUAL_EXTEND_RETRACT);
+        auto percent = 0.75 * m_controller->GetAxisValue(TeleopControlFunctions::MANUAL_EXTEND_RETRACT);
         m_extender->SetControlConstants(0, m_controlData);
         m_extender->UpdateTarget(percent);
         m_extender->Update();

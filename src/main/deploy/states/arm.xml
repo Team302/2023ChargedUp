@@ -97,7 +97,7 @@
     stateIdentifier="CUBE_BACKROW_ROTATE"
     controlDataIdentifier="RotateToUpwardAngle"
     controlDataIdentifier2=""
-    value="820"
+    value="798"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
