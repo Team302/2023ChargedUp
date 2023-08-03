@@ -55,7 +55,7 @@
     secondcrosshairy="" />
   <led
     pwmId="8"
-    number="15" />
+    number="44" />
   <chassis
     type="SWERVE"
     wheelDiameter="4.0"
@@ -310,7 +310,9 @@
       type="FALCON"
       inverted="false"
       sensorInverted="false"
-      feedbackDevice="INTERNAL"
+      feedbackDevice="REMOTESENSOR"
+      remoteSensorID="4"
+      remoteSensorType="CANCODER"
       countsPerRev="2048"
       gearRatio="84"
       brakeMode="true"
@@ -321,11 +323,11 @@
       reverselimitswitchopen="true"
       voltageCompensationSaturation="10.5"
       voltageCompensationEnable="true"
-      countsPerDegree="515.433" />
+      countsPerDegree="531" />
     <cancoder
       canId="4"
       canBusName="rio"
-      offset="-40.342"
+      offset="-130.8"
       reverse="false" />
   </mechanism>
   <mechanism
@@ -363,7 +365,7 @@
       canBusName="rio"
       pdpID="5"
       type="TALONSRX"
-      inverted="true"
+      inverted="false"
       sensorInverted="false"
       feedbackDevice="NONE"
       countsPerRev="1"
@@ -383,7 +385,7 @@
       canBusName="rio"
       pdpID="7"
       type="TALONSRX"
-      inverted="false"
+      inverted="true"
       sensorInverted="false"
       feedbackDevice="NONE"
       countsPerRev="1"

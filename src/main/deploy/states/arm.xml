@@ -37,7 +37,7 @@
     identifier="RotateToDownwardAngle"
     mode="POSITION_DEGREES"
     constrolServer="MOTORCONTROLLER"
-    proportional="0.0"
+    proportional="0.25"
     integral="0.0"
     derivative="0.0"
     feedforward="0.0"

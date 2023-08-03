@@ -100,6 +100,7 @@ void IntakeStateMgr::CheckForStateTransition()
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), identifier, m_targetState);
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), identifier3, m_intake != nullptr ? "true" : "false");
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("IntakeDebugging"), "Gamee Piece Present", m_intake->IsGamePiecePresent());
 
     if (m_intake != nullptr)
     {
