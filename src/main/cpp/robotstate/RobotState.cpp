@@ -114,10 +114,11 @@ void RobotState::CheckGamePieceMode(TeleopControl *controller)
         if (m_wasNextGamePieceButtonReleased)
         {
             m_gamePiece = (m_gamePiece == RobotStateChanges::Cube) ? RobotStateChanges::Cone : RobotStateChanges::Cube;
-            PublishStateChange(RobotStateChanges::HoldingGamePiece, m_gamePiece);
+            PublishStateChange(RobotStateChanges::NextGamePiece, m_gamePiece);
         }
     }
     m_wasGamePieceButtonReleased = !controller->IsButtonPressed(TeleopControlFunctions::CYCLE_CYCLE_GAMEPIECE);
+    m_wasNextGamePieceButtonReleased = !controller->IsButtonPressed(TeleopControlFunctions::CYCLE_NEXT_GAMEPIECE);
 }
 
 void RobotState::RegisterForStateChanges(IRobotStateChangeSubscriber *subscriber, RobotStateChanges::StateChange change)

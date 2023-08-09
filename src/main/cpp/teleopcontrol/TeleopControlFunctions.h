@@ -90,7 +90,7 @@ public:
         OPEN,
         GRAB,
         CYCLE_CYCLE_GAMEPIECE,
-        CYCLE_CURRENT_GAMEPIECE,
+        CYCLE_NEXT_GAMEPIECE,
         // Active intake controls?
         INTAKE_OFF,
         INTAKE,

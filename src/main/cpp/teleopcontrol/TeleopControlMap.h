@@ -177,6 +177,7 @@ robin_hood::unordered_map<TeleopControlFunctions::FUNCTION, const TeleopControlB
 
     {TeleopControlFunctions::STARTING_POSITION, copilotStartButton},
     {TeleopControlFunctions::CYCLE_CYCLE_GAMEPIECE, copilotSelectButton},
+    {TeleopControlFunctions::CYCLE_NEXT_GAMEPIECE, copilotDPad0},
     {TeleopControlFunctions::HUMAN_PLAYER_STATION, copilotBButton},
     {TeleopControlFunctions::FLOOR_POSITION, copilotAButton},
     {TeleopControlFunctions::MIDROW, copilotXButton},

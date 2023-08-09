@@ -194,7 +194,7 @@ DriverFeedback::DriverFeedback() : IRobotStateChangeSubscriber()
 {
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::IntakeState);
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::DesiredGamePiece);
-    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::CurrentGamePiece);
+    RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::NextGamePiece);
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::HoldingGamePiece);
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::GameState);
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::CompressorChange);
