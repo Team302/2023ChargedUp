@@ -7,24 +7,29 @@
     <!--score preloaded cone-->
     <snippet file="ScoreCone.xml"/>
     <!--drive to charing station-->
-<primitive id="DRIVE_PATH_PLANNER"
-	           pathname="BlueHP1"
-			   arm="FLOOR_POSITION_ROTATE_AUTON"
+ <primitive id="DRIVE_PATH"
+               pathname="BlueHPOne1.wpilib.json"
+               headingOption="SPECIFIED_ANGLE"
+               heading="180"
+               arm="STARTING_POSITION_ROTATE"
                intake="INTAKE_OFF"
-			   extender="STARTING_POSITION_EXTEND"
-               time="2.0"/>
-<primitive id="DO_NOTHING"
-			   arm="FLOOR_POSITION_ROTATE"
-               intake="INTAKE"
-			   extender="FLOOR_EXTEND"
-               time="0.25"/>
-<!--drive to cube-->
-<primitive id="DRIVE_PATH_PLANNER"
-	           pathname="BlueHP2"
-			   arm="FLOOR_POSITION_ROTATE"
-               intake="INTAKE"
-			   extender="FLOOR_EXTEND"
-               time="2.65"/>
+               time="0.5"
+               />
+    <primitive id="DRIVE_PATH"
+               pathname="BlueHPOne4.wpilib.json"
+               headingOption="SPECIFIED_ANGLE"
+               heading="180"
+               arm="STARTING_POSITION_ROTATE"
+               intake="INTAKE_OFF"
+               time="2.0"
+               />
+    <primitive id="DRIVE_PATH"
+               pathname="BlueHPOne2.wpilib.json"
+               headingOption="SPECIFIED_ANGLE"
+               heading="180"
+               intake="INTAKE_OFF"
+               time="5.0"
+               />
     <!--do nothing!-->
     <primitive id="DO_NOTHING"
                time="10.0"

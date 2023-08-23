@@ -15,7 +15,7 @@
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                intake="INTAKE_OFF"
-               time="15.0"
+               time="6.0"
                />
    <!--drive over charging station-->
     <primitive id="DRIVE_PATH"
@@ -25,7 +25,7 @@
                arm="STARTING_POSITION_ROTATE"
                extender="STARTING_POSITION_EXTEND"
                intake="INTAKE_OFF"
-               time="10.0"
+               time="5.0"
                />
     <!--auto balance-->
     <primitive id="AUTO_BALANCE"
