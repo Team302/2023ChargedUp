@@ -56,16 +56,16 @@
     stateIdentifier="INTAKE_EXPEL"
     controlDataIdentifier="intake"
     controlDataIdentifier2="intake"
-    value="-1"
-    secondValue="-1"
+    value="-0.83"
+    secondValue="-0.83"
     solenoid="REVERSE"
     solenoid2="NONE" />  
   <mechanismTarget
     stateIdentifier="INTAKE_EXPEL_LOW"
     controlDataIdentifier="intake"
     controlDataIdentifier2="intake"
-    value="-0.3"
-    secondValue="-0.3"
+    value="-0.35"
+    secondValue="-0.35"
     solenoid="REVERSE"
     solenoid2="NONE" />
   <mechanismTarget

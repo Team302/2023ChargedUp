@@ -33,7 +33,8 @@
     crosshairx=""
     crosshairy=""
     secondcrosshairx=""
-    secondcrosshairy=""/>
+    secondcrosshairy=""
+    />
   <limelight
     usage="SECONDARYLIMELIGHT"
     tablename="limelight-back"
@@ -97,6 +98,9 @@
         reverselimitswitchopen="true"
         voltageCompensationSaturation="10.5"
         voltageCompensationEnable="true"
+        peakCurrentDuration="25.0" 
+        continuousCurrentLimit="20.0" 
+        peakCurrentLimit="25.0" 
        />
       <motor
         usage="SWERVE_TURN"
@@ -155,6 +159,9 @@
         reverselimitswitchopen="true"
         voltageCompensationSaturation="10.5"
         voltageCompensationEnable="true"
+        peakCurrentDuration="25.0" 
+        continuousCurrentLimit="20.0" 
+        peakCurrentLimit="25.0"
         />
       <motor
         usage="SWERVE_TURN"
@@ -212,6 +219,9 @@
         reverselimitswitchopen="true"
         voltageCompensationSaturation="10.5"
         voltageCompensationEnable="true"
+        peakCurrentDuration="25.0" 
+        continuousCurrentLimit="20.0" 
+        peakCurrentLimit="25.0"
         />
       <motor
         usage="SWERVE_TURN"
@@ -269,7 +279,9 @@
         reverselimitswitchopen="true"
         voltageCompensationSaturation="10.5"
         voltageCompensationEnable="true"
-       
+        peakCurrentDuration="25.0" 
+        continuousCurrentLimit="20.0" 
+        peakCurrentLimit="25.0"
        />
       <motor
         usage="SWERVE_TURN"

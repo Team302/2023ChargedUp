@@ -50,6 +50,7 @@ void MaintainHeading::UpdateChassisSpeeds(ChassisMovement &chassisMovement)
         }
     }
     chassis->SetStoredHeading(chassis->GetPose().Rotation().Degrees());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Maintain", "Pos", chassis->GetPose().Rotation().Degrees().to<double>());
 
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Maintain", "VxAFTER", chassisMovement.chassisSpeeds.vx.to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Maintain", "VyAFTER", chassisMovement.chassisSpeeds.vy.to<double>());

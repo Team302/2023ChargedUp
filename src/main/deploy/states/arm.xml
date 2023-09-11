@@ -113,7 +113,7 @@
     stateIdentifier="CUBE_MIDROW_ROTATE_UP"
     controlDataIdentifier="RotateToUpwardAngle"
     controlDataIdentifier2=""
-    value="609"
+    value="587"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
