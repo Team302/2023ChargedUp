@@ -156,27 +156,27 @@ void HolonomicDrive::Run()
         }
         if (controller->IsButtonPressed(TeleopControlFunctions::AUTO_TURN_FORWARD))
         {
-            moveInfo.headingOption = ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE;
+            moveInfo.headingOption = ChassisOptionEnums::HeadingOption::MAINTAIN;
             if (FMSData::GetInstance()->GetAllianceColor() == frc::DriverStation::Alliance::kBlue)
             {
-                moveInfo.yawAngle = units::angle::degree_t(0.0);
+                dynamic_cast<SwerveChassis *>(m_chassis)->SetStoredHeading(units::angle::degree_t(0.0));
             }
             else
             {
-                moveInfo.yawAngle = units::angle::degree_t(180.0);
+                dynamic_cast<SwerveChassis *>(m_chassis)->SetStoredHeading(units::angle::degree_t(180.0));
             }
         }
         if (controller->IsButtonPressed(TeleopControlFunctions::AUTO_TURN_BACKWARD))
         {
-            moveInfo.headingOption = ChassisOptionEnums::HeadingOption::SPECIFIED_ANGLE;
+            moveInfo.headingOption = ChassisOptionEnums::HeadingOption::MAINTAIN;
 
             if (FMSData::GetInstance()->GetAllianceColor() == frc::DriverStation::Alliance::kBlue)
             {
-                moveInfo.yawAngle = units::angle::degree_t(180.0);
+                dynamic_cast<SwerveChassis *>(m_chassis)->SetStoredHeading(units::angle::degree_t(180.0));
             }
             else
             {
-                moveInfo.yawAngle = units::angle::degree_t(0.0);
+                dynamic_cast<SwerveChassis *>(m_chassis)->SetStoredHeading(units::angle::degree_t(0.0));
             }
         }
 
