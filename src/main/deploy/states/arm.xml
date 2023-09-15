@@ -37,7 +37,7 @@
     identifier="RotateToDownwardAngle"
     mode="POSITION_DEGREES"
     constrolServer="MOTORCONTROLLER"
-    proportional="0.0"
+    proportional="0.25"
     integral="0.0"
     derivative="0.0"
     feedforward="0.0"
@@ -89,7 +89,7 @@
     stateIdentifier="MANUAL_ROTATE"
     controlDataIdentifier="PercentOutput"
     controlDataIdentifier2=""
-    value="0.45"
+    value="0.65"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
@@ -97,7 +97,7 @@
     stateIdentifier="CUBE_BACKROW_ROTATE"
     controlDataIdentifier="RotateToUpwardAngle"
     controlDataIdentifier2=""
-    value="831"
+    value="798"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
@@ -105,7 +105,7 @@
     stateIdentifier="CONE_BACKROW_ROTATE"
     controlDataIdentifier="RotateToUpwardAngle"
     controlDataIdentifier2=""
-    value="831"
+    value="815"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
@@ -113,7 +113,7 @@
     stateIdentifier="CUBE_MIDROW_ROTATE_UP"
     controlDataIdentifier="RotateToUpwardAngle"
     controlDataIdentifier2=""
-    value="625"
+    value="587"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
@@ -145,7 +145,7 @@
     stateIdentifier="HUMAN_PLAYER_STATION_ROTATE"
     controlDataIdentifier="RotateToHP"
     controlDataIdentifier2=""
-    value="694"
+    value="683"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />

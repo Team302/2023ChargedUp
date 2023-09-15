@@ -7,6 +7,21 @@
     <!--score preloaded cone-->
     <snippet file="ScoreCone.xml"/>
 
+ <primitive id="DRIVE_PATH"
+               pathname="RedHPOne1.wpilib.json"
+               headingOption="SPECIFIED_ANGLE"
+               heading="0"
+               arm="STARTING_POSITION_ROTATE"
+               intake="INTAKE_OFF"
+               time="0.5"
+               />
+    <primitive id="DRIVE_PATH"
+               pathname="RedHPOne2.wpilib.json"
+               headingOption="SPECIFIED_ANGLE"
+               heading="0"
+               intake="INTAKE_OFF"
+               time="2.0"
+               />
     <!--exit community-->
     <primitive id="DRIVE_PATH"
                pathname="RedHPOne4.wpilib.json"

@@ -10,7 +10,7 @@
                arm="CONE_BACKROW_ROTATE"
                extender="CONE_BACKROW_EXTEND"
                 intake="INTAKE_HOLD"
-               time="1.0"
+               time="1.25"
                />
     <primitive id="DO_NOTHING"
                arm="FLOOR_POSITION_ROTATE_AUTON_HOLD"

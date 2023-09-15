@@ -169,7 +169,7 @@ robin_hood::unordered_map<TeleopControlFunctions::FUNCTION, const TeleopControlB
     {TeleopControlFunctions::SLOW_MODE, driverRBumper},
 
     {TeleopControlFunctions::AUTO_TURN_FORWARD, driverLStickPressed},
-    //{TeleopControlFunctions::AUTO_TURN_BACKWARD, driverRStickPressed},
+    {TeleopControlFunctions::AUTO_TURN_BACKWARD, driverRStickPressed},
 
     {TeleopControlFunctions::DEBUG_INC_P, driverDPad0},
     {TeleopControlFunctions::DEBUG_DEC_P, driverDPad180},
