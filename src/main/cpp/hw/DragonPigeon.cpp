@@ -135,3 +135,38 @@ double DragonPigeon::GetRawYaw()
     }
     return yaw;
 }
+
+ctre::phoenix::ErrorCode DragonPigeon::GetLastError()
+{
+    ctre::phoenix::ErrorCode error = ctre::phoenix::ErrorCode::GeneralError;
+
+    if (m_pigeon != nullptr)
+    {
+        error = m_pigeon->GetLastError();
+    }
+    else if (m_pigeon2 != nullptr)
+    {
+        error = m_pigeon2->GetLastError();
+    }
+
+    return error;
+}
+
+std::pair<ctre::phoenix::ErrorCode, uint64_t> DragonPigeon::GetFaults()
+{
+    ctre::phoenix::ErrorCode error = ctre::phoenix::ErrorCode::GeneralError;
+
+    ctre::phoenix::sensors::PigeonIMU_Faults faults;
+    ctre::phoenix::sensors::Pigeon2_Faults faults2;
+
+    if (m_pigeon != nullptr)
+    {
+        error = m_pigeon->GetFaults(faults);
+    }
+    else if (m_pigeon2 != nullptr)
+    {
+        error = m_pigeon2->GetFaults(faults2);
+    }
+
+    return std::make_pair(error, m_pigeon != nullptr ? faults.ToBitfield() : faults2.ToBitfield());
+}

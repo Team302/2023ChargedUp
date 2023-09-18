@@ -48,6 +48,8 @@ public:
     double GetRoll();
     double GetYaw();
     void ReZeroPigeon(double angleDeg, int timeoutMs = 0);
+    ctre::phoenix::ErrorCode GetLastError();
+    std::pair<ctre::phoenix::ErrorCode, uint64_t> GetFaults();
 
 private:
     ctre::phoenix::sensors::WPI_PigeonIMU *m_pigeon;

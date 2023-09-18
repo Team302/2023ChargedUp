@@ -326,6 +326,10 @@ void SwerveChassis::UpdateOdometry()
     units::degree_t yaw{m_pigeon->GetYaw()};
     Rotation2d rot2d{yaw};
 
+    /// Pigeon error logging
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "PigeonErrors", "PigeonYaw", m_pigeon->GetYaw());
+    // Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "PigeonErrors", "GetLastError", m_pigeon->GetLastError());
+
     /*if (m_vision == nullptr)
     {
         auto targetInfo = m_vision->getTargetInfo();
