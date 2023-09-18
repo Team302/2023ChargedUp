@@ -15,6 +15,11 @@
 //====================================================================================================================================================
 
 #include <ctre/phoenix/Sensors/PigeonIMU.h>
+
+#include <networktables/NetworkTableInstance.h>
+#include <networktables/NetworkTable.h>
+#include <networktables/NetworkTableEntry.h>
+
 #include <hw/DragonPigeon.h>
 #include <memory>
 
@@ -152,7 +157,7 @@ ctre::phoenix::ErrorCode DragonPigeon::GetLastError()
     return error;
 }
 
-std::pair<ctre::phoenix::ErrorCode, uint64_t> DragonPigeon::GetFaults()
+std::pair<ctre::phoenix::ErrorCode, uint64_t> DragonPigeon::GetFaultsAsBitfield()
 {
     ctre::phoenix::ErrorCode error = ctre::phoenix::ErrorCode::GeneralError;
 
@@ -169,4 +174,71 @@ std::pair<ctre::phoenix::ErrorCode, uint64_t> DragonPigeon::GetFaults()
     }
 
     return std::make_pair(error, m_pigeon != nullptr ? faults.ToBitfield() : faults2.ToBitfield());
+}
+
+void DragonPigeon::PublishFaultsAndErrors()
+{
+    std::pair<ctre::phoenix::ErrorCode, uint64_t> results = GetFaultsAsBitfield();
+
+    auto table = nt::NetworkTableInstance::GetDefault().GetTable("PigeonData");
+
+    ctre::phoenix::sensors::Pigeon2_Faults faults;
+
+    if (m_pigeon2 != nullptr)
+    {
+        m_pigeon2->GetFaults(faults);
+    }
+
+    table->PutNumber("Error Code", results.first);
+    table->PutBoolean("Has Faults?", faults.HasAnyFault());
+
+    table->PutBoolean("Accel faults", faults.AccelFault);
+    table->PutBoolean("API faults", faults.APIError);
+    table->PutBoolean("Booted into motion?", faults.BootIntoMotion);
+    table->PutBoolean("Gyro fault", faults.GyroFault);
+    table->PutBoolean("Hardware fault", faults.HardwareFault);
+    table->PutBoolean("Magnetometer fault", faults.MagnetometerFault);
+    table->PutBoolean("Reset while enabled", faults.ResetDuringEn);
+    table->PutBoolean("Saturated accel fault", faults.SaturatedAccel);
+    table->PutBoolean("Saturated magnetic field fault", faults.SaturatedMag);
+    table->PutBoolean("Saturated rotate velocity fault", faults.SaturatedRotVelocity);
+    table->PutBoolean("Under voltage fault", faults.UnderVoltage);
+
+    // iterate through bit list
+    // int count = 0;
+    // for (int i = 0; i < 64; i++)
+    // {
+    //     if (1 == ((results.second >> i) & 1)) // if bit is set
+    //     {
+    //         table->PutBoolean("Bit field bit " + i, true);
+    //     }
+    //     else
+    //     {
+    //         table->PutBoolean("Bit field bit " + i, true);
+    //     }
+    // }
+}
+
+void DragonPigeon::SetEnableCompass(bool value)
+{
+    if (m_pigeon2 != nullptr)
+    {
+        m_pigeon2->ConfigEnableCompass(value);
+    }
+}
+
+void DragonPigeon::SetDisableTemperatureCompensation(bool value)
+{
+    if (m_pigeon2 != nullptr)
+    {
+        m_pigeon2->ConfigDisableTemperatureCompensation(value);
+    }
+}
+
+void DragonPigeon::SetDisableNoMotionCalibration(bool value)
+{
+    if (m_pigeon2 != nullptr)
+    {
+        m_pigeon2->ConfigDisableNoMotionCalibration(value);
+    }
 }

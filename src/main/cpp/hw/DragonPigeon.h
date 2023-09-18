@@ -49,7 +49,11 @@ public:
     double GetYaw();
     void ReZeroPigeon(double angleDeg, int timeoutMs = 0);
     ctre::phoenix::ErrorCode GetLastError();
-    std::pair<ctre::phoenix::ErrorCode, uint64_t> GetFaults();
+    std::pair<ctre::phoenix::ErrorCode, uint64_t> GetFaultsAsBitfield();
+    void PublishFaultsAndErrors();
+    void SetEnableCompass(bool value);
+    void SetDisableTemperatureCompensation(bool value);
+    void SetDisableNoMotionCalibration(bool value);
 
 private:
     ctre::phoenix::sensors::WPI_PigeonIMU *m_pigeon;
