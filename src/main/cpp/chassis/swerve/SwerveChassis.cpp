@@ -329,6 +329,9 @@ void SwerveChassis::UpdateOdometry()
     /// Pigeon error logging
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "PigeonErrors", "PigeonData", m_pigeon->GetYaw());
     m_pigeon->PublishFaultsAndErrors();
+    m_pigeon->SetDisableNoMotionCalibration(true);
+    m_pigeon->SetDisableTemperatureCompensation(true);
+    m_pigeon->SetEnableCompass(true);
 
     /*if (m_vision == nullptr)
     {
