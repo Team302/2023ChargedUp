@@ -173,7 +173,7 @@ robin_hood::unordered_map<TeleopControlFunctions::FUNCTION, const TeleopControlB
 
     {TeleopControlFunctions::DEBUG_INC_P, driverDPad0},
     {TeleopControlFunctions::DEBUG_DEC_P, driverDPad180},
-    {TeleopControlFunctions::TIPCORRECTION_TOGGLE, driverRStickPressed},
+    //{TeleopControlFunctions::TIPCORRECTION_TOGGLE, driverRStickPressed},
 
     {TeleopControlFunctions::STARTING_POSITION, copilotStartButton},
     {TeleopControlFunctions::CYCLE_CYCLE_GAMEPIECE, copilotSelectButton},

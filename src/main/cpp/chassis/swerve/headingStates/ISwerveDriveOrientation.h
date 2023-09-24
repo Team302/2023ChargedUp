@@ -47,7 +47,7 @@ protected:
     ChassisOptionEnums::HeadingOption m_headingOption;
     units::angle::degree_t m_storedYaw;
 
-    double m_kPMaintainHeadingControl = 1.5; // 3.0
-    double m_kPGoalHeadingControl = 3.0;
+    double m_kPMaintainHeadingControl = 1.5; // compbot is 1.5 //practice bot is 0.85
+    double m_kPGoalHeadingControl = 3.0;     // comp bot is 3.0 //practice bot 1.5
     double m_kPGoalHeadingControl_STANDISH = 3.5;
 };
