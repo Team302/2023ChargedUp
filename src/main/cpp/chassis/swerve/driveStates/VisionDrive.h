@@ -105,7 +105,7 @@ private:
     bool m_xErrorUnderThreshold = false;
     const double m_xErrorThreshold = 3.0;
 
-    const double m_demoXDistanceMinimum = 130.0; // 5 feet
+    const double m_demoXDistanceMinimum = 110.0; // 5 feet
 
     // Angular movement settings
     const double m_minimumOmega_radps = 0.7;

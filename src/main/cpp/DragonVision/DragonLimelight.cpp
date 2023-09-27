@@ -381,6 +381,8 @@ std::optional<units::length::inch_t> DragonLimelight::GetTargetHeight() const
     PIPELINE_MODE mode = getPipeline();
     if (mode == PIPELINE_MODE::APRIL_TAG)
     {
+        if (getAprilTagID() == 0)
+            return m_aprilTagInfo.GetHeight(5);
         return m_aprilTagInfo.GetHeight(getAprilTagID());
     }
     else if ((mode == PIPELINE_MODE::CUBE) || mode == PIPELINE_MODE::CONE)
@@ -430,11 +432,18 @@ units::length::inch_t DragonLimelight::EstimateTargetXdistance() const
 
     std::optional<units::length::inch_t> theTargetHeight = GetTargetHeight();
 
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("Target Has Height"), theTargetHeight.has_value());
+
     if (theTargetHeight.has_value())
     {
         auto deltaHeight = theTargetHeight.value() - GetLimelightMountingHeight();
 
         units::length::inch_t x_distanceToTarget = units::length::inch_t(deltaHeight / tanOfAngle);
+
+        if (x_distanceToTarget.to<double>() < 0.0) // x_Distance is negative
+        {
+            x_distanceToTarget *= -1.0;
+        }
 
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("totalAngleFromHorizontal "), totalAngleFromHorizontal.to<double>());
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("DragonLimelight"), string("angleRad "), angleRad.to<double>());

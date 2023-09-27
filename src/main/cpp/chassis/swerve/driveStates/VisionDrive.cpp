@@ -98,9 +98,14 @@ std::array<frc::SwerveModuleState, 4> VisionDrive::UpdateSwerveModuleStates(Chas
                     m_xErrorUnderThreshold = true;
                 }
 
-                if (units::math::abs(xDemoError).to<double>() > m_demoXDistanceMinimum)
+                if (units::math::abs(xDemoError).to<double>() > m_demoXDistanceMinimum || (targetData->getApriltagID() == 5 ? units::math::abs(xDemoError).to<double>() < m_demoXDistanceMinimum : false))
                 {
                     xSpeed = units::length::meter_t(xError * m_visionKP_X) / 1_s;
+
+                    if (targetData->getApriltagID() == 5)
+                    {
+                        xSpeed *= -1.0;
+                    }
 
                     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "VisionDrive", "XSpeed Before Limiting (MPS)", xSpeed.to<double>());
 

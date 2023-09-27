@@ -55,7 +55,7 @@
     secondcrosshairy="" />
   <led
     pwmId="8"
-    number="15" />
+    number="46" />
   <chassis
     type="SWERVE"
     wheelDiameter="4.0"

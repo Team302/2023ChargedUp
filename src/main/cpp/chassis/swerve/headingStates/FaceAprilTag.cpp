@@ -48,6 +48,8 @@ void FaceAprilTag::UpdateChassisSpeeds(ChassisMovement &chassisMovement)
 
     if ((targetData != nullptr) && (m_vision->getPipeline(DragonVision::LIMELIGHT_POSITION::FRONT) == targetData->getTargetType()))
     {
+        // AtTargetAngle(targetData, &angleError);
+
         if (!AtTargetAngle(targetData, &angleError))
         {
             Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ANickDebugging", "Angle Error (Deg)", units::angle::degree_t(angleError).to<double>());
@@ -62,6 +64,7 @@ void FaceAprilTag::UpdateChassisSpeeds(ChassisMovement &chassisMovement)
 
             chassisMovement.chassisSpeeds.omega = omega;
         }
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ANickDebugging", "Angle Error (Deg)", units::angle::degree_t(angleError).to<double>());
     }
 }
 
@@ -71,6 +74,9 @@ bool FaceAprilTag::AtTargetAngle(std::shared_ptr<DragonVisionTarget> targetData,
     {
         units::length::inch_t yError = targetData->getYdistanceToTargetRobotFrame();
         units::length::inch_t xError = targetData->getXdistanceToTargetRobotFrame();
+
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ANickDebugging", "Y distance", yError.to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "ANickDebugging", "X distance", xError.to<double>() * 2);
 
         if (std::abs(xError.to<double>()) > 0.01)
         {
