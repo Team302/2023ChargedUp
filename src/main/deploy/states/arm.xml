@@ -89,7 +89,7 @@
     stateIdentifier="MANUAL_ROTATE"
     controlDataIdentifier="PercentOutput"
     controlDataIdentifier2=""
-    value="0.45"
+    value="0.35"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />
@@ -145,7 +145,7 @@
     stateIdentifier="HUMAN_PLAYER_STATION_ROTATE"
     controlDataIdentifier="RotateToHP"
     controlDataIdentifier2=""
-    value="683"
+    value="670"
     secondValue=""
     solenoid="NONE"
     solenoid2="NONE" />

@@ -334,7 +334,7 @@
       forwardlimitswitchopen="true"
       reverselimitswitch="true"
       reverselimitswitchopen="true"
-      voltageCompensationSaturation="10.5"
+      voltageCompensationSaturation="11.5"
       voltageCompensationEnable="true"
       countsPerDegree="531" />
     <cancoder
@@ -364,7 +364,7 @@
       forwardlimitswitchopen="true"
       reverselimitswitch="true"
       reverselimitswitchopen="true"
-      voltageCompensationSaturation="10.5"
+      voltageCompensationSaturation="11.5"
       voltageCompensationEnable="false"
       countsPerInch="3811.0878"/>
   </mechanism>
