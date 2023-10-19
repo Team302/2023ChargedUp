@@ -32,8 +32,8 @@
     stateIdentifier="INTAKE_HOLD"
     controlDataIdentifier="intake"
     controlDataIdentifier2="intake"
-    value="0.20"
-    secondValue="0.20"
+    value="0.4"
+    secondValue="0.0"
     solenoid="REVERSE"
     solenoid2="NONE" />
   <mechanismTarget
@@ -72,8 +72,8 @@
     stateIdentifier="HP_CONE_INTAKE"
     controlDataIdentifier="intake"
     controlDataIdentifier2="intake"
-    value="0.75"
-    secondValue="0.75"
+    value="1.0"
+    secondValue="1.0"
     solenoid="REVERSE"
     solenoid2="NONE" />
 
