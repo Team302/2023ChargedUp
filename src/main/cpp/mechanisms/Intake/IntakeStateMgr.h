@@ -92,7 +92,7 @@ private:
     int m_armAngle = 0;
     static IntakeStateMgr *m_instance;
 
-    static constexpr int HUMAN_PLAYER_STATION_ANGLE = 55;
+    static constexpr int HUMAN_PLAYER_STATION_ANGLE = 30;
     static constexpr int LOW_RELEASE_ANGLE = 60;
 
     const StateStruc m_offState = {INTAKE_STATE::OFF, m_intakeOffXMLString, StateType::INTAKE_STATE, true};

@@ -15,7 +15,7 @@
     identifier="RotateToHP"
     mode="POSITION_DEGREES"
     constrolServer="MOTORCONTROLLER"
-    proportional="1.35"
+    proportional="1.4"
     integral="0.005"
     derivative="0.0"
     feedforward="0.0"
