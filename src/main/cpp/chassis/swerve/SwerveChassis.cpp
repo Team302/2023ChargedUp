@@ -191,6 +191,18 @@ void SwerveChassis::ZeroAlignSwerveModules()
 /// @brief Drive the chassis
 void SwerveChassis::Drive(ChassisMovement moveInfo)
 {
+
+    auto states = m_kinematics.ToSwerveModuleStates(moveInfo.chassisSpeeds, moveInfo.centerOfRotationOffset);
+    // order of states array, fl, fr, bl, br
+
+    m_kinematics.DesaturateWheelSpeeds(&states, m_maxSpeed);
+
+    m_frontLeft.get()->SetDesiredState(states[0]);
+    m_frontRight.get()->SetDesiredState(states[1]);
+    m_backLeft.get()->SetDesiredState(states[2]);
+    m_backRight.get()->SetDesiredState(states[3]);
+
+    /*
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("swerve"), string("Vx"), moveInfo.chassisSpeeds.vx.to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("swerve"), string("Vy"), moveInfo.chassisSpeeds.vy.to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("swerve"), string("Omega"), moveInfo.chassisSpeeds.omega.to<double>());
@@ -218,7 +230,7 @@ void SwerveChassis::Drive(ChassisMovement moveInfo)
         m_backRight.get()->SetDesiredState(states[RIGHT_BACK]);
     }
     auto table = nt::NetworkTableInstance::GetDefault().GetTable("Anti-Tip");
-    table.get()->PutBoolean(std::string(" "), (moveInfo.checkTipping));
+    table.get()->PutBoolean(std::string(" "), (moveInfo.checkTipping));*/
 }
 
 void SwerveChassis::Drive()

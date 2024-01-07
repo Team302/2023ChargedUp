@@ -61,7 +61,7 @@
                               40 | 41 | 42 | 43 | 44 | 45 | 46 | 47 | 48 | 49 | 
                               50 | 51 | 52 | 53 | 54 | 55 | 56 | 57 | 58 | 59 | 
                               60 | 61 | 62 ) "0"
-          canBusName CDATA "rio"
+          canBusName CDATA "Canivore"
           type      (pigeon1 | pigeon2) "pigeon1"
           rotation CDATA "0.0"
           usage     (CENTER_OF_ROTATION)  "CENTER_OF_ROTATION"
@@ -230,7 +230,7 @@
                               		  40 | 41 | 42 | 43 | 44 | 45 | 46 | 47 | 48 | 49 | 
                               		  50 | 51 | 52 | 53 | 54 | 55 | 56 | 57 | 58 | 59 | 
                               		  60 | 61 | 62 ) "0"
-          canBusName                CDATA "rio"
+          canBusName                CDATA "Canivore"
 		  pdpID						CDATA #IMPLIED
           type              		( TALONSRX | FALCON | BRUSHLESS_SPARK_MAX | BRUSHED_SPARK_MAX ) "TALONSRX"
           inverted          		( true | false ) "false"
