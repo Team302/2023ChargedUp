@@ -26,7 +26,7 @@
 #include <chassis/ChassisOptionEnums.h>
 
 // Third party includes
-#include <pathplanner/lib/PathPlannerTrajectory.h>
+#include <pathplanner/lib/path/PathPlannerTrajectory.h>
 
 /// @brief This is used to give all neccessary data to ISwerveDriveStates
 

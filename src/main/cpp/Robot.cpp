@@ -34,6 +34,10 @@
 /// DEBUGGING
 #include <hw/factories/PigeonFactory.h>
 
+#include <iostream>
+#include <frc2/command/Command.h>
+#include <frc2/command/InstantCommand.h>
+
 using namespace std;
 
 void Robot::RobotInit()
@@ -42,6 +46,9 @@ void Robot::RobotInit()
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("RobotInit"), string("arrived"));
 
     m_controller = nullptr;
+
+    frc2::Command command = new frc2::InstantCommand(()->{std::cout << "Hi"});
+    command.Execute();
 
     // Read the XML file to build the robot
     auto XmlParser = new RobotXmlParser();

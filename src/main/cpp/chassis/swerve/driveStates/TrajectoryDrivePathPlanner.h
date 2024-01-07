@@ -23,7 +23,7 @@
 #include <chassis/swerve/SwerveChassis.h>
 
 // Third party includes
-#include <pathplanner/lib/PathPlannerTrajectory.h>
+#include <pathplanner/lib/path/PathPlannerTrajectory.h>
 #include <pathplanner/lib/controllers/PPHolonomicDriveController.h>
 
 class TrajectoryDrivePathPlanner : public RobotDrive

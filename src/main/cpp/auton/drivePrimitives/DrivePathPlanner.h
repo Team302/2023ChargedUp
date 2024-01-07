@@ -26,7 +26,7 @@
 #include <frc/Timer.h>
 
 // third party includes
-#include <pathplanner/lib/PathPlanner.h>
+#include <pathplanner/lib/path/PathPlannerTrajectory.h>
 
 class DrivePathPlanner : public IPrimitive
 {

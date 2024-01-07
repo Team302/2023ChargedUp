@@ -28,7 +28,7 @@
 #include <DragonVision/DragonVision.h>
 
 // Third Party Includes
-#include <pathplanner/lib/PathPlanner.h>
+#include <pathplanner/lib/path/PathPlannerTrajectory.h>
 
 using namespace std;
 using namespace frc;

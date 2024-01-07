@@ -45,7 +45,7 @@ public:
 		std::string networkTableName,
 		std::shared_ptr<IDragonMotorController> motorController0);
 	Extender() = delete;
-	~Extender() override = default;
+	~Extender() = default;
 
 	//========= Hand modified code start section 0 ========
 	void Update() override;

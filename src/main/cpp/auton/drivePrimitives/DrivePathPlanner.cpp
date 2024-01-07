@@ -33,7 +33,7 @@
 #include <chassis/swerve/driveStates/TrajectoryDrivePathPlanner.h>
 
 // third party includes
-#include <pathplanner/lib/PathPlanner.h>
+#include <pathplanner/lib/path/PathPlannerTrajectory.h>
 
 using namespace pathplanner;
 
