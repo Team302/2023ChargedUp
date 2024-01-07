@@ -3,60 +3,12 @@
   <pdp
     canId="1"
     type="REV" />
-  <pcm
-    canId="1"
-    type="REV"
-     minPSI="95.0"
-     maxPSI="115.0"
-     />
   <pigeon
     canId="0"
     canBusName="canivore"
     type="pigeon2"
     rotation="0.0"
     usage="CENTER_OF_ROTATION" />
-  <limelight
-    usage="MAINLIMELIGHT"
-    tablename="limelight-front"
-    mountingheight="37.325"
-    horizontaloffset="7.689"
-    forwardOffset="-7.24"
-    yaw="14.96"
-    roll="90"
-    pitch="0.0"
-    targetheight="24.125"
-    targetheight2="43.875"
-    defaultledmode="currentpipeline"
-    defaultcammode="vision"
-    streammode="sidebyside"
-    snapshots="off"
-    crosshairx=""
-    crosshairy=""
-    secondcrosshairx=""
-    secondcrosshairy=""
-    />
-  <limelight
-    usage="SECONDARYLIMELIGHT"
-    tablename="limelight-back"
-    mountingheight="34.472"
-    horizontaloffset="0.0"
-    forwardOffset="-8.405"
-    yaw="0"
-    roll="180"
-    pitch="0.0"
-    targetheight=""
-    targetheight2=""
-    defaultledmode="currentpipeline"
-    defaultcammode="vision"
-    streammode="sidebyside"
-    snapshots="off"
-    crosshairx=""
-    crosshairy=""
-    secondcrosshairx=""
-    secondcrosshairy="" />
-  <led
-    pwmId="8"
-    number="122"/>
   <chassis
     type="SWERVE"
     wheelDiameter="4.0"
@@ -310,118 +262,6 @@
         reverse="false" />
     </swervemodule>
   </chassis>
-
-  <mechanism
-    type="ARM"
-    networkTable="armNT"
-    controlFile="arm.xml">
-    <motor
-      usage="ARM"
-      canId="4"
-      canBusName="rio"
-      pdpID="4"
-      type="FALCON"
-      inverted="false"
-      sensorInverted="false"
-      feedbackDevice="REMOTESENSOR"
-      remoteSensorID="4"
-      remoteSensorType="CANCODER"
-      countsPerRev="2048"
-      gearRatio="84"
-      brakeMode="true"
-      follow="-1"
-      forwardlimitswitch="true"
-      forwardlimitswitchopen="true"
-      reverselimitswitch="true"
-      reverselimitswitchopen="true"
-      voltageCompensationSaturation="10.5"
-      voltageCompensationEnable="true"
-      countsPerDegree="531" />
-    <cancoder
-      canId="4"
-      canBusName="rio"
-      offset="-144.229"
-      reverse="false" />
-  </mechanism>
-  <mechanism
-    type="EXTENDER"
-    networkTable="extenderNT"
-    controlFile="extender.xml">
-    <motor
-      usage="Extender"
-      canId="15"
-      canBusName="rio"
-      pdpID="15"
-      type="FALCON"
-      inverted="false"
-      sensorInverted="false"
-      feedbackDevice="INTERNAL"
-      countsPerRev="2048"
-      gearRatio="10"
-      brakeMode="true"
-      follow="-1"
-      forwardlimitswitch="true"
-      forwardlimitswitchopen="true"
-      reverselimitswitch="true"
-      reverselimitswitchopen="true"
-      voltageCompensationSaturation="10.5"
-      voltageCompensationEnable="false"
-      countsPerInch="3811.0878"/>
-  </mechanism>
-<mechanism
-    type="INTAKE"
-    networkTable="intakeNT"
-    controlFile="intake.xml">
-      <motor
-      usage="INTAKE1"
-      canId="5"
-      canBusName="rio"
-      pdpID="5"
-      type="TALONSRX"
-      inverted="false"
-      sensorInverted="false"
-      feedbackDevice="NONE"
-      countsPerRev="1"
-      gearRatio="1"
-      brakeMode="true"
-      follow="-1"
-      forwardlimitswitch="true"
-      forwardlimitswitchopen="true"
-      reverselimitswitch="true"
-      reverselimitswitchopen="true"
-      voltageCompensationSaturation="10.5"
-      voltageCompensationEnable="true"
-      countsPerDegree="0" />
-      <motor
-      usage="INTAKE2"
-      canId="7"
-      canBusName="rio"
-      pdpID="7"
-      type="TALONSRX"
-      inverted="true"
-      sensorInverted="false"
-      feedbackDevice="NONE"
-      countsPerRev="1"
-      gearRatio="1"
-      brakeMode="true"
-      follow="-1"
-      forwardlimitswitch="true"
-      forwardlimitswitchopen="true"
-      reverselimitswitch="true"
-      reverselimitswitchopen="true"
-      voltageCompensationSaturation="10.5"
-      voltageCompensationEnable="true"
-      countsPerDegree="0" />
-    <solenoid
-      usage="IntakeSolenoid"
-      canId="1"
-      channel="0"
-      reversed="false" />
-    <digitalInput  
-      usage="GAME_PIECE_PRESENT_SENSOR" 
-      digitalId="9" 
-      reversed="true"/> 
-  </mechanism>
   <roborio
     orientation="X_LEFT_Y_UP" />
 </robot>
