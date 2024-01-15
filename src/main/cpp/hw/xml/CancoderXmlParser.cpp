@@ -44,7 +44,7 @@ DragonCanCoder *CancoderXmlParser::ParseXML(
     DragonCanCoder *cancoder = nullptr;
 
     string usage;
-    string canBusName("Canivore");
+    string canBusName("rio");
     int canID = 0;
     double offset = 0.0;
     bool reverse = false;

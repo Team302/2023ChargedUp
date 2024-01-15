@@ -371,6 +371,8 @@ void SwerveChassis::UpdateOdometry()
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("SwerveOdometry"), std::string("X Position: "), m_poseEstimator.GetEstimatedPosition().X().to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("SwerveOdometry"), std::string("Y Position: "), m_poseEstimator.GetEstimatedPosition().Y().to<double>());
     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("SwerveOdometry"), std::string("Rotation: "), m_poseEstimator.GetEstimatedPosition().Rotation().Degrees().to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("SwerveOdometry"), std::string("Rot2D Degree: "), rot2d.Degrees().to<double>());
+    Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, std::string("SwerveOdometry"), std::string("Yaw : "), yaw.to<double>());
 }
 /// @brief set all of the encoders to zero
 void SwerveChassis::SetEncodersToZero()

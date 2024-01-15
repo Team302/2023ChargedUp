@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE auton SYSTEM "auton.dtd">
+<auton>
+<primitive id="RESET_POSITION_PATH_PLANNER"
+	           pathname="Square1"/>
+<!--drive Straight 3m-->
+<primitive id="DRIVE_PATH_PLANNER"
+	           pathname="Square1"
+               time="4.0"/>
+
+</auton>

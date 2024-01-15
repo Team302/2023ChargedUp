@@ -4,7 +4,7 @@
        <pdp canId="1"  
             type="REV"/>  
        <pigeon canId="0"  
-               canBusName="Canivore"
+               canBusName="rio"
                usage="CENTER_OF_ROTATION"  
                type="pigeon2"  
                rotation="0.0"/>  
@@ -15,8 +15,8 @@
 <!-- -->  
        <chassis  type="SWERVE" 
               wheelDiameter="4.0" 
-              wheelBase="24.75"   
-              track="24.75" 
+              wheelBase="22.75"   
+              track="22.75" 
               maxVelocity="162.0" 
               maxAngularVelocity="360" 
               maxAcceleration="81" 
@@ -25,7 +25,7 @@
               controlFile="chassis.xml"> 
  
         <swervemodule type="RIGHT_BACK" 
-                      turn_p="0.085" 
+                      turn_p="0.1" 
                       turn_i="0.001" 
                       turn_d="0.0" 
                       turn_f="0.0" 
@@ -77,11 +77,11 @@
                     voltageCompensationSaturation="10.0" 
                    voltageCompensationEnable="true"/>         
 		    <cancoder canId="19" 
-                            offset="157.071"/> 
+                            offset="156.7092"/> 
         </swervemodule> 
 			  
         <swervemodule type="LEFT_BACK" 
-                      turn_p="0.085" 
+                      turn_p="0.1" 
                       turn_i="0.001"  
                       turn_d="0.0" 
                       turn_f="0.0" 
@@ -133,11 +133,11 @@
                     voltageCompensationSaturation="10.0" 
                    voltageCompensationEnable="true"/>         
 		    <cancoder canId="16" 
-                            offset="40.078"/> 
+                            offset="43.945"/> 
         </swervemodule> 
  
         <swervemodule type="RIGHT_FRONT" 
-                      turn_p="0.085" 
+                      turn_p="0.1" 
                       turn_i="0.001"  
                       turn_d="0.0" 
                       turn_f="0.0" 
@@ -189,10 +189,10 @@
                     voltageCompensationSaturation="10.0" 
                    voltageCompensationEnable="true"/>         
 		    <cancoder canId="2" 
-                            offset="-51.67"/> 
+                            offset="-51.5923"/> 
         </swervemodule> 
         <swervemodule type="LEFT_FRONT" 
-                      turn_p="0.085" 
+                      turn_p="0.1" 
                       turn_i="0.001"  
                       turn_d="0.0" 
                       turn_f="0.0" 
@@ -244,7 +244,7 @@
                     voltageCompensationSaturation="10.0" 
                    voltageCompensationEnable="true"/>         
 		    <cancoder canId="3" 
-                            offset="-108.632"/> 
+                            offset="-105.3812"/> 
         </swervemodule> 
       </chassis>    
 </robot>
