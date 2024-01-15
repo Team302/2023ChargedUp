@@ -42,12 +42,11 @@ void MaintainHeading::UpdateChassisSpeeds(ChassisMovement &chassisMovement)
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Maintain", "HitIf", true);
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Maintain", "HitElse", false);
         chassisMovement.chassisSpeeds.omega = units::radians_per_second_t(0.0);
-        if (abs(chassisMovement.chassisSpeeds.vx.to<double>()) > 0.0 || abs(chassisMovement.chassisSpeeds.vy.to<double>() > 0.0))
+        if (abs(chassisMovement.chassisSpeeds.vx.to<double>()) > 0.0 || abs(chassisMovement.chassisSpeeds.vy.to<double>()) > 0.0)
         {
-            if (std::abs(correction.to<double>()) < 10)
+            if (std::abs(correction.to<double>()) < 1)
             {
                 correction = CalcHeadingCorrection(chassis->GetStoredHeading(), m_kPGoalHeadingControl);
-                Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "Maintain", "Correction", correction.to<double>());
             }
             else
             {
