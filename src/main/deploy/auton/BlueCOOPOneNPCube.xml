@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE auton SYSTEM "auton.dtd">
 <auton>
-<primitive id="RESET_POSITION"
-	           pathname="Square1.wpilib.json"
+<primitive id="RESET_POSITION_PATH_PLANNER"
+	           pathname="SquareTest2"
               />
     <!--drive over charging station-->
-    <primitive id="DRIVE_PATH"
-               pathname="Square1.wpilib.json"
-               headingOption="SPECIFIED_ANGLE"
-               heading="90"
+    <primitive id="DRIVE_PATH_PLANNER"
+               pathname="SquareTest2"
                time="9.0"
                />
 </auton>

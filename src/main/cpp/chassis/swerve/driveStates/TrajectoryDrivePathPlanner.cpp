@@ -27,9 +27,9 @@ using frc::Pose2d;
 TrajectoryDrivePathPlanner::TrajectoryDrivePathPlanner(RobotDrive *robotDrive) : RobotDrive(),
                                                                                  m_trajectory(),
                                                                                  m_robotDrive(robotDrive),
-                                                                                 m_holonomicController(frc2::PIDController{0.75, 0.0, 0}, // 3.725, 0.85
-                                                                                                       frc2::PIDController{2.5, 0.0, 0},  // 3.725, 0.85
-                                                                                                       frc::PIDController{1.35, 0.0, 0}), // 0.325, 0.0
+                                                                                 m_holonomicController(frc2::PIDController{3.25, 0.75, 0}, // 3.725, 0.85
+                                                                                                       frc2::PIDController{3.25, 0.75, 0}, // 3.725, 0.85
+                                                                                                       frc::PIDController{3.25, 1.25, 0}), // 0.325, 0.0
                                                                                  m_desiredState(),
                                                                                  m_trajectoryStates(),
                                                                                  m_prevPose(ChassisFactory::GetChassisFactory()->GetSwerveChassis()->GetPose()),
@@ -132,7 +132,7 @@ bool TrajectoryDrivePathPlanner::IsDone()
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "trajectory drive path planner", "why done", m_whyDone);
     }
 
-    return isDone;
+    return false;
 }
 
 bool TrajectoryDrivePathPlanner::IsSamePose(frc::Pose2d currentPose, frc::Pose2d previousPose, double xyTolerance, double rotTolerance)
